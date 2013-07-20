@@ -1,0 +1,41 @@
+{
+	"currentVersion": 10.0,
+	"serviceDescription": "",
+	"hasVersionedData": false,
+	"supportsDisconnectedEditing": false,
+	"supportedQueryFormats": "JSON",
+	"maxRecordCount": 2000,
+	"hasStaticData": true,
+	"capabilities": "Query",
+	"description": "",
+	"copyrightText": "",
+	"spatialReference": {
+		"wkid": 4326,
+		"latestWkid": 4326
+	},
+	"initialExtent": {
+		"xmin": -180,
+		"ymin": -90,
+		"xmax": 180,
+		"ymax": 90,
+		"spatialReference": {
+			"wkid": 4326,
+			"latestWkid": 4326
+		}
+	},
+	"fullExtent": {
+		"xmin": -180,
+		"ymin": -90,
+		"xmax": 180,
+		"ymax": 90,
+		"spatialReference": {
+			"wkid": 4326,
+			"latestWkid": 4326
+		}
+	},
+	"allowGeometryUpdates": false,
+	"units": "esriDecimalDegrees",
+	"syncEnabled": false,
+	"layers": [],
+	"tables": []
+}
