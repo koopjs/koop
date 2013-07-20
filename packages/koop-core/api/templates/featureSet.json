@@ -1,0 +1,10 @@
+{
+  "objectIdFieldName" : "id",
+  "globalIdFieldName" : "",
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {"wkid" : 4326},
+  "hasZ" : false,
+  "hasM" : false,
+  "fields" : [],
+  "features" : []
+}

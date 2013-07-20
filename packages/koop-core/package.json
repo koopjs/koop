@@ -1,0 +1,22 @@
+{
+    "name": "koop",
+    "private": true,
+    "version": "0.0.0",
+    "description": "a Sails application",
+    "dependencies": {
+        "sails": "0.8.94",
+        "optimist": "0.4.0",
+        "sails-mongo": "*",
+        "request": "*",
+        "terraformer-arcgis-parser":"0.1.8",
+        "geohub":"0.1.1"
+    },
+    "scripts": {
+        "start": "node app.js",
+        "debug": "node debug app.js"
+    },
+    "main": "app.js",
+    "repository": "",
+    "author": "",
+    "license": "MIT"
+}
