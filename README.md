@@ -12,5 +12,24 @@ To provide a flexible server for exposing new/experimental data source and types
     npm install
     node app.js 
 
+## Geojson 
+
+  Koop comes with a couple geojson files stored in the api/geojson directory. You can place geojson file directly in there to test Koop.  
+
   [http://localhost:1337/geojson](http://localhost:1337/geojson)
 
+## Gists 
+
+You can pull geojson data directly from a gist too.
+
+  [http://localhost:1337/gist/6021269](http://localhost:1337/gist/6021269)
+  [http://localhost:1337/gist/6021269/FeatureServer](http://localhost:1337/gist/6021269/FeatureServer)
+  [http://localhost:1337/gist/6021269/FeatureServer/query](http://localhost:1337/gist/6021269/FeatureServer/query)
+
+## Github 
+
+And of course github can store geojson files as well. Koop can turn those into featureservices too. 
+
+  [http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes](http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes)
+  [http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer](http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/query)
+  [http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/query](http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/query)
