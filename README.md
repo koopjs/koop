@@ -31,5 +31,5 @@ You can pull geojson data directly from a gist too.
 And of course github can store geojson files as well. Koop can turn those into featureservices too. 
 
   [http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes](http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes)
-  [http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer](http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/query)
+  [http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer](http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/)
   [http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/query](http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/query)
