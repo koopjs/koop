@@ -7,4 +7,10 @@
 
 To provide a flexible server for exposing new/experimental data source and types as both Feature Services and other data formats. This server is meant to provide a simple platform to extend the currently supported functionality of ArcGIS Server, and act a means for benchmarking and showcasing new ideas around web mapping.
 
+## Usage 
+
+    npm install
+    node app.js 
+
+  [http://localhost:1337/geojson](http://localhost:1337/geojson)
 
