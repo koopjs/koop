@@ -1,7 +1,7 @@
 # koop
 ### a node.js implimentation of ArcGIS Server
 
-### Note: This server is in active development and does not currently (and probably) never will attempt to impliment 100% of the GeoService Rest Spec
+Note: This server is in active development and does not currently (and probably) never will attempt to impliment 100% of the GeoService Rest Spec
 
 ## Goal 
 
@@ -17,6 +17,10 @@ To provide a flexible server for exposing new/experimental data source and types
   Koop comes with a couple geojson files stored in the api/geojson directory. You can place geojson file directly in there to test Koop.  
 
   [http://localhost:1337/geojson](http://localhost:1337/geojson)
+  [http://localhost:1337/geojson/us-snow](http://localhost:1337/geojson/us-snow)
+  [http://localhost:1337/geojson/us-snow/FeatureServer](http://localhost:1337/geojson/us-snow/FeatureServer)
+  [http://localhost:1337/geojson/us-snow/FeatureServer/0](http://localhost:1337/geojson/us-snow/FeatureServer/0)
+  [http://localhost:1337/geojson/us-snow/FeatureServer/0/query](http://localhost:1337/geojson/us-snow/FeatureServer/0/query)
 
 ## Gists 
 
@@ -24,7 +28,8 @@ You can pull geojson data directly from a gist too.
 
   * [http://localhost:1337/gist/6021269](http://localhost:1337/gist/6021269)
   * [http://localhost:1337/gist/6021269/FeatureServer](http://localhost:1337/gist/6021269/FeatureServer)
-  * [http://localhost:1337/gist/6021269/FeatureServer/query](http://localhost:1337/gist/6021269/FeatureServer/query)
+  * [http://localhost:1337/gist/6021269/FeatureServer/0](http://localhost:1337/gist/6021269/FeatureServer/0)
+  * [http://localhost:1337/gist/6021269/FeatureServer/0/query](http://localhost:1337/gist/6021269/FeatureServer/0/query)
 
 ## Github 
 
@@ -32,7 +37,7 @@ And of course github can store geojson files as well. Koop can turn those into f
 
   * [http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes](http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes)
   * [http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer](http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/)
-  * [http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/query](http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/query)
+  * [http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/0/query](http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/0/query)
   * Note: Repos can of course have directories, and this presents an issue with creating dynamic routes that match arbitrary paths in github. To sole this Koop will replace dashes with slashed in its github routes: 
     * [http://localhost:1337/github/geobabbler/geodata/geojson-border_crossings/FeatureServer/0/query](http://localhost:1337/github/geobabbler/geodata/geojson-border_crossings/FeatureServer/0/query)
     * The above url would pull down this geojson file: [https://github.com/geobabbler/geodata/blob/master/geojson/border_crossings.geojson](https://github.com/geobabbler/geodata/blob/master/geojson/border_crossings.geojson)
