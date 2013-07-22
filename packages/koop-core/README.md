@@ -64,8 +64,6 @@ Esri welcomes contributions from anyone and everyone. Please see our [guidelines
 
 ## Credit
 
-Dymanic Map Layer code is based on code from https://github.com/sanborn/leaflet-ags/blob/master/src/AGS.Layer.Dynamic.js
-
 ## Licensing
 Copyright 2013 Esri
 
