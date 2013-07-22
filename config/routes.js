@@ -41,17 +41,17 @@ module.exports.routes = {
     action: 'geojson'
   },
 
-  'get /geojson/:id/FeatureServer/:method': {
+  'get /geojson/:id/FeatureServer/:layer/:method': {
     controller: 'featureservices',
     action: 'geojson'
   },
 
-  'get /gist/:id/FeatureServer/:method': {
+  'get /gist/:id/FeatureServer/:layer/:method': {
     controller: 'featureservices',
     action: 'gist'
   },
 
-  'get /gist/:id/FeatureServer': {
+  'get /gist/:id/FeatureServer/:layer': {
     controller: 'featureservices',
     action: 'gist'
   },
@@ -66,15 +66,23 @@ module.exports.routes = {
     action: 'index'
   },
 
+  
   'get /github/:user/:repo/:file/FeatureServer': {
     controller: 'featureservices',
     action: 'github'
   },
 
-  'get /github/:user/:repo/:file/FeatureServer/:method': {
+  'get /github/:user/:repo/:file/FeatureServer/:layer': {
     controller: 'featureservices',
     action: 'github'
   },
+
+  'get /github/:user/:repo/:file/FeatureServer/:layer/:method': {
+    controller: 'featureservices',
+    action: 'github'
+  }
+
+  
 
 
 };
