@@ -16,11 +16,11 @@ To provide a flexible server for exposing new/experimental data source and types
 
   Koop comes with a couple geojson files stored in the api/geojson directory. You can place geojson file directly in there to test Koop.  
 
-  [http://localhost:1337/geojson](http://localhost:1337/geojson)
-  [http://localhost:1337/geojson/us-snow](http://localhost:1337/geojson/us-snow)
-  [http://localhost:1337/geojson/us-snow/FeatureServer](http://localhost:1337/geojson/us-snow/FeatureServer)
-  [http://localhost:1337/geojson/us-snow/FeatureServer/0](http://localhost:1337/geojson/us-snow/FeatureServer/0)
-  [http://localhost:1337/geojson/us-snow/FeatureServer/0/query](http://localhost:1337/geojson/us-snow/FeatureServer/0/query)
+  * [http://localhost:1337/geojson](http://localhost:1337/geojson)
+  * [http://localhost:1337/geojson/snow](http://localhost:1337/geojson/snow)
+  * [http://localhost:1337/geojson/snow/FeatureServer](http://localhost:1337/geojson/snow/FeatureServer)
+  * [http://localhost:1337/geojson/snow/FeatureServer/0](http://localhost:1337/geojson/snow/FeatureServer/0)
+  * [http://localhost:1337/geojson/snow/FeatureServer/0/query](http://localhost:1337/geojson/snow/FeatureServer/0/query)
 
 ## Gists 
 
