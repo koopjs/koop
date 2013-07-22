@@ -19,7 +19,7 @@ var FeatureServicesController = {
           res.json( data );
         });
       } else {  
-        FeatureServices.info( geojson, function( serviceJson ){
+        FeatureServices.info( geojson, req.params.layer, function( serviceJson ){
           res.json( serviceJson );
         });
       }
@@ -39,7 +39,7 @@ var FeatureServicesController = {
                 res.json( d );
               });
             } else { 
-              FeatureServices.info( data[0], function( serviceJson ){
+              FeatureServices.info( data[0], req.params.layer, function( serviceJson ){
                 res.json( serviceJson );
               });
             }
@@ -55,7 +55,7 @@ var FeatureServicesController = {
 
   github: function(req, res){
     if ( req.params.user && req.params.repo && req.params.file ){
-        Geohub.repo( req.params.user, req.params.repo, req.params.file, function( err, data ){
+        Geohub.repo( req.params.user, req.params.repo, req.params.file.replace(/-/g,'/'), function( err, data ){
           if ( err ){
             res.json( err, 500 );
           } else if ( data ){
@@ -64,7 +64,7 @@ var FeatureServicesController = {
                 res.json( d );
               });
             } else {
-              FeatureServices.info( data, function( serviceJson ){
+              FeatureServices.info( data, req.params.layer, function( serviceJson ){
                 res.json( serviceJson );
               });
             }

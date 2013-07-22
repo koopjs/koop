@@ -32,6 +32,7 @@ module.exports = {
 
   fields: function( props ){
     var self = this;
+    var hasId = false;
     var fields = [];
     Object.keys( props ).forEach(function( key ){
       fields.push({
@@ -39,7 +40,15 @@ module.exports = {
         type: self.fieldType( props[ key ] ),
         alias: key
       });
+      if ( key == 'id') hasId = true;
     });
+    if ( !hasId ){
+       fields.push({
+        name: 'id',
+        type: 'esriiFieldTypeOID',
+        alias: 'id'
+      });
+    }
     return fields;
   },
 
@@ -49,14 +58,35 @@ module.exports = {
     return template;
   },
 
-  info: function( data, callback ){
-    var json = this.process('/../templates/featureService.json', data );
+  info: function( data, layer, callback ){
+    if ( layer !== undefined ) {
+      // send the layer json
+      var json = this.process('/../templates/featureLayer.json', data );
+    } else {
+      // no layer, send the service json
+      var json = this.process('/../templates/featureService.json', data );
+      json.layers.push({
+        id: 0,
+        name: "layer1",
+        parentLayerId: -1,
+        defaultVisibility: true,
+        subLayerIds: null,
+        minScale: 99999.99998945338,
+        maxScale: 0
+      });
+      
+    } 
     callback && callback( json );
   },
 
   query: function( data, callback ){
     var json = this.process('/../templates/featureSet.json', data );
     json.features = terraformer.convert( data );
+    json.features.forEach(function( f, i ){
+      if ( !f.attributes.id ){
+        f.attributes.id = i+1;
+      }
+    });
     callback && callback( json );
   }
 
