@@ -1,7 +1,7 @@
 # koop
-### a node.js implimentation of ArcGIS Server
+### a node.js implimentation of a Feature Service
 
-Note: This server is in active development and does not currently (and probably) never will attempt to impliment 100% of the GeoService Rest Spec
+Note: This server is in active development and does not currently (and probably) never will attempt to impliment 100% of the (GeoService Rest Spec)[http://www.esri.com/industries/landing-pages/geoservices/geoservices]
 
 ## Goal 
 
