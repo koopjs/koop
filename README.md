@@ -33,3 +33,6 @@ And of course github can store geojson files as well. Koop can turn those into f
   * [http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes](http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes)
   * [http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer](http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/)
   * [http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/query](http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/query)
+  * Note: Repos can of course have directories, and this presents an issue with creating dynamic routes that match arbitrary paths in github. To sole this Koop will replace dashes with slashed in its github routes: 
+    * [http://localhost:1337/github/geobabbler/geodata/geojson-border_crossings/FeatureServer/0/query](http://localhost:1337/github/geobabbler/geodata/geojson-border_crossings/FeatureServer/0/query)
+    * The above url would pull down this geojson file: [https://github.com/geobabbler/geodata/blob/master/geojson/border_crossings.geojson](https://github.com/geobabbler/geodata/blob/master/geojson/border_crossings.geojson)
