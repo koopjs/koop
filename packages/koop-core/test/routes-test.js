@@ -7,7 +7,7 @@ before(function (done) {
   setTimeout(function(){
     done();
   },1500);
-})
+});
 
 describe('Koop Routes', function(){
 

@@ -59,12 +59,13 @@ module.exports = {
   },
 
   info: function( data, layer, callback ){
+    var json;
     if ( layer !== undefined ) {
       // send the layer json
-      var json = this.process('/../templates/featureLayer.json', data );
+      json = this.process('/../templates/featureLayer.json', data );
     } else {
       // no layer, send the service json
-      var json = this.process('/../templates/featureService.json', data );
+      json = this.process('/../templates/featureService.json', data );
       json.layers.push({
         id: 0,
         name: "layer1",
@@ -76,7 +77,7 @@ module.exports = {
       });
       
     } 
-    callback && callback( json );
+    if ( callback ) callback( json );
   },
 
   query: function( data, callback ){
@@ -87,7 +88,7 @@ module.exports = {
         f.attributes.id = i+1;
       }
     });
-    callback && callback( json );
+    if ( callback ) callback( json );
   }
 
 };
