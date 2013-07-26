@@ -48,6 +48,14 @@ And of course github can store geojson files as well. Koop can turn those into f
     * [http://koop.heroku.com/github/geobabbler/geodata/geojson-border_crossings/FeatureServer/0/query](http://koop.heroku.com/github/geobabbler/geodata/geojson-border_crossings/FeatureServer/0/query)
     * The above url would pull down this geojson file: [https://github.com/geobabbler/geodata/blob/master/geojson/border_crossings.geojson](https://github.com/geobabbler/geodata/blob/master/geojson/border_crossings.geojson)
 
+## Testing 
+
+    # install grunt if you dont have it 
+    sudo npm install -g grunt-cli
+
+    # run the tests 
+    grunt test 
+
 ## Resources
 
 * [ArcGIS Developers](http://developers.arcgis.com)
