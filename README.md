@@ -89,5 +89,5 @@ limitations under the License.
 
 A copy of the license is available in the repository's [license.txt]( https://raw.github.com/Esri/esri-leaflet/master/license.txt) file.
 
-[](Esri Tags: ArcGIS Web Mapping Leaflet)
+[](Esri Tags: ArcGIS Web Mapping GeoJson FeatureServices)
 [](Esri Language: JavaScript)

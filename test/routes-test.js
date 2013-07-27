@@ -32,7 +32,7 @@ describe('Koop Routes', function(){
       });
     });
 
-    describe('/gist', function() {
+    describe('/gist/6021269', function() {
       it('should return 200', function(done) {
           agent.get('http://localhost:1337/gist/6021269').end(function(err, res) {
             res.should.have.status(200);
@@ -41,7 +41,7 @@ describe('Koop Routes', function(){
       });
     });
 
-    describe('/gist', function() {
+    describe('/gist/6021269/FeatureServer', function() {
       it('should return 200', function(done) {
           agent.get('http://localhost:1337/gist/6021269/FeatureServer').end(function(err, res) {
             res.should.have.status(200);
@@ -50,7 +50,7 @@ describe('Koop Routes', function(){
       });
     });
 
-    describe('/gist', function() {
+    describe('/gist/6021269/FeatureServer/0', function() {
       it('should return 200', function(done) {
           agent.get('http://localhost:1337/gist/6021269/FeatureServer/0').end(function(err, res) {
             res.should.have.status(200);
@@ -59,7 +59,7 @@ describe('Koop Routes', function(){
       });
     });
 
-    describe('/gist', function() {
+    describe('/gist/6021269/FeatureServer/0/query', function() {
       it('should return 200', function(done) {
           agent.get('http://localhost:1337/gist/6021269/FeatureServer/0/query').end(function(err, res) {
             res.should.have.status(200);
@@ -77,5 +77,49 @@ describe('Koop Routes', function(){
       });
     });
 
+    describe('/github/blarg/', function() {
+      it('should return 404', function(done) {
+          agent.get('http://localhost:1337/github/blarg/').end(function(err, res) {
+            res.should.have.status(404);
+            return done();
+          });
+      });
+    });
+
+    describe('/github/colemanm/hurricanes/fl_2004_hurricanes', function() {
+      it('should return 200', function(done) {
+          agent.get('http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes').end(function(err, res) {
+            res.should.have.status(200);
+            return done();
+          });
+      });
+    });
+
+    describe('/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer', function() {
+      it('should return 200', function(done) {
+          agent.get('http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer').end(function(err, res) {
+            res.should.have.status(200);
+            return done();
+          });
+      });
+    });
+
+    describe('/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/0', function() {
+      it('should return 200', function(done) {
+          agent.get('http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/0').  end(function(err, res) {
+            res.should.have.status(200);
+            return done();
+          });
+      });
+    });
+
+    describe('/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/0/query', function() {
+      it('should return 200', function(done) {
+          agent.get('http://localhost:1337/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/             0/query').end(function(err, res) {
+            res.should.have.status(200);
+            return done();
+          });
+      });
+    });
 });
 

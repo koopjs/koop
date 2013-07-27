@@ -7,6 +7,10 @@ var Geohub = require('geohub');
 
 var GithubController = {
 
+  notFound: function(req, res){
+    res.send('Must specify a user, repo, and file', 404);
+  },
+
   index: function(req, res){
       if ( req.params.user && req.params.repo && req.params.file ){
         Geohub.repo( req.params.user, req.params.repo, req.params.file, function( err, data ){
