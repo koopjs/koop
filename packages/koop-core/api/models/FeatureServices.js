@@ -14,7 +14,7 @@ module.exports = {
     'integer': 'esriFieldTypeInteger',
     'date': 'esriFieldTypeDate',
     'datetime': 'esriFieldTypeDate',
-    'float': 'esriiFieldTypeDouble'
+    'float': 'esriFieldTypeDouble'
   },
 
   fieldType: function( value ){

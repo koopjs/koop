@@ -61,6 +61,16 @@ module.exports.routes = {
     action: 'index'
   },
 
+  'get /github/:user': {
+    controller: 'github',
+    action: 'notFound'
+  },
+
+  'get /github/:user/:repo': {
+    controller: 'github',
+    action: 'notFound'
+  },
+
   'get /github/:user/:repo/:file': {
     controller: 'github',
     action: 'index'
