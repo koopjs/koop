@@ -8,6 +8,7 @@
         "optimist": "0.4.0",
         "sails-mongo": "*",
         "request": "*",
+        "terraformer":"*",
         "terraformer-arcgis-parser":"0.1.8",
         "geohub":"0.1.1"
     },
