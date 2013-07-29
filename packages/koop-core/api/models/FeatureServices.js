@@ -2,7 +2,8 @@
 	:: Services
 	-> model
 ---------------------*/
-var terraformer = require('terraformer-arcgis-parser');
+var terraformer = require('terraformer');
+var terraformerParser = require('terraformer-arcgis-parser');
 
 module.exports = {
 
@@ -88,7 +89,7 @@ module.exports = {
       });
     } else { 
       var json = this.process('/../templates/featureSet.json', data );
-      json.features = terraformer.convert( data );
+      json.features = terraformerParser.convert( data );
       json.features.forEach(function( f, i ){
         if ( !f.attributes.id ){
           f.attributes.id = i+1;
@@ -100,7 +101,7 @@ module.exports = {
 
   queryIds: function( data, ids, callback ){
     var json = this.process('/../templates/featureSet.json', data );
-    var allFeatures = terraformer.convert( data ),
+    var allFeatures = terraformerParser.convert( data ),
       features = [];
     allFeatures.forEach(function( f, i ){
       var id = i+1;
@@ -115,20 +116,49 @@ module.exports = {
     if ( callback ) callback( json );
   },
 
-  send: function(json, params, callback){
-    if ( params.returnCountOnly ){
-      json = { count: json.features.length };
-    } else if ( params.returnIdsOnly ){
-      var objectIds = [];
-      json.features.forEach(function(f){
-        objectIds.push( f.attributes.id );
+  // subset the features by geometry
+  // TODO support more that points 
+  geometryFilter: function(json, params, callback){
+    console.log('FEATURES', json.features.length);
+    var geom = params.geometry.split(',').map(function(v){ return parseFloat(v); });
+      delete params.geometry;
+    var geometryType = params.geometryType || "esriGeometryEnvelope"; 
+      delete params.geometryType;
+
+    if ( geometryType == 'esriGeometryEnvelope'){
+      var box = new terraformer.Polygon([ 
+        [ [ geom[0], geom[1] ], [ geom[0], geom[3] ], [ geom[2], geom[3] ], [  geom[2], geom[1] ] ] 
+      ]);
+      var filteredFeatures = [];
+      json.features.forEach(function( f ){
+        var point = new terraformer.Point([ f.geometry.x, f.geometry.y ]);
+        if (box.contains(point)) filteredFeatures.push(f);
       });
-      json = {
-        objectIdField: 'id',
-        objectIds: objectIds
-      };
-    } 
-    callback( json );
+      json.features = filteredFeatures;
+    }
+      
+    this.send( json, params, callback );
+  },
+
+  // filter the data based on any given query params 
+  send: function(json, params, callback){
+    if ( params.geometry ){
+      this.geometryFilter( json, params, callback );
+    } else {
+      if ( params.returnCountOnly ){
+        json = { count: json.features.length };
+      } else if ( params.returnIdsOnly ){
+        var objectIds = [];
+        json.features.forEach(function(f){
+          objectIds.push( f.attributes.id );
+        });
+        json = {
+          objectIdField: 'id',
+          objectIds: objectIds
+        };
+      } 
+      callback( json );
+    }
   }
 
 };

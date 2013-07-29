@@ -71,6 +71,10 @@ We'd like to have full feature service support from any geojson data source. Bel
   * returns only the Ids of the feature that would be returned based on other params  
     * [http://localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3&returnIdsOnly=true](http://       localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3&returnIdsOnly=true)
 
+#### geometry=minx,miny,maxx,maxy
+  * returns only the features that contained within the given geometry
+    * [http://localhost:1337/geojson/snow/FeatureServer/0/query?geometry=-110,30,-106,50](http://localhost:1337/geojson/snow/FeatureServer/0/query?geometry=-110,30,-106,50)
+
 ## Testing 
 
     # install grunt if you dont have it 
