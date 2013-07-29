@@ -11,7 +11,8 @@ To provide a flexible server for exposing new/experimental data sources and type
 
     npm install
     node app.js
-    # visit [http://localhost:1337/geojson](http://localhost:1337/geojson) 
+
+  visit [http://localhost:1337/geojson](http://localhost:1337/geojson) 
 
 
 # Demo / Docs
@@ -53,20 +54,20 @@ And of course github can store geojson files as well. Koop can turn those into f
 
 We'd like to have full feature service support from any geojson data source. Below is the current state of API coverage: 
 
-### query 
+### /query 
 
 #### f 
   * The default output from Koop is json, so we dont support f = html. 
 
-#### objectIds 
+#### objectIds=[comma sep list]
   * returns only the features that match a given objectId
     * [http://localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3](http://localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3)
 
-#### returnCountOnly 
+#### returnCountOnly=true/false 
   * returns only the count of features that would be returned based on other query params 
     * [http://localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3&returnCountOnly=true](http://localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3&returnCountOnly=true)
 
-#### returnIdsOnly
+#### returnIdsOnly=true/false
   * returns only the Ids of the feature that would be returned based on other params  
     * [http://localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3&returnIdsOnly=true](http://       localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3&returnIdsOnly=true)
 
