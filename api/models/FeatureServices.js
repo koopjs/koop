@@ -80,15 +80,55 @@ module.exports = {
     if ( callback ) callback( json );
   },
 
-  query: function( data, callback ){
+  query: function( data, params, callback ){
+    var self = this;
+    if ( params.objectIds ) {
+      this.queryIds( data, params.objectIds, function( json ){ 
+        self.send( json, params, callback );
+      });
+    } else { 
+      var json = this.process('/../templates/featureSet.json', data );
+      json.features = terraformer.convert( data );
+      json.features.forEach(function( f, i ){
+        if ( !f.attributes.id ){
+          f.attributes.id = i+1;
+        }
+      });
+      this.send( json, params, callback );
+    }
+  },
+
+  queryIds: function( data, ids, callback ){
     var json = this.process('/../templates/featureSet.json', data );
-    json.features = terraformer.convert( data );
-    json.features.forEach(function( f, i ){
+    var allFeatures = terraformer.convert( data ),
+      features = [];
+    allFeatures.forEach(function( f, i ){
+      var id = i+1;
       if ( !f.attributes.id ){
-        f.attributes.id = i+1;
+        f.attributes.id = id;
+      }
+      if ( ids.indexOf( id ) > -1 ){
+        features.push( f );
       }
     });
+    json.features = features;
     if ( callback ) callback( json );
+  },
+
+  send: function(json, params, callback){
+    if ( params.returnCountOnly ){
+      json = { count: json.features.length };
+    } else if ( params.returnIdsOnly ){
+      var objectIds = [];
+      json.features.forEach(function(f){
+        objectIds.push( f.attributes.id );
+      });
+      json = {
+        objectIdField: 'id',
+        objectIds: objectIds
+      };
+    } 
+    callback( json );
   }
 
 };
