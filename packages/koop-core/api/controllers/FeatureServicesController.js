@@ -15,7 +15,7 @@ var FeatureServicesController = {
       var geojson = require( path );
       // process as a feature service
       if ( req.params.method ) {
-        FeatureServices[ req.params.method ]( geojson, function( data ){
+        FeatureServices[ req.params.method ]( geojson, req.query || {}, function( data ){
           res.json( data );
         });
       } else {  
@@ -35,7 +35,7 @@ var FeatureServicesController = {
             res.json( err, 500 );
           } else if ( data.length ){
             if ( req.params.method ) {
-              FeatureServices[ req.params.method ]( data[0], function( d ){
+              FeatureServices[ req.params.method ]( data[0], req.query || {}, function( d ){
                 res.json( d );
               });
             } else { 
@@ -60,7 +60,7 @@ var FeatureServicesController = {
             res.json( err, 500 );
           } else if ( data ){
             if ( req.params.method ) {
-              FeatureServices[ req.params.method ]( data, function( d ){
+              FeatureServices[ req.params.method ]( data, req.query || {}, function( d ){
                 res.json( d );
               });
             } else {

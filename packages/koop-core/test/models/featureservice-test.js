@@ -63,7 +63,7 @@ describe('FeatureServices Model', function(){
 
     describe('when getting featureserver features from geojson', function(){
       it('should return a valid features', function(done){
-        fs.query( data, function( service ){
+        fs.query( data, {}, function( service ){
           service.should.be.an.instanceOf(Object);
           service.fields.should.be.an.instanceOf(Array);
           service.features.should.be.an.instanceOf(Array);
@@ -71,6 +71,39 @@ describe('FeatureServices Model', function(){
             feature.should.have.property('geometry');
             feature.should.have.property('attributes');
           });
+          done();
+        });
+      });
+    });
+
+    describe('when getting featureserver features by id queries', function(){
+      it('should return a proper features', function(done){
+        fs.query( data, { objectIds: [ 1, 2, 3 ]}, function( service ){
+          service.should.be.an.instanceOf(Object);
+          service.fields.should.be.an.instanceOf(Array);
+          service.features.should.have.length( 3 );
+          done();
+        });
+      });
+    });
+
+    describe('when getting features with returnCountOnly', function(){
+      it('should return only count of features', function(done){
+        fs.query( data, { returnCountOnly: true, objectIds: [ 1, 2, 3 ]}, function( service ){
+          service.should.be.an.instanceOf(Object);
+          service.should.have.property('count');
+          service.count.should.equal( 3 );
+          done();
+        });
+      });
+    });
+
+     describe('when getting features with returnIdsOnly', function(){
+      it('should return only ids of features', function(done){
+        fs.query( data, { returnIdsOnly: true, objectIds: [ 1, 2, 3 ]}, function( service ){
+          service.should.be.an.instanceOf(Object);
+          service.should.have.property('objectIds');
+          service.objectIds.length.should.equal( 3 );
           done();
         });
       });

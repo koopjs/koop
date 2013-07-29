@@ -48,6 +48,28 @@ And of course github can store geojson files as well. Koop can turn those into f
     * [http://koop.heroku.com/github/geobabbler/geodata/geojson-border_crossings/FeatureServer/0/query](http://koop.heroku.com/github/geobabbler/geodata/geojson-border_crossings/FeatureServer/0/query)
     * The above url would pull down this geojson file: [https://github.com/geobabbler/geodata/blob/master/geojson/border_crossings.geojson](https://github.com/geobabbler/geodata/blob/master/geojson/border_crossings.geojson)
 
+
+## Feature Service Support 
+
+We'd like to have full feature service support from any geojson data source. Below is the current state of API coverage: 
+
+### query 
+
+#### f 
+  * The default output from Koop is json, so we dont support f = html. 
+
+#### objectIds 
+  * returns only the features that match a given objectId
+    * [http://localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3](http://localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3)
+
+#### returnCountOnly 
+  * returns only the count of features that would be returned based on other query params 
+    * [http://localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3&returnCountOnly=true](http://localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3&returnCountOnly=true)
+
+#### returnIdsOnly
+  * returns only the Ids of the feature that would be returned based on other params  
+    * [http://localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3&returnIdsOnly=true](http://       localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3&returnIdsOnly=true)
+
 ## Testing 
 
     # install grunt if you dont have it 
