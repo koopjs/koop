@@ -98,13 +98,26 @@ describe('FeatureServices Model', function(){
       });
     });
 
-     describe('when getting features with returnIdsOnly', function(){
+    describe('when getting features with returnIdsOnly', function(){
       it('should return only ids of features', function(done){
         fs.query( data, { returnIdsOnly: true, objectIds: [ 1, 2, 3 ]}, function( service ){
           service.should.be.an.instanceOf(Object);
           service.should.have.property('objectIds');
           service.objectIds.length.should.equal( 3 );
           done();
+        });
+      });
+    });
+
+    describe('when filtering features with a geometry', function(){
+      it('should return geometries that are contained', function(done){
+        fs.query( data, { 
+          geometry: '-110,30,-106,50', 
+          geometryType: 'esriGeometryEnvelope'
+        }, function( service ){
+            service.should.be.an.instanceOf(Object);
+            service.features.length.should.equal( 3 );
+            done();
         });
       });
     });
