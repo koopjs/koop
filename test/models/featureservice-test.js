@@ -53,7 +53,7 @@ describe('FeatureServices Model', function(){
 
     describe('when getting featureserver info from geojson', function(done){
       it('should return a valid feature service object', function(done){
-        fs.info( data, 0, function( service ){
+        fs.info( data, 0, {}, function( service ){
           service.should.be.an.instanceOf(Object);
           service.fields.should.be.an.instanceOf(Array);
           done();
@@ -116,13 +116,29 @@ describe('FeatureServices Model', function(){
           geometryType: 'esriGeometryEnvelope'
         }, function( service ){
             service.should.be.an.instanceOf(Object);
-            service.features.length.should.equal( 3 );
+            service.features.length.should.equal( 100 );
             done();
         });
       });
     });
 
+    //http://localhost:1337/github/geobabbler/geodata/geojson-border_crossings/FeatureServer/0/query?f=json&returnGeometry=true&spatialRel=esriSpatialRelIntersects&geometry=%7B%22xmin%22%3A-20037508.342788905%2C%22ymin%22%3A1820609.8834746983%2C%22xmax%22%3A-10018754.171396958%2C%22ymax%22%3A11839364.054866645%2C%22spatialReference%22%3A%7B%22wkid%22%3A102100%7D%7D&geometryType=esriGeometryEnvelope&inSR=102100&outFields=id&outSR=102100
 
+    describe('when filtering features with a geometry and outSR', function(){
+      it('should return geometries that are contained', function(done){
+        fs.query( data, {
+          //geometry: '-110,30,-106,50',
+          geometry: {xmin: -20037508.342788905, ymin: 1820609.8834746983, xmax: -10018754.171396958, ymax: 11839364.054866645, spatialReference:{wkid:102100}},
+          geometryType: 'esriGeometryEnvelope',
+          outSR: 102100,
+          //inSR: 102100
+        }, function( service ){
+            service.should.be.an.instanceOf(Object);
+            service.features.length.should.equal( 100 );
+            done();
+        });
+      });
+    });
 
 });
 

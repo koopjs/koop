@@ -19,7 +19,7 @@ var FeatureServicesController = {
           res.json( data );
         });
       } else {  
-        FeatureServices.info( geojson, req.params.layer, function( serviceJson ){
+        FeatureServices.info( geojson, req.params.layer, req.query || {}, function( serviceJson ){
           res.json( serviceJson );
         });
       }
@@ -39,7 +39,7 @@ var FeatureServicesController = {
                 res.json( d );
               });
             } else { 
-              FeatureServices.info( data[0], req.params.layer, function( serviceJson ){
+              FeatureServices.info( data[0], req.params.layer, req.query || {}, function( serviceJson ){
                 res.json( serviceJson );
               });
             }
@@ -64,7 +64,7 @@ var FeatureServicesController = {
                 res.json( d );
               });
             } else {
-              FeatureServices.info( data, req.params.layer, function( serviceJson ){
+              FeatureServices.info( data, req.params.layer, res.query || {}, function( serviceJson ){
                 res.json( serviceJson );
               });
             }
