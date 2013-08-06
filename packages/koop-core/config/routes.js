@@ -41,6 +41,11 @@ module.exports.routes = {
     action: 'geojson'
   },
 
+  'get /geojson/:id/FeatureServer/:layer': {
+    controller: 'featureservices',
+    action: 'geojson'
+  },
+
   'get /geojson/:id/FeatureServer/:layer/:method': {
     controller: 'featureservices',
     action: 'geojson'

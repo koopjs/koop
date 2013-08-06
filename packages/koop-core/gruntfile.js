@@ -14,10 +14,10 @@ module.exports = function (grunt) {
     mochaTest: {
       test: {
         options: {
-          reporter: 'nyan'
+          reporter: 'nyan',
+          timeout: 5000
         },
         src: ['test/**/*.js'],
-        timeout: 3000
       }
     }
   });
