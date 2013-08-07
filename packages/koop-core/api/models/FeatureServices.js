@@ -150,7 +150,7 @@ module.exports = {
     ]);
     //========================================================================================================
 
-    if ( spatialRel == 'esriSpatialRelContains' ) {
+    if ( spatialRel == 'esriSpatialRelContainsZZZ' ) {
       var filteredFeatures = [];
       json.features.forEach(function( f ){
         // TODO check feature TYPE 
