@@ -19,7 +19,7 @@ function koopMap( dom ){
           return L.marker(latlng, {
             icon:  L.icon({
               iconUrl: '/images/marker-icon.png',
-              iconRetinaUrl: '/images/marker-icon@2x.png',
+              iconRetinaUrl: '/images/marker-icon-2x.png',
               iconSize: [20, 30],
               iconAnchor: [10, 25],
               popupAnchor: [0,-20],

@@ -1,7 +1,9 @@
 <div id="map"></div>
 <script>
-  var mapDom = 'map';
-  $('#'+mapDom).css({ width:document.width, height: document.height });
-  var koop = koopMap( mapDom );
-  koop.add(location.origin + '/github/<%= user %>/<%= repo %>/<%= file %>/FeatureServer/0');
+  $(function(){
+    var mapDom = 'map';
+    $('#'+mapDom).css({ width:document.width, height: document.height });
+    var koop = koopMap( mapDom );
+    koop.add(location.origin + '/github/<%= user %>/<%= repo %>/<%= file %>/FeatureServer/0');
+  });
 </script>
