@@ -1,24 +1,22 @@
 
-<div class="container">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="container">
-            <input type="text" id="gist" class="form-control" placeholder="Gist ID" style="">
-            <button class="btn btn-default" onClick="loadGist()">Load</button>
-          </div>
-        </div>
-      </div>   
-<div>
+<div id="map"></div>
+  <div class="load-form">
+    <input type="text" id="gist" class="form-control pull-left" placeholder="Enter a Gist ID" style="width:200px">
+    <button class="btn btn-primary pull-right" onClick="loadGist()">Load Gist</button>
+  </div>
 
 <script>
 
-  function submitGist(){
+  function loadGist(){
     var val = document.getElementById('gist').value;
     if ( val ) {
-      go( '/gist/' + val + '/FeatureServer/0' );
+      location.href = '/gist/' + val + '/preview';
     }
   }
+
+  var mapDom = 'map';
+  $('#'+mapDom).css({ width:document.width, height: document.height });
+  var koop = koopMap( mapDom );
 
 </script>
 

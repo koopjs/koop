@@ -67,6 +67,11 @@ module.exports.routes = {
     action: 'gist'
   },
 
+  'get /gist/:id/FeatureServer': {
+    controller: 'featureservices',
+    action: 'gist'
+  },
+
   'get /gist/': {
     controller: 'gist',
     action: 'index'
@@ -75,6 +80,11 @@ module.exports.routes = {
   'get /gist/:id': {
     controller: 'gist',
     action: 'findOne'
+  },
+
+  'get /github/': {
+    controller: 'github',
+    action: 'index'
   },
 
   'get /github/:user': {
@@ -89,7 +99,7 @@ module.exports.routes = {
 
   'get /github/:user/:repo/:file': {
     controller: 'github',
-    action: 'index'
+    action: 'getRepo'
   },
 
   'get /github/:user/:repo/:file/preview' : {
@@ -111,8 +121,6 @@ module.exports.routes = {
     controller: 'featureservices',
     action: 'github'
   }
-
-  
 
 
 };

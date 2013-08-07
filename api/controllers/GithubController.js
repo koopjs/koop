@@ -11,9 +11,9 @@ var GithubController = {
     res.send('Must specify a user, repo, and file', 404);
   },
 
-  index: function(req, res){
+  getRepo: function(req, res){
       if ( req.params.user && req.params.repo && req.params.file ){
-        Geohub.repo( req.params.user, req.params.repo, req.params.file, function( err, data ){
+        Geohub.repo( req.params.user, req.params.repo, req.params.file.replace(/::/g, '/'), function( err, data ){
           if ( err ){
             res.json( err, 500 );
           } else if ( data ){

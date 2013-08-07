@@ -21,8 +21,8 @@ function koopMap( dom ){
               iconUrl: '/images/marker-icon.png',
               iconRetinaUrl: '/images/marker-icon@2x.png',
               iconSize: [20, 30],
-              iconAnchor: [0, 10],
-              popupAnchor: [10, 0],
+              iconAnchor: [10, 25],
+              popupAnchor: [0,-20],
             })
           });
         },
