@@ -14,9 +14,11 @@
     }
   }
 
-  var mapDom = 'map';
-  $('#'+mapDom).css({ width:document.width, height: document.height });
-  var koop = koopMap( mapDom );
+  $(function(){
+    var mapDom = 'map';
+    $('#'+mapDom).css({ width:document.width, height: document.height });
+    var koop = koopMap( mapDom );
+  });
 
 </script>
 
