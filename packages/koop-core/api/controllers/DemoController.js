@@ -9,7 +9,7 @@ var DemoController = {
   },
 
   github: function(req, res){
-   res.render('demo/github', { locals:{ id: req.params.id } });
+   res.render('demo/github', { locals:{ user: req.params.user, repo: req.params.repo, file: req.params.file } });
   }
 
 

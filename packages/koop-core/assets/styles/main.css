@@ -1,7 +1,5 @@
 input.sample-input {
-  width: 225px;
-  float:left;
-  margin-right: 10px;
+  margin-bottom: 10px;
 }
 
 .box {
@@ -15,4 +13,11 @@ input.sample-input {
   border: 1px solid #e1e1e8;
   border-radius: 4px;
   margin: 10px;
+}
+
+.load-form {
+  position: absolute;
+  width:300px; 
+  top: 10px;
+  left:45px;
 }

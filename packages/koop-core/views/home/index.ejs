@@ -1,5 +1,5 @@
 
-<div class="container">
+<div class="container" style="padding:10px;">
   <div class="page-header">
     <h2> Koop <small>GeoJSON as FeatureServices</small></h2>
   </div>
@@ -9,16 +9,16 @@
       <div class="row">
         <div class="col-lg-4 highlight">
           <div class="container">
-            <h2>Gists</h2>
-            <input type="text" id="gist" class="sample-input form-control" placeholder="Gist ID">
-            <button class="btn btn-default" onClick="submitGist()">View</button>
+            <h2>View a gist</h2>
+            <input type="text" id="gist" class="sample-input form-control" value="6178185" placeholder="Enter a gist id">
+            <button class="btn btn-primary pull-right" onClick="submitGist()">Load</button>
           </div>
         </div>
         <div class="col-lg-4 highlight">
           <div class="container">
-            <h2>Github</h2>
-            <input type="text" id="github" class="sample-input form-control" placeholder="user/repo/file.geojson">
-            <button class="btn btn-default">View</button>
+            <h2>View github geojson</h2>
+            <input type="text" id="github" class="sample-input form-control" value="chelm/grunt-geo/forks" placeholder="Path to a geojson file: user/repo/file">
+            <button class="btn btn-primary pull-right" onClick="submitGithub()">Load</button>
           </div>
         </div>
       </div>   
@@ -45,7 +45,21 @@
   function submitGist(){
     var val = document.getElementById('gist').value;
     if ( val ) {
-      go( '/gist/' + val + '/FeatureServer/0' );
+      go( '/gist/' + val + '/preview' );
+    }
+  }
+
+  function submitGithub(){
+    var val = document.getElementById('github').value.split('/');
+    var user = val.shift();
+    var repo = val.shift();
+    if ( val.length > 1){
+      var path = val.join('::');
+    } else {
+      var path = val[0];
+    }
+    if ( user && repo && path ) {
+      go( '/github/' + [ user, repo, path ].join('/') + '/preview' );
     }
   }
 
