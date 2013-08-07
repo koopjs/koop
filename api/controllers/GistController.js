@@ -12,10 +12,12 @@ var GistController = {
         Geohub.gist( req.params.id , function( err, data ){
           if ( err ){
             res.json( err, 500 );
-          } else if ( data.length ){
-            res.json( data[0] );
-          } else {
-            res.send('There a problem accessing this gist', 500);
+          } else { 
+            if ( data.length ){
+              res.json( data[0] );
+            } else {
+              res.send('There a problem accessing this gist', 500);
+            }
           }
         });  
       } else {

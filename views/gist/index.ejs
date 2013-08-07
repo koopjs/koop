@@ -1,0 +1,24 @@
+
+<div class="container">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="container">
+            <input type="text" id="gist" class="form-control" placeholder="Gist ID" style="">
+            <button class="btn btn-default" onClick="loadGist()">Load</button>
+          </div>
+        </div>
+      </div>   
+<div>
+
+<script>
+
+  function submitGist(){
+    var val = document.getElementById('gist').value;
+    if ( val ) {
+      go( '/gist/' + val + '/FeatureServer/0' );
+    }
+  }
+
+</script>
+
