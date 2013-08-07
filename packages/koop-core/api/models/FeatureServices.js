@@ -131,11 +131,12 @@ module.exports = {
     // return an object the geometry and type and spatialRel 
     //========================================================================================================
     // Parse the geometry
-    try {
-      var geom = JSON.parse( params.geometry );
+    if ( typeof( params.geometry ) == 'object' ) {
+      //var geom = JSON.parse( params.geometry );
+      var geom = params.geometry;
       // TODO check the spatial ref for 102100 and convert each coord to 4326
       geom = [ geom.minx, geom.miny, geom.maxx, geom.maxy ];
-    } catch (e){
+    } else {
       var geom = params.geometry.split(',').map(function(v){ return parseFloat(v); });
     }
     delete params.geometry;
@@ -165,7 +166,6 @@ module.exports = {
       });
       json.features = filteredFeatures;
     }
-      
     this.send( json, params, callback );
   },
 
@@ -204,9 +204,8 @@ module.exports = {
       } else if ( params.outSR && ( params.outSR == '102100' ) ){
         json.features.forEach( function( f ){
           // create NEW terraformer POINT
-          // var newGeometry = new terraformer.POINT( f.geometry.x, f.geometry.y ).toMercator();
           // update the geometry on the feature      
-          // f.geometry = newGeometry;
+          f.geometry = new terraformer.Point( [f.geometry.x, f.geometry.y] ).toMercator();
         });
       }
 

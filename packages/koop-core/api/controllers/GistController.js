@@ -7,7 +7,7 @@ var Geohub = require('geohub');
 
 var GistController = {
 
-  index: function(req, res){
+  findOne: function(req, res){
       if ( req.params.id ){
         Geohub.gist( req.params.id , function( err, data ){
           if ( err ){

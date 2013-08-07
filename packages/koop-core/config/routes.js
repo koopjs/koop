@@ -24,8 +24,14 @@ module.exports.routes = {
 	
 	// To route the home page to the "index" action of the "home" controller:
 	'/' : {
-		controller	: 'home'
+		controller	: 'home',
+    action: 'index'
 	},
+
+  'get /gist/:id/preview' : {
+    controller  : 'demo',
+    action: 'gist'
+  },
 
   'get /geojson': {
     controller: 'geojson',
@@ -61,9 +67,14 @@ module.exports.routes = {
     action: 'gist'
   },
 
-  'get /gist/:id': {
+  'get /gist/': {
     controller: 'gist',
     action: 'index'
+  },
+
+  'get /gist/:id': {
+    controller: 'gist',
+    action: 'findOne'
   },
 
   'get /github/:user': {
@@ -81,6 +92,10 @@ module.exports.routes = {
     action: 'index'
   },
 
+  'get /github/:user/:repo/:file/preview' : {
+    controller  : 'demo',
+    action: 'github'
+  },
   
   'get /github/:user/:repo/:file/FeatureServer': {
     controller: 'featureservices',
