@@ -82,9 +82,9 @@ module.exports = {
     this.send( json, params, callback );
   },
 
-
+  // processes params based on query params 
   query: function( data, params, callback ){
-    console.log(params);
+    //console.log(params);
     var self = this;
     if ( params.objectIds ) {
       this.queryIds( data, params, function( json ){ 
@@ -94,7 +94,13 @@ module.exports = {
       var json = this.process('/../templates/featureSet.json', data, params );
       // geojson to esri json
       json.features = terraformerParser.convert( data );
-      if ( json.features[0].geometry.rings ) json.geometryType = 'esriGeometryPolygon';
+      
+      if ( json.features[0].geometry.rings ) { 
+        json.geometryType = 'esriGeometryPolygon';
+      } else if ( json.features[0].geometry.paths ){
+        json.geometryType = 'esriGeometryPolyline';
+      }
+
       // create an id field if not existing 
       if ( !params.idField ) {
         json.features.forEach(function( f, i ){
@@ -177,6 +183,7 @@ module.exports = {
     this.send( json, params, callback );
   },
 
+
   // process the where filter in the params 
   // TODO actually support parsing where clauses 
   whereFilter: function( json, params, callback ){
@@ -184,6 +191,7 @@ module.exports = {
       delete params.where; 
     this.send( json, params, callback );
   },
+
 
   // filter the data based on any given query params 
   send: function(json, params, callback){
@@ -217,21 +225,20 @@ module.exports = {
         });
       } else if ( params.outSR && ( params.outSR == '102100' ) ){
         json.spatialReference.wkid = params.outSR;
-        if ( json.geometryType == 'esriGeometryPoint' ){
-          var coords; 
-          json.features.forEach( function( f ){
-            coords = new terraformer.Point( [f.geometry.x, f.geometry.y] ).toMercator().coordinates;
-            f.geometry.x = coords[0];
-            f.geometry.y = coords[1];
+        var coords;
+        // project each geometry to merator  
+        json.features.forEach( function( f ){
+            if ( f.geometry.x && f.geometry.y ) {
+              coords = new terraformer.Point( [f.geometry.x, f.geometry.y] ).toMercator().coordinates;
+              f.geometry.x = coords[0];
+              f.geometry.y = coords[1];
+            } else if ( f.geometry.rings ){
+              f.geometry.rings = new terraformer.Polygon( f.geometry.rings ).toMercator().coordinates;
+            } else if ( f.geometry.paths ) { 
+              f.geometry.paths = new terraformer.LineString( f.geometry.paths ).toMercator().coordinates;
+            }
             f.geometry.spatialReference.wkid = params.outSR;
-          });
-        } else if (json.geometryType == 'esriGeometryPolygon' ) {
-          var coords;
-          json.features.forEach( function( f ){
-            f.geometry.rings = new terraformer.Polygon( [ f.geometry.rings ] ).toMercator().coordinates;
-            f.geometry.spatialReference.wkid = params.outSR;
-          });
-        } 
+        });
       }
 
       // checkout for outfields 
