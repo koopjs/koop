@@ -94,6 +94,7 @@ module.exports = {
       var json = this.process('/../templates/featureSet.json', data, params );
       // geojson to esri json
       json.features = terraformerParser.convert( data );
+      if ( json.features[0].geometry.rings ) json.geometryType = 'esriGeometryPolygon';
       // create an id field if not existing 
       if ( !params.idField ) {
         json.features.forEach(function( f, i ){
@@ -216,13 +217,21 @@ module.exports = {
         });
       } else if ( params.outSR && ( params.outSR == '102100' ) ){
         json.spatialReference.wkid = params.outSR;
-        var coords; 
-        json.features.forEach( function( f ){
-          coords = new terraformer.Point( [f.geometry.x, f.geometry.y] ).toMercator().coordinates;
-          f.geometry.x = coords[0];
-          f.geometry.y = coords[1];
-          f.geometry.spatialReference.wkid = params.outSR;
-        });
+        if ( json.geometryType == 'esriGeometryPoint' ){
+          var coords; 
+          json.features.forEach( function( f ){
+            coords = new terraformer.Point( [f.geometry.x, f.geometry.y] ).toMercator().coordinates;
+            f.geometry.x = coords[0];
+            f.geometry.y = coords[1];
+            f.geometry.spatialReference.wkid = params.outSR;
+          });
+        } else if (json.geometryType == 'esriGeometryPolygon' ) {
+          var coords;
+          json.features.forEach( function( f ){
+            f.geometry.rings = new terraformer.Polygon( [ f.geometry.rings ] ).toMercator().coordinates;
+            f.geometry.spatialReference.wkid = params.outSR;
+          });
+        } 
       }
 
       // checkout for outfields 
