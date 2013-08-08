@@ -44,7 +44,7 @@ var FeatureServicesController = {
     delete req.query.callback;
 
     if ( req.params.id ){
-        Geohub.gist( req.params.id , function( err, data ){
+        Geohub.gist( { id: req.params.id }, function( err, data ){
           if ( err ){
             res.json( err, 500 );
           } else if ( data.length ){
