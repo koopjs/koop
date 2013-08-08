@@ -43,32 +43,42 @@ var FeatureServicesController = {
     var callback = req.query.callback;
     delete req.query.callback;
 
-    if ( req.params.id ){
-        Geohub.gist( { id: req.params.id }, function( err, data ){
-          if ( err ){
-            res.json( err, 500 );
-          } else if ( data.length ){
-            if ( req.params.method ) {
-              FeatureServices[ req.params.method ]( data[0], req.query || {}, function( d ){
-                if ( callback ){
-                  res.send( callback + '(' + JSON.stringify( d ) + ')' );
-                } else { 
-                  res.json( d );
-                }
-              });
+    function send( err, data ){
+      if ( err ){
+        res.json( err, 500 );
+      } else if ( data ){
+        if ( req.params.method ) {
+          FeatureServices[ req.params.method ]( data, req.query || {}, function( d ){
+            if ( callback ){
+              res.send( callback + '(' + JSON.stringify( d ) + ')' );
             } else { 
-              FeatureServices.info( data[0], req.params.layer, req.query || {}, function( d ){
-                if ( callback ){
-                  res.send( callback + '(' + JSON.stringify( d ) + ')' );
-                } else { 
-                  res.json( d );
-                }
-              });
+              res.json( d );
             }
-          } else {
-            res.send('There a problem accessing this gist', 500);
-          }
-        });
+          });
+        } else { 
+          FeatureServices.info( data, req.params.layer, req.query || {}, function( d ){
+            if ( callback ){
+              res.send( callback + '(' + JSON.stringify( d ) + ')' );
+            } else { 
+              res.json( d );
+            }
+          });
+        }
+      } else {
+        res.send('There a problem accessing this gist', 500);
+      }
+    };
+
+    if ( req.params.id ){
+        var id = req.params.id;
+        if (!Cache.gist[ id ]){
+          Geohub.gist( { id: id }, function( err, data ){
+            Cache.gist[ id ] = JSON.stringify(data[0]);
+            send( err, data[0] );
+          });
+        } else {
+          send( null, JSON.parse(Cache.gist[ id ]) );
+        }
       } else {
         res.send('Must specify a user and gist id', 404);
       }
