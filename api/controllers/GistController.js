@@ -9,7 +9,9 @@ var GistController = {
 
   findOne: function(req, res){
       if ( req.params.id ){
-        Geohub.gist( req.params.id , function( err, data ){
+        console.log('Sending to geohub', req.params.id);
+        Geohub.gist( {id: req.params.id }, function( err, data ){
+          console.log('back', req.params.id);
           if ( err ){
             res.json( err, 500 );
           } else { 

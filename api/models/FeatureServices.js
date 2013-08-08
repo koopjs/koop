@@ -247,7 +247,7 @@ module.exports = {
           outFields = params.outFields.split( ',' );
 
         json.features.forEach( function( f ){
-          var newFeature = { geometry: f.geometry, attribute: {} };
+          var newFeature = { geometry: f.geometry, attributes: {} };
           outFields.forEach( function( field ){
             newFeature.attributes[ field ] = f.attributes[ field ];
           });
