@@ -23,21 +23,115 @@
         </div>
       </div>   
     </div>
-    <!--div class="container">
-      <h2>Examples</h2>
-      <hr/>
-      example gist links
-    </div>
     <div class="container">
       <h2>Docs</h2>
       <hr/>
-      <h3>FeatureService endpoints:</h3>
-        /FeatureServer 
-        /FeatureServer/0
-        /FeatureServer/query
-      <h3>Support query params</h3>
+      <p>Koop is designed to server both <a href="http://geojson.org" target="_blank">geojson</a> and <a href="http://maps.esri.com/apl4/sdk/rest/featureserver.html" target="_blank">Esri Featureservice</a> from <a href="http://gist.github.com" target="_blank">http://gist.github.com</a> and <a href="http://github.com">http://github.com</a> repos that contain GeoJSON data. The goal is to eventually provide full FeatureService support. Below are the params that Koop supports.</p>
+      <p>For more info in FeatureServices see the <a href="http://maps.esri.com/apl4/sdk/rest/featureserver.html" target="_blank">documention</a>.</p>
+      <!--h3>Endpoints</h3>
+        <p>The generic pattern for  endpoint follows the pattern of: host/(gist id or github repo)/FeatureServer/layer/query
+        <ul>
+        <li>Service metadata: host/resource/FeatureServer</li>
+        <li>Layer metadata: host/resource/FeatureServer/0</li>
+        <li>Layer queries: host/resource/FeatureServer/query</li>
+        </ul-->
+
+      <h3>Gists</h3>
+        Gists are accessed by specifying the Gist id like so: 
+        <ul>
+          <li>Raw GeoJSON: <a href="http://koop.dc.esri.com/gist/6021269/" target="_blank">http://koop.dc.esri.com/gist/6021269</a></li>
+          <li>FeatureService: <a href="http://koop.dc.esri.com/gist/6021269/FeatureServer/0" target="_blank">http://koop.dc.esri.com/gist/6021269/FeatureServer/0</a></li>
+          <li>Query: <a href="http://koop.dc.esri.com/gist/6021269/FeatureServer/0/query" target="_blank">http://koop.dc.esri.com/gist/6021269/FeatureServer/0/query</a></li>
+        </ul>
+      <h3>Github</h3>
+        Files from Github are accessed a setting a User, Repo, and File in the URL like so: 
+        <ul>
+          <li>Raw GeoJSON: <a href="http://koop.dc.esri.com/github/chelm/grunt-geo/forks" target="_blank">http://koop.dc.esri.com/github/chelm/grunt-geo/forks</a></li>
+          <li>FeatureService: <a href="http://koop.dc.esri.com/github/chelm/grunt-geo/forks/FeatureServer/0" target="_blank">http://koop.dc.esri.com/github/chelm/grunt-geo/forks/FeatureServer/0</a></li>
+          <li>Query: <a href="http://koop.dc.esri.com/github/chelm/grunt-geo/forks/FeatureServer/0/query" target="_blank">http://koop.dc.esri.com/github/chelm/grunt-geo/forks/FeatureServer/0/query</a></li>
+          <strong>NOTE</strong>: A tricky issue with Github is that geojson files might not always live in the repo root. Koop solves this by using a special character, "::", to signal directories: 
+            <a href="http://koop.dc.esri.com/github/chelm/grunt-geo/samples::bower" target="_blank">http://koop.dc.esri.com/github/chelm/grunt-geo/samples::bower</a>
+        </ul>
+
+      <h3>Previews</h3>
+        Koop can preview any gist or github file here:
+        <ul>
+          <li>Gist: <a href="http://koop.dc.esri.com/gist" target="_blank">http://koop.dc.esri.com/gist</a></li>
+          <li>Github: <a href="http://koop.dc.esri.com/github" target="_blank">http://koop.dc.esri.com/github</a></li>
+        </ul>
+
+      <h3>Query params</h3>
+        <div class="accordion" id="accordion2">
+          <div class="accordion-group">
+            <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                idField*
+              </a>
+            </div>
+            <div id="collapseOne" class="accordion-body collapse">
+              <div class="accordion-inner">
+                * the params is specific to koop and is not part of the FeatureService spec
+                specifies what field to use as the ObjectID field
+                <ul><li><a href="http://koop.dc.esri.com/gist/6021269/FeatureServer/0/query?idField=id">http://koop.dc.esri.com/geojson/snow/FeatureServer/0/query?idField=id</a></li></ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-group">
+            <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                objectIds
+              </a>
+            </div>
+            <div id="collapseOne" class="accordion-body collapse">
+              <div class="accordion-inner">
+                returns only the features that match a given objectId
+                <ul><li><a href="http://koop.dc.esri.com/gist/6021269/FeatureServer/0/query?objectIds=1,2,3">http://koop.dc.esri.com/geojson/snow/FeatureServer/0/query?objectIds=1,2,3</a></li></ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-group">
+            <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                returnCountOnly (true or false)
+              </a>
+            </div>
+            <div id="collapseTwo" class="accordion-body collapse">
+              <div class="accordion-inner">
+                if true, returns only the count of features that would be returned based on other query params
+                <ul><li><a href="http://koop.dc.esri.com/gist/6021269/FeatureServer/0/query?returnCountOnly=true">http://koop.dc.esri.com/geojson/snow/FeatureServer/0/query?returnCountOnly=true</a></li></ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-group">
+            <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+                returnIdsOnly (true or false)
+              </a>
+            </div>
+            <div id="collapseThree" class="accordion-body collapse">
+              <div class="accordion-inner">
+                returns only the Ids of the feature that would be returned based on other params
+                <ul><li><a href="http://koop.dc.esri.com/gist/6021269/FeatureServer/0/query?returnIdsOnly=true">http://koop.dc.esri.com/geojson/snow/FeatureServer/0/query?returnIdsOnly=true</a></li></ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-group">
+            <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+                geometry (xmin,ymin,xmax,ymax)
+              </a>
+            </div>
+            <div id="collapseThree" class="accordion-body collapse">
+              <div class="accordion-inner">
+                sets a geometry filter and returns only features that are within the given geometry
+                <ul><li><a href="http://koop.dc.esri.com/gist/6021269/FeatureServer/0/query?geometry=-110,30,-106,50">http://koop.dc.esri.com/geojson/snow/FeatureServer/0/query?geometry=-110,30,-106,50</a></li></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        
     </div>
-  </div-->
+  </div>
 <div>
 
 <script>
