@@ -53,12 +53,14 @@ module.exports = {
     return fields;
   },
 
+  // load a template json file and attach fields
   process: function( tmpl, data, params ){
     var template = require(__dirname + tmpl);
     template.fields = this.fields( data.features[0].properties, params.idField );
     return template;
   },
 
+  // returns the feature service metadata (/FeatureServere and /FeatureServer/0)
   info: function( data, layer, params, callback ){
     if ( layer !== undefined ) {
       // send the layer json
@@ -80,7 +82,9 @@ module.exports = {
     this.send( json, params, callback );
   },
 
+
   query: function( data, params, callback ){
+    console.log(params);
     var self = this;
     if ( params.objectIds ) {
       this.queryIds( data, params, function( json ){ 
@@ -88,7 +92,9 @@ module.exports = {
       });
     } else { 
       var json = this.process('/../templates/featureSet.json', data, params );
+      // geojson to esri json
       json.features = terraformerParser.convert( data );
+      // create an id field if not existing 
       if ( !params.idField ) {
         json.features.forEach(function( f, i ){
           if ( !f.attributes.id ){
@@ -96,6 +102,7 @@ module.exports = {
           }
         });
       }
+      // send back to controller 
       this.send( json, params, callback );
     }
   },
@@ -179,11 +186,17 @@ module.exports = {
 
   // filter the data based on any given query params 
   send: function(json, params, callback){
-    if ( params.geometry ){
+
+    if ( params.geometryZ ){
+
       this.geometryFilter( json, params, callback );
+
     } else if ( params.where ){
+
       this.whereFilter( json, params, callback );
+
     } else {
+
       if ( params.returnCountOnly ){
         json = { count: json.features.length };
       } else if ( params.returnIdsOnly ){
@@ -202,10 +215,13 @@ module.exports = {
           delete f.geometry;
         });
       } else if ( params.outSR && ( params.outSR == '102100' ) ){
+        json.spatialReference.wkid = params.outSR;
+        var coords; 
         json.features.forEach( function( f ){
-          // create NEW terraformer POINT
-          // update the geometry on the feature      
-          f.geometry = new terraformer.Point( [f.geometry.x, f.geometry.y] ).toMercator();
+          coords = new terraformer.Point( [f.geometry.x, f.geometry.y] ).toMercator().coordinates;
+          f.geometry.x = coords[0];
+          f.geometry.y = coords[1];
+          f.geometry.spatialReference.wkid = params.outSR;
         });
       }
 
