@@ -124,7 +124,16 @@ module.exports = {
 
 
   parseGeometry: function( geom, type ){
-    return this.geometryTypes[type]( geom );
+    try {
+      geom = JSON.parse( geom );
+      if ( geom.xmin ){
+        return this.geometryTypes[ type ]( geom );
+      } else {
+        return this.geometryTypes[ type ]( geom );
+      }
+    } catch( e ){
+      return this.geometryTypes[ type ]( geom );
+    }
   },
 
   //========================================================================================================
@@ -147,7 +156,9 @@ module.exports = {
         } else if ( f.geometry.rings ){
           featureGeom = new terraformer.Polygon([ f.geometry.rings ]);
         }
-        return geometry.contains( featureGeom );
+        if ( featureGeom ) { 
+          return geometry.contains( featureGeom );
+        }
       });
     },
     esriSpatialRelWithin: function( features, geometry ){
@@ -158,7 +169,9 @@ module.exports = {
         } else if ( f.geometry.rings ){
           featureGeom = new terraformer.Polygon([ f.geometry.rings ]);
         }
-        return geometry.within( featureGeom ); //featureGeom.within( geometry ); 
+        if ( featureGeom ) { 
+          return geometry.within( featureGeom ); //featureGeom.within( geometry ); 
+        }
       });  
     } 
   },
