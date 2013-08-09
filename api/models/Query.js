@@ -155,7 +155,10 @@ module.exports = {
           featureGeom = new terraformer.Point([ f.geometry.x, f.geometry.y ]);
         } else if ( f.geometry.rings ){
           featureGeom = new terraformer.Polygon([ f.geometry.rings ]);
+        } else if ( f.geometry.paths ) {
+          featureGeom = new terraformer.LineString( f.geometry.paths );
         }
+    
         if ( featureGeom ) { 
           return geometry.contains( featureGeom );
         }
@@ -168,6 +171,8 @@ module.exports = {
           featureGeom = new terraformer.Point([ f.geometry.x, f.geometry.y ]);
         } else if ( f.geometry.rings ){
           featureGeom = new terraformer.Polygon([ f.geometry.rings ]);
+        } else if ( f.geometry.paths ) {
+          featureGeom = new terraformer.LineString( f.geometry.paths );
         }
         if ( featureGeom ) { 
           return geometry.within( featureGeom ); //featureGeom.within( geometry ); 
