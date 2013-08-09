@@ -129,12 +129,15 @@ describe('FeatureServices Model', function(){
 
     //http://localhost:1337/github/geobabbler/geodata/geojson-border_crossings/FeatureServer/0/query?f=json&returnGeometry=true&spatialRel=esriSpatialRelIntersects&geometry=%7B%22xmin%22%3A-20037508.342788905%2C%22ymin%22%3A1820609.8834746983%2C%22xmax%22%3A-10018754.171396958%2C%22ymax%22%3A11839364.054866645%2C%22spatialReference%22%3A%7B%22wkid%22%3A102100%7D%7D&geometryType=esriGeometryEnvelope&inSR=102100&outFields=id&outSR=102100
 
+  http://localhost:1337/github/chelm/grunt-geo/forks/FeatureServer/0/query?geometryType=esriGeometryEnvelope&geometry={xmin: -258.046875, ymin: -40.58058466412763, xmax: 12.83203125, ymax:81.20141954209073, spatialReference:{wkid:4326}}
+
     describe('when filtering features with a geometry and outSR', function(){
       it('should return geometries that are contained', function(done){
         fs.query( data, {
           //geometry: '-110,30,-106,50',
           //geometry: {xmin: -20037508.342788905, ymin: 1820609.8834746983, xmax: -10018754.171396958, ymax: 11839364.054866645, spatialReference:{wkid:102100}},
           geometry: {xmin: -110, ymin: 30, xmax: -106, ymax: 50, spatialReference: { wkid: 4326 }},
+          //geometry: {xmin: -258.046875, ymin: -40.58058466412763, xmax: 12.83203125, ymax:81.20141954209073, spatialReference:{wkid: 4326}},
           geometryType: 'esriGeometryEnvelope',
         }, function( service ){
             service.should.be.an.instanceOf(Object);
