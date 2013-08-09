@@ -1,31 +1,35 @@
 {
-    "name": "koop",
-    "private": true,
-    "version": "0.1.0",
-    "description": "an api for converting geojson data into Esri feature services",
-    "dependencies": {
-        "sails": "0.8.94",
-        "optimist": "0.4.0",
-        "sails-mongo": "*",
-        "request": "*",
-        "terraformer":"0.2.0",
-        "terraformer-arcgis-parser":"0.1.8",
-        "geohub":"0.1.2"
-    },
-    "devDependencies": {
-        "grunt": "0.4.x",
-        "grunt-mocha-test": "*",
-        "grunt-contrib-jshint": "0.3.x",
-        "mocha": "*",
-        "should": "*",
-        "superagent": "*"
-    },
-    "scripts": {
-        "start": "node app.js",
-        "debug": "node debug app.js"
-    },
-    "main": "app.js",
-    "repository": "",
-    "author": "",
-    "license": "Apache"
+  "name": "koop",
+  "private": true,
+  "version": "0.1.0",
+  "description": "an api for converting geojson data into Esri feature services",
+  "dependencies": {
+    "sails": "0.8.94",
+    "optimist": "0.4.0",
+    "sails-mongo": "*",
+    "request": "*",
+    "terraformer": "0.2.0",
+    "terraformer-arcgis-parser": "0.1.8",
+    "geohub": "0.1.2"
+  },
+  "devDependencies": {
+    "grunt": "0.4.x",
+    "grunt-mocha-test": "*",
+    "grunt-contrib-jshint": "0.3.x",
+    "mocha": "*",
+    "should": "*",
+    "superagent": "*",
+    "grunt-express-server": "~0.4.2",
+    "grunt-contrib-watch": "~0.5.1",
+    "underscore": "~1.5.1",
+    "sql-parser": "~0.4.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "debug": "node debug app.js"
+  },
+  "main": "app.js",
+  "repository": "",
+  "author": "",
+  "license": "Apache"
 }

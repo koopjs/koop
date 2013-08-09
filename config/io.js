@@ -1,5 +1,5 @@
 // Configuration for internal socket.io server
-module.exports.io = {
+/*module.exports.io = {
 
 	// Socket.io transport config
 	transports: [
@@ -19,4 +19,4 @@ module.exports.io = {
 	// You can use the following config to override those settings
 	// host: 'localhost',
 	// port: 8888
-};
+};*/
