@@ -10,7 +10,9 @@
     "request": "*",
     "terraformer": "0.2.0",
     "terraformer-arcgis-parser": "0.1.8",
-    "geohub": "0.1.2"
+    "geohub": "0.1.2",
+    "underscore": "~1.5.1",
+    "sql-parser": "~0.4.0"
   },
   "devDependencies": {
     "grunt": "0.4.x",
