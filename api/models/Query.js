@@ -169,9 +169,10 @@ module.exports = {
   geometryFilter: function(json, params, callback){
 
     // Parse the geometry
-    var geometry = this.parseGeometry( params.geometry , params.geometryType ); 
-    delete params.geometry;
-    delete params.geometryType;
+    var type = params.geometryType || 'esriGeometryEnvelope';
+      delete params.geometryType;
+    var geometry = this.parseGeometry( params.geometry , type ); 
+      delete params.geometry;
 
     var spatialRel = params.spatialRel || 'esriSpatialRelContains';
     if ( this.spatialFilter[ spatialRel ] ){
