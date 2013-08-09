@@ -1,12 +1,12 @@
 var should = require('should');
 var path = require('path');
 var superagent = require('superagent');
-var app = require('../app');
+//var app = require('../app');
 
 before(function (done) {
-  setTimeout(function(){
+  //setTimeout(function(){
     done();
-  },1500);
+  //},1500);
 });
 
 describe('Koop Routes', function(){
@@ -24,9 +24,9 @@ describe('Koop Routes', function(){
     });
 
     describe('/gist', function() {
-      it('should return 404', function(done) {
+      it('should return 200', function(done) {
           agent.get('http://localhost:1337/gist/').end(function(err, res) {
-            res.should.have.status(404);
+            res.should.have.status(200);
             return done();
           });
       });
@@ -71,7 +71,7 @@ describe('Koop Routes', function(){
     describe('/github', function() {
       it('should return 404', function(done) {
           agent.get('http://localhost:1337/gist/').end(function(err, res) {
-            res.should.have.status(404);
+            res.should.have.status(200);
             return done();
           });
       });

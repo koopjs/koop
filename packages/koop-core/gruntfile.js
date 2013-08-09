@@ -19,13 +19,49 @@ module.exports = function (grunt) {
         },
         src: ['test/**/*.js'],
       }
+    },
+
+    express: {
+      options: {
+        // Override defaults here
+        port: 1337
+      },
+      dev: {
+        options: {
+          script: './app.js'
+        }
+      },
+      prod: {
+        options: {
+          script: './app.js',
+          node_env: 'production'
+        }
+      },
+      test: {
+        options: {
+          script: './app.js'
+        }
+      }
+    },
+
+    watch: {
+      express: {
+        files:  [ '**/*.js' ],
+        tasks:  [ 'express:dev' ],
+        options: {
+          nospawn: true //Without this option specified express won't be reloaded
+        }
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-express-server');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha-test');
 
   grunt.registerTask('test', [ 'mochaTest' ]);
+  grunt.registerTask('server', [ 'express:dev', 'watch' ]);
   grunt.registerTask('default', [ 'jshint', 'test']);
 
 };

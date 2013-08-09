@@ -2,6 +2,11 @@ var should = require('should');
 var fs = require('../../api/models/FeatureServices.js');
 var data = require('../fixtures/snow.geojson');
 
+before(function (done) {
+  Query = require('../../api/models/Query.js');
+  done();
+});
+
 describe('FeatureServices Model', function(){
 
     describe('when determining esri field types', function() {
@@ -128,13 +133,56 @@ describe('FeatureServices Model', function(){
       it('should return geometries that are contained', function(done){
         fs.query( data, {
           //geometry: '-110,30,-106,50',
-          geometry: {xmin: -20037508.342788905, ymin: 1820609.8834746983, xmax: -10018754.171396958, ymax: 11839364.054866645, spatialReference:{wkid:102100}},
+          //geometry: {xmin: -20037508.342788905, ymin: 1820609.8834746983, xmax: -10018754.171396958, ymax: 11839364.054866645, spatialReference:{wkid:102100}},
+          geometry: {xmin: -110, ymin: 30, xmax: -106, ymax: 50, spatialReference: { wkid: 4326 }},
           geometryType: 'esriGeometryEnvelope',
-          outSR: 102100,
-          //inSR: 102100
         }, function( service ){
             service.should.be.an.instanceOf(Object);
             service.features.length.should.equal( 100 );
+            done();
+        });
+      });
+    });
+
+    describe('when filtering features with a geometry and outSR', function(){
+      it('should return geometries that are contained', function(done){
+        fs.query( data, {
+          geometry: {xmin: -110, ymin: 30, xmax: -106, ymax: 50, spatialReference: { wkid: 4326 }},
+          geometryType: 'esriGeometryEnvelope',
+          spatialRel: 'esriSpatialRelContains'
+        }, function( service ){
+            service.should.be.an.instanceOf(Object);
+            service.features.length.should.equal( 100 );
+            done();
+        });
+      });
+    });
+
+    describe('when filtering features with where clauses', function(){
+      it('should return filtered features with less than', function(done){
+        fs.query( data, {
+          where: 'latitude < 39.9137'
+        }, function( service ){
+            service.should.be.an.instanceOf(Object);
+            service.features.length.should.equal( 261 );
+            done();
+        });
+      });
+      it('should return filtered features with greater than', function(done){
+        fs.query( data, {
+          where: 'latitude > 39.9137'
+        }, function( service ){
+            service.should.be.an.instanceOf(Object);
+            service.features.length.should.equal( 144 );
+            done();
+        });
+      });
+      it('should return filtered features with equal', function(done){
+        fs.query( data, {
+          where: 'latitude = 39.9137'
+        }, function( service ){
+            service.should.be.an.instanceOf(Object);
+            service.features.length.should.equal( 1 );
             done();
         });
       });
