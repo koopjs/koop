@@ -115,14 +115,14 @@ module.exports = {
         maxScale: 0
       };
     }
-    json.extent = this.extent( data.features );
+    //json.extent = this.extent( data.features );
     this.send( json, params, callback );
   },
 
   // todo support many layers 
   layers: function( data, params, callback ){
     var layerJson = this.process('/../templates/featureLayer.json', data, params );
-    layerJson.extent = this.extent( data.features );
+    //layerJson.extent = this.extent( data.features );
     var json = { layers: [ layerJson ], tables: [] };
     this.send( json, params, callback );
   },
