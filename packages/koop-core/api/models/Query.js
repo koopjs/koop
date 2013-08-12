@@ -93,11 +93,6 @@ module.exports = {
     esriGeometryEnvelope: function( geom ){
       if ( typeof( geom ) == 'object' ) {
         var box = new terraformer.Polygon( [[ 
-          /*[geom.xmin, geom.ymin], 
-          [geom.xmin, geom.ymax], 
-          [geom.xmax, geom.ymax], 
-          [geom.xmax, geom.ymin], 
-          [geom.xmin, geom.ymin]*/ 
           [geom.xmin, geom.ymin],
           [geom.xmax, geom.ymin],
           [geom.xmax, geom.ymax],
@@ -136,6 +131,7 @@ module.exports = {
     }
   },
 
+  // NEED to support these: 
   //========================================================================================================
     // esriSpatialRelIntersects
     // esriSpatialRelContains 
@@ -208,13 +204,15 @@ module.exports = {
     var where = sql.parse( 'select * from foo where '+ params.where).where;
     delete params.where;
 
-    var features = [];
-    _.each(json.features, function(f){
-      var param = where.conditions.left.value;
-      var val = where.conditions.right.value;
-      if ( this.whereOps[ where.conditions.operation ] && this.whereOps[ where.conditions.operation ]( f.attributes[ param ], val ) ) features.push( f );  
-    }, this);
-    json.features = features;
+    if ( params.where != '1=1' ){
+      var features = [];
+      _.each(json.features, function(f){
+        var param = where.conditions.left.value;
+        var val = where.conditions.right.value;
+        if ( this.whereOps[ where.conditions.operation ] && this.whereOps[ where.conditions.operation ]( f.attributes[ param ], val ) ) features.push( f );  
+      }, this);
+      json.features = features;
+    }
 
     // recycle the data + params through the filter fn
     this.filter( json, params, callback );
