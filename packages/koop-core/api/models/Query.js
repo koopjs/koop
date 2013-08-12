@@ -208,7 +208,7 @@ module.exports = {
       var props = f.attributes || f.properties;
       var param = where.conditions.left.value;
       var val = where.conditions.right.value;
-      if ( ( this.whereOps[ where.conditions.operation ] && props[ param ] && this.whereOps[ where.conditions.operation ]( props[ param ], val ) )) { 
+      if ( ( this.whereOps[ where.conditions.operation ] && props[ param ] && this.whereOps[ where.conditions.operation ]( props[ param ], val ) ) || param == val ) { 
         features.push( f );
       }
     }, this);
