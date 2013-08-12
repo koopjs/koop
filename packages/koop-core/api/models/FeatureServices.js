@@ -60,6 +60,43 @@ module.exports = {
     return template;
   },
 
+  extent: function( features ){
+    var minx = -180, 
+      miny = -90, 
+      maxx = 180, 
+      maxy = 90; 
+    features.forEach(function( f ){
+      if (f.geometry && f.geometry.type == 'Point' ){
+        if (f.geometry.coordinates[0] < minx) minx = f.geometry.coordinates[0];
+        if (f.geometry.coordinates[1] < miny) miny = f.geometry.coordinates[1];
+        if (f.geometry.coordinates[0] > maxx) maxx = f.geometry.coordinates[0];
+        if (f.geometry.coordinates[1] > maxy) maxy = f.geometry.coordinates[1];
+      } else if ( f.geometry && f.geometry.type == 'Polygon' ) {
+        f.geometry.coordinates[0].forEach(function( c ) {
+          if (c[0] < minx) minx = c[0];
+          if (c[1] < miny) miny = c[1];
+          if (c[0] > maxx) maxx = c[0];
+          if (c[1] > maxy) maxy = c[1];
+        });
+      }
+    });
+
+    console.log(minx, maxx);
+    return {
+      "extent" :  {
+        "xmin": minx,
+        "ymin": miny,
+        "xmax": maxx,
+        "ymax": maxy,
+        "spatialReference": {
+          "wkid": 4326,
+          "latestWkid": 4326
+        }
+      }
+    };
+
+  }, 
+
   // returns the feature service metadata (/FeatureServere and /FeatureServer/0)
   info: function( data, layer, params, callback ){
     if ( layer !== undefined ) {
@@ -78,6 +115,15 @@ module.exports = {
         maxScale: 0
       };
     }
+    json.extent = this.extent( data.features );
+    this.send( json, params, callback );
+  },
+
+  // todo support many layers 
+  layers: function( data, params, callback ){
+    var layerJson = this.process('/../templates/featureLayer.json', data, params );
+    layerJson.extent = this.extent( data.features );
+    var json = { layers: [ layerJson ], tables: [] };
     this.send( json, params, callback );
   },
 
