@@ -62,5 +62,24 @@ describe('Query Model', function(){
       });
     });
 
+    describe('when filtering via where', function(){
+      var snow = require('../fixtures/snow.geojson');
+      it('should return features that match where clause', function(done){
+        Query.filter( data, { where: '1=1' }, function( service ){
+          service.should.be.an.instanceOf(Object);
+          service.features.length.should.equal( data.features.length );
+          done();
+        });
+      });
+
+      it('should return features that match where clause', function(done){
+        Query.filter( snow, { where: 'latitude > 39.9', outFields: '*' }, function( service ){
+          service.should.be.an.instanceOf(Object);
+          service.features.length.should.equal( data.features.length );
+          done();
+        });
+      });
+    });
+
 });
 
