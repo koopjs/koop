@@ -25,7 +25,7 @@ module.exports.routes = {
 	// To route the home page to the "index" action of the "home" controller:
 	'/' : {
 		controller	: 'home',
-    action: 'index'
+    action: 'home'
 	},
 
   'get /gist/:id/preview' : {
@@ -62,10 +62,16 @@ module.exports.routes = {
     action: 'gist'
   },
 
+
   'get /gist/:id/FeatureServer/:layer': {
     controller: 'featureservices',
     action: 'gist'
   },
+  
+  /*'get /gist/:id/FeatureServer/:layer': {
+    controller: 'featureservices',
+    action: 'gist'
+  },*/
 
   'get /gist/:id/FeatureServer': {
     controller: 'featureservices',

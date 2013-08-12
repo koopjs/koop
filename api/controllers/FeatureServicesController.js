@@ -47,23 +47,34 @@ var FeatureServicesController = {
       if ( err ){
         res.json( err, 500 );
       } else if ( data ){
-        if ( req.params.method ) {
-          FeatureServices[ req.params.method ]( data, req.query || {}, function( d ){
+        if ( FeatureServices[ req.params.layer ]){
+          FeatureServices[ req.params.layer ]( data, req.query || {}, function( d ){
             if ( callback ){
               res.send( callback + '(' + JSON.stringify( d ) + ')' );
             } else { 
               res.json( d );
             }
           });
-        } else { 
-          FeatureServices.info( data, req.params.layer, req.query || {}, function( d ){
-            if ( callback ){
-              res.send( callback + '(' + JSON.stringify( d ) + ')' );
-            } else { 
-              res.json( d );
-            }
+        } else {
+          if ( req.params.method && FeatureServices[ req.params.method ] ){ 
+            FeatureServices[ req.params.method ]( data, req.query || {}, function( d ){
+              if ( callback ){
+                res.send( callback + '(' + JSON.stringify( d ) + ')' );
+              } else {
+                res.json( d );
+              }
           });
+          } else { 
+            FeatureServices.info( data, req.params.layer, req.query || {}, function( d ){
+              if ( callback ){
+                res.send( callback + '(' + JSON.stringify( d ) + ')' );
+              } else {
+                res.json( d );
+              }
+          });
+          }
         }
+      
       } else {
         res.send('There a problem accessing this gist', 500);
       }
@@ -80,7 +91,7 @@ var FeatureServicesController = {
           send( null, JSON.parse(Cache.gist[ id ]) );
         }
       } else {
-        res.send('Must specify a user and gist id', 404);
+        res.send('Must specify a gist id', 404);
       }
 
   },
@@ -88,32 +99,54 @@ var FeatureServicesController = {
   github: function(req, res){
     var callback = req.query.callback;
     delete req.query.callback;
-    if ( req.params.user && req.params.repo && req.params.file ){
-        Geohub.repo( req.params.user, req.params.repo, req.params.file.replace(/::/g, '/'), function( err, data ){
-          if ( err ){
-            res.json( err, 500 );
-          } else if ( data ){
-            if ( req.params.method ) {
-              FeatureServices[ req.params.method ]( data, req.query || {}, function( d ){
-                if ( callback ){
-                  res.send( callback + '(' + JSON.stringify( d ) + ')' );
-                } else {
-                  res.json( d );
-                }
-              });
+
+    function send( err, data ){
+      if ( err ){
+        res.json( err, 500 );
+      } else if ( data ){
+        if ( FeatureServices[ req.params.layer ]){
+          FeatureServices[ req.params.layer ]( data, req.query || {}, function( d ){
+            if ( callback ){
+              res.send( callback + '(' + JSON.stringify( d ) + ')' );
             } else {
-              FeatureServices.info( data, req.params.layer, res.query || {}, function( d ){
-                if ( callback ){
-                  res.send( callback + '(' + JSON.stringify( d ) + ')' );
-                } else {
-                  res.json( d );
-                }
-              });
+              res.json( d );
             }
-          } else {
-            res.send('There was a problem accessing this repo', 500);
+          });
+        } else {
+          if ( req.params.method && FeatureServices[ req.params.method ] ){
+            FeatureServices[ req.params.method ]( data, req.query || {}, function( d ){
+              if ( callback ){
+                res.send( callback + '(' + JSON.stringify( d ) + ')' );
+              } else {
+                res.json( d );
+              }
+          });
+          } else { 
+            FeatureServices.info( data, req.params.layer, req.query || {}, function( d ){
+              if ( callback ){
+                res.send( callback + '(' + JSON.stringify( d ) + ')' );
+              } else {
+                res.json( d );
+              }
+          });
           }
-        });
+        }
+
+      } else {
+        res.send('There a problem accessing this repo', 500);
+      }
+    };
+
+    if ( req.params.user && req.params.repo && req.params.file ){
+        var key = [ req.params.user, req.params.repo, req.params.file.replace(/::/g, '/')].join('/');
+        if (!Cache.gist[ key ]){
+          Geohub.repo( req.params.user, req.params.repo, req.params.file.replace(/::/g, '/'), function( err, data ){
+            Cache.gist[ key ] = JSON.stringify( data );
+            send( err, data );
+          });
+        } else {
+          send( null, JSON.parse( Cache.gist[ key ] ) );
+        }
       } else {
         res.send('Must specify a user, repo, and file', 404);
       }
