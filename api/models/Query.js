@@ -201,19 +201,19 @@ module.exports = {
   // process the where filter in the params 
   // TODO actually support parsing where clauses 
   whereFilter: function( json, params, callback ){
-    if ( params.where != '1=1' ){
-      var where = sql.parse( 'select * from foo where '+ params.where).where;
+    var where = sql.parse( 'select * from foo where '+ params.where).where;
 
-      console.log(params)
-      var features = [];
-      _.each(json.features, function(f){
-        var param = where.conditions.left.value;
-        var val = where.conditions.right.value;
-        if ( this.whereOps[ where.conditions.operation ] && this.whereOps[ where.conditions.operation ]( f.attributes[ param ], val ) ) features.push( f );  
-      }, this);
-      json.features = features;
-    }
-      
+    var features = [];
+    _.each(json.features, function(f){
+      var props = f.attributes || f.properties;
+      var param = where.conditions.left.value;
+      var val = where.conditions.right.value;
+      if ( ( this.whereOps[ where.conditions.operation ] && props[ param ] && this.whereOps[ where.conditions.operation ]( props[ param ], val ) )) { 
+        features.push( f );
+      }
+    }, this);
+    json.features = features;
+     
     delete params.where;
     // recycle the data + params through the filter fn
     this.filter( json, params, callback );
