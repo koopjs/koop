@@ -447,6 +447,8 @@ module.exports = function (grunt) {
     'sails-linker:devTplJADE'
   ]);
 
+  grunt.registerTask('heroku:production', ['prod']);
+
   grunt.loadNpmTasks('grunt-mocha-test');
 
   grunt.registerTask('test', [ 'mochaTest' ]);
