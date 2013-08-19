@@ -32,20 +32,20 @@ Each provider defines custom routes, a controller, and a model. Each of these us
 #### Routes
   * Define custom routes in the "routes" index.js file: 
 
-    // defined in api/providers/routes/index.js 
+    ``// defined in api/providers/routes/index.js 
     module.exports = {
       'get /sample': {
         controller: 'sample',
         action: 'index'
       }
-    } 
+    }``
 
   * The above creates a ``/sample`` route that calls the ``index`` method on the sample controller ( defined in ``/api/providers/sample/controller/index.js`` ).     
 
 #### Controller
   * Defines the handlers to used to respond to routes
 
-    module.exports = {
+    ``module.exports = {
       // this tells koop to treat this provider like AGS service and show up at the root data provider endpoint 
       provider: false,
 
@@ -54,7 +54,7 @@ Each provider defines custom routes, a controller, and a model. Each of these us
         res.send('Sample Providers, to make this a real one set provider true');
       }
   
-    }; 
+    };`` 
 
   * each method takes in a request and response property and needs to send something to the reponse. 
  
