@@ -1,0 +1,170 @@
+
+<div class="container" style="padding:10px;">
+  <div class="page-header">
+    <h2> Koop <small>GeoJSON as FeatureServices</small></h2>
+  </div>
+  <div class="container">
+    <div class="container">
+      <div class="row">
+        <div class="col-4 col-lg-offset-1">
+          <div class="container">
+            <h2>View a Gist</h2>
+            <input type="text" id="gist" class="sample-input form-control" value="6178185" placeholder="Enter a gist id">
+            <button class="btn btn-primary pull-right" onClick="submitGist()">Map Gist</button>
+          </div>
+        </div>
+        <div class="col-4 col-lg-offset-2">
+          <div class="container">
+            <h2>or GitHub GeoJSON</h2>
+            <input type="text" id="github" class="sample-input form-control" value="chelm/grunt-geo/forks" placeholder="Path to a geojson file: user/repo/file">
+            <button class="btn btn-primary pull-right" onClick="submitGithub()">Map GitHub</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <h2>Docs</h2>
+      <hr/>
+      <p>Koop serves both <a href="http://geojson.org" target="_blank">GeoJSON</a> and <a href="http://maps.esri.com/apl4/sdk/rest/featureserver.html" target="_blank">GeoServices Feature Service</a> from shared <a href="http://gist.github.com" target="_blank">Gists</a> and  public <a href="http://github.com">GitHub</a> repositories. This allows you to Query, Map, or Analyze GeoJSON files just like they were a full API service. </p>
+      <!--h3>Endpoints</h3>
+        <p>The generic pattern for a Koop endpoint is <code>host/(gist id or github repo)/FeatureServer/layer/query</code>
+        <ul>
+        <li>Service metadata: host/resource/FeatureServer</li>
+        <li>Layer metadata: host/resource/FeatureServer/0</li>
+        <li>Layer queries: host/resource/FeatureServer/query</li>
+        </ul-->
+
+      <h3>Gists</h3>
+        Gists are accessed by adding the id to <code>/gist/:gist_id</code>, and optionally the Feature Service metadata or query. For example:
+        <ul>
+          <li>Raw GeoJSON: <a href="/gist/6021269/" target="_blank">/gist/6021269</a></li>
+          <li>FeatureService: <a href="/gist/6021269/FeatureServer/0" target="_blank">/gist/6021269/FeatureServer/0</a></li>
+          <li>Query: <a href="/gist/6021269/FeatureServer/0/query" target="_blank">/gist/6021269/FeatureServer/0/query</a></li>
+        </ul>
+      <h3>Github</h3>
+        Files from Github are accessed with the endpoint <code>/github/:username/:repository/:path</code>
+        <ul>
+          <li>Raw GeoJSON: <a href="/github/chelm/grunt-geo/forks" target="_blank">/github/chelm/grunt-geo/forks</a></li>
+          <li>FeatureService: <a href="/github/chelm/grunt-geo/forks/FeatureServer/0" target="_blank">/github/chelm/grunt-geo/forks/FeatureServer/0</a></li>
+          <li>Query: <a href="/github/chelm/grunt-geo/forks/FeatureServer/0/query" target="_blank">/github/chelm/grunt-geo/forks/FeatureServer/0/query</a></li>
+          <strong>NOTE</strong>: <code>path</code> parameter uses "::" as the sub-directory seperator. So for example if the file is at <code>github.com/chelm/grunt-geo/tree/master/samples/bower.geojson</code> then the Koop path would look like:
+            <a href="/github/chelm/grunt-geo/samples::bower" target="_blank">/github/chelm/grunt-geo/samples::bower</a>
+        </ul>
+
+      <h3>Previews</h3>
+        Koop can preview any gist or github file using the simple view endpoints:
+        <ul>
+          <li>Gist: <a href="/gist" target="_blank">/gist</a></li>
+          <li>Github: <a href="/github" target="_blank">/github</a></li>
+        </ul>
+
+      <h3>Spatial Queries</h3>
+
+        <li><a href="http://koop.dc.esri.com/github/smartchicago/chicago-atlas/db::import::zipcodes/FeatureServer/0/query?geometry=-180,90,180,90" target="_blank">http://koop.dc.esri.com/github/smartchicago/chicago-atlas/db::import::zipcodes/FeatureServer/0/query?geometry=-180,90,180,90</a></li>
+
+      <h3>Filter Queries</h3>
+        
+        <li><a href='http://koop.dc.esri.com/github/smartchicago/chicago-atlas/db::import::zipcodes/FeatureServer/0/query?where=ZIP=60647' target="_blank">http://koop.dc.esri.com/github/smartchicago/chicago-atlas/db::import::zipcodes/FeatureServer/0/query?where=ZIP=60647</a></li>
+
+      <h3>Query parameters</h3>
+        <div class="accordion" id="accordion2">
+          <div class="accordion-group">
+            <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_id">
+                idField*
+              </a>
+            </div>
+            <div id="collapse_id" class="accordion-body collapse">
+              <div class="accordion-inner">
+                * the params is specific to koop and is not part of the FeatureService spec
+                specifies what field to use as the ObjectID field
+                <ul><li><a href="/gist/6021269/FeatureServer/0/query?idField=id">/geojson/snow/FeatureServer/0/query?idField=id</a></li></ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-group">
+            <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_objectid">
+                objectIds
+              </a>
+            </div>
+            <div id="collapse_objectid" class="accordion-body collapse">
+              <div class="accordion-inner">
+                returns only the features that match a given objectId
+                <ul><li><a href="/gist/6021269/FeatureServer/0/query?objectIds=1,2,3">/geojson/snow/FeatureServer/0/query?objectIds=1,2,3</a></li></ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-group">
+            <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_returncountonly">
+                returnCountOnly (true or false)
+              </a>
+            </div>
+            <div id="collapse_returncountonly" class="accordion-body collapse">
+              <div class="accordion-inner">
+                if true, returns only the count of features that would be returned based on other query params
+                <ul><li><a href="/gist/6021269/FeatureServer/0/query?returnCountOnly=true">/geojson/snow/FeatureServer/0/query?returnCountOnly=true</a></li></ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-group">
+            <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_returnidsonly">
+                returnIdsOnly (true or false)
+              </a>
+            </div>
+            <div id="collapse_returnidsonly" class="accordion-body collapse">
+              <div class="accordion-inner">
+                returns only the Ids of the feature that would be returned based on other params
+                <ul><li><a href="/gist/6021269/FeatureServer/0/query?returnIdsOnly=true">/geojson/snow/FeatureServer/0/query?returnIdsOnly=true</a></li></ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-group">
+            <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_geometry">
+                geometry (xmin,ymin,xmax,ymax)
+              </a>
+            </div>
+            <div id="collapse_geometry" class="accordion-body collapse">
+              <div class="accordion-inner">
+                sets a geometry filter and returns only features that are within the given geometry
+                <ul><li><a href="/gist/6021269/FeatureServer/0/query?geometry=-110,30,-106,50">/geojson/snow/FeatureServer/0/query?geometry=-110,30,-106,50</a></li></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+<div>
+
+<script>
+
+  function submitGist(){
+    var val = document.getElementById('gist').value;
+    if ( val ) {
+      go( '/gist/' + val + '/preview' );
+    }
+  }
+
+  function submitGithub(){
+    var val = document.getElementById('github').value.split('/');
+    var user = val.shift();
+    var repo = val.shift();
+    if ( val.length > 1){
+      var path = val.join('::');
+    } else {
+      var path = val[0];
+    }
+    if ( user && repo && path ) {
+      go( '/github/' + [ user, repo, path ].join('/') + '/preview' );
+    }
+  }
+
+  function go( path ){
+    location.href = path;
+  }
+
+</script>
+

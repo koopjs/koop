@@ -6,10 +6,10 @@ module.exports = {
   provider: true,
  
   index: function(req, res){
-    res.render('gist/index');
+    res.view('gist/index');
   },
 
-  findOne: function(req, res){
+  find: function(req, res){
     function send( err, data ){
         if ( err ){
           res.json( err, 500 );
@@ -95,7 +95,7 @@ module.exports = {
   },
 
   preview: function(req, res){
-    res.render('demo/gist', { locals:{ id: req.params.id } });
+    res.view('demo/gist', { locals:{ id: req.params.id } });
   }
 
 

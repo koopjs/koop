@@ -2,7 +2,7 @@ module.exports.routes = {
 	
 	'/' : {
 		controller	: 'home',
-    action: 'home'
+    action: 'index'
 	},
 
   'get /services': {
