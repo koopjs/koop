@@ -16,7 +16,7 @@ module.exports = {
 
   'get /gist/:id': {
     controller: 'gist',
-    action: 'findOne'
+    action: 'find'
   },
 
   'get /gist': {
