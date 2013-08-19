@@ -12,22 +12,56 @@ To provide a flexible server for exposing new/experimental data sources and type
     npm install
     node app.js
 
-  visit [http://localhost:1337/geojson](http://localhost:1337/geojson) 
+  visit [http://localhost:1337](http://localhost:1337) 
 
 
 # Demo / Docs
 
 Koop turns geojson into feature services and the links below act as documentation for the various kinds of things Koop supports. We've deployed [Koop to heroku]([http://koop.heroku.com/geojson](http://koop.heroku.com/geojson)) 
 
-## Geojson 
+## Data Providers
 
-  Koop comes with a couple geojson files stored in the api/geojson directory. You can place geojson file directly in there to test Koop.  
+Koop is now designed to load different data providers. These providers represents 3rd party services that we want to adapt into FeatureServices. Koop currently has 2 such providers: ``gist`` and ``github``. Each provider resides in ``api/providers/``
 
-  * [http://koop.heroku.com/geojson](http://koop.heroku.com/geojson)
-  * [http://koop.heroku.com/geojson/snow](http://koop.heroku.com/geojson/snow)
-  * [http://koop.heroku.com/geojson/snow/FeatureServer](http://koop.heroku.com/geojson/snow/FeatureServer)
-  * [http://koop.heroku.com/geojson/snow/FeatureServer/0](http://koop.heroku.com/geojson/snow/FeatureServer/0)
-  * [http://koop.heroku.com/geojson/snow/FeatureServer/0/query](http://koop.heroku.com/geojson/snow/FeatureServer/0/query)
+### Defining a new provider 
+
+Each provider defines custom routes, a controller, and a model. Each of these uses ``module.exports`` to export an object (common js modules).  Each is then fused into koop at start up time and becomes available within the server. 
+
+"Note": The name of the provider dir is used to define the name of the provider and its controller within koop. 
+
+#### Routes
+  * Define custom routes in the "routes" index.js file: 
+
+    // defined in api/providers/routes/index.js 
+    module.exports = {
+      'get /sample': {
+        controller: 'sample',
+        action: 'index'
+      }
+    } 
+
+  * The above creates a ``/sample`` route that calls the ``index`` method on the sample controller ( defined in ``/api/providers/sample/controller/index.js`` ).     
+
+#### Controller
+  * Defines the handlers to used to respond to routes
+
+    module.exports = {
+      // this tells koop to treat this provider like AGS service and show up at the root data provider endpoint 
+      provider: false,
+
+      // our index method to simple print text 
+      index: function(req, res){
+        res.send('Sample Providers, to make this a real one set provider true');
+      }
+  
+    }; 
+
+  * each method takes in a request and response property and needs to send something to the reponse. 
+ 
+#### Models 
+  * Should be used to interact with 3rd party services and databases
+
+
 
 ## Gists 
 
