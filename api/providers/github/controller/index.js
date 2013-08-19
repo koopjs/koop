@@ -10,7 +10,7 @@ module.exports = {
   },
 
   index: function(req, res){
-    res.render('github/index');
+    res.view('github/index');
   },
 
   getRepo: function(req, res){
@@ -87,7 +87,7 @@ module.exports = {
   },
 
   preview: function(req, res){
-   res.render('demo/github', { locals:{ user: req.params.user, repo: req.params.repo, file: req.params.file } });
+   res.view('demo/github', { locals:{ user: req.params.user, repo: req.params.repo, file: req.params.file } });
   }
 
 
