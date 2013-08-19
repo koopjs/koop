@@ -13,16 +13,6 @@ describe('Koop Routes', function(){
 
     var agent = superagent.agent();
 
-    describe('/geojson', function() {
-      it('should return an array of files in the filesystem store', function(done) {
-          agent.get('http://localhost:1337/geojson/').end(function(err, res) {
-            res.should.have.status(200);
-            res.body.length.should.equal(2);
-            return done();
-          });
-      });
-    });
-
     describe('/gist', function() {
       it('should return 200', function(done) {
           agent.get('http://localhost:1337/gist/').end(function(err, res) {
