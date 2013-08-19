@@ -40,7 +40,7 @@ Each provider defines custom routes, a controller, and a model. Each of these us
             controller: 'sample',
             action: 'index'
           }
-        }
+        };
 
       
 
@@ -49,16 +49,16 @@ Each provider defines custom routes, a controller, and a model. Each of these us
 #### Controller
   * Defines the handlers to used to respond to routes
 
-    ``module.exports = {
-      // this tells koop to treat this provider like AGS service and show up at the root data provider endpoint 
-      provider: false,
+      module.exports = {
+        // this tells koop to treat this provider like AGS service and show up at the root data provider endpoint 
+        provider: false,
 
-      // our index method to simple print text 
-      index: function(req, res){
-        res.send('Sample Providers, to make this a real one set provider true');
-      }
+        // our index method to simple print text 
+        index: function(req, res){
+          res.send('Sample Providers, to make this a real one set provider true');
+        }
   
-    };`` 
+      }; 
 
   * each method takes in a request and response property and needs to send something to the reponse. 
  
