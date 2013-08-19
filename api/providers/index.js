@@ -9,6 +9,7 @@
 (function(){
   var fs = require('fs'),
     path = './api/providers/';
+  //console.log(sails);
 
   fs.readdir( path, function(err, files){
     _.each(files, function( f ){
@@ -27,10 +28,11 @@
         _.each(routes, function( handler, route ){
           var route = route.split(' ');
           // bind the route to the said controller
-          sails.express.app[ route[0] ]( 
-            route[1], 
-            sails.middleware.controllers[ handler.controller ][ handler.action ] 
-          );
+          sails.router.bind(route[1], sails.middleware.controllers[ handler.controller ][ handler.action ], route[0] ); 
+          //sails.express.app[ route[0] ]( 
+          //  route[1], 
+          //  sails.middleware.controllers[ handler.controller ][ handler.action ] 
+          //);
         });
       }
     });
