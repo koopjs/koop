@@ -32,13 +32,15 @@ Each provider defines custom routes, a controller, and a model. Each of these us
 #### Routes
   * Define custom routes in the "routes" index.js file: 
 
-    ``// defined in api/providers/routes/index.js 
-    module.exports = {
-      'get /sample': {
-        controller: 'sample',
-        action: 'index'
-      }
-    }``
+      ``
+        // defined in api/providers/routes/index.js 
+        module.exports = {
+          'get /sample': {
+            controller: 'sample',
+            action: 'index'
+          }
+        }
+      ``
 
   * The above creates a ``/sample`` route that calls the ``index`` method on the sample controller ( defined in ``/api/providers/sample/controller/index.js`` ).     
 
