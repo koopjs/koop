@@ -17,7 +17,7 @@ To provide a flexible server for exposing new/experimental data sources and type
 
 # Demo / Docs
 
-Koop turns geojson into feature services and the links below act as documentation for the various kinds of things Koop supports. We've deployed [Koop to heroku]([http://koop.heroku.com/geojson](http://koop.heroku.com/geojson)) 
+Koop turns geojson into feature services and the links below act as documentation for the various kinds of things Koop supports. We've deployed [Koop to heroku]([http://koop.dc.esri.com/geojson](http://koop.dc.esri.com/geojson)) 
 
 ## Data Providers
 
@@ -40,7 +40,7 @@ Each provider defines custom routes, a controller, and a model. Each of these us
             controller: 'sample',
             action: 'index'
           }
-        };
+        }
 
       
 
@@ -71,20 +71,20 @@ Each provider defines custom routes, a controller, and a model. Each of these us
 
 You can pull geojson data directly from a gist too.
 
-  * [http://koop.heroku.com/gist/6021269](http://koop.heroku.com/gist/6021269)
-  * [http://koop.heroku.com/gist/6021269/FeatureServer](http://koop.heroku.com/gist/6021269/FeatureServer)
-  * [http://koop.heroku.com/gist/6021269/FeatureServer/0](http://koop.heroku.com/gist/6021269/FeatureServer/0)
-  * [http://koop.heroku.com/gist/6021269/FeatureServer/0/query](http://koop.heroku.com/gist/6021269/FeatureServer/0/query)
+  * [http://koop.dc.esri.com/gist/6021269](http://koop.dc.esri.com/gist/6021269)
+  * [http://koop.dc.esri.com/gist/6021269/FeatureServer](http://koop.dc.esri.com/gist/6021269/FeatureServer)
+  * [http://koop.dc.esri.com/gist/6021269/FeatureServer/0](http://koop.dc.esri.com/gist/6021269/FeatureServer/0)
+  * [http://koop.dc.esri.com/gist/6021269/FeatureServer/0/query](http://koop.dc.esri.com/gist/6021269/FeatureServer/0/query)
 
 ## Github 
 
 And of course github can store geojson files as well. Koop can turn those into featureservices too. 
 
-  * [http://koop.heroku.com/github/colemanm/hurricanes/fl_2004_hurricanes](http://koop.heroku.com/github/colemanm/hurricanes/fl_2004_hurricanes)
-  * [http://koop.heroku.com/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer](http://koop.heroku.com/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/)
-  * [http://koop.heroku.com/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/0/query](http://koop.heroku.com/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/0/query)
+  * [http://koop.dc.esri.com/github/colemanm/hurricanes/fl_2004_hurricanes](http://koop.dc.esri.com/github/colemanm/hurricanes/fl_2004_hurricanes)
+  * [http://koop.dc.esri.com/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer](http://koop.dc.esri.com/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/)
+  * [http://koop.dc.esri.com/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/0/query](http://koop.dc.esri.com/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/0/query)
   * Note: Repos can of course have directories, and this presents an issue with creating dynamic routes that match arbitrary paths in github. To sole this Koop will replace dashes with slashed in its github routes: 
-    * [http://koop.heroku.com/github/geobabbler/geodata/geojson-border_crossings/FeatureServer/0/query](http://koop.heroku.com/github/geobabbler/geodata/geojson-border_crossings/FeatureServer/0/query)
+    * [http://koop.dc.esri.com/github/geobabbler/geodata/geojson-border_crossings/FeatureServer/0/query](http://koop.dc.esri.com/github/geobabbler/geodata/geojson-border_crossings/FeatureServer/0/query)
     * The above url would pull down this geojson file: [https://github.com/geobabbler/geodata/blob/master/geojson/border_crossings.geojson](https://github.com/geobabbler/geodata/blob/master/geojson/border_crossings.geojson)
 
 
