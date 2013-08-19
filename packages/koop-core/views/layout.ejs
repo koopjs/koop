@@ -6,20 +6,21 @@
 		<!-- Viewport mobile tag for sensible mobile support -->
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 		
-		<!-- Stylesheets from your assets folder are included here -->
-		<%- assets.css() %>
+    <link href="/styles/bootstrap.min.css" media="all" rel="stylesheet" />
+    <link href="/styles/esri-leaflet.min.css" media="all" rel="stylesheet" />
+    <link href="/styles/leaflet.css" media="all" rel="stylesheet" />
+    <link href="/styles/main.css" media="all" rel="stylesheet" />
+    
 	</head>
 
 	<body>
 
-		<!-- Templates from your view path are included here -->
-		<%- assets.templateLibrary() %>
 		<!-- Javascripts from your assets folder are included here -->
-    <script type="text/javascript" src="/assets/js/jquery-1.8.3.js"></script>
-    <script type="text/javascript" src="/assets/js/leaflet.js"></script>
-    <script type="text/javascript" src="/assets/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/assets/js/esri-leaflet.min.js"></script>
-    <script type="text/javascript" src="/assets/js/map.js"></script>
+    <script type="text/javascript" src="/js/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="/js/leaflet.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/esri-leaflet.min.js"></script>
+    <script type="text/javascript" src="/js/map.js"></script>
 	
     <%- body %>
 	</body>
