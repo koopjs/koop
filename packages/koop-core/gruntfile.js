@@ -152,11 +152,9 @@ module.exports = function (grunt) {
         files: [
           {
           expand: true,
-          //cwd: '.tmp/public',
-          cwd: './assets',
+          cwd: '.tmp/public',
           src: ['**/*'],
-          dest: '.tmp/public'
-          //dest: 'www'
+          dest: 'www'
         }
         ]
       }
