@@ -9,7 +9,27 @@
 (function(){
   var fs = require('fs'),
     path = './api/providers/';
-  //console.log(sails);
+
+  function loadModels( options ){
+    var files = require('include-all')({
+      dirname   : options.path,
+      filter    : /(.+)\..+$/
+    });
+    //console.log(files);
+
+    _.each(files, function(module, filename) {
+      var keyName = filename;
+      module.identity = options.replaceExpr ? filename.replace(options.replaceExpr, "") : filename;
+      module.globalId = module.identity;
+      module.identity = module.identity.toLowerCase();
+      keyName = module.identity;
+      // save the model;
+      sails.models[keyName] = module;
+      // expose model as a global
+      global[module.globalId] = module;
+    });
+  }
+  
 
   fs.readdir( path, function(err, files){
     _.each(files, function( f ){
@@ -18,21 +38,18 @@
 
         var providerPath = __dirname + '/' + f;
 
-        var routes = require( providerPath + '/routes'),
-          model = require( providerPath + '/models');
+        // load the model into koop as sails model and global
+        loadModels({ path: providerPath + '/models' });
 
-        // TODO do something with provider models - it might makes sense to move some controller logic into a gist model 
-
+        // load the controller 
         sails.middleware.controllers[ f ] = require( providerPath + '/controller');
 
+        // bind the custom routes
+        var routes = require( providerPath + '/routes');
         _.each(routes, function( handler, route ){
           var route = route.split(' ');
           // bind the route to the said controller
           sails.router.bind(route[1], sails.middleware.controllers[ handler.controller ][ handler.action ], route[0] ); 
-          //sails.express.app[ route[0] ]( 
-          //  route[1], 
-          //  sails.middleware.controllers[ handler.controller ][ handler.action ] 
-          //);
         });
       }
     });

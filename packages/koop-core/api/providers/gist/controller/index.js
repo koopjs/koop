@@ -79,18 +79,18 @@ module.exports = {
     };
 
     if ( req.params.id ){
-        var id = req.params.id;
-        if (!Cache.gist[ id ]){
-          Geohub.gist( { id: id }, function( err, data ){
-            Cache.gist[ id ] = JSON.stringify(data[0]);
-            send( err, data[0] );
-          });
-        } else {
-          send( null, JSON.parse(Cache.gist[ id ]) );
-        }
+      var id = req.params.id;
+      if (!Cache.gist[ id ]){
+        Geohub.gist( { id: id }, function( err, data ){
+          Cache.gist[ id ] = JSON.stringify(data[0]);
+          send( err, data[0] );
+        });
       } else {
-        res.send('Must specify a gist id', 404);
+        send( null, JSON.parse(Cache.gist[ id ]) );
       }
+    } else {
+      res.send('Must specify a gist id', 404);
+    }
 
   },
 
