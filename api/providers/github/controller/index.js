@@ -1,5 +1,3 @@
-var request = require('request'); 
-var Geohub = require('geohub'); 
 
 module.exports = {
   
@@ -15,7 +13,7 @@ module.exports = {
 
   getRepo: function(req, res){
     if ( req.params.user && req.params.repo && req.params.file ){
-      Geohub.repo( req.params.user, req.params.repo, req.params.file.replace(/::/g, '/'), function( err, data ){
+      Github.find(req.params.user, req.params.repo, req.params.file, function( err, data ){
         if ( err ){
           res.json( err, 500 );
         } else if ( data ){
@@ -23,7 +21,7 @@ module.exports = {
         } else {
           res.send('There was a problem accessing this repo', 500);
         }
-      });  
+      });
     } else {
       res.send('Must specify a user, repo, and file', 404);
     }
@@ -71,15 +69,9 @@ module.exports = {
     };
 
     if ( req.params.user && req.params.repo && req.params.file ){
-      var key = [ req.params.user, req.params.repo, req.params.file.replace(/::/g, '/')].join('/');
-      if (!Cache.gist[ key ]){
-        Geohub.repo( req.params.user, req.params.repo, req.params.file.replace(/::/g, '/'), function( err, data ){
-          Cache.gist[ key ] = JSON.stringify( data );
-          send( err, data );
-        });
-      } else {
-        send( null, JSON.parse( Cache.gist[ key ] ) );
-      }
+      Github.find( req.params.user, req.params.repo, req.params.file, function( err, data){
+        send( null, data );
+      });
     } else {
       res.send('Must specify a user, repo, and file', 404);
     }
