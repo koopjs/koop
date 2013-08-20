@@ -1,5 +1,3 @@
-var request = require('request'); 
-var Geohub = require('geohub'); 
 
 module.exports = {
 
@@ -23,15 +21,9 @@ module.exports = {
     };
     if ( req.params.id ){
       var id = req.params.id;
-      if ( !Cache.gist[ id ] ){
-        Geohub.gist( {id: id }, function( err, data ){
-          Cache.gist[ id ] = JSON.stringify( data[0] ); 
-          send( err, data[0]);
-        });  
-      } else {
-        send( null, JSON.parse( Cache.gist[ id ] ));
-      }
-      
+      Gist.find( id, function( err, data) {
+        send( err, data );
+      });
     } else {
       res.send('Must specify a user and gist id', 404);
     }
@@ -80,14 +72,9 @@ module.exports = {
 
     if ( req.params.id ){
       var id = req.params.id;
-      if (!Cache.gist[ id ]){
-        Geohub.gist( { id: id }, function( err, data ){
-          Cache.gist[ id ] = JSON.stringify(data[0]);
-          send( err, data[0] );
-        });
-      } else {
-        send( null, JSON.parse(Cache.gist[ id ]) );
-      }
+      Gist.find( id, function( err, data) {
+        send( err, data );
+      });
     } else {
       res.send('Must specify a gist id', 404);
     }
