@@ -33,7 +33,7 @@
     "debug": "node debug app.js"
   },
   "main": "app.js",
-  "repository": "",
+  "repository": "http://github.com/Esri/koop.git",
   "author": "",
   "license": "Apache"
 }
