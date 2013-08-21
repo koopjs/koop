@@ -1,14 +1,10 @@
-/*---------------------
-	:: Services
-	-> model
----------------------*/
 var terraformer = require('terraformer');
 var terraformerParser = require('terraformer-arcgis-parser');
 
 module.exports = {
 
-	attributes: {
-	},
+  attributes: {
+  },
 
   fieldTypes: {
     'string': 'esriFieldTypeString',
