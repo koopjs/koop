@@ -5,23 +5,17 @@
 
 ## Goal 
 
-To provide a flexible server for exposing new/experimental data sources and types as both Feature Services and other data formats. This project is meant to provide a simple platform to extend the currently supported functionality of ArcGIS Server. Koop is a testing ground for new ideas about making maps on web with different data structures as input.
+To provide a flexible server for exposing new/experimental data sources and types as both Feature Services and other data formats. This project is meant to provide a simple platform for data experimentation with the ArcGIS platform. Koop is a testing ground for new ideas about making maps on the web with different data structures/formats as input.
 
-## Usage 
-
-    npm install
-    node app.js
-
-  visit [http://localhost:1337](http://localhost:1337) 
 
 
 # Demo / Docs
 
-Koop turns geojson into feature services and the links below act as documentation for the various kinds of things Koop supports. We've deployed [Koop to heroku]([http://koop.dc.esri.com/geojson](http://koop.dc.esri.com/geojson)) 
+Koop turns geojson into feature services and the links below act as documentation for the various kinds of things Koop supports. We've deployed a sample server as testbed: [http://koop.dc.esri.com](http://koop.dc.esri.com)
 
 ## Data Providers
 
-Koop is now designed to load different data providers. These providers represents 3rd party services that we want to adapt into FeatureServices. Koop currently has 2 such providers: ``gist`` and ``github``. Each provider resides in ``api/providers/``
+Koop is now designed to expose 3rd party services as FeatureServices that are consumable within Esri products and services. Currently Koop has 2 such providers: ``gists`` and ``github``. Each provider resides in ``api/providers/``
 
 ### Defining a new provider 
 
@@ -113,13 +107,33 @@ We'd like to have full feature service support from any geojson data source. Bel
   * returns only the features that contained within the given geometry
     * [http://localhost:1337/geojson/snow/FeatureServer/0/query?geometry=-110,30,-106,50](http://localhost:1337/geojson/snow/FeatureServer/0/query?geometry=-110,30,-106,50)
 
+## Installation 
+
+    # clone the repo 
+    git clone git@github.com:ArcGIS/koop.git
+    
+    # install the dependencies 
+    cd koop
+    npm install
+    
+    # run the server 
+    node app.js 
+  
+  visit [http://localhost:1337](http://localhost:1337) 
+     
+
 ## Testing 
 
     # install grunt if you dont have it 
     sudo npm install -g grunt-cli
 
     # run the tests 
-    grunt test 
+    grunt test
+
+## Dependencies 
+
+  * [Terraformer](http://github.com/Esri/Terraformer)
+  * [Geohub](http://github.com/chelm/geohub) 
 
 ## Resources
 
