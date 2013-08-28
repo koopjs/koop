@@ -19,6 +19,16 @@ module.exports = {
     action: 'find'
   },
 
+  'get /gist/raw/:id': {
+    controller: 'gist',
+    action: 'find'
+  },
+
+  'get /gist/raw/:id/:layer': {
+    controller: 'gist',
+    action: 'find'
+  },
+
   'get /gist': {
     controller: 'gist',
     action: 'index'

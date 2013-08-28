@@ -6,8 +6,8 @@ module.exports = {
     if (!Cache.gist[ id ]){
       // get the gist via the geohub module
       Geohub.gist( { id: id }, function( err, data ){
-        Cache.gist[ id ] = JSON.stringify(data[0]);
-        callback( err, data[0] );
+        Cache.gist[ id ] = JSON.stringify(data);
+        callback( err, data );
       });
     } else {
       callback( null, JSON.parse(Cache.gist[ id ]) );

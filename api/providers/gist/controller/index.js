@@ -21,8 +21,16 @@ module.exports = {
     };
     if ( req.params.id ){
       var id = req.params.id;
+      var d = {};
       Gist.find( id, function( err, data) {
-        send( err, data );
+        if (req.params.layer !== undefined && data[req.params.layer]){
+          //d = data[req.params.layer];
+          send( err, data[req.params.layer] );
+        } else if ( !req.params.layer ) {
+          send( err, data );
+        } else {
+          send( 'Layer not found', null);
+        }
       });
     } else {
       res.send('Must specify a user and gist id', 404);
@@ -46,6 +54,13 @@ module.exports = {
             }
           });
         } else {
+          // have a layer 
+          if (req.params.layer && data[ req.params.layer ]){
+            data = data[ req.params.layer ];
+          } else if ( req.params.layer && !data[req.params.layer]){
+            res.send('Layer not found', 404);
+          }
+ 
           if ( req.params.method && FeatureServices[ req.params.method ] ){
             FeatureServices[ req.params.method ]( data, req.query || {}, function( d ){
               if ( callback ){
@@ -53,7 +68,7 @@ module.exports = {
               } else {
                 res.json( d );
               }
-          });
+            });
           } else {
             FeatureServices.info( data, req.params.layer, req.query || {}, function( d ){
               if ( callback ){
@@ -61,7 +76,7 @@ module.exports = {
               } else {
                 res.json( d );
               }
-          });
+            });
           }
         }
 
