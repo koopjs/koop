@@ -52,7 +52,11 @@ module.exports = {
   // load a template json file and attach fields
   process: function( tmpl, data, params ){
     var template = require(__dirname + tmpl);
-    template.fields = this.fields( data.features[0].properties, params.idField );
+    if ( !data.length ){
+      template.fields = this.fields( data.features[0].properties, params.idField );
+    } else {
+      template.fields = this.fields( data[0].features[0].properties, params.idField );
+    }
     return template;
   },
 
@@ -98,26 +102,54 @@ module.exports = {
     } else {
       // no layer, send the service json
       var json = this.process('/../templates/featureService.json', data, params);
-      json.layers[0] = {
-        id: 0,
-        name: "layer1",
-        parentLayerId: -1,
-        defaultVisibility: true,
-        subLayerIds: null,
-        minScale: 99999.99,
-        maxScale: 0
-      };
+      if ( data.length ){
+        data.forEach(function( d, i){
+          json.layers[i] = {
+            id: i,
+            name: "layer " + i,
+            parentLayerId: -1,
+            defaultVisibility: true,
+            subLayerIds: null,
+            minScale: 99999.99,
+            maxScale: 0
+          };
+        });
+      } else {
+        json.layers[0] = {
+          id: 0,
+          name: "layer 1",
+          parentLayerId: -1,
+          defaultVisibility: true,
+          subLayerIds: null,
+          minScale: 99999.99,
+          maxScale: 0
+        };
+      }
     }
-    json.extent = this.extent( data.features );
+    json.extent = this.extent( (!data.length) ? data.features : data[0].features );
     this.send( json, params, callback );
   },
 
   // todo support many layers 
   layers: function( data, params, callback ){
-    var layerJson = this.process('/../templates/featureLayer.json', data, params );
-    layerJson.extent = this.extent( data.features );
-    var json = { layers: [ layerJson ], tables: [] };
-    this.send( json, params, callback );
+    var layerJson, json,
+      self = this;
+
+    if ( !data.length ){
+      layerJson = this.process('/../templates/featureLayer.json', data, params );
+      layerJson.extent = this.extent( data.features );
+      json = { layers: [ layerJson ], tables: [] };
+      this.send( json, params, callback );
+    } else {
+      json = { layers: [], tables: [] };
+      data.forEach(function( layer, i ){
+        layerJson = self.process('/../templates/featureLayer.json', layer, params );
+        layerJson.id = i;
+        layerJson.extent = self.extent( layer.features );
+        json.layers.push( layerJson );
+      });
+      this.send( json, params, callback );
+    }
   },
 
   // processes params based on query params 
