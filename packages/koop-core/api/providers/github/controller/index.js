@@ -12,18 +12,21 @@ module.exports = {
   },
 
   getRepo: function(req, res){
+    var _send = function( err, data ){
+      if ( err ){
+        res.json( err, 500 );
+      } else if ( data ){
+        res.json( data );
+      } else {
+        res.send('There was a problem accessing this repo', 500);
+      }
+    }
     if ( req.params.user && req.params.repo && req.params.file ){
-      Github.find(req.params.user, req.params.repo, req.params.file, function( err, data ){
-        if ( err ){
-          res.json( err, 500 );
-        } else if ( data ){
-          res.json( data );
-        } else {
-          res.send('There was a problem accessing this repo', 500);
-        }
-      });
+      Github.find(req.params.user, req.params.repo, req.params.file, _send );
+    } else if ( req.params.user && req.params.repo ) {
+      Github.find(req.params.user, req.params.repo, null, _send );
     } else {
-      res.send('Must specify a user, repo, and file', 404);
+      res.send('Must specify at least a user and a repo', 404);
     }
   },
   
@@ -44,6 +47,14 @@ module.exports = {
             }
           });
         } else {
+          // have a layer
+          if (req.params.layer && data[ req.params.layer ]){
+            data = data[ req.params.layer ];
+          } else if ( data.length ) { 
+            data = data[0];
+          } else if ( req.params.layer && !data[req.params.layer]){
+            res.send('Layer not found', 404);
+          }
           if ( req.params.method && FeatureServices[ req.params.method ] ){
             FeatureServices[ req.params.method ]( data, req.query || {}, function( d ){
               if ( callback ){
@@ -51,7 +62,7 @@ module.exports = {
               } else {
                 res.json( d );
               }
-          });
+            });
           } else {
             FeatureServices.info( data, req.params.layer, req.query || {}, function( d ){
               if ( callback ){
@@ -59,7 +70,7 @@ module.exports = {
               } else {
                 res.json( d );
               }
-          });
+            });
           }
         }
 
@@ -70,7 +81,11 @@ module.exports = {
 
     if ( req.params.user && req.params.repo && req.params.file ){
       Github.find( req.params.user, req.params.repo, req.params.file, function( err, data){
-        send( null, data );
+        send( err, data );
+      });
+    } else if ( req.params.user && req.params.repo && !req.params.file ) {
+      Github.find( req.params.user, req.params.repo, null, function( err, data){
+        send( err, data );
       });
     } else {
       res.send('Must specify a user, repo, and file', 404);
