@@ -12,7 +12,22 @@ module.exports = {
 
   'get /github/:user/:repo': {
     controller: 'github',
-    action: 'notFound'
+    action: 'getRepo'
+  },
+
+  'get /github/:user/:repo/FeatureServer': {
+    controller: 'github',
+    action: 'featureservice'
+  },
+
+  'get /github/:user/:repo/FeatureServer/:layer': {
+    controller: 'github',
+    action: 'featureservice'
+  },
+
+  'get /github/:user/:repo/FeatureServer/:layer/:method': {
+    controller: 'github',
+    action: 'featureservice'
   },
 
   'get /github/:user/:repo/:file': {

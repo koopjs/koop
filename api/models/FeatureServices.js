@@ -98,15 +98,17 @@ module.exports = {
   info: function( data, layer, params, callback ){
     if ( layer !== undefined ) {
       // send the layer json
+      data = (data && data[ layer ]) ? data[ layer ] : data;
       var json = this.process('/../templates/featureLayer.json', data, params );
+      json.name = data.name;
     } else {
       // no layer, send the service json
-      var json = this.process('/../templates/featureService.json', data, params);
+      var json = this.process('/../templates/featureService.json', (data && data[ 0 ]) ? data[ 0 ] : data, params);
       if ( data.length ){
         data.forEach(function( d, i){
           json.layers[i] = {
             id: i,
-            name: "layer " + i,
+            name: d.name || 'layer-'+i,
             parentLayerId: -1,
             defaultVisibility: true,
             subLayerIds: null,
@@ -154,7 +156,6 @@ module.exports = {
 
   // processes params based on query params 
   query: function( data, params, callback ){
-    //console.log(params);
     var self = this;
     if ( params.objectIds ) {
       this.queryIds( data, params, function( json ){ 
@@ -164,7 +165,6 @@ module.exports = {
       var json = this.process('/../templates/featureSet.json', data, params );
       // geojson to esri json
       json.features = terraformerParser.convert( data );
-      
       if ( json.features[0].geometry.rings ) { 
         json.geometryType = 'esriGeometryPolygon';
       } else if ( json.features[0].geometry.paths ){
