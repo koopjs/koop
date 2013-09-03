@@ -2,15 +2,15 @@
 // a rather retarded 
 module.exports = {
 
-  gist: {
+  repo: {},
+  gist: {},
 
-  },
 
   start: function(){
-    setInterval(function(){
+    //setInterval(function(){
       // clear cache
-      Cache.data = {};
-    }, 360000);
+    Cache.data = {};
+    //}, 360000);
   }
 
 };
