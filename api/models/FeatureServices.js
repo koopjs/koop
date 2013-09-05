@@ -71,7 +71,7 @@ module.exports = {
         if (f.geometry.coordinates[1] < miny) miny = f.geometry.coordinates[1];
         if (f.geometry.coordinates[0] > maxx) maxx = f.geometry.coordinates[0];
         if (f.geometry.coordinates[1] > maxy) maxy = f.geometry.coordinates[1];
-      } else if ( f.geometry && f.geometry.type == 'Polygon' ) {
+      } else if ( f.geometry && f.geometry.type == 'Polygon' && f.geometry.coordinates ) {
         f.geometry.coordinates[0].forEach(function( c ) {
           if (c[0] < minx) minx = c[0];
           if (c[1] < miny) miny = c[1];

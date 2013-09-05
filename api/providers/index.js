@@ -9,13 +9,13 @@
 (function(){
   var fs = require('fs'),
     path = './api/providers/';
+    console.log(sails.config.github_token);
 
   function loadModels( options ){
     var files = require('include-all')({
       dirname   : options.path,
       filter    : /(.+)\..+$/
     });
-    //console.log(files);
 
     _.each(files, function(module, filename) {
       var keyName = filename;
@@ -26,6 +26,7 @@
       // save the model;
       sails.models[keyName] = module;
       // expose model as a global
+      
       global[module.globalId] = module;
     });
   }
