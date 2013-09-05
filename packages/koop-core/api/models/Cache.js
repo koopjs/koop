@@ -60,18 +60,17 @@ module.exports = {
   get: function(type, key, callback ){
     var self = this;
 
-    //if ( this[ type ] ){
-
       if ( Cache.redis ){
         Cache.redis.hget(type, key, function(err, result){
           self.process( JSON.parse( result ), callback );     
         });
       } else { 
-        self.process( this[ type ][ key ], callback );
+        if ( this[ type ] ){
+          self.process( this[ type ][ key ], callback );
+        } else {
+          callback( 'Not found', null);
+        }
       }
-    //} else {
-    //  callback( 'Not found', null);
-    //}
 
   },
 
