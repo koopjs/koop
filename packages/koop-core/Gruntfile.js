@@ -451,7 +451,7 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-mocha-test');
 
-  grunt.registerTask('test', [ 'mochaTest' ]);
+  grunt.registerTask('test', [ 'mochaTest:test' ]);
 
   // When API files are changed:
   // grunt.event.on('watch', function(action, filepath) {
