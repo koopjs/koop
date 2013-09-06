@@ -12,10 +12,7 @@ module.exports = {
 
     //console.log('REDIS set', Cache.redis);
     if ( Cache.redis ){
-      Cache.redis.hset(type, key, JSON.stringify({
-        data: data,
-        timer: new Date().getTime() + this.checkTime
-      }));
+      Cache.redis.hset( type, key, JSON.stringify( json ) );
     } else {
       if ( !this[ type ] ){
         this[ type ] = {};
@@ -25,7 +22,8 @@ module.exports = {
     callback(null, true);
   },
 
-  process: function( entry, callback ){
+  process: function( type, key, entry, callback ){
+    var self = this;
     var now = new Date();
     if ( !entry ){
       callback( 'Not found', null);
@@ -36,13 +34,13 @@ module.exports = {
         var _internalCB = function(err, success){
             if ( !success ){
               // cache returned true, return current data
+              self.resetTimer( type, key );
               callback( null, entry.data );
             } else {
               self.insert(type, key, success.data, function(err, res){
                 callback( err, success.data );
               });
             }
-            self.resetTimer( type, key );
         };
 
         // expired, hit the API to check the latest sha
@@ -62,11 +60,11 @@ module.exports = {
 
       if ( Cache.redis ){
         Cache.redis.hget(type, key, function(err, result){
-          self.process( JSON.parse( result ), callback );     
+          self.process( type, key, JSON.parse( result ), callback );     
         });
       } else { 
         if ( this[ type ] ){
-          self.process( this[ type ][ key ], callback );
+          self.process( type, key, this[ type ][ key ], callback );
         } else {
           callback( 'Not found', null);
         }
@@ -80,7 +78,18 @@ module.exports = {
   },
 
   resetTimer: function( type, key ){
-    this[ type ][ key ].timer = new Date().getTime() + this.checkTime;
+    var self = this,
+      expires = new Date().getTime() + this.checkTime;
+
+    if ( Cache.redis ){
+      Cache.redis.hget(type, key, function(err, result){
+        var json = JSON.parse( result );
+          json.timer = expires;
+        Cache.redis.hset( type, key, JSON.stringify(json) );
+      });
+    } else {
+      this[ type ][ key ].timer = expires;
+    }
   }
 
 };
