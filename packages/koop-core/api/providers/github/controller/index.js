@@ -22,6 +22,7 @@ module.exports = {
       }
     }
     if ( req.params.user && req.params.repo && req.params.file ){
+      req.params.file = req.params.file.replace('.geojson', '');
       Github.find(req.params.user, req.params.repo, req.params.file, _send );
     } else if ( req.params.user && req.params.repo ) {
       Github.find(req.params.user, req.params.repo, null, _send );
@@ -80,6 +81,7 @@ module.exports = {
     };
 
     if ( req.params.user && req.params.repo && req.params.file ){
+      req.params.file = req.params.file.replace('.geojson', '');
       Github.find( req.params.user, req.params.repo, req.params.file, function( err, data){
         send( err, data );
       });
@@ -94,6 +96,7 @@ module.exports = {
   },
 
   preview: function(req, res){
+   req.params.file = req.params.file.replace('.geojson', '');
    res.view('demo/github', { locals:{ user: req.params.user, repo: req.params.repo, file: req.params.file } });
   }
 
