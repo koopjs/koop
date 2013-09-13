@@ -53,5 +53,11 @@ module.exports = {
   'get /github/:user/:repo/:file/preview' : {
     controller  : 'github',
     action: 'preview'
+  },
+
+  'get /github/tiles/:user/:repo/:file/:z/:x/:y' : {
+    controller  : 'github',
+    action: 'tiles'
   }
+
 }

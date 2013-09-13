@@ -37,6 +37,14 @@
     });
   }
   
+  //console.log(sails);
+  //enable cors 
+  sails.express.app.all('/*', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+  });
+  
 
   fs.readdir( path, function(err, files){
     _.each(files, function( f ){
