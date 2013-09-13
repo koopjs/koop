@@ -16,6 +16,7 @@ module.exports = {
       if ( err ){
         res.json( err, 500 );
       } else if ( data ){
+        console.log('sending data',data);
         res.json( data );
       } else {
         res.send('There was a problem accessing this repo', 500);
@@ -23,6 +24,7 @@ module.exports = {
     }
     if ( req.params.user && req.params.repo && req.params.file ){
       req.params.file = req.params.file.replace('.geojson', '');
+      console.log('wtf?');
       Github.find(req.params.user, req.params.repo, req.params.file, _send );
     } else if ( req.params.user && req.params.repo ) {
       Github.find(req.params.user, req.params.repo, null, _send );
@@ -98,6 +100,10 @@ module.exports = {
   preview: function(req, res){
    req.params.file = req.params.file.replace('.geojson', '');
    res.view('demo/github', { locals:{ user: req.params.user, repo: req.params.repo, file: req.params.file } });
+  },
+
+  tiles: function( req, res ){
+    res.json( [ req.params.z, req.params.x, req.params.y ] );
   }
 
 
