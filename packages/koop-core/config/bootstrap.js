@@ -6,6 +6,6 @@ var redis = require("redis");
 
 module.exports.bootstrap = function (cb) {
   setTimeout(function(){ require('../api/providers/'); }, 1000);
-  Cache.redis = false; //redis.createClient();
+  Cache.redis = redis.createClient();
 	cb();
 };
