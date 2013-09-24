@@ -55,7 +55,7 @@ module.exports = {
     action: 'preview'
   },
 
-  'get /github/tiles/:user/:repo/:file/:z/:x/:y' : {
+  'get /github/:user/:repo/:file/tiles/*': { //:z/:x/:y' : {
     controller  : 'github',
     action: 'tiles'
   }
