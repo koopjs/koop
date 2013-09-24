@@ -103,7 +103,7 @@ module.exports = {
   },
 
   tiles: function( req, res ){
-    res.json( [ req.params.z, req.params.x, req.params.y ] );
+    res.json( req.params );
   }
 
 
