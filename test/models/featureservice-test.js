@@ -170,6 +170,20 @@ describe('FeatureServices Model', function(){
       });
     });
 
+    describe('when filtering polygon features with a geometry', function(){
+      it('should return geometries that are contained by given bounds', function(done){
+        fs.query( polyData, {
+          geometry: {xmin: -180, ymin: -90, xmax: 180, ymax: 90, spatialReference: { wkid: 4326 }},
+          geometryType: 'esriGeometryEnvelope',
+          spatialRel: 'esriSpatialRelContains'
+        }, function( service ){
+            service.should.be.an.instanceOf(Object);
+            service.features.length.should.equal( 1 );
+            done();
+        });
+      });
+    });
+
     describe('when filtering features with where clauses', function(){
       it('should return filtered features with less than', function(done){
         fs.query( data, {
