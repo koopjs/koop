@@ -1,6 +1,7 @@
 var should = require('should');
 var fs = require('../../api/models/FeatureServices.js');
 var data = require('../fixtures/snow.geojson');
+var polyData = require('../fixtures/polygon.geojson');
 
 before(function (done) {
   Query = require('../../api/models/Query.js');
@@ -57,10 +58,21 @@ describe('FeatureServices Model', function(){
     });
 
     describe('when getting featureserver info from geojson', function(done){
-      it('should return a valid feature service object', function(done){
+      /*it('should return a valid feature service object', function(done){
         fs.info( data, 0, {}, function( service ){
           service.should.be.an.instanceOf(Object);
           service.fields.should.be.an.instanceOf(Array);
+          done();
+        });
+      });*/
+
+      it('should return a feature service with the proper geom type', function(done){
+        //data.features[0].geometry.type = "Polygon";
+        /*var copy = JSON.stringify(data);
+        var polyData = JSON.parse(copy);
+        polyData.features[0].geometry.type = "Polygon";*/
+        fs.info( polyData, 0, {}, function( service ){
+          service.geometryType.should.equal("esriGeometryPolygon");
           done();
         });
       });
@@ -127,9 +139,6 @@ describe('FeatureServices Model', function(){
       });
     });
 
-    //http://localhost:1337/github/geobabbler/geodata/geojson-border_crossings/FeatureServer/0/query?f=json&returnGeometry=true&spatialRel=esriSpatialRelIntersects&geometry=%7B%22xmin%22%3A-20037508.342788905%2C%22ymin%22%3A1820609.8834746983%2C%22xmax%22%3A-10018754.171396958%2C%22ymax%22%3A11839364.054866645%2C%22spatialReference%22%3A%7B%22wkid%22%3A102100%7D%7D&geometryType=esriGeometryEnvelope&inSR=102100&outFields=id&outSR=102100
-
-  http://localhost:1337/github/chelm/grunt-geo/forks/FeatureServer/0/query?geometryType=esriGeometryEnvelope&geometry={xmin: -258.046875, ymin: -40.58058466412763, xmax: 12.83203125, ymax:81.20141954209073, spatialReference:{wkid:4326}}
 
     describe('when filtering features with a geometry and outSR', function(){
       it('should return geometries that are contained', function(done){
