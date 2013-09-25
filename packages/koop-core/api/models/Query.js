@@ -94,9 +94,9 @@ module.exports = {
       if ( typeof( geom ) == 'object' ) {
         var box = new terraformer.Polygon( [[ 
           [geom.xmin, geom.ymin],
-          [geom.xmax, geom.ymin],
-          [geom.xmax, geom.ymax],
           [geom.xmin, geom.ymax],
+          [geom.xmax, geom.ymax],
+          [geom.xmax, geom.ymin],
           [geom.xmin, geom.ymin] 
         ]]);
         if (geom.spatialReference && geom.spatialReference.wkid == '102100'){
@@ -150,13 +150,13 @@ module.exports = {
         if ( f.geometry.x && f.geometry.y ){
           featureGeom = new terraformer.Point([ f.geometry.x, f.geometry.y ]);
         } else if ( f.geometry.rings ){
-          featureGeom = new terraformer.Polygon([ f.geometry.rings ]);
+          featureGeom = new terraformer.Polygon( f.geometry.rings );
         } else if ( f.geometry.paths ) {
           featureGeom = new terraformer.LineString( f.geometry.paths );
         }
     
-        if ( featureGeom ) { 
-          return geometry.contains( featureGeom );
+        if ( featureGeom ) {
+          return featureGeom.within( geometry );
         }
       });
     },
@@ -171,7 +171,7 @@ module.exports = {
           featureGeom = new terraformer.LineString( f.geometry.paths );
         }
         if ( featureGeom ) { 
-          return geometry.within( featureGeom ); //featureGeom.within( geometry ); 
+          return featureGeom.within(geometry); 
         }
       });  
     } 
