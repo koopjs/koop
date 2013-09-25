@@ -11,7 +11,7 @@
     "request": "*",
     "terraformer": "0.2.0",
     "terraformer-arcgis-parser": "0.1.8",
-    "geohub": "0.1.9",
+    "geohub": "0.2.0",
     "underscore": "~1.5.1",
     "sql-parser": "~0.4.0",
     "include-all": "~0.1.1",
