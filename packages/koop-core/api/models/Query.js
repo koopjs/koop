@@ -1,4 +1,4 @@
-var terraformer = require('terraformer'),
+var terraformer = require('Terraformer'),
   sql = require('sql-parser'),
   _ = require('underscore');
 
