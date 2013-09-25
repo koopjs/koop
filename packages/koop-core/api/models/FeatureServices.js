@@ -92,6 +92,21 @@ module.exports = {
         }
     };
 
+  },
+
+  setGeomType: function( json, feature ){
+     var tmpl_dir = '/../templates/';
+     if ( feature.geometry.type.toLowerCase() == 'polygon' ) {
+        json.geometryType = 'esriGeometryPolygon';
+        json.drawingInfo.renderer = require(__dirname + tmpl_dir + 'renderers/polygon.json');
+      } else if ( feature.geometry.type.toLowerCase() == 'linestring' ){
+        json.geometryType = 'esriGeometryPolyline';
+        json.drawingInfo.renderer = require(__dirname + tmpl_dir + 'renderers/line.json');
+      } else {
+        json.geometryType = 'esriGeometryPoint';
+        json.drawingInfo.renderer = require(__dirname + tmpl_dir + 'renderers/point.json');
+      }
+    return json;
   }, 
 
   // returns the feature service metadata (/FeatureServere and /FeatureServer/0)
@@ -101,6 +116,9 @@ module.exports = {
       data = (data && data[ layer ]) ? data[ layer ] : data;
       var json = this.process('/../templates/featureLayer.json', data, params );
       json.name = data.name;
+      // set the geometry based on the first feature 
+      // TODO: could clean this up or use a flag in the url to pull out feature of specific type like nixta
+      json = this.setGeomType( json, data.features[0] );
     } else {
       // no layer, send the service json
       var json = this.process('/../templates/featureService.json', (data && data[ 0 ]) ? data[ 0 ] : data, params);
@@ -157,18 +175,25 @@ module.exports = {
   // processes params based on query params 
   query: function( data, params, callback ){
     var self = this;
+      tmpl_dir = '/../templates/';    
+
     if ( params.objectIds ) {
       this.queryIds( data, params, function( json ){ 
         self.send( json, params, callback );
       });
     } else { 
-      var json = this.process('/../templates/featureSet.json', data, params );
+      var json = this.process( tmpl_dir + 'featureSet.json', data, params );
       // geojson to esri json
       json.features = terraformerParser.convert( data );
       if ( json.features[0].geometry.rings ) { 
         json.geometryType = 'esriGeometryPolygon';
+        //json.drawingInfo.renderer = require(__dirname + tmpl_dir + 'renderers/polygon.json');
       } else if ( json.features[0].geometry.paths ){
         json.geometryType = 'esriGeometryPolyline';
+        //json.drawingInfo.renderer = require(__dirname + tmpl_dir + 'renderers/line.json');
+      } else {
+        json.geometryType = 'esriGeometryPoint';
+        //json.drawingInfo.renderer = require(__dirname + tmpl_dir + 'renderers/point.json');
       }
 
       // create an id field if not existing 
