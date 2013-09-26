@@ -122,6 +122,15 @@ We'd like to have full feature service support from any geojson data source. Bel
   
   visit [http://localhost:1337](http://localhost:1337) 
      
+## Caching 
+
+Koop uses a local cache to store data so that it doesnt flood github with requests. By default Koop will use a local hash to store data, but this is inefficient and doesnt persist across processes. To get around this Koop can use a Redis. 
+
+To enable Redis caching you must first start a redis-server instance on your machine/server and then start koop with a ```--redis=true``` flag:
+
+    # start koop with Redis
+    node app.js --redis=true 
+
 
 ## Testing 
 
