@@ -7,6 +7,7 @@ var argv = require('optimist').argv;
 module.exports.bootstrap = function (cb) {
   setTimeout(function(){ require('../api/providers/'); }, 1000);
   if (argv.redis){
+    console.log('Storage: Using Redis Storage...');
     var redis = require("redis");
     Cache.redis = redis.createClient();
     
