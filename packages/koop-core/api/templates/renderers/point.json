@@ -2,23 +2,24 @@
   "type": "simple",
   "symbol": {
     "color": [
-      75,
+      45,
       172,
-      198,
+      128,
       161
     ],
     "outline": {
       "color": [
-        150,
-        150,
-        150,
-        155
+        190,
+        190,
+        190,
+        105
       ],
-      "width": 1.5,
+      "width": 0.5,
       "type": "esriSLS",
       "style": "esriSLSSolid"
     },
-    "type": "esriSFS",
-    "style": "esriSFSSolid"
+    "size": 7.5,
+    "type": "esriSMS",
+    "style": "esriSFSCircle"
   }
 }
