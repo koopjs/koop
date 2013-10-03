@@ -393,6 +393,7 @@ module.exports = function (grunt) {
         tasks: ['compileAssets', 'linkAssets']
       }
     }
+
   });
 
   // When Sails is lifted:
