@@ -61,18 +61,30 @@ module.exports = {
   },
 
   extent: function( features ){
-    var minx = -180, 
-      miny = -90, 
-      maxx = 180, 
-      maxy = 90; 
-    features.forEach(function( f ){
+    var minx, 
+      miny, 
+      maxx, 
+      maxy; 
+    features.forEach(function( f, i ){
       if (f.geometry && f.geometry.type == 'Point' ){
+        if ( i == 0){
+          minx = f.geometry.coordinates[0],
+          miny = f.geometry.coordinates[1],
+          maxx = f.geometry.coordinates[0],
+          maxy = f.geometry.coordinates[1];
+        }
         if (f.geometry.coordinates[0] < minx) minx = f.geometry.coordinates[0];
         if (f.geometry.coordinates[1] < miny) miny = f.geometry.coordinates[1];
         if (f.geometry.coordinates[0] > maxx) maxx = f.geometry.coordinates[0];
         if (f.geometry.coordinates[1] > maxy) maxy = f.geometry.coordinates[1];
       } else if ( f.geometry && f.geometry.type == 'Polygon' && f.geometry.coordinates ) {
-        f.geometry.coordinates[0].forEach(function( c ) {
+        f.geometry.coordinates[0].forEach(function( c, j ) {
+          if ( i == 0){
+            minx = c[0],
+            miny = c[1],
+            maxx = c[0],
+            maxy = c[1];
+          }
           if (c[0] < minx) minx = c[0];
           if (c[1] < miny) miny = c[1];
           if (c[0] > maxx) maxx = c[0];
