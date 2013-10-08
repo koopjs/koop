@@ -17,7 +17,6 @@ module.exports = {
     } else {
       // checks the timer 
       Cache.redis.get( type+':'+key+':timer', function( error, timer){
-        console.log('TIMER', timer);
         if ( timer ){
           // got a timer, therefore we are good and just return
           callback( null, data );
@@ -26,7 +25,6 @@ module.exports = {
           // expired, hit the API to check the latest sha
           if ( global[type] && global[type].checkCache ) {
             global[type].checkCache( key, data, function(err, success){
-              console.log('checkcache', success);
               if ( !success ){
                 // false is good -> reset timer and return data
                 // cache returned true, return current data
