@@ -24,7 +24,6 @@ module.exports = {
   // this method name is special reserved name that will get called by the cache model
   checkCache: function(id, data, callback){
     var json = data;
-    console.log('gist checkcache', json);
     Geohub.gistSha(id, sails.config.github_token, function(err, sha){
       if ( sha == json[0].updated_at ){
         callback(null, false);
