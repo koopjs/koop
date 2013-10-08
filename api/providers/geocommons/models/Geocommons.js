@@ -11,12 +11,12 @@ module.exports = {
           if ( !geojson.length ){
             geojson = [ geojson ];
           }
-          Cache.insert( type, id, JSON.stringify( geojson ), function( err, success){
+          Cache.insert( type, id, geojson, function( err, success){
             if ( success ) callback( null, geojson );
           });
         });
       } else {
-        callback( null, JSON.parse(entry) );
+        callback( null, entry );
       }
     });
   }

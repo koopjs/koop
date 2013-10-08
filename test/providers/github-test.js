@@ -3,8 +3,12 @@ var should = require('should');
 before(function (done) {
   key = 'test/repo/file';
   repoData = require('../fixtures/repo.geojson');
+  global['gist'] = require('../../api/providers/gist/models/Gist.js');
+  Mongo = require('../../api/models/Mongo.js');
   Cache = require('../../api/models/Cache.js');
-  Cache.redis = false;
+  var redis = require("redis");
+  Cache.redis = redis.createClient();
+  Cache.db = Mongo.connect( 'localhost:27017/kooptest?auto_reconnect=true&poolSize=10', {safe:false} );
   done();
 });
 

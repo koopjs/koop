@@ -5,91 +5,96 @@ module.exports = {
   checkTime: (60*60*1000), // 60 mins
 
   insert: function( type, key, data, callback ){
-    var json = {
-      data: data,
-      timer: new Date().getTime() + this.checkTime
-    };
-
-    //console.log('REDIS set', Cache.redis);
-    if ( Cache.redis ){
-      Cache.redis.hset( type, key, JSON.stringify( json ) );
-    } else {
-      if ( !this[ type ] ){
-        this[ type ] = {};
-      }
-      this[ type ][ key ] = json;
-    }
-    callback(null, true);
+    Cache.db.insert( type+':'+key, data, function(err, success){
+      callback(err, success);
+    });
   },
 
-  process: function( type, key, entry, callback ){
+  process: function( type, key, data, callback ){
     var self = this;
-    var now = new Date();
-    if ( !entry ){
+    if ( !data.length ){
       callback( 'Not found', null);
     } else {
       // checks the timer 
-      if ( now > entry.timer ){
-
-        var _internalCB = function(err, success){
-            if ( !success ){
-              // cache returned true, return current data
-              self.resetTimer( type, key );
-              callback( null, entry.data );
-            } else {
-              self.insert(type, key, success.data, function(err, res){
-                callback( err, success.data );
-              });
-            }
-        };
-
-        // expired, hit the API to check the latest sha
-        if ( global[type].checkCache ) {
-          global[type].checkCache( key, entry.data, _internalCB);
+      Cache.redis.get( type+':'+key+':timer', function( error, timer){
+        console.log('TIMER', timer);
+        if ( timer ){
+          // got a timer, therefore we are good and just return
+          callback( null, data );
         } else {
-          callback( null, entry.data ); }
-      } else {
-        // return the data 
-        callback( null, entry.data );
-      }
+
+          // expired, hit the API to check the latest sha
+          if ( global[type] && global[type].checkCache ) {
+            global[type].checkCache( key, data, function(err, success){
+              console.log('checkcache', success);
+              if ( !success ){
+                // false is good -> reset timer and return data
+                // cache returned true, return current data
+                Cache.redis.set( type+':'+key+':timer', key, function( error, timer){
+                  Cache.redis.expire( type+':'+key+':timer', 3600);
+                  callback( null, data );
+                });
+              } else {
+                // we need to remove and save new data 
+                self.remove(type, key, function(){
+                  self.insert(type, key, success, function(err, res){
+                    Cache.redis.set( type+':'+key+':timer', key, function( error, timer){
+                      Cache.redis.expire( type+':'+key+':timer', 3600);
+                      callback( err, success );
+                    });
+                  });
+                });
+              } 
+            });
+          } else {
+            callback( null, data ); 
+          }
+        }
+      });
     }
+  },
+
+  remove: function(type, key, callback){
+    Cache.db.remove( type+':'+key, function(err, result){
+      callback(null, true);
+    });
   },
 
   get: function(type, key, callback ){
     var self = this;
 
-      if ( Cache.redis ){
-        Cache.redis.hget(type, key, function(err, result){
-          self.process( type, key, JSON.parse( result ), callback );     
-        });
-      } else { 
+      //if ( Cache.db ){
+
+        // if redis has a key, then we select and return
+        //Cache.redis.get( type+':' + key + ':info', function( error, check){
+          //if ( check ) {
+            Cache.db.select( type+':'+key, function(err, result){
+              self.process( type, key, result, callback );     
+            });
+          //} else {
+          //  Cache.redis.set( type+':'+key + ':info', key, function( error, check){
+          //    Cache.redis.expires(type+':'+key + ':info', 60*60);
+             
+          //  });
+          //}  
+        //}); 
+ 
+      /*} else { 
         if ( this[ type ] ){
           self.process( type, key, this[ type ][ key ], callback );
         } else {
           callback( 'Not found', null);
         }
-      }
+      }*/
 
-  },
-
-  remove: function(type, key, callback){
-    delete this[ type ][ key ];
-    callback(null, true);
   },
 
   resetTimer: function( type, key ){
-    var self = this,
-      expires = new Date().getTime() + this.checkTime;
-
-    if ( Cache.redis ){
-      Cache.redis.hget(type, key, function(err, result){
-        var json = JSON.parse( result );
-          json.timer = expires;
-        Cache.redis.hset( type, key, JSON.stringify(json) );
-      });
-    } else {
-      this[ type ][ key ].timer = expires;
-    }
+    var self = this;
+    var id = type+':'+key+':timer';
+    Cache.redis.set( id, key, function( error, timer){
+      Cache.redis.expires( id, 3600);
+    });
   }
 
 };
