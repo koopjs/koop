@@ -13,12 +13,12 @@ module.exports = {
           if ( !geojson.length ){
             geojson = [ geojson ];
           }
-          Cache.insert( type, key, JSON.stringify( geojson ), function( err, success){
+          Cache.insert( type, key, geojson, function( err, success){
             if ( success ) callback( null, geojson );
           });
         });
       } else {
-        callback( null, JSON.parse( entry ) );
+        callback( null, entry );
       }
     });
   },
@@ -26,7 +26,7 @@ module.exports = {
   // compares the sha on the cached data and the hosted data
   // this method name is special reserved name that will get called by the cache model
   checkCache: function(key, data, callback){
-    var json = JSON.parse( data );
+    var json = data;
     key = key.split('/');
     var user = key.shift();
     var repo = key.shift();
@@ -37,7 +37,7 @@ module.exports = {
         callback(null, false);
       } else {
         Geohub.repo( user, repo, path, sails.config.github_token, function( err, geojson ){
-          callback(null, { data: JSON.stringify(geojson) });
+          callback(null, geojson );
         });
       }
     });
