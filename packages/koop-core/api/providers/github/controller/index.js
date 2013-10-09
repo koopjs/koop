@@ -52,7 +52,7 @@ module.exports = {
           if (req.params.layer && data[ req.params.layer ]){
             data = data[ req.params.layer ];
           } else if ( data.length ) { 
-            data = data[0];
+            //data = data[0];
           } else if ( req.params.layer && !data[req.params.layer]){
             res.send('Layer not found', 404);
           }
