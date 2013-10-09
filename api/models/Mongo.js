@@ -81,9 +81,24 @@ module.exports = {
 
   remove: function( key, callback){
     var self = this;
-    var layer = 0;
-    this._collection( 'koop-info' ).remove({ id: key + ':info' }, function(){
-      self._collection( key+':'+layer ).remove( callback );
+    var totalLayers, processedLayers;
+    var collect = function(){
+      if (processedLayers++ == totalLayers){
+        callback();
+      }
+    };
+  
+    this._collection( this.infoCollection ).findOne({id: key+':info'}, function(err, infoDoc){
+      if ( !infoDoc ){
+        callback();
+      } else {
+        totalLayers = infoDoc.info.length;
+        infoDoc.info.forEach(function(layer, i){
+          self._collection( key+':'+i ).remove(function (err, docs) {
+              collect();
+          });
+        });
+      }
     });
   },
 
