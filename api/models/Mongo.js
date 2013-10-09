@@ -56,7 +56,7 @@ module.exports = {
     var self = this; 
     var info = [],
       count = 0;
-      error = false;
+      error = null;
     var check = function( err, success){
       if (err) error = err;
       count++;
@@ -84,13 +84,13 @@ module.exports = {
     var totalLayers, processedLayers;
     var collect = function(){
       if (processedLayers++ == totalLayers){
-        callback();
+        callback( null, true );
       }
     };
   
     this._collection( this.infoCollection ).findOne({id: key+':info'}, function(err, infoDoc){
-      if ( !infoDoc ){
-        callback();
+      if ( !infoDoc || !infoDoc.info ){
+        callback( null, true );
       } else {
         totalLayers = infoDoc.info.length;
         infoDoc.info.forEach(function(layer, i){

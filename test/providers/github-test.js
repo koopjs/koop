@@ -8,7 +8,7 @@ before(function (done) {
   Cache = require('../../api/models/Cache.js');
   var redis = require("redis");
   Cache.redis = redis.createClient();
-  Cache.db = Mongo.connect( 'localhost:27017/kooptest?auto_reconnect=true&poolSize=10', {safe:false} );
+  Cache.db = Mongo.connect( 'localhost:27017/koop?auto_reconnect=true&poolSize=10', {safe:false} );
   done();
 });
 
