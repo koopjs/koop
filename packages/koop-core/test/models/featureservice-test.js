@@ -71,7 +71,7 @@ describe('FeatureServices Model', function(){
         /*var copy = JSON.stringify(data);
         var polyData = JSON.parse(copy);
         polyData.features[0].geometry.type = "Polygon";*/
-        fs.info( polyData, 0, {}, function( service ){
+        fs.info( polyData, 0, {}, function( err, service ){
           service.geometryType.should.equal("esriGeometryPolygon");
           done();
         });
@@ -80,7 +80,7 @@ describe('FeatureServices Model', function(){
 
     describe('when getting featureserver features from geojson', function(){
       it('should return a valid features', function(done){
-        fs.query( data, {}, function( service ){
+        fs.query( data, {}, function( err, service ){
           service.should.be.an.instanceOf(Object);
           service.fields.should.be.an.instanceOf(Array);
           service.features.should.be.an.instanceOf(Array);
@@ -95,7 +95,7 @@ describe('FeatureServices Model', function(){
 
     describe('when getting featureserver features by id queries', function(){
       it('should return a proper features', function(done){
-        fs.query( data, { objectIds: [ 1, 2, 3 ]}, function( service ){
+        fs.query( data, { objectIds: [ 1, 2, 3 ]}, function( err, service ){
           service.should.be.an.instanceOf(Object);
           service.fields.should.be.an.instanceOf(Array);
           service.features.should.have.length( 3 );
@@ -106,7 +106,7 @@ describe('FeatureServices Model', function(){
 
     describe('when getting features with returnCountOnly', function(){
       it('should return only count of features', function(done){
-        fs.query( data, { returnCountOnly: true, objectIds: [ 1, 2, 3 ]}, function( service ){
+        fs.query( data, { returnCountOnly: true, objectIds: [ 1, 2, 3 ]}, function( err, service ){
           service.should.be.an.instanceOf(Object);
           service.should.have.property('count');
           service.count.should.equal( 3 );
@@ -117,7 +117,7 @@ describe('FeatureServices Model', function(){
 
     describe('when getting features with returnIdsOnly', function(){
       it('should return only ids of features', function(done){
-        fs.query( data, { returnIdsOnly: true, objectIds: [ 1, 2, 3 ]}, function( service ){
+        fs.query( data, { returnIdsOnly: true, objectIds: [ 1, 2, 3 ]}, function( err,service ){
           service.should.be.an.instanceOf(Object);
           service.should.have.property('objectIds');
           service.objectIds.length.should.equal( 3 );
@@ -131,7 +131,7 @@ describe('FeatureServices Model', function(){
         fs.query( data, { 
           geometry: '-110,30,-106,50', 
           geometryType: 'esriGeometryEnvelope'
-        }, function( service ){
+        }, function( err, service ){
             service.should.be.an.instanceOf(Object);
             service.features.length.should.equal( 100 );
             done();
@@ -148,7 +148,7 @@ describe('FeatureServices Model', function(){
           geometry: {xmin: -110, ymin: 30, xmax: -106, ymax: 50, spatialReference: { wkid: 4326 }},
           //geometry: {xmin: -258.046875, ymin: -40.58058466412763, xmax: 12.83203125, ymax:81.20141954209073, spatialReference:{wkid: 4326}},
           geometryType: 'esriGeometryEnvelope',
-        }, function( service ){
+        }, function( err, service ){
             service.should.be.an.instanceOf(Object);
             service.features.length.should.equal( 100 );
             done();
@@ -162,7 +162,7 @@ describe('FeatureServices Model', function(){
           geometry: {xmin: -110, ymin: 30, xmax: -106, ymax: 50, spatialReference: { wkid: 4326 }},
           geometryType: 'esriGeometryEnvelope',
           spatialRel: 'esriSpatialRelContains'
-        }, function( service ){
+        }, function( err, service ){
             service.should.be.an.instanceOf(Object);
             service.features.length.should.equal( 100 );
             done();
@@ -176,7 +176,7 @@ describe('FeatureServices Model', function(){
           geometry: {xmin: -180, ymin: -90, xmax: 180, ymax: 90, spatialReference: { wkid: 4326 }},
           geometryType: 'esriGeometryEnvelope',
           spatialRel: 'esriSpatialRelContains'
-        }, function( service ){
+        }, function( err, service ){
             service.should.be.an.instanceOf(Object);
             service.features.length.should.equal( 1 );
             done();
@@ -188,7 +188,7 @@ describe('FeatureServices Model', function(){
       it('should return filtered features with less than', function(done){
         fs.query( data, {
           where: 'latitude < 39.9137'
-        }, function( service ){
+        }, function( err, service ){
             service.should.be.an.instanceOf(Object);
             service.features.length.should.equal( 261 );
             done();
@@ -197,7 +197,7 @@ describe('FeatureServices Model', function(){
       it('should return filtered features with greater than', function(done){
         fs.query( data, {
           where: 'latitude > 39.9137'
-        }, function( service ){
+        }, function( err, service ){
             service.should.be.an.instanceOf(Object);
             service.features.length.should.equal( 144 );
             done();
@@ -206,7 +206,7 @@ describe('FeatureServices Model', function(){
       it('should return filtered features with equal', function(done){
         fs.query( data, {
           where: 'latitude = 39.9137'
-        }, function( service ){
+        }, function( err, service ){
             service.should.be.an.instanceOf(Object);
             service.features.length.should.equal( 1 );
             done();
