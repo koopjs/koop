@@ -81,5 +81,28 @@ describe('Query Model', function(){
       });
     });
 
+    describe('when requesting data with outStatistics', function(){
+      var snow = require('../fixtures/snow.geojson');
+      it('should return an error when outStatistics params fails', function(done){
+        Query.filter( data, { outStatistics : 'xx11xx' }, function( err, service ){
+          err.should.not.equal(null);
+          should.not.exist( service );
+          done();
+        });
+      });
+
+      /*it('should return json when outStatistics params is proper', function(done){
+        var snow = require('../fixtures/snow.geojson');
+        Query.outStatistics( snow, { outStatistics : '[{"statisticType": "min", "onStatisticField": "total precip","outStatisticFieldName":"min_precip"}]' }, function( err, service ){
+          //console.log( service );
+          err.should.equal(null);
+          //should.exist( service );
+          //service.fields.should.be.an.instanceOf(Array);
+          //service.features.should.be.an.instanceOf(Array);
+          done();
+        });
+      });*/
+    });
+
 });
 

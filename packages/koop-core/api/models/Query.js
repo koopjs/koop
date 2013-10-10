@@ -67,13 +67,104 @@ module.exports = {
           });
           json.features = features;
         }
+
+        // before we send back json, process outStats
+        if ( params.outStatistics ){
+          this.outStatistics( json, params, callback );
+        } else {
+          callback( json );
+        }
         
-        callback( json );
 
       }
 
     }
 
+  },
+
+  calculateStat: function(type, field, features){
+    var propName = (features[0].attributes) ? 'attributes' : 'properties';
+    var types = {
+      'min': function(field, features){
+        var min = features[0][propName][field];
+        features.forEach(function(f,i){
+          if (f[propName][field] < min){
+            min = f[propName][field];
+          }
+        });
+        return min;
+      }, 
+      'max': function(field, features){
+        var max = features[0][propName][field];
+        features.forEach(function(f,i){
+          if (f[propName][field] > max){
+            max = f[propName][field];
+          }
+        });
+        return max;
+      },
+      'count': function(field, features){
+        var count = 0;
+        features.forEach(function(f,i){
+          if (f[propName][field]){
+            count++;
+          }
+        });
+        return count;
+      },
+    };
+    //count | sum | avg | stddev | var
+    return types[type](field, features);
+  },
+
+  outStatistics: function( json, params, callback ){
+    var result = {}, value, self = this;
+    try { 
+      json.fields = [];
+      var statFeatures = [{attributes:{}}];
+      var stats = JSON.parse(params.outStatistics);
+      if (stats.length){
+        stats.forEach(function(stat, i){
+         // console.log(stat.statisticType, stat.onStatisticField, json.features.length );
+          value = self.calculateStat( stat.statisticType, stat.onStatisticField, json.features );
+          statFeatures[ 0 ].attributes[ stat.outStatisticFieldName ] = value;
+          json.fields.push({
+            name: stat.outStatisticFieldName,
+            type: self.fieldType( value ),
+            alias: stat.outStatisticFieldName
+          });
+        });
+        json.features = statFeatures;
+        callback(null, json);
+      } else { 
+        callback("'outStatistics' parameter is invalid", null);
+      }
+      
+    } catch (e){
+      callback("'outStatistics' parameter is invalid", null);
+    }
+
+  },
+
+  fieldTypes: {
+    'string': 'esriFieldTypeString',
+    'integer': 'esriFieldTypeInteger',
+    'date': 'esriFieldTypeDate',
+    'datetime': 'esriFieldTypeDate',
+    'float': 'esriFieldTypeDouble'
+  },
+
+  fieldType: function( value ){
+    var type = typeof( value );
+    if ( type == 'number'){
+      type = ( this.isInt( value ) ) ? 'integer' : 'float';
+    }
+    return this.fieldTypes[ type ];
+  },
+
+  // is the value an integer?
+  isInt: function( v ){
+    return Math.round( v ) == v;
   },
 
   geometryTypes: {

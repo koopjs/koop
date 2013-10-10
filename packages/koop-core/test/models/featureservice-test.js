@@ -214,5 +214,72 @@ describe('FeatureServices Model', function(){
       });
     });
 
+  /*  [
+  {
+    "statisticType": "<count | sum | min | max | avg | stddev | var>",
+    "onStatisticField": "Field1", 
+    "outStatisticFieldName": "Out_Field_Name1"
+  },
+  {
+    "statisticType": "<count | sum | min | max | avg | stddev | var>",
+    "onStatisticField": "Field2",
+    "outStatisticFieldName": "Out_Field_Name2"
+  }  
+]*/
+
+    describe('when querying features with false outStatistics params', function(){
+      it('should return an error when an empty json string is passed', function(done){
+        fs.query( data, {
+          outStatistics: '{}'
+        }, function( err, service ){
+            should.exist( err );
+            should.not.exist( service );
+            done();
+        });
+      });
+    });
+
+    describe('when querying for statistics', function(){
+      it('should return correct fields and features for one stat', function(done){
+        fs.query( data, {
+          outStatistics: '[{"statisticType": "min", "onStatisticField": "total precip","outStatisticFieldName":"min_precip"}]'
+        }, function( err, service ){
+            //console.log(service.features[0]['attributes']['min_precip'])
+            service.should.be.an.instanceOf(Object);
+            service.fields.length.should.equal( 1 );
+            service.features.length.should.equal( 1 );
+            service.features[0]['attributes']['min_precip'].should.equal( 0 );
+            done();
+        });
+      });
+
+      it('should return correct number of fields and features for 2 stats', function(done){
+        fs.query( data, {
+          outStatistics: '[{"statisticType": "min", "onStatisticField": "total precip","outStatisticFieldName":"min_precip"},{"statisticType": "max", "onStatisticField": "total precip","outStatisticFieldName":"max_precip"}]'
+        }, function( err, service ){
+            // console.log(service.features[0]['attributes']['max_precip'])
+            service.should.be.an.instanceOf(Object);
+            service.fields.length.should.equal( 2 );
+            service.features.length.should.equal( 1 );
+            service.features[0]['attributes']['min_precip'].should.equal( 0 );
+            service.features[0]['attributes']['max_precip'].should.equal( 1.5 );
+            done();
+        });
+      });
+
+      it('should return correct number of fields and features for 2 stats', function(done){
+        fs.query( data, {
+          outStatistics: '[{"statisticType": "count", "onStatisticField": "total precip","outStatisticFieldName":"count_precip"}]'
+        }, function( err, service ){
+            //console.log(service.features[0]['attributes']['count_precip'])
+            service.should.be.an.instanceOf(Object);
+            service.fields.length.should.equal( 1 );
+            service.features.length.should.equal( 1 );
+            service.features[0]['attributes']['count_precip'].should.not.equal( 0 );
+            done();
+        });
+      });
+    });
+
 });
 
