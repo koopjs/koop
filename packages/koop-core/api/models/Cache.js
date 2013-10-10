@@ -6,7 +6,7 @@ module.exports = {
 
   insert: function( type, key, data, callback ){
     Cache.db.insert( type+':'+key, data, function(err, success){
-      callback(err, success);
+      callback( err, success );
     });
   },
 
@@ -30,7 +30,7 @@ module.exports = {
                 // false is good -> reset timer and return data
                 // cache returned true, return current data
                 Cache.redis.set( type+':'+key+':timer', key, function( error, timer){
-                  Cache.redis.expire( type+':'+key+':timer', 3600);
+                  Cache.redis.expire( type+':'+key+':timer', 360000);
                   callback( null, data );
                 });
               } else {
@@ -39,7 +39,7 @@ module.exports = {
                 self.remove(type, key, function(){
                   self.insert(type, key, success, function(err, res){
                     Cache.redis.set( type+':'+key+':timer', key, function( error, timer){
-                      Cache.redis.expire( type+':'+key+':timer', 3600);
+                      Cache.redis.expire( type+':'+key+':timer', 360000);
                       callback( err, success );
                     });
                   });
