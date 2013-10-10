@@ -279,6 +279,39 @@ describe('FeatureServices Model', function(){
             done();
         });
       });
+
+      it('should return correct number of fields and features for sum stats', function(done){
+        fs.query( data, {
+          outStatistics: '[{"statisticType": "sum", "onStatisticField": "total precip","outStatisticFieldName":            "sum_precip"}]'
+        }, function( err, service ){
+            //console.log(service.features[0]['attributes']['sum_precip'])
+            service.should.be.an.instanceOf(Object);
+            service.fields.length.should.equal( 1 );
+            service.features.length.should.equal( 1 );
+            service.features[0]['attributes']['sum_precip'].should.equal( 135.69000000000003 );
+            done();
+        });
+      });
+
+      it('should return correct number of fields and features for avg stats', function(done){
+        fs.query( data, {
+          outStatistics: '[{"statisticType": "avg", "onStatisticField": "total precip","outStatisticFieldName":              "avg_precip"}]'
+        }, function( err, service ){
+            service.features[0]['attributes']['avg_precip'].should.equal( 0.3253956834532375 );
+            done();
+        });
+      });
+
+      it('should return correct number of fields and features for var/stddev stats', function(done){
+        fs.query( data, {
+          outStatistics: '[{"statisticType": "var", "onStatisticField": "total precip","outStatisticFieldName":              "var_precip"},{"statisticType": "stddev", "onStatisticField": "total precip","outStatisticFieldName":              "stddev_precip"}]'
+        }, function( err, service ){
+            service.features[0]['attributes']['var_precip'].should.equal( 0.07643107844659537 );
+            service.features[0]['attributes']['stddev_precip'].should.equal( 0.27646171244242007 );
+            done();
+        });
+      });
+
     });
 
 });

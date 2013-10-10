@@ -112,6 +112,34 @@ module.exports = {
         });
         return count;
       },
+      'sum': function(field, features){
+        var sum = 0;
+        features.forEach(function(f,i){
+          if (f[propName][field]){
+            sum += parseFloat(f[propName][field]);
+          }
+        });
+        return sum;
+      },
+      'avg': function(field, features){
+        var sum = types['sum'](field, features);
+        return sum/features.length;
+      },
+      'stddev': function(field, features){
+        var v = types['var']( field, features );
+        return Math.sqrt(v);
+      },
+      'var': function(field, features){
+        var avg = types['avg']( field, features ), 
+          i = features.length,
+          v = 0;
+ 
+        while( i-- ){
+          v += Math.pow( (features[ i ][propName][field] - avg), 2 );
+        }
+        v /= features.length;
+        return v;
+      }
     };
     //count | sum | avg | stddev | var
     return types[type](field, features);
