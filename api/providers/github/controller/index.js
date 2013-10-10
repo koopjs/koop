@@ -40,7 +40,7 @@ module.exports = {
         res.json( err, 500 );
       } else if ( data ){
         if ( FeatureServices[ req.params.layer ]){
-          FeatureServices[ req.params.layer ]( data, req.query || {}, function( d ){
+          FeatureServices[ req.params.layer ]( data, req.query || {}, function( err, d ){
             if ( callback ){
               res.send( callback + '(' + JSON.stringify( d ) + ')' );
             } else {
@@ -57,7 +57,7 @@ module.exports = {
             res.send('Layer not found', 404);
           }
           if ( req.params.method && FeatureServices[ req.params.method ] ){
-            FeatureServices[ req.params.method ]( data, req.query || {}, function( d ){
+            FeatureServices[ req.params.method ]( data, req.query || {}, function( err, d ){
               if ( callback ){
                 res.send( callback + '(' + JSON.stringify( d ) + ')' );
               } else {
@@ -65,7 +65,7 @@ module.exports = {
               }
             });
           } else {
-            FeatureServices.info( data, req.params.layer, req.query || {}, function( d ){
+            FeatureServices.info( data, req.params.layer, req.query || {}, function( err, d ){
               if ( callback ){
                 res.send( callback + '(' + JSON.stringify( d ) + ')' );
               } else {

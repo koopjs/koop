@@ -14,12 +14,12 @@ module.exports = {
 
       if ( params.returnCountOnly ){
 
-        callback({ count: json.features.length });
+        callback( null, { count: json.features.length });
 
       } else if ( params.returnIdsOnly ){
 
-        this.getIds( json, params.idField, function( ids ){
-          callback( ids );
+        this.getIds( json, params.idField, function( err, ids ){
+          callback( err, ids );
         });
 
       } else {
@@ -72,7 +72,7 @@ module.exports = {
         if ( params.outStatistics ){
           this.outStatistics( json, params, callback );
         } else {
-          callback( json );
+          callback( null, json );
         }
         
 
@@ -153,7 +153,7 @@ module.exports = {
       var stats = JSON.parse(params.outStatistics);
       if (stats.length){
         stats.forEach(function(stat, i){
-         // console.log(stat.statisticType, stat.onStatisticField, json.features.length );
+          //console.log(stat.statisticType, stat.onStatisticField, json.features.length );
           value = self.calculateStat( stat.statisticType, stat.onStatisticField, json.features );
           statFeatures[ 0 ].attributes[ stat.outStatisticFieldName ] = value;
           json.fields.push({
@@ -370,7 +370,7 @@ module.exports = {
       objectIds.push( props[ field ] );
     });
 
-    callback( {
+    callback( null, {
       objectIdField: field,
       objectIds: objectIds
     });
