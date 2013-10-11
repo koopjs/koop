@@ -6,6 +6,7 @@ module.exports = {
         providers.push( name);
       }
     });
+    providers.push('TEST CODE');
     res.json( providers );
   } 
 };
