@@ -9,14 +9,16 @@
     "ejs": "0.8.4",
     "sails-mongo": "*",
     "request": "~2.27.0",
-    "terraformer": "https://api.github.com/repos/esri/Terraformer/tarball/master",
+    "terraformer": "https://api.github.com/repos/chelm/Terraformer/tarball/master", 
     "terraformer-arcgis-parser": "0.1.8",
     "geohub": "0.2.0",
     "underscore": "~1.5.1",
     "sql-parser": "~0.4.0",
     "include-all": "~0.1.1",
     "redis": "~0.8.4",
-    "mongoskin": "~0.6.0"
+    "mongoskin": "~0.6.0",
+    "tilemath": "0.0.2",
+    "node-fs": "~0.1.7"
   },
   "devDependencies": {
     "grunt": "0.4.x",

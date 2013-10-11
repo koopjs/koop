@@ -24,7 +24,6 @@ module.exports = {
     }
     if ( req.params.user && req.params.repo && req.params.file ){
       req.params.file = req.params.file.replace('.geojson', '');
-      console.log('wtf?');
       Github.find(req.params.user, req.params.repo, req.params.file, _send );
     } else if ( req.params.user && req.params.repo ) {
       Github.find(req.params.user, req.params.repo, null, _send );
@@ -103,7 +102,27 @@ module.exports = {
   },
 
   tiles: function( req, res ){
-    res.json( req.params );
+    //console.log( req.params );
+    var key,
+      layer = req.params.layer || 0;
+
+    var _send = function( err, data ){
+      req.params.key = key + ':' + layer;
+      Tiles.get( req.params, data[ layer ], function(err, tile){
+        //res.contentType(req.params[1]);
+        res.send( tile );
+      });
+    }
+    if ( req.params.user && req.params.repo && req.params.file ){
+      req.params.file = req.params.file.replace('.geojson', '');
+      key = ['github', req.params.user, req.params.repo, req.params.file].join(':');
+      Github.find(req.params.user, req.params.repo, req.params.file, _send );
+    } else if ( req.params.user && req.params.repo ) {
+      key = ['github', req.params.user, req.params.repo].join(':');
+      Github.find(req.params.user, req.params.repo, null, _send );
+    } else {
+      res.send('Must specify at least a user and a repo', 404);
+    }
   }
 
 
