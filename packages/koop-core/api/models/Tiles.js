@@ -14,7 +14,7 @@ module.exports = {
       key = params.key,
       format = params.format;
 
-    if (!x || !y || !z || !format || !key){
+    if (!params.x || !params.y || !params.z || !format || !key){
       callback('Missing parameters', null);
     } else {
       // check the cache 
@@ -38,7 +38,8 @@ module.exports = {
         xmax: bounds[3], 
         ymax: bounds[2], 
         spatialReference: { wkid: 4326 }
-      }
+      },
+      geometryType: 'esriGeometryEnvelope'
     }
     
     json.features = terraformerParser.convert( json );
