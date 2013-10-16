@@ -91,18 +91,20 @@ module.exports = {
           function render(){
 
             var map = new nodetiles.Map({
-                projection: "EPSG:4326" // set the projection of the map
+                projection: "EPSG:900913" // set the projection of the map
             });
 
-            map.addData(new GeoJsonSource({
-              name: "world",
-              path: file.replace(/png/g, 'json'),
-              projection: "EPSG:4326"
-            }));
+            if ( geojson.features && geojson.features.length ) {
+              map.addData(new GeoJsonSource({
+                name: "world",
+                path: file.replace(/png/g, 'json'),
+                projection: "EPSG:4326"
+              }));
+            }
 
             map.addStyle(fs.readFileSync('./style.mss','utf8'));
 
-            var b = merc.bbox( x, y, z );
+            var b = merc.bbox( x, y, z, false, '900913');
 
             map.render({
               // Make sure your bounds are in the same projection as the map
@@ -135,9 +137,7 @@ module.exports = {
             var f = dir.pop();
             
             nfs.mkdir( dir.join('/'), '0777', true, function(){
-              console.log('FILE DOES NOT EXIST', file.replace(/png/g, 'json')); 
               fs.writeFile( jsonFile, JSON.stringify( geojson ), function(){
-                console.log('SAVE GEOJSON'); 
                 render();
               });
             });
