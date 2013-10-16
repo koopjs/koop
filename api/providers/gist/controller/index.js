@@ -22,7 +22,7 @@ module.exports = {
     if ( req.params.id ){
       var id = req.params.id;
       var d = {};
-      Gist.find( id, function( err, data) {
+      Gist.find( id, req.query, function( err, data) {
         if (req.params.layer !== undefined && data[req.params.layer]){
           //d = data[req.params.layer];
           send( err, data[req.params.layer] );
@@ -87,7 +87,7 @@ module.exports = {
 
     if ( req.params.id ){
       var id = req.params.id;
-      Gist.find( id, function( err, data) {
+      Gist.find( id, req.query, function( err, data) {
         send( err, data );
       });
     } else {

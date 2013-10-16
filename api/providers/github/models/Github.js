@@ -1,13 +1,13 @@
 var Geohub = require('geohub');
 
 module.exports = {
-  find: function( user, repo, file, callback ){
+  find: function( user, repo, file, options, callback ){
     file = ( file ) ? file.replace(/::/g, '/') : null;
 
     var key = [ user, repo, file].join('/'),
       type = 'Github';
     
-    Cache.get( type, key, function(err, entry ){
+    Cache.get( type, key, options, function(err, entry ){
       if ( err ){
         console.log('Data not found in cache, requesting', key);
         Geohub.repo( user, repo, file, sails.config.github_token, function( err, geojson ){

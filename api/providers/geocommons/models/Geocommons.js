@@ -1,9 +1,9 @@
 var request = require('request');
 module.exports = {
-  find: function( id, callback ){
+  find: function( id, options, callback ){
     // looks for data in the cache first
     var type = 'Geocommons';
-    Cache.get( type, id, function(err, entry ){
+    Cache.get( type, id, options, function(err, entry ){
       if ( err ){
         var url = "http://geocommons.com/overlays/" + id + "/features.json";
         request.get( url , function( err, data ){

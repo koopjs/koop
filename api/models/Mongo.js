@@ -8,11 +8,12 @@ module.exports = {
   },
 
   // get data out of the db
-  select: function(key, callback){
+  select: function(key, options, callback){
     var self = this;
     //var layer = 0;
     var error = false,
       totalLayers,
+      queryOpts = {}, 
       allLayers = [];
 
     // closure to check each layer and send back when done
@@ -30,9 +31,19 @@ module.exports = {
       } else {
         totalLayers = infoDoc.info.length;
         infoDoc.info.forEach(function(layer, i){
-          
-          self._collection( key+':'+i ).find( ).toArray(function (err, docs) {
-            if ( docs.length ) {
+          if ( options.geometry ){
+            var box = options.geometry;
+            queryOpts = {"geometry":{ $geoWithin:{ $geometry:{"type":"Polygon","coordinates":[[
+              [box.xmin, box.ymin],
+              [box.xmax, box.ymin],
+              [box.xmax, box.ymax],
+              [box.xmin, box.ymax],
+              [box.xmin, box.ymin]
+            ]]}}}};
+          }
+          self._collection( key+':'+i ).find( queryOpts ).toArray(function (err, docs) {
+            console.log('select docs', JSON.stringify(queryOpts));
+            if ( docs && docs.length ) {
               collect( null, {
                 type: 'FeatureCollection', 
                 features: docs, 
@@ -52,7 +63,6 @@ module.exports = {
   // create a collection and insert features
   // create a 2d index 
   insert: function( key, geojson, callback ){
-    console.log('INSERT', key);
     var self = this; 
     var info = [],
       count = 0;
@@ -72,7 +82,9 @@ module.exports = {
       info[i].sha = layer.sha;
 
         self._collection( key+':'+i ).insert( layer.features, function(err, result){
-          check(err, true);
+          //self._collection( key+':'+i ).ensureIndex( { 'geometry' : "2dsphere" }, function(){
+            check(err, true);
+          //});
         });
     });
 
@@ -81,10 +93,13 @@ module.exports = {
 
   remove: function( key, callback){
     var self = this;
-    var totalLayers, processedLayers;
+    var totalLayers, processedLayers = 0;
     var collect = function(){
-      if (processedLayers++ == totalLayers){
-        callback( null, true );
+      processedLayers++;
+      if ( processedLayers == totalLayers ){
+        self._collection( self.infoCollection ).remove({id: key+':info'}, function(err, success){
+          callback( null, true );
+        });
       }
     };
   

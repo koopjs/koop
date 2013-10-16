@@ -22,7 +22,7 @@ module.exports = {
     if ( req.params.id ){
       var id = req.params.id;
       var d = {};
-      Geocommons.find( id, function( err, data) {
+      Geocommons.find( id, req.query, function( err, data) {
         if (req.params.layer !== undefined && data[req.params.layer]){
           //d = data[req.params.layer];
           send( err, data[req.params.layer] );
@@ -87,7 +87,7 @@ module.exports = {
 
     if ( req.params.id ){
       var id = req.params.id;
-      Geocommons.find( id, function( err, data) {
+      Geocommons.find( id, req.query, function( err, data) {
         send( err, data );
       });
     } else {
