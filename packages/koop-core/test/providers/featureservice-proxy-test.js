@@ -29,7 +29,6 @@ describe('FeatureService Proxy Provider', function(){
             res.should.have.status( 200 );
             json.type.should.equal( 'FeatureCollection' );
             should.exist( json.features );
-            console.log(json);
             return done();
           });
       });

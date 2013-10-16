@@ -56,11 +56,12 @@ module.exports = {
       console.log('Thumbnail', req.query.url);
       var url = req.query.url;
       delete req.query.url;
-      FeatureServiceProxy.thumbnail( url, req.query, function(err, json){
+      FeatureServiceProxy.thumbnail( url, req.query, function(err, file){
         if (err) {
           res.send(err, 500);
         } else {
-          res.json( json );
+          console.log('send file', file);
+          res.sendfile( file );
         }
       });
     }
