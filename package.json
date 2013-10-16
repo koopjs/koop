@@ -21,7 +21,8 @@
     "node-fs": "~0.1.7",
     "tilenik": "0.0.3",
     "canvas": "~1.1.1",
-    "sphericalmercator": "~1.0.2"
+    "sphericalmercator": "~1.0.2",
+    "qs": "~0.6.5"
   },
   "devDependencies": {
     "grunt": "0.4.x",
