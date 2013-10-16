@@ -128,7 +128,7 @@ module.exports = {
 
     // build the geometry from z,x,y
     var bounds = merc.bbox( req.params.x, req.params.y, req.params.z );
-    console.log(req.params.z, req.params.x, req.params.y, bounds);
+    //console.log(req.params.z, req.params.x, req.params.y, bounds);
     req.query.geometry = {
         xmin: bounds[0],
         ymin: bounds[1],

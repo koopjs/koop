@@ -1,0 +1,9 @@
+<div id="map"></div>
+<script>
+  $(function(){
+    var mapDom = 'map';
+    $('#'+mapDom).css({ width:document.width, height: document.height });
+    koop = koopMap( mapDom );
+    koop.addTile(location.origin + '/github/<%= user %>/<%= repo %>/<%= file %>/tiles/{z}/{x}/{y}.png');
+  });
+</script>
