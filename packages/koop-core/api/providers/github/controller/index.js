@@ -115,7 +115,7 @@ module.exports = {
 
     var _send = function( err, data ){
       req.params.key = key + ':' + layer;
-      console.log('TILES', layer, data);
+      //console.log('TILES', layer, data);
       Tiles.get( req.params, data[ layer ], function(err, tile){
         if ( req.params.format == 'png'){
           //res.contentType('image/png');

@@ -82,77 +82,70 @@ module.exports = {
   _stash: function( file, format, geojson, z, x, y, callback ){
     var feature;
 
-    /*var geojson = {type:'FeatureCollection', features:[]};
-    data.features.forEach(function(f){
-      feature = terraformerParser.parse( f ).toJSON();
-      delete feature.geometry.bbox;
-      delete feature.bbox;
-      geojson.features.push( feature );
-    });*/
-
-      nfs.writeFile( file.replace(/png/g, 'json'), JSON.stringify( geojson ), function(){
-        if ( format == 'json' ){
+      if ( format == 'json' ){
+        fs.writeFile( file, JSON.stringify( geojson ), function(){
           callback( null, file );
-        } else {
-          /*var canvas = new Canvas(256,256);
+        });
+      } else {
 
-          var out = nfs.createWriteStream( file ), 
-            stream = canvas.createPNGStream();
+          function render(){
 
-          stream.on('data', function(chunk){
-            out.write(chunk);
-          });*/
+            var map = new nodetiles.Map({
+                projection: "EPSG:4326" // set the projection of the map
+            });
 
+            map.addData(new GeoJsonSource({
+              name: "world",
+              path: file.replace(/png/g, 'json'),
+              projection: "EPSG:4326"
+            }));
 
-          var css = "#layer { line-width: 2; line-color: #08c; point-color: #088; }";
+            map.addStyle(fs.readFileSync('./style.mss','utf8'));
 
-          /* Create your map context */
-          var map = new nodetiles.Map({
-              projection: "EPSG:900913" // set the projection of the map
-          });
-          
-          /* Add some data */
-          map.addData(new GeoJsonSource({ 
-            name: "layer",
-            path: file.replace(/png/g, 'json'), 
-            projection: "EPSG:4326"
-          }));
-          
-          /* Link your Carto stylesheet */
-          map.addStyle(css);
+            var b = merc.bbox( x, y, z );
 
-          var b = merc.bbox( x, y, z );
-          
-          /* Render out the map to a file */
-          map.render({
-            // Make sure your bounds are in the same projection as the map
-            bounds: { minX: b[0], minY: b[1], maxX: b[2], maxY: b[3] },
-            width: 256,   // number of pixels to output
-            height: 256,
-            callback: function(err, canvas) {
-              var f = fs.createWriteStream(file),
-                  stream = canvas.createPNGStream();
-          
-              stream.on('data', function(chunk){
-                f.write(chunk);
+            map.render({
+              // Make sure your bounds are in the same projection as the map
+              bounds: { minX: b[0], minY: b[1], maxX: b[2], maxY: b[3] },
+              width: 256,   // number of pixels to output
+              height: 256,
+              callback: function(err, canvas) {
+                var f = fs.createWriteStream(file),
+                    stream = canvas.createPNGStream();
+
+                stream.on('data', function(chunk){
+                  f.write(chunk);
+                });
+
+                stream.on('end', function(){
+                  //console.log('Saved ', file, stream.canvas.toDataURL());
+                  setTimeout(function(){
+                    callback( null, file );
+                  },50);
+                });
+              }
+            });
+
+          };
+
+          var jsonFile = file.replace(/png/g, 'json');
+          if ( !nfs.existsSync( jsonFile ) ) {
+
+            var dir = jsonFile.split('/');
+            var f = dir.pop();
+            
+            nfs.mkdir( dir.join('/'), '0777', true, function(){
+              console.log('FILE DOES NOT EXIST', file.replace(/png/g, 'json')); 
+              fs.writeFile( jsonFile, JSON.stringify( geojson ), function(){
+                console.log('SAVE GEOJSON'); 
+                render();
               });
-          
-              stream.on('end', function(){
-                console.log('Saved ', file, stream);
-                callback( null, file );
-              });
-            }
-          });
-
-          /*Tilenik.render(canvas, geojson, css, z, x, y, function( png ){
-            console.log('rendered', png);
-            //nfs.writeFile( file, png, function(){
-              //callback( null, file );
-              setTimeout(function(){ callback( null, file );}, 50 );
-            //});
-          });*/
+            });
+          } else {
+            render();
           }
-      });
+
+      }
   } 
 
 };
