@@ -61,9 +61,9 @@ module.exports = {
     });
   },
 
-  get: function(type, key, callback ){
+  get: function(type, key, options, callback ){
     var self = this;
-    Cache.db.select( type+':'+key, function(err, result){
+    Cache.db.select( type+':'+key, options, function(err, result){
       self.process( type, key, result, callback );     
     });
   },

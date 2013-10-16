@@ -3,6 +3,7 @@ function koopMap( dom ){
   var koop = {
     map: map,
     add: addLayer,
+    addTile: addTile,
     remove: removeLayer 
   };   
 
@@ -11,6 +12,11 @@ function koopMap( dom ){
   L.esri.basemapLayer("NationalGeographic").addTo(map);
 
   var layerFS;
+
+  
+  function addTile( url ) {
+    L.tileLayer(url, {}).addTo(map);
+  }
 
   function addLayer( url ) {
     // Add ArcGIS Online feature service
