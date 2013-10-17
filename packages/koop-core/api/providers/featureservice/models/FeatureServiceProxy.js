@@ -87,7 +87,7 @@ module.exports = {
     var self = this;
 
     options.uniq = (new Date()).getTime();
-    options.dir = '/usr/local/koop/thumbs/';
+    options.dir = sails.config.data_dir + 'thumbs/';
     options.width = options.width || 150;
     options.height = options.height || 150;
   

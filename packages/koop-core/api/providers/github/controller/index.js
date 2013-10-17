@@ -1,5 +1,6 @@
-var sm = require('sphericalmercator');
-var merc = new sm({size:256});
+var sm = require('sphericalmercator'),
+  merc = new sm({size:256}),
+  fs = require('fs');
 
 module.exports = {
   
@@ -114,15 +115,14 @@ module.exports = {
 
     var _send = function( err, data ){
       req.params.key = key + ':' + layer;
-      //console.log('TILES', layer, data);
-      Tiles.get( req.params, data[ layer ], function(err, tile){
-        if ( req.params.format == 'png'){
-          //res.contentType('image/png');
-          res.sendfile( tile );
-        } else {
-          res.send( tile );
-        }
-      });
+        Tiles.get( req.params, data[ layer ], function(err, tile){
+          if ( req.params.format == 'png'){
+            //res.contentType('image/png');
+            res.sendfile( tile );
+          } else {
+            res.send( tile );
+          }
+        });
     }
 
     // build the geometry from z,x,y
@@ -136,15 +136,40 @@ module.exports = {
         spatialReference: { wkid: 4326 }
     };
 
-    //req.query = {geometry: {xmin: -110, ymin: 30, xmax: -106, ymax: 50, spatialReference: { wkid: 4326 }}};
+    var _sendImmediate = function( file ){
+      if ( req.params.format == 'png'){
+        res.sendfile( file );
+      } else {
+        res.sendfile( file );
+      }
+    };
 
     if ( req.params.user && req.params.repo && req.params.file ){
       req.params.file = req.params.file.replace('.geojson', '');
       key = ['github', req.params.user, req.params.repo, req.params.file].join(':');
-      Github.find(req.params.user, req.params.repo, req.params.file, req.query, _send );
+      var file = sails.config.data_dir + 'tiles/';
+        file += key + ':' + layer + '/' + req.params.format;
+        file += '/' + req.params.z + '/' + req.params.x + '/' + req.params.y + '.' + req.params.format;
+      
+      if ( !fs.existsSync( file ) ) {
+        console.log('NOPE', file);
+        Github.find(req.params.user, req.params.repo, req.params.file, req.query, _send );
+      } else {
+        _sendImmediate(file);
+      }
+
     } else if ( req.params.user && req.params.repo ) {
       key = ['github', req.params.user, req.params.repo].join(':');
-      Github.find(req.params.user, req.params.repo, null, req.query, _send );
+      var file = sails.config.data_dir + 'tiles/';
+        file += key + ':' + layer + '/' + req.params.format;
+        file += '/' + req.params.z + '/' + req.params.x + '/' + req.params.y + '.' + req.params.format;
+
+      if ( !fs.existsSync( file ) ) {
+        Github.find(req.params.user, req.params.repo, null, req.query, _send );
+      } else {
+        _sendImmediate(file);
+      }
+
     } else {
       res.send('Must specify at least a user and a repo', 404);
     }

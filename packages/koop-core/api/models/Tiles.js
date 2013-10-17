@@ -13,7 +13,7 @@ var merc = new sm({size:256});
 
 module.exports = {
 
-  dir: '/usr/local/koop/tiles', 
+  //dir: sails.config.data_dir, 
 
   get: function(params, data, callback ){
     var x = parseInt( params.x ),
@@ -63,7 +63,7 @@ module.exports = {
 
   _check: function( x, y, z, key, format, data, callback ){
     var self = this;
-    var p = [this.dir, key, format, z, x].join('/');
+    var p = [sails.config.data_dir + 'tiles', key, format, z, x].join('/');
     var file = p + '/' + y + '.' + format;
 
     nfs.mkdir( p, '0777', true, function(){
