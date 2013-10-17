@@ -18,5 +18,9 @@ module.exports.bootstrap = function (cb) {
   } else {
     Cache.db = Local;
   }
+
+  if ( argv.data_dir  ){
+    sails.config.data_dir = argv.data_dir;
+  }
   cb();
 };
