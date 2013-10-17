@@ -36,8 +36,7 @@ module.exports = {
       res.send('Must specifiy a url', 500);
     } else {
       // get featureservice data
-      console.log('Proxy', req.query.url );
-      var url = req.query.url;
+      var url = req.query.url.replace('?','&');
       delete req.query.url;
       FeatureServiceProxy.proxy( url, req.query, function(err, json){
         if (err) {
@@ -53,8 +52,7 @@ module.exports = {
     if (!req.query || !req.query.url ){ 
       res.send('Must specifiy a url', 500);
     } else {
-      console.log('Thumbnail', req.query.url);
-      var url = req.query.url;
+      var url = req.query.url.replace('?','&');
       delete req.query.url;
       FeatureServiceProxy.thumbnail( url, req.query, function(err, file){
         if (err) {
