@@ -42,7 +42,7 @@ module.exports = {
             ]]}}}};
           }
           self._collection( key+':'+i ).find( queryOpts ).toArray(function (err, docs) {
-            console.log('select docs', JSON.stringify(queryOpts));
+            //console.log('select docs', JSON.stringify(queryOpts));
             if ( docs && docs.length ) {
               collect( null, {
                 type: 'FeatureCollection', 

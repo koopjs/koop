@@ -18,7 +18,6 @@ module.exports = {
       if ( err ){
         res.json( err, 500 );
       } else if ( data ){
-        console.log('sending data',data);
         res.json( data );
       } else {
         res.send('There was a problem accessing this repo', 500);

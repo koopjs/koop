@@ -47,7 +47,6 @@ module.exports = {
               } 
             });
           } else {
-            console.log('Provider has no checkCache method, sending cached data');
             callback( null, data ); 
           }
         }
