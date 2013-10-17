@@ -102,7 +102,7 @@ module.exports = {
               }));
             }
 
-            map.addStyle(fs.readFileSync('./style.mss','utf8'));
+            map.addStyle(fs.readFileSync('./api/templates/renderers/style.mss','utf8'));
 
             var b = merc.bbox( x, y, z, false, '900913');
 

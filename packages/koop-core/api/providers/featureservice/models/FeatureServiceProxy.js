@@ -1,12 +1,15 @@
 var request = require('request'),
   qs = require('qs'),
   fs = require('fs');
+  nfs = require('node-fs');
   nodetiles = require('nodetiles-core'),
   GeoJsonSource = nodetiles.datasources.GeoJson,
   Projector = nodetiles.projector,
 
   terraformer = require('Terraformer'),
   terraformerParser = require('terraformer-arcgis-parser');
+
+  var sm = require('sphericalmercator');
 
 module.exports = {
   proxy: function( url, options, callback ){
@@ -79,46 +82,77 @@ module.exports = {
     });
   },
 
+  // generate the image, set up options, and save json file 
   generateThumb: function( json, extent, options, callback ) {
-    console.log('GENERATE THUMB', extent, options);
-    fs.writeFile( '/usr/local/koop/tiles/tmp.json', JSON.stringify( json ), function(){
+    var self = this;
+
+    options.uniq = (new Date()).getTime();
+    options.dir = '/usr/local/koop/thumbs/';
+    options.width = options.width || 150;
+    options.height = options.height || 150;
   
-      var map = new nodetiles.Map({
-          projection: "EPSG:4326" // set the projection of the map
-      });
+    var dir = options.dir + options.uniq; 
 
-      if ( json.features && json.features.length ) {
-        map.addData(new GeoJsonSource({
-          name: "world",
-          path: '/usr/local/koop/tiles/tmp.json',
-          projection: "EPSG:4326"
-        }));
+    // make sure dir exists 
+    nfs.mkdir( options.dir, '0777', true, function(){
+      fs.writeFile( dir + '.json', JSON.stringify( json ), function(){
+        self.render(json, extent, options, callback);
+      }); 
+    });
+  },
+
+
+  // actually renders and returns the saved file 
+  render: function( json, extent, options, callback){
+    
+    var map = new nodetiles.Map({
+      projection: "EPSG:900913" 
+    });
+
+    if ( json.features && json.features.length ) {
+      map.addData(new GeoJsonSource({
+        name: "world",
+        path: options.dir + options.uniq + '.json',
+        projection: "EPSG:4326"
+      }));
+    }
+
+    map.addStyle( fs.readFileSync('./api/templates/renderers/style.mss','utf8') );
+
+    // project extent
+    
+    var merc = new sm( { size:options.width } ),
+      mins = merc.forward( [extent.xmin-5, extent.ymin-5] ),
+      maxs = merc.forward( [extent.xmax+5, extent.ymax+5] );
+
+    var png = options.dir + options.uniq + '.png';
+    
+    map.render({
+      bounds: { 
+        minX: mins[0], 
+        minY: mins[1], 
+        maxX: maxs[0], 
+        maxY: maxs[1] 
+      },
+
+      width: options.width, 
+      height: options.height,
+
+      callback: function(err, canvas) {
+        var f = fs.createWriteStream( png ),
+          stream = canvas.createPNGStream();
+
+        stream.on('data', function(chunk){
+          f.write(chunk);
+        });
+
+        stream.on('end', function(){
+          setTimeout(function(){
+            callback( null, png );
+          },50);
+        });
       }
-
-      map.addStyle(fs.readFileSync('./style.mss','utf8'));
-
-      map.render({
-        // Make sure your bounds are in the same projection as the map
-        bounds: { minX: extent.xmin-5, minY: extent.ymin-5, maxX: extent.xmax+5, maxY: extent.ymax+5 },
-        width: 100,   // number of pixels to output
-        height: 100,
-        callback: function(err, canvas) {
-          var f = fs.createWriteStream('/usr/local/koop/tiles/tmp.png'),
-              stream = canvas.createPNGStream();
-
-          stream.on('data', function(chunk){
-            f.write(chunk);
-          });
-
-          stream.on('end', function(){
-            //console.log('Saved ', stream.canvas.toDataURL());
-            setTimeout(function(){
-              callback( null, '/usr/local/koop/tiles/tmp.png' );
-            },50);
-          });
-        }
-      });
-    }); 
+    });
   }
   
 };

@@ -112,7 +112,7 @@ describe('Koop Routes', function(){
       });
     });
 
-    describe('/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/0/query', function() {
+    /*describe('a crazy long github url', function() {
       it('should return 200', function(done) {
           agent.get('http://localhost:1337/github/cambridgegis/cambridgegis_data/Demographics::Census_2010::2010_Tracts::DEMOGRAPHICS_Tracts2010/FeatureServer/0/query?geometryType=esriGeometryEnvelope&geometry={"xmin":-71.2169837951660,"ymin":42.30283298203012,"xmax":-70.89563369750977,"ymax":42.42890510622485,"spatialReference":{"wkid":4326}}').end(function(err, res) {
             res.should.have.status(200);
@@ -120,6 +120,6 @@ describe('Koop Routes', function(){
             return done();
           });
       });
-    });
+    });*/
 });
 
