@@ -43,6 +43,9 @@ module.exports = {
           }
           self._collection( key+':'+i ).find( queryOpts ).toArray(function (err, docs) {
             //console.log('select docs', JSON.stringify(queryOpts));
+            if (err) {
+              console.log('Error selecting features in DB', err);
+            }
             if ( docs && docs.length ) {
               collect( null, {
                 type: 'FeatureCollection', 
@@ -52,7 +55,7 @@ module.exports = {
                 updated_at: layer.updated_at 
               });
             } else {
-              collect( 'Not Found', [] );
+              collect( 'Not Found', null );
             }
           });
         });
