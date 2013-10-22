@@ -109,15 +109,15 @@ module.exports = {
       projection: "EPSG:900913" 
     });
 
-    if ( json.features && json.features.length ) {
+    if ( json && json.features && json.features.length ) {
       map.addData(new GeoJsonSource({
-        name: "world",
+        name: json.features[0].geometry.type.toLowerCase(),
         path: options.dir + options.uniq + '.json',
         projection: "EPSG:4326"
       }));
     }
 
-    map.addStyle( fs.readFileSync('./api/templates/renderers/style.mss','utf8') );
+    map.addStyle( sails.config.defaultStyle );
 
     // project extent
     
