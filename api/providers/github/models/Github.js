@@ -11,12 +11,16 @@ module.exports = {
       if ( err ){
         console.log('Data not found in cache, requesting', key);
         Geohub.repo( user, repo, file, sails.config.github_token, function( err, geojson ){
-          if ( !geojson.length ){
-            geojson = [ geojson ];
+          if ( !geojson ){
+            callback( 'No geojson found', null );
+          } else {
+            if ( !geojson.length ){
+              geojson = [ geojson ];
+            }
+            Cache.insert( type, key, geojson, function( err, success){
+              if ( success ) callback( null, geojson );
+            });
           }
-          Cache.insert( type, key, geojson, function( err, success){
-            if ( success ) callback( null, geojson );
-          });
         });
       } else {
         console.log('Data found!, using cache', key);
