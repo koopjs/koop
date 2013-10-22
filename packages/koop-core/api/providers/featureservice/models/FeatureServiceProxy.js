@@ -48,7 +48,7 @@ module.exports = {
   thumbnail: function( url, options, callback ){
     var self = this;
     //http://localhost:1337/github/chelm/geodata/ski_areas/FeatureServer/0
-    this.proxy(url.replace('/query', ''), {}, function(err, layerInfo ){
+    this.proxy(url.replace('/query', ''), {f:'json'}, function(err, layerInfo ){
       if ( err ){
         callback(err, null);
       } else {
