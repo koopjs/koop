@@ -32,6 +32,9 @@ module.exports = {
         totalLayers = infoDoc.info.length;
         infoDoc.info.forEach(function(layer, i){
           if ( options.geometry ){
+            if ( typeof(options.geometry) == 'string' ){
+              options.geometry = JSON.parse( options.geometry );
+            }
             var box = options.geometry;
             queryOpts = {"geometry":{ $geoWithin:{ $geometry:{"type":"Polygon","coordinates":[[
               [box.xmin, box.ymin],
@@ -42,20 +45,31 @@ module.exports = {
             ]]}}}};
           }
           self._collection( key+':'+i ).find( queryOpts ).toArray(function (err, docs) {
-            console.log('select docs', JSON.stringify(queryOpts));
+            //console.log('select docs', JSON.stringify(queryOpts));
             if (err) {
               console.log('Error selecting features in DB', err);
-            }
-            if ( docs && docs.length ) {
-              collect( null, {
-                type: 'FeatureCollection', 
-                features: docs, 
-                name: layer.name, 
-                sha: layer.sha, 
-                updated_at: layer.updated_at 
+              // return all the data 
+              self._collection( key+':'+i ).find().toArray(function (err, docs) {
+                collect( null, {
+                  type: 'FeatureCollection',
+                  features: docs,
+                  name: layer.name,
+                  sha: layer.sha,
+                  updated_at: layer.updated_at
+                });
               });
             } else {
-              collect( 'Not Found', null );
+              if ( docs && docs.length ) {
+                collect( null, {
+                  type: 'FeatureCollection', 
+                  features: docs, 
+                  name: layer.name, 
+                  sha: layer.sha, 
+                  updated_at: layer.updated_at 
+                });
+              } else {
+                collect( 'Not Found', null );
+              }
             }
           });
         });
