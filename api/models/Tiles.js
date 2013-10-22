@@ -94,9 +94,9 @@ module.exports = {
                 projection: "EPSG:900913" // set the projection of the map
             });
 
-            if ( geojson.features && geojson.features.length ) {
+            if ( geojson && geojson.features && geojson.features.length ) {
               map.addData(new GeoJsonSource({
-                name: "world",
+                name: geojson.features[0].geometry.type.toLowerCase(),
                 path: file.replace(/png/g, 'json'),
                 projection: "EPSG:4326"
               }));

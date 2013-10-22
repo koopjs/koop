@@ -88,8 +88,8 @@ module.exports = {
 
     options.uniq = (new Date()).getTime();
     options.dir = sails.config.data_dir + 'thumbs/';
-    options.width = options.width || 150;
-    options.height = options.height || 150;
+    options.width = parseInt( options.width ) || 150;
+    options.height = parseInt( options.height ) || 150;
   
     var dir = options.dir + options.uniq; 
 
