@@ -22,7 +22,8 @@
     "tilenik": "0.0.3",
     "canvas": "~1.1.1",
     "sphericalmercator": "~1.0.2",
-    "qs": "~0.6.5"
+    "qs": "~0.6.5",
+    "nodetiles-core": "0.0.2"
   },
   "devDependencies": {
     "grunt": "0.4.x",

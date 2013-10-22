@@ -29,7 +29,7 @@ Map {
    line-color: #3F6;
 }*/
 
-#world { 
+/*#world { 
   marker-fill:teal;
   marker-line-color:darken(teal,10%);
   marker-width:3;
@@ -38,4 +38,9 @@ Map {
   marker-allow-overlap:true;
   //line-color:darken(teal,10%);
   //polygon-fill: lighten(teal, 30%);
+}*/
+
+#world {
+   line-color: #C00;
+   line-width: 1;
 }
