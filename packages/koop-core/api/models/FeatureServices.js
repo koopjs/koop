@@ -246,6 +246,7 @@ module.exports = {
 
   // filter the data based on any given query params 
   send: function(json, params, callback){
+    console.log(params);
     Query.filter( json, params, callback );
   }
 
