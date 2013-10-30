@@ -150,6 +150,10 @@ To enable Redis caching you must first start a redis-server instance on your mac
 * [ArcGIS Developers](http://developers.arcgis.com)
 * [ArcGIS REST Services](http://resources.arcgis.com/en/help/arcgis-rest-api/)
 * [twitter@esri](http://twitter.com/esri)
+* 
+## Presentations
+
+* [Fort Collins Esri Dev meetup October 2013](http://chelm.github.io/presentations/fort-collins-devmeetup-oct-2013/#0)
 
 ## Issues
 
