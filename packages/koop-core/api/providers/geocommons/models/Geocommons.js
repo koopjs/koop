@@ -5,7 +5,9 @@ module.exports = {
     var type = 'Geocommons';
     Cache.get( type, id, options, function(err, entry ){
       if ( err ){
-        var url = "http://geocommons.com/overlays/" + id + "/features.json";
+        var url = "http://geocommons.com/overlays/" + id;
+          url += ".json?include_features=1&geometry_format=geojson"; 
+
         request.get( url , function( err, data ){
           var geojson = JSON.parse( data.body );
           if ( !geojson.length ){

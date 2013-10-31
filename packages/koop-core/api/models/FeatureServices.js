@@ -158,7 +158,7 @@ module.exports = {
         };
       }
     }
-    json.extent = this.extent( (!data.length) ? data.features : data[0].features );
+    json.fullExtent = json.initialExtent = json.extent = this.extent( (!data.length) ? data.features : data[0].features );
     this.send( json, params, callback );
   },
 
@@ -169,7 +169,7 @@ module.exports = {
 
     if ( !data.length ){
       layerJson = this.process('/../templates/featureLayer.json', data, params );
-      layerJson.extent = this.extent( data.features );
+      layerJson.extent = layerJson.fullExtent = layerJson.initialExtent = this.extent( data.features );
       json = { layers: [ layerJson ], tables: [] };
       this.send( json, params, callback );
     } else {
@@ -177,7 +177,7 @@ module.exports = {
       data.forEach(function( layer, i ){
         layerJson = self.process('/../templates/featureLayer.json', layer, params );
         layerJson.id = i;
-        layerJson.extent = self.extent( layer.features );
+        layerJson.extent = layerJson.fullExtent = layerJson.initialExtent = self.extent( layer.features );
         json.layers.push( layerJson );
       });
       this.send( json, params, callback );
