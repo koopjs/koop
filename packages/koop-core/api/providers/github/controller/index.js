@@ -16,10 +16,27 @@ module.exports = {
 
   getRepo: function(req, res){
     var _send = function( err, data ){
+      var len = data.length;
+      var allTopojson = [];
+      var processTopojson = function( topology ){
+        allTopojson.push(topology);
+        if ( allTopojson.length == len ) {
+          res.json( allTopojson );
+        }
+      };
+
       if ( err ){
         res.json( err, 500 );
       } else if ( data ){
-        res.json( data );
+        if ( req.query.topojson ){ 
+          data.forEach(function( d ){
+            Topojson.convert(d, function(err, topology){
+              processTopojson( topology );
+            });
+          });
+        } else {
+          res.json( data );
+        }
       } else {
         res.send('There was a problem accessing this repo', 500);
       }
