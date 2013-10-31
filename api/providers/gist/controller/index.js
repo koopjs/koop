@@ -9,11 +9,33 @@ module.exports = {
 
   find: function(req, res){
     function send( err, data ){
+        var len = data.length;
+        var allTopojson = [];
+        var processTopojson = function( topology ){
+          allTopojson.push(topology);
+          if ( allTopojson.length == len ) {
+            res.json( allTopojson );
+          }
+        };
+
         if ( err ){
           res.json( err, 500 );
         } else { 
           if ( data ){
-            res.json( data );
+            if (req.query.topojson ){
+              var allData = {};
+              data.forEach(function( d ){
+                Topojson.convert(d, function(err, topology){
+                  processTopojson( topology );
+                });
+                //allData[d.name] = d;
+              });    
+              //Topojson.convert(allData, function(err, topology){
+               // res.json( topology );  
+              //});
+            } else { 
+              res.json( data );
+            }
           } else {
             res.send('There a problem accessing this gist', 500);
           }
