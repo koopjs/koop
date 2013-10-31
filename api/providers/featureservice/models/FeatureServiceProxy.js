@@ -1,7 +1,7 @@
 var request = require('request'),
   qs = require('qs'),
   fs = require('fs');
-  nfs = require('node-fs');
+  nfs = require('node-fs'),
   nodetiles = require('nodetiles-core'),
   GeoJsonSource = nodetiles.datasources.GeoJson,
   Projector = nodetiles.projector,
@@ -24,6 +24,10 @@ module.exports = {
           self.geojson( result, function( err, geojson ){
             callback( null, geojson );
           });
+        } else if ( options.topojson && result.features && result.features.length ) {
+          self.topojson( result, function( err, topology ){
+            callback( null, topology );
+          });
         } else {
           callback( null, result );
         }
@@ -43,6 +47,14 @@ module.exports = {
       geojson.features.push( feature );
     });
     callback(null, geojson);
+  },
+
+  // convert to topojson
+  topojson: function( json, callback ){
+    // use terraformer to convert esri json to geojson
+    this.geojson(json, function(err, collection){
+      Topojson.convert( collection, callback );
+    });
   },
 
   thumbnail: function( url, options, callback ){
