@@ -13,7 +13,13 @@ module.exports = {
           res.json( err, 500 );
         } else { 
           if ( data ){
-            res.json( data );
+            if ( req.query.topojson ) {
+              Topojson.convert( data[0], function( err, topology){
+                res.json( topology );
+              });
+            } else { 
+              res.json( data );
+            }
           } else {
             res.send('There a problem accessing this overlay', 500);
           }
