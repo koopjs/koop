@@ -32,6 +32,17 @@ describe('FeatureService Proxy Provider', function(){
             return done();
           });
       });
+      it('proxy should return 200 and geojson with url param & geojson', function(done) {
+          agent.get('http://localhost:1337/featureservice/proxy?url=http://localhost:1337/github/chelm/geodata/us-states/FeatureServer/0/query&topojson=true').end( function( err, res ) {
+            var json = res.body;
+            res.should.have.status( 200 );
+            json.type.should.equal( 'Topology' );
+            should.exist( json.objects );
+            should.exist( json.arcs );
+            should.exist( json.transform );
+            return done();
+          });
+      });
       it('thumbnail should return 500 with no url', function(done) {
           agent.get('http://localhost:1337/featureservice/thumbnail').end( function( err, res ) {
             res.should.have.status( 500 );
