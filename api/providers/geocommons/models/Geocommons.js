@@ -1,5 +1,6 @@
 var request = require('request');
 module.exports = {
+
   find: function( id, options, callback ){
     // looks for data in the cache first
     var type = 'Geocommons';
