@@ -4,6 +4,7 @@ function koopMap( dom ){
     map: map,
     add: addLayer,
     addTile: addTile,
+    addTopojson: addTopojson,
     remove: removeLayer 
   };   
 
@@ -16,6 +17,27 @@ function koopMap( dom ){
   
   function addTile( url ) {
     L.tileLayer(url, {}).addTo(map);
+  }
+
+  function addTopojson( url ) {
+    L.TopoJSON = L.GeoJSON.extend({
+      addData: function(jsonData) {
+        if (jsonData.type === "Topology") {
+          for (key in jsonData.objects) {
+            geojson = topojson.feature(jsonData, jsonData.objects[key]);
+            L.GeoJSON.prototype.addData.call(this, geojson);
+          }
+        }    
+        else {
+          L.GeoJSON.prototype.addData.call(this, jsonData);
+        }
+      }  
+    });
+
+    $.getJSON(url, function(data) {
+      var topo = new L.TopoJSON(data[ 0 ], {});
+      topo.addTo(map);
+    });
   }
 
   function addLayer( url ) {
