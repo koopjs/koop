@@ -1,13 +1,10 @@
 @land: lighten(#080,20%);
 @line: #1abc9c;
-
-Map {
-   background-color: rgba(0,0,0,0);
-}
+@blue: #2c3e50;
 
 #point { 
-  marker-fill:#2c3e50;
-  marker-line-color: #34495e;
+  marker-fill: @blue;
+  marker-line-color: lighten(@blue, 30%);
   marker-width:4;
   marker-line-width:1;
   marker-opacity:1;
