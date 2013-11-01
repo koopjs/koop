@@ -20,20 +20,6 @@ function koopMap( dom ){
   }
 
   function addTopojson( url ) {
-    L.TopoJSON = L.GeoJSON.extend({
-      addData: function(jsonData) {
-        if (jsonData.type === "Topology") {
-          for (key in jsonData.objects) {
-            geojson = topojson.feature(jsonData, jsonData.objects[key]);
-            L.GeoJSON.prototype.addData.call(this, geojson);
-          }
-        }    
-        else {
-          L.GeoJSON.prototype.addData.call(this, jsonData);
-        }
-      }  
-    });
-
     $.getJSON(url, function(data) {
       var topo = new L.TopoJSON(data[ 0 ], {});
       topo.addTo(map);

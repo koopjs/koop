@@ -1,0 +1,9 @@
+<div id="map"></div>
+<script>
+  $(function(){
+    var mapDom = 'map';
+    $('#'+mapDom).css({ width:document.width, height: document.height });
+    koop = koopMap( mapDom );
+    koop.addTopojson(location.origin + '/github/<%= user %>/<%= repo %>/<%= file %>?topojson=true');
+  });
+</script>

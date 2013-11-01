@@ -2,9 +2,9 @@ var request = require('request'),
   qs = require('qs'),
   fs = require('fs');
   nfs = require('node-fs'),
-  //nodetiles = require('nodetiles-core'),
-  //GeoJsonSource = nodetiles.datasources.GeoJson,
-  //Projector = nodetiles.projector,
+  nodetiles = require('nodetiles-core'),
+  GeoJsonSource = nodetiles.datasources.GeoJson,
+  Projector = nodetiles.projector,
 
   terraformer = require('Terraformer'),
   terraformerParser = require('terraformer-arcgis-parser');
