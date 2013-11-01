@@ -1,5 +1,4 @@
-var Tilenik = require('tilenik'),
-  nodetiles = require('nodetiles-core'),
+var nodetiles = require('nodetiles-core'),
   GeoJsonSource = nodetiles.datasources.GeoJson,
   Projector = nodetiles.projector,
   Canvas = require('canvas'),
