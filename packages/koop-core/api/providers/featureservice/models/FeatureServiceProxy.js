@@ -130,7 +130,7 @@ module.exports = {
     }
 
     //map.addStyle( sails.config.defaultStyle );
-    console.log('STYLE', fs.readFileSync('./api/templates/renderers/style.mss') );
+    //console.log('STYLE', fs.readFileSync('./api/templates/renderers/style.mss') );
     //map.addStyle( fs.readFileSync('./api/templates/renderers/style.mss','utf8') );
 
     // project extent
