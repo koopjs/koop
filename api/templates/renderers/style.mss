@@ -2,7 +2,6 @@
 @line: #1abc9c;
 
 #point { 
-  marker-fill: #2c3e50;
   marker-line-color: lighten(#2c3e50, 30%);
   marker-width:4;
   marker-line-width:1;
