@@ -65,6 +65,7 @@ module.exports = {
       miny, 
       maxx, 
       maxy; 
+    var first = false;
     features.forEach(function( f, i ){
       if (f.geometry && f.geometry.type == 'Point' ){
         if ( i == 0){
@@ -77,8 +78,9 @@ module.exports = {
         if (f.geometry.coordinates[1] < miny) miny = f.geometry.coordinates[1];
         if (f.geometry.coordinates[0] > maxx) maxx = f.geometry.coordinates[0];
         if (f.geometry.coordinates[1] > maxy) maxy = f.geometry.coordinates[1];
-      } else if ( f.geometry && f.geometry.type == 'Polygon' && f.geometry.coordinates ) {
-        f.geometry.coordinates[0].forEach(function( c, j ) {
+      } else if ( f.geometry && ( f.geometry.type == 'Polygon' || f.geometry.type == 'MultiPolygon') && f.geometry.coordinates ) {
+        var coords = (f.geometry.type == 'MultiPolygon') ? f.geometry.coordinates[0][0] : f.geometry.coordinates[0];
+        coords.forEach(function( c, j ) {
           if ( i == 0){
             minx = c[0],
             miny = c[1],
@@ -108,7 +110,7 @@ module.exports = {
 
   setGeomType: function( json, feature ){
      var tmpl_dir = '/../templates/';
-     if ( feature.geometry.type.toLowerCase() == 'polygon' ) {
+     if ( feature.geometry.type.toLowerCase() == 'polygon' || feature.geometry.type.toLowerCase() == 'multipolygon') {
         json.geometryType = 'esriGeometryPolygon';
         json.drawingInfo.renderer = require(__dirname + tmpl_dir + 'renderers/polygon.json');
       } else if ( feature.geometry.type.toLowerCase() == 'linestring' ){
