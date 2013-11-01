@@ -17,7 +17,6 @@
     "include-all": "~0.1.1",
     "redis": "~0.8.4",
     "mongoskin": "~0.6.0",
-    "tilemath": "0.0.2",
     "node-fs": "~0.1.7",
     "canvas": "~1.1.1",
     "sphericalmercator": "~1.0.2",
