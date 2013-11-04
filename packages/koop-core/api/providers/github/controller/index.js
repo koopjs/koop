@@ -125,6 +125,12 @@ module.exports = {
    res.view('demo/github_tiles', { locals:{ user: req.params.user, repo: req.params.repo, file: req.params.file } });
   },
 
+  topojson_preview: function(req, res){
+   console.log('REQ', req)
+   req.params.file = req.params.file.replace('.geojson', '');
+   res.view('demo/github_topojson', { locals:{ user: req.params.user, repo: req.params.repo, file: req.params.file } });
+  },
+
   tiles: function( req, res ){
     //console.log( req.params );
     var key,

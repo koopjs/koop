@@ -4,6 +4,7 @@ function koopMap( dom ){
     map: map,
     add: addLayer,
     addTile: addTile,
+    addTopojson: addTopojson,
     remove: removeLayer 
   };   
 
@@ -16,6 +17,13 @@ function koopMap( dom ){
   
   function addTile( url ) {
     L.tileLayer(url, {}).addTo(map);
+  }
+
+  function addTopojson( url ) {
+    $.getJSON(url, function(data) {
+      var topo = new L.TopoJSON(data[ 0 ], {});
+      topo.addTo(map);
+    });
   }
 
   function addLayer( url ) {
