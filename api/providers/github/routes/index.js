@@ -60,6 +60,12 @@ module.exports = {
     action: 'tile_preview'
   },
 
+  'get /github/:user/:repo/:file/topojson/preview' : {
+    controller  : 'github',
+    action: 'topojson_preview'
+  },
+
+
   'get /github/:user/:repo/:file/tiles/:z/:x/:y.:format': { //:z/:x/:y' : {
     controller : 'github',
     action: 'tiles'
