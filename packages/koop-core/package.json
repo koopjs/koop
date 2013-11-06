@@ -21,7 +21,7 @@
     "canvas": "~1.1.1",
     "sphericalmercator": "~1.0.2",
     "qs": "~0.6.5",
-    "nodetiles-core": "https://api.github.com/repos/chelm/nodetiles-core/tarball/master",
+    "nodetiles-core": "0.0.2",
     "topojson": "~1.4.3"
   },
   "devDependencies": {
