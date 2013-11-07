@@ -3,7 +3,7 @@ module.exports = {
   infoCollection: 'koop-info', 
 
   connect: function( conn ){
-    this.client = mongo.db( conn );
+    this.client = mongo.db( conn, {safe:false} );
     return this; 
   },
 
