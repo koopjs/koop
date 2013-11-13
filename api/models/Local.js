@@ -10,10 +10,19 @@ module.exports = {
     }
   },
 
-  insert: function( key, geojson, callback ){
-    console.log('INSERT', key);
-    this.store[key] = geojson;
+  insert: function( type, key, geojson, callback ){
+    this.store[type+':'+key] = geojson;
     callback(null, geojson); 
+  },
+
+  register: function( type, key, info, callback ){
+    this.store[type + ':' + key + ':' + info.id] = info;
+    callback(null, geojson);
+  },
+
+  deregister: function( type, key, id, callback ){
+    delete  this.store[type+':'+key] = info;
+    callback(null, geojson);
   },
 
   remove: function( key, callback){

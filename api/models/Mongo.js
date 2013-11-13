@@ -134,6 +134,32 @@ module.exports = {
     });
   },
 
+  services: { 
+    register: function( type, info, callback){
+      Mongo._collection( type ).insert( info,  function(err, result){
+        callback( err, true );
+      });
+    },
+
+    count: function( type, callback){
+      Mongo._collection( type ).count( function(err, cnt){
+        callback( err, cnt );
+      });
+    },
+
+    remove: function( type, id, callback){
+      Mongo._collection( type ).remove( { _id: id },  function(err, result){
+        callback( err, true );
+      });
+    },
+
+    get: function( type, id, callback){
+      Mongo._collection( type ).find( ( (id) ? { _id: id } : {})).toArray(function (err, docs) {
+        callback( err, docs );
+      });
+    }
+  },
+
 
   //--------------
     // PRIVATE METHODS
