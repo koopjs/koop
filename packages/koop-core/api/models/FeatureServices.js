@@ -65,6 +65,7 @@ module.exports = {
       miny, 
       maxx, 
       maxy; 
+
     var first = false;
     features.forEach(function( f, i ){
       if (f.geometry && f.geometry.type == 'Point' ){
@@ -140,7 +141,7 @@ module.exports = {
         data.forEach(function( d, i){
           json.layers[i] = {
             id: i,
-            name: d.name || 'layer-'+i,
+            name: d.name || 'layer '+i,
             parentLayerId: -1,
             defaultVisibility: true,
             subLayerIds: null,

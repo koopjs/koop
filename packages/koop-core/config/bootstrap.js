@@ -9,7 +9,7 @@ module.exports.bootstrap = function (cb) {
   setTimeout(function(){ require('../api/providers/'); }, 1000);
 
   sails.config.defaultStyle = fs.readFileSync('./api/templates/renderers/style.mss','utf8');
-  console.log('Default Style:', sails.config.defaultStyle);
+  //console.log('Default Style:', sails.config.defaultStyle);
  
   // use redis for expiring cache requests  
   var redis = require("redis");
