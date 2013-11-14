@@ -29,7 +29,7 @@ var Thumbnail = function(){
   // actually renders and returns the saved file 
   this.render = function( json, extent, options, callback ){
 
-    console.log(extent, json.features[0].geometry );
+    //console.log(extent, json.features[0].geometry );
 
     var map = new nodetiles.Map({
       projection: "EPSG:900913"
@@ -44,7 +44,7 @@ var Thumbnail = function(){
     }
 
     map.addStyle( sails.config.defaultStyle );
-    //console.log('STYLE', fs.readFileSync('./api/templates/renderers/style.mss') );
+    console.log('STYLE', fs.readFileSync('./api/templates/renderers/style.mss') );
     //map.addStyle( fs.readFileSync('./api/templates/renderers/style.mss','utf8') );
 
     // project extent
