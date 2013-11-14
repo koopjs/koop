@@ -202,7 +202,7 @@ module.exports = {
               };
             }
 
-            console.log(extent);
+            console.log(extent, geojson.features[0].geometry );
 
             Thumbnail.generate( geojson, extent, req.query, function(err, file){
               if (err) {

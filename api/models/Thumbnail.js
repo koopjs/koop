@@ -29,6 +29,8 @@ var Thumbnail = function(){
   // actually renders and returns the saved file 
   this.render = function( json, extent, options, callback ){
 
+    console.log(extent, json.features[0].geometry );
+
     var map = new nodetiles.Map({
       projection: "EPSG:900913"
     });
