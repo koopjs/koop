@@ -38,6 +38,11 @@ module.exports = {
     controller: 'agol',
     action: 'featureserver'
   },
+
+  'get /agol/:id/:item/thumbnail': {
+    controller: 'agol',
+    action: 'thumbnail'
+  },
   
   'delete /agol/:id': {
     controller: 'agol',

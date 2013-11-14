@@ -1,5 +1,5 @@
 @land: lighten(#080,20%);
-@line: #1abc9c;
+@line: #fff;
 
 #point { 
   marker-fill: #2c3e50;
@@ -11,12 +11,12 @@
 }
 
 #polygon {
-  polygon-fill: #16a085;
+  polygon-fill: #999;
   line-color: @line;
   line-width: 1;
 }
 
 #linestring {
-  line-color: @line;
+  line-color: #2c3e50;
   line-width: 2;
 }

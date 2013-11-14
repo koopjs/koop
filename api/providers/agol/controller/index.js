@@ -1,4 +1,6 @@
-var request = require('request');
+var request = require('request'),
+  terraformer = require('Terraformer'),
+  terraformerParser = require('terraformer-arcgis-parser');
 
 module.exports = {
 
@@ -154,5 +156,65 @@ module.exports = {
       }
     });
     
-  }
+  },
+
+  thumbnail: function(req, res){
+    AGOL.find(req.params.id, function(err, data){
+      if (err) {
+        res.send( err, 500);
+      } else {
+        // Get the item 
+        AGOL.getItemData( data[0].host, req.params.item, req.query, function(error, itemJson){
+          if (error) {
+            res.send( error, 500);
+          } else {
+            var features = itemJson.data.featureCollection.layers[0].featureSet.features;
+            var geojson = {type: 'FeatureCollection', features: []};
+            var feature;
+            features.forEach(function(f, i){
+              feature = JSON.parse( terraformerParser.parse( f ).toJson() );
+              delete feature.bbox;
+              delete feature.geometry.bbox;
+              geojson.features.push( feature );
+            });
+
+            if ( !itemJson.extent ){
+              var extent = {
+                xmin: -180,
+                ymin: 85,
+                xmax: 180,
+                ymax: 85,
+                spatialReference: {
+                  wkid: 4326,
+                  latestWkid: 4326
+                }
+              };
+            } else {
+              var extent = {
+                xmin: itemJson.extent[0][0],
+                ymin: itemJson.extent[0][1],
+                xmax: itemJson.extent[1][0],
+                ymax: itemJson.extent[1][1],
+                spatialReference: {
+                  wkid: 4326,
+                  latestWkid: 4326
+                }
+              };
+            }
+
+            console.log(extent);
+
+            Thumbnail.generate( geojson, extent, req.query, function(err, file){
+              if (err) {
+                res.send(err, 500);
+              } else {
+                console.log('send file', file);
+                res.sendfile( file );
+              }
+            });
+          }
+        });
+      }
+    });
+  } 
 };
