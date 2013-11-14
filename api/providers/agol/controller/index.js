@@ -31,7 +31,7 @@ module.exports = {
   }, 
 
   find: function(req, res){
-    AGOL.find(req.params.id, function(err, data){
+    AGOL.find(parseInt(req.params.id), function(err, data){
       if (err) {
         res.send( err, 500);
       } else {
@@ -41,7 +41,7 @@ module.exports = {
   },
 
   findItem: function(req, res){
-    AGOL.find(req.params.id, function(err, data){
+    AGOL.find(parseInt(req.params.id), function(err, data){
       if (err) {
         res.send( err, 500);
       } else {
@@ -58,7 +58,7 @@ module.exports = {
   },
 
   findItemData: function(req, res){
-    AGOL.find(req.params.id, function(err, data){
+    AGOL.find(parseInt(req.params.id), function(err, data){
       if (err) {
         res.send( err, 500);
       } else {
@@ -145,7 +145,7 @@ module.exports = {
           if (error) {
             res.send( error, 500);
           } else {
-            FeatureCollectionProxy.geojson(itemJson.data.featureCollection.layers[0].featureSet, function(err, geojson){
+            FeatureCollectionProxy.geojson(itemJson.data, function(err, geojson){
               if ( !geojson.length ) {
                 geojson = [geojson];
               }
@@ -159,7 +159,7 @@ module.exports = {
   },
 
   thumbnail: function(req, res){
-    AGOL.find(req.params.id, function(err, data){
+    AGOL.find(parseInt(req.params.id), function(err, data){
       if (err) {
         res.send( err, 500);
       } else {
@@ -168,7 +168,7 @@ module.exports = {
           if (error) {
             res.send( error, 500);
           } else {
-            var features = itemJson.data.featureCollection.layers[0].featureSet.features;
+            var features = itemJson.data.features;
             var geojson = {type: 'FeatureCollection', features: []};
             var feature;
             features.forEach(function(f, i){

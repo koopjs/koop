@@ -16,6 +16,12 @@
   line-width: 1;
 }
 
+#multipolygon {
+  polygon-fill: #999;
+  line-color: @line;
+  line-width: 1;
+}
+
 #linestring {
   line-color: #2c3e50;
   line-width: 2;
