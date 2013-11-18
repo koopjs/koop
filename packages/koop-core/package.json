@@ -18,10 +18,9 @@
     "redis": "~0.8.4",
     "mongoskin": "~0.6.0",
     "node-fs": "~0.1.7",
-    "canvas": "~1.1.1",
     "sphericalmercator": "~1.0.2",
     "qs": "~0.6.5",
-    "nodetiles-core": "https://api.github.com/repos/nodetiles/nodetiles-core/tarball/master",
+    "nodetiles-core": "https://api.github.com/repos/chelm/nodetiles-core/tarball/master",
     "topojson": "~1.4.3"
   },
   "devDependencies": {

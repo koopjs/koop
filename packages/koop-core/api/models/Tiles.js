@@ -1,7 +1,6 @@
 var nodetiles = require('nodetiles-core'),
   GeoJsonSource = nodetiles.datasources.GeoJson,
   Projector = nodetiles.projector,
-  Canvas = require('canvas'),
   nfs = require('node-fs'),
   fs = require('fs'),
   terraformer = require('Terraformer'),
