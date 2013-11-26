@@ -11,7 +11,7 @@
     "request": "~2.27.0",
     "terraformer": "https://api.github.com/repos/chelm/Terraformer/tarball/master",
     "terraformer-arcgis-parser": "0.1.8",
-    "geohub": "0.2.0",
+    "geohub": "0.3.0",
     "underscore": "~1.5.1",
     "sql-parser": "~0.4.0",
     "include-all": "~0.1.1",
