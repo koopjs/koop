@@ -39,6 +39,7 @@ module.exports = {
     var path = key.join('/') + '.geojson';
 
     Geohub.repoSha(user, repo, path, sails.config.github_token, function(err, sha){
+      console.log(sha, json[0].sha);
       if ( sha == json[0].sha ){
         callback(null, false);
       } else {
