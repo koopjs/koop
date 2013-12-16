@@ -53,9 +53,9 @@ module.exports = {
   'get /github/:user/:repo/:file/preview' : {
     controller  : 'github',
     action: 'preview'
-  },
+  }
 
-  'get /github/:user/:repo/:file/tiles/preview' : {
+  /*'get /github/:user/:repo/:file/tiles/preview' : {
     controller  : 'github',
     action: 'tile_preview'
   },
@@ -74,6 +74,6 @@ module.exports = {
   'get /github/:user/:repo/:file/:layer/tiles/:z/:x/:y.:format': { //:z/:x/:y' : {
     controller : 'github',
     action: 'tiles'
-  }
+  }*/
 
 }
