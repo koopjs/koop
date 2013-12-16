@@ -3,7 +3,7 @@
 // providers must define a route, model, controller via common js style module : 
   // provider-name
     // /routes/index.js 
-    // /models/index.js 
+    // /models/ModelName.js 
     // /controller/index.js 
 
 (function(){
@@ -17,6 +17,8 @@
     next();
   });
 
+  // loads a model into koop 
+  // makes sure its globally accessible like other models
   function loadModels( options ){
     var files = require('include-all')({
       dirname   : options.path,
@@ -37,7 +39,6 @@
     });
   }
   
-  //console.log(sails);
   //enable cors 
   sails.express.app.all('/*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -46,10 +47,11 @@
   });
   
 
+  // read each dir and load the files into the app 
   fs.readdir( path, function(err, files){
     _.each(files, function( f ){
       var filepath = path + f;
-      if ( fs.lstatSync( filepath ).isDirectory() ) {
+      if ( fs.lstatSync( filepath ).isDirectory() && f != 'base') {
 
         var providerPath = __dirname + '/' + f;
 
