@@ -1,11 +1,12 @@
 var request = require('request'),
   terraformer = require('Terraformer'),
-  terraformerParser = require('terraformer-arcgis-parser');
+  terraformerParser = require('terraformer-arcgis-parser'),
+  extend = require('node.extend'),
+  base = require('../../base/controller.js');
 
-module.exports = {
+// inherit from base controller
+var Controller = extend({
 
-  provider: true,
- 
   register: function(req, res){
     if ( !req.body.host ){
       res.send('Must provide a host to register:', 500); 
@@ -101,7 +102,7 @@ module.exports = {
           if (error) {
             res.send( error, 500);
           } else {
-            Geojson.fromEsri(itemJson.data, function(err, geojson){
+            GeoJSON.fromEsri(itemJson.data, function(err, geojson){
               if ( !geojson.length ) {
                 geojson = [geojson];
               }
@@ -113,4 +114,7 @@ module.exports = {
     });
     
   }
-};
+
+}, base);
+
+module.exports = Controller;
