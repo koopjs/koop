@@ -85,7 +85,7 @@ describe('FeatureService Proxy Provider', function(){
       });*/
 
       it('should return 200 when accessing item data', function(done) {
-          agent.get('http://localhost:1337/agol/dcdev/9f44b197ff9444559c46cb2994dd618d/data')
+          agent.get('http://localhost:1337/agol/1/9f44b197ff9444559c46cb2994dd618d/data')
               .end( function( err, res ) {
                 res.should.have.status( 200 );
                 should.not.exist(err);
@@ -97,7 +97,7 @@ describe('FeatureService Proxy Provider', function(){
       });
 
       it('should return 200 when accessing item as a featureservice', function(done) {
-          agent.get('http://localhost:1337/agol/dcdev/9f44b197ff9444559c46cb2994dd618d/FeatureServer')
+          agent.get('http://localhost:1337/agol/1/9f44b197ff9444559c46cb2994dd618d/FeatureServer')
               .end( function( err, res ) {
                 res.should.have.status( 200 );
                 should.not.exist(err);
@@ -106,7 +106,7 @@ describe('FeatureService Proxy Provider', function(){
       });
 
       it('should return 200 when accessing item as a featureservice layer', function(done) {
-          agent.get('http://localhost:1337/agol/dcdev/9f44b197ff9444559c46cb2994dd618d/FeatureServer/0')
+          agent.get('http://localhost:1337/agol/1/9f44b197ff9444559c46cb2994dd618d/FeatureServer/0')
               .end( function( err, res ) {
                 //console.log('back');
                 //var json = res.body;
@@ -118,7 +118,7 @@ describe('FeatureService Proxy Provider', function(){
       });
 
       it('should return 200 when accessing item as a featureservice query', function(done) {
-          agent.get('http://localhost:1337/agol/dcdev/9f44b197ff9444559c46cb2994dd618d/FeatureServer/0/query')
+          agent.get('http://localhost:1337/agol/1/9f44b197ff9444559c46cb2994dd618d/FeatureServer/0/query')
               .end( function( err, res ) {
                 res.should.have.status( 200 );
                 should.not.exist(err);
@@ -126,14 +126,14 @@ describe('FeatureService Proxy Provider', function(){
               });
       });
 
-      it('should return 200 when accessing item as a featureservice query', function(done) {
-          agent.get('http://localhost:1337/agol/dcdev/9f44b197ff9444559c46cb2994dd618d/thumbnail')
+      /*it('should return 200 when accessing item as a featureservice query', function(done) {
+          agent.get('http://localhost:1337/agol/1/9f44b197ff9444559c46cb2994dd618d/thumbnail')
               .end( function( err, res ) {
                 res.should.have.status( 200 );
                 should.not.exist(err);
                 return done();
               });
-      });
+      });*/
 
     });
 
