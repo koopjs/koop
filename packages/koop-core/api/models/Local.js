@@ -28,5 +28,19 @@ module.exports = {
   remove: function( key, callback){
     delete this.store[key];
     callback(null, true);
+  },
+
+  timer: {
+    get: function(key, callback){
+      callback( null, this.store[key]);  
+    },
+    set: function(key, expires, callback){
+      var self = this;
+      this.store[key] = true;
+      setInterval(function(){
+        delete self.store[key];
+      }, expires);
+      callback(null, true);
+    }
   }
 };

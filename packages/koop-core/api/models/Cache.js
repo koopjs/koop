@@ -16,7 +16,7 @@ module.exports = {
       callback( 'Not found', null);
     } else {
       // checks the timer 
-      Cache.redis.get( type+':'+key+':timer', function( error, timer){
+      Cache.db.timer.get( type+':'+key+':timer', function( error, timer){
         if ( timer ){
           // got a timer, therefore we are good and just return
           console.log('Cache timer exists, not checking for updates', key);
@@ -29,8 +29,7 @@ module.exports = {
               if ( !success ){
                 // false is good -> reset timer and return data
                 // cache returned true, return current data
-                Cache.redis.set( type+':'+key+':timer', key, function( error, timer){
-                  Cache.redis.expire( type+':'+key+':timer', 360000);
+                Cache.db.timer.set( type+':'+key+':timer', 360000, function( error, timer){
                   callback( null, data );
                 });
               } else {
@@ -38,8 +37,7 @@ module.exports = {
                 console.log('Setting a timer', key);
                 self.remove(type, key, function(){
                   self.insert(type, key, success, function(err, res){
-                    Cache.redis.set( type+':'+key+':timer', key, function( error, timer){
-                      Cache.redis.expire( type+':'+key+':timer', 360000);
+                    Cache.db.timer.set( type+':'+key+':timer', 360000, function( error, timer){
                       callback( err, success );
                     });
                   });
@@ -65,14 +63,7 @@ module.exports = {
     Cache.db.select( type+':'+key, options, function(err, result){
       self.process( type, key, result, callback );     
     });
-  },
-
-  resetTimer: function( type, key ){
-    var self = this;
-    var id = type+':'+key+':timer';
-    Cache.redis.set( id, key, function( error, timer){
-      Cache.redis.expires( id, 3600);
-    });
   }
+
 
 };
