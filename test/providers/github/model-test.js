@@ -8,8 +8,6 @@ before(function (done) {
   global['github'] = require('../../../api/providers/github/models/Github.js');
   Mongo = require('../../../api/models/Mongo.js');
   Cache = require('../../../api/models/Cache.js');
-  var redis = require("redis");
-  Cache.redis = redis.createClient();
   Cache.db = Mongo.connect( 'localhost:27017/koop?auto_reconnect=true&poolSize=10', {safe:false} );
   done();
 });

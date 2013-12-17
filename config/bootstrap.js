@@ -12,8 +12,8 @@ module.exports.bootstrap = function (cb) {
   //console.log('Default Style:', sails.config.defaultStyle);
  
   // use redis for expiring cache requests  
-  var redis = require("redis");
-  Cache.redis = redis.createClient();
+  //var redis = require("redis");
+  //Cache.redis = redis.createClient();
 
   if ( argv.mongo ){
     // use mongo to store data 

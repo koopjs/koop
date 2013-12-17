@@ -8,15 +8,13 @@ before(function (done) {
   global['gist'] = require('../../api/providers/gist/models/Gist.js');
   Mongo = require('../../api/models/Mongo.js');
   Cache = require('../../api/models/Cache.js');
-  var redis = require("redis");
-  Cache.redis = redis.createClient();
 
   // use mongo to store data 
   Cache.db = Mongo.connect( 'localhost:27017/koop?auto_reconnect=true&poolSize=10', {safe:false} );
   done();
 });
 
-describe('Cache Model', function(){
+describe('Mongo Cache Model', function(){
 
     describe('when caching a github file', function(){
     

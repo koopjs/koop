@@ -160,6 +160,19 @@ module.exports = {
     }
   },
 
+  timer: {
+    set: function(key, expires, callback){
+      Mongo._collection( 'timers' ).ensureIndex( { "expireAt": 1 }, { expireAfterSeconds: 3600 } )
+      Mongo._collection( 'timers' ).insert({key: key, expiresAt: new Date() });
+      callback( null, true);
+    },
+    get: function(key, callback){
+      Mongo._collection( 'timers' ).findOne({key: key}, function(err, timer){
+        callback(err, timer);
+      });
+    }
+  },
+
 
   //--------------
     // PRIVATE METHODS
