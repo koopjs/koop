@@ -7,15 +7,70 @@
 
 To provide a flexible server for exposing new/experimental data sources and types as both Feature Services and other data formats. This project is meant to provide a simple platform for data experimentation with the ArcGIS platform. Koop is a testing ground for new ideas about making maps on the web with different data structures/formats as input.
 
+## Dependencies 
+
+* Node.js (version > 0.10.0) 
+* MongoDB ( optional, but recommended for faster caching )
+
+## Installation 
+
+Koop is a [Node.js](http://nodejs.org/) project so you'll need [Node.js](http://nodejs.org/), preferably a version > 0.10.0. 
+
+```javascript
+    # clone the repo
+    git clone git@github.com:ArcGIS/koop.git
+
+    # install the dependencies
+    cd koop
+    npm install
+
+    // visit [http://localhost:1337](http://localhost:1337)
+```
+
+## Running Koop
+
+Koop run its own http server and you can start it like this (koop will use 1337 as its default port): 
+
+```javascript
+    // to run with a local cache (no persistent cache)
+    node app.js 
+
+    // to run with mongo (provide a valid mongodb connection string)
+    node app.js --mongo=localhost:27017/koop  
+
+    // to run on a non default port 
+    PORT=1337 node app.js --mongo=localhost:27017/koop   
+     
+```
+
+## Tests 
+
+Currently the tests use grunt to run them, and they depend on a running instance of koop. Once you have koop running issue: 
+
+```javascript 
+    # install grunt if you dont have it
+    sudo npm install -g grunt-cli
+
+    # run the tests 
+    grunt test 
+```  
 
 
-# Demo / Docs
+# Demo + More Docs
 
-Koop turns geojson into feature services and the links below act as documentation for the various kinds of things Koop supports. We've deployed a sample server as testbed: [http://koop.dc.esri.com](http://koop.dc.esri.com)
+We've deployed a sample server as a testbed / proof of concept to [http://koop.dc.esri.com](http://koop.dc.esri.com)
 
 ## Data Providers
 
-Koop is now designed to expose 3rd party services as FeatureServices that are consumable within Esri products and services. Currently Koop has 2 such providers: ``gists`` and ``github``. Each provider resides in ``api/providers/``
+Koop is now designed to expose 3rd party services as FeatureServices that are consumable within Esri products and services. Currently Koop has the following providers shipped by default: 
+  
+  * gists
+  * github 
+  * agol 
+  * socrata 
+
+Each provider resides in ``api/providers/``
+
 
 ### Defining a new provider 
 
@@ -27,7 +82,7 @@ Each provider defines custom routes, a controller, and a model. Each of these us
   * Define custom routes in the "routes" index.js file: 
 
 ```javascript      
-        // defined in api/providers/routes/index.js
+        // defined in api/providers/sample/routes/index.js
  
         module.exports = {
           'get /sample': {
@@ -58,22 +113,19 @@ Each provider defines custom routes, a controller, and a model. Each of these us
   * each method takes in a request and response property and needs to send something to the reponse. 
  
 #### Models 
-  * Should be used to interact with 3rd party services and databases
+  * Should be used to interact directly with 3rd party services and databases
+  * Models make the http requests to API and should hand back raw data to the controllers
 
 
 
-## Gists 
-
-You can pull geojson data directly from a gist too.
+## Example URL Structure 1: Gists as a FeatureService  
 
   * [http://koop.dc.esri.com/gist/6021269](http://koop.dc.esri.com/gist/6021269)
   * [http://koop.dc.esri.com/gist/6021269/FeatureServer](http://koop.dc.esri.com/gist/6021269/FeatureServer)
   * [http://koop.dc.esri.com/gist/6021269/FeatureServer/0](http://koop.dc.esri.com/gist/6021269/FeatureServer/0)
   * [http://koop.dc.esri.com/gist/6021269/FeatureServer/0/query](http://koop.dc.esri.com/gist/6021269/FeatureServer/0/query)
 
-## Github 
-
-And of course github can store geojson files as well. Koop can turn those into featureservices too. 
+## Example URL Structure 2: Github Repo as a FeatureService
 
   * [http://koop.dc.esri.com/github/colemanm/hurricanes/fl_2004_hurricanes](http://koop.dc.esri.com/github/colemanm/hurricanes/fl_2004_hurricanes)
   * [http://koop.dc.esri.com/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer](http://koop.dc.esri.com/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/)
@@ -85,65 +137,14 @@ And of course github can store geojson files as well. Koop can turn those into f
 
 ## Feature Service Support 
 
-We'd like to have full feature service support from any geojson data source. Below is the current state of API coverage: 
+We'd like to have full feature service query support from any geojson data source. Currently the coverage is limited to the following params: 
 
-### /query 
+To see a full list of what koop will support in time visit [http://resources.arcgis.com/en/help/arcgis-rest-api/](http://resources.arcgis.com/en/help/arcgis-rest-api/#/Query_Feature_Service_Layer/02r3000000r1000000/)
 
-#### f 
-  * The default output from Koop is json, so we dont support f = html. 
-
-#### objectIds=[comma sep list]
-  * returns only the features that match a given objectId
-    * [http://localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3](http://localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3)
-
-#### returnCountOnly=true/false 
-  * returns only the count of features that would be returned based on other query params 
-    * [http://localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3&returnCountOnly=true](http://localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3&returnCountOnly=true)
-
-#### returnIdsOnly=true/false
-  * returns only the Ids of the feature that would be returned based on other params  
-    * [http://localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3&returnIdsOnly=true](http://       localhost:1337/geojson/snow/FeatureServer/0/query?objectIds=1,2,3&returnIdsOnly=true)
-
-#### geometry=minx,miny,maxx,maxy
-  * returns only the features that contained within the given geometry
-    * [http://localhost:1337/geojson/snow/FeatureServer/0/query?geometry=-110,30,-106,50](http://localhost:1337/geojson/snow/FeatureServer/0/query?geometry=-110,30,-106,50)
-
-## Installation 
-
-    # clone the repo 
-    git clone git@github.com:ArcGIS/koop.git
-    
-    # install the dependencies 
-    cd koop
-    npm install
-    
-    # run the server 
-    node app.js 
-  
-  visit [http://localhost:1337](http://localhost:1337) 
      
 ## Caching 
 
-Koop uses a local cache to store data so that it doesnt flood github with requests. By default Koop will use a local hash to store data, but this is inefficient and doesnt persist across processes. To get around this Koop can use a Redis. 
-
-To enable Redis caching you must first start a redis-server instance on your machine/server and then start koop with a ```--redis=true``` flag:
-
-    # start koop with Redis
-    node app.js --redis=true 
-
-
-## Testing 
-
-    # install grunt if you dont have it 
-    sudo npm install -g grunt-cli
-
-    # run the tests 
-    grunt test
-
-## Dependencies 
-
-  * [Terraformer](http://github.com/Esri/Terraformer)
-  * [Geohub](http://github.com/chelm/geohub) 
+Koop uses either a local cache or a MongoDB instance to store data so that it doesnt flood external API with requests. This is helpful for avoiding API rate limits and general makes Koop faster (quick access to data). By default Koop will use a local hash to store data, but this is inefficient and doesnt persist across processes. To get around this Koop can use MongoDB which works well for non-relational data and has the added bonus of having geospatial query support. 
 
 ## Resources
 
@@ -151,9 +152,6 @@ To enable Redis caching you must first start a redis-server instance on your mac
 * [ArcGIS REST Services](http://resources.arcgis.com/en/help/arcgis-rest-api/)
 * [twitter@esri](http://twitter.com/esri)
 * 
-## Presentations
-
-* [Fort Collins Esri Dev meetup October 2013](http://chelm.github.io/presentations/fort-collins-devmeetup-oct-2013/#0)
 
 ## Issues
 
