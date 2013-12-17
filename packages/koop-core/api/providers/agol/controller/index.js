@@ -106,7 +106,8 @@ var Controller = extend({
               if ( !geojson.length ) {
                 geojson = [geojson];
               }
-              Controller._processFeatureServer( req, res, err, data, callback);
+              // pass to the shared logic for FeatureService routing
+              Controller._processFeatureServer( req, res, err, geojson, callback);
             });
           }
         });
