@@ -6,8 +6,8 @@ var model, data;
 
 
 before(function (done) {
-  model = require('../models/Socrata');
-  data = require('./fixtures/earthquakes.json');
+  model = require('../../../api/providers/socrata/models/Socrata');
+  data = require('../../fixtures/earthquakes.json');
   done();
 });
 
