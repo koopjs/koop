@@ -59,7 +59,8 @@
         loadModels({ path: providerPath + '/models' });
 
         // load the controller 
-        sails.middleware.controllers[ f ] = require( providerPath + '/controller');
+        var controller = require( providerPath + '/controller');
+        sails.middleware.controllers[ controller.serviceName || f ] = controller;
 
         // bind the custom routes
         var routes = require( providerPath + '/routes');
