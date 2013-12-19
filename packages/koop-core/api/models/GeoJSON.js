@@ -16,6 +16,8 @@ module.exports = {
       geojson.features.push( feature );
     });
     callback(null, geojson);
-  }
+  },
+
+  toTopoJSON: function(geojson, callback) 
 
 };
