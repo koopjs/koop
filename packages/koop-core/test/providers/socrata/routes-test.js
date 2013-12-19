@@ -32,7 +32,7 @@ describe('Socrata Controller and Routes', function(){
       it('register should return 200 when POSTing w/o a host', function(done) {
           var id = 'tester';
           agent.post('http://localhost:1337/socrata/register')
-          .send({ host: 'arcgis.com', id: id })
+          .send({ host: 'https://data.cityofchicago.org', id: id })
           .end( function( err, res ) {
             var json = res.body;
             json.serviceId.should.not.equal( null );
@@ -55,6 +55,14 @@ describe('Socrata Controller and Routes', function(){
           .end( function( err, res ) {
             var json = res.body;
             res.should.have.status( 200 );
+            return done();
+          });
+      });
+
+      it('should return 404 when GETing an unknown provider/host', function(done) {
+          agent.get('http://localhost:1337/socrata/bogus')
+          .end( function( err, res ) {
+            res.should.have.status( 404 );
             return done();
           });
       });

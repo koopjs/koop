@@ -155,6 +155,7 @@ module.exports = {
 
     get: function( type, id, callback){
       Mongo._collection( type ).find( ( (id) ? { _id: id } : {})).toArray(function (err, docs) {
+        if (!docs.length) err = 'No service found by that id';
         callback( err, docs );
       });
     }

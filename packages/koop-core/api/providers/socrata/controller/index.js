@@ -30,9 +30,9 @@ var Controller = extend({
   }, 
 
   find: function(req, res){
-    Socrata.find(parseInt(req.params.id), function(err, data){
+    Socrata.find(req.params.id, function(err, data){
       if (err) {
-        res.send( err, 500);
+        res.send( err, 404);
       } else {
         res.json( data );
       }
@@ -40,7 +40,7 @@ var Controller = extend({
   },
 
   findResource: function(req, res){
-    Socrata.find(parseInt(req.params.id), function(err, data){
+    Socrata.find(req.params.id, function(err, data){
       if (err) {
         res.send( err, 500);
       } else {
