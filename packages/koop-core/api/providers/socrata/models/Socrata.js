@@ -36,7 +36,13 @@ var Socrata = function(){
       } else {
         self.toGeojson( JSON.parse( data.body ), function(err, geojson){
           geojson.name = id;
-          callback( err, geojson );
+          if ( options.topojson ){
+            Topojson.convert(geojson, function(error, topology){
+              callback( error, topology );
+            });
+          } else {
+            callback( err, geojson );
+          }
         });
       }
     }); 
