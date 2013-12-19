@@ -16,12 +16,12 @@ var Socrata = function(){
   };
 
   this.remove = function( id, callback ){
-    Cache.db.services.remove( 'socrata:services', id,  callback);
+    Cache.db.services.remove( 'socrata:services', parseInt(id) || id,  callback);
   }; 
 
   // get service by id, no id == return all
   this.find = function( id, callback ){
-    Cache.db.services.get( 'socrata:services', parseInt(id), callback);
+    Cache.db.services.get( 'socrata:services', parseInt(id) || id, callback);
   };
 
   this.socrata_path = '/resource/';

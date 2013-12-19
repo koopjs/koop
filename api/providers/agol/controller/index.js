@@ -32,7 +32,7 @@ var Controller = extend({
   }, 
 
   find: function(req, res){
-    AGOL.find(parseInt(req.params.id), function(err, data){
+    AGOL.find(req.params.id, function(err, data){
       if (err) {
         res.send( err, 500);
       } else {
@@ -42,7 +42,7 @@ var Controller = extend({
   },
 
   findItem: function(req, res){
-    AGOL.find(parseInt(req.params.id), function(err, data){
+    AGOL.find(req.params.id, function(err, data){
       if (err) {
         res.send( err, 500);
       } else {
@@ -59,7 +59,7 @@ var Controller = extend({
   },
 
   findItemData: function(req, res){
-    AGOL.find(parseInt(req.params.id), function(err, data){
+    AGOL.find(req.params.id, function(err, data){
       if (err) {
         res.send( err, 500);
       } else {

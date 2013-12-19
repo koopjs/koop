@@ -16,12 +16,12 @@ var AGOL = function(){
   };
 
   this.remove = function( id, callback ){
-    Cache.db.services.remove( 'agol:services', id,  callback);
+    Cache.db.services.remove( 'agol:services', parseInt(id) || id,  callback);
   }; 
 
   // get service by id, no id == return all
   this.find = function( id, callback ){
-    Cache.db.services.get( 'agol:services', parseInt(id), callback);
+    Cache.db.services.get( 'agol:services', parseInt(id) || id, callback);
   };
 
   this.agol_path = '/sharing/rest/content/items/';
