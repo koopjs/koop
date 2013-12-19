@@ -1,11 +1,43 @@
 # koop
 ## Turn GeoJSON into FeatureServices 
 
+Koop provides a flexible server for exposing 3rd party data sources (APIs) as both Feature Services and other data formats. This project is meant to provide a simple / plugable platform for experimenting with various data within the ArcGIS platform. Koop aims to provide a platform for accessing any API and making it easy to consume within the realm of Esri's geospatial web products. 
+
+## Features 
+
+v1.0 January 2014 
+
+  * Data Adapters
+    * Gist / Github
+    * Socrarta Open Data APIs
+    * ArcGIS Online 
+      - note: this is special case where koop can expose non-featureservices as actual feature services 
+  * API Caching 
+    * Support simple data caching with automatic cache expiration via etags, shas, etc 
+  * Request caching 
+    * should cache request and return 304 
+  * Feature Service Layer Queries 
+    * Full support of [http://resources.arcgis.com/en/help/arcgis-rest-api/](http://resources.arcgis.com/en/help/arcgis- rest-api/#/Query_Feature_Service_Layer/02r3000000r1000000/)
+  * API Registration 
+    - register hosts from Socrata and AGOL deploys 
+ 
+
+v1.1 March 2014 (planned)
+  * Data formats
+    - PNG Tiles
+    - Vector Tiles 
+    - Map Services 
+    - UTF Grid 
+
+  * Support mixed geometry types 
+  * HTML Templates
+  * Feature access via REST endpoints 
+  
+
+## Architecture 
+
 ![lots of geojson into featureservices](https://f.cloud.github.com/assets/351164/864572/24113276-f624-11e2-831d-50cf8395b200.png)
 
-## Goal 
-
-To provide a flexible server for exposing new/experimental data sources and types as both Feature Services and other data formats. This project is meant to provide a simple platform for data experimentation with the ArcGIS platform. Koop is a testing ground for new ideas about making maps on the web with different data structures/formats as input.
 
 ## Dependencies 
 
