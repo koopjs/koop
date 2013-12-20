@@ -90,28 +90,22 @@ var Socrata = function(){
     var parts = key.split('::');
     url = parts[0] + this.socrata_path + parts[1] + '.json';
 
-    request.get(url, function( err, data, response ){
-      if (err) {
-        callback( err, null );
-      } else {
-        self.toGeojson( JSON.parse( data.body ), function( error, geojson ){
-          geojson.updated_at = new Date(data.headers['last-modified']).getTime();
-          geojson.name = parts[1];
-          callback( error, [geojson] );
-        });
-      }
-    });
+    if (data.updated_at && (new Date().getTime() - data.updated_at) > (1000*60*60)){
+      callback(null, false);
+    } else { 
+      request.get(url, function( err, data, response ){
+        if (err) {
+          callback( err, null );
+        } else {
+          self.toGeojson( JSON.parse( data.body ), function( error, geojson ){
+            geojson.updated_at = new Date(data.headers['last-modified']).getTime();
+            geojson.name = parts[1];
+            callback( error, [geojson] );
+          });
+        }
+      });
+    }
 
-    /*if ( data.updated_at && data.updated_at < new Date().getTime() ){
-        callback(null, false);
-      } else {
-        var url = host + self.socrata_path + id + '.json';
-        request.get(url,
-        Geohub.repo( user, repo, path, sails.config.github_token, function( err, geojson ){
-          callback(null, geojson );
-        });
-      }
-    });*/
   };
 
 }
