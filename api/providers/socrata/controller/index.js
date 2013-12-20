@@ -49,7 +49,7 @@ var Controller = extend({
           if (error) {
             res.send( error, 500);
           } else { 
-            res.json( itemJson );
+            res.json( itemJson[0] );
           }
         });
       }
@@ -84,7 +84,7 @@ var Controller = extend({
             res.send( error, 500);
           } else {
             // pass to the shared logic for FeatureService routing
-            Controller._processFeatureServer( req, res, err, [geojson], callback);
+            Controller._processFeatureServer( req, res, err, geojson, callback);
           }
         });
       }

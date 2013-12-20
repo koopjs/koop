@@ -28,24 +28,31 @@ var Socrata = function(){
 
   // got the service and get the item
   this.getResource = function( host, id, options, callback ){
-    var self = this;
-    var url = host + this.socrata_path + id + '.json';
-    request.get(url, function(err, data ){
-      if (err) {
-        callback(err, null);
-      } else {
-        self.toGeojson( JSON.parse( data.body ), function(err, geojson){
-          geojson.name = id;
-          if ( options.topojson ){
-            Topojson.convert(geojson, function(error, topology){
-              callback( error, topology );
-            });
+    var self = this,
+      type = 'Socrata',
+      key = [host,id].join('::'); 
+
+    Cache.get( type, key, options, function(err, entry ){
+      if ( err ){
+        var url = host + self.socrata_path + id + '.json';
+        request.get(url, function(err, data, response ){
+          if (err) {
+            callback(err, null);
           } else {
-            callback( err, geojson );
+            self.toGeojson( JSON.parse( data.body ), function(err, geojson){
+              geojson.updated_at = new Date(data.headers['last-modified']).getTime();
+              geojson.name = id;
+              Cache.insert( type, key, [geojson], function( err, success){
+                if ( success ) callback( null, [geojson] );
+              });
+            });
           }
         });
+      } else {
+        callback( null, entry );
       }
-    }); 
+    });
+
   };
 
   this.toGeojson = function(json, callback){
@@ -74,6 +81,37 @@ var Socrata = function(){
       });
       callback(null, geojson);
     }
+  };
+
+  // compares the sha on the cached data and the hosted data
+  // this method name is special reserved name that will get called by the cache model
+  this.checkCache = function(key, data, callback){
+    var self = this;
+    var parts = key.split('::');
+    url = parts[0] + this.socrata_path + parts[1] + '.json';
+
+    request.get(url, function( err, data, response ){
+      if (err) {
+        callback( err, null );
+      } else {
+        self.toGeojson( JSON.parse( data.body ), function( error, geojson ){
+          geojson.updated_at = new Date(data.headers['last-modified']).getTime();
+          geojson.name = parts[1];
+          callback( error, [geojson] );
+        });
+      }
+    });
+
+    /*if ( data.updated_at && data.updated_at < new Date().getTime() ){
+        callback(null, false);
+      } else {
+        var url = host + self.socrata_path + id + '.json';
+        request.get(url,
+        Geohub.repo( user, repo, path, sails.config.github_token, function( err, geojson ){
+          callback(null, geojson );
+        });
+      }
+    });*/
   };
 
 }
