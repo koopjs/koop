@@ -39,7 +39,16 @@ var Socrata = function(){
           if (err) {
             callback(err, null);
           } else {
-            self.toGeojson( JSON.parse( data.body ), function(err, geojson){
+            var types = JSON.parse( data.headers['x-soda2-types'] );
+              fields = JSON.parse( data.headers['x-soda2-fields'] );
+            var locationField;
+            types.forEach(function(t,i){
+              if (t == 'location'){
+                locationField = fields[i];
+              }
+            });
+            console.log('locationfield', locationField);
+            self.toGeojson( JSON.parse( data.body ), locationField, function(err, geojson){
               geojson.updated_at = new Date(data.headers['last-modified']).getTime();
               geojson.name = id;
               Cache.insert( type, key, [geojson], function( err, success){
@@ -55,7 +64,7 @@ var Socrata = function(){
 
   };
 
-  this.toGeojson = function(json, callback){
+  this.toGeojson = function(json, locationField, callback){
     if (!json || !json.length){
       callback('Error converting data to geojson', null);
     } else {
@@ -64,17 +73,11 @@ var Socrata = function(){
       json.forEach(function(feature, i){
         geojsonFeature = {type: 'Feature', geometry: {}, id: i+1};
         if (feature){
-          if (feature.location && feature.location.latitude && feature.location.longitude){
-            geojsonFeature.geometry.coordinates = [parseFloat(feature.location.longitude), parseFloat(feature.location.latitude)];
+          if (feature[locationField] && feature[locationField].latitude && feature[locationField].longitude){
+            geojsonFeature.geometry.coordinates = [parseFloat(feature[locationField].longitude), parseFloat(feature[locationField].latitude)];
             geojsonFeature.geometry.type = 'Point';
             delete feature.location;
           } 
-          if (feature.latitude && feature.longitude){
-            geojsonFeature.geometry.coordinates = [parseFloat(feature.longitude), parseFloat(feature.latitude)];
-            geojsonFeature.geometry.type = 'Point';
-            delete feature.latitude;
-            delete feature.longitude;
-          }
           geojsonFeature.properties = feature;
           geojson.features.push( geojsonFeature );
         }
@@ -97,7 +100,15 @@ var Socrata = function(){
         if (err) {
           callback( err, null );
         } else {
-          self.toGeojson( JSON.parse( data.body ), function( error, geojson ){
+           var types = JSON.parse( data.headers['x-soda2-types'] );
+              fields = JSON.parse( data.headers['x-soda2-fields'] );
+            var locationField;
+            types.forEach(function(t,i){
+              if (t == 'location'){
+                locationField = fields[i];
+              }
+            });
+          self.toGeojson( JSON.parse( data.body ), locationField, function( error, geojson ){
             geojson.updated_at = new Date(data.headers['last-modified']).getTime();
             geojson.name = parts[1];
             callback( error, [geojson] );
