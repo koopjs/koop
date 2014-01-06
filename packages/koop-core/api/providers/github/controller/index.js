@@ -30,7 +30,33 @@ Controller.thumbnail = function(req, res){
      if ( err ){
        res.json( err, 500 );
      } else if ( data ){
-       res.json( data );
+        // process data for thumbnail generation
+        var self = this;
+        var extent = {
+          xmin: -180,
+          ymin: 85,
+          xmax: 180,
+          ymax: 85,
+          spatialReference: {
+            wkid: 4326,
+            latestWkid: 4326
+          }
+        };
+
+        var options = {
+          width: req.query.width || 150,
+          height: req.query.height || 150
+        };
+
+        // generate a thumbnail
+        Thumbnail.generate( data[0], options, function(err){
+          if (err){
+            res.send(err, 500);
+          } else {
+            // send back image
+          }
+        });
+        //res.json( data );
      } else {
        this.Error(req, res);
      }
