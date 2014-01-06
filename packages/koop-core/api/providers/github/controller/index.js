@@ -25,6 +25,27 @@ Controller.index = function(req, res){
   res.view('github/index');
 };
 
+Controller.thumbnail = function(req, res){
+  var _reply = function(err, data){
+     if ( err ){
+       res.json( err, 500 );
+     } else if ( data ){
+       res.json( data );
+     } else {
+       this.Error(req, res);
+     }
+  };
+
+   if ( req.params.user && req.params.repo && req.params.file ){
+      req.params.file = req.params.file.replace('.geojson', '');
+      Github.find(req.params.user, req.params.repo, req.params.file, req.query, _reply );
+    } else if ( req.params.user && req.params.repo, req.query ) {
+      Github.find(req.params.user, req.params.repo, null, req.query, _reply );
+    } else {
+      this.notFound(req, res);
+    }
+};
+
 // 
 Controller.getRepo = function(req, res){
 
@@ -88,5 +109,7 @@ Controller.preview = function(req, res){
    req.params.file = req.params.file.replace('.geojson', '');
    res.view('demo/github', { locals:{ user: req.params.user, repo: req.params.repo, file: req.params.file } });
 };
+
+
 
 module.exports = Controller;
