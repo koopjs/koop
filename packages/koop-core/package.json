@@ -20,7 +20,8 @@
     "sphericalmercator": "~1.0.2",
     "qs": "~0.6.5",
     "topojson": "~1.4.3",
-    "node.extend": "~1.0.8"
+    "node.extend": "~1.0.8",
+    "nodetiles-core": "0.0.3"
   },
   "devDependencies": {
     "grunt": "0.4.x",
