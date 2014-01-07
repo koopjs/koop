@@ -8,6 +8,7 @@
   marker-line-width:1;
   marker-opacity:1;
   marker-allow-overlap:true;
+  background-color: #f00;
 }
 
 #polygon {

@@ -32,28 +32,17 @@ Controller.thumbnail = function(req, res){
      } else if ( data ){
         // process data for thumbnail generation
         var self = this;
-        var extent = {
-          xmin: -180,
-          ymin: 85,
-          xmax: 180,
-          ymax: 85,
-          spatialReference: {
-            wkid: 4326,
-            latestWkid: 4326
-          }
-        };
+        var key = [req.params.user, req.params.repo, req.params.file].join('::');
 
-        var options = {
-          width: req.query.width || 150,
-          height: req.query.height || 150
-        };
+        req.query.cache = false;
 
         // generate a thumbnail
-        Thumbnail.generate( data[0], options, function(err){
+        Thumbnail.generate( data[0], key, req.query, function(err, file){
           if (err){
             res.send(err, 500);
           } else {
             // send back image
+            res.sendfile( file );
           }
         });
         //res.json( data );
