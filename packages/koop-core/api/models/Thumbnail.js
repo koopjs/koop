@@ -46,7 +46,8 @@ var Thumbnail = function(){
   // actually renders and returns the saved file 
   this.render = function( json, options, callback ){
 
-    var extent = {
+    if (!options.extent){
+      options.extent = {
           xmin: -180,
           ymin: 85,
           xmax: 180,
@@ -55,7 +56,8 @@ var Thumbnail = function(){
             wkid: 4326,
             latestWkid: 4326
           }
-        };
+      };
+    }
 
     //console.log(extent, json.features[0].geometry );
     var map = new nodetiles.Map({
@@ -75,8 +77,8 @@ var Thumbnail = function(){
 
     // project extent
     var merc = new sm( { size:options.width } ),
-      mins = merc.forward( [extent.xmin-5, extent.ymin-5] ),
-      maxs = merc.forward( [extent.xmax+5, extent.ymax+5] );
+      mins = merc.forward( [options.extent.xmin-5, options.extent.ymin-5] ),
+      maxs = merc.forward( [options.extent.xmax+5, options.extent.ymax+5] );
       //mins = [extent.xmin-5, extent.ymin-5]; //merc.forward( [extent.xmin-5, extent.ymin-5] ),
       //maxs = [extent.xmax-5, extent.ymax-5]; //merc.forward( [extent.xmax+5, extent.ymax+5] );
     
