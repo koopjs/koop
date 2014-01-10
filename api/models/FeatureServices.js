@@ -61,7 +61,9 @@ module.exports = {
   },
 
   extent: function( features ){
-    var minx, 
+    return Extent.bounds( features );
+
+    /*var minx, 
       miny, 
       maxx, 
       maxy; 
@@ -105,7 +107,7 @@ module.exports = {
           "wkid": 4326,
           "latestWkid": 4326
         }
-    };
+    };*/
 
   },
 
