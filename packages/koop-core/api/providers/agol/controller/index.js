@@ -114,7 +114,41 @@ var Controller = extend({
       }
     });
     
+  },
+
+  thumbnail: function(req, res){
+
+     AGOL.find(req.params.id, function(err, data){
+      if (err) {
+        res.send( err, 500);
+      } else {
+        // Get the item 
+        AGOL.getItemData( data[0].host, req.params.item, req.query, function(error, itemJson){
+          if (error) {
+            res.send( error, 500);
+          } else {
+            GeoJSON.fromEsri(itemJson.data, function(err, geojson){
+              req.query.cache = true;
+              var key = ['agol', req.params.id, req.params.item].join(':');
+
+              // generate a thumbnail
+              Thumbnail.generate( geojson, key, req.query, function(err, file){
+                if (err){
+                  res.send(err, 500);
+                } else {
+                  // send back image
+                  res.sendfile( file );
+                }
+              });
+              
+            });
+          }
+        });
+      }
+    });
+
   }
+
 
 }, base);
 
