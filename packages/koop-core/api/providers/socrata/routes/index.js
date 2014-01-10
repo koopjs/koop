@@ -34,6 +34,11 @@ module.exports = {
     action: 'featureserver'
   },
 
+  'get /socrata/:id/:item/thumbnail': {
+    controller: 'socrata',
+    action: 'thumbnail'
+  },
+
   'delete /socrata/:id': {
     controller: 'socrata',
     action: 'del'

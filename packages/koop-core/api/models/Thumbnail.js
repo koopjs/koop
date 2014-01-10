@@ -47,21 +47,13 @@ var Thumbnail = function(){
   this.render = function( json, options, callback ){
 
     if (!options.extent){
-      options.extent = {
-          xmin: -180,
-          ymin: 85,
-          xmax: 180,
-          ymax: 85,
-          spatialReference: {
-            wkid: 4326,
-            latestWkid: 4326
-          }
-      };
+      options.extent = Extent.bounds( json.features );
+      console.log( options.extent )
     }
 
     //console.log(extent, json.features[0].geometry );
     var map = new nodetiles.Map({
-      projection: "EPSG:4326"
+      projection: "EPSG:900913"
     });
 
     if ( json && json.features && json.features.length ) {
@@ -74,20 +66,17 @@ var Thumbnail = function(){
 
     map.addStyle( sails.config.defaultStyle );
 
-
     // project extent
+    var buff = 0;
     var merc = new sm( { size:options.width } ),
-      mins = merc.forward( [options.extent.xmin-5, options.extent.ymin-5] ),
-      maxs = merc.forward( [options.extent.xmax+5, options.extent.ymax+5] );
-      //mins = [extent.xmin-5, extent.ymin-5]; //merc.forward( [extent.xmin-5, extent.ymin-5] ),
-      //maxs = [extent.xmax-5, extent.ymax-5]; //merc.forward( [extent.xmax+5, extent.ymax+5] );
-    
-    console.log(' dude wheres my car', mins, maxs);
+      mins = merc.forward( [options.extent.xmin-buff, options.extent.ymin-buff] ),
+      maxs = merc.forward( [options.extent.xmax+buff, options.extent.ymax+buff] );
 
+    //var mins = [ -17929343.833647896, 1451685.3503452404 ];
+    //var maxs = [ -6748944.170467165, 8462856.604201747 ]; 
+    
     var png = options.f_base + '.png';
     
-    console.log('OPTIONS', options)
-
     map.render({
       bounds: {
         minX: mins[0],
@@ -104,12 +93,10 @@ var Thumbnail = function(){
           stream = canvas.createPNGStream();
 
         stream.on('data', function(chunk){
-          console.log('writing...')
           f.write(chunk);
         });
 
         stream.on('end', function(){
-          console.log('done...', png)
           setTimeout(function(){
             callback( null, png );
           },100);
