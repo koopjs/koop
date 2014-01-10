@@ -39,10 +39,10 @@ module.exports = {
     action: 'featureserver'
   },
 
-  /*'get /agol/:id/:item/thumbnail': {
+  'get /agol/:id/:item/thumbnail': {
     controller: 'agol',
     action: 'thumbnail'
-  },*/
+  },
   
   'delete /agol/:id': {
     controller: 'agol',
