@@ -10,10 +10,14 @@ module.exports = {
     var geojson = {type: 'FeatureCollection', features: []};
     var feature;
     json.features.forEach(function(f, i){
-      feature = JSON.parse( terraformerParser.parse( f ).toJson() );
-      delete feature.bbox;
-      delete feature.geometry.bbox;
-      geojson.features.push( feature );
+      try {
+        feature = JSON.parse( terraformerParser.parse( f ).toJson() );
+        delete feature.bbox;
+        delete feature.geometry.bbox;
+        geojson.features.push( feature );
+      } catch (e){
+        console.log('error parsing feature', e, f);
+      }
     });
     callback(null, geojson);
   }

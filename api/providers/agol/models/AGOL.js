@@ -71,14 +71,16 @@ var AGOL = function(){
     if ( !itemJson.url ){
       callback('Missing url parameter for Feature Service Item', null);
     } else {
-      request.get( itemJson.url + '/' + (options.layer || 0) + '/query?where=1=1&f=json', function(err, data ){
+      request.get( itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where=1=1&f=json', function(err, data ){
         if (err) {
           callback(err, null);
         } else {
           try { 
             itemJson.data = JSON.parse( data.body ).features;
+            console.log('parsed', itemJson.data.length);
             callback( null, itemJson );
           } catch (e){
+            console.log('Error', e);
             callback( 'Unable to parse Feature Service response', null );
           }
         }
