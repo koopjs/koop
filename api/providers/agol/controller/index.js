@@ -63,7 +63,12 @@ var Controller = extend({
       if (err) {
         res.send( err, 500);
       } else {
-        // Get the item 
+        // if we have a layer then pass it along
+        if ( req.params.layer ) {
+          req.query.layer = req.params.layer;
+          console.log('using a feature service layer', req.params.layer);
+        }
+        // Get the item
         AGOL.getItemData( data[0].host, req.params.item, req.query, function(error, itemJson){
           if (error) {
             res.send( error, 500);
@@ -128,8 +133,17 @@ var Controller = extend({
             res.send( error, 500);
           } else {
             GeoJSON.fromEsri(itemJson.data, function(err, geojson){
-              req.query.cache = true;
+              req.query.cache = false;
               var key = ['agol', req.params.id, req.params.item].join(':');
+
+              if ( itemJson.extent ){
+                req.query.extent = {
+                  xmin: itemJson.extent[0][0],
+                  ymin: itemJson.extent[0][1],
+                  xmax: itemJson.extent[1][0],
+                  ymax: itemJson.extent[1][1]
+                }; 
+              }
 
               // generate a thumbnail
               Thumbnail.generate( geojson, key, req.query, function(err, file){

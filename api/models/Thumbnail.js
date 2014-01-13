@@ -28,7 +28,7 @@ var Thumbnail = function(){
 
     // if the png exists send it back
     fs.exists( png, function(exists){
-      if (exists && options.cache ){
+      if (exists && sails.config.image_cache ){
         console.log('Using thumbnail cache', png);
         callback(null, png);
       } else {

@@ -103,7 +103,6 @@ var Controller = extend({
           if (error) {
             res.send( error, 500);
           } else {
-            req.query.cache = true;
             var key = ['socrata', req.params.id, req.params.item].join(':');
 
             // generate a thumbnail

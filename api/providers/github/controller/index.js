@@ -34,8 +34,6 @@ Controller.thumbnail = function(req, res){
         var self = this;
         var key = [req.params.user, req.params.repo, req.params.file].join('::');
 
-        req.query.cache = false;
-
         // generate a thumbnail
         Thumbnail.generate( data[0], key, req.query, function(err, file){
           if (err){
