@@ -47,7 +47,7 @@ var AGOL = function(){
         callback(err, null);
       } else {
         if (itemJson.type == 'Feature Collection' || itemJson.type == 'Feature Service' ) {
-          self[ itemJson.type.replace(' ', '') ]( host + self.agol_path, itemId, itemJson, callback );
+          self[ itemJson.type.replace(' ', '') ]( host + self.agol_path, itemId, itemJson, options, callback );
         } else {
           callback('Requested Item must be a Feature Collection', null);
         }
@@ -55,7 +55,7 @@ var AGOL = function(){
     });
   };
 
-  this.FeatureCollection = function(base_url, id, itemJson, callback){
+  this.FeatureCollection = function(base_url, id, itemJson, options, callback){
     var url = base_url + '/' + id + '/data?f=json'; 
     request.get(url, function(err, data ){
       if (err) {
@@ -67,16 +67,20 @@ var AGOL = function(){
     });
   };
 
-  this.FeatureService = function(base_url, id, itemJson, callback){
+  this.FeatureService = function(base_url, id, itemJson, options, callback){
     if ( !itemJson.url ){
       callback('Missing url parameter for Feature Service Item', null);
     } else {
-      request.get( itemJson.url + '/0/query?where=1=1&f=json', function(err, data ){
+      request.get( itemJson.url + '/' + (options.layer || 0) + '/query?where=1=1&f=json', function(err, data ){
         if (err) {
           callback(err, null);
         } else {
-          itemJson.data = JSON.parse( data.body ).features;
-          callback( null, itemJson );
+          try { 
+            itemJson.data = JSON.parse( data.body ).features;
+            callback( null, itemJson );
+          } catch (e){
+            callback( 'Unable to parse Feature Service response', null );
+          }
         }
       });
     }
