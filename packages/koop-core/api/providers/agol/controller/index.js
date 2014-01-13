@@ -107,7 +107,7 @@ var Controller = extend({
           if (error) {
             res.send( error, 500);
           } else {
-            GeoJSON.fromEsri(itemJson.data, function(err, geojson){
+            GeoJSON.fromEsri( {features: itemJson.data}, function(err, geojson){
               if ( !geojson.length ) {
                 geojson = [geojson];
               }
@@ -127,37 +127,57 @@ var Controller = extend({
       if (err) {
         res.send( err, 500);
       } else {
-        // Get the item 
-        AGOL.getItemData( data[0].host, req.params.item, req.query, function(error, itemJson){
-          if (error) {
-            res.send( error, 500);
-          } else {
-            GeoJSON.fromEsri(itemJson.data, function(err, geojson){
-              req.query.cache = false;
-              var key = ['agol', req.params.id, req.params.item].join(':');
 
-              if ( itemJson.extent ){
-                req.query.extent = {
-                  xmin: itemJson.extent[0][0],
-                  ymin: itemJson.extent[0][1],
-                  xmax: itemJson.extent[1][0],
-                  ymax: itemJson.extent[1][1]
-                }; 
-              }
+        // check the image first and return if exists
+        var key = ['agol', req.params.id, req.params.item, (req.params.layer || 0)].join(':');
+        var dir = sails.config.data_dir + '/thumbs/';
+        req.query.width = parseInt( req.query.width ) || 150;
+        req.query.height = parseInt( req.query.height ) || 150;
+        req.query.f_base = dir + key + '/' + req.query.width + '::' + req.query.height;
+        // var png = req.query.f_base+'.png';
 
-              // generate a thumbnail
-              Thumbnail.generate( geojson, key, req.query, function(err, file){
-                if (err){
-                  res.send(err, 500);
-                } else {
-                  // send back image
-                  res.sendfile( file );
-                }
-              });
-              
-            });
+        var fileName = Thumbnail.exists(key, req.query); 
+        if ( fileName ){
+          res.sendfile( fileName );
+        } else {
+
+          // if we have a layer then pass it along
+          if ( req.params.layer ) {
+            req.query.layer = req.params.layer;
+            console.log('using a feature service layer', req.params.layer);
           }
-        });
+
+          // Get the item 
+          AGOL.getItemData( data[0].host, req.params.item, req.query, function(error, itemJson){
+            if (error) {
+              res.send( error, 500);
+            } else {
+              GeoJSON.fromEsri({features: itemJson.data}, function(err, geojson){
+                req.query.cache = false;
+
+                if ( itemJson.extent ){
+                  req.query.extent = {
+                    xmin: itemJson.extent[0][0],
+                    ymin: itemJson.extent[0][1],
+                    xmax: itemJson.extent[1][0],
+                    ymax: itemJson.extent[1][1]
+                  }; 
+                }
+
+                // generate a thumbnail
+                Thumbnail.generate( geojson, key, req.query, function(err, file){
+                  if (err){
+                    res.send(err, 500);
+                  } else {
+                    // send back image
+                    res.sendfile( file );
+                  }
+                });
+                
+              });
+            }
+          });
+        }
       }
     });
 

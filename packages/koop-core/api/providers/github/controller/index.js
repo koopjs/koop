@@ -26,14 +26,17 @@ Controller.index = function(req, res){
 };
 
 Controller.thumbnail = function(req, res){
+  // check the image first and return if exists
+  var key = ['github', req.params.user, req.params.repo, req.params.file].join(':');
+  var dir = sails.config.data_dir + '/thumbs/';
+  req.query.width = parseInt( req.query.width ) || 150;
+  req.query.height = parseInt( req.query.height ) || 150;
+  req.query.f_base = dir + key + '/' + req.query.width + '::' + req.query.height;
+  
   var _reply = function(err, data){
      if ( err ){
        res.json( err, 500 );
      } else if ( data ){
-        // process data for thumbnail generation
-        var self = this;
-        var key = [req.params.user, req.params.repo, req.params.file].join('::');
-
         // generate a thumbnail
         Thumbnail.generate( data[0], key, req.query, function(err, file){
           if (err){
@@ -49,6 +52,12 @@ Controller.thumbnail = function(req, res){
      }
   };
 
+
+  var fileName = Thumbnail.exists(key, req.query);
+  if ( fileName ){
+    res.sendfile( fileName );
+  } else {
+
    if ( req.params.user && req.params.repo && req.params.file ){
       req.params.file = req.params.file.replace('.geojson', '');
       Github.find(req.params.user, req.params.repo, req.params.file, req.query, _reply );
@@ -57,6 +66,7 @@ Controller.thumbnail = function(req, res){
     } else {
       this.notFound(req, res);
     }
+  }
 };
 
 // 

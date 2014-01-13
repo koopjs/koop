@@ -48,6 +48,11 @@ module.exports = {
     controller: 'agol',
     action: 'thumbnail'
   },
+
+  'get /agol/:id/:item/thumbnail/:layer': {
+    controller: 'agol',
+    action: 'thumbnail'
+  },
   
   'delete /agol/:id': {
     controller: 'agol',

@@ -8,6 +8,25 @@ var fs = require('fs');
 
 var Thumbnail = function(){
 
+  // check to see if an image already exists and sails.config.image_cache is true
+  this.exists = function(key, options, callback){
+
+    var width = parseInt( options.width ) || 150;
+    var height = parseInt( options.height ) || 150;
+    var dir = sails.config.data_dir + '/thumbs/';
+    var png_name = dir + key + '/' + width + '::' + height + '.png';
+
+    // if the png exists send it back
+    var exists = fs.existsSync( png_name );
+
+    if (exists && sails.config.image_cache ){
+      return png_name; 
+    } else {
+      return false;
+    }
+  };
+
+
   // Primary entry point for thumbnail generation 
   // should be relatively stupid about where to write file, but should check for cached images 
   // @param json GeoJSON for rendering to image 
@@ -15,30 +34,12 @@ var Thumbnail = function(){
   this.generate = function( json, key, options, callback ) {
     var self = this;
 
-    //options.uniq = (new Date()).getTime();
-    options.dir = sails.config.data_dir + '/thumbs/';
-    options.width = parseInt( options.width ) || 150;
-    options.height = parseInt( options.height ) || 150;
-
-    var dir = options.dir + key;
-
-    options.f_base = dir + '/' + options.width + '::' + options.height;
-
-    var png = options.f_base+'.png';
-
-    // if the png exists send it back
-    fs.exists( png, function(exists){
-      if (exists && sails.config.image_cache ){
-        console.log('Using thumbnail cache', png);
-        callback(null, png);
-      } else {
-        // make sure dir exists 
-        nfs.mkdir( dir, '0777', true, function(){
-          fs.writeFile( options.f_base + '.json', JSON.stringify( json ), function(){
-            self.render(json, options, callback);
-          });
-        });
-      }
+    var dir = sails.config.data_dir + '/thumbs/' + key;
+    // make sure dir exists 
+    nfs.mkdir( dir, '0777', true, function(){
+      fs.writeFile( options.f_base + '.json', JSON.stringify( json ), function(){
+        self.render(json, options, callback);
+      });
     });
 
   };
@@ -48,7 +49,6 @@ var Thumbnail = function(){
 
     if (!options.extent){
       options.extent = Extent.bounds( json.features );
-      console.log( options.extent )
     }
 
     //console.log(extent, json.features[0].geometry );
