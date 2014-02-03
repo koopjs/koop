@@ -107,7 +107,8 @@ var Controller = extend({
           if (error) {
             res.send( error, 500);
           } else {
-            GeoJSON.fromEsri( {features: itemJson.data}, function(err, geojson){
+            //GeoJSON.fromEsri( {features: itemJson.data}, function(err, geojson){
+            GeoJSON.fromEsri( itemJson.data, function(err, geojson){
               if ( !geojson.length ) {
                 geojson = [geojson];
               }
@@ -152,7 +153,8 @@ var Controller = extend({
             if (error) {
               res.send( error, 500);
             } else {
-              GeoJSON.fromEsri({features: itemJson.data}, function(err, geojson){
+              //GeoJSON.fromEsri({features: itemJson.data}, function(err, geojson){
+              GeoJSON.fromEsri(itemJson.data, function(err, geojson){
                 req.query.cache = false;
 
                 if ( itemJson.extent ){

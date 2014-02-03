@@ -4,6 +4,7 @@ var data = require('../fixtures/snow.geojson');
 var polyData = require('../fixtures/polygon.geojson');
 
 before(function (done) {
+  Extent = require('../../api/models/Extent.js');
   Query = require('../../api/models/Query.js');
   done();
 });
