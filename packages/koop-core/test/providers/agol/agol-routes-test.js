@@ -124,14 +124,14 @@ describe('FeatureService Proxy Provider', function(){
               });
       });
 
-      /*it('should return 200 when accessing item as a featureservice query', function(done) {
+      it('should return 200 when accessing item as a featureservice query', function(done) {
           agent.get('http://localhost:1337/agol/1/9f44b197ff9444559c46cb2994dd618d/thumbnail')
               .end( function( err, res ) {
                 res.should.have.status( 200 );
                 should.not.exist(err);
                 return done();
               });
-      });*/
+      });
 
     });
 
