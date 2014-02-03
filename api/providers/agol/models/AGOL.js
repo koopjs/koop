@@ -76,8 +76,7 @@ var AGOL = function(){
           callback(err, null);
         } else {
           try { 
-            itemJson.data = JSON.parse( data.body ).features;
-            console.log('parsed', itemJson.data.length);
+            itemJson.data = {features: JSON.parse( data.body ).features};
             callback( null, itemJson );
           } catch (e){
             console.log('Error', e);

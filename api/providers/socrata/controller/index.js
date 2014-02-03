@@ -133,7 +133,13 @@ var Controller = extend({
       });
     }
 
+  },
+
+  
+  preview: function(req, res){
+   res.view('demo/socrata', { locals:{ host: req.params.id, item: req.params.item } });
   }
+
 
 
 }, base);

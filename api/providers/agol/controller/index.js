@@ -108,7 +108,6 @@ var Controller = extend({
             res.send( error, 500);
           } else {
             GeoJSON.fromEsri( {features: itemJson.data.features}, function(err, geojson){
-            //GeoJSON.fromEsri( itemJson.data, function(err, geojson){
               if ( !geojson.length ) {
                 geojson = [geojson];
               }
@@ -119,7 +118,7 @@ var Controller = extend({
         });
       }
     });
-    
+     
   },
 
   thumbnail: function(req, res){
@@ -182,6 +181,10 @@ var Controller = extend({
       }
     });
 
+  },
+
+  preview: function(req, res){
+   res.view('demo/agol', { locals:{ host: req.params.id, item: req.params.item } });
   }
 
 

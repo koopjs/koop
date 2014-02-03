@@ -76,9 +76,9 @@ var Socrata = function(){
             geojsonFeature.geometry.coordinates = [parseFloat(feature[locationField].longitude), parseFloat(feature[locationField].latitude)];
             geojsonFeature.geometry.type = 'Point';
             delete feature.location;
+            geojsonFeature.properties = feature;
+            geojson.features.push( geojsonFeature );
           } 
-          geojsonFeature.properties = feature;
-          geojson.features.push( geojsonFeature );
         }
       });
       callback(null, geojson);

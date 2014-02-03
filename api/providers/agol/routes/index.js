@@ -57,6 +57,12 @@ module.exports = {
   'delete /agol/:id': {
     controller: 'agol',
     action: 'del'
-  }
+  },
+
+  
+  'get /agol/:id/:item/preview': {
+    controller: 'agol',
+    action: 'preview'
+  },
 
 }

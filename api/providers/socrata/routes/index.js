@@ -42,6 +42,11 @@ module.exports = {
   'delete /socrata/:id': {
     controller: 'socrata',
     action: 'del'
-  }
+  },
+
+  'get /socrata/:id/:item/preview': {
+    controller: 'socrata',
+    action: 'preview'
+  },
 
 }
