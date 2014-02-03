@@ -20,7 +20,7 @@ describe('Socrata Model', function(){
 
     describe('socrata model methods', function() {
       it('toGeoJSON should err when given no data', function(done) {
-        model.toGeojson([], function(err, geojson){
+        model.toGeojson([], 'location', function(err, geojson){
           should.exist(err);
           should.not.exist( geojson );
           return done();
@@ -28,7 +28,7 @@ describe('Socrata Model', function(){
       });
 
       it('toGeoJSON should return geojson', function(done) {
-        model.toGeojson(data, function(err, geojson){
+        model.toGeojson(data, 'location', function(err, geojson){
           should.not.exist(err);
           should.exist( geojson );
           geojson.features.length.should.not.equal(0);
