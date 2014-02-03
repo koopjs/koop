@@ -47,7 +47,6 @@ var Socrata = function(){
                 locationField = fields[i];
               }
             });
-            console.log('locationfield', locationField);
             self.toGeojson( JSON.parse( data.body ), locationField, function(err, geojson){
               geojson.updated_at = new Date(data.headers['last-modified']).getTime();
               geojson.name = id;
