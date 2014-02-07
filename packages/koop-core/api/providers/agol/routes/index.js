@@ -65,4 +65,9 @@ module.exports = {
     action: 'preview'
   },
 
+  'get /agol/:id/:item/tiles/:z/:x/:y.:format': {
+    controller: 'agol',
+    action: 'tiles'
+  },
+
 }
