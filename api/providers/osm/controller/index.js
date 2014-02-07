@@ -9,6 +9,11 @@ var Controller = extend({
     points:'planet_osm_point',
     polygons:'planet_osm_polygon'
   },
+
+  // renders an empty map with a text input 
+  explore: function(req, res){
+    res.view('osm/index', { locals:{ where: req.query.where } });
+  },
     
   base: 'http://'+sails.config.host+':'+sails.config.port+'/osm',
 
@@ -54,7 +59,8 @@ var Controller = extend({
 
   _sendError: function(res, err){
     res.send(err,500);
-  } 
+  },
+
 
 }, base);
 
