@@ -23,5 +23,10 @@ module.exports = {
   'get /osm/:type/FeatureServer': {
     controller: 'osm',
     action: 'featureserver'
-  }
+  },
+
+  'get /osm/:type/explore': {
+    controller: 'osm',
+    action: 'explore'
+  },
 }

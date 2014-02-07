@@ -1,13 +1,5 @@
 function koopMap( dom ){ 
 
-  var koop = {
-    map: map,
-    add: addLayer,
-    addTile: addTileLayer,
-    addUTF: addUTF,
-    remove: removeLayer 
-  };   
-
   var map = L.map( dom ).setView([45.52751668442124, -122.67175197601318], 3);
   // Add ArcGIS Online Basemap
   L.esri.basemapLayer("NationalGeographic").addTo(map);
@@ -16,6 +8,7 @@ function koopMap( dom ){
 
   function addLayer( url ) {
     // Add ArcGIS Online feature service
+    console.log('adding layer', url);
     layerFS =  L.esri.featureLayer( url, {
         pointToLayer: function (geojson, latlng) {
           return L.marker(latlng, {
@@ -75,6 +68,15 @@ function koopMap( dom ){
       layerFS = null;
     }
   }
+
+  
+  var koop = {
+    map: map,
+    add: addLayer,
+    addUTF: addUTF,
+    addTile: addTileLayer,
+    remove: removeLayer
+  };
  
   return koop; 
 }
