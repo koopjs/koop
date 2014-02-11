@@ -60,25 +60,19 @@ module.exports = {
     action: 'thumbnail'
   },
 
-  /*'get /github/:user/:repo/:file/tiles/preview' : {
+  'get /github/:user/:repo/:file/tiles/preview' : {
     controller  : 'github',
     action: 'tile_preview'
   },
 
-  'get /github/:user/:repo/:file/topojson/preview' : {
-    controller  : 'github',
-    action: 'topojson_preview'
-  },
-
-
-  'get /github/:user/:repo/:file/tiles/:z/:x/:y.:format': { //:z/:x/:y' : {
+  'get /github/:user/:repo/:file/tiles/:z/:x/:y.:format': { 
     controller : 'github',
     action: 'tiles'
   },
 
-  'get /github/:user/:repo/:file/:layer/tiles/:z/:x/:y.:format': { //:z/:x/:y' : {
+  'get /github/:user/:repo/:file/:layer/tiles/:z/:x/:y.:format': { 
     controller : 'github',
     action: 'tiles'
-  }*/
+  }
 
 }
