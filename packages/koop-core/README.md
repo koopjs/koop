@@ -17,7 +17,7 @@ v1.0 January 2014
   * Request caching 
     * should cache request and return 304 
   * Feature Service Layer Queries 
-    * Full support of [http://resources.arcgis.com/en/help/arcgis-rest-api/](http://resources.arcgis.com/en/help/arcgis- rest-api/#/Query_Feature_Service_Layer/02r3000000r1000000/)
+    * Full support of [http://resources.arcgis.com/en/help/arcgis-rest-api/](http://resources.arcgis.com/en/help/arcgis-rest-api/#/Query_Feature_Service_Layer/02r3000000r1000000/)
   * API Registration 
     - register hosts from Socrata and AGOL deploys 
  
