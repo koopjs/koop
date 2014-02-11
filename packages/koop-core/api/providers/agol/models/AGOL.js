@@ -71,8 +71,12 @@ var AGOL = function(){
     if ( !itemJson.url ){
       callback('Missing url parameter for Feature Service Item', null);
     } else {
-      console.log(itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where=1=1&f=json');
-      request.get( itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where=1=1&f=json', function(err, data ){
+      var url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where=1=1&f=json'; 
+      if (options.geometry){
+        url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
+      }
+      console.log( url );
+      request.get( url, function(err, data ){
         if (err) {
           callback(err, null);
         } else {

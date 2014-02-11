@@ -197,13 +197,14 @@ var Controller = extend({
 
     var _send = function( err, data ){
       req.params.key = key + ':' + layer;
-        Tiles.get( req.params, data[ layer ], function(err, tile){
-          if ( req.params.format == 'png'){
-            //res.contentType('image/png');
-            res.sendfile( tile );
-          } else {
-            res.send( tile );
-          }
+        GeoJSON.fromEsri( data, function(err, geojson){
+          Tiles.get( req.params, geojson, function(err, tile){
+            if ( req.params.format == 'png'){
+              res.sendfile( tile );
+            } else {
+              res.send( tile );
+            }
+          });
         });
     }
 
@@ -246,7 +247,7 @@ var Controller = extend({
             if (error) {
               res.send( error, 500);
             } else {
-              _send(error, itemJson);
+              _send(error, itemJson.data);
             }
           });
         }
