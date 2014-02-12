@@ -15,13 +15,13 @@ module.exports.bootstrap = function (cb) {
   //var redis = require("redis");
   //Cache.redis = redis.createClient();
 
-  if ( argv.mongo ){
+  /*if ( argv.mongo ){
     // use mongo to store data 
     console.log('Using Mongo DB storage');
     Cache.db = Mongo.connect(( argv.mongo || 'localhost:27017/koop' ) + '?auto_reconnect=true&poolSize=10');
   } else {
     Cache.db = Local;
-  }
+  }*/
 
   if ( argv.data_dir  ){
     sails.config.data_dir = argv.data_dir;
