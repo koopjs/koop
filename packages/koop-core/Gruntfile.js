@@ -368,16 +368,16 @@ module.exports = function (grunt) {
 
   // When Sails is lifted:
   grunt.registerTask('default', [
-    'compileAssets',
+    //'compileAssets',
     'linkAssets',
     'watch'
   ]);
 
   grunt.registerTask('compileAssets', [
-    //'clean:dev',
-    //'jst:dev',
-    //'less:dev',
-    //'copy:dev'
+    'clean:dev',
+    'jst:dev',
+    'less:dev',
+    'copy:dev'
   ]);
 
   grunt.registerTask('linkAssets', [
@@ -395,7 +395,7 @@ module.exports = function (grunt) {
   // Build the assets into a web accessible folder.
   // (handy for phone gap apps, chrome extensions, etc.)
   grunt.registerTask('build', [
-    'compileAssets',
+    //'compileAssets',
     'linkAssets',
     'clean:build',
     'copy:build'
@@ -436,7 +436,7 @@ module.exports = function (grunt) {
     });
   });
 
-  grunt.registerTask('server', ['runNode', 'watch']);
+  grunt.registerTask('server', ['compileAssets', 'runNode', 'watch']);
 
 
   // When API files are changed:
