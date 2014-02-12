@@ -4,6 +4,7 @@ function koopMap( dom ){
     map: map,
     add: addLayer,
     addTile: addTileLayer,
+    addUTF: addUTF,
     remove: removeLayer 
   };   
 
@@ -36,6 +37,22 @@ function koopMap( dom ){
   function addTileLayer( url ) {
     L.tileLayer(url, {}).addTo(map);
   }
+
+  function addUTF(url){
+
+    var utfGrid = new L.UtfGrid('http://{s}.tiles.mapbox.com/v3/mapbox.geography-class/{z}/{x}/{y}.grid.json?callback={cb}');
+
+    utfGrid.on('click', function (e) {
+      console.log('click: ' + e.data);
+    }); 
+    utfGrid.on('mouseover', function (e) {
+      console.log('mouseover: ' + e.data);
+    });
+    utfGrid.on('mouseout', function (e) {
+      console.log('mouseout: ' + e.data);
+    });
+  }
+
 
   function createPopup(geojson,layer) {
     // Show all data

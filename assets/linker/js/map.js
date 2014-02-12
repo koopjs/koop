@@ -3,28 +3,16 @@ function koopMap( dom ){
   var koop = {
     map: map,
     add: addLayer,
-    addTile: addTile,
-    addTopojson: addTopojson,
+    addTile: addTileLayer,
+    addUTF: addUTF,
     remove: removeLayer 
   };   
 
-  var map = L.map( dom).setView([45.52751668442124, -122.67175197601318], 3);
+  var map = L.map( dom ).setView([45.52751668442124, -122.67175197601318], 3);
   // Add ArcGIS Online Basemap
   L.esri.basemapLayer("NationalGeographic").addTo(map);
 
   var layerFS;
-
-  
-  function addTile( url ) {
-    L.tileLayer(url, {}).addTo(map);
-  }
-
-  function addTopojson( url ) {
-    $.getJSON(url, function(data) {
-      var topo = new L.TopoJSON(data[ 0 ], {});
-      topo.addTo(map);
-    });
-  }
 
   function addLayer( url ) {
     // Add ArcGIS Online feature service
@@ -45,6 +33,27 @@ function koopMap( dom ){
         }
       }).addTo(map);
   }
+
+  function addTileLayer( url ) {
+    L.tileLayer(url, {}).addTo(map);
+  }
+
+  function addUTF(url){
+
+    var utfGrid = new L.UtfGrid( url+ '?callback={cb}');
+
+    utfGrid.on('click', function (e) {
+      console.log('click: ', e);
+    }); 
+    utfGrid.on('mouseover', function (e) {
+      if (e.data) console.log('mouseover: ', e.data);
+    });
+    utfGrid.on('mouseout', function (e) {
+//      console.log('mouseout: ', e.data);
+    });
+    map.addLayer(utfGrid);
+  }
+
 
   function createPopup(geojson,layer) {
     // Show all data

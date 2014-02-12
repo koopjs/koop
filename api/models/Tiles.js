@@ -95,7 +95,7 @@ module.exports = {
             if ( geojson && geojson.features && geojson.features.length ) {
               map.addData(new GeoJsonSource({
                 name: geojson.features[0].geometry.type.toLowerCase(),
-                path: file.replace(/png/g, 'json'),
+                path: file.replace(/png|grid/g, 'json'),
                 projection: "EPSG:4326"
               }));
             }
@@ -133,13 +133,16 @@ module.exports = {
                 width: 256,   // number of pixels to output
                 height: 256,
                 callback: function(err, grid) {
-                  callback(null, grid);
+                  fs.writeFile( file, JSON.stringify( grid ), function(){
+                    callback(null, grid);
+                  });
                 }
                });
             }
           };
 
-          var jsonFile = file.replace(/png/g, 'json');
+          var jsonFile = file.replace(/png|grid/g, 'json');
+
           if ( !nfs.existsSync( jsonFile ) ) {
 
             var dir = jsonFile.split('/');
@@ -149,6 +152,10 @@ module.exports = {
               fs.writeFile( jsonFile, JSON.stringify( geojson ), function(){
                 render();
               });
+            });
+          } else if ( format == 'grid' && nfs.existsSync( file )){
+            fs.readFile(file, function(err, data){
+              callback(null, JSON.parse(data));  
             });
           } else {
             render();
