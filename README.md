@@ -9,7 +9,7 @@ v1.0 January 2014
 
   * Data Adapters
     * Gist / Github
-    * Socrarta Open Data APIs
+    * Socrata Open Data APIs
     * ArcGIS Online 
       - note: this is special case where koop can expose non-featureservices as actual feature services 
   * API Caching 
