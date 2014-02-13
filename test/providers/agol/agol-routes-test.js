@@ -46,6 +46,7 @@ describe('FeatureService Proxy Provider', function(){
       it('register should return 200 when GETing all registered providers', function(done) {
           agent.get('http://localhost:1337/agol')
           .end( function( err, res ) {
+            console.log('BACK');
             var json = res.body;
             res.should.have.status( 200 );
             return done();
@@ -83,7 +84,7 @@ describe('FeatureService Proxy Provider', function(){
       });*/
 
       it('should return 200 when accessing item data', function(done) {
-          agent.get('http://localhost:1337/agol/1/9f44b197ff9444559c46cb2994dd618d/data')
+          agent.get('http://localhost:1337/agol/1/8d543eb987bf42edb0c389f47475e124/data')
               .end( function( err, res ) {
                 res.should.have.status( 200 );
                 should.not.exist(err);
