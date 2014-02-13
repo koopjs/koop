@@ -2,10 +2,7 @@
 var terraformer = require('Terraformer');
 var terraformerParser = require('terraformer-arcgis-parser');
 
-module.exports = {
-
-  // convert 
-  fromEsri: function( json, callback ){
+exports.fromEsri = function( json, callback ){
     // use terraformer to convert esri json to geojson
     var geojson = {type: 'FeatureCollection', features: []};
     var feature;
@@ -20,6 +17,4 @@ module.exports = {
       }
     });
     callback(null, geojson);
-  }
-
-};
+  };
