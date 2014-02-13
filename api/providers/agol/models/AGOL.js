@@ -87,7 +87,7 @@ var AGOL = function(){
     }
   };
 
-}
+};
   
 
 module.exports = new AGOL();

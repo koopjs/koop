@@ -3,4 +3,4 @@ module.exports = {
     controller: 'sample',
     action: 'index'
   }
-}
+};
