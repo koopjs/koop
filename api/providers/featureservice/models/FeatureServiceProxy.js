@@ -56,7 +56,7 @@ exports.topojson = function( json, callback ){
   });
 };
 
-expots.thumbnail = function( url, options, callback ){
+exports.thumbnail = function( url, options, callback ){
   var self = this;
   //http://localhost:1337/github/chelm/geodata/ski_areas/FeatureServer/0
   this.proxy(url.replace('/query', ''), {f:'json'}, function(err, layerInfo ){
