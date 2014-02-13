@@ -90,7 +90,7 @@ describe('FeatureService Proxy Provider', function(){
                 should.not.exist(err);
                 var item = res.body;
                 item.data.should.not.equal( null );
-                item.id.should.equal( '9f44b197ff9444559c46cb2994dd618d' );
+                item.id.should.equal( '8d543eb987bf42edb0c389f47475e124' );
                 return done();
               });
       });
