@@ -42,7 +42,7 @@ v1.1 March 2014 (planned)
 ## Dependencies 
 
 * Node.js (version > 0.10.0) 
-* MongoDB ( optional, but recommended for faster caching )
+* PostgreSQL / PostGIS 
 
 ## Installation 
 
@@ -68,10 +68,10 @@ Koop run its own http server and you can start it like this (koop will use 1337 
     node app.js 
 
     // to run with mongo (provide a valid mongodb connection string)
-    node app.js --mongo=localhost:27017/koop  
+    node app.js   
 
     // to run on a non default port 
-    PORT=1337 node app.js --mongo=localhost:27017/koop   
+    PORT=1337 node app.js
      
 ```
 
