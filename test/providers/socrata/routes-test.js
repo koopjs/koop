@@ -2,7 +2,7 @@ var should = require('should');
 var path = require('path');
 var superagent = require('superagent');
 
-var resourceId = 'alternative-fuel-locations';
+var resourceId = 'f7f2-ggz5';
 
 before(function (done) {
   done();
@@ -10,10 +10,10 @@ before(function (done) {
 
 after(function( done ){
   var agent = superagent.agent();
-  agent.del('http://localhost:1337/socrata/tester')
-    .end( function( err, res ) {
+ // agent.del('http://localhost:1337/socrata/tester')
+ //   .end( function( err, res ) {
       done();
-    });
+ //   });
 });
 
 describe('Socrata Controller and Routes', function(){
@@ -68,6 +68,7 @@ describe('Socrata Controller and Routes', function(){
       });
 
       it('should return 200 when accessing item data', function(done) {
+          
           agent.get('http://localhost:1337/socrata/tester/'+resourceId )
               .end( function( err, res ) {
                 res.should.have.status( 200 );

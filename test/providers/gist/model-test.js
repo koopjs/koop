@@ -6,9 +6,7 @@ before(function (done) {
   repoData = require('../../fixtures/repo.geojson');
   snowData = require('../../fixtures/snow.geojson');
   global['github'] = require('../../../api/providers/github/models/Github.js');
-  Mongo = require('../../../api/models/Mongo.js');
-  Cache = require('../../../api/models/Cache.js');
-  Cache.db = Mongo.connect( 'localhost:27017/koop?auto_reconnect=true&poolSize=10', {safe:false} );
+  Cache = require('../../helpers/Cache.js');
   done();
 });
 

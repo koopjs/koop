@@ -2,7 +2,9 @@ exports.checkTime = (60*60*1000); // 60 mins
 
 exports.insert = function( type, key, data, callback ){
   Cache.db.insert( type+':'+key, data, function(err, success){
-    callback( err, success );
+    Cache.db.timer.set( type+':'+key+':timer', 360000, function( error, timer){
+      callback( err, success );
+    });
   });
 };
 

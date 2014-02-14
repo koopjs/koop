@@ -69,7 +69,6 @@ var Controller = extend({
         // if we have a layer then pass it along
         if ( req.params.layer ) {
           req.query.layer = req.params.layer;
-          console.log('using a feature service layer', req.params.layer);
         }
         // Get the item
         AGOL.getItemData( data[0].host, req.params.item, req.query, function(error, itemJson){
@@ -147,7 +146,6 @@ var Controller = extend({
           // if we have a layer then pass it along
           if ( req.params.layer ) {
             req.query.layer = req.params.layer;
-            console.log('using a feature service layer', req.params.layer);
           }
 
           // Get the item 
@@ -191,7 +189,6 @@ var Controller = extend({
   },
 
   tiles: function( req, res ){
-    //console.log( req.params );
     var key,
       layer = req.params.layer || 0;
 
@@ -210,7 +207,6 @@ var Controller = extend({
 
     // build the geometry from z,x,y
     var bounds = merc.bbox( req.params.x, req.params.y, req.params.z );
-    //console.log(req.params.z, req.params.x, req.params.y, bounds);
     req.query.geometry = {
         xmin: bounds[0],
         ymin: bounds[1],

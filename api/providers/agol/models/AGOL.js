@@ -9,7 +9,7 @@ var AGOL = function(){
     //var id = (new Date()).getTime();
     Cache.db.services.count( type, function(error, count){
       id = id || count++;
-      Cache.db.services.register( type, {'_id': id, 'host': host},  function( err, success ){
+      Cache.db.services.register( type, {'id': id, 'host': host},  function( err, success ){
         callback( err, id );
       });
     });
@@ -75,7 +75,6 @@ var AGOL = function(){
       if (options.geometry){
         url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
       }
-      console.log( url );
       request.get( url, function(err, data ){
         if (err) {
           callback(err, null);
