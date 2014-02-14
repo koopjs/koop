@@ -4,9 +4,7 @@ var superagent = require('superagent');
 
 before(function (done) {
   global['agol'] = require('../../../api/providers/agol/models/AGOL.js');
-  Mongo = require('../../../api/models/Mongo.js');
-  Cache = require('../../../api/models/Cache.js');
-  Cache.db = Mongo.connect( 'localhost:27017/koop?auto_reconnect=true&poolSize=10', {safe:false} );
+  Cache = require('../../helpers/Cache.js');
   done();
 });
 
@@ -63,7 +61,7 @@ describe('FeatureService Proxy Provider', function(){
           });
       });
 
-      /*it('should register and return 200 when accessing an item', function(done) {
+      it('should register and return 200 when accessing an item', function(done) {
           var id = 1;
           agent.post('http://localhost:1337/agol/register')
           .send({ host: 'http://arcgis.com', id: id })
@@ -72,7 +70,7 @@ describe('FeatureService Proxy Provider', function(){
             json.serviceId.should.not.equal( null );
             res.should.have.status( 200 );
 
-            agent.get('http://localhost:1337/agol/0/9f44b197ff9444559c46cb2994dd618d')
+            agent.get('http://localhost:1337/agol/1/9f44b197ff9444559c46cb2994dd618d')
               .end( function( err, res ) {
                 should.not.exist(err);
                 var item = res.body;
@@ -81,7 +79,7 @@ describe('FeatureService Proxy Provider', function(){
                 return done();
               });
           });
-      });*/
+      });
 
       it('should return 200 when accessing item data', function(done) {
           agent.get('http://localhost:1337/agol/1/8d543eb987bf42edb0c389f47475e124/data')

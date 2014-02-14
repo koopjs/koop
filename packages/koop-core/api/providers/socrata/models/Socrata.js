@@ -9,7 +9,7 @@ var Socrata = function(){
     //var id = (new Date()).getTime();
     Cache.db.services.count( type, function(error, count){
       id = id || count++;
-      Cache.db.services.register( type, {'_id': id, 'host': host},  function( err, success ){
+      Cache.db.services.register( type, {'id': id, 'host': host},  function( err, success ){
         callback( err, id );
       });
     });
