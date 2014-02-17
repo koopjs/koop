@@ -66,11 +66,7 @@ module.exports = {
     var template = require(__dirname + tmpl);
     if ( !data.length && data.features && data.features.length ){
       template.fields = this.fields( data.features[0].properties, params.idField );
-<<<<<<< HEAD
     } else if (data[0] && data[0].features[0] && data[0].features[0].length ) {
-=======
-    } else if (data[0] && data[0].features && data[0].feature.length){
->>>>>>> conflict
       template.fields = this.fields( data[0].features[0].properties, params.idField );
     } else {
       template.fields = [];
