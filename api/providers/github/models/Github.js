@@ -30,7 +30,7 @@ exports.find = function( user, repo, file, options, callback ){
 
 // compares the sha on the cached data and the hosted data
 // this method name is special reserved name that will get called by the cache model
-exports.checkCache = function(key, data, callback){
+/*exports.checkCache = function(key, data, callback){
   var json = data;
   key = key.split('/');
   var user = key.shift();
@@ -38,7 +38,7 @@ exports.checkCache = function(key, data, callback){
   var path = key.join('/') + '.geojson';
 
   Geohub.repoSha(user, repo, path, sails.config.github_token, function(err, sha){
-    console.log(sha, json[0].sha);
+    
     if ( sha == json[0].sha ){
       callback(null, false);
     } else {
@@ -47,4 +47,4 @@ exports.checkCache = function(key, data, callback){
       });
     }
   });
-};
+};*/

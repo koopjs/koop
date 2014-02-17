@@ -1,6 +1,8 @@
-var nodetiles = require('nodetiles-core'),
+var Tilenik = require('tilenik'),
+  nodetiles = require('nodetiles-core'),
   GeoJsonSource = nodetiles.datasources.GeoJson,
   Projector = nodetiles.projector,
+  Canvas = require('canvas'),
   nfs = require('node-fs'),
   fs = require('fs'),
   terraformer = require('Terraformer'),
@@ -40,6 +42,25 @@ module.exports = {
 
   },
 
+  // TODO stop filtering here, we need to pass bbox selection down to the DB level 
+  _filter: function( bounds, json, callback ){
+    var params = {
+      geometry: {
+        xmin: bounds[1], 
+        ymin: bounds[0],
+        xmax: bounds[3], 
+        ymax: bounds[2], 
+        spatialReference: { wkid: 4326 }
+      },
+      geometryType: 'esriGeometryEnvelope'
+    }
+    
+    json.features = terraformerParser.convert( json );
+    Query.geometryFilter( json, params, function( err, filtered ){
+      callback( null, filtered );
+    }); 
+  },
+
   _check: function( x, y, z, key, format, data, callback ){
     var self = this;
     var p = [sails.config.data_dir + 'tiles', key, format, z, x].join('/');
@@ -47,7 +68,7 @@ module.exports = {
 
     nfs.mkdir( p, '0777', true, function(){
       if ( !nfs.existsSync( file ) ) {
-        //console.log( 'NEW TILE', file, data );
+        //console.log( 'NEW TILE', file, data.features.length );
         self._stash( file, format, data, z, x, y, function( err, newfile ){
           callback( err, newfile );
         });
@@ -73,57 +94,43 @@ module.exports = {
                 projection: "EPSG:900913" // set the projection of the map
             });
 
-            if ( geojson && geojson.features && geojson.features.length ) {
+            if ( geojson.features && geojson.features.length ) {
               map.addData(new GeoJsonSource({
-                name: geojson.features[0].geometry.type.toLowerCase(),
-                path: file.replace(/png|grid/g, 'json'),
+                name: "world",
+                path: file.replace(/png/g, 'json'),
                 projection: "EPSG:4326"
               }));
             }
 
-            map.addStyle( sails.config.defaultStyle );
+            map.addStyle(fs.readFileSync('./api/templates/renderers/style.mss','utf8'));
 
             var b = merc.bbox( x, y, z, false, '900913');
 
-            if ( format == 'png' ){
-              map.render({
-                // Make sure your bounds are in the same projection as the map
-                bounds: { minX: b[0], minY: b[1], maxX: b[2], maxY: b[3] },
-                width: 256,   // number of pixels to output
-                height: 256,
-                callback: function(err, canvas) {
-                  var f = fs.createWriteStream(file),
-                      stream = canvas.createPNGStream();
+            map.render({
+              // Make sure your bounds are in the same projection as the map
+              bounds: { minX: b[0], minY: b[1], maxX: b[2], maxY: b[3] },
+              width: 256,   // number of pixels to output
+              height: 256,
+              callback: function(err, canvas) {
+                var f = fs.createWriteStream(file),
+                    stream = canvas.createPNGStream();
 
-                  stream.on('data', function(chunk){
-                    f.write(chunk);
-                  });
+                stream.on('data', function(chunk){
+                  f.write(chunk);
+                });
 
-                  stream.on('end', function(){
-                    //console.log('Saved ', file, stream.canvas.toDataURL());
-                    setTimeout(function(){
-                      callback( null, file );
-                    },50);
-                  });
-                }
-              });
-            } else if ( format == 'grid') {
-               map.renderGrid({
-                // Make sure your bounds are in the same projection as the map
-                bounds: { minX: b[0], minY: b[1], maxX: b[2], maxY: b[3] },
-                width: 256,   // number of pixels to output
-                height: 256,
-                callback: function(err, grid) {
-                  fs.writeFile( file, JSON.stringify( grid ), function(){
-                    callback(null, grid);
-                  });
-                }
-               });
-            }
+                stream.on('end', function(){
+                  //console.log('Saved ', file, stream.canvas.toDataURL());
+                  setTimeout(function(){
+                    callback( null, file );
+                  },50);
+                });
+              }
+            });
+
           };
 
-          var jsonFile = file.replace(/png|grid/g, 'json');
-
+          var jsonFile = file.replace(/png/g, 'json');
           if ( !nfs.existsSync( jsonFile ) ) {
 
             var dir = jsonFile.split('/');
@@ -133,10 +140,6 @@ module.exports = {
               fs.writeFile( jsonFile, JSON.stringify( geojson ), function(){
                 render();
               });
-            });
-          } else if ( format == 'grid' && nfs.existsSync( file )){
-            fs.readFile(file, function(err, data){
-              callback(null, JSON.parse(data));  
             });
           } else {
             render();

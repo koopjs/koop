@@ -53,6 +53,7 @@ module.exports = {
   process: function( tmpl, data, params ){
     var template = require(__dirname + tmpl);
     if ( !data.length ){
+      console.log(data)
       template.fields = this.fields( data.features[0].properties, params.idField );
     } else {
       template.fields = this.fields( data[0].features[0].properties, params.idField );
