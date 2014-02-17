@@ -3,6 +3,8 @@ var pg = require('pg'),
   sm = require('sphericalmercator'),
   merc = new sm( { size:256 } );
 
+var config = require('./config');
+
 var OSM = function(){
 
   var conString = "postgres://localhost/"+sails.config.osmdb;
