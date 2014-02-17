@@ -1,6 +1,9 @@
-// helper for calculating the extent of an array of features 
+// Helper model for calculating the extent of an array of features 
+// touches each feature and builds an extent
+// should be using a better structure here to support streaming / non-blocking calls
 
-exports.bounds = function(features){
+// an array of geojson features
+exports.bounds = function(features, callback){
   var minx,
     miny,
     maxx,
@@ -35,8 +38,7 @@ exports.bounds = function(features){
       });
     }
   });
-
-  return {
+  var extent = {
       "xmin": minx,
       "ymin": miny,
       "xmax": maxx,
@@ -46,4 +48,9 @@ exports.bounds = function(features){
         "latestWkid": 4326
       }
   };
+  if (callback){
+    callback(null, extent);
+  } else {
+    return extent;
+  }
 };

@@ -24,17 +24,22 @@ exports.process = function( type, key, data, callback ){
         if ( global[type] && global[type].checkCache ) {
           console.log('No cache timer, checking service for updates') 
           global[type].checkCache( key, data, function(err, success){
+            console.log('check cache', err, success);
             if ( !success ){
               // false is good -> reset timer and return data
               // cache returned true, return current data
+              console.log('Setting a timer', key);
               Cache.db.timer.set( type+':'+key+':timer', 360000, function( error, timer){
+                console.log(error, timer)
                 callback( null, data );
               });
             } else {
               // we need to remove and save new data 
-              console.log('Setting a timer', key);
+              console.log('Removing data', key);
               self.remove(type, key, function(){
+                console.log('inserting data', key);
                 self.insert(type, key, success, function(err, res){
+                  console.log('Setting a timer', key);
                   Cache.db.timer.set( type+':'+key+':timer', 360000, function( error, timer){
                     callback( err, success );
                   });
