@@ -44,7 +44,6 @@ describe('FeatureService Proxy Provider', function(){
       it('register should return 200 when GETing all registered providers', function(done) {
           agent.get('http://localhost:1337/agol')
           .end( function( err, res ) {
-            console.log('BACK');
             var json = res.body;
             res.should.have.status( 200 );
             return done();
