@@ -23,7 +23,8 @@
     "node.extend": "~1.0.8",
     "nodetiles-core": "0.0.3",
     "nodemon": "~0.7.6",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "pg": "~2.11.1"
   },
   "devDependencies": {
     "grunt": "0.4.x",
