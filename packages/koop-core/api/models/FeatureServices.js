@@ -198,7 +198,7 @@ module.exports = {
       this.queryIds( data, params, function( json ){ 
         self.send( json, params, callback );
       });
-    } else { 
+    } else {
       var json = this.process( tmpl_dir + 'featureSet.json', data, params );
       // geojson to esri json
       json.features = terraformerParser.convert( data );
