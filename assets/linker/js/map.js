@@ -32,6 +32,7 @@ function koopMap( dom ){
           createPopup(geojson,layer);
         }
       }).addTo(map);
+      console.log('ADDING LAYER', layerFS);
   }
 
   function addTileLayer( url ) {

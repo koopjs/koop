@@ -9,6 +9,7 @@ exports.provider = true;
   // shared logic for handling Feature Service requests 
   // most providers will use this mehtod to figure out what request is being made 
 exports._processFeatureServer = function(req, res, err, data, callback){
+    delete req.query.geometry; 
     if ( err ){
       res.json( err, 500 );
     } else if ( data ){

@@ -115,7 +115,6 @@ module.exports = {
           //console.log(select);
           self._query( select, function (err, result) {
             if ( result && result.rows && result.rows.length ) {
-              //console.log('ROWS', result.rows.length);
               callback( null, [{
                 type: 'FeatureCollection', 
                 features: _.pluck(result.rows, 'feature'),
