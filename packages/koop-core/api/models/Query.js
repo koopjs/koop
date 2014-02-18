@@ -7,6 +7,7 @@ module.exports = {
   filter: function( json, params, callback ){
 
     if ( params.geometry ){
+      console.log('wtf');
       this.geometryFilter( json, params, callback );
     } else if ( params.where ){
       this.whereFilter( json, params, callback );
