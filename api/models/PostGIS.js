@@ -157,7 +157,7 @@ module.exports = {
     register: function( type, info, callback){
       PostGIS._createTable(type, '( id varchar(100), host varchar(100))', function(err, result){
         PostGIS._query('select * from "'+type+'" where id=\''+info.id+"\'", function(err, res){
-          if ( !res.rows.length ) {
+          if ( !err || !res || !res.rows || !res.rows.length ) {
             var sql = 'insert into "'+type+'" (id, host) VALUES (\''+info.id+'\', \''+info.host+'\')' ;
             PostGIS._query(sql, function(err, res){
               callback( err, true );
