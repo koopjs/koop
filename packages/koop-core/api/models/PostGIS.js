@@ -59,7 +59,6 @@ module.exports = {
             var box = options.geometry;
             select += ' WHERE ST_Intersects(ST_GeomFromGeoJSON(feature->>\'geometry\'), ST_MakeEnvelope('+box.xmin+','+box.ymin+','+box.xmax+','+box.ymax+'))';
           }
-          console.log(select);
           self._query( select, function (err, result) {
             if ( result && result.rows && result.rows.length ) {
               collect( null, {
