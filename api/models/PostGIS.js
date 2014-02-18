@@ -188,7 +188,7 @@ module.exports = {
     },
 
     get: function( type, id, callback){
-      PostGIS._createTable(type, '( id integer PRIMARY KEY, host varchar(100))', function(err, result){
+      PostGIS._createTable(type, '( id varchar(100), host varchar(100))', function(err, result){
         if (!id) {
           var sql = 'select * from "'+type+'"';
           PostGIS._query(sql, function(err, res){
