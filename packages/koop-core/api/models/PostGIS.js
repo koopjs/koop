@@ -61,20 +61,19 @@ module.exports = {
             }
 
             if (options.geometry.xmin && options.geometry.ymin){
-            var box = options.geometry;
-            if (box.spatialReference.wkid != 4326){
-              var mins = merc.inverse( [box.xmin, box.ymin] ),
-                maxs = merc.inverse( [box.xmax, box.ymax] );
+              var box = options.geometry;
+              if (box.spatialReference.wkid != 4326){
+                var mins = merc.inverse( [box.xmin, box.ymin] ),
+                  maxs = merc.inverse( [box.xmax, box.ymax] );
                 box.xmin = mins[0],
                 box.ymin = mins[1],
                 box.xmax = maxs[0],
                 box.ymax = maxs[1];
               }
-            }
 
-            select += ' WHERE ST_Intersects(ST_GeomFromGeoJSON(feature->>\'geometry\'), ST_MakeEnvelope('+box.xmin+','+box.ymin+','+box.xmax+','+box.ymax+'))';
+              select += ' WHERE ST_Intersects(ST_GeomFromGeoJSON(feature->>\'geometry\'), ST_MakeEnvelope('+box.xmin+','+box.ymin+','+box.xmax+','+box.ymax+'))';
+            }
           }
-          console.log(select);
           self._query( select, function (err, result) {
             if ( result && result.rows && result.rows.length ) {
               collect( null, {
