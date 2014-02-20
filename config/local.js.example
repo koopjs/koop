@@ -5,6 +5,8 @@
 
 module.exports = {
 
+  logfile: '/var/log/koop.log',
+
   data_dir: '/usr/local/koop/',
   
   github_token: 'XXXXXXXXXXXXXXXXXX',

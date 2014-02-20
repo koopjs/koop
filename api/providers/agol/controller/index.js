@@ -5,16 +5,7 @@ var request = require('request'),
   sm = require('sphericalmercator'),
   merc = new sm({size:256}),
   fs = require('fs'),
-  bunyan = require('bunyan'), 
-  spawnasync = require('spawn-async'),
   base = require('../../base/controller.js');
-
-var log = new bunyan({
-    'name': __dirname + '/koop.log',
-    'level': process.env['LOG_LEVEL'] || 'debug'
-});
-  
-var worker = spawnasync.createWorker({'log': log});
 
 
 // inherit from base controller
@@ -72,24 +63,59 @@ var Controller = extend({
   },
 
   findItemData: function(req, res){
-    AGOL.find(req.params.id, function(err, data){
-      if (err) {
-        res.send( err, 500);
-      } else {
-        // if we have a layer then pass it along
-        if ( req.params.layer ) {
-          req.query.layer = req.params.layer;
+
+    var _get = function(id, item, options, callback){
+       AGOL.find( id, function( err, data ){
+        if (err) {
+          callback(err, null);
+        } else {
+          // Get the item
+          AGOL.getItemData( data[0].host, item, options, function(error, itemJson){
+            if (error) {
+              callback( error, null);
+            } else {
+              callback( null, itemJson );
+            }
+          });
         }
-        // Get the item
-        AGOL.getItemData( data[0].host, req.params.item, req.query, function(error, itemJson){
-          if (error) {
-            res.send( error, 500);
-          } else {
-            res.json( itemJson );
-          }
+      });  
+    }; 
+
+    // if we have a layer then append it to the query params 
+    if ( req.params.layer ) {
+      req.query.layer = req.params.layer;
+    }
+
+    // check format for exporting data
+    if ( req.params.format ){
+
+      // build the file key and look for the file 
+      var key = [req.params.id, req.params.item, req.query.layer || 0 ].join(':'); 
+      // look for geojson file 
+      // if not found, then get data, pass to exportToFormat
+      _get(req.params.id, req.params.item, req.query, function( err, itemJson ){
+        console.log(err, itemJson);
+        GeoJSON.fromEsri( itemJson.data, function(err, geojson){
+          Controller.exportToFormat( format, key, geojson, function(err, result){
+            if (err) {
+              res.send( err, 500 );
+            } else {
+              res.send( result );
+            }
+          });
         });
-      }
-    });
+      });
+
+    } else {
+      // get the esri json data for the service
+      _get(req.params.id, req.params.item, req.query, function( err, itemJson ){
+          if (err) {
+            res.send( err, 500 );
+          } else {
+            res.send( result );
+          }
+      });
+    }
   },
 
   del: function(req, res){
@@ -261,23 +287,6 @@ var Controller = extend({
     } else {
       _sendImmediate(file);
     }
-  },
-
-  export: function(req,res){
-    console.log(req);
-    // do we have a the 
-
-    worker.aspawn(['ogr2ogr', '--formats'],
-      function (err, stdout, stderr) {
-          if (err) {
-              res.send(err.message);
-              console.log('error: %s', err.message);
-              console.error(stderr);
-          } else {
-              res.send(stdout);
-              console.log(stdout);
-          }
-      });
   }
 
 }, base);

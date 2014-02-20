@@ -19,7 +19,7 @@ module.exports = {
     action: 'findItem'
   },
 
-  'get /agol/:id/:item/data': {
+  'get /agol/:id/:item/data.:format': {
     controller: 'agol',
     action: 'findItemData'
   },
@@ -72,7 +72,7 @@ module.exports = {
 
   'get /agol/:id/:item/export.:format': {
     controller: 'agol',
-    action: 'export'
-  },
+    action: 'exportToFormat'
+  }
 
 }
