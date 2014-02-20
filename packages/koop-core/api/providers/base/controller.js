@@ -1,3 +1,6 @@
+var spawnasync = require('spawn-async');
+var worker = spawnasync.createWorker({'log': sails.config.log});
+
 
 // A base controller that we can use to inherit from
 // contains help methods to process complex query structures for request routing
@@ -54,4 +57,25 @@ exports._processFeatureServer = function(req, res, err, data, callback){
     } else {
       res.send('There a problem accessing this repo', 500);
     }
+};
+
+exports.exportToFormat = function( req, res ){
+    // do we have the file in the format requested?
+    // if its json serve it out of the db 
+    // else create a geojson file on disk 
+    // build the conversion string for org2ogr
+    // execute command 
+    // respond to request  
+
+    worker.aspawn(['ogr2ogr', '--formats'],
+      function (err, stdout, stderr) {
+          if (err) {
+              res.send(err.message);
+              console.log('error: %s', err.message);
+              console.error(stderr);
+          } else {
+              res.send(stdout);
+              console.log(stdout);
+          }
+      });
 };
