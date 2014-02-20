@@ -5,7 +5,17 @@ var request = require('request'),
   sm = require('sphericalmercator'),
   merc = new sm({size:256}),
   fs = require('fs'),
+  bunyan = require('bunyan'), 
+  spawnasync = require('spawn-async'),
   base = require('../../base/controller.js');
+
+var log = new bunyan({
+    'name': __dirname + '/koop.log',
+    'level': process.env['LOG_LEVEL'] || 'debug'
+});
+  
+var worker = spawnasync.createWorker({'log': log});
+
 
 // inherit from base controller
 var Controller = extend({
@@ -251,6 +261,23 @@ var Controller = extend({
     } else {
       _sendImmediate(file);
     }
+  },
+
+  export: function(req,res){
+    console.log(req);
+    // do we have a the 
+
+    worker.aspawn(['ogr2ogr', '--formats'],
+      function (err, stdout, stderr) {
+          if (err) {
+              res.send(err.message);
+              console.log('error: %s', err.message);
+              console.error(stderr);
+          } else {
+              res.send(stdout);
+              console.log(stdout);
+          }
+      });
   }
 
 }, base);

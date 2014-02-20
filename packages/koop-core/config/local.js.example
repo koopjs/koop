@@ -1,0 +1,21 @@
+/**
+ * Local environment settings
+ *
+ */
+
+module.exports = {
+
+  data_dir: '/usr/local/koop/',
+  
+  github_token: 'XXXXXXXXXXXXXXXXXX',
+
+  // use cached images
+  image_cache: true,
+
+  db_conn: "postgres://localhost/{YOUR POSTGIS DB}",
+
+  port: process.env.PORT || 1337,
+
+  environment: process.env.NODE_ENV || 'development'
+
+};
