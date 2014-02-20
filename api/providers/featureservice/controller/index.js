@@ -62,3 +62,4 @@ exports.thumbnail = function(req, res){
     });
   }
 };
+

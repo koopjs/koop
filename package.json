@@ -23,7 +23,9 @@
     "node.extend": "~1.0.8",
     "nodetiles-core": "0.0.3",
     "nodemon": "~0.7.6",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "spawn-async": "0.0.1",
+    "bunyan": "~0.22.1"
   },
   "devDependencies": {
     "grunt": "0.4.x",

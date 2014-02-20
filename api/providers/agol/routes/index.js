@@ -70,4 +70,9 @@ module.exports = {
     action: 'tiles'
   },
 
+  'get /agol/:id/:item/export.:format': {
+    controller: 'agol',
+    action: 'export'
+  },
+
 }
