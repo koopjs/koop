@@ -66,20 +66,54 @@ exports._processFeatureServer = function(req, res, err, data, callback){
 // take in a format, file key, geojson, and callback
 //   
 exports.exportToFormat = function( format, key, geojson, callback ){
-    console.log(format, key, geojson);
-    var p = [sails.config.data_dir + 'files', key].join('/');
-    var file = p + '/export.json';
-
-    nfs.mkdir( p, '0777', true, function(){
-      if ( !nfs.existsSync( file ) ) {
-        //self._stash( file, format, data, z, x, y, function( err, newfile ){
-        fs.writeFile( file, JSON.stringify( geojson ), function(){
-          callback( null, file );
+    var _callOgr = function(inFile, outFile, callback){
+      if (format == 'json'){
+        callback(null, true);
+      } else if (ogrFormats[format]) {
+        worker.aspawn(['ogr2ogr', '-f', ogrFormats[format], outFile, inFile],
+          function (err, stdout, stderr) {
+            if (err) {
+              callback(err.message, null);
+            } else {
+              callback(null, true);
+            }
         });
-        //});
       } else {
-        console.log( 'File Exists! ', file );
-        callback( null, file );
+        callback('Unknown format', null);
+      }
+    };
+
+    var ogrFormats = {
+      kml: 'KML',
+      shp: '"ESRI Shapefile"',
+      csv: 'CSV'
+    };
+
+    var path = [sails.config.data_dir + 'files', key].join('/');
+    var base = path + '/export',
+      jsonFile = base + '.json';
+      newFile = base + '.' + format;
+
+    nfs.mkdir( path, '0777', true, function(){
+      if ( !nfs.existsSync( jsonFile ) ) {
+        fs.writeFile( jsonFile, JSON.stringify( geojson ), function(){
+          _callOgr( jsonFile, newFile, function(err, success){
+            if (err){
+              callback( err, null );
+            } else {
+              callback( null, newFile );
+            }
+          });
+        });
+      } else {
+        console.log( 'File Exists! ', jsonFile );
+        _callOgr( jsonFile, newFile, function(err, success){
+          if (err){
+            callback( err, null );
+          } else {
+            callback( null, newFile );
+          }
+        });
       }
     });
     // check for geojson file on disk  

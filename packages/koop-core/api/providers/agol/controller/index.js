@@ -46,24 +46,27 @@ var Controller = extend({
   },
 
   findItem: function(req, res){
-    AGOL.find(req.params.id, function(err, data){
-      if (err) {
-        res.send( err, 500);
-      } else {
-        // Get the item 
-        AGOL.getItem( data[0].host, req.params.item, req.query, function(error, itemJson){
-          if (error) {
-            res.send( error, 500);
-          } else { 
-            res.json( itemJson );
-          }
-        });
-      }
-    });
+    if (req.params.format){
+      Controller.findItemData(req, res);
+    } else {
+      AGOL.find(req.params.id, function(err, data){
+        if (err) {
+          res.send( err, 500);
+        } else {
+          // Get the item 
+          AGOL.getItem( data[0].host, req.params.item, req.query, function(error, itemJson){
+            if (error) {
+              res.send( error, 500);
+            } else { 
+              res.json( itemJson );
+            }
+          });
+        }
+      });
+    }
   },
 
   findItemData: function(req, res){
-
     var _get = function(id, item, options, callback){
        AGOL.find( id, function( err, data ){
         if (err) {
@@ -90,23 +93,23 @@ var Controller = extend({
     if ( req.params.format ){
 
       // build the file key and look for the file 
-      var key = [req.params.id, req.params.item, req.query.layer || 0 ].join(':'); 
-      // look for geojson file 
-      // if not found, then get data, pass to exportToFormat
-      _get(req.params.id, req.params.item, req.query, function( err, itemJson ){
-        //------------ TEMP TODO TEMP REMOVE
-//          itemJson = { data: { features: [] }};
-        //------------
-        GeoJSON.fromEsri( itemJson.data, function(err, geojson){
-          Controller.exportToFormat( req.params.format, key, geojson, function(err, result){
-            if (err) {
-              res.send( err, 500 );
-            } else {
-              res.sendfile( result );
-            }
-          });
+      var key = [req.params.id, req.params.item, req.query.layer || 0 ].join(':');
+      var fileName = [sails.config.data_dir + 'files', key, 'export.' + req.params.format].join('/');
+
+      if (fs.existsSync( fileName )){
+        res.sendfile( fileName );
+      } else {
+
+        _get(req.params.id, req.params.item, req.query, function( err, itemJson ){
+            Controller.exportToFormat( req.params.format, key, itemJson.data[req.query.layer || 0], function(err, result){
+              if (err) {
+                res.send( err, 500 );
+              } else {
+                res.sendfile( result );
+              }
+            });
         });
-      });
+      }
 
     } else {
       // get the esri json data for the service
@@ -114,7 +117,7 @@ var Controller = extend({
           if (err) {
             res.send( err, 500 );
           } else {
-            res.send( result );
+            res.send( itemJson );
           }
       });
     }
