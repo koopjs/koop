@@ -36,7 +36,7 @@ var AGOL = function(){
         var json = JSON.parse( data.body );
         callback( null, json );
       }
-    }); 
+    });
   };
 
   // got the service and get the item
@@ -56,12 +56,28 @@ var AGOL = function(){
   };
 
   this.FeatureCollection = function(base_url, id, itemJson, options, callback){
-    var url = base_url + '/' + id + '/data?f=json'; 
-    request.get(url, function(err, data ){
-      if (err) {
-        callback(err, null);
+    Cache.get( 'agol', id, options, function(err, entry ){
+      if ( err ){
+        var url = base_url + '/' + id + '/data?f=json'; 
+        request.get(url, function(err, data ){
+          if (err) {
+            callback(err, null);
+          } else {
+            var json = JSON.parse( data.body ).featureCollection.layers[0].featureSet;
+            GeoJSON.fromEsri( json, function(err, geojson){
+              Cache.insert( 'agol', id, [geojson], function( err, success){
+                if ( success ) {
+                  itemJson.data = geojson;
+                  callback( null, itemJson );
+                } else {
+                  callback( err, null );
+                }
+              });
+            });
+          }
+        });
       } else {
-        itemJson.data = JSON.parse( data.body ).featureCollection.layers[0].featureSet;
+        itemJson.data = entry;
         callback( null, itemJson );
       }
     });
@@ -71,21 +87,37 @@ var AGOL = function(){
     if ( !itemJson.url ){
       callback('Missing url parameter for Feature Service Item', null);
     } else {
-      var url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where=1=1&f=json'; 
-      if (options.geometry){
-        url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
-      }
-      request.get( url, function(err, data ){
-        if (err) {
-          callback(err, null);
-        } else {
-          try { 
-            itemJson.data = {features: JSON.parse( data.body ).features};
-            callback( null, itemJson );
-          } catch (e){
-            console.log('Error', e);
-            callback( 'Unable to parse Feature Service response', null );
+      Cache.get( 'agol', id, options, function(err, entry ){
+        if ( err ){
+          var url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where=1=1&f=json'; 
+          if (options.geometry){
+            url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
           }
+          request.get(url, function(err, data ){
+            if (err) {
+              callback(err, null);
+            } else {
+              try {
+                var json = {features: JSON.parse( data.body ).features};
+                GeoJSON.fromEsri( json, function(err, geojson){
+                  Cache.insert( 'agol', id, [geojson], function( err, success){
+                    if ( success ) {
+                      itemJson.data = geojson;
+                      callback( null, itemJson );
+                    } else {
+                      callback( err, null );
+                    }
+                  });
+                });
+              } catch (e){
+                console.log('Error', e);
+                callback( 'Unable to parse Feature Service response', null );
+              }
+            }
+          });
+        } else {
+          itemJson.data = entry;
+          callback( null, itemJson );
         }
       });
     }

@@ -117,7 +117,7 @@ module.exports = {
       info[i].sha = layer.sha;
    
       var table = key+':'+i;
-      self._createTable( table, self._buildSchemaFromFeature(layer.features[0]), function(err, result){
+      self._createTable( table, self._buildSchemaFromFeature(), function(err, result){
         layer.features.forEach(function(feature, i){
           self._insertFeature(table, feature, i);
         });
