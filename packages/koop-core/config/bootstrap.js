@@ -13,9 +13,22 @@ module.exports.bootstrap = function (cb) {
 
   sails.config.defaultStyle = fs.readFileSync('./api/templates/renderers/style.mss','utf8');
 
+    streams: [{
+            type: 'rotating-file',
+            path: '/var/log/foo.log',
+            period: '1d',   // daily rotation
+            count: 3        // keep 3 back copies
+        }]
   sails.config.log = new bunyan({
-    'name': sails.config.logfile || './koop.log',
-    'level': process.env['LOG_LEVEL'] || 'debug'
+    'name': 'koop-log',
+    streams: [{
+            type: 'rotating-file',
+            path: '/var/log/koop.log',
+            period: '1d',   // daily rotation
+            count: 3        // keep 3 back copies
+    }]
+    //'path': sails.config.logfile || './koop.log',
+    //'level': process.env['LOG_LEVEL'] || 'debug'
   });
 
   Cache.db = PostGIS.connect( sails.config.db_conn );

@@ -94,13 +94,15 @@ var Controller = extend({
       // look for geojson file 
       // if not found, then get data, pass to exportToFormat
       _get(req.params.id, req.params.item, req.query, function( err, itemJson ){
-        console.log(err, itemJson);
+        //------------ TEMP TODO TEMP REMOVE
+//          itemJson = { data: { features: [] }};
+        //------------
         GeoJSON.fromEsri( itemJson.data, function(err, geojson){
-          Controller.exportToFormat( format, key, geojson, function(err, result){
+          Controller.exportToFormat( req.params.format, key, geojson, function(err, result){
             if (err) {
               res.send( err, 500 );
             } else {
-              res.send( result );
+              res.sendfile( result );
             }
           });
         });

@@ -63,13 +63,13 @@ describe('FeatureService Proxy Provider', function(){
       it('should register and return 200 when accessing an item', function(done) {
           var id = 1;
           agent.post('http://localhost:1337/agol/register')
-          .send({ host: 'http://arcgis.com', id: id })
+          .send({ host: 'http://arcgis.com', id: 'arcgis' })
           .end( function( err, res ) {
             var json = res.body;
             json.serviceId.should.not.equal( null );
             res.should.have.status( 200 );
 
-            agent.get('http://localhost:1337/agol/1/9f44b197ff9444559c46cb2994dd618d')
+            agent.get('http://localhost:1337/agol/arcgis/9f44b197ff9444559c46cb2994dd618d')
               .end( function( err, res ) {
                 should.not.exist(err);
                 var item = res.body;
@@ -81,7 +81,7 @@ describe('FeatureService Proxy Provider', function(){
       });
 
       it('should return 200 when accessing item data', function(done) {
-          agent.get('http://localhost:1337/agol/1/8d543eb987bf42edb0c389f47475e124/data')
+          agent.get('http://localhost:1337/agol/arcgis/8d543eb987bf42edb0c389f47475e124/data')
               .end( function( err, res ) {
                 res.should.have.status( 200 );
                 should.not.exist(err);
@@ -93,7 +93,7 @@ describe('FeatureService Proxy Provider', function(){
       });
 
       it('should return 200 when accessing item as a featureservice', function(done) {
-          agent.get('http://localhost:1337/agol/1/9f44b197ff9444559c46cb2994dd618d/FeatureServer')
+          agent.get('http://localhost:1337/agol/arcgis/9f44b197ff9444559c46cb2994dd618d/FeatureServer')
               .end( function( err, res ) {
                 res.should.have.status( 200 );
                 should.not.exist(err);
@@ -102,7 +102,7 @@ describe('FeatureService Proxy Provider', function(){
       });
 
       it('should return 200 when accessing item as a featureservice layer', function(done) {
-          agent.get('http://localhost:1337/agol/1/9f44b197ff9444559c46cb2994dd618d/FeatureServer/0')
+          agent.get('http://localhost:1337/agol/arcgis/9f44b197ff9444559c46cb2994dd618d/FeatureServer/0')
               .end( function( err, res ) {
                 //console.log('back');
                 //var json = res.body;
@@ -114,7 +114,7 @@ describe('FeatureService Proxy Provider', function(){
       });
 
       it('should return 200 when accessing item as a featureservice query', function(done) {
-          agent.get('http://localhost:1337/agol/1/9f44b197ff9444559c46cb2994dd618d/FeatureServer/0/query')
+          agent.get('http://localhost:1337/agol/arcgis/9f44b197ff9444559c46cb2994dd618d/FeatureServer/0/query')
               .end( function( err, res ) {
                 res.should.have.status( 200 );
                 should.not.exist(err);
@@ -123,7 +123,7 @@ describe('FeatureService Proxy Provider', function(){
       });
 
       it('should return 200 when accessing item as a featureservice query', function(done) {
-          agent.get('http://localhost:1337/agol/1/9f44b197ff9444559c46cb2994dd618d/thumbnail')
+          agent.get('http://localhost:1337/agol/arcgis/9f44b197ff9444559c46cb2994dd618d/thumbnail')
               .end( function( err, res ) {
                 res.should.have.status( 200 );
                 should.not.exist(err);

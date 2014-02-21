@@ -1,6 +1,8 @@
 var spawnasync = require('spawn-async');
 var worker = spawnasync.createWorker({'log': sails.config.log});
 
+var nfs = require('node-fs'),
+  fs = require('fs');
 
 // A base controller that we can use to inherit from
 // contains help methods to process complex query structures for request routing
@@ -59,23 +61,39 @@ exports._processFeatureServer = function(req, res, err, data, callback){
     }
 };
 
-exports.exportToFormat = function( req, res ){
-    // do we have the file in the format requested?
-    // if its json serve it out of the db 
-    // else create a geojson file on disk 
+
+// Exports data as any supported format 
+// take in a format, file key, geojson, and callback
+//   
+exports.exportToFormat = function( format, key, geojson, callback ){
+    console.log(format, key, geojson);
+    var p = [sails.config.data_dir + 'files', key].join('/');
+    var file = p + '/export.json';
+
+    nfs.mkdir( p, '0777', true, function(){
+      if ( !nfs.existsSync( file ) ) {
+        //self._stash( file, format, data, z, x, y, function( err, newfile ){
+        fs.writeFile( file, JSON.stringify( geojson ), function(){
+          callback( null, file );
+        });
+        //});
+      } else {
+        console.log( 'File Exists! ', file );
+        callback( null, file );
+      }
+    });
+    // check for geojson file on disk  
+       // else create a geojson file on disk 
     // build the conversion string for org2ogr
     // execute command 
     // respond to request  
 
-    worker.aspawn(['ogr2ogr', '--formats'],
+  /*  worker.aspawn(['ogr2ogr', '--formats'],
       function (err, stdout, stderr) {
           if (err) {
-              res.send(err.message);
-              console.log('error: %s', err.message);
-              console.error(stderr);
+              callback(err.message, null);
           } else {
-              res.send(stdout);
-              console.log(stdout);
+              callback(null, stdout);
           }
-      });
+      });*/
 };
