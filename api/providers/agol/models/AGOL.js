@@ -1,4 +1,5 @@
-var request = require('request');
+var request = require('request'),
+  async = require('async');
 
 var AGOL = function(){
 
@@ -86,35 +87,69 @@ var AGOL = function(){
   };
 
   this.Service = function(base_url, id, itemJson, options, callback){
+    var self = this;
     if ( !itemJson.url ){
       callback('Missing url parameter for Feature Service Item', null);
     } else {
       Cache.get( 'agol', id, options, function(err, entry ){
         if ( err ){
-          var url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where=1=1&f=json'; 
+          // get the ids only
+          var idUrl = itemJson.url + '/' + (options.layer || 0) + '/query?where=1=1&returnIdsOnly=true&returnCountOnly=true&f=json';
+
           if (options.geometry){
-            url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
+            idUrl += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
           }
-          request.get(url, function(err, data ){
-            if (err) {
-              callback(err, null);
-            } else {
-              try {
-                var json = {features: JSON.parse( data.body ).features};
-                GeoJSON.fromEsri( json, function(err, geojson){
-                  Cache.insert( 'agol', id, [geojson], function( err, success){
-                    if ( success ) {
-                      itemJson.data = geojson;
-                      callback( null, itemJson );
-                    } else {
-                      callback( err, null );
-                    }
-                  });
-                });
-              } catch (e){
-                console.log('Error', e);
-                callback( 'Unable to parse Feature Service response', null );
+
+          request.get(idUrl, function(err, serviceIds ){
+            // determine if its greater then 1000 
+            var idJson = JSON.parse(serviceIds.body);
+
+            if (idJson.count < 1000){
+
+              var url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where=1=1&f=json'; 
+              if (options.geometry){
+                url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
               }
+              request.get(url, function(err, data ){
+                if (err) {
+                  callback(err, null);
+                } else {
+                  try {
+                    var json = {features: JSON.parse( data.body ).features};
+                    GeoJSON.fromEsri( json, function(err, geojson){
+                      Cache.insert( 'agol', id, [geojson], function( err, success){
+                        if ( success ) {
+                          itemJson.data = geojson;
+                          callback( null, itemJson );
+                        } else {
+                          callback( err, null );
+                        }
+                      });
+                    });
+                  } catch (e){
+                    console.log('Error', e);
+                    callback( 'Unable to parse Feature Service response', null );
+                  }
+                }
+              });
+            } else {
+              // TEMP COUNT REMOVE ME
+              idJson.count = 5000;
+              var i, where, pageMax, url, pages, max;
+              max = 1000;
+              pages = Math.ceil(idJson.count / max);
+              pageRequests = [];
+              for (i=1; i < pages+1; i++){
+                pageMax = i*max;
+                where = 'objectId<'+pageMax+' AND '+ 'objectId>='+((pageMax-max)+1);
+                url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where='+where+'&f=json';
+                if ( options.geometry ){
+                  url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
+                }
+                pageRequests.push({req: url});
+              }
+              self.requestQueue(idJson.count, pageRequests, callback);
+              //callback( 'Too many freaking features... must page ' + idJson.count, null );
             }
           });
         } else {
@@ -123,6 +158,44 @@ var AGOL = function(){
         }
       });
     }
+  };
+
+  // make requests for feature pages 
+  // execute done when we have all features 
+  this.requestQueue = function(max, reqs, done){
+    var finalJson = { features: [] };
+    var reqCount = 0;
+  
+    // aggregate responses into one json and call done we have all of them 
+    var _collect = function(json){
+      finalJson.features = finalJson.features.concat(json.features);
+      reqCount++;
+      console.log('collect', finalJson.features.length);
+
+      if (reqCount == 1){
+        finalJson.fields = json.fields;
+        finalJson.displayFieldName = json.displayFieldName;
+        finalJson.fieldAliases = json.fieldAliases;
+        finalJson.geometryType = json.geometryType;
+        finalJson.spatialReference = json.spatialReference;
+      }
+
+      if (reqCount == reqs.length-1){
+        done(null, finalJson);
+      }
+    };
+
+    var q = async.queue(function (task, callback) {
+      // make request
+      request.get(task.req, function(err, data){
+        var json = JSON.parse(data.body);
+        _collect(json);
+        callback();
+      });
+    }, 2);
+
+    q.push(reqs, function(err){ if (err) console.log(err); });
+
   };
 
 };

@@ -4,7 +4,7 @@
 	"hasVersionedData": false,
 	"supportsDisconnectedEditing": false,
 	"supportedQueryFormats": "JSON",
-	"maxRecordCount": 2000,
+	"maxRecordCount": 1000,
 	"hasStaticData": true,
 	"capabilities": "Query",
 	"description": "",
