@@ -77,6 +77,9 @@ var Controller = extend({
             if (error) {
               callback( error, null);
             } else {
+              if (itemJson.data[0].features.length > 1000){
+                itemJson.data[0].features = itemJson.data[0].features.splice(0,1000);
+              }
               callback( null, itemJson );
             }
           });

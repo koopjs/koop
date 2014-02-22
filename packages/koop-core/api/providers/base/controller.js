@@ -18,6 +18,10 @@ exports._processFeatureServer = function(req, res, err, data, callback){
       if ( FeatureServices[ req.params.layer ]){
         // requests for specific layers - pass data and the query string  
         FeatureServices[ req.params.layer ]( data, req.query || {}, function( err, d ){
+          // limit response to 1000 
+          if (d.feature && d.features.length > 1000){
+            d.features = d.features.splice(0,1000);
+          }
           if ( callback ){
             res.send( callback + '(' + JSON.stringify( d ) + ')' );
           } else {
@@ -37,6 +41,10 @@ exports._processFeatureServer = function(req, res, err, data, callback){
         if ( req.params.method && FeatureServices[ req.params.method ] ){
           // we have a method call like "/layers"
           FeatureServices[ req.params.method ]( data, req.query || {}, function( err, d ){
+            // limit response to 1000 
+            if (d.features && d.features.length > 1000){
+              d.features = d.features.splice(0,1000);
+            }
             if ( callback ){
               res.send( callback + '(' + JSON.stringify( d ) + ')' );
             } else {

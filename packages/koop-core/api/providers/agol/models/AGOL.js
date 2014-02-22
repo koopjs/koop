@@ -133,8 +133,9 @@ var AGOL = function(){
                 }
               });
             } else {
-              // TEMP COUNT REMOVE ME
-              idJson.count = 5000;
+              // TODO TEMP COUNT REMOVE ME
+              idJson.count = 3000;
+              // ---------
               var i, where, pageMax, url, pages, max;
               max = 1000;
               pages = Math.ceil(idJson.count / max);
@@ -148,8 +149,7 @@ var AGOL = function(){
                 }
                 pageRequests.push({req: url});
               }
-              self.requestQueue(idJson.count, pageRequests, callback);
-              //callback( 'Too many freaking features... must page ' + idJson.count, null );
+              self.requestQueue(idJson.count, pageRequests, id, itemJson, callback);
             }
           });
         } else {
@@ -162,15 +162,15 @@ var AGOL = function(){
 
   // make requests for feature pages 
   // execute done when we have all features 
-  this.requestQueue = function(max, reqs, done){
+  this.requestQueue = function(max, reqs, id, itemJson, done){
     var finalJson = { features: [] };
     var reqCount = 0;
   
     // aggregate responses into one json and call done we have all of them 
     var _collect = function(json){
+      console.log(json.features.length);
       finalJson.features = finalJson.features.concat(json.features);
       reqCount++;
-      console.log('collect', finalJson.features.length);
 
       if (reqCount == 1){
         finalJson.fields = json.fields;
@@ -180,8 +180,19 @@ var AGOL = function(){
         finalJson.spatialReference = json.spatialReference;
       }
 
-      if (reqCount == reqs.length-1){
-        done(null, finalJson);
+      if (reqCount == reqs.length){
+        GeoJSON.fromEsri( finalJson, function(err, geojson){
+          itemJson.data = [geojson];
+          Cache.insert( 'agol', id, itemJson.data, function( err, success){
+            if ( success ) {
+              console.log('collect', itemJson.data[0].features.length);
+              done(null, itemJson);
+            } else {
+              done(err, null);
+            }
+          });
+        });
+
       }
     };
 
