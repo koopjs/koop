@@ -46,8 +46,10 @@ var AGOL = function(){
       if ( err ){
         callback(err, null);
       } else {
-        if (itemJson.type == 'Feature Collection' || itemJson.type == 'Feature Service' ) {
+        if (itemJson.type == 'Feature Collection'){
           self[ itemJson.type.replace(' ', '') ]( host + self.agol_path, itemId, itemJson, options, callback );
+        } else if ( itemJson.type == 'Feature Service' || itemJson.type == 'Map Service' ) {
+          self[ 'Service' ]( host + self.agol_path, itemId, itemJson, options, callback );
         } else {
           callback('Requested Item must be a Feature Collection', null);
         }
@@ -83,7 +85,7 @@ var AGOL = function(){
     });
   };
 
-  this.FeatureService = function(base_url, id, itemJson, options, callback){
+  this.Service = function(base_url, id, itemJson, options, callback){
     if ( !itemJson.url ){
       callback('Missing url parameter for Feature Service Item', null);
     } else {

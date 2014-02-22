@@ -70,12 +70,21 @@ exports.exportToFormat = function( format, key, geojson, callback ){
       if (format == 'json'){
         callback(null, true);
       } else if (ogrFormats[format]) {
-        worker.aspawn(['ogr2ogr', '-f', ogrFormats[format], outFile, inFile],
+        var cmd = ['ogr2ogr', '-f', ogrFormats[format], outFile, inFile].join(' ');
+        console.log(cmd)
+        worker.aspawn([cmd],
           function (err, stdout, stderr) {
             if (err) {
+              console.log(err, stdout, stderr);
               callback(err.message, null);
             } else {
-              callback(null, true);
+              console.log( stdout, stderr);
+              if ( format == 'shp' ){
+                console.log('need to zip up the shp');
+                callback(null, outFile);
+              } else {
+                callback(null, outFile);
+              }
             }
         });
       } else {
@@ -97,16 +106,15 @@ exports.exportToFormat = function( format, key, geojson, callback ){
     nfs.mkdir( path, '0777', true, function(){
       if ( !nfs.existsSync( jsonFile ) ) {
         fs.writeFile( jsonFile, JSON.stringify( geojson ), function(){
-          _callOgr( jsonFile, newFile, function(err, success){
+          _callOgr( jsonFile, newFile, function(err, outFile){
             if (err){
               callback( err, null );
             } else {
-              callback( null, newFile );
+              callback( null, outFile );
             }
           });
         });
       } else {
-        console.log( 'File Exists! ', jsonFile );
         _callOgr( jsonFile, newFile, function(err, success){
           if (err){
             callback( err, null );
