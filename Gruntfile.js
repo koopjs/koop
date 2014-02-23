@@ -347,7 +347,7 @@ module.exports = function (grunt) {
           reporter: 'nyan',
           timeout: 5000
         },
-        src: ['test/**/*.js'],
+        src: ['./test/**/*.js'],
       }
     },
 
