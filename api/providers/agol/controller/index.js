@@ -73,10 +73,14 @@ var Controller = extend({
           callback(err, null);
         } else {
           // Get the item
+          if ( !parseInt(options.layer) ){
+            options.layer = 0;
+          }
           AGOL.getItemData( data[0].host, item, options, function(error, itemJson){
             if (error) {
               callback( error, null);
             } else {
+              //console.log(itemJson);
               if (itemJson.data[0].features.length > 1000){
                 itemJson.data[0].features = itemJson.data[0].features.splice(0,1000);
               }
@@ -94,9 +98,8 @@ var Controller = extend({
 
     // check format for exporting data
     if ( req.params.format ){
-
       // build the file key and look for the file 
-      var key = [req.params.id, req.params.item, req.query.layer || 0 ].join(':');
+      var key = [req.params.id, req.params.item, parseInt(req.query.layer) || 0 ].join(':');
       var fileName = [sails.config.data_dir + 'files', key, 'export.' + req.params.format].join('/');
 
       if (fs.existsSync( fileName )){
@@ -104,13 +107,18 @@ var Controller = extend({
       } else {
 
         _get(req.params.id, req.params.item, req.query, function( err, itemJson ){
-            Controller.exportToFormat( req.params.format, key, itemJson.data[req.query.layer || 0], function(err, result){
-              if (err) {
-                res.send( err, 500 );
-              } else {
-                res.sendfile( result );
-              }
-            });
+            //console.log(itemJson.data[req.query.layer || 0]);
+            if ( !itemJson.data[parseInt(req.query.layer) || 0].features.length ){
+              res.send( 'No features exist for the requested FeatureService layer', 500 );
+            } else {
+              Controller.exportToFormat( req.params.format, key, itemJson.data[parseInt(req.query.layer) || 0], function(err, result){
+                if (err) {
+                  res.send( err, 500 );
+                } else {
+                  res.sendfile( result );
+                }
+              });
+            }
         });
       }
 

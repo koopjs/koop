@@ -80,16 +80,24 @@ exports.exportToFormat = function( format, key, geojson, callback ){
       } else if (ogrFormats[format]) {
         var cmd = ['ogr2ogr', '-f', ogrFormats[format], outFile, inFile].join(' ');
         console.log(cmd)
-        worker.aspawn([cmd],
+        if ( format == 'shp' ){
+          outFile = outFile.replace('zip', 'shp');
+        }
+        worker.aspawn(['ogr2ogr', '-f', ogrFormats[format], outFile, inFile],
           function (err, stdout, stderr) {
             if (err) {
-              console.log(err, stdout, stderr);
               callback(err.message, null);
             } else {
-              console.log( stdout, stderr);
               if ( format == 'shp' ){
                 console.log('need to zip up the shp');
-                callback(null, outFile);
+                var zipfile = outFile.replace('shp','zip');
+                var dbf = outFile.replace('shp','dbf');
+                var shx = outFile.replace('shp','shx');
+                var prj = outFile.replace('shp','prj');
+                worker.aspawn(['zip', zipfile, outFile, dbf, shx], function(err, stdout, stderr){
+                  console.log(err, stdout, stderr);
+                  callback(null, zipfile);
+                });
               } else {
                 callback(null, outFile);
               }
@@ -102,12 +110,12 @@ exports.exportToFormat = function( format, key, geojson, callback ){
 
     var ogrFormats = {
       kml: 'KML',
-      shp: '"ESRI Shapefile"',
+      shp: 'ESRI Shapefile',
       csv: 'CSV'
     };
 
     var path = [sails.config.data_dir + 'files', key].join('/');
-    var base = path + '/export',
+    var base = path + '/' + key,
       jsonFile = base + '.json';
       newFile = base + '.' + format;
 
