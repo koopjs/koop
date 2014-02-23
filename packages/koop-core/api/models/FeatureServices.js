@@ -15,15 +15,15 @@ module.exports = {
   },
 
   fieldType: function( value ){
-    if ( parseInt(value) ){
-      return this.fieldTypes[ 'integer' ];
-    } else { 
+    //if ( parseInt(value) ){
+    //  return this.fieldTypes[ 'integer' ];
+    //} else { 
       var type = typeof( value );
       if ( type == 'number'){
         type = ( this.isInt( value ) ) ? 'integer' : 'float';
       }
       return this.fieldTypes[ type ];
-    }
+    //}
   },
 
   // is the value an integer?
