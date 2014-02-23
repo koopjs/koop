@@ -131,6 +131,22 @@ describe('FeatureService Proxy Provider', function(){
               });
       });
 
+      it('should return 500 when accessing a deleted item', function(done) {
+          agent.get('http://localhost:1337/agol/arcgis/00017f5a4b854fb0b4e1a47888ca3dd6')
+              .end( function( err, res ) {
+                res.should.have.status( 500 );
+                return done();
+              });
+      });
+  
+      it('should return 500 when exporting an empty layer', function(done) {
+          agent.get('http://localhost:1337/agol/arcgis/000429f808ba404bb6b67e192170a5d7/data.csv')
+              .end( function( err, res ) {
+                res.should.have.status( 500 );
+                return done();
+              });
+      });
+
     });
 
 });
