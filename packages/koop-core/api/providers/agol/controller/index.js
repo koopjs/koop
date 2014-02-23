@@ -96,6 +96,7 @@ var Controller = extend({
       req.query.layer = req.params.layer;
     }
 
+
     // check format for exporting data
     if ( req.params.format ){
       // build the file key and look for the file 
