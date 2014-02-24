@@ -78,25 +78,20 @@ exports.exportToFormat = function( format, key, geojson, callback ){
       if (format == 'json'){
         callback(null, true);
       } else if (ogrFormats[format]) {
-        var cmd = ['ogr2ogr', '-f', ogrFormats[format], outFile, inFile].join(' ');
-        console.log(cmd)
-        if ( format == 'shp' ){
-          outFile = outFile.replace('zip', 'shp');
-        }
-        worker.aspawn(['ogr2ogr', '-f', ogrFormats[format], outFile, inFile],
+        var cmd = ['ogr2ogr', '-f', ogrFormats[format], ( format == 'zip' ) ? outFile.replace('zip','shp') : outFile, inFile].join(' ');
+        console.log(cmd);
+        worker.aspawn(['ogr2ogr', '-f', ogrFormats[format], ( format == 'zip' ) ? outFile.replace('zip','shp') : outFile, inFile],
           function (err, stdout, stderr) {
             if (err) {
               callback(err.message, null);
             } else {
-              if ( format == 'shp' ){
-                console.log('need to zip up the shp');
-                var zipfile = outFile.replace('shp','zip');
-                var dbf = outFile.replace('shp','dbf');
-                var shx = outFile.replace('shp','shx');
-                var prj = outFile.replace('shp','prj');
-                worker.aspawn(['zip', zipfile, outFile, dbf, shx], function(err, stdout, stderr){
-                  console.log(err, stdout, stderr);
-                  callback(null, zipfile);
+              if ( format == 'zip' ){
+                var shp = outFile.replace('zip','shp');
+                var dbf = outFile.replace('zip','dbf');
+                var shx = outFile.replace('zip','shx');
+                var prj = outFile.replace('zip','prj');
+                worker.aspawn(['zip', '-j', outFile, shp, dbf, shx, prj], function(err, stdout, stderr){
+                  callback(null, outFile);
                 });
               } else {
                 callback(null, outFile);
@@ -110,7 +105,7 @@ exports.exportToFormat = function( format, key, geojson, callback ){
 
     var ogrFormats = {
       kml: 'KML',
-      shp: 'ESRI Shapefile',
+      zip: 'ESRI Shapefile',
       csv: 'CSV'
     };
 

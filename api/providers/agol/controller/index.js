@@ -99,25 +99,27 @@ var Controller = extend({
     if ( req.params.format ){
       // build the file key and look for the file 
       var key = [req.params.id, req.params.item, parseInt(req.query.layer) || 0 ].join(':');
-      var fileName = [sails.config.data_dir + 'files', key, 'export.' + req.params.format].join('/');
+      var fileName = [sails.config.data_dir + 'files', key, key + '.' + req.params.format].join('/');
+
+      console.log(fileName);
 
       if (fs.existsSync( fileName )){
         res.sendfile( fileName );
       } else {
 
         _get(req.params.id, req.params.item, req.query, function( err, itemJson ){
-            //console.log(itemJson.data[req.query.layer || 0]);
-            if ( !itemJson.data[0].features.length ){
-              res.send( 'No features exist for the requested FeatureService layer', 500 );
-            } else {
-              Controller.exportToFormat( req.params.format, key, itemJson.data[0], function(err, result){
-                if (err) {
-                  res.send( err, 500 );
-                } else {
-                  res.sendfile( result );
-                }
-              });
-            }
+          //console.log(itemJson.data[req.query.layer || 0]);
+          if ( !itemJson.data[0].features.length ){
+            res.send( 'No features exist for the requested FeatureService layer', 500 );
+          } else {
+            Controller.exportToFormat( req.params.format, key, itemJson.data[0], function(err, result){
+              if (err) {
+                res.send( err, 500 );
+              } else {
+                res.sendfile( result );
+              }
+            });
+          }
         });
       }
 
