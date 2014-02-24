@@ -101,7 +101,7 @@ var Controller = extend({
       var key = [req.params.id, req.params.item, parseInt(req.query.layer) || 0 ].join(':');
       var fileName = [sails.config.data_dir + 'files', key, key + '.' + req.params.format].join('/');
 
-      console.log(fileName);
+      sails.config.log.info(fileName);
 
       if (fs.existsSync( fileName )){
         res.sendfile( fileName );
@@ -116,7 +116,6 @@ var Controller = extend({
               if (err) {
                 res.send( err, 500 );
               } else {
-                console.log( result );
                 res.sendfile( result );
               }
             });
@@ -287,7 +286,7 @@ var Controller = extend({
       file += '/' + req.params.z + '/' + req.params.x + '/' + req.params.y + '.' + req.params.format;
 
     if ( !fs.existsSync( file ) ) {
-      console.log('NO tile in cache, go get the data', file);
+      sails.config.log.info('NO tile in cache, go get the data', file);
       AGOL.find(req.params.id, function(err, data){
         if (err) {
           res.send( err, 500);

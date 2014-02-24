@@ -79,7 +79,7 @@ exports.exportToFormat = function( format, key, geojson, callback ){
         callback(null, outFile);
       } else if (ogrFormats[format]) {
         var cmd = ['ogr2ogr', '-f', ogrFormats[format], ( format == 'zip' ) ? outFile.replace('zip','shp') : outFile, inFile].join(' ');
-        console.log(cmd);
+        sails.config.log.info(cmd);
         worker.aspawn(['ogr2ogr', '-f', ogrFormats[format], ( format == 'zip' ) ? outFile.replace('zip','shp') : outFile, inFile],
           function (err, stdout, stderr) {
             if (err) {
