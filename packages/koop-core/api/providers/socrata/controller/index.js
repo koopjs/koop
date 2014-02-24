@@ -45,7 +45,7 @@ var Controller = extend({
         res.send( err, 500);
       } else {
         // Get the item 
-        Socrata.getResource( data[0].host, req.params.item, req.query, function(error, itemJson){
+        Socrata.getResource( data.host, req.params.item, req.query, function(error, itemJson){
           if (error) {
             res.send( error, 500);
           } else { 
@@ -79,7 +79,7 @@ var Controller = extend({
         res.send( err, 500);
       } else {
         // Get the item 
-        Socrata.getResource( data[0].host, req.params.item, req.query, function(error, geojson){
+        Socrata.getResource( data.host, req.params.item, req.query, function(error, geojson){
           if (error) {
             res.send( error, 500);
           } else {
@@ -111,7 +111,7 @@ var Controller = extend({
           res.send( err, 500);
         } else {
           // Get the item 
-          Socrata.getResource( data[0].host, req.params.item, req.query, function(error, itemJson){
+          Socrata.getResource( data.host, req.params.item, req.query, function(error, itemJson){
             if (error) {
               res.send( error, 500);
             } else {

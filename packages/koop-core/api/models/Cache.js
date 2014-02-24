@@ -54,8 +54,8 @@ exports.process = function( type, key, data, callback ){
   }
 };
 
-exports.remove = function(type, key, callback){
-  Cache.db.remove( type+':'+key, function(err, result){
+exports.remove = function(type, key, options, callback){
+  Cache.db.remove( type+':'+key+':'+(options.layer || 0), function(err, result){
     callback(null, true);
   });
 };

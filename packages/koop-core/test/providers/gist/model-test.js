@@ -26,7 +26,7 @@ describe('Github Model', function(){
         Cache.insert( 'repo', key, repoData[0], 0, function( error, success ){
           should.not.exist(error);
           success.should.equal( true );
-          Cache.remove('repo', key, function( err, d ){
+          Cache.remove('repo', key, {layer: 0}, function( err, d ){
             should.not.exist(err);
             d.should.equal( true );
             Cache.get('repo', key, {}, function(err, result){
@@ -55,7 +55,7 @@ describe('Github Model', function(){
         options = {geometry: {xmin: -110, ymin: 30, xmax: -106, ymax: 50, spatialReference: { wkid: 4326 }}};
 
       it('should spatially select the data', function(done){
-        Cache.remove( type, snowKey, function( err, d ){
+        Cache.remove( type, snowKey, {layer: 0}, function( err, d ){
           Cache.insert( type, snowKey, snowData, 0, function( error, success ){
             should.not.exist(error);
             success.should.equal( true );

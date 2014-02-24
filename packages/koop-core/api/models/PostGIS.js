@@ -49,7 +49,6 @@ module.exports = {
         callback('Not Found', []);
       } else {
         var info = result.rows[0].info;
-        console.log(info);
           var select = 'select feature from "' + key+':'+(options.layer || 0)+'"'; 
 
           if ( options.geometry ){
@@ -73,7 +72,7 @@ module.exports = {
             }
           }
           self._query( select, function (err, result) {
-            console.log(select, result.rows.length);
+            //console.log(select, result.rows.length);
             if ( result && result.rows && result.rows.length ) {
               callback( null, [{
                 type: 'FeatureCollection', 
@@ -100,16 +99,7 @@ module.exports = {
     var info = {},
       count = 0;
       error = null;
-    /*var check = function( err, success){
-      if (err) error = err;
-      count++;
-      if (count == geojson.length){
-        self._query( 'insert into "'+self.infoTable+'" values (\''+key+':info\',\''+JSON.stringify(info)+'\')', function(err, result){
-          callback(error, true);
-        });
-      }
-    };*/
-    //geojson.forEach(function( layer, i ){
+      
       info.name = geojson.name ;
       info.updated_at = geojson.updated_at;
       info.sha = geojson.sha;
@@ -119,11 +109,12 @@ module.exports = {
         geojson.features.forEach(function(feature, i){
           self._insertFeature(table, feature, i);
         });
-        self._query( 'insert into "'+self.infoTable+'" values (\''+table+':info\',\''+JSON.stringify(info)+'\')', function(err,     result){
-          callback(err, true);
+        self._query( 'delete from "'+self.infoTable+'" where id=\''+table+':info\'', function(err,res){
+          self._query( 'insert into "'+self.infoTable+'" values (\''+table+':info\',\''+JSON.stringify(info)+'\')', function(err, result){
+            callback(err, true);
+          });
         });
       });     
-    //});
     
   },
 
@@ -136,16 +127,6 @@ module.exports = {
 
   remove: function( key, callback){
     var self = this;
-    var totalLayers, processedLayers = 0;
-    var collect = function(){
-      processedLayers++;
-      if ( processedLayers == totalLayers ){
-        //delete row from info table 
-        self._query("delete from \""+self.infoTable+"\" where id='"+(key+':info')+"'", function(err, result){
-          callback();
-        })
-      }
-    };
   
     this._query('select info from "'+this.infoTable+'" where id=\''+(key+":info")+"'", function(err, result){
       if ( !result || !result.rows.length ){
@@ -153,11 +134,10 @@ module.exports = {
         callback( null, true );
       } else {
         var info = result.rows[0].info;
-        totalLayers = info.length;
-        info.forEach(function(layer, i){
-          self.dropTable(key+':'+i, function(err, result){
-            collect();
-          });
+        self.dropTable(key, function(err, result){
+            self._query("delete from \""+self.infoTable+"\" where id='"+(key+':info')+"'", function(err, result){
+              callback();
+            });
         });
       }
     });

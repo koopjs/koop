@@ -2,7 +2,7 @@ var should = require('should');
 
 before(function (done) {
   fs = require('../../api/models/FeatureServices.js');
-  data = require('../fixtures/snow.geojson');
+  snowData = require('../fixtures/snow.geojson');
   Query = require('../../api/models/Query.js');
   done();
 });
@@ -11,9 +11,9 @@ describe('Query Model', function(){
 
     describe('when returning count only', function(){
       it('should return the count', function(done){
-        Query.filter( data, { returnCountOnly: true }, function( err, service ){
+        Query.filter( snowData, { returnCountOnly: true }, function( err, service ){
           service.should.be.an.instanceOf(Object);
-          service.count.should.equal( data.features.length );
+          service.count.should.equal( snowData.features.length );
           done();
         });
       });
@@ -21,11 +21,11 @@ describe('Query Model', function(){
 
     describe('when returning ids only', function(){
       it('should return an array of object ids', function(done){
-        Query.filter( data, { returnIdsOnly: true, idField: 'station' }, function( err, service ){
+        Query.filter( snowData, { returnIdsOnly: true, idField: 'station' }, function( err, service ){
           service.should.be.an.instanceOf(Object);
           service.objectIds.should.be.an.instanceOf(Array);
           service.objectIdField.should.equal( 'station' );
-          service.objectIds.length.should.equal( data.features.length );
+          service.objectIds.length.should.equal( snowData.features.length );
           done();
         });
       });
@@ -33,7 +33,7 @@ describe('Query Model', function(){
 
     describe('when not returning geometrys', function(){
       it('should return an array of features with no geometries', function(done){
-        Query.filter( data, { returnGeometry: false }, function( err, service ){
+        Query.filter( snowData, { returnGeometry: false }, function( err, service ){
           service.should.be.an.instanceOf(Object);
           service.features[0].should.not.have.property( 'geometry' );
           done();
@@ -43,7 +43,7 @@ describe('Query Model', function(){
 
     describe('when not returning geometrys', function(){
       it('should return an array of features with no geometries', function(done){
-        Query.filter( data, { returnGeometry: false }, function( err, service ){
+        Query.filter( snowData, { returnGeometry: false }, function( err, service ){
           service.should.be.an.instanceOf(Object);
           service.features[0].should.not.have.property( 'geometry' );
           done();
@@ -53,7 +53,7 @@ describe('Query Model', function(){
 
     describe('when filtering outFields', function(){
       it('should return features with only given outFields', function(done){
-        Query.filter( data, { outFields: 'station' }, function( err, service ){
+        Query.filter( snowData, { outFields: 'station' }, function( err, service ){
           service.should.be.an.instanceOf(Object);
           service.features[0].properties.should.have.property( 'station' );
           service.features[0].properties.should.not.have.property( 'latitude' );
@@ -65,17 +65,17 @@ describe('Query Model', function(){
     describe('when filtering via where', function(){
       var snow = require('../fixtures/snow.geojson');
       it('should return features that match where clause', function(done){
-        Query.filter( data, { where: '1=1' }, function( err, service ){
+        Query.filter( snowData, { where: '1=1' }, function( err, service ){
           service.should.be.an.instanceOf(Object);
-          service.features.length.should.equal( data.features.length );
+          service.features.length.should.equal( snowData.features.length );
           done();
         });
       });
 
       it('should return features that match where clause', function(done){
-        Query.filter( snow, { where: 'latitude > 39.9', outFields: '*' }, function( err, service ){
+        Query.filter( snowData, { where: 'latitude > 39.9', outFields: '*' }, function( err, service ){
           service.should.be.an.instanceOf(Object);
-          service.features.length.should.equal( data.features.length );
+          service.features.length.should.equal( snowData.features.length );
           done();
         });
       });
@@ -84,7 +84,7 @@ describe('Query Model', function(){
     describe('when requesting data with outStatistics', function(){
       var snow = require('../fixtures/snow.geojson');
       it('should return an error when outStatistics params fails', function(done){
-        Query.filter( data, { outStatistics : 'xx11xx' }, function( err, service ){
+        Query.filter( snowData, { outStatistics : 'xx11xx' }, function( err, service ){
           err.should.not.equal(null);
           should.not.exist( service );
           done();

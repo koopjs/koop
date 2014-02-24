@@ -9,8 +9,23 @@ exports.find = function( id, options, callback ){
         if ( !geojson.length ){
           geojson = [ geojson ];
         }
-        Cache.insert( type, id, geojson, function( err, success){
-          if ( success ) callback( null, geojson );
+
+        var _totalLayer = geojson.length,
+          finalJson = [];
+        // local method to collect layers and send them all
+        var _send = function(data){
+          finalJson.push(data);
+          if ( finalJson.length == _totalLayer ) {
+            callback(null, finalJson);
+          }
+        };
+
+        geojson.forEach(function(layer, i){
+          Cache.insert( type, id, layer, i, function( err, success){
+            if ( success ) {
+              _send(layer);
+            } 
+          });
         });
       });
     } else {
