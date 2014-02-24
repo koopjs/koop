@@ -109,7 +109,9 @@ var Controller = extend({
 
         _get(req.params.id, req.params.item, req.query, function( err, itemJson ){
           //console.log(itemJson.data[req.query.layer || 0]);
-          if ( !itemJson.data[0].features.length ){
+          if (err){
+            res.send(err, 500 );
+          } else if ( !itemJson.data[0].features.length ){
             res.send( 'No features exist for the requested FeatureService layer', 500 );
           } else {
             Controller.exportToFormat( req.params.format, key, itemJson.data[0], function(err, result){
