@@ -5,6 +5,7 @@ before(function (done) {
   snowKey = 'chelm/geodata/snow';
   repoData = require('../../fixtures/repo.geojson');
   snowData = require('../../fixtures/snow.geojson');
+  PostGIS = require('../../../api/models/PostGIS.js');
   global['github'] = require('../../../api/providers/github/models/Github.js');
   Cache = require('../../helpers/Cache.js');
   done();
@@ -22,7 +23,7 @@ describe('Github Model', function(){
       });
 
       it('should insert and remove the data', function(done){
-        Cache.insert( 'repo', key, repoData, function( error, success ){
+        Cache.insert( 'repo', key, repoData[0], 0, function( error, success ){
           should.not.exist(error);
           success.should.equal( true );
           Cache.remove('repo', key, function( err, d ){
@@ -37,7 +38,7 @@ describe('Github Model', function(){
       });
 
       it('should insert and get the sha', function(done){
-        Cache.insert( 'repo', key, repoData, function( error, success ){
+        Cache.insert( 'repo', key, repoData[0], 0, function( error, success ){
           should.not.exist(error);
           success.should.equal( true );
           Cache.get('repo', key, {}, function( err, d ){
@@ -55,7 +56,7 @@ describe('Github Model', function(){
 
       it('should spatially select the data', function(done){
         Cache.remove( type, snowKey, function( err, d ){
-          Cache.insert( type, snowKey, [snowData], function( error, success ){
+          Cache.insert( type, snowKey, snowData, 0, function( error, success ){
             should.not.exist(error);
             success.should.equal( true );
             Cache.get( type, snowKey, options, function(err, data){

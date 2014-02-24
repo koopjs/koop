@@ -5,6 +5,7 @@ before(function (done) {
   snowKey = 'chelm/geodata/snow';
   repoData = require('../../fixtures/repo.geojson');
   snowData = require('../../fixtures/snow.geojson');
+  PostGIS = require('../../../api/models/PostGIS.js');
   global['github'] = require('../../../api/providers/github/models/Github.js');
   Cache = require('../../helpers/Cache.js');
   done();
@@ -12,7 +13,13 @@ before(function (done) {
 
 describe('Github Model', function(){
 
+
     describe('when caching a github file', function(){
+      afterEach(function(done){
+        Cache.remove('repo', key, function( err, d ){
+          done();
+        });
+      });
     
       it('should error when missing key is sent', function(done){
         Cache.get('repo', key+'-BS', {}, function( err, data ){
@@ -22,7 +29,7 @@ describe('Github Model', function(){
       });
 
       it('should insert and remove the data', function(done){
-        Cache.insert( 'repo', key, repoData, function( error, success ){
+        Cache.insert( 'repo', key, repoData[0], 0, function( error, success ){
           should.not.exist(error);
           success.should.equal( true );
           Cache.remove('repo', key, function( err, d ){
@@ -37,7 +44,7 @@ describe('Github Model', function(){
       });
 
       it('should insert and get the sha', function(done){
-        Cache.insert( 'repo', key, repoData, function( error, success ){
+        Cache.insert( 'repo', key, repoData[0], 0, function( error, success ){
           should.not.exist(error);
           success.should.equal( true );
           Cache.get('repo', key, {}, function( err, d ){
@@ -49,22 +56,5 @@ describe('Github Model', function(){
       });
     });
 
-    describe('when caching snow data', function(){
-      var type = 'Github',
-        options = {geometry: {xmin: -110, ymin: 30, xmax: -106, ymax: 50, spatialReference: { wkid: 4326 }}};
-
-      it('should spatially select the data', function(done){
-        Cache.remove( type, snowKey, function( err, d ){
-          Cache.insert( type, snowKey, [snowData], function( error, success ){
-            should.not.exist(error);
-            success.should.equal( true );
-            Cache.get( type, snowKey, options, function(err, data){
-              should.not.exist(err);
-              done();
-            });
-          });
-        });
-      });
-    });
 });
 
