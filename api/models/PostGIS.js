@@ -13,10 +13,10 @@ module.exports = {
     this.client = new pg.Client( conn );
     this.client.connect(function(err) {
       if ( err ){
-        console.log('Cannot connect to the given database', conn);
+        sails.config.log.info('Cannot connect to the given database', conn);
         process.exit();
       } else {
-        console.log('Connected to postgres db for storage', conn);
+        sails.config.log.info('Connected to postgres db for storage', conn);
         // creates table only if they dont exist
         self._createTable(self.infoTable, "( id varchar(255) PRIMARY KEY, info JSON)");
         self._createTable(self.timerTable, "( id varchar(255) PRIMARY KEY, expires timestamp)");
@@ -72,7 +72,6 @@ module.exports = {
             }
           }
           self._query( select, function (err, result) {
-            //console.log(select, result.rows.length);
             if ( result && result.rows && result.rows.length ) {
               callback( null, [{
                 type: 'FeatureCollection', 

@@ -97,7 +97,7 @@ var AGOL = function(){
     } else {
       Cache.get( 'agol', id, options, function(err, entry ){
         if ( err ){
-          console.log('AGOL request not found in cache, retrieving...');
+          sails.config.log.info('AGOL request not found in cache, retrieving...');
           // get the ids only
           var idUrl = itemJson.url + '/' + (options.layer || 0) + '/query?where=1=1&returnIdsOnly=true&returnCountOnly=true&f=json';
 
@@ -113,7 +113,7 @@ var AGOL = function(){
               if (idJson.error){
                 callback( idJson.error.message + ': ' + idUrl, null );
               } else {
-                console.log('COUNT', idJson, id);
+                sails.config.log.info('COUNT', idJson.count, id);
                 if (idJson.count == 0){
                   itemJson.data = [{type: 'FeatureCollection', features: []}];
                   callback( null, itemJson );
@@ -139,7 +139,6 @@ var AGOL = function(){
                           });
                         });
                       } catch (e){
-                        console.log('Error', e);
                         callback( 'Unable to parse Feature Service response', null );
                       }
                     }
