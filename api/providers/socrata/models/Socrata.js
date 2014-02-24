@@ -50,7 +50,7 @@ var Socrata = function(){
             self.toGeojson( JSON.parse( data.body ), locationField, function(err, geojson){
               geojson.updated_at = new Date(data.headers['last-modified']).getTime();
               geojson.name = id;
-              Cache.insert( type, key, [geojson], function( err, success){
+              Cache.insert( type, key, geojson, 0, function( err, success){
                 if ( success ) callback( null, [geojson] );
               });
             });

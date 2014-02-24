@@ -8,19 +8,17 @@ before(function (done) {
   PostGIS = require('../../api/models/PostGIS.js');
   Cache = require('../../api/models/Cache.js');
 
-  table = "repo:test/repo/file:0";
-
   // use mongo to store data 
   Cache.db = PostGIS.connect( 'postgres://localhost/koopdev' );
   done();
 });
 
-describe('Mongo Cache Model', function(){
+describe('PostGIS Cache Model Tests', function(){
 
     describe('when caching a github file', function(){
 
       afterEach(function(done){
-        Cache.remove('repo', key, done);
+        Cache.remove('repo', key, {layer: 0}, done);
       });
 
       it('should error when missing key is sent', function(done){
@@ -31,10 +29,10 @@ describe('Mongo Cache Model', function(){
       });
 
       it('should insert and remove the data', function(done){
-        Cache.insert( 'repo', key, repoData, function( error, success ){
+        Cache.insert( 'repo', key, repoData[0], 0, function( error, success ){
           should.not.exist(error);
           success.should.equal( true );
-          Cache.remove('repo', key, function( err, d ){
+          Cache.remove('repo', key, {layer: 0}, function( err, d ){
             should.not.exist(err);
             Cache.get('repo', key, {}, function(err, result){
               should.exist( err );
@@ -45,7 +43,7 @@ describe('Mongo Cache Model', function(){
       });
 
       it('should insert and get the sha', function(done){
-        Cache.insert( 'repo', key, repoData, function( error, success ){
+        Cache.insert( 'repo', key, repoData[0], 0, function( error, success ){
           should.not.exist(error);
           success.should.equal( true );
           Cache.get('repo', key, {}, function( err, d ){

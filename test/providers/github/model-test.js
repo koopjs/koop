@@ -16,7 +16,7 @@ describe('Github Model', function(){
 
     describe('when caching a github file', function(){
       afterEach(function(done){
-        Cache.remove('repo', key, function( err, d ){
+        Cache.remove('repo', key, {layer: 0}, function( err, d ){
           done();
         });
       });
@@ -32,7 +32,7 @@ describe('Github Model', function(){
         Cache.insert( 'repo', key, repoData[0], 0, function( error, success ){
           should.not.exist(error);
           success.should.equal( true );
-          Cache.remove('repo', key, function( err, d ){
+          Cache.remove('repo', key, {layer: 0}, function( err, d ){
             should.not.exist(err);
             d.should.equal( true );
             Cache.get('repo', key, {}, function(err, result){
