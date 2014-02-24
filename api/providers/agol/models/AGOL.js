@@ -72,9 +72,9 @@ var AGOL = function(){
           } else {
             var json = JSON.parse( data.body ).featureCollection.layers[0].featureSet;
             GeoJSON.fromEsri( json, function(err, geojson){
-              Cache.insert( 'agol', id, [geojson], function( err, success){
+              Cache.insert( 'agol', id, geojson, (options.layer || 0), function( err, success){
                 if ( success ) {
-                  itemJson.data = geojson;
+                  itemJson.data = [geojson];
                   callback( null, itemJson );
                 } else {
                   callback( err, null );
@@ -97,6 +97,7 @@ var AGOL = function(){
     } else {
       Cache.get( 'agol', id, options, function(err, entry ){
         if ( err ){
+          console.log('AGOL request not found in cache, retrieving...');
           // get the ids only
           var idUrl = itemJson.url + '/' + (options.layer || 0) + '/query?where=1=1&returnIdsOnly=true&returnCountOnly=true&f=json';
 
@@ -107,62 +108,64 @@ var AGOL = function(){
           //console.log(options, idUrl);
           request.get(idUrl, function(err, serviceIds ){
             // determine if its greater then 1000 
-            console.log(serviceIds.body);
-            
-            var idJson = JSON.parse(serviceIds.body);
-            if (idJson.error){
-              callback( idJson.error.message + ': ' + idUrl, null );
-            } else {
-              console.log('COUNT', idJson, id);
-              if (idJson.count == 0){
-                itemJson.data = [{type: 'FeatureCollection', features: []}];
-                callback( null, itemJson );
-              } else if (idJson.count < 1000){
-                var url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where=1=1&f=json'; 
-                if (options.geometry){
-                  url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
-                }
-                request.get(url, function(err, data ){
-                  if (err) {
-                    callback(err, null);
-                  } else {
-                    try {
-                      var json = {features: JSON.parse( data.body ).features};
-                      GeoJSON.fromEsri( json, function(err, geojson){
-                        Cache.insert( 'agol', id, [geojson], function( err, success){
-                          if ( success ) {
-                            itemJson.data = [geojson];
-                            callback( null, itemJson );
-                          } else {
-                            callback( err, null );
-                          }
-                        });
-                      });
-                    } catch (e){
-                      console.log('Error', e);
-                      callback( 'Unable to parse Feature Service response', null );
-                    }
-                  }
-                });
+            try {
+              var idJson = JSON.parse(serviceIds.body);
+              if (idJson.error){
+                callback( idJson.error.message + ': ' + idUrl, null );
               } else {
-                // TODO TEMP COUNT REMOVE ME
-                idJson.count = 3000;
-                // ---------
-                var i, where, pageMax, url, pages, max;
-                max = 1000;
-                pages = Math.ceil(idJson.count / max);
-                pageRequests = [];
-                for (i=1; i < pages+1; i++){
-                  pageMax = i*max;
-                  where = 'objectId<'+pageMax+' AND '+ 'objectId>='+((pageMax-max)+1);
-                  url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where='+where+'&f=json';
-                  if ( options.geometry ){
+                console.log('COUNT', idJson, id);
+                if (idJson.count == 0){
+                  itemJson.data = [{type: 'FeatureCollection', features: []}];
+                  callback( null, itemJson );
+                } else if (idJson.count < 1000){
+                  var url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where=1=1&f=json'; 
+                  if (options.geometry){
                     url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
                   }
-                  pageRequests.push({req: url});
+                  request.get(url, function(err, data ){
+                    if (err) {
+                      callback(err, null);
+                    } else {
+                      try {
+                        var json = {features: JSON.parse( data.body ).features};
+                        GeoJSON.fromEsri( json, function(err, geojson){
+                          Cache.insert( 'agol', id, geojson, (options.layer || 0), function( err, success){
+                            if ( success ) {
+                              itemJson.data = [geojson];
+                              callback( null, itemJson );
+                            } else {
+                              callback( err, null );
+                            }
+                          });
+                        });
+                      } catch (e){
+                        console.log('Error', e);
+                        callback( 'Unable to parse Feature Service response', null );
+                      }
+                    }
+                  });
+                } else {
+                  // TODO TEMP COUNT REMOVE ME
+                  idJson.count = 3000;
+                  // ---------
+                  var i, where, pageMax, url, pages, max;
+                  max = 1000;
+                  pages = Math.ceil(idJson.count / max);
+                  pageRequests = [];
+                  for (i=1; i < pages+1; i++){
+                    pageMax = i*max;
+                    where = 'objectId<'+pageMax+' AND '+ 'objectId>='+((pageMax-max)+1);
+                    url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where='+where+'&f=json';
+                    if ( options.geometry ){
+                      url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
+                    }
+                    pageRequests.push({req: url});
+                  }
+                  self.requestQueue(idJson.count, pageRequests, id, itemJson, (options.layer || 0), callback);
                 }
-                self.requestQueue(idJson.count, pageRequests, id, itemJson, callback);
               }
+            } catch (e) {
+              callback( 'Unknown layer, make the layer you requested exists', null );
             }
           });
         } else {
@@ -175,13 +178,12 @@ var AGOL = function(){
 
   // make requests for feature pages 
   // execute done when we have all features 
-  this.requestQueue = function(max, reqs, id, itemJson, done){
+  this.requestQueue = function(max, reqs, id, itemJson, layerId, done){
     var finalJson = { features: [] };
     var reqCount = 0;
   
     // aggregate responses into one json and call done we have all of them 
     var _collect = function(json){
-      console.log(json.features.length);
       finalJson.features = finalJson.features.concat(json.features);
       reqCount++;
 
@@ -196,7 +198,7 @@ var AGOL = function(){
       if (reqCount == reqs.length){
         GeoJSON.fromEsri( finalJson, function(err, geojson){
           itemJson.data = [geojson];
-          Cache.insert( 'agol', id, itemJson.data, function( err, success){
+          Cache.insert( 'agol', id, itemJson.data, layerId, function( err, success){
             if ( success ) {
               console.log('collect', itemJson.data[0].features.length);
               done(null, itemJson);

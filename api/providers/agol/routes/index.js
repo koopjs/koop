@@ -23,6 +23,11 @@ module.exports = {
     controller: 'agol',
     action: 'findItemData'
   },
+
+  'get /agol/:id/:item/:layer': {
+    controller: 'agol',
+    action: 'findItemData'
+  },
  
   'get /agol/:id/:item': {
     controller: 'agol',
