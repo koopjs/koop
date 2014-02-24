@@ -44,15 +44,13 @@ module.exports = {
       }
     };
 
-    this._query('select info from "'+this.infoTable+'" where id=\''+(key+":info")+'\'', function(err, result){
+    this._query('select info from "'+this.infoTable+'" where id=\''+(key+':'+(options.layer || 0 )+":info")+'\'', function(err, result){
       if ( err || !result || !result.rows || !result.rows.length ){
         callback('Not Found', []);
       } else {
         var info = result.rows[0].info;
-        totalLayers = info.length;
-
-        info.forEach(function(layer, i){
-          var select = 'select feature from "' + key+':'+i+'"'; 
+        console.log(info);
+          var select = 'select feature from "' + key+':'+(options.layer || 0)+'"'; 
 
           if ( options.geometry ){
 
@@ -75,34 +73,34 @@ module.exports = {
             }
           }
           self._query( select, function (err, result) {
+            console.log(select, result.rows.length);
             if ( result && result.rows && result.rows.length ) {
-              collect( null, {
+              callback( null, [{
                 type: 'FeatureCollection', 
                 features: _.pluck(result.rows, 'feature'),
-                name: layer.name, 
-                sha: layer.sha, 
-                updated_at: layer.updated_at 
-              });
+                name: info.name, 
+                sha: info.sha, 
+                updated_at: info.updated_at 
+              }]);
             } else {
-              collect( 'Not Found', {
+              callback( 'Not Found', [{
                 type: 'FeatureCollection',
                 features: []
-              });
+              }]);
             }
           });
-        });
       }
     });
   },
 
   // create a collection and insert features
   // create a 2d index 
-  insert: function( key, geojson, callback ){
+  insert: function( key, geojson, layerId, callback ){
     var self = this; 
-    var info = [],
+    var info = {},
       count = 0;
       error = null;
-    var check = function( err, success){
+    /*var check = function( err, success){
       if (err) error = err;
       count++;
       if (count == geojson.length){
@@ -110,20 +108,22 @@ module.exports = {
           callback(error, true);
         });
       }
-    };
-    geojson.forEach(function( layer, i ){
-      info[i] = { name: layer.name };
-      info[i].updated_at = layer.updated_at;
-      info[i].sha = layer.sha;
+    };*/
+    //geojson.forEach(function( layer, i ){
+      info.name = geojson.name ;
+      info.updated_at = geojson.updated_at;
+      info.sha = geojson.sha;
    
-      var table = key+':'+i;
+      var table = key+':'+layerId;
       self._createTable( table, self._buildSchemaFromFeature(), function(err, result){
-        layer.features.forEach(function(feature, i){
+        geojson.features.forEach(function(feature, i){
           self._insertFeature(table, feature, i);
         });
-        check(err, true);
+        self._query( 'insert into "'+self.infoTable+'" values (\''+table+':info\',\''+JSON.stringify(info)+'\')', function(err,     result){
+          callback(err, true);
+        });
       });     
-    });
+    //});
     
   },
 
@@ -215,7 +215,7 @@ module.exports = {
               err = 'No service found by that id';
               callback( err, null);
             } else {
-              callback( err, res.rows);
+              callback( err, res.rows[0]);
             }
           });
         }

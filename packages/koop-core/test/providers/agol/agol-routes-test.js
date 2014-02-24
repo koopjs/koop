@@ -147,6 +147,14 @@ describe('FeatureService Proxy Provider', function(){
               });
       });
 
+      it('should return 500 when a missing/unknown feature service layer', function(done) {
+          agent.get('http://localhost:1337/agol/arcgis/000915053fad47cfa0a2dca9d3d4e76a/100')
+              .end( function( err, res ) {
+                res.should.have.status( 500 );
+                return done();
+              });
+      });
+
     });
 
 });
