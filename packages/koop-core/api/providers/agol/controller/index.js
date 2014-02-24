@@ -116,6 +116,7 @@ var Controller = extend({
               if (err) {
                 res.send( err, 500 );
               } else {
+                console.log( result );
                 res.sendfile( result );
               }
             });

@@ -76,7 +76,7 @@ exports._processFeatureServer = function(req, res, err, data, callback){
 exports.exportToFormat = function( format, key, geojson, callback ){
     var _callOgr = function(inFile, outFile, callback){
       if (format == 'json'){
-        callback(null, true);
+        callback(null, outFile);
       } else if (ogrFormats[format]) {
         var cmd = ['ogr2ogr', '-f', ogrFormats[format], ( format == 'zip' ) ? outFile.replace('zip','shp') : outFile, inFile].join(' ');
         console.log(cmd);
