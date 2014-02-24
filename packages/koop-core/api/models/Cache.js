@@ -1,3 +1,10 @@
+var log = function(val){
+  if (typeof(sails) !== 'undefined'){
+    sails.config.log.info(val);
+  }
+};
+
+
 exports.checkTime = (60*60*1000); // 60 mins
 
 exports.insert = function( type, key, data, layerId, callback ){
@@ -17,28 +24,25 @@ exports.process = function( type, key, data, callback ){
     Cache.db.timer.get( type+':'+key+':timer', function( error, timer){
       if ( timer ){
         // got a timer, therefore we are good and just return
-        sails.config.log.info('Cache timer exists, not checking for updates', key);
+        log('Cache timer exists, not checking for updates', key);
         callback( null, data );
       } else {
         // expired, hit the API to check the latest sha
         if ( global[type] && global[type].checkCache ) {
-          sails.config.log.info('No cache timer, checking service for updates') 
+          log('No cache timer, checking service for updates') 
           global[type].checkCache( key, data, function(err, success){
             if ( !success ){
               // false is good -> reset timer and return data
               // cache returned true, return current data
-              sails.config.log.info('Setting a timer', key);
+              log('Setting a timer', key);
               Cache.db.timer.set( type+':'+key+':timer', 360000, function( error, timer){
                 console.log(error, timer)
                 callback( null, data );
               });
             } else {
               // we need to remove and save new data 
-              sails.config.log.info('Removing data', key);
               self.remove(type, key, function(){
-                sails.config.log.info('inserting data', key);
                 self.insert(type, key, success, function(err, res){
-                  sails.config.log.info('Setting a timer', key);
                   Cache.db.timer.set( type+':'+key+':timer', 360000, function( error, timer){
                     callback( err, success );
                   });

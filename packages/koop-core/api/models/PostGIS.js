@@ -13,10 +13,10 @@ module.exports = {
     this.client = new pg.Client( conn );
     this.client.connect(function(err) {
       if ( err ){
-        sails.config.log.info('Cannot connect to the given database', conn);
+        //sails.config.log.info('Cannot connect to the given database', conn);
         process.exit();
       } else {
-        sails.config.log.info('Connected to postgres db for storage', conn);
+        //sails.config.log.info('Connected to postgres db for storage', conn);
         // creates table only if they dont exist
         self._createTable(self.infoTable, "( id varchar(255) PRIMARY KEY, info JSON)");
         self._createTable(self.timerTable, "( id varchar(255) PRIMARY KEY, expires timestamp)");
