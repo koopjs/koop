@@ -15,7 +15,7 @@ exports.fromEsri = function( json, callback ){
           geojson.features.push( feature );
         }
       } catch (e){
-        console.log('error parsing feature', e, f);
+        //console.log('error parsing feature', e, f);
       }
     });
     callback(null, geojson);
