@@ -129,6 +129,7 @@ var AGOL = function(){
                       try {
                         var json = {features: JSON.parse( data.body ).features};
                         GeoJSON.fromEsri( json, function(err, geojson){
+                          geojson.updated_at = itemJson.modified; 
                           Cache.insert( 'agol', id, geojson, (options.layer || 0), function( err, success){
                             if ( success ) {
                               itemJson.data = [geojson];
@@ -197,6 +198,7 @@ var AGOL = function(){
       if (reqCount == reqs.length){
         GeoJSON.fromEsri( finalJson, function(err, geojson){
           itemJson.data = [geojson];
+          geojson.updated_at = itemJson.modified; 
           Cache.insert( 'agol', id, geojson, layerId, function( err, success){
             if ( success ) {
               done(null, itemJson);
