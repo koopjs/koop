@@ -198,9 +198,8 @@ var AGOL = function(){
       if (reqCount == reqs.length){
         GeoJSON.fromEsri( finalJson, function(err, geojson){
           itemJson.data = [geojson];
-          Cache.insert( 'agol', id, itemJson.data, layerId, function( err, success){
+          Cache.insert( 'agol', id, geojson, layerId, function( err, success){
             if ( success ) {
-              console.log('collect', itemJson.data[0].features.length);
               done(null, itemJson);
             } else {
               done(err, null);
