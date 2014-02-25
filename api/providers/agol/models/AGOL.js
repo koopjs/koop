@@ -118,7 +118,7 @@ var AGOL = function(){
                   itemJson.data = [{type: 'FeatureCollection', features: []}];
                   callback( null, itemJson );
                 } else if (idJson.count < 1000){
-                  var url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where=1=1&f=json'; 
+                  var url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where=1=1&f=json&outFields=*'; 
                   if (options.geometry){
                     url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
                   }
