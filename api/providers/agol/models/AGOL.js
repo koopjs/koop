@@ -144,9 +144,11 @@ var AGOL = function(){
                       }
                     }
                   });
+                } else if (idJson.count > 3000){
+                  callback( 'Feature Count is too large to convert: ' + idJson.count, null );
                 } else {
                   // TODO TEMP COUNT REMOVE ME
-                  idJson.count = 3000;
+                  //idJson.count = 3000;
                   // ---------
                   var i, where, pageMax, url, pages, max;
                   max = 1000;
@@ -198,7 +200,6 @@ var AGOL = function(){
           finalJson.geometryType = json.geometryType;
           finalJson.spatialReference = json.spatialReference;
 
-          console.log( json ); 
           GeoJSON.fromEsri( json, function(err, geojson){
             itemJson.data = [ geojson ];
             geojson.updated_at = itemJson.modified; 
