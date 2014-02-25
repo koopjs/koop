@@ -184,18 +184,16 @@ var AGOL = function(){
   
     // aggregate responses into one json and call done we have all of them 
     var _collect = function(json){
-      finalJson.features = finalJson.features.concat(json.features);
       reqCount++;
 
-      if (reqCount == 1){
+      if ( reqCount == 1 ){
+        finalJson.features = json.features;
         finalJson.fields = json.fields;
         finalJson.displayFieldName = json.displayFieldName;
         finalJson.fieldAliases = json.fieldAliases;
         finalJson.geometryType = json.geometryType;
         finalJson.spatialReference = json.spatialReference;
-      }
 
-      if (reqCount == reqs.length){
         GeoJSON.fromEsri( finalJson, function(err, geojson){
           itemJson.data = [geojson];
           geojson.updated_at = itemJson.modified; 
@@ -207,8 +205,20 @@ var AGOL = function(){
             }
           });
         });
-
+      } else {
+        // insert a partial
+        GeoJSON.fromEsri( json, function(err, geojson){
+          Cache.insertPartial( 'agol', id, geojson, layerId, function( err, success){
+            // wipe any files so that next time we get em
+            var exec = require('child_process').exec;
+            var path = sails.config.data_dir + "files/arcgis:"+id+":"+layerId;
+            child = exec("rm "+path+"/*", function (error, stdout, stderr) {
+              console.log('cleared out files'); //, path, error, stdout, stderr);
+            });
+          });
+        }); 
       }
+
     };
 
     var q = async.queue(function (task, callback) {

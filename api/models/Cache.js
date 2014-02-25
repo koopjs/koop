@@ -15,6 +15,12 @@ exports.insert = function( type, key, data, layerId, callback ){
   });
 };
 
+exports.insertPartial = function( type, key, data, layerId, callback ){
+  Cache.db.insertPartial( type+':'+key, data, layerId, function(err, success){
+    callback( err, success );
+  });
+};
+
 exports.process = function( type, key, data, callback ){
   var self = this;
   if ( !data.length ){
