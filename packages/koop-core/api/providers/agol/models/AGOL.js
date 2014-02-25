@@ -219,7 +219,7 @@ var AGOL = function(){
               var path = sails.config.data_dir + "files/arcgis:"+id+":"+layerId;
               child = exec("rm "+path+"/*", function (error, stdout, stderr) {
                 console.log('cleared out files'); //, path, error, stdout, stderr);
-                if (reqCount == req.length){
+                if (reqCount == reqs.length){
                   done(null, itemJson);
                 }
               });
