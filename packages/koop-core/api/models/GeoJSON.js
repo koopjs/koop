@@ -9,13 +9,16 @@ exports.fromEsri = function( json, callback ){
     json.features.forEach(function(f, i){
       try {
         if (f.geometry){
-          feature = JSON.parse( terraformerParser.parse( f ).toJson() );
+          feature = terraformerParser.parse( f );
           delete feature.bbox;
           delete feature.geometry.bbox;
+          if (!feature.id){
+            feature.id = i+1;
+          }
           geojson.features.push( feature );
         }
       } catch (e){
-        //console.log('error parsing feature', e, f);
+        console.log('error parsing feature', e, f);
       }
     });
     callback(null, geojson);
