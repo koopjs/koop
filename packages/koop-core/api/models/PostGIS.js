@@ -117,6 +117,17 @@ module.exports = {
     
   },
 
+  insertPartial: function( key, geojson, layerId, callback ){
+    var self = this;
+    var info = {};
+
+    var table = key+':'+layerId;
+    geojson.features.forEach(function(feature, i){
+        self._insertFeature(table, feature, i);
+    });
+    callback(null, true);
+  },
+
   // inserts geojson features into the feature column of the given table
   _insertFeature: function(table, feature, i){
     var sql = 'insert into "'+table+'" (feature) VALUES (\''+JSON.stringify(feature).replace(/'/g, "")+'\')' ;
@@ -135,7 +146,7 @@ module.exports = {
         var info = result.rows[0].info;
         self.dropTable(key, function(err, result){
             self._query("delete from \""+self.infoTable+"\" where id='"+(key+':info')+"'", function(err, result){
-              callback();
+              if (callback) callback();
             });
         });
       }
