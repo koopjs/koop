@@ -113,7 +113,7 @@ var AGOL = function(){
               if (idJson.error){
                 callback( idJson.error.message + ': ' + idUrl, null );
               } else {
-                sails.config.log.info('COUNT', idJson.count, id);
+                console.log('COUNT', idJson.count, id);
                 if (idJson.count == 0){
                   itemJson.data = [{type: 'FeatureCollection', features: []}];
                   callback( null, itemJson );
@@ -184,41 +184,49 @@ var AGOL = function(){
   
     // aggregate responses into one json and call done we have all of them 
     var _collect = function(json){
-      reqCount++;
-
-      if ( reqCount == 1 ){
-        finalJson.features = json.features;
-        finalJson.fields = json.fields;
-        finalJson.displayFieldName = json.displayFieldName;
-        finalJson.fieldAliases = json.fieldAliases;
-        finalJson.geometryType = json.geometryType;
-        finalJson.spatialReference = json.spatialReference;
-
-        GeoJSON.fromEsri( finalJson, function(err, geojson){
-          itemJson.data = [geojson];
-          geojson.updated_at = itemJson.modified; 
-          Cache.insert( 'agol', id, geojson, layerId, function( err, success){
-            if ( success ) {
-              done(null, itemJson);
-            } else {
-              done(err, null);
-            }
-          });
-        });
+      if ( json.error ){
+        done( json.error.details[0], null);
       } else {
-        // insert a partial
-        GeoJSON.fromEsri( json, function(err, geojson){
-          Cache.insertPartial( 'agol', id, geojson, layerId, function( err, success){
-            // wipe any files so that next time we get em
-            var exec = require('child_process').exec;
-            var path = sails.config.data_dir + "files/arcgis:"+id+":"+layerId;
-            child = exec("rm "+path+"/*", function (error, stdout, stderr) {
-              console.log('cleared out files'); //, path, error, stdout, stderr);
+
+        reqCount++;
+
+        if ( reqCount == 1 ){
+          finalJson.features = json.features;
+          finalJson.fields = json.fields;
+          finalJson.displayFieldName = json.displayFieldName;
+          finalJson.fieldAliases = json.fieldAliases;
+          finalJson.geometryType = json.geometryType;
+          finalJson.spatialReference = json.spatialReference;
+
+          console.log( json ); 
+          GeoJSON.fromEsri( json, function(err, geojson){
+            itemJson.data = [ geojson ];
+            geojson.updated_at = itemJson.modified; 
+            Cache.insert( 'agol', id, geojson, layerId, function( err, success){
+              /*if ( success ) {
+                done(null, itemJson);
+              } else {
+                done(err, null);
+              }*/
             });
           });
-        }); 
+        } else {
+          // insert a partial
+          GeoJSON.fromEsri( json, function(err, geojson){
+            Cache.insertPartial( 'agol', id, geojson, layerId, function( err, success){
+              // wipe any files so that next time we get em
+              var exec = require('child_process').exec;
+              var path = sails.config.data_dir + "files/arcgis:"+id+":"+layerId;
+              child = exec("rm "+path+"/*", function (error, stdout, stderr) {
+                console.log('cleared out files'); //, path, error, stdout, stderr);
+                if (reqCount == req.length){
+                  done(null, itemJson);
+                }
+              });
+            });
+          }); 
+        }
       }
-
     };
 
     var q = async.queue(function (task, callback) {
@@ -228,7 +236,7 @@ var AGOL = function(){
         _collect(json);
         callback();
       });
-    }, 2);
+    }, 1);
 
     q.push(reqs, function(err){ if (err) console.log(err); });
 
