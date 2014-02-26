@@ -26,7 +26,8 @@
     "lodash": "~2.4.1",
     "spawn-async": "0.0.1",
     "bunyan": "~0.22.1",
-    "async": "~0.2.10"
+    "async": "~0.2.10",
+    "zmq": "~2.6.0"
   },
   "devDependencies": {
     "grunt": "0.4.x",

@@ -97,7 +97,7 @@ var AGOL = function(){
     } else {
       Cache.get( 'agol', id, options, function(err, entry ){
         if ( err ){
-          sails.config.log.info('AGOL request not found in cache, retrieving...');
+          //sails.config.log.info('AGOL request not found in cache, retrieving...');
           // get the ids only
           var idUrl = itemJson.url + '/' + (options.layer || 0) + '/query?where=1=1&returnIdsOnly=true&returnCountOnly=true&f=json';
 
@@ -144,11 +144,11 @@ var AGOL = function(){
                       }
                     }
                   });
-                } else if (idJson.count > 3000){
-                  callback( 'Feature Count is too large to convert: ' + idJson.count, null );
+                //} else if (idJson.count > 3000){
+                //  callback( 'Feature Count is too large to convert: ' + idJson.count, null );
                 } else {
                   // TODO TEMP COUNT REMOVE ME
-                  //idJson.count = 3000;
+                  idJson.count = 5000;
                   // ---------
                   var i, where, pageMax, url, pages, max;
                   max = 1000;
@@ -237,6 +237,7 @@ var AGOL = function(){
         _collect(json);
         callback();
       });
+      callback();
     }, 1);
 
     q.push(reqs, function(err){ if (err) console.log(err); });

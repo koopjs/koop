@@ -59,6 +59,12 @@ Koop is a [Node.js](http://nodejs.org/) project so you'll need [Node.js](http://
     // visit [http://localhost:1337](http://localhost:1337)
 ```
 
+## Configuration 
+
+Koop uses a config called `/config/local.js` to setup its database connection and data directories for caching data. When you first clone koop you'll need to copy `/config/local.js.example` to `/config/local.js` and change the defaults. 
+
+    
+
 ## Running Koop
 
 Koop run its own http server and you can start it like this (koop will use 1337 as its default port): 
