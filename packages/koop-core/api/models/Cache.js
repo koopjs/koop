@@ -4,7 +4,6 @@ var log = function(val){
   }
 };
 
-
 exports.checkTime = (60*60*1000); // 60 mins
 
 exports.insert = function( type, key, data, layerId, callback ){

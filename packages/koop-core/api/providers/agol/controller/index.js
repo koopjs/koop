@@ -107,6 +107,9 @@ var Controller = extend({
         res.sendfile( fileName );
       } else {
 
+        // check the koop status table to see if we have a job running 
+          // if we do then return 
+          // else proceed 
         _get(req.params.id, req.params.item, req.query, function( err, itemJson ){
           //console.log(itemJson.data[req.query.layer || 0]);
           if (err){
