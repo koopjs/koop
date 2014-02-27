@@ -105,7 +105,7 @@ var AGOL = function(){
             idUrl += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
           }
 
-          //console.log(options, idUrl);
+          // get the id count of the service 
           request.get(idUrl, function(err, serviceIds ){
             // determine if its greater then 1000 
             try {
@@ -115,9 +115,14 @@ var AGOL = function(){
               } else {
                 console.log('COUNT', idJson.count, id);
                 if (idJson.count == 0){
+
+                  // return empty geojson
                   itemJson.data = [{type: 'FeatureCollection', features: []}];
                   callback( null, itemJson );
+
                 } else if (idJson.count < 1000){
+
+                  // we can the data in one shot
                   var url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where=1=1&f=json&outFields=*'; 
                   if (options.geometry){
                     url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
@@ -147,9 +152,7 @@ var AGOL = function(){
                 //} else if (idJson.count > 3000){
                 //  callback( 'Feature Count is too large to convert: ' + idJson.count, null );
                 } else {
-                  // TODO TEMP COUNT REMOVE ME
-                  idJson.count = 5000;
-                  // ---------
+                  // logic for paging through the feature service
                   var i, where, pageMax, url, pages, max;
                   max = 1000;
                   pages = Math.ceil(idJson.count / max);
@@ -157,13 +160,18 @@ var AGOL = function(){
                   for (i=1; i < pages+1; i++){
                     pageMax = i*max;
                     where = 'objectId<'+pageMax+' AND '+ 'objectId>='+((pageMax-max)+1);
-                    url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where='+where+'&f=json';
+                    url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where='+where+'&outFields=*&f=json';
                     if ( options.geometry ){
                       url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
                     }
                     pageRequests.push({req: url});
                   }
-                  self.requestQueue(idJson.count, pageRequests, id, itemJson, (options.layer || 0), callback);
+                  // creates the empty table
+                  Cache.remove('agol', id, {layer: (options.layer || 0)}, function(){
+                    Cache.insert( 'agol', id, {updated_at: itemJson.modified, features:[]}, (options.layer || 0), function( err, success){
+                     self.requestQueue(idJson.count, pageRequests, id, itemJson, (options.layer || 0), callback);
+                    });
+                  });
                 }
               }
             } catch (e) {
@@ -185,7 +193,7 @@ var AGOL = function(){
     var reqCount = 0;
   
     // aggregate responses into one json and call done we have all of them 
-    var _collect = function(json){
+    var _collect = function(json, cb){
       if ( json.error ){
         done( json.error.details[0], null);
       } else {
@@ -203,19 +211,27 @@ var AGOL = function(){
           GeoJSON.fromEsri( json, function(err, geojson){
             itemJson.data = [ geojson ];
             geojson.updated_at = itemJson.modified; 
-            Cache.insert( 'agol', id, geojson, layerId, function( err, success){
-              /*if ( success ) {
-                done(null, itemJson);
-              } else {
-                done(err, null);
-              }*/
+              Cache.insertPartial( 'agol', id, geojson, layerId, function( err, success){
+              console.log('\t Inserted first chunk');
+              cb();
             });
           });
         } else {
           // insert a partial
           GeoJSON.fromEsri( json, function(err, geojson){
+            // concat the features so we return the full json
+            itemJson.data[0].features = itemJson.data[0].features.concat( geojson.features );
+            console.log( 'Insert Partial', geojson.features.length );
             Cache.insertPartial( 'agol', id, geojson, layerId, function( err, success){
-              // wipe any files so that next time we get em
+              console.log('\t inserted partial', reqCount, 'of', reqs.length);
+              cb();
+              if (reqCount == reqs.length){
+                done(null, itemJson);
+              }
+            });
+          });
+
+          /*    // wipe any files so that next time we get em
               var exec = require('child_process').exec;
               var path = sails.config.data_dir + "files/arcgis:"+id+":"+layerId;
               child = exec("rm "+path+"/*", function (error, stdout, stderr) {
@@ -223,9 +239,7 @@ var AGOL = function(){
                 if (reqCount == reqs.length){
                   done(null, itemJson);
                 }
-              });
-            });
-          }); 
+              });*/
         }
       }
     };
@@ -234,11 +248,9 @@ var AGOL = function(){
       // make request
       request.get(task.req, function(err, data){
         var json = JSON.parse(data.body);
-        _collect(json);
-        callback();
+        _collect(json, callback);
       });
-      callback();
-    }, 1);
+    }, 4);
 
     q.push(reqs, function(err){ if (err) console.log(err); });
 
