@@ -39,7 +39,6 @@ var Socrata = function(){
           if (err) {
             callback(err, null);
           } else {
-            console.log(data.headers)
             var types = JSON.parse( data.headers['x-soda2-types'] );
               fields = JSON.parse( data.headers['x-soda2-fields'] );
             var locationField;
