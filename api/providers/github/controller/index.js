@@ -71,17 +71,18 @@ Controller.thumbnail = function(req, res){
 
 // 
 Controller.getRepo = function(req, res){
+    var key = ['github'];
 
     // method to respond to model finds
     var _send = function( err, data ){
       var len = data.length;
       var allTopojson = [];
-      var processTopojson = function( topology ){
+      /*var processTopojson = function( topology ){
         allTopojson.push(topology);
         if ( allTopojson.length == len ) {
           res.json( allTopojson );
         }
-      };
+      };*/
 
       if ( err ){
         res.json( err, 500 );
@@ -91,6 +92,15 @@ Controller.getRepo = function(req, res){
             Topojson.convert(d, function(err, topology){
               processTopojson( topology );
             });
+          });
+        } else if ( req.params.format ) {
+          var key = ['github', req.params.user, req.params.params, req.params.file].join(':');
+          Controller.exportToFormat( req.params.format, key, data[0], function(err, file){
+            if (err){
+              res.send(err, 500);
+            } else {
+              res.sendfile( file );
+            }
           });
         } else {
           res.json( data );
@@ -102,8 +112,8 @@ Controller.getRepo = function(req, res){
     if ( req.params.user && req.params.repo && req.params.file ){
       req.params.file = req.params.file.replace('.geojson', '');
       Github.find(req.params.user, req.params.repo, req.params.file, req.query, _send );
-    } else if ( req.params.user && req.params.repo, req.query ) {
-      Github.find(req.params.user, req.params.repo, null, req.query, _send );
+    //} else if ( req.params.user && req.params.repo, req.query ) {
+    //  Github.find(req.params.user, req.params.repo, null, req.query, _send );
     } else {
       this.notFound(req, res);
     }

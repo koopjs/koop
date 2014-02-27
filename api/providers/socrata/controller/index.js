@@ -48,6 +48,15 @@ var Controller = extend({
         Socrata.getResource( data.host, req.params.item, req.query, function(error, itemJson){
           if (error) {
             res.send( error, 500);
+          } else if ( req.params.format ) {
+            var key = ['socrata', req.params.id ].join(':');
+            Controller.exportToFormat( req.params.format, key, itemJson[0], function(err, file){
+              if (err){
+                res.send(err, 500);
+              } else {
+                res.sendfile( file );
+              }
+            });
           } else { 
             res.json( itemJson[0] );
           }
