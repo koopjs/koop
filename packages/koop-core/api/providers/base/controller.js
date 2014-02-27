@@ -74,12 +74,12 @@ exports._processFeatureServer = function(req, res, err, data, callback){
 // take in a format, file key, geojson, and callback
 //   
 exports.exportToFormat = function( format, key, geojson, callback ){
+
+    // executes OGR
     var _callOgr = function(inFile, outFile, callback){
       if (format == 'json'){
         callback(null, outFile);
       } else if (ogrFormats[format]) {
-        var cmd = ['ogr2ogr', '-f', ogrFormats[format], ( format == 'zip' ) ? outFile.replace('zip','shp') : outFile, inFile].join(' ');
-        sails.config.log.info(cmd);
         worker.aspawn(['ogr2ogr', '-f', ogrFormats[format], ( format == 'zip' ) ? outFile.replace('zip','shp') : outFile, inFile],
           function (err, stdout, stderr) {
             if (err) {
@@ -103,50 +103,40 @@ exports.exportToFormat = function( format, key, geojson, callback ){
       }
     };
 
+    // handles the response to callback
+    var _send = function(err, file){
+      if (err){
+        callback( err, null );
+      } else {
+        callback( null, newFile );
+      }
+    };
+
     var ogrFormats = {
       kml: 'KML',
       zip: 'ESRI Shapefile',
-      csv: 'CSV'
+      csv: 'CSV',
+      gpkg: 'GPKG'
     };
 
+    // create the files for out output
+    // we always create a json file, then use it to convert to a file
     var path = [sails.config.data_dir + 'files', key].join('/');
     var base = path + '/' + key,
       jsonFile = base + '.json';
       newFile = base + '.' + format;
 
+    // build files, remove old ones first
     nfs.mkdir( path, '0777', true, function(){
-      if ( !nfs.existsSync( jsonFile ) ) {
-        fs.writeFile( jsonFile, JSON.stringify( geojson ), function(){
-          _callOgr( jsonFile, newFile, function(err, outFile){
-            if (err){
-              callback( err, null );
-            } else {
-              callback( null, outFile );
-            }
-          });
-        });
-      } else {
-        _callOgr( jsonFile, newFile, function(err, success){
-          if (err){
-            callback( err, null );
-          } else {
-            callback( null, newFile );
-          }
-        });
+      if ( nfs.existsSync( jsonFile ) ) {
+        fs.unlinkSync(jsonFile);
       }
+      fs.writeFile( jsonFile, JSON.stringify( geojson ), function(){
+        if (nfs.existsSync( newFile )){
+          fs.unlinkSync(newFile);
+        }
+        _callOgr( jsonFile, newFile, _send);
+      });
     });
-    // check for geojson file on disk  
-       // else create a geojson file on disk 
-    // build the conversion string for org2ogr
-    // execute command 
-    // respond to request  
 
-  /*  worker.aspawn(['ogr2ogr', '--formats'],
-      function (err, stdout, stderr) {
-          if (err) {
-              callback(err.message, null);
-          } else {
-              callback(null, stdout);
-          }
-      });*/
 };
