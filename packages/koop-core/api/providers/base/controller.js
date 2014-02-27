@@ -80,9 +80,11 @@ exports.exportToFormat = function( format, key, geojson, callback ){
       if (format == 'json'){
         callback(null, outFile);
       } else if (ogrFormats[format]) {
+        console.log(['ogr2ogr', '-f', ogrFormats[format], ( format == 'zip' ) ? outFile.replace('zip','shp') : outFile, inFile].join(' '));
         worker.aspawn(['ogr2ogr', '-f', ogrFormats[format], ( format == 'zip' ) ? outFile.replace('zip','shp') : outFile, inFile],
           function (err, stdout, stderr) {
             if (err) {
+              console.log(err, stdout, stderr);
               callback(err.message, null);
             } else {
               if ( format == 'zip' ){
@@ -108,7 +110,7 @@ exports.exportToFormat = function( format, key, geojson, callback ){
       if (err){
         callback( err, null );
       } else {
-        callback( null, newFile );
+        callback( null, file );
       }
     };
 
@@ -126,17 +128,34 @@ exports.exportToFormat = function( format, key, geojson, callback ){
       jsonFile = base + '.json';
       newFile = base + '.' + format;
 
-    // build files, remove old ones first
     nfs.mkdir( path, '0777', true, function(){
-      if ( nfs.existsSync( jsonFile ) ) {
-        fs.unlinkSync(jsonFile);
+      if ( !nfs.existsSync( jsonFile ) ) {
+        fs.writeFile( jsonFile, JSON.stringify( geojson ), function(){
+          _callOgr( jsonFile, newFile, _send); 
+        });
+      } else {
+        _callOgr( jsonFile, newFile, _send) ;
       }
-      fs.writeFile( jsonFile, JSON.stringify( geojson ), function(){
-        if (nfs.existsSync( newFile )){
-          fs.unlinkSync(newFile);
-        }
-        _callOgr( jsonFile, newFile, _send);
-      });
     });
+
+    /*// build files, remove old ones first
+    nfs.mkdir( path, '0777', true, function(){
+      //if ( nfs.existsSync( jsonFile ) ) {
+      //  fs.unlinkSync(jsonFile);
+      //}
+      if ( !nfs.existsSync( jsonFile ) ){
+        
+        fs.writeFile( jsonFile, JSON.stringify( geojson ), function(){
+          _callOgr( jsonFile, newFile, _send);
+        });
+      } else {
+        console.log('json exists...')
+        _callOgr( jsonFile, newFile, _send);
+      }
+      //if (nfs.existsSync( newFile )){
+      //  fs.unlinkSync(newFile);
+      //}
+      //});
+    });*/
 
 };

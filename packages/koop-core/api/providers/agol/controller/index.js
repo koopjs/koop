@@ -7,7 +7,6 @@ var request = require('request'),
   fs = require('fs'),
   base = require('../../base/controller.js');
 
-
 // inherit from base controller
 var Controller = extend({
 
