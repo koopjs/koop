@@ -14,6 +14,11 @@ module.exports = {
     action: 'featureservice'
   },
 
+  'get /gist/:id.:format': {
+    controller: 'gist',
+    action: 'find'
+  },
+
   'get /gist/:id': {
     controller: 'gist',
     action: 'find'

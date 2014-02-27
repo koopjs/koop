@@ -13,6 +13,11 @@ module.exports = {
     controller: 'socrata',
     action: 'find'
   },
+
+  'get /socrata/:id/:item.:format': {
+    controller: 'socrata',
+    action: 'findResource'
+  },
   
   'get /socrata/:id/:item': {
     controller: 'socrata',

@@ -34,6 +34,16 @@ var Controller = extend({
             //Topojson.convert(allData, function(err, topology){
              // res.json( topology );  
             //});
+          } else if ( req.params.format ) {
+            var key = ['gist', req.params.id ].join(':');
+            console.log(req.params.format, key, data[0]);
+            Controller.exportToFormat( req.params.format, key, data[0], function(err, file){
+              if (err){
+                res.send(err, 500);
+              } else {
+                res.sendfile( file );
+              }
+            });
           } else { 
             res.json( data );
           }

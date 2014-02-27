@@ -30,6 +30,11 @@ module.exports = {
     action: 'featureservice'
   },
 
+  'get /github/:user/:repo/:file.:format': {
+    controller: 'github',
+    action: 'getRepo'
+  },
+
   'get /github/:user/:repo/:file': {
     controller: 'github',
     action: 'getRepo'
