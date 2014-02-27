@@ -27,7 +27,8 @@
     "spawn-async": "0.0.1",
     "bunyan": "~0.22.1",
     "async": "~0.2.10",
-    "zmq": "~2.6.0"
+    "zmq": "~2.6.0",
+    "pg": "~2.11.1"
   },
   "devDependencies": {
     "grunt": "0.4.x",
