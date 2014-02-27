@@ -104,10 +104,14 @@ module.exports = {
       info.sha = geojson.sha;
    
       var table = key+':'+layerId;
+
       self._createTable( table, self._buildSchemaFromFeature(), function(err, result){
+        // insert each feature
         geojson.features.forEach(function(feature, i){
           self._insertFeature(table, feature, i);
         });
+
+        // TODO Why not use an update query here? 
         self._query( 'delete from "'+self.infoTable+'" where id=\''+table+':info\'', function(err,res){
           self._query( 'insert into "'+self.infoTable+'" values (\''+table+':info\',\''+JSON.stringify(info)+'\')', function(err, result){
             callback(err, true);

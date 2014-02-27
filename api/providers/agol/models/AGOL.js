@@ -151,12 +151,15 @@ var AGOL = function(){
                   });
                 //} else if (idJson.count > 3000){
                 //  callback( 'Feature Count is too large to convert: ' + idJson.count, null );
+                
                 } else {
+
                   // logic for paging through the feature service
                   var i, where, pageMax, url, pages, max;
                   max = 1000;
                   pages = Math.ceil(idJson.count / max);
                   pageRequests = [];
+
                   for (i=1; i < pages+1; i++){
                     pageMax = i*max;
                     where = 'objectId<'+pageMax+' AND '+ 'objectId>='+((pageMax-max)+1);
@@ -166,10 +169,11 @@ var AGOL = function(){
                     }
                     pageRequests.push({req: url});
                   }
+
                   // creates the empty table
                   Cache.remove('agol', id, {layer: (options.layer || 0)}, function(){
-                    Cache.insert( 'agol', id, {updated_at: itemJson.modified, features:[]}, (options.layer || 0), function( err, success){
-                     self.requestQueue(idJson.count, pageRequests, id, itemJson, (options.layer || 0), callback);
+                    Cache.insert( 'agol', id, {updated_at: itemJson.modified, name: itemJson.name, features:[]}, (options.layer || 0), function( err, success){
+                      self.requestQueue(idJson.count, pageRequests, id, itemJson, (options.layer || 0), callback);
                     });
                   });
                 }
@@ -189,8 +193,9 @@ var AGOL = function(){
   // make requests for feature pages 
   // execute done when we have all features 
   this.requestQueue = function(max, reqs, id, itemJson, layerId, done){
-    var finalJson = { features: [] };
     var reqCount = 0;
+    // setup the place to collect all the features
+    itemJson.data = [ {features: []} ];
   
     // aggregate responses into one json and call done we have all of them 
     var _collect = function(json, cb){
@@ -200,58 +205,34 @@ var AGOL = function(){
 
         reqCount++;
 
-        if ( reqCount == 1 ){
-          finalJson.features = json.features;
-          finalJson.fields = json.fields;
-          finalJson.displayFieldName = json.displayFieldName;
-          finalJson.fieldAliases = json.fieldAliases;
-          finalJson.geometryType = json.geometryType;
-          finalJson.spatialReference = json.spatialReference;
-
-          GeoJSON.fromEsri( json, function(err, geojson){
-            itemJson.data = [ geojson ];
-            geojson.updated_at = itemJson.modified; 
-              Cache.insertPartial( 'agol', id, geojson, layerId, function( err, success){
-              console.log('\t Inserted first chunk');
-              cb();
-            });
+        // insert a partial
+        GeoJSON.fromEsri( json, function(err, geojson){
+          // concat the features so we return the full json
+          itemJson.data[0].features = itemJson.data[0].features.concat( geojson.features );
+          //console.log( 'Insert Partial', geojson.features.length );
+          Cache.insertPartial( 'agol', id, geojson, layerId, function( err, success){
+            //console.log('\t inserted partial', reqCount, 'of', reqs.length);
+            cb();
+            if (reqCount == reqs.length){
+              // pass back the full array of features
+              done(null, itemJson);
+            }
           });
-        } else {
-          // insert a partial
-          GeoJSON.fromEsri( json, function(err, geojson){
-            // concat the features so we return the full json
-            itemJson.data[0].features = itemJson.data[0].features.concat( geojson.features );
-            console.log( 'Insert Partial', geojson.features.length );
-            Cache.insertPartial( 'agol', id, geojson, layerId, function( err, success){
-              console.log('\t inserted partial', reqCount, 'of', reqs.length);
-              cb();
-              if (reqCount == reqs.length){
-                done(null, itemJson);
-              }
-            });
-          });
+        });
 
-          /*    // wipe any files so that next time we get em
-              var exec = require('child_process').exec;
-              var path = sails.config.data_dir + "files/arcgis:"+id+":"+layerId;
-              child = exec("rm "+path+"/*", function (error, stdout, stderr) {
-                console.log('cleared out files'); //, path, error, stdout, stderr);
-                if (reqCount == reqs.length){
-                  done(null, itemJson);
-                }
-              });*/
-        }
       }
     };
 
+    // concurrent queue for feature pages 
     var q = async.queue(function (task, callback) {
-      // make request
+      // make a request for a page 
       request.get(task.req, function(err, data){
         var json = JSON.parse(data.body);
         _collect(json, callback);
       });
     }, 4);
 
+    // add all the page urls to the queue 
     q.push(reqs, function(err){ if (err) console.log(err); });
 
   };
