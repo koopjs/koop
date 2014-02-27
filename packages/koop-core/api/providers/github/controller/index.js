@@ -159,7 +159,10 @@ Controller.tiles = function( req, res ){
       layer = req.params.layer || 0;
 
     var _send = function( err, data ){
-      req.params.key = key + ':' + layer;
+        req.params.key = key + ':' + layer;
+        if (req.query.style){
+          req.params.style = req.query.style;
+        }
         Tiles.get( req.params, data[ layer ], function(err, tile){
           if ( req.params.format == 'png'){
             //res.contentType('image/png');
@@ -176,7 +179,7 @@ Controller.tiles = function( req, res ){
 
     // build the geometry from z,x,y
     var bounds = merc.bbox( req.params.x, req.params.y, req.params.z );
-    //console.log(req.params.z, req.params.x, req.params.y, bounds);
+
     req.query.geometry = {
         xmin: bounds[0],
         ymin: bounds[1],

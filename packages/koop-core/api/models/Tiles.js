@@ -20,6 +20,9 @@ module.exports = {
       key = params.key,
       format = params.format;
 
+    var style = params.style;
+    console.log('STYLE?', style)
+
     if (!params.x || !params.y || !params.z || !format || !key){
       callback('Missing parameters', null);
     } else {
