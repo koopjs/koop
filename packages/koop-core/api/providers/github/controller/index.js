@@ -95,13 +95,19 @@ Controller.getRepo = function(req, res){
           });
         } else if ( req.params.format ) {
           var key = ['github', req.params.user, req.params.params, req.params.file].join(':');
-          Controller.exportToFormat( req.params.format, key, data[0], function(err, file){
-            if (err){
-              res.send(err, 500);
-            } else {
-              res.sendfile( file );
-            }
-          });
+          var fileName = [sails.config.data_dir + 'files', key, key + '.' + req.params.format].join('/');
+
+          if (fs.existsSync( fileName )){
+            res.sendfile( fileName );
+          } else {
+            Controller.exportToFormat( req.params.format, key, data[0], function(err, file){
+              if (err){
+                res.send(err, 500);
+              } else {
+                res.sendfile( file );
+              }
+            });
+          }
         } else {
           res.json( data );
         }

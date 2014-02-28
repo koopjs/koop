@@ -150,7 +150,7 @@ module.exports = {
         var info = result.rows[0].info;
         self.dropTable(key, function(err, result){
             self._query("delete from \""+self.infoTable+"\" where id='"+(key+':info')+"'", function(err, result){
-              if (callback) callback();
+              if (callback) callback( err, true);
             });
         });
       }
