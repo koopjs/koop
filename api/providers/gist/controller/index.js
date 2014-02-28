@@ -1,4 +1,5 @@
 var extend = require('node.extend'),
+  fs = require('fs'),
   base = require('../../base/controller.js');
 
 
@@ -36,14 +37,19 @@ var Controller = extend({
             //});
           } else if ( req.params.format ) {
             var key = ['gist', req.params.id ].join(':');
-            console.log(req.params.format, key, data[0]);
-            Controller.exportToFormat( req.params.format, key, data[0], function(err, file){
-              if (err){
-                res.send(err, 500);
-              } else {
-                res.sendfile( file );
-              }
-            });
+            var fileName = [sails.config.data_dir + 'files', key, key + '.' + req.params.format].join('/');
+
+            if (fs.existsSync( fileName )){
+              res.sendfile( fileName );
+            } else {
+              Controller.exportToFormat( req.params.format, key, data[0], function(err, file){
+                if (err){
+                  res.send(err, 500);
+                } else {
+                  res.sendfile( file );
+                }
+              });
+            }
           } else { 
             res.json( data );
           }

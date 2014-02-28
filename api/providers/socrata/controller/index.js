@@ -1,4 +1,5 @@
 var extend = require('node.extend'),
+  fs = require('fs'),
   base = require('../../base/controller.js');
 
 // inherit from base controller
@@ -50,13 +51,19 @@ var Controller = extend({
             res.send( error, 500);
           } else if ( req.params.format ) {
             var key = ['socrata', req.params.id ].join(':');
-            Controller.exportToFormat( req.params.format, key, itemJson[0], function(err, file){
-              if (err){
-                res.send(err, 500);
-              } else {
-                res.sendfile( file );
-              }
-            });
+            var fileName = [sails.config.data_dir + 'files', key, key + '.' + req.params.format].join('/');
+
+            if (fs.existsSync( fileName )){
+              res.sendfile( fileName );
+            } else {
+              Controller.exportToFormat( req.params.format, key, itemJson[0], function(err, file){
+                if (err){
+                  res.send(err, 500);
+                } else {
+                  res.sendfile( file );
+                }
+              });
+            }
           } else { 
             res.json( itemJson[0] );
           }

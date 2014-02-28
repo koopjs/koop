@@ -100,7 +100,7 @@ var Controller = extend({
       var key = [req.params.id, req.params.item, parseInt(req.query.layer) || 0 ].join(':');
       var fileName = [sails.config.data_dir + 'files', key, key + '.' + req.params.format].join('/');
 
-      sails.config.log.info(fileName);
+      console.log(fileName);
 
       if (fs.existsSync( fileName )){
         res.sendfile( fileName );
