@@ -10,12 +10,11 @@ var Climate = function(){
      var select = 'select feature from gfs_' + type;
 
      if ( options.geometry ){
-
        if ( typeof(options.geometry) == 'string' ){
          options.geometry = JSON.parse( options.geometry );
        }
 
-       if (options.geometry.xmin && options.geometry.ymin){
+       if (options.geometry.xmin !== undefined && options.geometry.ymin !== undefined){
          var box = options.geometry;
          if (box.spatialReference.wkid != 4326){
            var mins = merc.inverse( [box.xmin, box.ymin] ),
@@ -29,7 +28,7 @@ var Climate = function(){
          select += ' WHERE ST_Intersects(ST_GeomFromGeoJSON(feature->>\'geometry\'), ST_MakeEnvelope('+box.xmin+','+box.ymin+','+box.xmax+','+box.ymax+'))';
        }
      }
-      console.log(select)
+     //console.log(select)
      Cache.db._query( select, function (err, result) {
        if ( result && result.rows && result.rows.length ) {
          callback( null, [{

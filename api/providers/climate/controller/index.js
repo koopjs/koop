@@ -87,13 +87,13 @@ var Controller = extend({
     };
 
       var file = sails.config.data_dir + 'tiles/';
-        file += 'gfs_' + type + '/' + req.params.format;
+        file += type + '/' + req.params.format;
         file += '/' + req.params.z + '/' + req.params.x + '/' + req.params.y + '.' + req.params.format;
-      
-      if ( !fs.existsSync( file ) ) {
-        Climate.find( type, req.query, _send );
-      } else {
+     
+      if ( fs.existsSync( file ) ) {
         _sendImmediate( file );
+      } else {
+        Climate.find( type, req.query, _send );
       }
   }
 
