@@ -5,6 +5,6 @@
     $('#'+mapDom).css({ width:document.width, height: document.height });
     koop = koopMap( mapDom );
     koop.addTile(location.origin + '/github/<%= user %>/<%= repo %>/<%= file %>/tiles/{z}/{x}/{y}.png');
-    koop.addUTF(location.origin + '/github/<%= user %>/<%= repo %>/<%= file %>/tiles/{z}/{x}/{y}.grid');
+    koop.addUTF(location.origin + '/github/<%= user %>/<%= repo %>/<%= file %>/tiles/{z}/{x}/{y}.utf');
   });
 </script>
