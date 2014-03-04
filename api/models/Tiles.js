@@ -78,7 +78,7 @@ module.exports = {
             if ( geojson && geojson.features && geojson.features.length ) {
               map.addData(new GeoJsonSource({
                 name: geojson.features[0].geometry.type.toLowerCase(),
-                path: file.replace(/png|grid/g, 'json'),
+                path: file.replace(/png|utf/g, 'json'),
                 projection: "EPSG:4326"
               }));
             }
@@ -109,7 +109,7 @@ module.exports = {
                   });
                 }
               });
-            } else if ( format == 'grid') {
+            } else if ( format == 'utf') {
                map.renderGrid({
                 // Make sure your bounds are in the same projection as the map
                 bounds: { minX: b[0], minY: b[1], maxX: b[2], maxY: b[3] },
@@ -124,7 +124,7 @@ module.exports = {
             }
           };
 
-          var jsonFile = file.replace(/png|grid/g, 'json');
+          var jsonFile = file.replace(/png|utf/g, 'json');
 
           if ( !nfs.existsSync( jsonFile ) ) {
 
@@ -136,7 +136,7 @@ module.exports = {
                 render();
               });
             });
-          } else if ( format == 'grid' && nfs.existsSync( file )){
+          } else if ( format == 'utf' && nfs.existsSync( file )){
             fs.readFile(file, function(err, data){
               callback(null, JSON.parse(data));  
             });
