@@ -80,7 +80,7 @@ exports.exportToFormat = function( format, key, geojson, callback ){
       if (format == 'json'){
         callback(null, outFile);
       } else if (ogrFormats[format]) {
-        console.log(['ogr2ogr', '-f', ogrFormats[format], ( format == 'zip' ) ? outFile.replace('zip','shp') : outFile, inFile].join(' '));
+        //console.log(['ogr2ogr', '-f', ogrFormats[format], ( format == 'zip' ) ? outFile.replace('zip','shp') : outFile, inFile].join(' '));
         worker.aspawn(['ogr2ogr', '-f', ogrFormats[format], ( format == 'zip' ) ? outFile.replace('zip','shp') : outFile, inFile],
           function (err, stdout, stderr) {
             if (err) {
