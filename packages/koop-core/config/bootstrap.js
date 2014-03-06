@@ -9,7 +9,9 @@ var bunyan = require('bunyan');
 
 
 module.exports.bootstrap = function (cb) {
-  setTimeout(function(){ require('../api/providers/'); }, 1000);
+  setTimeout(function(){ 
+    require('../api/helpers/');
+    require('../api/providers/'); 
 
   sails.config.defaultStyle = fs.readFileSync('./api/templates/renderers/style.mss','utf8');
 
@@ -29,4 +31,6 @@ module.exports.bootstrap = function (cb) {
     sails.config.data_dir = argv.data_dir;
   }
   cb();
+  
+  }, 1000);
 };
