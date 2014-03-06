@@ -71,7 +71,7 @@ var Socrata = function(){
       var geojsonFeature;
       json.forEach(function(feature, i){
         geojsonFeature = {type: 'Feature', geometry: {}, id: i+1};
-        if (feature && locationFeild){
+        if (feature && locationField){
           if (feature[locationField] && feature[locationField].latitude && feature[locationField].longitude){
             geojsonFeature.geometry.coordinates = [parseFloat(feature[locationField].longitude), parseFloat(feature[locationField].latitude)];
             geojsonFeature.geometry.type = 'Point';
