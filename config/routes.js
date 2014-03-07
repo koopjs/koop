@@ -10,6 +10,16 @@ module.exports.routes = {
   'get /services': {
     controller: 'services',
     action: 'list'
-  } 
+  },
+
+  'get /arcgis/rest/info': {
+    controller: 'services',
+    action: 'info'
+  }, 
+
+  'post /arcgis/rest/info': {
+    controller: 'services',
+    action: 'info'
+  }
 
 };

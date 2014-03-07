@@ -7,5 +7,9 @@ module.exports = {
       }
     });
     res.json( providers );
+  },
+
+  info: function( req, res ){
+    res.json({info:true});
   } 
 };
