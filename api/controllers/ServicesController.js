@@ -10,6 +10,13 @@ module.exports = {
   },
 
   info: function( req, res ){
-    res.json({info:true});
+    var info = {
+      "currentVersion": 10.0,
+      "fullVersion": "10.0",
+      "authInfo": {
+        "isTokenBasedSecurity": false
+      }
+    }
+    res.json(info);
   } 
 };
