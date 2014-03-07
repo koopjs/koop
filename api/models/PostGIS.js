@@ -58,10 +58,23 @@ module.exports = {
                 options.geometry = JSON.parse( options.geometry );
               } catch(e){
                 console.log('Error parsing options.geometry', options.geometry);
+                try {
+                  if ( options.geometry.split(',').length == 4 ){
+                    var extent = options.geometry.split(',');
+                    var box = { spatialReference: {wkid: 4326} }; 
+                    box.xmin = extent[0],
+                      box.ymin = extent[1],
+                      box.xmax = extent[2],
+                      box.ymax = extent[3];
+                      select += ' WHERE ST_Intersects(ST_GeomFromGeoJSON(feature->>\'geometry\'), ST_MakeEnvelope('+box.xmin+','+box.ymin+','+box.xmax+','+box.ymax+'))';
+                  }
+                } catch(e){
+                  console.log('Error building bbox from', options.geometry);
+                }
               }
             }
 
-            if (options.geometry.xmin && options.geometry.ymin){
+            if (options.geometry.xmin && options.geometry.ymin ){
               var box = options.geometry;
               if (box.spatialReference.wkid != 4326){
                 var mins = merc.inverse( [box.xmin, box.ymin] ),
