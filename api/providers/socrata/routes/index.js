@@ -39,6 +39,22 @@ module.exports = {
     action: 'featureserver'
   },
 
+  
+  'post /socrata/:id/:item/FeatureServer/:layer/:method': {
+    controller: 'socrata',
+    action: 'featureserver'
+  },
+
+  'post /socrata/:id/:item/FeatureServer/:layer': {
+    controller: 'socrata',
+    action: 'featureserver'
+  },
+
+  'post /socrata/:id/:item/FeatureServer': {
+    controller: 'socrata',
+    action: 'featureserver'
+  },
+
   'get /socrata/:id/:item/thumbnail': {
     controller: 'socrata',
     action: 'thumbnail'

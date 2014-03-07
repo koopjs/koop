@@ -65,7 +65,9 @@ exports.process = function( type, key, data, callback ){
 
 exports.remove = function(type, key, options, callback){
   Cache.db.remove( type+':'+key+':'+(options.layer || 0), function(err, result){
-    callback(null, true);
+    if ( callback ) { 
+      callback(null, true);
+    }
   });
 };
 
