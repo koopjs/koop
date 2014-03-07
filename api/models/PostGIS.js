@@ -54,7 +54,11 @@ module.exports = {
           if ( options.geometry ){
 
             if ( typeof(options.geometry) == 'string' ){
-              options.geometry = JSON.parse( options.geometry );
+              try {
+                options.geometry = JSON.parse( options.geometry );
+              } catch(e){
+                console.log('Error parsing options.geometry', options.geometry);
+              }
             }
 
             if (options.geometry.xmin && options.geometry.ymin){
