@@ -61,12 +61,11 @@ module.exports = {
                 try {
                   if ( options.geometry.split(',').length == 4 ){
                     var extent = options.geometry.split(',');
-                    var box = { spatialReference: {wkid: 4326} }; 
-                    box.xmin = extent[0],
-                      box.ymin = extent[1],
-                      box.xmax = extent[2],
-                      box.ymax = extent[3];
-                      select += ' WHERE ST_Intersects(ST_GeomFromGeoJSON(feature->>\'geometry\'), ST_MakeEnvelope('+box.xmin+','+box.ymin+','+box.xmax+','+box.ymax+'))';
+                    options.geometry = { spatialReference: {wkid: 4326} }; 
+                    options.geometry.xmin = extent[0],
+                    options.geometry.ymin = extent[1],
+                    options.geometry.xmax = extent[2],
+                    options.geometry.ymax = extent[3];
                   }
                 } catch(e){
                   console.log('Error building bbox from', options.geometry);
@@ -88,6 +87,7 @@ module.exports = {
               select += ' WHERE ST_Intersects(ST_GeomFromGeoJSON(feature->>\'geometry\'), ST_MakeEnvelope('+box.xmin+','+box.ymin+','+box.xmax+','+box.ymax+'))';
             }
           }
+          //console.log(select);
           self._query( select, function (err, result) {
             if ( result && result.rows && result.rows.length ) {
               callback( null, [{

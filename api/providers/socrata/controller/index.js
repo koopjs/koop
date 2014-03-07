@@ -108,6 +108,7 @@ var Controller = extend({
             res.send( error, 500);
           } else {
             // pass to the shared logic for FeatureService routing
+            delete req.query.geometry;
             Controller._processFeatureServer( req, res, err, geojson, callback);
           }
         });
