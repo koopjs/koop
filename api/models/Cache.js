@@ -8,7 +8,7 @@ exports.checkTime = (60*60*1000); // 60 mins
 
 exports.insert = function( type, key, data, layerId, callback ){
   Cache.db.insert( type+':'+key, data, layerId, function(err, success){
-    Cache.db.timer.set( type+':'+key+':timer', 360000, function( error, timer){
+    Cache.db.timer.set( type+':'+key+':timer', 3600000, function( error, timer){
       callback( err, success );
     });
   });
@@ -40,7 +40,7 @@ exports.process = function( type, key, data, callback ){
               // false is good -> reset timer and return data
               // cache returned true, return current data
               log('Setting a timer', key);
-              Cache.db.timer.set( type+':'+key+':timer', 360000, function( error, timer){
+              Cache.db.timer.set( type+':'+key+':timer', 3600000, function( error, timer){
                 console.log(error, timer)
                 callback( null, data );
               });
@@ -48,7 +48,7 @@ exports.process = function( type, key, data, callback ){
               // we need to remove and save new data 
               self.remove(type, key, function(){
                 self.insert(type, key, success, function(err, res){
-                  Cache.db.timer.set( type+':'+key+':timer', 360000, function( error, timer){
+                  Cache.db.timer.set( type+':'+key+':timer', 3600000, function( error, timer){
                     callback( err, success );
                   });
                 });
