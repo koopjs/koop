@@ -124,6 +124,9 @@ module.exports = {
 
       self._createTable( table, self._buildSchemaFromFeature(), function(err, result){
         // insert each feature
+        if ( geojson.length ){
+          geojson = geojson[0];
+        }
         geojson.features.forEach(function(feature, i){
           self._insertFeature(table, feature, i);
         });
@@ -275,7 +278,7 @@ module.exports = {
     var self = this;
     var sql = "select exists(select * from information_schema.tables where table_name='"+ name +"')";
     this.client.query(sql, function(err, result){
-      if ( !result.rows[0].exists ){
+      if ( !err || !result || !result.rows[0].exists ){
         var create = "CREATE TABLE \"" + name + "\" " + schema;
         self.client.query(create, function(err, result){
           if (callback) {

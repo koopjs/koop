@@ -79,7 +79,7 @@ var Socrata = function(){
             geojsonFeature.properties = feature;
             geojson.features.push( geojsonFeature );
           } 
-        } else if (feature && feature.latitude && feature.longitude ){
+        } else if ( feature && feature.latitude && feature.longitude ){
            geojsonFeature.geometry.coordinates = [parseFloat(feature.longitude), parseFloat(feature.latitude)];
            geojsonFeature.geometry.type = 'Point';
            geojsonFeature.properties = feature;
