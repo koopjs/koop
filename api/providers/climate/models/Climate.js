@@ -28,7 +28,7 @@ var Climate = function(){
          select += ' WHERE ST_Intersects(ST_GeomFromGeoJSON(feature->>\'geometry\'), ST_MakeEnvelope('+box.xmin+','+box.ymin+','+box.xmax+','+box.ymax+'))';
        }
      }
-     //console.log(select)
+     console.log(select)
      Cache.db._query( select, function (err, result) {
        if ( result && result.rows && result.rows.length ) {
          callback( null, [{
