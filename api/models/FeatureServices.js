@@ -35,18 +35,20 @@ module.exports = {
     var self = this;
     var fields = [];
     Object.keys( props ).forEach(function( key ){
-      var type = (( idField && key == idField ) ? 'esriFieldTypeOID' : self.fieldType( props[ key ] )) || 'esriFieldTypeString';
-      var fld = {
-        name: key,
-        type: type,
-        alias: key
-      };
+      var type = (( idField && key == idField ) ? 'esriFieldTypeOID' : self.fieldType( props[ key ] ));
+      if (type){
+        var fld = {
+          name: key,
+          type: type,
+          alias: key
+        };
 
-      if (type == 'esriFieldTypeString'){
-        fld.length = 128;
+        if (type == 'esriFieldTypeString'){
+          fld.length = 128;
+        }
+
+        fields.push( fld );
       }
-
-      fields.push( fld );
     });
 
     if ( !idField ){
