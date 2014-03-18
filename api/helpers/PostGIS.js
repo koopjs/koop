@@ -54,10 +54,26 @@ module.exports = {
           if ( options.geometry ){
 
             if ( typeof(options.geometry) == 'string' ){
-              options.geometry = JSON.parse( options.geometry );
+              try {
+                options.geometry = JSON.parse( options.geometry );
+              } catch(e){
+                console.log('Error parsing options.geometry', options.geometry);
+                try {
+                  if ( options.geometry.split(',').length == 4 ){
+                    var extent = options.geometry.split(',');
+                    options.geometry = { spatialReference: {wkid: 4326} }; 
+                    options.geometry.xmin = extent[0],
+                    options.geometry.ymin = extent[1],
+                    options.geometry.xmax = extent[2],
+                    options.geometry.ymax = extent[3];
+                  }
+                } catch(e){
+                  console.log('Error building bbox from', options.geometry);
+                }
+              }
             }
 
-            if (options.geometry.xmin && options.geometry.ymin){
+            if (options.geometry.xmin && options.geometry.ymin ){
               var box = options.geometry;
               if (box.spatialReference.wkid != 4326){
                 var mins = merc.inverse( [box.xmin, box.ymin] ),
@@ -71,6 +87,7 @@ module.exports = {
               select += ' WHERE ST_Intersects(ST_GeomFromGeoJSON(feature->>\'geometry\'), ST_MakeEnvelope('+box.xmin+','+box.ymin+','+box.xmax+','+box.ymax+'))';
             }
           }
+          //console.log(select);
           self._query( select, function (err, result) {
             if ( result && result.rows && result.rows.length ) {
               callback( null, [{
@@ -107,6 +124,9 @@ module.exports = {
 
       self._createTable( table, self._buildSchemaFromFeature(), function(err, result){
         // insert each feature
+        if ( geojson.length ){
+          geojson = geojson[0];
+        }
         geojson.features.forEach(function(feature, i){
           self._insertFeature(table, feature, i);
         });
@@ -258,7 +278,7 @@ module.exports = {
     var self = this;
     var sql = "select exists(select * from information_schema.tables where table_name='"+ name +"')";
     this.client.query(sql, function(err, result){
-      if ( !result.rows[0].exists ){
+      if ( !err || !result || !result.rows[0].exists ){
         var create = "CREATE TABLE \"" + name + "\" " + schema;
         self.client.query(create, function(err, result){
           if (callback) {

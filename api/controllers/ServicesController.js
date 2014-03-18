@@ -7,5 +7,16 @@ module.exports = {
       }
     });
     res.json( providers );
+  },
+
+  info: function( req, res ){
+    var info = {
+      "currentVersion": 10.0,
+      "fullVersion": "10.0",
+      "authInfo": {
+        "isTokenBasedSecurity": false
+      }
+    }
+    res.json(info);
   } 
 };

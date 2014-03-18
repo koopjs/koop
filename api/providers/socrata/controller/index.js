@@ -40,6 +40,10 @@ var Controller = extend({
     });
   },
 
+  findResourcePost: function( req, res ){
+    Controller.findResource( req, res );
+  },
+
   findResource: function(req, res){
     Socrata.find(req.params.id, function(err, data){
       if (err) {
@@ -89,6 +93,10 @@ var Controller = extend({
   featureserver: function( req, res ){
     var callback = req.query.callback;
     delete req.query.callback;
+    
+    for (var k in req.body){
+      req.query[k] = req.body[k];
+    }
 
     Socrata.find(req.params.id, function(err, data){
       if (err) {
@@ -100,6 +108,7 @@ var Controller = extend({
             res.send( error, 500);
           } else {
             // pass to the shared logic for FeatureService routing
+            delete req.query.geometry;
             Controller._processFeatureServer( req, res, err, geojson, callback);
           }
         });
