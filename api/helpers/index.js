@@ -6,7 +6,8 @@ var fs = require('fs'),
 
 // loads a model into koop 
 // makes sure its globally accessible like other models
-function loadModels( options ){
+/*function loadModels( options ){
+  console.log(path);
   var files = require('include-all')({
     dirname   : options.path,
     filter    : /(.+)\..+$/
@@ -24,9 +25,14 @@ function loadModels( options ){
     
     global[module.globalId] = module;
   });
-}
+}*/
 
 
 // load the model into koop as global
-loadModels({ path: path });
+fs.readdir( path, function(err, files){
+  _.each(files, function(file){
+    console.log(file);
+  });
+  //loadModels({ path: path });
+});
 
