@@ -110,7 +110,19 @@ exports.exportToFormat = function( format, key, geojson, callback ){
       if (err){
         callback( err, null );
       } else {
-        callback( null, file );
+        // push the downloaded file up to s3
+        if (sails.peechee.type == 's3'){ 
+          fs.readFile(file, function (err, data) {
+            if ( format == 'zip' || format == 'gpkg' ){
+              data = new Buffer(data, 'binary').toString('base64');
+            }
+            sails.peechee.write(data, key, key+'.'+format, function(err,res){
+              callback( null, file );
+            })
+          });
+        } else {
+          callback(null, file);
+        }
       }
     };
 
@@ -128,9 +140,8 @@ exports.exportToFormat = function( format, key, geojson, callback ){
       jsonFile = base + '.json';
       newFile = base + '.' + format;
 
-    sails.peechee.path(path, key+'.json', function(err, path){
 
-    /*nfs.mkdir( path, '0777', true, function(){
+    nfs.mkdir( path, '0777', true, function(){
       if ( !nfs.existsSync( jsonFile ) ) {
         fs.writeFile( jsonFile, JSON.stringify( geojson ), function(){
           _callOgr( jsonFile, newFile, _send); 
@@ -138,7 +149,7 @@ exports.exportToFormat = function( format, key, geojson, callback ){
       } else {
         _callOgr( jsonFile, newFile, _send) ;
       }
-    });*/
+    });
 
     
 
