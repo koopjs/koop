@@ -5,15 +5,28 @@
 
 module.exports = {
 
+  // location for the koop logs
   logfile: '/var/log/koop.log',
 
+  // peechee is configurable filesystem for storing data 
+  // on s3 or the local filesystem
+  peechee: {
+    type: 's3',
+    dir: 'koop-dev', // must exist in s3 
+    region: 'us-west-2'
+  },
+
+  // the local dir for storing tile files  
   data_dir: '/usr/local/koop/',
   
+  // for accessing github 
   github_token: 'XXXXXXXXXXXXXXXXXX',
 
   // use cached images
+  // you can set this to false to always create new images (bad for prod, good for dev/testing)
   image_cache: true,
 
+  // the connection to your PostGIS enabled database 
   db_conn: "postgres://localhost/{YOUR POSTGIS DB}",
 
   port: process.env.PORT || 1337,

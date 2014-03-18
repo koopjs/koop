@@ -128,7 +128,9 @@ exports.exportToFormat = function( format, key, geojson, callback ){
       jsonFile = base + '.json';
       newFile = base + '.' + format;
 
-    nfs.mkdir( path, '0777', true, function(){
+    sails.peechee.path(path, key+'.json', function(err, path){
+
+    /*nfs.mkdir( path, '0777', true, function(){
       if ( !nfs.existsSync( jsonFile ) ) {
         fs.writeFile( jsonFile, JSON.stringify( geojson ), function(){
           _callOgr( jsonFile, newFile, _send); 
@@ -136,26 +138,8 @@ exports.exportToFormat = function( format, key, geojson, callback ){
       } else {
         _callOgr( jsonFile, newFile, _send) ;
       }
-    });
-
-    /*// build files, remove old ones first
-    nfs.mkdir( path, '0777', true, function(){
-      //if ( nfs.existsSync( jsonFile ) ) {
-      //  fs.unlinkSync(jsonFile);
-      //}
-      if ( !nfs.existsSync( jsonFile ) ){
-        
-        fs.writeFile( jsonFile, JSON.stringify( geojson ), function(){
-          _callOgr( jsonFile, newFile, _send);
-        });
-      } else {
-        console.log('json exists...')
-        _callOgr( jsonFile, newFile, _send);
-      }
-      //if (nfs.existsSync( newFile )){
-      //  fs.unlinkSync(newFile);
-      //}
-      //});
     });*/
+
+    
 
 };

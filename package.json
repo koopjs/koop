@@ -28,7 +28,8 @@
     "bunyan": "~0.22.1",
     "async": "~0.2.10",
     "zmq": "~2.6.0",
-    "pg": "~2.11.1"
+    "pg": "~2.11.1",
+    "peechee": "0.0.1"
   },
   "devDependencies": {
     "grunt": "0.4.x",
