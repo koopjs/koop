@@ -78,6 +78,9 @@ var Controller = extend({
           AGOL.getItemData( data.host, item, options, function(error, itemJson){
             if (error) {
               callback( error, null);
+            } else if ( itemJson.koop_status ) {
+              // return w/202  
+              res.json( { status: 'processing' }, 202);
             } else {
               if (itemJson.data[0].features.length > 1000){
                 itemJson.data[0].features = itemJson.data[0].features.splice(0,1000);
@@ -100,8 +103,6 @@ var Controller = extend({
       var key = [req.params.id, req.params.item, parseInt(req.query.layer) || 0 ].join(':');
       var fileName = [sails.config.data_dir + 'files', key, key + '.' + req.params.format].join('/');
 
-      console.log(fileName);
-
       if (fs.existsSync( fileName )){
         res.sendfile( fileName );
       } else {
@@ -109,6 +110,7 @@ var Controller = extend({
         // check the koop status table to see if we have a job running 
           // if we do then return 
           // else proceed 
+        req.query.format = req.params.format;
         _get(req.params.id, req.params.item, req.query, function( err, itemJson ){
           //console.log(itemJson.data[req.query.layer || 0]);
           if (err){
