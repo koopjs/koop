@@ -77,3 +77,12 @@ exports.get = function(type, key, options, callback ){
     self.process( type, key, result, callback );     
   });
 };
+
+exports.getInfo = function( key, callback ){
+  Cache.db.getInfo( key, callback );
+};
+
+exports.updateInfo = function( key, info, callback ){
+  Cache.db.updateInfo( key, info, callback );
+};
+

@@ -149,31 +149,50 @@ var AGOL = function(){
                       }
                     }
                   });
-                //} else if (idJson.count > 3000){
-                //  callback( 'Feature Count is too large to convert: ' + idJson.count, null );
                 
                 } else {
-
-                  // logic for paging through the feature service
-                  var i, where, pageMax, url, pages, max;
-                  max = 1000;
-                  pages = Math.ceil(idJson.count / max);
-                  pageRequests = [];
-
-                  for (i=1; i < pages+1; i++){
-                    pageMax = i*max;
-                    where = 'objectId<'+pageMax+' AND '+ 'objectId>='+((pageMax-max)+1);
-                    url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where='+where+'&outFields=*&f=json';
-                    if ( options.geometry ){
-                      url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
-                    }
-                    pageRequests.push({req: url});
-                  }
-
                   // creates the empty table
                   Cache.remove('agol', id, {layer: (options.layer || 0)}, function(){
-                    Cache.insert( 'agol', id, {updated_at: itemJson.modified, name: itemJson.name, features:[]}, (options.layer || 0), function( err, success){
-                      self.requestQueue(idJson.count, pageRequests, id, itemJson, (options.layer || 0), callback);
+
+                    var info = {
+                      status: 'processing', 
+                      updated_at: itemJson.modified, 
+                      name: itemJson.name, 
+                      features:[]
+                    };
+
+                    if ( options.format ){
+                      info.format = options.format;
+                    }
+
+                    Cache.insert( 'agol', id, info, ( options.layer || 0 ), function( err, success ){
+
+                      // return, but continue on
+                      itemJson.data = [{features:[]}];
+                      itemJson.koop_status = 'processing';
+                      callback(null, itemJson);
+                  
+                      // logic for paging through the feature service
+                      var i, where, pageMax, url, pages, max;
+                      max = 1000;
+                      pages = Math.ceil(idJson.count / max);
+                      pageRequests = [];
+
+                      for (i=1; i < pages+1; i++){
+                        pageMax = i*max;
+                        where = 'objectId<'+pageMax+' AND '+ 'objectId>='+((pageMax-max)+1);
+                        url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where='+where+'&outFields=*&f=json';
+                        if ( options.geometry ){
+                          url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
+                        }
+                        pageRequests.push({req: url});
+                      }
+
+                      //self.requestQueue(idJson.count, pageRequests, id, itemJson, (options.layer || 0), callback);
+                      self.requestQueue(idJson.count, pageRequests, id, itemJson, (options.layer || 0), function(err,data){
+                        console.log('Finished requesting all pages, now we need to update the db and complete the format export');
+                        Tasker.finish( ['agol',id, options.layer || 0].join(':') );
+                      });
                     });
                   });
                 }
@@ -182,6 +201,10 @@ var AGOL = function(){
               callback( 'Unknown layer, make the layer you requested exists', null );
             }
           });
+        } else if ( entry[0].status == 'processing' ){
+          itemJson.data = [{features:[]}];
+          itemJson.koop_status = 'processing';
+          callback(null, itemJson);
         } else {
           itemJson.data = entry;
           callback( null, itemJson );

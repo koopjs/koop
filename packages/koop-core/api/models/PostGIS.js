@@ -25,6 +25,29 @@ module.exports = {
     return this; 
   },
 
+  // returns the info doc for a key 
+  getInfo: function( key, callback ){
+    this._query('select info from "'+this.infoTable+'" where id=\''+key+":info\'", function(err, result){
+      if ( err || !result || !result.rows || !result.rows.length ){
+        callback('Key Not Found ' + key, null);
+      } else {
+        var info = result.rows[0].info;
+        callback(null, info);
+      };
+    });
+  },
+
+  // updates the info doc for a key 
+  updateInfo: function( key, info, callback ){
+    this._query("update " + this.infoTable + " set info = '" + JSON.stringify(info) + "' where id = '"+key+":info'", function(err, result){
+      if ( err || !result ){
+        callback('Key Not Found ' + key, null);
+      } else {
+        callback(null, true);
+      };
+    });
+  },
+
 
   // get data out of the db
   select: function(key, options, callback){
@@ -47,8 +70,10 @@ module.exports = {
     this._query('select info from "'+this.infoTable+'" where id=\''+(key+':'+(options.layer || 0 )+":info")+'\'', function(err, result){
       if ( err || !result || !result.rows || !result.rows.length ){
         callback('Not Found', []);
+      } else if (result.rows[0].info.status == 'processing') {
+        callback( null, [{ status: 'processing' }]);
       } else {
-        var info = result.rows[0].info;
+          var info = result.rows[0].info;
           var select = 'select feature from "' + key+':'+(options.layer || 0)+'"'; 
 
           if ( options.geometry ){
@@ -118,6 +143,8 @@ module.exports = {
       
       info.name = geojson.name ;
       info.updated_at = geojson.updated_at;
+      info.status = geojson.status;
+      info.format = geojson.format;
       info.sha = geojson.sha;
    
       var table = key+':'+layerId;
