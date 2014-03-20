@@ -30,7 +30,11 @@ module.exports.bootstrap = function (cb) {
     sails.worker = spawnasync.createWorker({'log': sails.config.log});
 
     // TODO refactor the db configuration to support different types of db backends 
-    Cache.db = PostGIS.connect( sails.config.db_conn );
+    if ( sails.config.db.postgis ){
+      Cache.db = PostGIS.connect( sails.config.db.postgis.conn );
+    } else {
+      Cache.db = Local;
+    }
 
     // set up an instance of peechee for saving files (downloads) 
     sails.peechee = new Peechee( sails.config.peechee );
