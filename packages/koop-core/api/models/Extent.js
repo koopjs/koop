@@ -22,6 +22,20 @@ exports.bounds = function(features, callback){
       if (f.geometry.coordinates[1] < miny) miny = f.geometry.coordinates[1];
       if (f.geometry.coordinates[0] > maxx) maxx = f.geometry.coordinates[0];
       if (f.geometry.coordinates[1] > maxy) maxy = f.geometry.coordinates[1];
+    } else if ( f.geometry && ( f.geometry.type == 'LineString' || f.geometry.type == 'MultiLineString') && f.geometry.coordinates ) {
+      var coords = (f.geometry.type == 'MultiLineString') ? f.geometry.coordinates[0] : f.geometry.coordinates;
+      coords.forEach(function( c, j ) {
+        if ( i == 0){
+          minx = c[0],
+          miny = c[1],
+          maxx = c[0],
+          maxy = c[1];
+        }
+        if (c[0] < minx) minx = c[0];
+        if (c[1] < miny) miny = c[1];
+        if (c[0] > maxx) maxx = c[0];
+        if (c[1] > maxy) maxy = c[1];
+      });
     } else if ( f.geometry && ( f.geometry.type == 'Polygon' || f.geometry.type == 'MultiPolygon') && f.geometry.coordinates ) {
       var coords = (f.geometry.type == 'MultiPolygon') ? f.geometry.coordinates[0][0] : f.geometry.coordinates[0];
       coords.forEach(function( c, j ) {
