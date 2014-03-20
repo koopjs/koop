@@ -188,10 +188,8 @@ var AGOL = function(){
                         pageRequests.push({req: url});
                       }
 
-                      //self.requestQueue(idJson.count, pageRequests, id, itemJson, (options.layer || 0), callback);
                       self.requestQueue(idJson.count, pageRequests, id, itemJson, (options.layer || 0), function(err,data){
-                        console.log('Finished requesting all pages, now we need to update the db and complete the format export');
-                        Tasker.finish( ['agol',id, options.layer || 0].join(':') );
+                        Tasker.finish( ['agol',id, options.layer || 0].join(':'), { type: 'FeatureCollection', features: data.data[0].features} );
                       });
                     });
                   });
@@ -232,9 +230,7 @@ var AGOL = function(){
         GeoJSON.fromEsri( json, function(err, geojson){
           // concat the features so we return the full json
           itemJson.data[0].features = itemJson.data[0].features.concat( geojson.features );
-          //console.log( 'Insert Partial', geojson.features.length );
           Cache.insertPartial( 'agol', id, geojson, layerId, function( err, success){
-            //console.log('\t inserted partial', reqCount, 'of', reqs.length);
             cb();
             if (reqCount == reqs.length){
               // pass back the full array of features

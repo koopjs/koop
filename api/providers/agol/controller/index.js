@@ -100,7 +100,8 @@ var Controller = extend({
     // check format for exporting data
     if ( req.params.format ){
       // build the file key and look for the file 
-      var key = [req.params.id, req.params.item, parseInt(req.query.layer) || 0 ].join(':');
+      //var key = [req.params.id, req.params.item, parseInt(req.query.layer) || 0 ].join(':');
+      var key = [ 'agol', req.params.item, parseInt(req.query.layer) || 0 ].join(':');
       var fileName = [sails.config.data_dir + 'files', key, key + '.' + req.params.format].join('/');
 
       if (fs.existsSync( fileName )){
@@ -118,7 +119,7 @@ var Controller = extend({
           } else if ( !itemJson.data[0].features.length ){
             res.send( 'No features exist for the requested FeatureService layer', 500 );
           } else {
-            Controller.exportToFormat( req.params.format, key, itemJson.data[0], function(err, result){
+            Exporter.exportToFormat( req.params.format, key, itemJson.data[0], function(err, result){
               if (err) {
                 res.send( err, 500 );
               } else {
