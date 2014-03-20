@@ -132,10 +132,12 @@ Controller.featureservice = function(req, res){
     if ( req.params.user && req.params.repo && req.params.file ){
       req.params.file = req.params.file.replace('.geojson', '');
       Github.find( req.params.user, req.params.repo, req.params.file, req.query, function( err, data){
+        delete req.query.geometry;
         Controller._processFeatureServer( req, res, err, data, callback);
       });
     } else if ( req.params.user && req.params.repo && !req.params.file ) {
       Github.find( req.params.user, req.params.repo, null, req.query, function( err, data){
+        delete req.query.geometry;
         Controller._processFeatureServer( req, res, err, data, callback);
       });
     } else {
