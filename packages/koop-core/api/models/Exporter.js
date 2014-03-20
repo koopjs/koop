@@ -1,6 +1,7 @@
 // Exports data as any supported format 
 // take in a format, file key, geojson, and callback
-//   
+var fs = require('node-fs');
+ 
 exports.exportToFormat = function( format, key, geojson, callback ){
 
     // executes OGR
@@ -9,7 +10,7 @@ exports.exportToFormat = function( format, key, geojson, callback ){
         callback(null, outFile);
       } else if (ogrFormats[format]) {
         //console.log(['ogr2ogr', '-f', ogrFormats[format], ( format == 'zip' ) ? outFile.replace('zip','shp') : outFile, inFile].join(' '));
-        worker.aspawn(['ogr2ogr', '-f', ogrFormats[format], ( format == 'zip' ) ? outFile.replace('zip','shp') : outFile, inFile],
+        sails.worker.aspawn(['ogr2ogr', '-f', ogrFormats[format], ( format == 'zip' ) ? outFile.replace('zip','shp') : outFile, inFile],
           function (err, stdout, stderr) {
             if (err) {
               console.log(err, stdout, stderr);
@@ -20,7 +21,7 @@ exports.exportToFormat = function( format, key, geojson, callback ){
                 var dbf = outFile.replace('zip','dbf');
                 var shx = outFile.replace('zip','shx');
                 var prj = outFile.replace('zip','prj');
-                worker.aspawn(['zip', '-j', outFile, shp, dbf, shx, prj], function(err, stdout, stderr){
+                sails.worker.aspawn(['zip', '-j', outFile, shp, dbf, shx, prj], function(err, stdout, stderr){
                   callback(null, outFile);
                 });
               } else {
@@ -69,8 +70,8 @@ exports.exportToFormat = function( format, key, geojson, callback ){
       newFile = base + '.' + format;
 
 
-    nfs.mkdir( path, '0777', true, function(){
-      if ( !nfs.existsSync( jsonFile ) ) {
+    fs.mkdir( path, '0777', true, function(){
+      if ( !fs.existsSync( jsonFile ) ) {
         fs.writeFile( jsonFile, JSON.stringify( geojson ), function(){
           _callOgr( jsonFile, newFile, _send); 
         });
