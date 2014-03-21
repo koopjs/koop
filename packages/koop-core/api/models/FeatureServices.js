@@ -66,7 +66,11 @@ module.exports = {
     var template = require(__dirname + tmpl);
     if ( !data.length && data.features && data.features.length ){
       template.fields = this.fields( data.features[0].properties, params.idField );
+<<<<<<< HEAD
     } else if (data[0] && data[0].features[0] && data[0].features[0].length ) {
+=======
+    } else if (data[0] && data[0].features && data[0].feature.length){
+>>>>>>> conflict
       template.fields = this.fields( data[0].features[0].properties, params.idField );
     } else {
       template.fields = [];
@@ -169,10 +173,10 @@ module.exports = {
       var json = this.process( tmpl_dir + 'featureSet.json', data, params );
       // geojson to esri json
       json.features = terraformerParser.convert( data );
-      if ( json.features.length && json.features[0].geometry.rings ) { 
+      if ( json.features && json.features.length && json.features[0].geometry.rings ) { 
         json.geometryType = 'esriGeometryPolygon';
         //json.drawingInfo.renderer = require(__dirname + tmpl_dir + 'renderers/polygon.json');
-      } else if ( json.features.length && json.features[0].geometry.paths ){
+      } else if ( json.features && json.features.length && json.features[0].geometry.paths ){
         json.geometryType = 'esriGeometryPolyline';
         //json.drawingInfo.renderer = require(__dirname + tmpl_dir + 'renderers/line.json');
       } else {

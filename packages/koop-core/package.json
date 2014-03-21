@@ -29,7 +29,8 @@
     "async": "~0.2.10",
     "zmq": "~2.6.0",
     "pg": "~2.11.1",
-    "peechee": "0.0.1"
+    "peechee": "0.0.1",
+    "terraformer-wkt-parser": "~1.0.0"
   },
   "devDependencies": {
     "grunt": "0.4.x",
