@@ -1,1 +1,1 @@
-node app.js --data_dir=/usr/local/koop
+node app.js --data_dir=/usr/local/koop --osmdb=kooposm1
