@@ -9,12 +9,12 @@ module.exports = {
   logfile: '/var/log/koop.log',
 
   // peechee is configurable filesystem for storing data 
-  // on s3 or the local filesystem
-  peechee: {
-    type: 's3',
-    dir: 'koop-dev', // must exist in s3 
+  // on 's3' or the 'local' filesystem
+  /*peechee: {
+    type: 'local',
+    dir: '/usr/local/koop/', // must exist in s3 
     region: 'us-west-2'
-  },
+  },*/
 
   // the local dir for storing tile files  
   data_dir: '/usr/local/koop/',
