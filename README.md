@@ -3,36 +3,6 @@
 
 Koop provides a flexible server for exposing 3rd party data sources (APIs) as both Feature Services and other data formats. This project is meant to provide a simple / plugable platform for experimenting with various data within the ArcGIS platform. Koop aims to provide a platform for accessing any API and making it easy to consume within the realm of Esri's geospatial web products. 
 
-## Features 
-
-v1.0 January 2014 
-
-  * Data Adapters
-    * Gist / Github
-    * Socrata Open Data APIs
-    * ArcGIS Online 
-      - note: this is special case where koop can expose non-featureservices as actual feature services 
-  * API Caching 
-    * Support simple data caching with automatic cache expiration via etags, shas, etc 
-  * Request caching 
-    * should cache request and return 304 
-  * Feature Service Layer Queries 
-    * Full support of [http://resources.arcgis.com/en/help/arcgis-rest-api/](http://resources.arcgis.com/en/help/arcgis-rest-api/#/Query_Feature_Service_Layer/02r3000000r1000000/)
-  * API Registration 
-    - register hosts from Socrata and AGOL deploys 
- 
-
-v1.1 March 2014 (planned)
-  * Data formats
-    - PNG Tiles
-    - Vector Tiles 
-    - Map Services 
-    - UTF Grid 
-
-  * Support mixed geometry types 
-  * HTML Templates
-  * Feature access via REST endpoints 
-  
 
 ## Architecture 
 
@@ -41,49 +11,73 @@ v1.1 March 2014 (planned)
 
 ## Dependencies 
 
+The following dependencies are needed in order to run Koop on your local machine / server: 
+
 * Node.js (version > 0.10.0) 
 * PostgreSQL / PostGIS 
+
+## 
 
 ## Installation 
 
 Koop is a [Node.js](http://nodejs.org/) project so you'll need [Node.js](http://nodejs.org/), preferably a version > 0.10.0. 
 
-```javascript
+```
     # clone the repo
     git clone git@github.com:ArcGIS/koop.git
 
-    # install the dependencies
+    # enter the koop project directory 
     cd koop
+
+    # copy the example config file and make local edits 
+    cp config/local.js.example config/local.js 
+
+    # NOTE: it is crucial that you make the appropriate edits to your config/local.js file so that the values match your environment.
+
+    # install the node.js dependencies
     npm install
 
-    // visit [http://localhost:1337](http://localhost:1337)
+    # run the server in auto-reload mode
+    grunt server 
+
+    # visit [http://localhost:1337](http://localhost:1337)
 ```
 
 ## Configuration 
 
 Koop uses a config called `/config/local.js` to setup its database connection and data directories for caching data. When you first clone koop you'll need to copy `/config/local.js.example` to `/config/local.js` and change the defaults. 
 
-    
+In order to use the Github and Gist providers you'll need to correctly set the "github_token" property to match your personal Github API token.  
+
+Also make sure you update the PostGIS database configuration to match the host, port, user, password, and name of your database.  
+
+   
+### PostGIS 
+
+Koop currently requires a PostGIS database to be created when the app starts up. In PostgreSQL 9.3 you can create a PostGIS enabled database by executing `CREATE EXTENSION postgis;` inside an existing database. 
+
+ 
 
 ## Running Koop
 
 Koop run its own http server and you can start it like this (koop will use 1337 as its default port): 
 
-```javascript
-    // to run with a local cache (no persistent cache)
-    node app.js 
-
-    // to run with mongo (provide a valid mongodb connection string)
+```
+    // to run with
     node app.js   
 
     // to run on a non default port 
-    PORT=1337 node app.js
+    PORT=9999 node app.js
+
+
+    // optionally you can start the server via grunt 
+    grunt server 
      
 ```
 
 ## Tests 
 
-Currently the tests use grunt to run them, and they depend on a running instance of koop. Once you have koop running issue: 
+Currently the tests use grunt to run them, and they depend on a locally running instance of koop. Once you have koop running issue: 
 
 ```javascript 
     # install grunt if you dont have it
