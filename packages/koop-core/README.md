@@ -1,7 +1,7 @@
 # koop
-## Turn GeoJSON into FeatureServices 
+## Turn data into FeatureServices 
 
-Koop provides a flexible server for exposing 3rd party data sources (APIs) as both Feature Services and other data formats. This project is meant to provide a simple / plugable platform for experimenting with various data within the ArcGIS platform. Koop aims to provide a platform for accessing any API and making it easy to consume within the realm of Esri's geospatial web products. 
+Koop provides a flexible server for exposing 3rd party data sources (APIs) as both Feature Services and other data formats (GeoJSON). This project is meant to provide a simple / plugable platform for experimenting with various data within the ArcGIS platform. Koop aims to provide a platform for accessing any API and making it easy to consume within the realm of Esri's geospatial web products. 
 
 
 ## Architecture 
