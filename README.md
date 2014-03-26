@@ -6,7 +6,7 @@ Koop provides a flexible server for exposing 3rd party data sources (APIs) as bo
 
 ## Architecture 
 
-![lots of geojson into featureservices](https://f.cloud.github.com/assets/351164/864572/24113276-f624-11e2-831d-50cf8395b200.png)
+![lots of geojson into featureservices](https://cloud.githubusercontent.com/assets/351164/2530456/333495b0-b526-11e3-8f9b-c1ebeb75b044.png)
 
 
 ## Dependencies 
