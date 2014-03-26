@@ -189,7 +189,10 @@ var AGOL = function(){
                       }
 
                       self.requestQueue(idJson.count, pageRequests, id, itemJson, (options.layer || 0), function(err,data){
-                        Tasker.finish( ['agol',id, options.layer || 0].join(':'), { type: 'FeatureCollection', features: data.data[0].features} );
+                        Tasker.taskQueue( {
+                          key: ['agol',id, options.layer || 0].join(':'), 
+                          options: options 
+                        });
                       });
                     });
                   });

@@ -1,9 +1,18 @@
+var async = require('async');
 
-exports.finish = function( key, geojson ){
+// concurrent queue for feature pages 
+exports.taskQueue = async.queue(function (task, callback) {
+  // get the geojson for the task key
+  Cache.db.select( task.key, task.options, function( err, result ){
+    finish(task.key, result[0], callback);
+  }); 
+}, 2);
+
+function finish( key, geojson, callback ){
 
   var _update = function( info ){
     Cache.updateInfo(key, info, function(err, success){
-      console.log('updated info for ', key);
+      callback();
     });
   };
 
