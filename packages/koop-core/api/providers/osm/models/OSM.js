@@ -7,7 +7,7 @@ var config = require('./config');
 
 var OSM = function(){
 
-  var conString = "postgres://localhost/"+sails.config.osmdb;
+  var conString = "postgres://localhost/" + config.osmdb;
 
   this.client = new pg.Client(conString);
   this.client.connect(function(err) {
@@ -58,7 +58,7 @@ var OSM = function(){
 
   this._buildQueryString = function(table, options){
     var limit = options.limit || 1000;
-    console.log(options); 
+    //console.log(options); 
     var query = 'SELECT *, ST_AsGeoJson(way) as geometry from ';
     query +=  table;
     if ( options.where ) { 
