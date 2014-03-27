@@ -180,8 +180,8 @@ var AGOL = function(){
 
                       for (i=1; i < pages+1; i++){
                         pageMax = i*max;
-                        where = 'objectId<'+pageMax+' AND '+ 'objectId>='+((pageMax-max)+1);
-                        url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where='+where+'&outFields=*&f=json';
+                        where = 'objectId<'+pageMax+'+AND+'+ 'objectId>='+((pageMax-max)+1);
+                        url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where='+where+'&f=json&outFields=*';
                         if ( options.geometry ){
                           url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
                         }
@@ -189,10 +189,11 @@ var AGOL = function(){
                       }
 
                       self.requestQueue(idJson.count, pageRequests, id, itemJson, (options.layer || 0), function(err,data){
-                        Tasker.taskQueue( {
-                          key: ['agol',id, options.layer || 0].join(':'), 
+                        console.log('and.... we\'re done');
+                        Tasker.taskQueue.push( {
+                          key: [ 'agol', id ].join(':'), 
                           options: options 
-                        });
+                        }, function(){});
                       });
                     });
                   });
@@ -245,12 +246,18 @@ var AGOL = function(){
       }
     };
 
+    var i = 0
     // concurrent queue for feature pages 
     var q = async.queue(function (task, callback) {
       // make a request for a page 
+      console.log('get page', i++);
       request.get(task.req, function(err, data){
-        var json = JSON.parse(data.body);
-        _collect(json, callback);
+        try {
+          var json = JSON.parse(data.body);
+          _collect(json, callback);
+        } catch(e){
+          console.log('back', task.req, data.body, e);
+        }
       });
     }, 4);
 

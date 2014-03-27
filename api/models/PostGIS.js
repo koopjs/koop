@@ -70,7 +70,7 @@ module.exports = {
     this._query('select info from "'+this.infoTable+'" where id=\''+(key+':'+(options.layer || 0 )+":info")+'\'', function(err, result){
       if ( err || !result || !result.rows || !result.rows.length ){
         callback('Not Found', []);
-      } else if (result.rows[0].info.status == 'processing') {
+      } else if (result.rows[0].info.status == 'processing' && !options.bypassProcessing ) {
         callback( null, [{ status: 'processing' }]);
       } else {
           var info = result.rows[0].info;

@@ -2,10 +2,14 @@ var async = require('async');
 
 // concurrent queue for feature pages 
 exports.taskQueue = async.queue(function (task, callback) {
+  // tell the cache to ignore data in a processing state 
+  task.options.bypassProcessing = true;
+  
   // get the geojson for the task key
   Cache.db.select( task.key, task.options, function( err, result ){
-    finish(task.key, result[0], callback);
+    finish(task.key +":"+ (task.options.layer || 0), result[0], callback);
   }); 
+
 }, 2);
 
 function finish( key, geojson, callback ){
