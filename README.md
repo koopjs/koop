@@ -24,7 +24,7 @@ Koop is a [Node.js](http://nodejs.org/) project so you'll need [Node.js](http://
 
 ```
     # clone the repo
-    git clone git@github.com:ArcGIS/koop.git
+    git clone git@github.com:Esri/koop.git
 
     # enter the koop project directory 
     cd koop
