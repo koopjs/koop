@@ -39,13 +39,6 @@ function loadModels( options ){
   });
 }
 
-//enable cors 
-sails.express.app.all('/*', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
-});
-
 
 // read each dir and load the files into the app 
 fs.readdir( path, function(err, files){
