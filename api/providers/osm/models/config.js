@@ -1,1 +1,1 @@
-exports.osmdb = 'chicago_osm';
+exports.osmdb = 'osm';

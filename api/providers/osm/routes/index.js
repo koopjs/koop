@@ -29,4 +29,14 @@ module.exports = {
     controller: 'osm',
     action: 'explore'
   },
+
+  'get /osm/:type/:boundaryType/count': {
+    controller: 'osm',
+    action: 'getCounts'
+  },
+
+  'get /osm/:type/distinct/:field': {
+    controller: 'osm',
+    action: 'getDistinct'
+  }
 }
