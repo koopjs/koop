@@ -43,6 +43,10 @@ Koop is a [Node.js](http://nodejs.org/) project so you'll need [Node.js](http://
     # visit [http://localhost:1337](http://localhost:1337)
 ```
 
+## Trouble with node-canvas?
+
+If you have trouble installing koop it might be an issue with the Node.js module `canvas` (especially on a mac). To get around this follow [these directions](https://github.com/LearnBoost/node-canvas/wiki/Installation---OSX). 
+
 ## Configuration 
 
 Koop uses a config called `/config/local.js` to setup its database connection and data directories for caching data. When you first clone koop you'll need to copy `/config/local.js.example` to `/config/local.js` and change the defaults. 
