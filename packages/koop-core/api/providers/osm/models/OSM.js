@@ -1,4 +1,5 @@
 var pg = require('pg'),
+  _ = require('lodash'),
   WKT = require('terraformer-wkt-parser'),
   sm = require('sphericalmercator'),
   merc = new sm( { size:256 } );
@@ -46,12 +47,32 @@ var OSM = function(){
     });
   };
 
-  this._count = function(table, callback){
-    this.client.query('SELECT count(*) as count from '+table, function(err, result) {
+  this.distinct = function(field, table, options, callback){
+    var tfield = table+'.'+field;
+    var select = 'SELECT DISTINCT ' + tfield + ' FROM ' + table + ' WHERE ' + tfield + ' is not null';
+    console.log(select);
+    this.client.query(select, function(err, result) {
       if(err) {
         callback(err, null);
       } else {
-        callback(null, result.rows[0].count);
+        callback(null, _.pluck(result.rows, field));
+      }
+    });
+  };
+
+  this.count = function(field, table, options, callback){
+    var tfield = table+'.'+field;
+    var select = 'SELECT count(osm_id)::int, '+tfield+' FROM '+table;
+    if ( options.where ){
+      select += ' WHERE ' + options.where;
+    }
+    select += ' GROUP BY '+tfield;
+    console.log(select)
+    this.client.query(select, function(err, result) {
+      if(err) {
+        callback(err, null);
+      } else {
+        callback(null, result.rows);
       }
     });
   };
