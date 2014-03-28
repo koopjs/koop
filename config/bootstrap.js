@@ -1,14 +1,12 @@
 // App bootstrap
 // Code to run before launching the app
 //
-// Make sure you call cb() when you're finished.
 var argv = require('optimist').argv,
   Peechee = require('peechee'),
   spawnasync = require('spawn-async'),
   fs = require('fs');
 
 var bunyan = require('bunyan');
-
 
 module.exports.bootstrap = function (cb) {
   setTimeout(function(){ 
