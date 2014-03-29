@@ -11,6 +11,7 @@
     "request": "~2.27.0",
     "terraformer": "1.0.3",
     "terraformer-arcgis-parser": "1.0.3",
+    "terraformer-wkt-parser": "~1.0.0",
     "geohub": "0.3.0",
     "underscore": "~1.5.1",
     "sql-parser": "~0.4.0",
@@ -27,10 +28,8 @@
     "spawn-async": "0.0.1",
     "bunyan": "~0.22.1",
     "async": "~0.2.10",
-    "zmq": "~2.6.0",
     "pg": "~2.11.1",
-    "peechee": "0.0.1",
-    "terraformer-wkt-parser": "~1.0.0"
+    "peechee": "0.0.1"
   },
   "devDependencies": {
     "grunt": "0.4.x",
