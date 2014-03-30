@@ -1,6 +1,6 @@
 var terraformer = require('Terraformer'),
   sql = require('sql-parser'),
-  _ = require('underscore');
+  _ = require('lodash');
 
 module.exports = {
   // process all query params filters 
