@@ -1,4 +1,4 @@
-var terraformer = require('Terraformer');
+var terraformer = require('terraformer');
 var terraformerParser = require('terraformer-arcgis-parser');
 
 module.exports = {

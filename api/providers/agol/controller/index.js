@@ -1,5 +1,5 @@
 var request = require('request'),
-  terraformer = require('Terraformer'),
+  terraformer = require('terraformer'),
   terraformerParser = require('terraformer-arcgis-parser'),
   extend = require('node.extend'),
   sm = require('sphericalmercator'),

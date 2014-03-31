@@ -3,7 +3,7 @@ var nodetiles = require('nodetiles-core'),
   Projector = nodetiles.projector,
   nfs = require('node-fs'),
   fs = require('fs'),
-  terraformer = require('Terraformer'),
+  terraformer = require('terraformer'),
   terraformerParser = require('terraformer-arcgis-parser');
 
 var sm = require('sphericalmercator');
