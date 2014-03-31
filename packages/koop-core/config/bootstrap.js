@@ -19,7 +19,7 @@ module.exports.bootstrap = function (cb) {
       'name': 'koop-log',
       streams: [{
               type: 'rotating-file',
-              path: '/var/log/koop.log',
+              path: sails.config.logfile,
               period: '1d',   // daily rotation
               count: 3        // keep 3 back copies
       }]
