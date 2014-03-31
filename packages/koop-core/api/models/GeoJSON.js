@@ -1,5 +1,5 @@
 
-var terraformer = require('Terraformer');
+var terraformer = require('terraformer');
 var terraformerParser = require('terraformer-arcgis-parser');
 
 exports.fromEsri = function( json, callback ){
