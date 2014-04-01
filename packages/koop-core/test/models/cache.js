@@ -1,15 +1,11 @@
-var should = require('should'),
-  mongo = require('mongoskin');
+var should = require('should');
 
 before(function (done) {
   key = 'test/repo/file';
   repoData = require('../fixtures/repo.geojson');
   global['gist'] = require('../../api/providers/gist/models/Gist.js');
   PostGIS = require('../../api/models/PostGIS.js');
-  Cache = require('../../api/models/Cache.js');
-
-  // use mongo to store data 
-  Cache.db = PostGIS.connect( 'postgres://localhost/koopdev' );
+  Cache = require('../helpers/Cache.js');
   done();
 });
 
