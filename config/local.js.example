@@ -12,8 +12,7 @@ module.exports = {
   // on 's3' or the 'local' filesystem
   /*peechee: {
     type: 'local',
-    dir: '/usr/local/koop/', // must exist in s3 
-    region: 'us-west-2'
+    dir: '/usr/local/koop/'
   },*/
 
   // the local dir for storing tile files  
@@ -27,7 +26,11 @@ module.exports = {
   image_cache: true,
 
   // the connection to your PostGIS enabled database 
-  db_conn: "postgres://localhost/{YOUR POSTGIS DB}",
+  db: {
+    postgis: {
+      conn: "postgres://localhost/koop"
+    }
+  },
 
   port: process.env.PORT || 1337,
 
