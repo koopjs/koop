@@ -35,7 +35,9 @@ module.exports.bootstrap = function (cb) {
     }
 
     // set up an instance of peechee for saving files (downloads) 
-    sails.peechee = new Peechee( sails.config.peechee );
+    if ( sails.config.peechee && sails.config.peechee.type == 's3' ){
+      sails.peechee = new Peechee( sails.config.peechee );
+    }
   
     cb();
   }, 1000);

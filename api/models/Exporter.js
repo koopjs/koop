@@ -40,7 +40,7 @@ exports.exportToFormat = function( format, key, geojson, callback ){
         callback( err, null );
       } else {
         // push the downloaded file up to s3
-        if (sails.peechee.type == 's3'){ 
+        if (sails.peechee && sails.peechee.type == 's3'){ 
           fs.readFile(file, function (err, data) {
             if ( format == 'zip' || format == 'gpkg' ){
               data = new Buffer(data, 'binary').toString('base64');
