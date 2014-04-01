@@ -29,7 +29,7 @@
     "bunyan": "~0.22.1",
     "async": "~0.2.10",
     "pg": "~2.11.1",
-    "peechee": "0.0.5"
+    "peechee": "0.0.6"
   },
   "devDependencies": {
     "grunt": "0.4.x",
