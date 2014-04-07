@@ -77,12 +77,12 @@ Controller.getRepo = function(req, res){
     var _send = function( err, data ){
       var len = data.length;
       var allTopojson = [];
-      /*var processTopojson = function( topology ){
+      var processTopojson = function( topology ){
         allTopojson.push(topology);
         if ( allTopojson.length == len ) {
-          res.json( allTopojson );
+          res.json( allTopojson[0] );
         }
-      };*/
+      };
 
       if ( err ){
         res.json( err, 500 );
