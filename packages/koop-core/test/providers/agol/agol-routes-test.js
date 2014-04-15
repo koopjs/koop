@@ -156,9 +156,9 @@ describe('FeatureService Proxy Provider', function(){
       });
 
       it('should return 200 when a when accessing a feature service w/more than 1000', function(done) {
-          agent.get('http://localhost:1337/agol/arcgis/1488f3c05c2b4647b2a5acefe806c066/3')
+          agent.get('http://localhost:1337/agol/arcgis/5eb31a7a8a594396965d9965465321c9')
               .end( function( err, res ) {
-                res.should.have.status( 200 );
+                res.should.not.have.status( 500 );
                 return done();
               });
       });
