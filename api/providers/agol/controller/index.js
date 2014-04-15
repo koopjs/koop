@@ -4,6 +4,7 @@ var request = require('request'),
   extend = require('node.extend'),
   sm = require('sphericalmercator'),
   merc = new sm({size:256}),
+  crypto = require('crypto'),
   fs = require('fs'),
   base = require('../../base/controller.js');
 
@@ -92,17 +93,19 @@ var Controller = extend({
       });  
     }; 
 
-    // if we have a layer then append it to the query params 
-    if ( req.params.layer ) {
-      req.query.layer = req.params.layer;
-    }
-
     // check format for exporting data
     if ( req.params.format ){
-      // build the file key and look for the file 
-      //var key = [req.params.id, req.params.item, parseInt(req.query.layer) || 0 ].join(':');
-      var key = [ 'agol', req.params.item, parseInt(req.query.layer) || 0 ].join(':');
-      var fileName = [sails.config.data_dir + 'files', key, key + '.' + req.params.format].join('/');
+      // build the file key as an MD5 hash that's a join on the paams and look for the file 
+      var toHash = req.params.item + '_' + ( req.params.layer || 0 ) + JSON.stringify( req.query );
+      var key = crypto.createHash('md5').update(toHash).digest('hex');
+      console.log(toHash, key);
+      
+      var fileName = [sails.config.data_dir + 'files', agol+item, key + '.' + req.params.format].join('/');
+
+      // if we have a layer then append it to the query params 
+      if ( req.params.layer ) {
+        req.query.layer = req.params.layer;
+      }
 
       if (fs.existsSync( fileName )){
         res.sendfile( fileName );
