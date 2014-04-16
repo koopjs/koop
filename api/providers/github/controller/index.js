@@ -2,6 +2,7 @@ var sm = require('sphericalmercator'),
   extend = require('node.extend'),
   base = require('../../base/controller.js'),
   merc = new sm({size:256}),
+  crypto = require('crypto'),
   fs = require('fs');
 
 // inherit from base controller
@@ -94,13 +95,17 @@ Controller.getRepo = function(req, res){
             });
           });
         } else if ( req.params.format ) {
-          var key = ['github', req.params.user, req.params.params, req.params.file].join(':');
-          var fileName = [sails.config.data_dir + 'files', key, key + '.' + req.params.format].join('/');
+          var dir = ['github', req.params.user, req.params.repo, req.params.file].join(':');
+          // build the file key as an MD5 hash that's a join on the paams and look for the file 
+          var toHash = JSON.stringify( req.params ) + JSON.stringify( req.query );
+          var key = crypto.createHash('md5').update( toHash ).digest('hex');
+
+          var fileName = [sails.config.data_dir + 'files', dir, key + '.' + req.params.format].join('/');
 
           if (fs.existsSync( fileName )){
             res.sendfile( fileName );
           } else {
-            Exporter.exportToFormat( req.params.format, key, key, data[0], function(err, file){
+            Exporter.exportToFormat( req.params.format, dir, key, data[0], function(err, file){
               if (err){
                 res.send(err, 500);
               } else {

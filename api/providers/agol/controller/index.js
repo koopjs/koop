@@ -22,7 +22,7 @@ var Controller = extend({
         } else {
           res.json({ 'serviceId': id });
         }
-    });
+      });
     }
   },
 
@@ -145,6 +145,10 @@ var Controller = extend({
       }
 
     } else {
+      // if we have a layer then append it to the query params 
+      if ( req.params.layer ) {
+        req.query.layer = req.params.layer;
+      }
       // get the esri json data for the service
       _get(req.params.id, req.params.item, req.query, function( err, itemJson ){
           if (err) {

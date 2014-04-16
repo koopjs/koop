@@ -1,5 +1,6 @@
 var extend = require('node.extend'),
   fs = require('fs'),
+  crypto = require('crypto'),
   base = require('../../base/controller.js');
 
 
@@ -36,8 +37,12 @@ var Controller = extend({
              // res.json( topology );  
             //});
           } else if ( req.params.format ) {
-            var key = ['gist', req.params.id ].join(':');
-            var fileName = [sails.config.data_dir + 'files', key, key + '.' + req.params.format].join('/');
+            var dir = ['gist', req.params.id ].join(':');
+            // build the file key as an MD5 hash that's a join on the paams and look for the file 
+            var toHash = JSON.stringify( req.params ) + JSON.stringify( req.query );
+            var key = crypto.createHash('md5').update( toHash ).digest('hex');
+
+            var fileName = [sails.config.data_dir + 'files', dir, key + '.' + req.params.format].join('/');
 
             if (fs.existsSync( fileName )){
               res.sendfile( fileName );
