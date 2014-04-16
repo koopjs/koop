@@ -111,7 +111,7 @@ var Controller = extend({
       
       var fileName = [sails.config.data_dir + 'files', dir, key + '.' + req.params.format].join('/');
       
-      //console.log(toHash, key);
+      console.log( fileName );
 
       // if we have a layer then append it to the query params 
       if ( req.params.layer ) {

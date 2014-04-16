@@ -101,6 +101,7 @@ Controller.getRepo = function(req, res){
           var key = crypto.createHash('md5').update( toHash ).digest('hex');
 
           var fileName = [sails.config.data_dir + 'files', dir, key + '.' + req.params.format].join('/');
+          console.log(fileName)
 
           if (fs.existsSync( fileName )){
             res.sendfile( fileName );
