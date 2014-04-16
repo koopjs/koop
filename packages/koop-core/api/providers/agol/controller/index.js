@@ -107,12 +107,10 @@ var Controller = extend({
       var key = crypto.createHash('md5').update(toHash).digest('hex');
 
       // use the item as the file dir so we can organize exports by id
-      var dir = req.params.item;
+      var dir = req.params.item + '_' + ( req.params.layer || 0 );
       
       var fileName = [sails.config.data_dir + 'files', dir, key + '.' + req.params.format].join('/');
       
-      console.log( fileName );
-
       // if we have a layer then append it to the query params 
       if ( req.params.layer ) {
         req.query.layer = req.params.layer;
