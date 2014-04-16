@@ -2,7 +2,7 @@
 // take in a format, file key, geojson, and callback
 var fs = require('node-fs');
  
-exports.exportToFormat = function( format, key, geojson, callback ){
+exports.exportToFormat = function( format, dir, key, geojson, callback ){
 
     // executes OGR
     var _callOgr = function(inFile, outFile, callback){
@@ -64,7 +64,7 @@ exports.exportToFormat = function( format, key, geojson, callback ){
 
     // create the files for out output
     // we always create a json file, then use it to convert to a file
-    var path = [sails.config.data_dir + 'files', key].join('/');
+    var path = [sails.config.data_dir + 'files', dir].join('/');
     var base = path + '/' + key,
       jsonFile = base + '.json';
       newFile = base + '.' + format;

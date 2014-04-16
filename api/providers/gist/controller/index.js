@@ -42,7 +42,7 @@ var Controller = extend({
             if (fs.existsSync( fileName )){
               res.sendfile( fileName );
             } else {
-              Exporter.exportToFormat( req.params.format, key, data[0], function(err, file){
+              Exporter.exportToFormat( req.params.format, key, key, data[0], function(err, file){
                 if (err){
                   res.send(err, 500);
                 } else {
