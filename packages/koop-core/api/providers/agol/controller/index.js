@@ -5,6 +5,7 @@ var request = require('request'),
   sm = require('sphericalmercator'),
   merc = new sm({size:256}),
   crypto = require('crypto'),
+  _ = require('lodash'),
   fs = require('fs'),
   base = require('../../base/controller.js');
 
@@ -95,12 +96,22 @@ var Controller = extend({
 
     // check format for exporting data
     if ( req.params.format ){
+      // sort the req.query before we hash so we are consistent 
+      var sorted_query = {};
+      _(req.query).keys().sort().each(function (key) {
+        sorted_query[key] = req.query[key];
+      });
+
       // build the file key as an MD5 hash that's a join on the paams and look for the file 
-      var toHash = req.params.item + '_' + ( req.params.layer || 0 ) + JSON.stringify( req.query );
+      var toHash = req.params.item + '_' + ( req.params.layer || 0 ) + JSON.stringify( sorted_query );
       var key = crypto.createHash('md5').update(toHash).digest('hex');
-      console.log(toHash, key);
+
+      // use the item as the file dir so we can organize exports by id
+      var dir = req.params.item;
       
-      var fileName = [sails.config.data_dir + 'files', agol+item, key + '.' + req.params.format].join('/');
+      var fileName = [sails.config.data_dir + 'files', dir, key + '.' + req.params.format].join('/');
+      
+      //console.log(toHash, key);
 
       // if we have a layer then append it to the query params 
       if ( req.params.layer ) {
@@ -122,7 +133,7 @@ var Controller = extend({
           } else if ( !itemJson.data[0].features.length ){
             res.send( 'No features exist for the requested FeatureService layer', 500 );
           } else {
-            Exporter.exportToFormat( req.params.format, key, itemJson.data[0], function(err, result){
+            Exporter.exportToFormat( req.params.format, dir, key, itemJson.data[0], function(err, result){
               if (err) {
                 res.send( err, 500 );
               } else {
