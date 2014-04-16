@@ -51,10 +51,10 @@ var AGOL = function(){
       if ( err ){
         callback(err, null);
       } else {
-        if (itemJson.type == 'Feature Collection'){
+        if ( itemJson.type == 'Feature Collection' ){
           self[ itemJson.type.replace(' ', '') ]( host + self.agol_path, itemId, itemJson, options, callback );
         } else if ( itemJson.type == 'Feature Service' || itemJson.type == 'Map Service' ) {
-          self[ 'Service' ]( host + self.agol_path, itemId, itemJson, options, callback );
+          self.Service( host + self.agol_path, itemId, itemJson, options, callback );
         } else {
           callback('Requested Item must be a Feature Collection', null);
         }
@@ -97,7 +97,6 @@ var AGOL = function(){
     } else {
       Cache.get( 'agol', id, options, function(err, entry ){
         if ( err ){
-          //sails.config.log.info('AGOL request not found in cache, retrieving...');
           // get the ids only
           var idUrl = itemJson.url + '/' + (options.layer || 0) + '/query?where=1=1&returnIdsOnly=true&returnCountOnly=true&f=json';
 
