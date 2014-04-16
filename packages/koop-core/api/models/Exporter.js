@@ -45,7 +45,7 @@ exports.exportToFormat = function( format, dir, key, geojson, callback ){
             if ( format == 'zip' || format == 'gpkg' ){
               data = new Buffer(data, 'binary').toString('base64');
             }
-            sails.peechee.write(data, key, key+'.'+format, function(err,res){
+            sails.peechee.write(data, dir, key+'.'+format, function(err,res){
               callback( null, file );
             })
           });
