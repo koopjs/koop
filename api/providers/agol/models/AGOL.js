@@ -181,21 +181,34 @@ var AGOL = function(){
                         itemJson.koop_status = 'processing';
                         callback(null, itemJson);
 
-                        // logic for paging through the feature service
                         var maxCount = parseInt(serviceInfo.maxRecordCount),
-                          nPages = Math.ceil(idJson.count / maxCount),
                           pageRequests;
 
                         // build legit offset based page requests 
-                        if (serviceInfo.advancedQueryCapabilities.supportsPagination){
+                        if (!serviceInfo.advancedQueryCapabilities.supportsPagination){
+
+                          var nPages = Math.ceil(idJson.count / maxCount);
                           pageRequests = self.buildOffsetPages( nPages, itemJson.url, maxCount, options );
+
                         } else {
                           // build where clause based pages 
-                          pageRequests = self.buildObjectIDPages( nPages, itemJson.url, maxCount, options ); 
+                          var statsUrl = self.buildStatsUrl( itemJson.url, ( options.layer || 0 ), serviceInfo.objectIdField );
+
+                          request.get( statsUrl, function( err, res ){
+                            var statsJson = JSON.parse(res.body);
+                            pageRequests = self.buildObjectIDPages( 
+                              itemJson.url, 
+                              statsJson.features[0].attributes.min, 
+                              statsJson.features[0].attributes.max, 
+                              maxCount, 
+                              options 
+                            ); 
+                          });
+
                         }
-                        console.log('requests', pageRequests[0], pageRequests.length);
+
+                        // queuse up the requests for each page 
                         self.requestQueue(idJson.count, pageRequests, id, itemJson, (options.layer || 0), function(err,data){
-                          console.log('and.... we\'re done');
                           Tasker.taskQueue.push( {
                             key: [ 'agol', id ].join(':'), 
                             options: options 
@@ -246,17 +259,20 @@ var AGOL = function(){
 
 
   //build object id query based page requests 
-  this.buildObjectIDPages = function( pages, url, max, options ){
+  this.buildObjectIDPages = function( url, min, max, maxCount, options ){
     var reqs = [], 
       pageMax;
+
+    var pages = Math.ceil(max / maxCount);
+
     for (i=1; i < pages+1; i++){
-      pageMax = i*max;
-      where = 'objectId<'+pageMax+'+AND+'+ 'objectId>='+((pageMax-max)+1);
-      url = url + '/' + (options.layer || 0) + '/query?outSR=4326&where='+where+'&f=json&outFields=*';
+      pageMax = i*maxCount;
+      where = 'objectId<=' + pageMax + '+AND+' + 'objectId>=' + ((pageMax-maxCount)+1);
+      pageUrl = url + '/' + (options.layer || 0) + '/query?outSR=4326&where='+where+'&f=json&outFields=*';
       if ( options.geometry ){
-        url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
+        pageUrl += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
       }
-      reqs.push({req: url});
+      reqs.push({req: pageUrl});
     }
 
     return reqs;
@@ -298,13 +314,13 @@ var AGOL = function(){
     // concurrent queue for feature pages 
     var q = async.queue(function (task, callback) {
       // make a request for a page 
-      console.log('get page', i++);
+      //console.log('get page', i++);
       request.get(task.req, function(err, data){
         try {
           var json = JSON.parse(data.body);
           _collect(json, callback);
         } catch(e){
-          console.log('back', task.req, data.body, e);
+          console.log('failed to parse json', task.req, data.body, e);
         }
       });
     }, 4);
@@ -315,12 +331,18 @@ var AGOL = function(){
   };
 
   // Gets the feature service info 
-  this.getFeatureServiceInfo = function(url, layer, callback){
+  this.getFeatureServiceInfo = function( url, layer, callback ){
     request.get( url +'/'+ layer + '?f=json', function( err, res ){
       var json = JSON.parse( res.body );
       callback( err, json );
     });
-  }
+  };
+
+  this.buildStatsUrl = function( url, layer, field ){
+    var json = [{"statisticType":"min","onStatisticField":field,"outStatisticFieldName":"min"},
+      {"statisticType":"max","onStatisticField":field,"outStatisticFieldName":"max"}];
+    return url+'/'+layer+'/query?f=json&outStatistics='+JSON.stringify(json);
+  };
 
 };
   
