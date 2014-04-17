@@ -4,7 +4,8 @@ var log = function(val){
   }
 };
 
-exports.checkTime = (60*60*1000); // 60 mins
+//exports.checkTime = (60*60*1000*24); // 24 hours
+exports.checkTime = (60*1*1000); // 1 mins
 
 exports.insert = function( type, key, data, layerId, callback ){
   Cache.db.insert( type+':'+key, data, layerId, function(err, success){
@@ -29,7 +30,7 @@ exports.process = function( type, key, data, callback ){
     Cache.db.timer.get( type+':'+key+':timer', function( error, timer){
       if ( timer ){
         // got a timer, therefore we are good and just return
-        //console.log('Cache timer exists, not checking for updates', key);
+        console.log('Cache timer exists, not checking for updates', key);
         callback( null, data );
       } else {
         // expired, hit the API to check the latest sha
@@ -41,7 +42,6 @@ exports.process = function( type, key, data, callback ){
               // cache returned true, return current data
               //console.log('Setting a timer', key);
               Cache.db.timer.set( type+':'+key+':timer', 3600000, function( error, timer){
-                console.log(error, timer)
                 callback( null, data );
               });
             } else {
