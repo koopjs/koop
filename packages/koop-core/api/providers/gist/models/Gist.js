@@ -36,7 +36,7 @@ exports.find = function( id, options, callback ){
 
 // compares the updated_at timestamp on the cached data and the hosted data
 // this method name is special reserved name that will get called by the cache model
-exports.checkCache = function(id, data, callback){
+exports.checkCache = function(id, data, options, callback){
   var json = data;
   Geohub.gistSha(id, sails.config.github_token, function(err, sha){
     if ( sha == json[0].updated_at ){

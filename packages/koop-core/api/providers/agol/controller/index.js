@@ -16,7 +16,7 @@ var Controller = extend({
     if ( !req.body.host ){
       res.send('Must provide a host to register:', 500); 
     } else { 
-      AGOL.register( req.body.id, req.body.host, function(err, id){
+      agol.register( req.body.id, req.body.host, function(err, id){
         if (err) {
           res.send( err, 500);
         } else {
@@ -27,7 +27,7 @@ var Controller = extend({
   },
 
   list: function(req, res){
-    AGOL.find(null, function(err, data){
+    agol.find(null, function(err, data){
       if (err) {
         res.send( err, 500);
       } else {
@@ -37,7 +37,7 @@ var Controller = extend({
   }, 
 
   find: function(req, res){
-    AGOL.find(req.params.id, function(err, data){
+    agol.find(req.params.id, function(err, data){
       if (err) {
         res.send( err, 500);
       } else {
@@ -50,12 +50,12 @@ var Controller = extend({
     if (req.params.format){
       Controller.findItemData(req, res);
     } else {
-      AGOL.find(req.params.id, function(err, data){
+      agol.find(req.params.id, function(err, data){
         if (err) {
           res.send( err, 500);
         } else {
           // Get the item 
-          AGOL.getItem( data.host, req.params.item, req.query, function(error, itemJson){
+          agol.getItem( data.host, req.params.item, req.query, function(error, itemJson){
             if (error) {
               res.send( error, 500);
             } else { 
@@ -69,7 +69,7 @@ var Controller = extend({
 
   findItemData: function(req, res){
     var _get = function(id, item, options, callback){
-       AGOL.find( id, function( err, data ){
+       agol.find( id, function( err, data ){
         if (err) {
           callback(err, null);
         } else {
@@ -77,9 +77,11 @@ var Controller = extend({
           if ( !parseInt(options.layer) ){
             options.layer = 0;
           }
-          AGOL.getItemData( data.host, item, options, function(error, itemJson){
+
+          agol.getItemData( data.host, item, options, function(error, itemJson){
             if (error) {
               callback( error, null);
+            // if we have status return right away
             } else if ( itemJson.koop_status ) {
               // return w/202  
               res.json( { status: 'processing' }, 202);
@@ -93,6 +95,10 @@ var Controller = extend({
         }
       });  
     }; 
+
+    // CHECK the time since our last cache entry 
+    // if > 24 hours since; clear cache and wipe files 
+    // else move on 
 
     // check format for exporting data
     if ( req.params.format ){
@@ -162,7 +168,7 @@ var Controller = extend({
     if ( !req.params.id ){
       res.send( 'Must specify a service id', 500 );
     } else { 
-      AGOL.remove(req.params.id, function(err, data){
+      agol.remove(req.params.id, function(err, data){
         if (err) {
           res.send( err, 500);
         } else {
@@ -180,12 +186,12 @@ var Controller = extend({
       req.query.layer = 0;
     }
 
-    AGOL.find(req.params.id, function(err, data){
+    agol.find(req.params.id, function(err, data){
       if (err) {
         res.send( err, 500);
       } else {
         // Get the item 
-        AGOL.getItemData( data.host, req.params.item, req.query, function(error, itemJson){
+        agol.getItemData( data.host, req.params.item, req.query, function(error, itemJson){
           if (error) {
             res.send( error, 500);
           } else {
@@ -205,7 +211,7 @@ var Controller = extend({
 
   thumbnail: function(req, res){
 
-     AGOL.find(req.params.id, function(err, data){
+     agol.find(req.params.id, function(err, data){
       if (err) {
         res.send( err, 500);
       } else {
@@ -229,7 +235,7 @@ var Controller = extend({
           }
 
           // Get the item 
-          AGOL.getItemData( data.host, req.params.item, req.query, function(error, itemJson){
+          agol.getItemData( data.host, req.params.item, req.query, function(error, itemJson){
             if (error) {
               res.send( error, 500);
             } else {
@@ -310,7 +316,7 @@ var Controller = extend({
 
     if ( !fs.existsSync( file ) ) {
       sails.config.log.info('NO tile in cache, go get the data', file);
-      AGOL.find(req.params.id, function(err, data){
+      agol.find(req.params.id, function(err, data){
         if (err) {
           res.send( err, 500);
         } else {
@@ -319,7 +325,7 @@ var Controller = extend({
             req.query.layer = req.params.layer;
           }
           // Get the item
-          AGOL.getItemData( data.host, req.params.item, req.query, function(error, itemJson){
+          agol.getItemData( data.host, req.params.item, req.query, function(error, itemJson){
             if (error) {
               res.send( error, 500);
             } else {

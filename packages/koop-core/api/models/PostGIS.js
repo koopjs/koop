@@ -19,7 +19,7 @@ module.exports = {
         //sails.config.log.info('Connected to postgres db for storage', conn);
         // creates table only if they dont exist
         self._createTable(self.infoTable, "( id varchar(255) PRIMARY KEY, info JSON)");
-        self._createTable(self.timerTable, "( id varchar(255) PRIMARY KEY, expires timestamp)");
+        self._createTable(self.timerTable, "( id varchar(255) PRIMARY KEY, expires varchar(25))");
       }
     });
     return this; 
@@ -129,7 +129,7 @@ module.exports = {
               }]);
             }
           });
-      }
+        }
     });
   },
 
@@ -143,6 +143,7 @@ module.exports = {
       
       info.name = geojson.name ;
       info.updated_at = geojson.updated_at;
+      info.expires_at = geojson.expires_at;
       info.status = geojson.status;
       info.format = geojson.format;
       info.sha = geojson.sha;
@@ -266,10 +267,10 @@ module.exports = {
 
   timer: {
     set: function(key, expires, callback){
-      var now = new Date().getTime();
-      var expires_at = new Date( now + expires );
+      var now = new Date();
+      var expires_at = new Date( now.getTime() + expires );
       PostGIS._query('delete from "'+ PostGIS.timerTable +'" WHERE id=\''+key+"\'", function(err,res){
-        PostGIS._query('insert into "'+ PostGIS.timerTable +'" (id, expires) VALUES (\''+key+'\', \''+expires_at.toUTCString()+'\')', function(err, res){
+        PostGIS._query('insert into "'+ PostGIS.timerTable +'" (id, expires) VALUES (\''+key+'\', \''+expires_at.getTime()+'\')', function(err, res){
           callback( err, res);
         });
       });
@@ -279,8 +280,7 @@ module.exports = {
         if (err || !res || !res.rows || !res.rows.length ){
           callback( err, null);
         } else {
-          
-          if ( new Date().getTime() < new Date(res.rows[0].expires).getTime()){
+          if ( new Date().getTime() < parseInt( res.rows[0].expires )){
             callback( err, res.rows[0]);
           } else {
             callback( err, null);

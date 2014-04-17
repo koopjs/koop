@@ -92,7 +92,7 @@ var Socrata = function(){
 
   // compares the sha on the cached data and the hosted data
   // this method name is special reserved name that will get called by the cache model
-  this.checkCache = function(key, data, callback){
+  this.checkCache = function(key, data, options, callback){
     var self = this;
     var parts = key.split('::');
     url = parts[0] + this.socrata_path + parts[1] + '.json';
@@ -104,14 +104,14 @@ var Socrata = function(){
         if (err) {
           callback( err, null );
         } else {
-           var types = JSON.parse( data.headers['x-soda2-types'] );
-              fields = JSON.parse( data.headers['x-soda2-fields'] );
-            var locationField;
-            types.forEach(function(t,i){
-              if (t == 'location'){
-                locationField = fields[i];
-              }
-            });
+          var types = JSON.parse( data.headers['x-soda2-types'] );
+          var fields = JSON.parse( data.headers['x-soda2-fields'] );
+          var locationField;
+          types.forEach(function(t,i){
+            if (t == 'location'){
+              locationField = fields[i];
+            }
+          });
           self.toGeojson( JSON.parse( data.body ), locationField, function( error, geojson ){
             geojson.updated_at = new Date(data.headers['last-modified']).getTime();
             geojson.name = parts[1];
