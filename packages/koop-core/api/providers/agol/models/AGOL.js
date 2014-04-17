@@ -96,7 +96,7 @@ var AGOL = function(){
       callback('Missing url parameter for Feature Service Item', null);
     } else {
       Cache.get( 'agol', id, options, function(err, entry ){
-        if ( !err ){
+        if ( err ){
           // get the ids only
           var idUrl = itemJson.url + '/' + (options.layer || 0) + '/query?where=1=1&returnIdsOnly=true&returnCountOnly=true&f=json';
 
@@ -185,7 +185,7 @@ var AGOL = function(){
                           pageRequests;
 
                         // build legit offset based page requests 
-                        if (!serviceInfo.advancedQueryCapabilities.supportsPagination){
+                        if ( serviceInfo.advancedQueryCapabilities.supportsPagination ){
 
                           var nPages = Math.ceil(idJson.count / maxCount);
                           pageRequests = self.buildOffsetPages( nPages, itemJson.url, maxCount, options );
