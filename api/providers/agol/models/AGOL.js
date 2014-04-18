@@ -324,7 +324,6 @@ var AGOL = function(){
     // aggregate responses into one json and call done we have all of them 
     var _collect = function(json, cb){
       if ( json.error ){
-        console.log(json.error)
         done( json.error.details[0], null);
       } else {
 
