@@ -27,7 +27,7 @@ exports.insertPartial = function( type, key, data, layerId, callback ){
 exports.process = function( type, key, data, options, callback ){
   var self = this;
   // timing at which we'll check the validity of the cache 
-  var checkTime = (30*60*1000); // 30 mins 
+  var checkTime = (30*1000); // 30 mins 
 
   if ( !data.length ){
     callback( 'Not found', null);
@@ -47,13 +47,14 @@ exports.process = function( type, key, data, options, callback ){
             if ( !success ){
               // false is good -> reset timer and return data
               // cache returned true, return current data
+              console.log('Set new timer 1', timerKey);
               Cache.db.timer.set( timerKey, checkTime, function( error, timer){
                 callback( null, data );
               });
             } else {
               // we need to remove and save new data 
               self.remove(type, key, options, function(){
-                self.insert(type, key, data, 0, function(err, res){
+                self.insert(type, key, data, (options.layer || 0), function(err, res){
                   Cache.db.timer.set( timerKey, checkTime, function( error, timer){
                     callback( err, success );
                   });

@@ -3,6 +3,10 @@ var request = require('request'),
 
 var AGOL = function(){
 
+  // how to long to persist the cache of data 
+  // after which data will be dropped and re-fetched
+  this.cacheLife = (30*1000);  
+
   // adds a service to the Cache.db
   // needs a host, generates an id 
   this.register = function( id, host, callback ){
@@ -55,13 +59,33 @@ var AGOL = function(){
         // put host in option so our cacheCheck has ref to it 
         options.host = host;
 
-        if ( itemJson.type == 'Feature Collection' ){
-          self.getFeatureCollection( host + self.agol_path, itemId, itemJson, options, callback );
-        } else if ( itemJson.type == 'Feature Service' || itemJson.type == 'Map Service' ) {
-          self.getFeatureService( itemId, itemJson, options, callback );
-        } else {
-          callback('Requested Item must be a Feature Collection', null);
-        }
+        var qKey = ['agol', itemId, (options.layer || 0)].join(':');
+
+        Cache.getInfo( qKey, function(err, info){
+
+          var is_expired = ( new Date().getTime() >= info.expires_at );
+          console.log('is expired?', is_expired, new Date(), info.expires_at);
+
+          if ( is_expired ) {
+            Cache.remove('agol', itemId, options, function(err, res){
+              if ( itemJson.type == 'Feature Collection' ){
+                self.getFeatureCollection( host + self.agol_path, itemId, itemJson, options, callback );
+              } else if ( itemJson.type == 'Feature Service' || itemJson.type == 'Map Service' ) {
+                self.getFeatureService( itemId, itemJson, options, callback );
+              } else {
+                callback('Requested Item must be a Feature Collection', null);
+              }
+            });
+          } else {
+            if ( itemJson.type == 'Feature Collection' ){
+              self.getFeatureCollection( host + self.agol_path, itemId, itemJson, options, callback );
+            } else if ( itemJson.type == 'Feature Service' || itemJson.type == 'Map Service' ) {
+              self.getFeatureService( itemId, itemJson, options, callback );
+            } else {
+              callback('Requested Item must be a Feature Collection', null);
+            }
+          }
+        });
 
       }
     });
@@ -100,17 +124,16 @@ var AGOL = function(){
     if ( !itemJson.url ){
       callback( 'Missing url parameter for Feature Service Item', null );
     } else {
+
       Cache.get( 'agol', id, options, function(err, entry ){
         if ( err ){
           // no data in the cache; request new data 
           self.makeFeatureServiceRequest( id, itemJson, options, callback );
  
         } else if ( entry && entry[0] && entry[0].status == 'processing' ){
-
           itemJson.data = [{features:[]}];
           itemJson.koop_status = 'processing';
           callback(null, itemJson);
-
         } else {
           itemJson.data = entry;
           callback( null, itemJson );
@@ -121,6 +144,7 @@ var AGOL = function(){
 
 
   this.makeFeatureServiceRequest = function( id, itemJson, options, callback ){
+    var self = this;
     // get the ids only
     var idUrl = itemJson.url + '/' + (options.layer || 0) + '/query?where=1=1&returnIdsOnly=true&returnCountOnly=true&f=json';
 
@@ -150,7 +174,7 @@ var AGOL = function(){
             self.singlePageFeatureService( id, itemJson, options, callback );
           // We HAVE to page 
           } else {
-            self.pageFeatureService( id, itemJson, options, callback );
+            self.pageFeatureService( id, itemJson, idJson.count, options, callback );
           }
         }
       } catch (e) {
@@ -163,6 +187,7 @@ var AGOL = function(){
 
   // make a request to a single page feature service 
   this.singlePageFeatureService = function( id, itemJson, options, callback ){
+    var self = this;
     // we can the data in one shot
     var url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where=1=1&f=json&outFields=*';
     if (options.geometry){
@@ -180,7 +205,7 @@ var AGOL = function(){
 
             geojson.name = itemJson.name;
             geojson.updated_at = itemJson.modified;
-            geojson.expires_at = new Date().getTime() + (24*60*1000);
+            geojson.expires_at = new Date().getTime() + self.cacheLife;
 
             // save the data 
             Cache.insert( 'agol', id, geojson, (options.layer || 0), function( err, success){
@@ -203,7 +228,7 @@ var AGOL = function(){
 
 
   // handles pagin over the feature service 
-  this.pageFeatureService = function( id, itemJson, options, callback ){
+  this.pageFeatureService = function( id, itemJson, count, options, callback ){
     var self = this;    
 
     // get the featureservice info 
@@ -211,9 +236,12 @@ var AGOL = function(){
       // creates the empty table
       Cache.remove('agol', id, {layer: (options.layer || 0)}, function(){
 
+        var expiration = new Date().getTime() + self.cacheLife;
+
         var info = {
           status: 'processing',
           updated_at: itemJson.modified,
+          expires_at: expiration,
           name: itemJson.name,
           features:[]
         };
@@ -222,11 +250,14 @@ var AGOL = function(){
           info.format = options.format;
         }
 
+        
         Cache.insert( 'agol', id, info, ( options.layer || 0 ), function( err, success ){
 
           // return, but continue on
-          itemJson.data = [{features:[]}];
+          itemJson.data = [{ features:[] }];
           itemJson.koop_status = 'processing';
+          itemJson.cache_save = false;
+          itemJson.expires_at = expiration;
           callback(null, itemJson);
 
           var maxCount = parseInt(serviceInfo.maxRecordCount),
@@ -235,7 +266,7 @@ var AGOL = function(){
           // build legit offset based page requests 
           if ( serviceInfo.advancedQueryCapabilities.supportsPagination ){
 
-            var nPages = Math.ceil(idJson.count / maxCount);
+            var nPages = Math.ceil(count / maxCount);
             pageRequests = self.buildOffsetPages( nPages, itemJson.url, maxCount, options );
 
           } else {
@@ -256,7 +287,8 @@ var AGOL = function(){
           }
 
           // queuse up the requests for each page 
-          self.requestQueue(idJson.count, pageRequests, id, itemJson, (options.layer || 0), function(err,data){
+          self.requestQueue( count, pageRequests, id, itemJson, (options.layer || 0), function(err,data){
+            console.log('...and done');
             Tasker.taskQueue.push( {
               key: [ 'agol', id ].join(':'),
               options: options
@@ -349,7 +381,7 @@ var AGOL = function(){
     // concurrent queue for feature pages 
     var q = async.queue(function (task, callback) {
       // make a request for a page 
-      //console.log('get page', i++);
+      console.log('get page', i++);
       request.get(task.req, function(err, data){
         try {
           var json = JSON.parse(data.body);
@@ -382,19 +414,20 @@ var AGOL = function(){
 
 
   // checks the age of the cache, if its older than 24 hours purges all known data 
-  this.checkCache = function(id, data, options, callback){
+  /*this.checkCache = function(id, data, options, callback){
     var self = this;
     var qKey = ['agol', id, (options.layer || 0)].join(':');
 
     Cache.getInfo( qKey, function(err, info){
 
       var is_expired = ( new Date().getTime() >= info.expires_at );
+      console.log('is expired?', is_expired, new Date(), info.expires_at);
 
       if ( is_expired ) { 
         // get new data 
         Cache.remove('agol', id, options, function(err, res){
           self.getItemData( options.host, id, options, function(err, itemJson){
-            callback(err, itemJson.data);
+            callback(err, itemJson);
           });
         });
         
@@ -402,7 +435,7 @@ var AGOL = function(){
         callback(err, is_expired);
       }
     });
-  };
+  };*/
 
 };
   
