@@ -151,6 +151,8 @@ module.exports = {
       var table = key+':'+layerId;
 
       self._createTable( table, self._buildSchemaFromFeature(), function(err, result){
+        console.log('PostGIS', table, err, result);
+
         // insert each feature
         if ( geojson.length ){
           geojson = geojson[0];
@@ -280,6 +282,7 @@ module.exports = {
         if (err || !res || !res.rows || !res.rows.length ){
           callback( err, null);
         } else {
+          console.log(new Date(), new Date(parseInt(res.rows[0].expires)))
           if ( new Date().getTime() < parseInt( res.rows[0].expires )){
             callback( err, res.rows[0]);
           } else {

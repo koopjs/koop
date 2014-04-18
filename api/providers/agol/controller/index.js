@@ -79,6 +79,7 @@ var Controller = extend({
           }
 
           agol.getItemData( data.host, item, options, function(error, itemJson){
+            //console.log('CONTROLLER', itemJson);
             if (error) {
               callback( error, null);
             // if we have status return right away
@@ -86,8 +87,9 @@ var Controller = extend({
               // return w/202  
               res.json( { status: 'processing' }, 202);
             } else {
-              if (itemJson.data[0].features.length > 1000){
-                itemJson.data[0].features = itemJson.data[0].features.splice(0,1000);
+              //console.log('sending features...', itemJson.data[0].features.length);
+              if ( itemJson.data[0].features.length > 1000){
+                itemJson.data[0].features = itemJson.data[0].features.splice(0,1);
               }
               callback( null, itemJson );
             }
