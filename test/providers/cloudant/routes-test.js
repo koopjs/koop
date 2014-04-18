@@ -3,7 +3,7 @@ var path = require('path');
 var superagent = require('superagent');
 
 var cloudantHost = 'https://normanb.cloudant.com';
-var resourceId = '_design/SpatialView/_geo/ski_areas';
+var resourceId = 'colorado_skiing/_design/SpatialView/_geo/ski_areas';
 
 before(function (done) {
   done();
@@ -69,7 +69,6 @@ describe('Cloudant Controller and Routes', function(){
       });
 
       it('should return 200 when accessing item data', function(done) {
-          
           agent.get('http://localhost:1337/cloudant/tester/'+resourceId )
               .end( function( err, res ) {
                 res.should.have.status( 200 );
@@ -90,7 +89,7 @@ describe('Cloudant Controller and Routes', function(){
       it('should return 200 when accessing item as a featureservice layer', function(done) {
           agent.get('http://localhost:1337/cloudant/tester/'+resourceId+'/FeatureServer/0')
               .end( function( err, res ) {
-                res.should.have.statxus( 200 );
+                res.should.have.status( 200 );
                 should.not.exist(err);
                 return done();
               });
