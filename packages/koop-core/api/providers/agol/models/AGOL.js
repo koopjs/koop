@@ -58,7 +58,7 @@ var AGOL = function(){
         if ( itemJson.type == 'Feature Collection' ){
           self.getFeatureCollection( host + self.agol_path, itemId, itemJson, options, callback );
         } else if ( itemJson.type == 'Feature Service' || itemJson.type == 'Map Service' ) {
-          self.getFeatureService( host + self.agol_path, itemId, itemJson, options, callback );
+          self.getFeatureService( itemId, itemJson, options, callback );
         } else {
           callback('Requested Item must be a Feature Collection', null);
         }
@@ -95,7 +95,7 @@ var AGOL = function(){
     });
   };
 
-  this.getFeatureService = function(base_url, id, itemJson, options, callback){
+  this.getFeatureService = function( id, itemJson, options, callback){
     var self = this;
     if ( !itemJson.url ){
       callback( 'Missing url parameter for Feature Service Item', null );
@@ -103,7 +103,7 @@ var AGOL = function(){
       Cache.get( 'agol', id, options, function(err, entry ){
         if ( err ){
           // no data in the cache; request new data 
-          self.makeFeatureServiceRequest(base_url, id, itemJson, options, callback );
+          self.makeFeatureServiceRequest( id, itemJson, options, callback );
  
         } else if ( entry && entry[0] && entry[0].status == 'processing' ){
 
@@ -120,7 +120,7 @@ var AGOL = function(){
   };
 
 
-  this.makeFeatureServiceRequest = function( base_url, id, itemJson, options, callback ){
+  this.makeFeatureServiceRequest = function( id, itemJson, options, callback ){
     // get the ids only
     var idUrl = itemJson.url + '/' + (options.layer || 0) + '/query?where=1=1&returnIdsOnly=true&returnCountOnly=true&f=json';
 
@@ -147,105 +147,10 @@ var AGOL = function(){
 
           // Count is low 
           } else if (idJson.count < 1000){
-
-            // we can the data in one shot
-            var url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where=1=1&f=json&outFields=*'; 
-            if (options.geometry){
-              url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
-            }
-            // get the features 
-            request.get(url, function(err, data ){
-              if (err) {
-                callback(err, null);
-              } else {
-                try {
-                  var json = {features: JSON.parse( data.body ).features};
-                  // convert to GeoJSON 
-                  GeoJSON.fromEsri( json, function(err, geojson){
-
-                    geojson.name = itemJson.name; 
-                    geojson.updated_at = itemJson.modified; 
-                    geojson.expires_at = new Date().getTime() + (24*60*1000); 
-
-                    // save the data 
-                    Cache.insert( 'agol', id, geojson, (options.layer || 0), function( err, success){
-                      if ( success ) {
-                        itemJson.data = [geojson];
-                        callback( null, itemJson );
-                      } else {
-                        callback( err, null );
-                      }
-                    });
-                  });
-                } catch (e){
-                  callback( 'Unable to parse Feature Service response', null );
-                }
-              }
-            });
-          
+            self.singlePageFeatureService( id, itemJson, options, callback );
           // We HAVE to page 
           } else {
-      
-            // get the featureservice info 
-            self.getFeatureServiceInfo(itemJson.url, ( options.layer || 0 ), function(err, serviceInfo){
-              // creates the empty table
-              Cache.remove('agol', id, {layer: (options.layer || 0)}, function(){
-
-                var info = {
-                  status: 'processing', 
-                  updated_at: itemJson.modified, 
-                  name: itemJson.name, 
-                  features:[]
-                };
-
-                if ( options.format ){
-                  info.format = options.format;
-                }
-
-                Cache.insert( 'agol', id, info, ( options.layer || 0 ), function( err, success ){
-
-                  // return, but continue on
-                  itemJson.data = [{features:[]}];
-                  itemJson.koop_status = 'processing';
-                  callback(null, itemJson);
-
-                  var maxCount = parseInt(serviceInfo.maxRecordCount),
-                    pageRequests;
-
-                  // build legit offset based page requests 
-                  if ( serviceInfo.advancedQueryCapabilities.supportsPagination ){
-
-                    var nPages = Math.ceil(idJson.count / maxCount);
-                    pageRequests = self.buildOffsetPages( nPages, itemJson.url, maxCount, options );
-
-                  } else {
-                    // build where clause based pages 
-                    var statsUrl = self.buildStatsUrl( itemJson.url, ( options.layer || 0 ), serviceInfo.objectIdField );
-
-                    request.get( statsUrl, function( err, res ){
-                      var statsJson = JSON.parse(res.body);
-                      pageRequests = self.buildObjectIDPages( 
-                        itemJson.url, 
-                        statsJson.features[0].attributes.min, 
-                        statsJson.features[0].attributes.max, 
-                        maxCount, 
-                        options 
-                      ); 
-                    });
-
-                  }
-
-                  // queuse up the requests for each page 
-                  self.requestQueue(idJson.count, pageRequests, id, itemJson, (options.layer || 0), function(err,data){
-                    Tasker.taskQueue.push( {
-                      key: [ 'agol', id ].join(':'), 
-                      options: options 
-                    }, function(){});
-                  });
-
-                });
-              });
-            });
+            self.pageFeatureService( id, itemJson, options, callback );
           }
         }
       } catch (e) {
@@ -253,6 +158,117 @@ var AGOL = function(){
       }
     });
   };
+
+
+
+  // make a request to a single page feature service 
+  this.singlePageFeatureService = function( id, itemJson, options, callback ){
+    // we can the data in one shot
+    var url = itemJson.url + '/' + (options.layer || 0) + '/query?outSR=4326&where=1=1&f=json&outFields=*';
+    if (options.geometry){
+      url += '&spatialRel=esriSpatialRelIntersects&geometry=' + JSON.stringify(options.geometry);
+    }
+    // get the features 
+    request.get(url, function(err, data ){
+      if (err) {
+        callback(err, null);
+      } else {
+        try {
+          var json = {features: JSON.parse( data.body ).features};
+          // convert to GeoJSON 
+          GeoJSON.fromEsri( json, function(err, geojson){
+
+            geojson.name = itemJson.name;
+            geojson.updated_at = itemJson.modified;
+            geojson.expires_at = new Date().getTime() + (24*60*1000);
+
+            // save the data 
+            Cache.insert( 'agol', id, geojson, (options.layer || 0), function( err, success){
+              if ( success ) {
+                itemJson.data = [geojson];
+                callback( null, itemJson );
+              } else {
+                callback( err, null );
+              }
+            });
+          });
+        } catch (e){
+          callback( 'Unable to parse Feature Service response', null );
+        }
+      }
+    });
+  };
+
+
+
+
+  // handles pagin over the feature service 
+  this.pageFeatureService = function( id, itemJson, options, callback ){
+    var self = this;    
+
+    // get the featureservice info 
+    self.getFeatureServiceInfo(itemJson.url, ( options.layer || 0 ), function(err, serviceInfo){
+      // creates the empty table
+      Cache.remove('agol', id, {layer: (options.layer || 0)}, function(){
+
+        var info = {
+          status: 'processing',
+          updated_at: itemJson.modified,
+          name: itemJson.name,
+          features:[]
+        };
+
+        if ( options.format ){
+          info.format = options.format;
+        }
+
+        Cache.insert( 'agol', id, info, ( options.layer || 0 ), function( err, success ){
+
+          // return, but continue on
+          itemJson.data = [{features:[]}];
+          itemJson.koop_status = 'processing';
+          callback(null, itemJson);
+
+          var maxCount = parseInt(serviceInfo.maxRecordCount),
+            pageRequests;
+
+          // build legit offset based page requests 
+          if ( serviceInfo.advancedQueryCapabilities.supportsPagination ){
+
+            var nPages = Math.ceil(idJson.count / maxCount);
+            pageRequests = self.buildOffsetPages( nPages, itemJson.url, maxCount, options );
+
+          } else {
+            // build where clause based pages 
+            var statsUrl = self.buildStatsUrl( itemJson.url, ( options.layer || 0 ), serviceInfo.objectIdField );
+
+            request.get( statsUrl, function( err, res ){
+              var statsJson = JSON.parse(res.body);
+              pageRequests = self.buildObjectIDPages(
+                itemJson.url,
+                statsJson.features[0].attributes.min,
+                statsJson.features[0].attributes.max,
+                maxCount,
+                options
+              );
+            });
+
+          }
+
+          // queuse up the requests for each page 
+          self.requestQueue(idJson.count, pageRequests, id, itemJson, (options.layer || 0), function(err,data){
+            Tasker.taskQueue.push( {
+              key: [ 'agol', id ].join(':'),
+              options: options
+            }, function(){});
+          });
+
+        });
+      });
+    });
+
+  };
+
 
 
   //build resultOffset based page requests 
@@ -276,6 +292,7 @@ var AGOL = function(){
   };
 
 
+
   //build object id query based page requests 
   this.buildObjectIDPages = function( url, min, max, maxCount, options ){
     var reqs = [], 
@@ -295,6 +312,7 @@ var AGOL = function(){
 
     return reqs;
   };
+
 
   // make requests for feature pages 
   // execute done when we have all features 
@@ -364,7 +382,7 @@ var AGOL = function(){
   };
 
 
-  // checks the age of the cache, if its older than 24 hours 
+  // checks the age of the cache, if its older than 24 hours purges all known data 
   this.checkCache = function(id, data, options, callback){
     var self = this;
     var qKey = ['agol', id, (options.layer || 0)].join(':');
