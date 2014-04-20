@@ -4,17 +4,12 @@
   "version": "0.1.0",
   "description": "an api for converting geojson data into Esri feature services",
   "dependencies": {
-    "grunt": "0.4.x",
-    "zeparser": "0.0.7",
-    "sails": "0.9.3",
-    "optimist": "~0.4.0",
-    "ejs": "0.8.4",
+    "express": "~4.0.0",
     "request": "~2.27.0",
     "terraformer": "1.0.3",
     "terraformer-arcgis-parser": "1.0.3",
     "terraformer-wkt-parser": "~1.0.0",
     "geohub": "0.3.0",
-    "underscore": "~1.5.1",
     "sql-parser": "~0.4.0",
     "include-all": "~0.1.1",
     "node-fs": "~0.1.7",
@@ -29,7 +24,13 @@
     "bunyan": "~0.22.1",
     "async": "~0.2.10",
     "pg": "~2.11.1",
-    "peechee": "0.0.6"
+    "peechee": "0.0.6",
+    "config": "~0.4.35",
+    "cors": "~2.2.0",
+    "response-time": "~1.0.0",
+    "yaml": "~0.2.3",
+    "ejs": "~1.0.0",
+    "body-parser": "1.0.2"
   },
   "devDependencies": {
     "grunt": "0.4.x",
@@ -44,8 +45,7 @@
     "sql-parser": "~0.4.0"
   },
   "scripts": {
-    "start": "node app.js",
-    "debug": "node debug app.js"
+    "start": "node server.js"
   },
   "main": "app.js",
   "repository": "http://github.com/Esri/koop.git",
