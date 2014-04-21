@@ -35,6 +35,7 @@ if (process.env.NODE_ENV === "development") {
   app.use(express.logger());
 }
 
+// handle POST requests 
 app.use(bodyParser());
 
 app.use(express.static(__dirname + "/public"));
@@ -42,9 +43,10 @@ app.use(express.static(__dirname + "/public"));
 // add koop middleware
 app.use(koop);
 
-app.listen(process.env.PORT || config.port,  function() {
+app.listen(process.env.PORT || config.server.port,  function() {
   console.log("Listening at http://%s:%d/", this.address().address, this.address().port);
 
+  // Start the Cache DB with the conn string from config
   if ( config.db.postgis ){
     Cache.db = PostGIS.connect( config.db.postgis.conn );
   } else {
@@ -53,13 +55,14 @@ app.listen(process.env.PORT || config.port,  function() {
 
   //config.defaultStyle = fs.readFileSync( __dirname + '/templates/renderers/style.mss', 'utf8' );
 
+  // A bunyan log is required for the async workers 
   config.log = new bunyan({
     'name': 'koop-log',
     streams: [{
       type: 'rotating-file',
       path: config.logfile,
-      period: '1d',   // daily rotation
-      count: 3        // keep 3 back copies
+      period: '1d',
+      count: 3
     }]
   });
 
