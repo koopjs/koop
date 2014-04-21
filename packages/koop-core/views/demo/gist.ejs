@@ -1,9 +1,0 @@
-<div id="map"></div>
-<script>
-  $(function(){
-    var mapDom = 'map';
-    $('#'+mapDom).css({ width:document.width, height: document.height });
-    var koop = koopMap( mapDom );
-    koop.add(location.origin + '/gist/' + <%= id %> + '/FeatureServer/0');
-  });
-</script>
