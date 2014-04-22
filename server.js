@@ -56,8 +56,6 @@ app.listen(process.env.PORT || config.server.port,  function() {
     Cache.db = Local;
   }
 
-  //config.defaultStyle = fs.readFileSync( __dirname + '/templates/renderers/style.mss', 'utf8' );
-
   // A bunyan log is required for the async workers 
   config.log = new bunyan({
     'name': 'koop-log',
