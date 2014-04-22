@@ -10,17 +10,20 @@ var cors = require("cors"),
     spawnasync = require('spawn-async'),
     bunyan = require('bunyan'),
     config = require("config"),
+    fs = require('fs'),
     bodyParser = require('body-parser'),
     responseTime = require("response-time"),
     koop = require('koop-server')(config);
 
 global['config'] = config;
 
-// Scan package for koop plugins and require them . 
-try { koop.register(require("koop-github")); } catch (e) {}
-try { koop.register(require("koop-gist")); } catch (e) {}
-try { koop.register(require("koop-socrata")); } catch (e) {}
-try { koop.register(require("koop-agol")); } catch (e) {}
+// Scan package for koop plugins and require them 
+var files = fs.readdirSync('node_modules');
+files.forEach(function(f){
+  if ( f.match(/koop-*.+/) ){
+    try { koop.register(require(f)); } catch (e) {}
+  }
+});
 
 var app = express();
 
@@ -38,12 +41,8 @@ if (process.env.NODE_ENV === "development") {
 // handle POST requests 
 app.use(bodyParser());
 
-//app.use(express.static(__dirname + "/public"));
-
 // add koop middleware
 app.use(koop);
-
-//console.log(koop);
 
 app.listen(process.env.PORT || config.server.port,  function() {
   console.log("Listening at http://%s:%d/", this.address().address, this.address().port);
