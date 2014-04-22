@@ -30,7 +30,8 @@
     "response-time": "~1.0.0",
     "yaml": "~0.2.3",
     "ejs": "~1.0.0",
-    "body-parser": "1.0.2"
+    "body-parser": "1.0.2",
+    "koop-server": "*"
   },
   "devDependencies": {
     "grunt": "0.4.x",
