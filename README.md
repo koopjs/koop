@@ -30,13 +30,13 @@ The following dependencies are needed in order to run Koop on your local machine
     ```npm install```
 
 ## Configuration 
-Koop uses a config called `/config/local.js` to setup its database connection and data directories for caching data. 
+Koop uses a series of config files in the ```/config``` directory to setup its database connection and data directories for caching data. 
 
-### NOTE: it is crucial that you make the appropriate edits to your config/local.js file so that the values match your environment.
+### NOTE: it is crucial that you make the appropriate edits to your config/default.yml file so that the values match your environment.
 
 1. copy the example config file
-    ```cp config/local.js.example config/local.js```
-2.  edit config/local.js for your environment.
+    ```cp config/default.yml.example config/default.yml```
+2.  edit config/default.yml for your environment.
 
 In particular you will need to:
 * Ensure that the specified logfile directory exists and you have write permissions on it.
@@ -50,19 +50,10 @@ Koop runs its own http server and will use port 1337 by default. You can start k
 ```grunt server``` 
 
 ### start the server with node:
-```node app.js```
+```node server.js```
 
 ### to run on a non default port 
-```PORT=9999 node app.js```
-
-## Tests 
-Currently the tests depend on a locally running instance of koop. Once you have koop running:
-
-1. install grunt if you dont have it
-    ```sudo npm install -g grunt-cli```
-2. run the tests 
-    ```grunt test```  
-
+```PORT=8080 node server.js```
 
 ## Demo + More Docs
 
@@ -76,8 +67,18 @@ Koop is now designed to expose 3rd party services as FeatureServices that are co
   * agol 
   * socrata 
 
-Each provider resides in ``api/providers/``
+Each provider resides in its own git repo (ie [koop-github](https://github.com/chelm/koop-github))
 
+To install a provider all you need to do is: 
+
+  ```npm install https://github.com/chelm/koop-github/tarball/master
+
+### Current Providers 
+
+* [koop-github](https://github.com/chelm/koop-github)
+* [koop-gist](https://github.com/chelm/koop-gist)
+* [koop-socrata](https://github.com/chelm/koop-socrata)
+* [koop-agol](https://github.com/chelm/koop-agol)
 
 ### Defining a new provider 
 Each provider defines custom routes, a controller, and a model. Each of these uses ``module.exports`` to export an object (common js modules).  Each is then fused into koop at start up time and becomes available within the server. 
@@ -152,7 +153,6 @@ Koop uses either a local cache or a MongoDB instance to store data so that it do
 * [ArcGIS Developers](http://developers.arcgis.com)
 * [ArcGIS REST Services](http://resources.arcgis.com/en/help/arcgis-rest-api/)
 * [twitter@esri](http://twitter.com/esri)
-* 
 
 ## Issues
 Find a bug or want to request a new feature?  Please let us know by submitting an issue.
@@ -163,7 +163,7 @@ Esri welcomes contributions from anyone and everyone. Please see our [guidelines
 ## Credit
 
 ## Licensing
-Copyright 2013 Esri
+Copyright 2014 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
