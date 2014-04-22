@@ -38,10 +38,12 @@ if (process.env.NODE_ENV === "development") {
 // handle POST requests 
 app.use(bodyParser());
 
-app.use(express.static(__dirname + "/public"));
+//app.use(express.static(__dirname + "/public"));
 
 // add koop middleware
 app.use(koop);
+
+//console.log(koop);
 
 app.listen(process.env.PORT || config.server.port,  function() {
   console.log("Listening at http://%s:%d/", this.address().address, this.address().port);
