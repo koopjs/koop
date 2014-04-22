@@ -41,6 +41,8 @@ if (process.env.NODE_ENV === "development") {
 // handle POST requests 
 app.use(bodyParser());
 
+app.use(express.static(__dirname + '/public'));
+
 // add koop middleware
 app.use(koop);
 
