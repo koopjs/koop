@@ -1,3 +1,17 @@
 # Default config
 server:
   port: 1337
+
+logfile: '/var/log/koop.log'
+
+# the local dir for storing tile files  
+data_dir: '/usr/local/koop/'
+  
+# for accessing github 
+github_token: 'XXXXXXXXXXXXXXXXXX'
+
+# the connection to your PostGIS enabled database 
+db: 
+  postgis: 
+    conn: "postgres://localhost/koopdev"
+
