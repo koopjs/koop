@@ -2,11 +2,3 @@
 server:
   port: 1337
 
-logfile: '/var/log/koop.log'
-data_dir: '/usr/local/koop/'
-github_token: '6c67e3477b6c08a2871d76b26db2b66a7b78f8a6'
-db: 
-  postgis: 
-    conn: "postgres://localhost/koopdev"
-  
-
