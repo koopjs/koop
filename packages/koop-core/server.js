@@ -44,7 +44,7 @@ app.use(bodyParser());
 app.use(express.static(__dirname + '/public'));
 
 // add koop middleware
-app.use(koop);
+app.use( koop );
 
 app.listen(process.env.PORT || config.server.port,  function() {
   console.log("Listening at http://%s:%d/", this.address().address, this.address().port);
