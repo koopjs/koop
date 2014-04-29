@@ -71,7 +71,7 @@ Each provider resides in its own git repo (ie [koop-github](https://github.com/c
 
 To install a provider all you need to do is: 
 
-  ```npm install https://github.com/chelm/koop-github/tarball/master
+  ```npm install https://github.com/chelm/koop-github/tarball/master```
 
 ### Current Providers 
 
