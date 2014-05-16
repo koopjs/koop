@@ -71,6 +71,7 @@ app.listen(process.env.PORT || config.server.port,  function() {
   config.worker = spawnasync.createWorker({'log': config.log});
 
   // set up an instance of peechee for saving files (downloads) 
+  global['peechee'] = {};
   if ( config.peechee && config.peechee.type == 's3' ){
     global['peechee'] = new Peechee( config.peechee );
   }
