@@ -31,7 +31,7 @@
     "yaml": "~0.2.3",
     "ejs": "~1.0.0",
     "body-parser": "1.0.2",
-    "koop-server": "*"
+    "koop-server": "https://github.com/Esri/koop-server/tarball/master"
   },
   "devDependencies": {
     "grunt": "0.4.x",
