@@ -31,6 +31,10 @@ app.disable("x-powered-by");
 app.use(responseTime());
 app.use(cors());
 
+app.post('/arcgis/rest/info', function(req, res){
+  res.send({},200);
+});
+
 app.set('view engine', 'ejs');
 app.set('view options', {layout: 'layout.ejs'});
 
