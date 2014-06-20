@@ -31,18 +31,6 @@
     "body-parser": "1.0.2",
     "koop-server": "https://github.com/Esri/koop-server/tarball/master"
   },
-  "devDependencies": {
-    "grunt": "0.4.x",
-    "grunt-mocha-test": "*",
-    "grunt-contrib-jshint": "0.3.x",
-    "mocha": "*",
-    "should": "*",
-    "superagent": "*",
-    "grunt-express-server": "~0.4.2",
-    "grunt-contrib-watch": "~0.5.1",
-    "underscore": "~1.5.1",
-    "sql-parser": "~0.4.0"
-  },
   "scripts": {
     "start": "node server.js"
   },
