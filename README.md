@@ -20,14 +20,6 @@ The following dependencies are needed in order to run Koop on your local machine
 3. install the node.js dependencies
     ```npm install```
 
-### If npm install fails trying to install node-canvas (on a mac)
-1. install xquartz - https://xquartz.macosforge.org/landing/
-2. install cairo
-    ```brew install cairo```
-3. Update the pkgconfig path
-    ```export PKG_CONFIG_PATH=/usr/X11/lib/pkgconfig```
-4. try again to install node.js dependencies
-    ```npm install```
 
 ## Configuration 
 Koop uses a series of config files in the ```/config``` directory to setup its database connection and data directories for caching data. 
