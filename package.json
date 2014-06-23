@@ -9,6 +9,8 @@
     "node-fs": "~0.1.7",
     "spawn-async": "0.0.1",
     "bunyan": "~0.22.1",
+    "terraformer-arcgis-parser": "1.0.3",
+    "terraformer-wkt-parser": "~1.0.0",
     "peechee": "0.0.6",
     "config": "~0.4.35",
     "cors": "~2.2.0",
@@ -16,7 +18,8 @@
     "yaml": "~0.2.3",
     "ejs": "~1.0.0",
     "body-parser": "1.0.2",
-    "koop-server": "https://github.com/Esri/koop-server/tarball/master"
+    "koop-server": "https://github.com/Esri/koop-server/tarball/master",
+    "node.extend": "~1.0.10"
   },
   "scripts": {
     "start": "node server.js"
