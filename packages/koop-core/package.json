@@ -9,7 +9,7 @@
     "node-fs": "~0.1.7",
     "spawn-async": "0.0.1",
     "bunyan": "~0.22.1",
-    "terraformer-arcgis-parser": "1.0.3",
+    "terraformer-arcgis-parser": "1.0.4",
     "terraformer-wkt-parser": "~1.0.0",
     "sphericalmercator": "~1.0.2",
     "topojson": "~1.4.3",
