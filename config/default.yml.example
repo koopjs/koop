@@ -10,8 +10,15 @@ data_dir: '/usr/local/koop/'
 # for accessing github 
 github_token: 'XXXXXXXXXXXXXXXXXX'
 
-# the connection to your PostGIS enabled database 
-db: 
-  postgis: 
-    conn: "postgres://localhost/koopdev"
 
+#### Database config ####
+
+# the connection to your PostGIS enabled database 
+#db: 
+#  postgis: 
+#    conn: "postgres://localhost/koopdev"
+
+# for local development you can use Spatialite 
+db:
+  sqlite:
+    filename: ':memory:'
