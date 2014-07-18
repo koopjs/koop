@@ -21,7 +21,7 @@ global['config'] = config;
 var files = fs.readdirSync('node_modules');
 files.forEach(function(f){
   if ( f.match(/koop-*.+/) ){
-    try { koop.register(require(f)); } catch (e) {}
+    try { koop.register(require(f)); } catch (e) { console.log(e)}
   }
 });
 
@@ -54,10 +54,15 @@ app.listen(process.env.PORT || config.server.port,  function() {
   console.log("Listening at http://%s:%d/", this.address().address, this.address().port);
 
   // Start the Cache DB with the conn string from config
-  if ( config.db.postgis ){
-    Cache.db = PostGIS.connect( config.db.postgis.conn );
+  if ( config.db ) {
+    if ( config.db.postgis ){
+      Cache.db = PostGIS.connect( config.db.postgis.conn );
+    } else if ( config.db.sqlite ) {
+      Cache.db = SQLite.connect(config.db.sqlite);
+    }
   } else {
-    Cache.db = Local;
+    console.log('Exiting since no DB configuration found in config');
+    process.exit();
   }
 
   // A bunyan log is required for the async workers 

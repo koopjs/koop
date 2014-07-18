@@ -9,8 +9,10 @@ Koop provides a flexible server for exposing 3rd party data sources (APIs) as bo
 
 ## Dependencies 
 The following dependencies are needed in order to run Koop on your local machine / server: 
-* Node.js (version > 0.10.0) 
-* PostgreSQL / PostGIS - In PostgreSQL 9.3 you can create a PostGIS enabled database by executing `CREATE EXTENSION postgis;` inside an existing database. 
+* Node.js (version > 0.10.0)
+* Database
+  * Koop needs a spatial database to act as a cache for data. In production we use PostGIS, but for local development we use Spatiallite (installed with koop via `npm install`). 
+  * To PostGIS you'll need to install both PostgreSQL and PostGIS. In PostgreSQL 9.3 you can create a PostGIS enabled database by executing `CREATE EXTENSION postgis;` inside an existing database. 
 
 ## Installation
 1. clone the repo
@@ -37,9 +39,6 @@ In particular you will need to:
 
 ## Running Koop
 Koop runs its own http server and will use port 1337 by default. You can start koop in several ways (see below) and then visit [http://localhost:1337](http://localhost:1337)
-
-### start the server with auto-reload via grunt:
-```grunt server``` 
 
 ### start the server with node:
 ```node server.js```
