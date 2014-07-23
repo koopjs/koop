@@ -22,7 +22,8 @@
     "ejs": "~1.0.0",
     "body-parser": "1.0.2",
     "koop-server": "https://github.com/Esri/koop-server/tarball/master",
-    "node.extend": "~1.0.10"
+    "node.extend": "~1.0.10",
+    "pg": "~3.4.0"
   },
   "scripts": {
     "start": "node server.js"
