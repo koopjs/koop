@@ -21,6 +21,7 @@
     "yaml": "~0.2.3",
     "ejs": "~1.0.0",
     "body-parser": "1.0.2",
+    "koop-acs": "https://github.com/chelm/koop-acs/tarball/master",
     "koop-server": "https://github.com/Esri/koop-server/tarball/master",
     "node.extend": "~1.0.10",
     "pg": "~3.4.0"
