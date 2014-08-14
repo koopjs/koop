@@ -70,7 +70,7 @@ app.listen(process.env.PORT || config.server.port,  function() {
     'name': 'koop-log',
     streams: [{
       type: 'rotating-file',
-      path: config.logfile,
+      path: config.logfile || __dirname + '/koop.log',
       period: '1d',
       count: 3
     }]

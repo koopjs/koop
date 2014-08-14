@@ -18,7 +18,6 @@
     "config": "~0.4.35",
     "cors": "~2.2.0",
     "response-time": "~1.0.0",
-    "yaml": "~0.2.3",
     "ejs": "~1.0.0",
     "body-parser": "1.0.2",
     "koop-server": "https://github.com/Esri/koop-server/tarball/master",
