@@ -8,13 +8,11 @@ process.env.UV_THREADPOOL_SIZE = process.env.UV_THREADPOOL_SIZE || Math.ceil(Mat
 
 var cors = require("cors"),
     express = require("express"),
-    Peechee = require('peechee'),
-    spawnasync = require('spawn-async'),
-    bunyan = require('bunyan'),
     config = require("config"),
     fs = require('fs'),
     bodyParser = require('body-parser'),
     responseTime = require("response-time"),
+   
     koop = require('koop-server')(config);
 
 // Scan package for koop providers and register them with koop-server
