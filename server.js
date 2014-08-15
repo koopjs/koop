@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 "use strict";
 
+// NOTE: The only thing this file does is start the public facing server and load any installed providers 
+
 // increase the libuv threadpool size to 1.5x the number of logical CPUs.
 process.env.UV_THREADPOOL_SIZE = process.env.UV_THREADPOOL_SIZE || Math.ceil(Math.max(4, require('os').cpus().length * 1.5));
 
@@ -15,7 +17,7 @@ var cors = require("cors"),
     responseTime = require("response-time"),
     koop = require('koop-server')(config);
 
-// Scan package for koop plugins and require them 
+// Scan package for koop providers and register them with koop-server
 var files = fs.readdirSync('node_modules');
 files.forEach(function(f){
   if ( f.match(/koop-*.+/) ){
@@ -50,26 +52,5 @@ app.use( koop );
 
 app.listen(process.env.PORT || config.server.port,  function() {
   console.log("Listening at http://%s:%d/", this.address().address, this.address().port);
-
-  // A bunyan log is required for the async workers 
-  /*config.log = new bunyan({
-    'name': 'koop-log',
-    streams: [{
-      type: 'rotating-file',
-      path: config.logfile || __dirname + '/koop.log',
-      period: '1d',
-      count: 3
-    }]
-  });
-
-  // allow us to kick off system commands w/o blocking
-  config.worker = spawnasync.createWorker({'log': config.log});
-
-  // set up an instance of peechee for saving files (downloads) 
-  global['peechee'] = {};
-  if ( config.peechee && config.peechee.type == 's3' ){
-    global['peechee'] = new Peechee( config.peechee );
-  }*/
-
 });
 
