@@ -1,3 +1,4 @@
+var layerFS, map;
 function koopMap( dom ){ 
 
   var koop = {
@@ -8,11 +9,10 @@ function koopMap( dom ){
     remove: removeLayer 
   };   
 
-  var map = L.map( dom ).setView([45.52751668442124, -122.67175197601318], 3);
+  map = L.map( dom ).setView([45.52751668442124, -122.67175197601318], 3);
   // Add ArcGIS Online Basemap
   L.esri.basemapLayer("NationalGeographic").addTo(map);
 
-  var layerFS;
 
   function addLayer( url ) {
     // Add ArcGIS Online feature service
@@ -32,7 +32,11 @@ function koopMap( dom ){
           createPopup(geojson,layer);
         }
       }).addTo(map);
-      console.log('ADDING LAYER', layerFS);
+    layerFS.metadata(function(err, data){
+      var extent = data.extent;
+      map.fitBounds([[ extent.ymin, extent.xmin], [ extent.ymax, extent.xmax ] ]);
+    });
+    //console.log('ADDING LAYER', layerFS);
   }
 
   function addTileLayer( url ) {

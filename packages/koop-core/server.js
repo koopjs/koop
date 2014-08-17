@@ -12,7 +12,6 @@ var cors = require("cors"),
     fs = require('fs'),
     bodyParser = require('body-parser'),
     responseTime = require("response-time"),
-   
     koop = require('koop-server')(config);
 
 // Scan package for koop providers and register them with koop-server
