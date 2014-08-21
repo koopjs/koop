@@ -23,7 +23,8 @@
     "koop-acs": "https://github.com/chelm/koop-acs/tarball/master",
     "koop-server": "https://github.com/Esri/koop-server/tarball/master",
     "node.extend": "~1.0.10",
-    "pg": "~3.4.0"
+    "pg": "~3.4.0",
+    "git-rev": "~0.2.1"
   },
   "scripts": {
     "start": "node server.js"

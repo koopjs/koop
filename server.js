@@ -5,6 +5,7 @@
 process.env.UV_THREADPOOL_SIZE = process.env.UV_THREADPOOL_SIZE || Math.ceil(Math.max(4, require('os').cpus().length * 1.5));
 
 var cors = require("cors"),
+    git = require('git-rev'),
     express = require("express"),
     Peechee = require('peechee'),
     spawnasync = require('spawn-async'),
@@ -33,6 +34,13 @@ app.use(cors());
 
 app.post('/arcgis/rest/info', function(req, res){
   res.send({},200);
+});
+
+// reply to /status  
+app.get("/status", function(req, res, next) {
+  git.long(function (str) {
+    res.send(str);
+  })
 });
 
 app.set('view engine', 'ejs');
