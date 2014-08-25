@@ -1,25 +1,26 @@
 {
-  "name": "koop",
-  "private": true,
-  "version": "0.1.0",
-  "description": "an api for converting geojson data into Esri feature services",
-  "dependencies": {
-    "express": "~4.0.0",
-    "request": "~2.27.0",
-    "node-fs": "~0.1.7",
-    "config": "~0.4.35",
-    "cors": "~2.2.0",
-    "response-time": "~1.0.0",
-    "ejs": "~1.0.0",
-    "body-parser": "1.0.2",
-    "koop-server": "https://github.com/Esri/koop-server/tarball/master",
-    "pg": "~3.4.0"
-  },
-  "scripts": {
-    "start": "node server.js"
-  },
-  "main": "app.js",
-  "repository": "http://github.com/Esri/koop.git",
-  "author": "",
-  "license": "Apache"
+    "name": "koop",
+    "private": true,
+    "version": "0.1.0",
+    "description": "an api for converting geojson data into Esri feature services",
+    "dependencies": {
+        "express": "~4.0.0",
+        "request": "~2.27.0",
+        "node-fs": "~0.1.7",
+        "config": "~0.4.35",
+        "cors": "~2.2.0",
+        "response-time": "~1.0.0",
+        "ejs": "~1.0.0",
+        "body-parser": "1.0.2",
+        "koop-server": "https://github.com/Esri/koop-server/tarball/master",
+        "pg": "~3.4.0"
+    },
+    "scripts": {
+        "start": "node server.js",
+        "setup": "node setup.js"
+    },
+    "main": "app.js",
+    "repository": "http://github.com/Esri/koop.git",
+    "author": "",
+    "license": "Apache"
 }
