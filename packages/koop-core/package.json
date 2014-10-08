@@ -12,7 +12,7 @@
         "response-time": "~1.0.0",
         "ejs": "~1.0.0",
         "body-parser": "1.0.2",
-        "koop-server": "https://github.com/Esri/koop-server/tarball/master",
+        "koop-server": "~0.1.0",
         "pg": "~3.4.0"
     },
     "scripts": {

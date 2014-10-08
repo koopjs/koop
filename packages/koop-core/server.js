@@ -24,11 +24,15 @@ files.forEach(function(f){
   }
 });
 
+
+
 if (cluster.isMaster) {
+
     var cpuCount = config.children || require('os').cpus().length;
     for (var i = 0; i < cpuCount; i += 1) {
         cluster.fork();
     }
+
 } else {
 
   var app = express();
