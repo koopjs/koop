@@ -7,6 +7,7 @@
 process.env.UV_THREADPOOL_SIZE = process.env.UV_THREADPOOL_SIZE || Math.ceil(Math.max(4, require('os').cpus().length * 1.5));
 
 var cors = require("cors"),
+    cluster = require('cluster'),
     git = require('git-rev'),
     express = require("express"),
     config = require("config"),
@@ -23,39 +24,47 @@ files.forEach(function(f){
   }
 });
 
-var app = express();
+if (cluster.isMaster) {
+    var cpuCount = config.children || require('os').cpus().length;
+    for (var i = 0; i < cpuCount; i += 1) {
+        cluster.fork();
+    }
+} else {
 
-app.disable("x-powered-by");
-app.use(responseTime());
-app.use(cors());
+  var app = express();
+  
+  app.disable("x-powered-by");
+  app.use(responseTime());
+  app.use(cors());
+  
+  app.post('/arcgis/rest/info', function(req, res){
+    res.send({},200);
+  });
+  
+  // reply to /status  
+  app.get("/status", function(req, res, next) {
+    git.long(function (str) {
+      res.send(str);
+    })
+  });
+  
+  app.set('view engine', 'ejs');
+  app.set('view options', {layout: 'layout.ejs'});
+  
+  if (process.env.NODE_ENV === "development") {
+    app.use(express.logger());
+  }
+  
+  // handle POST requests 
+  app.use(bodyParser());
+  
+  app.use(express.static(__dirname + '/public'));
+  
+  // add koop middleware
+  app.use( koop );
+  
+  app.listen(process.env.PORT || config.server.port,  function() {
+    console.log("Listening at http://%s:%d/", this.address().address, this.address().port);
+  });
 
-app.post('/arcgis/rest/info', function(req, res){
-  res.send({},200);
-});
-
-// reply to /status  
-app.get("/status", function(req, res, next) {
-  git.long(function (str) {
-    res.send(str);
-  })
-});
-
-app.set('view engine', 'ejs');
-app.set('view options', {layout: 'layout.ejs'});
-
-if (process.env.NODE_ENV === "development") {
-  app.use(express.logger());
 }
-
-// handle POST requests 
-app.use(bodyParser());
-
-app.use(express.static(__dirname + '/public'));
-
-// add koop middleware
-app.use( koop );
-
-app.listen(process.env.PORT || config.server.port,  function() {
-  console.log("Listening at http://%s:%d/", this.address().address, this.address().port);
-});
-
