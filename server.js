@@ -29,7 +29,7 @@ if (cluster.isMaster) {
   var files = fs.readdirSync('node_modules');
   files.forEach(function(f){
     if ( f.match(/koop-*.+/) ){
-      try { koop.register(require(f)); } catch (e) { console.log('Error', e)}
+      try { koop.register(require(f)); } catch (e) { console.log('Error', e, f)}
     }
   });
 
