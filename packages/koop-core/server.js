@@ -16,24 +16,22 @@ var cors = require("cors"),
     responseTime = require("response-time"),
     koop = require('koop-server')(config);
 
-// Scan package for koop providers and register them with koop-server
-var files = fs.readdirSync('node_modules');
-files.forEach(function(f){
-  if ( f.match(/koop-*.+/) ){
-    try { koop.register(require(f)); } catch (e) { console.log('Error', e)}
-  }
-});
-
-
-
 if (cluster.isMaster) {
 
-    var cpuCount = config.children || require('os').cpus().length;
+    var cpuCount = parseInt( config.processes ) || require('os').cpus().length;
     for (var i = 0; i < cpuCount; i += 1) {
         cluster.fork();
     }
 
 } else {
+
+  // Scan package for koop providers and register them with koop-server
+  var files = fs.readdirSync('node_modules');
+  files.forEach(function(f){
+    if ( f.match(/koop-*.+/) ){
+      try { koop.register(require(f)); } catch (e) { console.log('Error', e)}
+    }
+  });
 
   var app = express();
   
@@ -48,7 +46,7 @@ if (cluster.isMaster) {
   // reply to /status  
   app.get("/status", function(req, res, next) {
     git.long(function (str) {
-      res.send(str);
+      res.json({"koop":str, "koop-server": koop.sha});
     })
   });
   
@@ -66,7 +64,7 @@ if (cluster.isMaster) {
   
   // add koop middleware
   app.use( koop );
-  
+ 
   app.listen(process.env.PORT || config.server.port,  function() {
     console.log("Listening at http://%s:%d/", this.address().address, this.address().port);
   });
