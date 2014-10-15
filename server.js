@@ -46,7 +46,7 @@ if (cluster.isMaster) {
   // reply to /status  
   app.get("/status", function(req, res, next) {
     git.long(function (str) {
-      res.json({"koop":str, "koop-server": koop.sha});
+      res.json({"koop":str, "koop-server": koop.status});
     })
   });
   
