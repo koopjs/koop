@@ -49,7 +49,7 @@ if (cluster.isMaster) {
       res.json({"koop":str, "koop-server": koop.status});
     })
   });
-  
+
   app.set('view engine', 'ejs');
   app.set('view options', {layout: 'layout.ejs'});
   
@@ -70,3 +70,9 @@ if (cluster.isMaster) {
   });
 
 }
+
+// catch failing cluster instances 
+cluster.on('exit', function (worker) {
+  koop.log.error('Worker ' + worker.id + ' died');
+  cluster.fork();
+});
