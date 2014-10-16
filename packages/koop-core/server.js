@@ -42,7 +42,7 @@ if (cluster.isMaster) {
   app.post('/arcgis/rest/info', function(req, res){
     res.send({},200);
   });
-  
+
   // reply to /status  
   app.get("/status", function(req, res, next) {
     git.long(function (str) {
@@ -73,6 +73,6 @@ if (cluster.isMaster) {
 
 // catch failing cluster instances 
 cluster.on('exit', function (worker) {
-  koop.log.error('Worker ' + worker.id + ' died');
+  console.log('Worker died', worker.id);
   cluster.fork();
 });
