@@ -1,3 +1,0 @@
-[submodule "api/providers/climate"]
-	path = api/providers/climate
-	url = git@github.com:chelm/koop-climate.git
