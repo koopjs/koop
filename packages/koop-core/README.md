@@ -16,6 +16,7 @@ The following dependencies are needed in order to run Koop on your local machine
 * Database
   * Koop needs a spatial database to act as a cache for data
   * Currently supports PostGIS (PostgreSQL) and Spatialite (SQLite)
+    * Out of the box an in-memory SQLite db is used but PostGIS is highly recommended 
 
 ## Installation
 
@@ -25,15 +26,19 @@ The following dependencies are needed in order to run Koop on your local machine
     ```cd koop```
 3. install the node.js dependencies
     ```npm install```
+4. install any providers, for example:  
+    ```npm install https://github.com/chelm/koop-github/tarball/master``` 
+5. start the server 
+    ```node server.js```
+
+After this you should have a working Koop instance running on port 1337 of your localhost. 
 
 ## Configuration 
-Koop uses a series of config files in the ```/config``` directory to setup its database connection and data directories for caching data. 
+Koop uses a config file in the ```/config``` directory to setup its database connection and data directories for caching data. 
 
-**NOTE: it is crucial that you make the appropriate edits to your config/default.yml file so that the values match your environment.**
+**NOTE: it is crucial that you make the appropriate edits to your config/default.json file so that the values match your local environment.**
 
-1. copy the example config file
-    ```cp config/default.yml.example config/default.yml```
-2.  edit config/default.yml for your environment.
+The file `config/default.json` sets up the bare miminum koop environment, but you mostly likely want to use `config/default.json.example` as a starting point for a more advanced setup.
 
 In particular you will need to:
 
