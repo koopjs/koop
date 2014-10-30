@@ -1,0 +1,11 @@
+{
+    "server": {
+        "port": 1337
+    },
+    "processes":1,
+    "db": {
+        "sqlite": {
+            "filename": ":memory:"
+        }
+    }
+}
