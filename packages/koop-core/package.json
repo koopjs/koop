@@ -2,7 +2,7 @@
   "name": "koop",
   "private": true,
   "version": "0.1.0",
-  "description": "an api for converting geojson data into Esri feature services",
+  "description": "An API for converting GeoJSON data into Esri Feature Services",
   "dependencies": {
     "express": "~4.0.0",
     "request": "~2.27.0",
@@ -20,8 +20,8 @@
     "start": "node server.js",
     "setup": "node setup.js"
   },
-  "main": "app.js",
+  "main": "server.js",
   "repository": "http://github.com/Esri/koop.git",
-  "author": "",
-  "license": "Apache"
+  "author": "Chris Helm <christopher.helm@gmail.com>",
+  "license": "Apache 2.0"
 }
