@@ -1,0 +1,28 @@
+// Default config
+{
+    "server": {
+        "port": 1337
+    },
+
+    //the local dir for storing tile files
+    data_dir: '/usr/local/koop/',
+
+    // if a logfile is defined all logs will go to it, otherwise console used for logging
+    "logfile": "/var/log/koop.log",
+
+    // used to access github, should be moved into the github provider
+    "github_token": "XXXXXXXXXXXXXXXXXXXXXX",
+
+    "db": {
+        "postgis": {
+            "conn": "postgres://localhost/koopdev"
+        }
+    }
+
+    // Spatialite configuration (would replace PostGIS)
+    //"db": {
+    //    "sqlite": {
+    //        "filename": ":memory:"
+    //    }
+    //}
+}
