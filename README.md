@@ -21,6 +21,13 @@ The following dependencies are needed in order to run Koop on your local machine
 
 
 ## Installation
+1. Setup the Python environmental variable
+2. 
+    ```
+    # Windows
+    SET PYTHON = C:\Python27\python\python.exe
+    
+    ```
 
 1. Clone the repo
 
