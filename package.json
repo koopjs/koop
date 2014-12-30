@@ -1,27 +1,56 @@
 {
   "name": "koop",
-  "private": true,
-  "version": "0.1.0",
-  "description": "An API for converting GeoJSON data into Esri Feature Services",
-  "dependencies": {
-    "express": "~4.0.0",
-    "request": "~2.27.0",
-    "node-fs": "~0.1.7",
-    "config": "~0.4.35",
-    "cors": "~2.2.0",
-    "response-time": "~1.0.0",
-    "ejs": "~1.0.0",
-    "body-parser": "1.0.2",
-    "koop-server": "~0.1.4",
-    "pg": "~3.4.0",
-    "git-rev": "~0.2.1"
-  },
+  "version": "1.0.0",
+  "description": "A node module/express middleware for converting GeoJSON to Esri Feature Services.",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "setup": "node setup.js"
+    "test": "node_modules/jshint/bin/jshint lib/* && mocha test/models/ -t 20000",
+    "lint": "node_modules/jshint/bin/jshint lib/*"
   },
-  "main": "server.js",
-  "repository": "http://github.com/Esri/koop.git",
-  "author": "Chris Helm <christopher.helm@gmail.com>",
-  "license": "Apache 2.0"
+  "author": {
+    "name": "Chris Helm"
+  },
+  "license": "Apache2",
+  "dependencies": {
+    "async": "~0.9.0",
+    "aws-sdk": "~2.0.0",
+    "body-parser": "~1.0.2",
+    "config": "~1.8.1",
+    "express": "~4.0.0",
+    "kue": "~0.8.9",
+    "lodash": "~2.4.1",
+    "mapnik": "1.4.17",
+    "mapnik-pool": "~0.0.0",
+    "mkdirp": "~0.5.0",
+    "mv": "~2.0.0",
+    "node-fs": "~0.1.7",
+    "pg": "~2.11.1",
+    "request": "~2.27.0",
+    "rimraf": "^2.2.8",
+    "spatialite": "0.0.5",
+    "sphericalmercator": "~1.0.2",
+    "sql-parser": "~0.4.0",
+    "terraformer": "1.0.3",
+    "terraformer-arcgis-parser": "1.0.4",
+    "terraformer-wkt-parser": "~1.0.0",
+    "topojson": "~1.4.3",
+    "winston": "~0.7.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Esri/koop.git"
+  },
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/Esri/koop/issues"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.8",
+    "gulp-escomplex": "^1.0.0",
+    "gulp-escomplex-reporter-html": "^1.0.0",
+    "gulp-jshint": "^1.8.4",
+    "jshint": "~2.5.1",
+    "jshint-stylish": "^0.4.0",
+    "should": "~3.3.2"
+  }
 }

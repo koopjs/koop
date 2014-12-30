@@ -1,0 +1,24 @@
+{
+  "apps": [
+    {
+      "exec_mode": "fork_mode",
+      "script": "./lib/ExportWorker.js",
+      "name": "export-0",
+      "node_args": [ ],
+      "env": {
+      },
+      "error_file": "./lib/export-0.err.log",
+      "out_file": "./lib/export-0.out.log"
+    },
+    {
+      "exec_mode": "fork_mode",
+      "script": "./lib/ExportWorker.js",
+      "name": "export-1",
+      "node_args": [ ],
+      "env": {
+      },
+      "error_file": "./lib/export-1.err.log",
+      "out_file": "./lib/export-1.out.log"
+    }
+  ]
+}
