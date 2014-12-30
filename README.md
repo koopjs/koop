@@ -2,6 +2,8 @@
 
 **Turn data into Feature Services.**
 
+Koop is a node.js module that exposes an [Express](http://expressjs.com/) server for the purpose of being used as middleware within an Express based application.  
+
 Koop provides a flexible server for exposing 3rd party data sources (APIs) as both [Feature Services](http://resources.arcgis.com/en/help/arcgis-rest-api/#/Query_Feature_Service_Layer/02r3000000r1000000/) and other data formats (GeoJSON). This project is meant to provide a simple / pluggable platform for experimenting with various data within the ArcGIS platform. Koop aims to provide a platform for accessing any API and making it easy to consume within the realm of Esri's geospatial web products.
 
 Visit the demo at [http://koop.dc.esri.com](http://koop.dc.esri.com).
@@ -20,71 +22,65 @@ The following dependencies are needed in order to run Koop on your local machine
   * Currently supports PostGIS (PostgreSQL) and SpatiaLite (SQLite)
 
 
-## Installation
+## Pre-Installation on Windows
 1. Setup the Python environmental variable
-2. 
+ 
     ```
     # Windows
     SET PYTHON = C:\Python27\python\python.exe
     
     ```
 
-1. Clone the repo
+## Installation
+
+Basic installation would occur within an existing or new node.js project like so
 
     ```
-    git clone git@github.com:Esri/koop.git
+    npm install koop
     ```
 
-2. Enter the koop project directory
+Then you would install a Koop Provider, like Github (see below for a full list of providers)
 
     ```
-    cd koop
+    npm install koop-github 
     ```
 
-3. Install Node.js dependencies
+## Registering Providers 
 
-    ```
-    npm install
-    ```
+Once you've installed koop and chosen a provider to work with you need to "register" the provider with koop
 
-4. Install a Koop Provider (see below for a full list of providers)
+    ```javascript
 
-    ```
-    npm install https://github.com/chelm/koop-github/tarball/master 
-    ```
+    // create a config object that tells koop where to write data and what db to use
+    var config = {
+      "server": { "port": 1337 },
+      "data_dir": "/usr/local/koop/",
+      "db": {
+        "postgis": {
+            "conn": "postgres://localhost/koopdev"
+        }
+      }
+    };
+    
+    // pass the config to koop 
+    var koop = require('koop')( config ),
+    github = require('koop-github');
+ 
+    // register the provider with koop to bind its routes/handlers
+    koop.register( github );
 
-## Configuration
+    // create an express app 
+    var express = require("express")
+    var app = express();
 
-Koop uses a series of config files in the `/config` directory to setup its database connection and data directories for caching data.
+    // add koop middleware to the express app
+    app.use( koop );
 
-**NOTE: it is crucial that you make the appropriate edits to your config/default.json file so that the values match your local environment.**
-
-Use the file `config/default.json.example` as a reference for all possible configuration parameters. 
-
-In particular you will most likely need to edit/add entries for:
-
-    * Ensure that the specified logfile directory exists and you have write permissions on it.
-    * Ensure that the PostGIS database configuration matches the host, port, user, password, and name of your database.
-
-### Caching
-
-Koop uses either a local SQLite cache or a PostgreSQL/PostGIS database to store data so that it doesnt flood external API with requests. This is helpful to prevent API rate limits and general makes Koop faster (quick access to data). The local SQLite file should not be used for production as it has limits on scale and across processes and in production use you should use a PostgreSQL database.
-
-## Running Koop
-
-Koop runs its own HTTP server and will default to [port 1337](http://localhost:1337).
-
-### Start the server with `node`
-
-```
-node server.js
-```
-
-In order to run koop on a specific port (not 1337), just set the `PORT` environmental variable like so:
-
-```
-PORT=8080 node server.js
-```
+    // start the express server
+    app.listen(process.env.PORT || config.server.port,  function() {
+      console.log("Listening at http://%s:%d/", this.address().address, this.address().port);
+    }); 
+    ``` 
 
 ## Data Providers
 
@@ -97,10 +93,6 @@ Koop is designed to expose 3rd party services as Feature Services that are consu
 
 Each provider resides in its own git repo (e.g. [koop-github](https://github.com/chelm/koop-github)).
 
-To install a provider all you need to do is:
-
-```
-npm install https://github.com/chelm/koop-github/tarball/master
 ```
 
 ## Development
