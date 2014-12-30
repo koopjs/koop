@@ -92,29 +92,27 @@ Koop is designed to expose 3rd party services as Feature Services that are consu
 
 Each provider resides in its own git repo (e.g. [koop-github](https://github.com/chelm/koop-github)).
 
-```
-
 ## Development
 
 To modify [koop-server](https://github.com/esri/koop-server) or develop new koop providers, install them to the `node_modules` directory in the koop application folder:
 
 - Check out [koop-server](https://github.com/esri/koop-server) and link in `node_modules/`
 
-```
- git clone git@github.com:Esri/koop-server.git
- cd koop-server && npm install
- cd node_modules && ln -s ../koop-server
-```
+  ```
+  git clone git@github.com:Esri/koop-server.git
+  cd koop-server && npm install
+  cd node_modules && ln -s ../koop-server
+  ```
 
 ### Defining a new provider
 
 - Check out providers such as [koop-agol](https://github.com/esri/koop-agol) and link in `node_modules/`
 
-```
- git clone git@github.com:Esri/koop-agol.git
- cd koop-agol && npm install
- cd node_modules && ln -s ../koop-agol
-```
+  ```
+  git clone git@github.com:Esri/koop-agol.git
+  cd koop-agol && npm install
+  cd node_modules && ln -s ../koop-agol
+  ```
 
 Each provider defines custom routes, a controller, and a model. Each of these uses ``module.exports`` to export an object (common js modules).  Each is then fused into koop at start up time and becomes available within the server.
 
@@ -124,7 +122,7 @@ Each provider defines custom routes, a controller, and a model. Each of these us
 
 * Define custom routes in the `routes/index.js` file:
 
-    ```javascript
+  ```javascript
     // defined in api/providers/sample/routes/index.js
 
     module.exports = {
@@ -133,7 +131,7 @@ Each provider defines custom routes, a controller, and a model. Each of these us
         action: 'index'
       }
     }
-    ```
+  ```
 
 * The above creates a `/sample` route that calls the `index` method on the sample controller (defined in `/api/providers/sample/controller/index.js`)
 
@@ -141,7 +139,7 @@ Each provider defines custom routes, a controller, and a model. Each of these us
 
 * Defines the handlers used to respond to routes
 
-    ```javascript
+  ```javascript
     module.exports = {
       // this tells koop to treat this provider like AGS service and show up at the root data provider endpoint
       provider: false,
@@ -152,7 +150,7 @@ Each provider defines custom routes, a controller, and a model. Each of these us
       }
 
     };
-    ```
+  ```
 
 * Each method takes in a request and response property and needs to send something to the reponse
 
