@@ -49,8 +49,7 @@ Then you would install a Koop Provider, like Github (see below for a full list o
 
 Once you've installed koop and chosen a provider to work with you need to "register" the provider with koop
 
-    ```javascript
-
+  ```
     // create a config object that tells koop where to write data and what db to use
     var config = {
       "server": { "port": 1337 },
@@ -80,7 +79,7 @@ Once you've installed koop and chosen a provider to work with you need to "regis
     app.listen(process.env.PORT || config.server.port,  function() {
       console.log("Listening at http://%s:%d/", this.address().address, this.address().port);
     }); 
-    ``` 
+  ``` 
 
 ## Data Providers
 
