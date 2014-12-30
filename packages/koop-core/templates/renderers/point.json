@@ -1,0 +1,25 @@
+{
+  "type": "simple",
+  "symbol": {
+    "color": [
+      45,
+      172,
+      128,
+      161
+    ],
+    "outline": {
+      "color": [
+        190,
+        190,
+        190,
+        105
+      ],
+      "width": 0.5,
+      "type": "esriSLS",
+      "style": "esriSLSSolid"
+    },
+    "size": 7.5,
+    "type": "esriSMS",
+    "style": "esriSMSCircle"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "simple",
+  "symbol": {
+    "color": [
+      75,
+      172,
+      198,
+      161
+    ],
+    "outline": {
+      "color": [
+        150,
+        150,
+        150,
+        155
+      ],
+      "width": 0.5,
+      "type": "esriSLS",
+      "style": "esriSLSSolid"
+    },
+    "type": "esriSFS",
+    "style": "esriSFSSolid"
+  }
+}
