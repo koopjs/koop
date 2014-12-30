@@ -25,60 +25,60 @@ The following dependencies are needed in order to run Koop on your local machine
 ## Pre-Installation on Windows
 1. Setup the Python environmental variable
  
-    ```
-    # Windows
-    SET PYTHON = C:\Python27\python\python.exe
-    
-    ```
+  ```
+  # Windows
+  SET PYTHON = C:\Python27\python\python.exe
+  
+  ```
 
 ## Installation
 
 Basic installation would occur within an existing or new node.js project like so
 
-    ```
-    npm install koop
-    ```
+  ```
+  npm install koop
+  ```
 
 Then you would install a Koop Provider, like Github (see below for a full list of providers)
 
-    ```
-    npm install koop-github 
-    ```
+  ```
+  npm install koop-github 
+  ```
 
 ## Registering Providers 
 
 Once you've installed koop and chosen a provider to work with you need to "register" the provider with koop
 
   ```
-    // create a config object that tells koop where to write data and what db to use
-    var config = {
-      "server": { "port": 1337 },
-      "data_dir": "/usr/local/koop/",
-      "db": {
-        "postgis": {
-            "conn": "postgres://localhost/koopdev"
-        }
+  // create a config object that tells koop where to write data and what db to use
+  var config = {
+    "server": { "port": 1337 },
+    "data_dir": "/usr/local/koop/",
+    "db": {
+      "postgis": {
+          "conn": "postgres://localhost/koopdev"
       }
-    };
-    
-    // pass the config to koop 
-    var koop = require('koop')( config ),
-    github = require('koop-github');
+    }
+  };
+  
+  // pass the config to koop 
+  var koop = require('koop')( config ),
+  github = require('koop-github');
  
-    // register the provider with koop to bind its routes/handlers
-    koop.register( github );
+  // register the provider with koop to bind its routes/handlers
+  koop.register( github );
 
-    // create an express app 
-    var express = require("express")
-    var app = express();
+  // create an express app 
+  var express = require("express")
+  var app = express();
 
-    // add koop middleware to the express app
-    app.use( koop );
+  // add koop middleware to the express app
+  app.use( koop );
 
-    // start the express server
-    app.listen(process.env.PORT || config.server.port,  function() {
-      console.log("Listening at http://%s:%d/", this.address().address, this.address().port);
-    }); 
+  // start the express server
+  app.listen(process.env.PORT || config.server.port,  function() {
+    console.log("Listening at http://%s:%d/", this.address().address, this.address().port);
+  }); 
   ``` 
 
 ## Data Providers
