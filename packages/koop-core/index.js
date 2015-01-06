@@ -10,7 +10,7 @@ module.exports = function( config ) {
   var app = express(), route, controller, model;
 
   // keep track of the registered services
-  app.services = [];
+  app.services = {};
 
   koop.config = config;
 
@@ -37,9 +37,21 @@ module.exports = function( config ) {
 
   app.use(express.static(__dirname + '/public'));
 
-  // serve the index
+  // serve all the provider json
   app.get("/providers", function(req, res, next) {
     res.json(app.services);
+  });
+
+  // serve up a provider
+  app.get("/providers/:provider", function(req, res, next) {
+    res.json(app.services[req.params.provider]);
+  });
+
+  // gets all the datasets in the cache for a provider
+  app.get("/providers/:provider/datasets", function(req, res, next) {
+    koop.Cache.db._query("select * from koopinfo where id ilike '%" + req.params.provider + "%'", function(err, result){
+      res.json( result.rows );
+    })
   });
 
   // register providers into the app
@@ -47,7 +59,7 @@ module.exports = function( config ) {
   app.register = function(provider){
     // only register if the provider has a name
     if ( provider.name ) {
-      app.services.push( { type:'FeatureServer', name: provider.name.toLowerCase() });
+      app.services[provider.name] = provider;
 
       // save the provider onto the app
       model = new provider.model( koop );
