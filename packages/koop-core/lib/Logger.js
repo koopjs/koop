@@ -6,7 +6,7 @@ function Logger( config ){
   if ( config.logfile ){
     transports = [
       // keep logging errors to the console (may not be needed)
-      new (winston.transports.Console)({ level: 'error' }),
+      //new (winston.transports.Console)({ level: 'error' }),
       new (winston.transports.File)({ filename: config.logfile, level: 'debug' })
     ];
   } else {

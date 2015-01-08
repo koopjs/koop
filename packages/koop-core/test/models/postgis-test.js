@@ -1,6 +1,4 @@
 var should = require('should');
-var config = require('config');
-global.config = config;
 
 before(function (done) {
   key = 'test:repo:file';

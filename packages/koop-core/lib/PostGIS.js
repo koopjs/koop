@@ -341,6 +341,7 @@ module.exports = {
       info.format = geojson.format;
       info.sha = geojson.sha;
       info.info = geojson.info;
+      info.host = geojson.host;
    
       var table = key+':'+layerId;
 
