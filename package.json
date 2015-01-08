@@ -1,6 +1,6 @@
 {
   "name": "koop",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A node module/express middleware for converting GeoJSON to Esri Feature Services.",
   "main": "index.js",
   "scripts": {
