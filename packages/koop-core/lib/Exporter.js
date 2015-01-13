@@ -544,7 +544,7 @@ var Exporter = function( koop ){
 
   this._finish = function( params, callback ){
     var self = this;
-    var limit = 10000;
+    var limit = 2000;
 
     var layer = (params.options.layer || 0);
 
