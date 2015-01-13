@@ -156,7 +156,8 @@ module.exports = {
     var result = {}, value, self = this;
     try {
       json.fields = [];
-      var stats = JSON.parse(params.outStatistics);
+      // replacing slashes in cases where escaped slashes given
+      var stats = JSON.parse(params.outStatistics.replace(/\\/,''));
       if (stats.length){
 
         if ( params.groupByFieldsForStatistics ){
