@@ -1,3 +1,8 @@
+
+## [1.0.3](https://github.com/Esri/koop/releases/tag/1.0.3) - 2015-01-13
+### Changed
+- Fixed a bug in the ExportWorker where shps were being created as a directory with an extension .shp; this fixes some formatting errors that were related. 
+
 ## [1.0.2](https://github.com/Esri/koop/releases/tag/1.0.2) - 2015-01-13
 ### Changed
 - Koop exports now force OGR to create shp file dirs instead of files; This adds more consistency so the code can maintain a single way for creating zip exports
