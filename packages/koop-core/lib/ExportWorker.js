@@ -115,7 +115,7 @@ jobs.process('exports', 2, function(job, done){
 
 
 function createFiles(job, done){
-  console.log('starting job ', job.id, job.data);
+  console.log('starting job ', job.id);
   // create a new VRT File
   var vrt = '<OGRVRTDataSource>';
   fs.appendFileSync( job.data.files.rootVrtFile, vrt );
@@ -168,7 +168,7 @@ function createFiles(job, done){
               cmd.push(task.ogrFormat);
               cmd.push('-update');
               cmd.push('-append');
-              cmd.push(( task.format == 'zip' ) ? task.files.rootNewFileTmp.replace('zip', 'shp') : task.files.rootNewFileTmp); 
+              cmd.push(( task.format == 'zip' ) ? task.files.rootNewFileTmp.replace('.zip', '') : task.files.rootNewFileTmp); 
               cmd.push( task.files.rootVrtFile );
               try {
                 callOGR(task.format, task.files.rootNewFileTmp, cmd, task.options, task.files, function(err, formatFile){
@@ -252,7 +252,7 @@ function callOGR( format, outFile, cmd, options, files, callback ){
         var prj = outFile.replace('zip','prj');
         if ( options.name ){
             // cp each file into dir with new name 
-            var shpdir = base + files.tmpName + '.shp';
+            var shpdir = base + files.tmpName; //+ '.shp';
             mv(shpdir+'/OGRGeoJSON.shp', base+'/' + options.name + '.shp', function(err) {
               mv(shpdir+'/OGRGeoJSON.dbf', base+'/' + options.name + '.dbf', function(err) {
                 mv(shpdir+'/OGRGeoJSON.shx', base+'/' + options.name + '.shx', function(err) {
@@ -277,7 +277,8 @@ function callOGR( format, outFile, cmd, options, files, callback ){
                           });
                         });
                       } catch (e){
-                        console.log('error creating zip', e);
+                        //console.log('error creating zip', e);
+                        koop.log.error('error creating zip: %s', zipCMD);
                         info.generating = { error: e };
                         koop.Cache.updateInfo( task.table, info, function(err, res){
                           callback(e, null);  
