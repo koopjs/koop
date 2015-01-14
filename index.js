@@ -122,25 +122,14 @@ module.exports = function( config ) {
   koop.exporter = new koop.Exporter( koop );
   koop.Cache = new koop.DataCache( koop );
 
-  // ---------------------------------------------------
-  // TODO I'd like to make the DB more "opt-in" where they get passed into koop
-  // - this would mean that you would require postgis, sqlite, etc. in the parent app
-  // - not exactly sure how best to do this yet  
-  // ---------------------------------------------------
-
-  // Start the Cache DB with the conn string from config
-  if ( config && config.db ) {
-    if ( config.db.postgis ) {
-      koop.Cache.db = koop.PostGIS.connect( config.db.postgis.conn );
-    } else if ( config && config.db.sqlite ) {
-      koop.Cache.db = koop.SQLite.connect( config.db.sqlite );
-    }
-    koop.Cache.db.log = koop.log;
-  } else if (config && !config.db){
-    console.log('Exiting since no DB configuration found in config');
-    process.exit();
-  }
-
+  // use the default local cache until a DB adapter mod is registered
+  koop.Cache.db = koop.LocalDB; 
+ 
+  // registers a DB modules  
+  app.registerCache = function( adapter ){
+    koop.Cache.db = adapter.connect( config.db.conn, koop );
+    return;
+  };
 
   return app;
 
