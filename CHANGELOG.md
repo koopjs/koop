@@ -1,13 +1,13 @@
-## [1.0.5](https://github.com/Esri/koop/releases/tag/1.0.5) - 2015-01-15
+## [1.0.5](https://github.com/Esri/koop/releases/tag/v1.0.5) - 2015-01-15
 ### Added 
 - a flag to the lib/PostGIS.js cache too ignore the selection limit unless a provider wants to use it.
   - since this feature is used by only a couple providers it seemed better to make it an opt-in option for the few, rather than an opt-out option across every provider.  
 
-## [1.0.3](https://github.com/Esri/koop/releases/tag/1.0.3) - 2015-01-13
+## [1.0.3](https://github.com/Esri/koop/releases/tag/v1.0.3) - 2015-01-13
 ### Changed
 - Fixed a bug in the ExportWorker where shps were being created as a directory with an extension .shp; this fixes some formatting errors that were related. 
 
-## [1.0.2](https://github.com/Esri/koop/releases/tag/1.0.2) - 2015-01-13
+## [1.0.2](https://github.com/Esri/koop/releases/tag/v1.0.2) - 2015-01-13
 ### Changed
 - Koop exports now force OGR to create shp file dirs instead of files; This adds more consistency so the code can maintain a single way for creating zip exports
 - The query support for outStatistics now removes any passed in slashes so it stops choking on parsing semi-bad inputs
