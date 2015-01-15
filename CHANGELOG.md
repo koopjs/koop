@@ -1,3 +1,7 @@
+## [1.0.5](https://github.com/Esri/koop/releases/tag/1.0.5) - 2015-01-15
+### Added 
+- a flag to the lib/PostGIS.js cache too ignore the selection limit unless a provider wants to use it.
+  - since this feature is used by only a couple providers it seemed better to make it an opt-in option for the few, rather than an opt-out option across every provider.  
 
 ## [1.0.3](https://github.com/Esri/koop/releases/tag/1.0.3) - 2015-01-13
 ### Changed
