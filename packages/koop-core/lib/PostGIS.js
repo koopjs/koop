@@ -248,7 +248,7 @@ module.exports = {
           }
 
           self._query( select.replace(/ id, feature->>'properties' as props, feature->>'geometry' as geom /, ' count(*) as count '), function(err, result){
-            if (!options.limit && !err && result.rows.length && (result.rows[0].count > self.limit && !options.bypass_limit) ){
+            if (!options.limit && !err && result.rows.length && (result.rows[0].count > self.limit && options.enforce_limit) ){
               callback( null, [{
                 exceeds_limit: true,
                 type: 'FeatureCollection',
