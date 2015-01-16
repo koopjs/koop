@@ -1,3 +1,9 @@
+## [1.0.6](https://github.com/Esri/koop/releases/tag/v1.0.6) - 2015-01-16
+### Added
+- a flag to the lib/Exporter.js class that will lock export jobs to prevent duplicate jobs stepping on each other in the queue. 
+  - This means that one job per dataset can be enqueued at a time. 
+  - Down the road this may cause problems for when we want to pre-cache several formats for the same dataset at the same time. That bridge will be crossed at that time.  
+
 ## [1.0.5](https://github.com/Esri/koop/releases/tag/v1.0.5) - 2015-01-15
 ### Added 
 - a flag to the lib/PostGIS.js cache too ignore the selection limit unless a provider wants to use it.
