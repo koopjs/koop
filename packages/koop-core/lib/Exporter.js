@@ -247,6 +247,13 @@ var Exporter = function( koop ){
     if ( koop.config.export_workers ) {
 
       koop.Cache.getInfo(table, function(err, info){
+        var locked = false;
+        if ( !info.export_lock ){
+          info.export_lock = true;
+        } else {
+          locked = true;
+        }
+
         info.status = 'processing';
         info.generating = {
           progress: 0+'%'
@@ -280,20 +287,22 @@ var Exporter = function( koop ){
           };
           task.pages = [];
           
-          var job = self.export_q.create( 'exports', task ).save( function( err ){
-            koop.log.debug( 'added job to export queue ' + job.id);
-          });
+          if ( !locked ){
+            var job = self.export_q.create( 'exports', task ).save( function( err ){
+              koop.log.debug( 'added job to export queue ' + job.id);
+            });
 
-          job.on('progress', function(progress){
-            koop.Cache.getInfo( table, function( err, info ){
-              if (info.generating) {
-                info.generating.progress = progress + '%';
-              }
-              _update( info, function(err, res){
-                koop.log.debug( 'job progress' + job.id + ' ' + progress + '%' );
+            job.on('progress', function(progress){
+              koop.Cache.getInfo( table, function( err, info ){
+                if (info.generating) {
+                  info.generating.progress = progress + '%';
+                }
+                _update( info, function(err, res){
+                  koop.log.debug( 'job progress' + job.id + ' ' + progress + '%' );
+                });
               });
             });
-          });
+          }
         });
       });
     } else {
