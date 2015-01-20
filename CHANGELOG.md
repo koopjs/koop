@@ -1,3 +1,10 @@
+
+## [1.0.7](https://github.com/Esri/koop/releases/tag/v1.0.7) - 2015-01-20
+### Changed 
+- lib/Tiles.js now passes along an optional name param to the tile generator. Vector tile use this name to store features. 
+- fixed the tests, they are passing but jshint is not. 
+- changed the way the lib/BaseController.js sends back its statuses. 
+
 ## [1.0.6](https://github.com/Esri/koop/releases/tag/v1.0.6) - 2015-01-16
 ### Added
 - a flag to the lib/Exporter.js class that will lock export jobs to prevent duplicate jobs stepping on each other in the queue. 
