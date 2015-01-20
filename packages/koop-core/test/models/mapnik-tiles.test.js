@@ -24,7 +24,7 @@ describe('Mapnik Tiles Model', function(){
         var file = __dirname + '/../fixtures/co.6.13.24.vector.pbf',
           format = 'vector.pbf';
 
-        tiles._stash( file, format, data, 6, 12, 24, function( err, res ){
+        tiles._stash( file, format, data, 6, 12, 24, {}, function( err, res ){
           should.not.exist(err);
           should.exist(res);
           done();
@@ -35,7 +35,7 @@ describe('Mapnik Tiles Model', function(){
         var file = __dirname + '/../fixtures/5.5.12.vector.pbf',
           format = 'vector.pbf';
 
-        tiles._stash( file, format, data, 5, 5, 11, function( err, res ){
+        tiles._stash( file, format, data, 5, 5, 11, {}, function( err, res ){
           should.not.exist(err);
           should.exist(res);
           done();
@@ -49,7 +49,7 @@ describe('Mapnik Tiles Model', function(){
         var file = __dirname + '/../fixtures/5.5.12.png',
           format = 'png';
 
-        tiles._stash( file, format, data, 5, 5, 12, function( err, res ){
+        tiles._stash( file, format, data, 5, 5, 12, {}, function( err, res ){
           should.not.exist(err);
           should.exist(res);
           done();
@@ -63,7 +63,7 @@ describe('Mapnik Tiles Model', function(){
         var file = __dirname + '/../fixtures/5.5.12.utf',
           format = 'utf';
 
-        tiles._stash( file, format, data, 5, 5, 12, function( err, res ){
+        tiles._stash( file, format, data, 5, 5, 12, {}, function( err, res ){
           should.not.exist(err);
           should.exist(res);
           done();

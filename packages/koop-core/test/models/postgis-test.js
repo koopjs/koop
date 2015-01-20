@@ -1,4 +1,5 @@
 var should = require('should');
+var config = require('config');
 
 before(function (done) {
   key = 'test:repo:file';
@@ -6,13 +7,11 @@ before(function (done) {
   snowData = require('../fixtures/snow.geojson');
   PostGIS = require('../../lib/PostGIS.js');
   koop = require('../../lib/index');
-  config = require('config');
 
   config.logfile = __dirname + "/../test.log";
 
   // init the koop log based on config params 
   koop.log = new koop.Logger( config );
-
   if (!config.db.postgis)
     done();
   else

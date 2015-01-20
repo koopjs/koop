@@ -176,13 +176,17 @@ var Tiles = function( koop ){
       key = params.key,
       format = params.format;
 
+    var options = {
+      name: params.name
+    };
+
     var style = params.style;
 
     if (!params.x || !params.y || !params.z || !format || !key){
       callback('Missing parameters', null);
     } else {
       // check the cache - the local file system 
-      this._check( x, y, z, key, format, data, function( err, file ){
+      this._check( x, y, z, key, format, data, options, function( err, file ){
         if ( file ){
           if ( format == 'json' ){
             callback( err, file );
@@ -197,13 +201,13 @@ var Tiles = function( koop ){
 
   };
 
-  this._check = function( x, y, z, key, format, data, callback ){
+  this._check = function( x, y, z, key, format, data, options, callback ){
     var self = this;
     var p = [ koop.files.localDir + 'tiles', key, format, z, x].join('/');
     var file = p + '/' + y + '.' + format;
     nfs.mkdir( p, '0777', true, function(){
       if ( !nfs.existsSync( file ) ) {
-        self._stash( file, format, data, z, x, y, function( err, newfile ){
+        self._stash( file, format, data, z, x, y, options, function( err, newfile ){
           callback( err, newfile );
         });
       } else {
@@ -212,11 +216,11 @@ var Tiles = function( koop ){
     });
   };
 
-  this._stash = function( file, format, geojson, z, x, y, callback ){
+  this._stash = function( file, format, geojson, z, x, y, opts, callback ){
     var feature;
-
       if ( format == 'json' ){
         delete geojson.info;
+        delete geojson.name;
         fs.writeFile( file, JSON.stringify( geojson ), function(){
           callback( null, file );
         });
@@ -228,14 +232,13 @@ var Tiles = function( koop ){
             if ( format == 'png' ){
               map = new mapnik.Map(256, 256);
               map.loadSync(__dirname + '/../templates/renderers/style.xml');
-
-              layer = new mapnik.Layer('tile');
+              layer = new mapnik.Layer(opts.name || 'tile');
               layer.srs = '+init=epsg:4326';
               layer.datasource = new mapnik.Datasource( { type: 'geojson', file: jsonFile } );
 
               // add styles
               if (geojson && geojson.features && geojson.features.length){ 
-                layer.styles = [geojson.features[0].geometry.type.toLowerCase()];
+                layer.styles = (geojson.features[0].geometry) ? [geojson.features[0].geometry.type.toLowerCase()] : [];
               }
               map.add_layer(layer);
 
@@ -260,9 +263,9 @@ var Tiles = function( koop ){
               map.loadSync(__dirname + '/../templates/renderers/style.xml');
               
               try {
-                layer = new mapnik.Layer(geojson.name.replace( '.geojson', '' ));
+                layer = new mapnik.Layer(opts.name.replace( '.geojson', '' ));
               } catch (e){
-                layer = new mapnik.Layer('tile');
+                layer = new mapnik.Layer(opts.name || 'tile');
               }
               layer.datasource = new mapnik.Datasource( { type: 'geojson', file: jsonFile } );
               map.add_layer(layer);
@@ -283,7 +286,7 @@ var Tiles = function( koop ){
               var grid = new mapnik.Grid(256, 256, {key: '__id__'});
               map = new mapnik.Map(256, 256);
               map.loadSync(__dirname + '/../templates/renderers/style.xml');
-              layer = new mapnik.Layer('tile');
+              layer = new mapnik.Layer(opts.name || 'tile');
               layer.datasource = new mapnik.Datasource( { type: 'geojson', file: jsonFile } );
               // add styles 
               var options = {layer:0};
