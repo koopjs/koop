@@ -1,4 +1,9 @@
 
+## [1.0.8](https://github.com/Esri/koop/releases/tag/v1.0.8) - 2015-01-21
+### Changed
+- fixed an issue with object id fields in feature service queries for Ids with filters
+  - when using returnIdsOnly the objectID was not getting set, which return false rows. 
+
 ## [1.0.7](https://github.com/Esri/koop/releases/tag/v1.0.7) - 2015-01-20
 ### Changed 
 - lib/Tiles.js now passes along an optional name param to the tile generator. Vector tile use this name to store features. 
