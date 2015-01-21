@@ -1,4 +1,9 @@
 
+## [1.0.9](https://github.com/Esri/koop/releases/tag/v1.0.9) - 2015-01-21
+### Changed
+- splitting objectIds for feature service queries
+  - must be a string, not an array now (as per the geoservices rest spec)
+
 ## [1.0.8](https://github.com/Esri/koop/releases/tag/v1.0.8) - 2015-01-21
 ### Changed
 - fixed an issue with object id fields in feature service queries for Ids with filters
