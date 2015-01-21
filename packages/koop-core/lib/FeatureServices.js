@@ -258,6 +258,10 @@ module.exports = {
     var json = this.process('/../templates/featureSet.json', data, params );
     var allFeatures = terraformerParser.convert( data ),
       features = [];
+
+    // split the id list on comma, we need an array
+    params.objectIds = params.objectIds.split(',');
+
     allFeatures.forEach(function( f, i ){
       var id;
       if ( !params.idField ){
@@ -269,7 +273,7 @@ module.exports = {
       } else {
         id = f.attributes[ params.idField ];
       }
-      if ( params.objectIds.indexOf( id ) > -1 ){
+      if ( params.objectIds.indexOf( id+'' ) > -1 ){
         features.push( f );
       }
     });
