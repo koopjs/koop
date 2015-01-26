@@ -2,6 +2,7 @@ var mapnik = require('mapnik'),
   mapnikPool = require('mapnik-pool')(mapnik),
   mercator = new(require('sphericalmercator'))(),
   nfs = require('node-fs'),
+  zlib = require('zlib'),
   request = require('request'),
   path = require('path'),
   fs = require('fs');
@@ -16,7 +17,7 @@ mapnik.pools = {};
 
 var Tiles = function( koop ){
 
-  this.mapnikHeader = '<Map srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over" background-color="transparent" buffer-size="50"><Style name="esriGeometryPolygon" filter-mode="first"><Rule><PolygonSymbolizer fill="darkblue" fill-opacity=".75"/></Rule></Style><Style name="esriGeometryPoint"><Rule><MarkersSymbolizer fill="#55AADD" opacity=".75" width="10.5" stroke="white" stroke-width="2" stroke-opacity=".25" placement="point" marker-type="ellipse" allow-overlap="true"/></Rule></Style><Style name="esriGeometryPolyline">  <Rule><LineSymbolizer stroke="darkgrey" stroke-width="3" /><LineSymbolizer stroke="white" stroke-width="1.5" /></Rule></Style>';
+  this.mapnikHeader = '<Map srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over" background-color="transparent" buffer-size="50"><Style name="polygon" filter-mode="first"><Rule><PolygonSymbolizer fill="darkblue" fill-opacity=".75"/></Rule></Style><Style name="point"><Rule><MarkersSymbolizer fill="#55AADD" opacity=".75" width="10.5" stroke="white" stroke-width="2" stroke-opacity=".25" placement="point" marker-type="ellipse" allow-overlap="true"/></Rule></Style><Style name="linestring">  <Rule><LineSymbolizer stroke="darkgrey" stroke-width="3" /><LineSymbolizer stroke="white" stroke-width="1.5" /></Rule></Style><Style name="multilinestring"><Rule><LineSymbolizer stroke="darkgrey" stroke-width="3" /><LineSymbolizer stroke="white" stroke-width="1.5" /></Rule></Style><Style name="multipolygon" filter-mode="first"><Rule><PolygonSymbolizer fill="darkblue" fill-opacity=".75"/></Rule></Style>';
 
   this.mapnikFooter = '</Map>';
 
@@ -58,18 +59,21 @@ var Tiles = function( koop ){
     var styleSheet = this.mapnikHeader, table;
     var layers = [];
 
-    var i = data.layerInfo.length - 1;
-    while ( i >= 0 ) {
-      layer = data.layerInfo[i];
-      table = [params.type, params.item, layer.id].join(':');
-      layers.push( self.mapnikLayer( table, layer ) );
-      i--;
-    } 
-
-    /*layer = data.layerInfo[47];
-    table = [params.type, params.item, layer.id].join(':');
-    layers.push( self.mapnikLayer( table, layer ) );*/
-
+    if (data && data.layerInfo){
+      var i = data.layerInfo.length - 1;
+      while ( i >= 0 ) {
+        layer = data.layerInfo[i];
+        table = [params.type, params.item, layer.id].join(':');
+        layers.push( self.mapnikLayer( table, layer ) );
+        i--;
+      } 
+    } else if ( data.layers ){
+      data.layers.forEach(function(layer){
+        var lyr = '<Layer name="'+layer.name+'" buffer-size="50" status="on" srs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"><StyleName>'+layer.style+'</StyleName> <Datasource> <Parameter name="file">'+layer.file+'</Parameter> <Parameter name="layer">OGRGeoJSON</Parameter> <Parameter name="type">ogr</Parameter></Datasource></Layer>';
+        layers.push(lyr);
+      });
+    }
+   
     styleSheet += layers.join('');
     styleSheet += this.mapnikFooter;
     fs.writeFile(file, styleSheet, function(err){
@@ -209,8 +213,29 @@ var Tiles = function( koop ){
       if ( !nfs.existsSync( file ) ) {
         options.key = key;
         options.size = 256;
-        self._stash( file, format, data, z, x, y, options, function( err, newfile ){
-          callback( err, newfile );
+
+        // check for the config, create it if we need too
+        // check for the mapnik config
+        var p = [ koop.files.localDir, 'tiles', key].join('/');
+        var styleFile = p + '/style.xml';
+        options.styleFile = styleFile;
+        nfs.mkdir( p, '0777', true, function(){
+          //if ( !nfs.existsSync( styleFile ) ) {
+            var info = {layers:[{
+              name: options.name || 'tile',
+              style: (data && data.features && data.features[0] ) ? data.features[0].geometry.type.toLowerCase() : 'polygon',
+              file: file.replace(/png|utf|pbf|vector\.pbf/g, 'json')
+            }]}; 
+            self.createMapnikStyleSheet(styleFile, info, {}, function(err, done){
+              self._stash( file, format, data, z, x, y, options, function( err, newfile ){
+                callback( err, newfile );
+              });
+            });
+          //} else {
+          //  self._stash( file, format, data, z, x, y, options, function( err, newfile ){
+          //    callback( err, newfile );
+          //  });
+          //}
         });
       } else {
         callback( null, file );
@@ -223,6 +248,7 @@ var Tiles = function( koop ){
       if ( format == 'json' ){
         delete geojson.info;
         delete geojson.name;
+        geojson.type = 'FeatureCollection';
         fs.writeFile( file, JSON.stringify( geojson ), function(){
           callback( null, file );
         });
@@ -230,8 +256,8 @@ var Tiles = function( koop ){
 
           // create a pool for mapnik to swim
           if ( !mapnik.pools[ opts.key ] ){
-            var stylesheet = __dirname + '/../templates/renderers/style.xml';
-            mapnik.pools[ opts.key ] = mapnikPool.fromString( fs.readFileSync( stylesheet, 'utf8' ), {
+            //var stylesheet = __dirname + '/../templates/renderers/style.xml';
+            mapnik.pools[ opts.key ] = mapnikPool.fromString( fs.readFileSync( opts.styleFile, 'utf8' ), {
               size: opts.size,
               bufferSize: 128
             });
@@ -242,10 +268,12 @@ var Tiles = function( koop ){
 
             mapnik.pools[ opts.key ].acquire(function(err, map) {
 
+              map.extent = mercator.bbox(x, y, z, false, '900913');
+
               if ( format == 'png' ){
 //                map = new mapnik.Map(256, 256);
 //                map.loadSync(__dirname + '/../templates/renderers/style.xml');
-                layer = new mapnik.Layer(opts.name || 'tile');
+/*                layer = new mapnik.Layer(opts.name || 'tile');
                 layer.srs = '+init=epsg:4326';
                 layer.datasource = new mapnik.Datasource( { type: 'geojson', file: jsonFile } );
                 layer.bufferSize = 128;
@@ -255,9 +283,10 @@ var Tiles = function( koop ){
                   layer.styles = (geojson.features[0].geometry) ? [geojson.features[0].geometry.type.toLowerCase()] : [];
                 }
                 map.add_layer(layer);
+                map.bufferSize = 128;
+                map.extent = mercator.bbox(x, y, z, false, '900913');*/
 
                 var image = new mapnik.Image(256, 256);
-                map.extent = mercator.bbox(x, y, z, false, '900913');
 
                 map.render( image, {}, function( err, im ) {
                   if (err) {
@@ -275,36 +304,56 @@ var Tiles = function( koop ){
                 
               } else if (format == 'vector.pbf' || format == 'pbf') {
 
-                //map = new mapnik.Map(256, 256);
-                //map.loadSync(__dirname + '/../templates/renderers/style.xml');
-                try {
-                  layer = new mapnik.Layer(opts.name.replace( '.geojson', '' ));
-                } catch (e){
-                  layer = new mapnik.Layer(opts.name || 'tile');
-                }
-                layer.datasource = new mapnik.Datasource( { type: 'geojson', file: jsonFile } );
-                layer.bufferSize = 128;
-
-                map.add_layer(layer);
-
                 var vtile = new mapnik.VectorTile( z, x, y );
-                map.extent = mercator.bbox(x, y, z, false, '900913');
 
                 map.render( vtile, {}, function( err, vtile ) {
                   if (err) {
                     mapnik.pools[ opts.key ].release( map );
                     callback( err, null );
                   } else {
-                    fs.writeFileSync( file, vtile.getData() );
-                    mapnik.pools[ opts.key ].release( map );
-                    callback( null, file );
+                    zlib.deflate(vtile.getData(), function(err, buffer) {
+                      fs.writeFileSync( file, buffer );
+                      mapnik.pools[ opts.key ].release( map );
+                      callback( null, file );
+                    });
                   }
                 });
+  
+
+                //map = new mapnik.Map(256, 256);
+                //map.loadSync(__dirname + '/../templates/renderers/style.xml');
+
+                /*try {
+                  layer = new mapnik.Layer(opts.name.replace( '.geojson', '' ));
+                } catch (e){
+                  layer = new mapnik.Layer(opts.name || 'tile');
+                }
+                layer.datasource = new mapnik.Datasource( { type: 'geojson', file: jsonFile, buffer_size: 50 } );
+
+                map.add_layer(layer);
+
+                var vtile = new mapnik.VectorTile( z, x, y );
+                map.extent = mercator.bbox(x, y, z, false, '900913');
+
+                map.render(vtile, {}, function( err, vtile ) {
+                  if (err) {
+                    mapnik.pools[ opts.key ].release( map );
+                    callback( err, null );
+                  } else {
+                    zlib.deflate(vtile.getData(), function(err, buffer) {
+                      fs.writeFileSync( file, buffer );
+                      mapnik.pools[ opts.key ].release( map );
+                      callback( null, file );
+                    });
+                  }
+                });*/
 
               } else if ( format == 'utf') {
                 var grid = new mapnik.Grid(256, 256, {key: '__id__'});
                 //map = new mapnik.Map(256, 256);
                 //map.loadSync(__dirname + '/../templates/renderers/style.xml');
+                
+                /*
                 layer = new mapnik.Layer(opts.name || 'tile');
                 layer.datasource = new mapnik.Datasource( { type: 'geojson', file: jsonFile } );
                 // add styles 
@@ -315,7 +364,7 @@ var Tiles = function( koop ){
                 }
                 map.add_layer(layer);
                 map.extent = mercator.bbox(x, y, z, false, '900913');
-
+                */
 
                 map.render( grid, options, function( err, g ) {
                   if (err) {
@@ -343,6 +392,8 @@ var Tiles = function( koop ){
 
             nfs.mkdir( dir.join('/'), '0777', true, function(){
               delete geojson.info;
+              delete geojson.name;
+              geojson.type = 'FeatureCollection';
               fs.writeFile( jsonFile, JSON.stringify( geojson ), function(){
                 render();
               });

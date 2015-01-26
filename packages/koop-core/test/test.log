@@ -776,3 +776,85 @@
 {"level":"debug","message":"Selecting data select id, feature->>'properties' as props, feature->>'geometry' as geom from \"test:german:data2:0\" WHERE ST_GeomFromGeoJSON(feature->>'geometry') && ST_SetSRID('BOX3D(11.296916335529545 50.976109119993865,14.273970437121521 52.39566469623532)'::box3d,4326) ORDER BY id","timestamp":"2015-01-20T16:43:07.554Z"}
 {"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-20T16:43:07.615Z"}
 {"level":"debug","message":"Get Count 417 select count(*) as count from \"test:repo:file:0\"","timestamp":"2015-01-20T16:43:07.670Z"}
+{"level":"info","message":"CREATE TABLE \"repo:test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:22.308Z"}
+{"level":"info","message":"CREATE TABLE \"repo:test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:22.480Z"}
+{"level":"debug","message":"Selecting data select id, feature->>'properties' as props, feature->>'geometry' as geom from \"repo:test:repo:file:0\" ORDER BY id","timestamp":"2015-01-26T20:17:22.574Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local null dummy.png","timestamp":"2015-01-26T20:17:23.642Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local/ test.json","timestamp":"2015-01-26T20:17:26.485Z"}
+{"level":"info","message":"File exists on S3 chelm-koop-shoot-local test.json","timestamp":"2015-01-26T20:17:27.154Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local/test test.json","timestamp":"2015-01-26T20:17:28.487Z"}
+{"level":"info","message":"File exists on S3 chelm-koop-shoot-local test.json","timestamp":"2015-01-26T20:17:29.297Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local//test-rm test-rm.json","timestamp":"2015-01-26T20:17:30.283Z"}
+{"level":"info","message":"Removed file from s3 chelm-koop-shoot-local test-rm.json","timestamp":"2015-01-26T20:17:30.740Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local /test-rm test-rm.json","timestamp":"2015-01-26T20:17:31.177Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local/subdir test2.json","timestamp":"2015-01-26T20:17:32.235Z"}
+{"level":"debug","message":"Delete subdir subdir/test2.json","timestamp":"2015-01-26T20:17:33.708Z"}
+{"level":"info","message":"Removed Bucket from s3 subdir %s","timestamp":"2015-01-26T20:17:34.047Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local subdir test2.json","timestamp":"2015-01-26T20:17:34.506Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:35.109Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:35.194Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:35.258Z"}
+{"level":"debug","message":"Updating info test:repo:file:0 undefined","timestamp":"2015-01-26T20:17:35.310Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:35.319Z"}
+{"level":"info","message":"CREATE TABLE \"test:snow:data:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:35.400Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:35.463Z"}
+{"level":"debug","message":"Selecting data select id, feature->>'properties' as props, feature->>'geometry' as geom from \"test:repo:file:0\" ORDER BY id","timestamp":"2015-01-26T20:17:35.520Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:35.549Z"}
+{"level":"debug","message":"Selecting data select id, feature->>'properties' as props, feature->>'geometry' as geom from \"test:repo:file:0\" WHERE  (feature->'properties'->>'total precip') = '0.31' ORDER BY id","timestamp":"2015-01-26T20:17:35.600Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:35.608Z"}
+{"level":"info","message":"CREATE TABLE \"test:snow:data:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:35.658Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:35.673Z"}
+{"level":"info","message":"CREATE TABLE \"test:german:data:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:35.723Z"}
+{"level":"debug","message":"Selecting data select id, feature->>'properties' as props, feature->>'geometry' as geom from \"test:german:data:0\" WHERE  (feature->'properties'->>'ID')::float::int >= 2894 AND  (feature->'properties'->>'ID') <= '2997' ORDER BY id","timestamp":"2015-01-26T20:17:35.776Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:35.788Z"}
+{"level":"info","message":"CREATE TABLE \"test:german:data2:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:35.841Z"}
+{"level":"debug","message":"Selecting data select id, feature->>'properties' as props, feature->>'geometry' as geom from \"test:german:data2:0\" WHERE  (feature->'properties'->>'ID')::float::int >= 2894 AND  (feature->'properties'->>'ID')::float::int <= 2997 AND  (feature->'properties'->>'Land') ilike '%germany%' AND  (feature->'properties'->>'Art') ilike '%BRL%' ORDER BY id","timestamp":"2015-01-26T20:17:35.878Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:36.016Z"}
+{"level":"info","message":"CREATE TABLE \"test:german:data3:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:36.068Z"}
+{"level":"debug","message":"Selecting data select id, feature->>'properties' as props, feature->>'geometry' as geom from \"test:german:data3:0\" WHERE  (feature->'properties'->>'ID')::float::int >= 2894 AND  (feature->'properties'->>'ID')::float::int <= 3401 AND  (feature->'properties'->>'Art') = 'BRL' AND ( (feature->'properties'->>'Land') = 'Germany' OR  (feature->'properties'->>'Land') = 'Poland') ORDER BY id","timestamp":"2015-01-26T20:17:36.099Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:36.112Z"}
+{"level":"info","message":"CREATE TABLE \"test:german:data2:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:36.162Z"}
+{"level":"debug","message":"Selecting data select id, feature->>'properties' as props, feature->>'geometry' as geom from \"test:german:data2:0\" WHERE ST_GeomFromGeoJSON(feature->>'geometry') && ST_SetSRID('BOX3D(11.296916335529545 50.976109119993865,14.273970437121521 52.39566469623532)'::box3d,4326) ORDER BY id","timestamp":"2015-01-26T20:17:36.232Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:17:36.287Z"}
+{"level":"debug","message":"Get Count 417 select count(*) as count from \"test:repo:file:0\"","timestamp":"2015-01-26T20:17:36.326Z"}
+{"level":"info","message":"CREATE TABLE \"repo:test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:47.158Z"}
+{"level":"info","message":"CREATE TABLE \"repo:test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:47.270Z"}
+{"level":"debug","message":"Selecting data select id, feature->>'properties' as props, feature->>'geometry' as geom from \"repo:test:repo:file:0\" ORDER BY id","timestamp":"2015-01-26T20:18:47.338Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local null dummy.png","timestamp":"2015-01-26T20:18:48.056Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local/ test.json","timestamp":"2015-01-26T20:18:50.463Z"}
+{"level":"info","message":"File exists on S3 chelm-koop-shoot-local test.json","timestamp":"2015-01-26T20:18:51.051Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local/test test.json","timestamp":"2015-01-26T20:18:52.241Z"}
+{"level":"info","message":"File exists on S3 chelm-koop-shoot-local test.json","timestamp":"2015-01-26T20:18:52.802Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local//test-rm test-rm.json","timestamp":"2015-01-26T20:18:54.112Z"}
+{"level":"info","message":"Removed file from s3 chelm-koop-shoot-local test-rm.json","timestamp":"2015-01-26T20:18:54.566Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local /test-rm test-rm.json","timestamp":"2015-01-26T20:18:55.107Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local/subdir test2.json","timestamp":"2015-01-26T20:18:56.324Z"}
+{"level":"debug","message":"Delete subdir subdir/test2.json","timestamp":"2015-01-26T20:18:57.655Z"}
+{"level":"info","message":"Removed Bucket from s3 subdir %s","timestamp":"2015-01-26T20:18:57.784Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local subdir test2.json","timestamp":"2015-01-26T20:18:58.235Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:58.833Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:58.941Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:59.006Z"}
+{"level":"debug","message":"Updating info test:repo:file:0 undefined","timestamp":"2015-01-26T20:18:59.066Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:59.074Z"}
+{"level":"info","message":"CREATE TABLE \"test:snow:data:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:59.174Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:59.223Z"}
+{"level":"debug","message":"Selecting data select id, feature->>'properties' as props, feature->>'geometry' as geom from \"test:repo:file:0\" ORDER BY id","timestamp":"2015-01-26T20:18:59.260Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:59.272Z"}
+{"level":"debug","message":"Selecting data select id, feature->>'properties' as props, feature->>'geometry' as geom from \"test:repo:file:0\" WHERE  (feature->'properties'->>'total precip') = '0.31' ORDER BY id","timestamp":"2015-01-26T20:18:59.314Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:59.322Z"}
+{"level":"info","message":"CREATE TABLE \"test:snow:data:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:59.366Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:59.379Z"}
+{"level":"info","message":"CREATE TABLE \"test:german:data:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:59.423Z"}
+{"level":"debug","message":"Selecting data select id, feature->>'properties' as props, feature->>'geometry' as geom from \"test:german:data:0\" WHERE  (feature->'properties'->>'ID')::float::int >= 2894 AND  (feature->'properties'->>'ID') <= '2997' ORDER BY id","timestamp":"2015-01-26T20:18:59.477Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:59.490Z"}
+{"level":"info","message":"CREATE TABLE \"test:german:data2:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:59.541Z"}
+{"level":"debug","message":"Selecting data select id, feature->>'properties' as props, feature->>'geometry' as geom from \"test:german:data2:0\" WHERE  (feature->'properties'->>'ID')::float::int >= 2894 AND  (feature->'properties'->>'ID')::float::int <= 2997 AND  (feature->'properties'->>'Land') ilike '%germany%' AND  (feature->'properties'->>'Art') ilike '%BRL%' ORDER BY id","timestamp":"2015-01-26T20:18:59.577Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:59.594Z"}
+{"level":"info","message":"CREATE TABLE \"test:german:data3:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:59.633Z"}
+{"level":"debug","message":"Selecting data select id, feature->>'properties' as props, feature->>'geometry' as geom from \"test:german:data3:0\" WHERE  (feature->'properties'->>'ID')::float::int >= 2894 AND  (feature->'properties'->>'ID')::float::int <= 3401 AND  (feature->'properties'->>'Art') = 'BRL' AND ( (feature->'properties'->>'Land') = 'Germany' OR  (feature->'properties'->>'Land') = 'Poland') ORDER BY id","timestamp":"2015-01-26T20:18:59.663Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:59.681Z"}
+{"level":"info","message":"CREATE TABLE \"test:german:data2:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:59.722Z"}
+{"level":"debug","message":"Selecting data select id, feature->>'properties' as props, feature->>'geometry' as geom from \"test:german:data2:0\" WHERE ST_GeomFromGeoJSON(feature->>'geometry') && ST_SetSRID('BOX3D(11.296916335529545 50.976109119993865,14.273970437121521 52.39566469623532)'::box3d,4326) ORDER BY id","timestamp":"2015-01-26T20:18:59.800Z"}
+{"level":"info","message":"CREATE TABLE \"test:repo:file:0\" (id SERIAL PRIMARY KEY,feature JSON,geom Geometry(POINT, 4326))","timestamp":"2015-01-26T20:18:59.853Z"}
+{"level":"debug","message":"Get Count 417 select count(*) as count from \"test:repo:file:0\"","timestamp":"2015-01-26T20:18:59.946Z"}
