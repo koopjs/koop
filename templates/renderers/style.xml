@@ -11,7 +11,7 @@
 </Style>
 <Style name="point">
   <Rule>
-    <MarkersSymbolizer fill="#55AADD" opacity=".75" width="10.5" stroke="white" stroke-width="2" stroke-opacity=".25" placement="point" marker-type="ellipse" allow-overlap="true"/>
+    <MarkersSymbolizer fill="#55AADD" opacity=".75" width="10.5" stroke="white" stroke-width="2" stroke-opacity=".25" placement="point" marker-type="ellipse" allow-overlap="true" avoid-edges="true"/>
   </Rule>
 </Style>
 <Style name="linestring">
