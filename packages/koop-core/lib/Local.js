@@ -10,18 +10,51 @@ module.exports = {
     }
   },
 
+  getCount: function( key, options, callback ){
+    
+  },
+
+  getInfo: function( key, callback ){
+
+  },
+
+  updateInfo: function( key, info, callback ){
+
+  },
+
   insert: function( type, key, geojson, callback ){
     this.store[type+':'+key] = geojson;
     callback(null, geojson); 
   },
 
-  register: function( type, key, info, callback ){
+  insertPartial: function( key, geojson, layerId, callback ){
+
+  },
+
+  _insertFeature: function(table, feature, i){
+
+  },
+
+  dropTable: function(){
+
+  },
+
+  serviceRegister: function( type, key, info, callback ){
     this.store[type + ':' + key + ':' + info.id] = info;
     callback(null, geojson);
   },
 
-  deregister: function( type, key, id, callback ){
-    delete this.store[type+':'+key];
+  serviceCount:function(){
+
+  },
+
+  serviceRemove: function( type, id, callback){
+    delete this.store[type+':'+id];
+    callback(null, geojson);
+  },
+
+  serviceGet: function( type, id, callback){
+    delete this.store[type+':'+id];
     callback(null, geojson);
   },
 
@@ -30,17 +63,22 @@ module.exports = {
     callback(null, true);
   },
 
-  timer: {
-    get: function(key, callback){
+  timerGet: function(key, callback){
       callback( null, this.store[key]);  
-    },
-    set: function(key, expires, callback){
+  },
+
+  timerSet: function(key, expires, callback){
       var self = this;
       this.store[key] = true;
       setInterval(function(){
         delete self.store[key];
       }, expires);
       callback(null, true);
-    }
   }
+
+  _query: function(sql, callback){
+    
+  }
+
+
 };

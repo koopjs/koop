@@ -3,8 +3,6 @@ var should = require('should');
 before(function (done) {
   key = 'test:repo:file';
   repoData = require('../fixtures/repo.geojson');
-  PostGIS = require('../../lib/PostGIS.js');
-  SQLite = require('../../lib/SQLite.js');
 
   CacheHelper = require('../helpers/Cache.js');
   Cache = CacheHelper.cache;
