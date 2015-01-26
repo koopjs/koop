@@ -1,4 +1,12 @@
 
+## [1.0.10](https://github.com/Esri/koop/releases/tag/v1.0.10) - 2015-01-26
+### Changed
+- using mapnik-pool for all tiles now
+- refactored tiles for better vector tile buffer/edge support in the mapnik
+- PBF tiles are now deflated via zlib, which makes them smaller
+  - providers need to set the header
+    - `content-encoding: deflate`
+
 ## [1.0.9](https://github.com/Esri/koop/releases/tag/v1.0.9) - 2015-01-21
 ### Changed
 - splitting objectIds for feature service queries
