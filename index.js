@@ -123,6 +123,9 @@ module.exports = function( config ) {
   koop.Cache = new koop.DataCache( koop );
 
   // use the default local cache until a DB adapter mod is registered
+  if (!config.db || !config.db.conn){
+    console.warn('Warning koop w/o persistent cache means no data will be cached across server sessions.');
+  }
   koop.Cache.db = koop.LocalDB; 
  
   // registers a DB modules  
