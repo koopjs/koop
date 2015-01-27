@@ -141,6 +141,10 @@ module.exports = function( config ) {
     process.exit();
   }
 
+  app.use(function (req, res, next) {
+      res.removeHeader("X-Powered-By");
+      next();
+  });
 
   return app;
 
