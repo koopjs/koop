@@ -1,4 +1,8 @@
 
+## [1.0.11](https://github.com/Esri/koop/releases/tag/v1.0.11) - 2015-01-27
+### Changed
+- fixed support for bad outStatistics params in the url
+
 ## [1.0.10](https://github.com/Esri/koop/releases/tag/v1.0.10) - 2015-01-26
 ### Changed
 - using mapnik-pool for all tiles now
