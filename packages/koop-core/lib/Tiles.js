@@ -223,7 +223,7 @@ var Tiles = function( koop ){
           //if ( !nfs.existsSync( styleFile ) ) {
             var info = {layers:[{
               name: options.name || 'tile',
-              style: (data && data.features && data.features[0] ) ? data.features[0].geometry.type.toLowerCase() : 'polygon',
+              style: (data && data.features && data.features[0] ) ? data.features[0].geometry.type.toLowerCase() : 'point',
               file: file.replace(/png|utf|pbf|vector\.pbf/g, 'json')
             }]}; 
             self.createMapnikStyleSheet(styleFile, info, {}, function(err, done){
