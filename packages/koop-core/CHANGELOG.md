@@ -1,4 +1,10 @@
 
+## [1.0.12](https://github.com/Esri/koop/releases/tag/v1.0.12) - 2015-01-29
+### Added
+- now sending the expiration time with the base json response, helps with cache life
+### Changed 
+- Tile styles are defaulted to points
+
 ## [1.0.11](https://github.com/Esri/koop/releases/tag/v1.0.11) - 2015-01-27
 ### Changed
 - fixed support for bad outStatistics params in the url
