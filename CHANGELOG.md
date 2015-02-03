@@ -1,4 +1,9 @@
 
+## [1.0.13](https://github.com/Esri/koop/releases/tag/v1.0.13) - 2015-02-02
+###Changed 
+- changed the way tiles are created, rather than creating a file on disk, now we just pass the mapnik XML around 
+- using ST_Simplify instead of ST_SimplifyPreserveTopology for speed 
+
 ## [1.0.12](https://github.com/Esri/koop/releases/tag/v1.0.12) - 2015-01-29
 ### Added
 - now sending the expiration time with the base json response, helps with cache life
