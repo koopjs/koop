@@ -210,7 +210,7 @@ module.exports = {
           var info = result.rows[0].info;
           var select;
           if (options.simplify){
-            select = 'select id, feature->>\'properties\' as props, st_asgeojson(st_simplifypreservetopology(geom::geometry, '+options.simplify+')) as geom from "' + key+':'+(options.layer || 0)+'"'; 
+            select = 'select id, feature->>\'properties\' as props, st_asgeojson(st_simplify(ST_GeomFromGeoJSON(feature->>\'geometry\'), '+options.simplify+')) as geom from "' + key+':'+(options.layer || 0)+'"'; 
           } else {
             select = 'select id, feature->>\'properties\' as props, feature->>\'geometry\' as geom from "' + key+':'+(options.layer || 0)+'"'; 
           }
