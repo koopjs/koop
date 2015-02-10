@@ -146,6 +146,9 @@ module.exports = function( config ) {
       next();
   });
 
+  // save the koop log onto the app
+  app.log = koop.log;
+
   return app;
 
 };

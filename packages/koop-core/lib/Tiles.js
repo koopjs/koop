@@ -17,7 +17,7 @@ mapnik.pools = {};
 
 var Tiles = function( koop ){
 
-  this.mapnikHeader = '<Map srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over" background-color="transparent" buffer-size="50"><Style name="polygon" filter-mode="first"><Rule><PolygonSymbolizer fill="darkblue" fill-opacity=".75"/></Rule></Style><Style name="point"><Rule><MarkersSymbolizer fill="#55AADD" opacity=".75" width="10.5" stroke="white" stroke-width="2" stroke-opacity=".25" placement="point" marker-type="ellipse" allow-overlap="true"/></Rule></Style><Style name="linestring">  <Rule><LineSymbolizer stroke="darkgrey" stroke-width="3" /><LineSymbolizer stroke="white" stroke-width="1.5" /></Rule></Style><Style name="multilinestring"><Rule><LineSymbolizer stroke="darkgrey" stroke-width="3" /><LineSymbolizer stroke="white" stroke-width="1.5" /></Rule></Style><Style name="multipolygon" filter-mode="first"><Rule><PolygonSymbolizer fill="darkblue" fill-opacity=".75"/></Rule></Style>';
+  this.mapnikHeader = '<Map srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over" background-color="transparent" buffer-size="20"><Style name="polygon" filter-mode="first"><Rule><PolygonSymbolizer fill="darkblue" fill-opacity=".75"/></Rule></Style><Style name="point"><Rule><MarkersSymbolizer fill="#55AADD" opacity=".75" width="10.5" stroke="white" stroke-width="2" stroke-opacity=".25" placement="point" marker-type="ellipse" allow-overlap="true"/></Rule></Style><Style name="linestring">  <Rule><LineSymbolizer stroke="darkgrey" stroke-width="3" /><LineSymbolizer stroke="white" stroke-width="1.5" /></Rule></Style><Style name="multilinestring"><Rule><LineSymbolizer stroke="darkgrey" stroke-width="3" /><LineSymbolizer stroke="white" stroke-width="1.5" /></Rule></Style><Style name="multipolygon" filter-mode="first"><Rule><PolygonSymbolizer fill="darkblue" fill-opacity=".75"/></Rule></Style>';
 
   this.mapnikFooter = '</Map>';
 
@@ -41,7 +41,7 @@ var Tiles = function( koop ){
 
     tableQuery = this.buildTableQuery( table, fields);
 
-    var layer = '<Layer name="'+name+'" maxzoom="'+minZoom+'" minzoom="'+maxZoom+'" buffer-size="50" status="on" srs="+proj=latlong +datum=WGS84">';
+    var layer = '<Layer name="'+name+'" maxzoom="'+minZoom+'" minzoom="'+maxZoom+'" buffer-size="20" status="on" srs="+proj=latlong +datum=WGS84">';
     layer += '<StyleName>' + type + '</StyleName>';
     layer += '<Datasource><Parameter name="type">postgis</Parameter>';
     layer += '<Parameter name="host">'+Cache.db.client.host+'</Parameter>';
@@ -69,7 +69,7 @@ var Tiles = function( koop ){
       } 
     } else if ( data.layers ){
       data.layers.forEach(function(layer){
-        var lyr = '<Layer name="'+layer.name+'" buffer-size="50" status="on" srs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"><StyleName>'+layer.style+'</StyleName> <Datasource> <Parameter name="file">'+layer.file+'</Parameter> <Parameter name="layer">OGRGeoJSON</Parameter> <Parameter name="type">ogr</Parameter></Datasource></Layer>';
+        var lyr = '<Layer name="'+layer.name+'" buffer-size="20" status="on" srs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"><StyleName>'+layer.style+'</StyleName> <Datasource> <Parameter name="file">'+layer.file+'</Parameter> <Parameter name="layer">OGRGeoJSON</Parameter> <Parameter name="type">ogr</Parameter></Datasource></Layer>';
         layers.push(lyr);
       });
     }
@@ -119,8 +119,8 @@ var Tiles = function( koop ){
       if ( !fs.existsSync( file ) ) {
         if ( !mapnik.pools[ mapKey ] ){
           mapnik.pools[ mapKey ] = mapnikPool.fromString( fs.readFileSync( stylesheet, 'utf8' ), { 
-            size: size+100,
-            bufferSize: 30
+            size: size,
+            bufferSize: 20
           });
         }
 
