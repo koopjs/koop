@@ -95,6 +95,7 @@ module.exports = function( config ) {
       if ( controller[ handler ] ){
         defaultRoutes[ handler ].forEach(function(route){
           app[ 'get' ]( '/'+ name + pattern + route, controller[ handler ]);
+          app[ 'post' ]( '/'+ name + pattern + route, controller[ handler ]);
         });
       }
     }
