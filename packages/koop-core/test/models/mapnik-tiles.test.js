@@ -1,6 +1,10 @@
 var should = require('should');
-   
-var opts = { styleFile: __dirname+'/../fixtures/style.xml' };
+var fs = require('fs');
+
+var opts = { 
+  styleFile: __dirname+'/../fixtures/style.xml', 
+  rawStyleSheet: fs.readFileSync(__dirname+'/../fixtures/style.xml').toString()
+};
 
 before(function (done) {
   data = require('../fixtures/11.geojson');
@@ -26,6 +30,7 @@ describe('Mapnik Tiles Model', function(){
       it('when creating a tile', function(done){
         var file = __dirname + '/../fixtures/co.6.13.24.vector.pbf',
           format = 'vector.pbf';
+        var rawStyleSheet = 'stylesheet'
 
         tiles._stash( file, format, data, 6, 12, 24, opts, function( err, res ){
           should.not.exist(err);
