@@ -95,6 +95,7 @@ module.exports = function( config ) {
       if ( controller[ handler ] ){
         defaultRoutes[ handler ].forEach(function(route){
           app[ 'get' ]( '/'+ name + pattern + route, controller[ handler ]);
+          app[ 'post' ]( '/'+ name + pattern + route, controller[ handler ]);
         });
       }
     }
@@ -126,6 +127,7 @@ module.exports = function( config ) {
   if (!config.db || !config.db.conn){
     console.warn('Warning koop w/o persistent cache means no data will be cached across server sessions.');
   }
+
   koop.Cache.db = koop.LocalDB; 
  
   // registers a DB modules  
@@ -133,6 +135,15 @@ module.exports = function( config ) {
     koop.Cache.db = adapter.connect( config.db.conn, koop );
     return;
   };
+
+  // remove the x powered by header from all responses
+  app.use(function (req, res, next) {
+      res.removeHeader("X-Powered-By");
+      next();
+  });
+
+  // save the koop log onto the app
+  app.log = koop.log;
 
   return app;
 

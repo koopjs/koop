@@ -37,15 +37,23 @@ describe('FeatureServices Model', function(){
         propFloat:10.1,
         propString:'Awesome'
       };
-      var fields = fs.fields( input );
+      var fieldObj = fs.fields( input ),
+        fields = fieldObj.fields;
 
-      it('attributes should be an array', function(done) {
+
+      it('fields should be an array', function(done) {
+          fieldObj.should.be.an.instanceOf(Object);
           fields.should.be.an.instanceOf(Array);
           done();
       });
 
+      it('IOD field should equal id', function(done) {
+          fieldObj.oidField.should.equal('id');
+          done();
+      });
+
       it('attributes should contain a double, int, and string', function(done) {
-          fields.forEach(function(f){
+          fields.forEach(function( f ){
             f.should.have.property('type');
             f.should.have.property('name');
             f.should.have.property('alias');
@@ -85,7 +93,7 @@ describe('FeatureServices Model', function(){
 
     describe('when getting featureserver features by id queries', function(){
       it('should return a proper features', function(done){
-        fs.query( data, { objectIds: [ 1, 2, 3 ]}, function( err, service ){
+        fs.query( data, { objectIds: '1,2,3'}, function( err, service ){
           service.should.be.an.instanceOf(Object);
           service.fields.should.be.an.instanceOf(Array);
           service.features.should.have.length( 3 );
@@ -95,7 +103,7 @@ describe('FeatureServices Model', function(){
     });
     describe('when getting features with returnCountOnly', function(){
       it('should return only count of features', function(done){
-        fs.query( data, { returnCountOnly: true, objectIds: [ 1, 2, 3 ]}, function( err, service ){
+        fs.query( data, { returnCountOnly: true, objectIds: '1,2,3'}, function( err, service ){
           service.should.be.an.instanceOf(Object);
           service.should.have.property('count');
           service.count.should.equal( 3 );
@@ -105,7 +113,7 @@ describe('FeatureServices Model', function(){
     });
     describe('when getting features with returnIdsOnly', function(){
       it('should return only ids of features', function(done){
-        fs.query( data, { returnIdsOnly: true, objectIds: [ 1, 2, 3 ]}, function( err,service ){
+        fs.query( data, { returnIdsOnly: true, objectIds: '1,2,3'}, function( err,service ){
           service.should.be.an.instanceOf(Object);
           service.should.have.property('objectIds');
           service.objectIds.length.should.equal( 3 );
