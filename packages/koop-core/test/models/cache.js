@@ -47,7 +47,7 @@ describe('Cache Model Tests', function(){
           Cache.get('repo', key, {}, function( err, d ){
             should.not.exist(err);
             should.exist(d[0].name);
-            d[0].name.should.equal('snow.geojson');
+            d[0].name.should.equal('forks.geojson');
             done();
           });
         });
