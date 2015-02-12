@@ -1,4 +1,14 @@
 
+## [1.0.15](https://github.com/Esri/koop/releases/tag/v1.0.15) - 2015-02-12
+###Added
+- added a the module connect-multipart to support multipart form posts
+
+###Changes
+- fixed the way feature service requests handle query strings to the info endpoints
+
+
+###Removed 
+
 ## [1.0.14](https://github.com/Esri/koop/releases/tag/v1.0.14) - 2015-02-10
 ###Changed
 - default routes needed to add support for POSTs to feature service endpoints

@@ -4,6 +4,7 @@ var express = require("express"),
   pjson = require('./package.json'),
   _ = require("lodash"),
   child = require('child_process').fork,
+  multipart = require('connect-multiparty')(),
   koop = require('./lib');
 
 module.exports = function( config ) {
@@ -95,7 +96,8 @@ module.exports = function( config ) {
       if ( controller[ handler ] ){
         defaultRoutes[ handler ].forEach(function(route){
           app[ 'get' ]( '/'+ name + pattern + route, controller[ handler ]);
-          app[ 'post' ]( '/'+ name + pattern + route, controller[ handler ]);
+          // add multipart middleware for POSTs to featureservices
+          app[ 'post' ]( '/'+ name + pattern + route, multipart, controller[ handler ]);
         });
       }
     }
