@@ -132,7 +132,12 @@ module.exports = function( config ) {
  
   // registers a DB modules  
   app.registerCache = function( adapter ){
-    koop.Cache.db = adapter.connect( config.db.conn, koop );
+    if ( config.db && config.db.conn ) {
+      koop.Cache.db = adapter.connect( config.db.conn, koop );
+    } 
+    else {
+      console.log('Cannot register this cache, missing db connection in config');
+    }
     return;
   };
 
