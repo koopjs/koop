@@ -1,4 +1,8 @@
 
+## [1.0.16](https://github.com/Esri/koop/releases/tag/v1.0.16) - 2015-02-13
+###Changed
+- Fized the package json missing the multipart post module  
+
 ## [1.0.15](https://github.com/Esri/koop/releases/tag/v1.0.15) - 2015-02-12
 ###Added
 - added a the module connect-multipart to support multipart form posts
