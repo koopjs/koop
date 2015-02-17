@@ -11,8 +11,6 @@
 - fixed the way feature service requests handle query strings to the info endpoints
 
 
-###Removed 
-
 ## [1.0.14](https://github.com/Esri/koop/releases/tag/v1.0.14) - 2015-02-10
 ###Changed
 - default routes needed to add support for POSTs to feature service endpoints
