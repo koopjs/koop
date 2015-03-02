@@ -1,5 +1,7 @@
 var should = require('should');
 
+var Cache;
+
 before(function (done) {
   key = 'test:repo:file';
   repoData = require('../fixtures/repo.geojson');
@@ -44,7 +46,7 @@ describe('Cache Model Tests', function(){
         Cache.insert( 'repo', key, repoData[0], 0, function( error, success ){
           should.not.exist(error);
           success.should.equal( true );
-          Cache.get('repo', key, {}, function( err, d ){
+          Cache.get('repo', key, { layer: 0 }, function( err, d ){
             should.not.exist(err);
             should.exist(d[0].name);
             d[0].name.should.equal('forks.geojson');
