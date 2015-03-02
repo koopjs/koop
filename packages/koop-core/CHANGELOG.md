@@ -1,4 +1,8 @@
 
+## [1.0.18](https://github.com/Esri/koop/releases/tag/v1.0.18) - 2015-03-02
+###Added 
+- support for koop-pgcache to export workers
+
 ## [1.0.17](https://github.com/Esri/koop/releases/tag/v1.0.17) - 2015-03-02
 ###Changed
 - Koop longer ships with default support for PostGIS or Spatiallite. These have become optional plugins
