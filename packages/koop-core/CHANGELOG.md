@@ -1,4 +1,11 @@
 
+## [1.0.17](https://github.com/Esri/koop/releases/tag/v1.0.17) - 2015-03-02
+###Changed
+- Koop longer ships with default support for PostGIS or Spatiallite. These have become optional plugins
+  - this means that need to be added the koop module at server start up time
+  - koop now ships with a Local cache out of the box that is not persisted across server sessions
+
+
 ## [1.0.16](https://github.com/Esri/koop/releases/tag/v1.0.16) - 2015-02-13
 ###Changed
 - Fized the package json missing the multipart post module  
