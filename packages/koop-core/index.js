@@ -125,6 +125,25 @@ module.exports = function( config ) {
   koop.exporter = new koop.Exporter( koop );
   koop.Cache = new koop.DataCache( koop );
 
+  // use the default local cache until a DB adapter mod is registered
+  if (!config.db || !config.db.conn){
+    console.warn('Warning koop w/o persistent cache means no data will be cached across server sessions.');
+  }
+
+  koop.Cache.db = koop.LocalDB; 
+ 
+  // registers a DB modules  
+  app.registerCache = function( adapter ){
+    if ( config.db && config.db.conn ) {
+      koop.Cache.db = adapter.connect( config.db.conn, koop );
+    } 
+    else {
+      console.log('Cannot register this cache, missing db connection in config');
+    }
+    return;
+  };
+
+  // remove the x powered by header from all responses
   app.use(function (req, res, next) {
       res.removeHeader("X-Powered-By");
       next();
