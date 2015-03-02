@@ -952,3 +952,52 @@
 {"level":"info","message":"Removed Bucket from s3 subdir %s","timestamp":"2015-02-11T21:46:31.884Z"}
 {"level":"debug","message":"Delete subdir subdir/test2.json","timestamp":"2015-02-11T21:46:31.889Z"}
 {"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local subdir test2.json","timestamp":"2015-02-11T21:46:32.396Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local null dummy.png","timestamp":"2015-02-17T14:29:07.625Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local/ test.json","timestamp":"2015-02-17T14:29:10.693Z"}
+{"level":"info","message":"File exists on S3 chelm-koop-shoot-local test.json","timestamp":"2015-02-17T14:29:11.296Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local/test test.json","timestamp":"2015-02-17T14:29:12.777Z"}
+{"level":"info","message":"File exists on S3 chelm-koop-shoot-local test.json","timestamp":"2015-02-17T14:29:13.393Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local//test-rm test-rm.json","timestamp":"2015-02-17T14:29:14.824Z"}
+{"level":"info","message":"Removed file from s3 chelm-koop-shoot-local test-rm.json","timestamp":"2015-02-17T14:29:15.483Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local /test-rm test-rm.json","timestamp":"2015-02-17T14:29:16.135Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local/subdir test2.json","timestamp":"2015-02-17T14:29:17.652Z"}
+{"level":"debug","message":"Delete subdir subdir/test2.json","timestamp":"2015-02-17T14:29:19.704Z"}
+{"level":"info","message":"Removed Bucket from s3 subdir %s","timestamp":"2015-02-17T14:29:19.705Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local subdir test2.json","timestamp":"2015-02-17T14:29:20.423Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local null dummy.png","timestamp":"2015-02-17T14:29:59.505Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local/ test.json","timestamp":"2015-02-17T14:30:03.988Z"}
+{"level":"info","message":"File exists on S3 chelm-koop-shoot-local test.json","timestamp":"2015-02-17T14:30:05.559Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local/test test.json","timestamp":"2015-02-17T14:30:06.877Z"}
+{"level":"info","message":"File exists on S3 chelm-koop-shoot-local test.json","timestamp":"2015-02-17T14:30:07.507Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local//test-rm test-rm.json","timestamp":"2015-02-17T14:30:09.791Z"}
+{"level":"info","message":"Removed file from s3 chelm-koop-shoot-local test-rm.json","timestamp":"2015-02-17T14:30:10.296Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local /test-rm test-rm.json","timestamp":"2015-02-17T14:30:10.880Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local/subdir test2.json","timestamp":"2015-02-17T14:30:12.095Z"}
+{"level":"debug","message":"Delete subdir subdir/test2.json","timestamp":"2015-02-17T14:30:13.799Z"}
+{"level":"info","message":"Removed Bucket from s3 subdir %s","timestamp":"2015-02-17T14:30:13.802Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local subdir test2.json","timestamp":"2015-02-17T14:30:14.412Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local null dummy.png","timestamp":"2015-02-17T14:31:56.491Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local null dummy.png","timestamp":"2015-02-17T14:39:14.266Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local/ test.json","timestamp":"2015-02-17T14:39:16.485Z"}
+{"level":"info","message":"File exists on S3 chelm-koop-shoot-local test.json","timestamp":"2015-02-17T14:39:17.027Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local/test test.json","timestamp":"2015-02-17T14:39:18.154Z"}
+{"level":"info","message":"File exists on S3 chelm-koop-shoot-local test.json","timestamp":"2015-02-17T14:39:18.661Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local//test-rm test-rm.json","timestamp":"2015-02-17T14:39:19.739Z"}
+{"level":"info","message":"Removed file from s3 chelm-koop-shoot-local test-rm.json","timestamp":"2015-02-17T14:39:20.232Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local /test-rm test-rm.json","timestamp":"2015-02-17T14:39:20.763Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local/subdir test2.json","timestamp":"2015-02-17T14:39:21.750Z"}
+{"level":"info","message":"Removed Bucket from s3 subdir %s","timestamp":"2015-02-17T14:39:23.078Z"}
+{"level":"debug","message":"Delete subdir subdir/test2.json","timestamp":"2015-02-17T14:39:23.089Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local subdir test2.json","timestamp":"2015-02-17T14:39:23.534Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local null dummy.png","timestamp":"2015-02-17T14:39:34.807Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local/ test.json","timestamp":"2015-02-17T14:39:36.819Z"}
+{"level":"info","message":"File exists on S3 chelm-koop-shoot-local test.json","timestamp":"2015-02-17T14:39:37.244Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local/test test.json","timestamp":"2015-02-17T14:39:38.334Z"}
+{"level":"info","message":"File exists on S3 chelm-koop-shoot-local test.json","timestamp":"2015-02-17T14:39:38.798Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local//test-rm test-rm.json","timestamp":"2015-02-17T14:39:39.922Z"}
+{"level":"info","message":"Removed file from s3 chelm-koop-shoot-local test-rm.json","timestamp":"2015-02-17T14:39:40.358Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local /test-rm test-rm.json","timestamp":"2015-02-17T14:39:40.810Z"}
+{"level":"info","message":"Uploaded file to s3 chelm-koop-shoot-local/subdir test2.json","timestamp":"2015-02-17T14:39:41.802Z"}
+{"level":"info","message":"Removed Bucket from s3 subdir %s","timestamp":"2015-02-17T14:39:42.866Z"}
+{"level":"debug","message":"Delete subdir subdir/test2.json","timestamp":"2015-02-17T14:39:42.889Z"}
+{"level":"info","message":"File does not exist on S3 chelm-koop-shoot-local subdir test2.json","timestamp":"2015-02-17T14:39:43.307Z"}
