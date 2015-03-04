@@ -1,4 +1,8 @@
 
+## [1.0.19](https://github.com/Esri/koop/releases/tag/v1.0.19) - 2015-03-04
+###Changed
+- We are now using the latest node-mapnik versions which should help with installs on Windows 
+
 ## [1.0.18](https://github.com/Esri/koop/releases/tag/v1.0.18) - 2015-03-02
 ###Added 
 - support for koop-pgcache to export workers
