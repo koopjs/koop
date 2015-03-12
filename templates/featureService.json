@@ -1,14 +1,14 @@
 {
 	"currentVersion": 10.21,
-	"serviceDescription": "",
+	"serviceDescription": "This is a feature service exposed with Koop, an open source project that turns APIs into features. Service Description information may not be available for all services. For more information, check out https://github.com/Esri/koop ",
 	"hasVersionedData": false,
 	"supportsDisconnectedEditing": false,
 	"supportedQueryFormats": "JSON",
 	"maxRecordCount": 1000,
 	"hasStaticData": true,
 	"capabilities": "Query",
-	"description": "",
-	"copyrightText": "",
+	"description": "This is a feature service exposed with Koop, an open source project that turns APIs into features. Service Description information may not be available for all services. For more information, check out https://github.com/Esri/koop",
+	"copyrightText": "Copyright information varies from provider to provider, for more information please contact the source of this data",
 	"spatialReference": {
 		"wkid": 4326,
 		"latestWkid": 4326
