@@ -1,10 +1,13 @@
+# Change Log
+All notable changes to this project will be documented in this file.
+This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0.19](https://github.com/Esri/koop/releases/tag/v1.0.19) - 2015-03-04
 ###Changed
-- We are now using the latest node-mapnik versions which should help with installs on Windows 
+- We are now using the latest node-mapnik versions which should help with installs on Windows
 
 ## [1.0.18](https://github.com/Esri/koop/releases/tag/v1.0.18) - 2015-03-02
-###Added 
+###Added
 - support for koop-pgcache to export workers
 
 ## [1.0.17](https://github.com/Esri/koop/releases/tag/v1.0.17) - 2015-03-02
@@ -16,7 +19,7 @@
 
 ## [1.0.16](https://github.com/Esri/koop/releases/tag/v1.0.16) - 2015-02-13
 ###Changed
-- Fized the package json missing the multipart post module  
+- Fized the package json missing the multipart post module
 
 ## [1.0.15](https://github.com/Esri/koop/releases/tag/v1.0.15) - 2015-02-12
 ###Added
@@ -31,18 +34,18 @@
 - default routes needed to add support for POSTs to feature service endpoints
 - worker exporters needed to exit more gracefully and stop working when a file fails to be created
 - a typo in GeoJSON.fromEsri was crashing request pages in koop-agol
- 
+
 
 ## [1.0.13](https://github.com/Esri/koop/releases/tag/v1.0.13) - 2015-02-02
-###Changed 
-- changed the way tiles are created, rather than creating a file on disk, now we just pass the mapnik XML around 
-- using ST_Simplify instead of ST_SimplifyPreserveTopology for speed 
+###Changed
+- changed the way tiles are created, rather than creating a file on disk, now we just pass the mapnik XML around
+- using ST_Simplify instead of ST_SimplifyPreserveTopology for speed
 
 ## [1.0.12](https://github.com/Esri/koop/releases/tag/v1.0.12) - 2015-01-29
 ### Added
 - now sending the expiration time with the base json response, helps with cache life
 
-### Changed 
+### Changed
 - Tile styles are defaulted to points
 
 ## [1.0.11](https://github.com/Esri/koop/releases/tag/v1.0.11) - 2015-01-27
@@ -65,34 +68,34 @@
 ## [1.0.8](https://github.com/Esri/koop/releases/tag/v1.0.8) - 2015-01-21
 ### Changed
 - fixed an issue with object id fields in feature service queries for Ids with filters
-  - when using returnIdsOnly the objectID was not getting set, which return false rows. 
+  - when using returnIdsOnly the objectID was not getting set, which return false rows.
 
 ## [1.0.7](https://github.com/Esri/koop/releases/tag/v1.0.7) - 2015-01-20
-### Changed 
-- lib/Tiles.js now passes along an optional name param to the tile generator. Vector tile use this name to store features. 
-- fixed the tests, they are passing but jshint is not. 
-- changed the way the lib/BaseController.js sends back its statuses. 
+### Changed
+- lib/Tiles.js now passes along an optional name param to the tile generator. Vector tile use this name to store features.
+- fixed the tests, they are passing but jshint is not.
+- changed the way the lib/BaseController.js sends back its statuses.
 
 ## [1.0.6](https://github.com/Esri/koop/releases/tag/v1.0.6) - 2015-01-16
 ### Added
-- a flag to the lib/Exporter.js class that will lock export jobs to prevent duplicate jobs stepping on each other in the queue. 
-  - This means that one job per dataset can be enqueued at a time. 
-  - Down the road this may cause problems for when we want to pre-cache several formats for the same dataset at the same time. That bridge will be crossed at that time.  
+- a flag to the lib/Exporter.js class that will lock export jobs to prevent duplicate jobs stepping on each other in the queue.
+  - This means that one job per dataset can be enqueued at a time.
+  - Down the road this may cause problems for when we want to pre-cache several formats for the same dataset at the same time. That bridge will be crossed at that time.
 
 ## [1.0.5](https://github.com/Esri/koop/releases/tag/v1.0.5) - 2015-01-15
-### Added 
+### Added
 - a flag to the lib/PostGIS.js cache too ignore the selection limit unless a provider wants to use it.
-  - since this feature is used by only a couple providers it seemed better to make it an opt-in option for the few, rather than an opt-out option across every provider.  
+  - since this feature is used by only a couple providers it seemed better to make it an opt-in option for the few, rather than an opt-out option across every provider.
 
 ## [1.0.3](https://github.com/Esri/koop/releases/tag/v1.0.3) - 2015-01-13
 ### Changed
-- Fixed a bug in the ExportWorker where shps were being created as a directory with an extension .shp; this fixes some formatting errors that were related. 
+- Fixed a bug in the ExportWorker where shps were being created as a directory with an extension .shp; this fixes some formatting errors that were related.
 
 ## [1.0.2](https://github.com/Esri/koop/releases/tag/v1.0.2) - 2015-01-13
 ### Changed
 - Koop exports now force OGR to create shp file dirs instead of files; This adds more consistency so the code can maintain a single way for creating zip exports
 - The query support for outStatistics now removes any passed in slashes so it stops choking on parsing semi-bad inputs
-- The large data limit was moved from 10k features to 2k. This helps koop when its deployed with workers in that more work is handed down to the workers, which is good. 
+- The large data limit was moved from 10k features to 2k. This helps koop when its deployed with workers in that more work is handed down to the workers, which is good.
 
 
 ## [1.0.1](https://github.com/Esri/koop/releases/tag/1.0.1) - 2015-01-08
@@ -107,4 +110,4 @@
 - Version 1.0.0 changes many thing
   - koop is now a module, installable via `npm install`
   - koop-server is no more; all central code is in the koop project
-  - to use Koop you must use it as middleware in an app that boots up an http server 
+  - to use Koop you must use it as middleware in an app that boots up an http server
