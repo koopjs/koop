@@ -2,7 +2,7 @@
 
 **Turn data into Feature Services.**
 
-Koop is a node.js module that exposes an [Express](http://expressjs.com/) server for the purpose of being used as middleware within an Express based application.  
+Koop is a node.js module that exposes an [Express](http://expressjs.com/) server for the purpose of being used as middleware within an Express based application.
 
 Koop provides a flexible server for exposing 3rd party data sources (APIs) as both [Feature Services](http://resources.arcgis.com/en/help/arcgis-rest-api/#/Query_Feature_Service_Layer/02r3000000r1000000/) and other data formats (GeoJSON). This project is meant to provide a simple / pluggable platform for experimenting with various data within the ArcGIS platform. Koop aims to provide a platform for accessing any API and making it easy to consume within the realm of Esri's geospatial web products.
 
@@ -24,11 +24,10 @@ The following dependencies are needed in order to run Koop on your local machine
 
 ## Pre-Installation on Windows
 1. Setup the Python environmental variable
- 
+
   ```
   # Windows
   SET PYTHON = C:\Python27\python\python.exe
-  
   ```
 
 ## Installation
@@ -42,10 +41,10 @@ Basic installation would occur within an existing or new node.js project like so
 Then you would install a Koop Provider, like Github (see below for a full list of providers)
 
   ```
-  npm install koop-github 
+  npm install koop-github
   ```
 
-## Registering Providers 
+## Registering Providers
 
 Once you've installed koop and chosen a provider to work with you need to "register" the provider with koop
 
@@ -60,15 +59,15 @@ Once you've installed koop and chosen a provider to work with you need to "regis
       }
     }
   };
-  
-  // pass the config to koop 
+
+  // pass the config to koop
   var koop = require('koop')( config ),
   github = require('koop-github');
- 
+
   // register the provider with koop to bind its routes/handlers
   koop.register( github );
 
-  // create an express app 
+  // create an express app
   var express = require("express")
   var app = express();
 
@@ -78,8 +77,8 @@ Once you've installed koop and chosen a provider to work with you need to "regis
   // start the express server
   app.listen(process.env.PORT || config.server.port,  function() {
     console.log("Listening at http://%s:%d/", this.address().address, this.address().port);
-  }); 
-  ``` 
+  });
+  ```
 
 ## Data Providers
 
@@ -181,9 +180,8 @@ Not all capabilities of [Feature Services](http://resources.arcgis.com/en/help/a
 
 ## Resources
 
-* [ArcGIS Developers](http://developers.arcgis.com)
-* [ArcGIS REST Services](http://resources.arcgis.com/en/help/arcgis-rest-api/)
-* [twitter@esri](http://twitter.com/esri)
+* [ArcGIS REST API Documentation](http://resources.arcgis.com/en/help/arcgis-rest-api/)
+* [ArcGIS for Developers](http://developers.arcgis.com)
 
 ## Issues
 
@@ -191,7 +189,7 @@ Find a bug or want to request a new feature? Please let us know by submitting an
 
 ## Contributing
 
-Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/esri/contributing).
+Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/Esri/contributing).
 
 ## Licensing
 
@@ -209,7 +207,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-A copy of the license is available in the repository's [LICENSE](./LICENSE) file.
+A copy of the license is available in the repository's [LICENSE](./license.txt) file.
 
 [](Esri Tags: ArcGIS Web Mapping GeoJson FeatureServices)
 [](Esri Language: JavaScript)
