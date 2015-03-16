@@ -4,7 +4,7 @@
   "description": "A node module/express middleware for converting GeoJSON to Esri Feature Services.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/models/ -t 20000",
+    "test": "node_modules/mocha/bin/mocha test/models/ -t 20000",
     "lint": "node_modules/jshint/bin/jshint lib/*"
   },
   "author": {
@@ -49,6 +49,7 @@
     "gulp-jshint": "^1.8.4",
     "jshint": "~2.5.1",
     "jshint-stylish": "^0.4.0",
+    "mocha": "^2.2.1",
     "should": "~3.3.2"
   }
 }
