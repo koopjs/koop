@@ -58,6 +58,10 @@ module.exports = function( config ) {
   // register providers into the app
   // sets up models, routes -> controllers/handlers
   app.register = function(provider){
+    if (provider.type && provider.type == 'plugin'){
+      return app.registerPlugin( provider );
+    }
+
     // only register if the provider has a name
     if ( provider.name ) {
       app.services[provider.name] = provider;
@@ -81,6 +85,10 @@ module.exports = function( config ) {
       // add each route, the routes let us override defaults etc.
       app._bindRoutes( provider.routes, controller );
     }
+  };
+
+  app.registerPlugin = function( plugin ){
+    koop[plugin.name] = plugin;
   };
 
   var defaultRoutes = {
@@ -119,10 +127,14 @@ module.exports = function( config ) {
   // init koop centralized file access
   // this allows us to turn the FS access off globally
   koop.files = new koop.Files( koop );
-  koop.tiles = new koop.Tiles( koop );
-  koop.thumbnail = new koop.Thumbnail( koop );
+
   // Need the exporter to have access to the cache so we pass it Koop
   koop.exporter = new koop.Exporter( koop );
+
+  // END annoying things that are changing
+  // --------------------------------------------------
+
+
   koop.Cache = new koop.DataCache( koop );
 
   // use the default local cache until a DB adapter mod is registered
