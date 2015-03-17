@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.0] - 2015-03-17
+### Changed
+* No more mapnik dependency by default. Instead all tile logic has been moved to [koop-tiles-plugin](https://github.com/koopjs/koop-tile-provider)
+* Also better checks for the tile plugin in the BaseModel
+
 ## [1.0.19] - 2015-03-04
 ### Changed
 * We are now using the latest [node-mapnik](https://github.com/mapnik/node-mapnik) version, which should help with installs on Windows.
