@@ -4,14 +4,13 @@ var should = require('should'),
 var snowData, exporter, koop;
 
 before(function (done) {
-  var Cache = {
-    data_dir: __dirname + '/output/'
-  };
   snowData = require('../fixtures/snow.geojson');
   var Exporter = require('../../lib/Exporter.js');
   koop = require('../../lib/index');
-  koop.config = {};
-  koop.files = require('../../lib/Files.js')( { config: {} } );
+  koop.config = {
+    data_dir: __dirname + '/output/'
+  };
+  koop.files = require('../../lib/Files.js')( koop );
   exporter = new Exporter( koop );
   done();
 });
