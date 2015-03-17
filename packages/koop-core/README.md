@@ -1,3 +1,4 @@
+![build status](https://api.travis-ci.org/Esri/koop.svg?branch=master)
 # koop
 
 **Turn data into Feature Services.**
