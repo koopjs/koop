@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test/models/ -t 20000",
-    "lint": "jshint lib/*"
+    "lint": "gulp"
   },
   "author": {
     "name": "Chris Helm"
