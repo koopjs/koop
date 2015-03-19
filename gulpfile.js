@@ -5,11 +5,12 @@ var jshint = require('gulp-jshint');
 
 var pack = require('./package.json');
 
-gulp.task('complexity', function () {
+gulp.task('complexity', function ( ) {
   gulp.src([
     'index.js',
-    'lib/**'
-  ], {
+    'lib/*.js'
+  ],
+  {
     base: __dirname
   })
   .pipe(complex({
