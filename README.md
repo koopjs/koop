@@ -1,6 +1,7 @@
 # koop
 
-[![build status](https://api.travis-ci.org/Esri/koop.svg?branch=master)](https://travis-ci.org/Esri/koop)
+[![npm version](https://img.shields.io/npm/v/koop.svg?style=flat-square)](https://www.npmjs.com/package/koop)
+[![build status](https://img.shields.io/travis/Esri/koop.svg?style=flat-square)](https://travis-ci.org/Esri/koop)
 
 **Turn data into Feature Services.**
 
