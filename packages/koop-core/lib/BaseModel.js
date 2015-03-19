@@ -46,6 +46,7 @@ var BaseModel = function( koop ){
   function tileGet( params, data, callback ){
     params.dir = params.dir || koop.files.localDir;
     if ( koop.tiles ){
+      delete data.info;
       koop.tiles.getTile( params, data, callback );
     } 
     else {

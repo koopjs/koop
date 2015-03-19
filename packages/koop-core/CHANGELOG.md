@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.1] - 2015-03-19
+### Added 
+* Log files will now rotate automatically
+
+### Changed
+* BaseModel will remove unneeded json data from geojson when passing to the tile plugin
+
 ## [1.1.0] - 2015-03-17
 ### Changed
 * No more mapnik dependency by default. Instead all tile logic has been moved to the [koop-tiles-plugin](https://github.com/koopjs/koop-tile-plugin) module.
