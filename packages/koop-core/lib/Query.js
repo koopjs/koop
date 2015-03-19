@@ -25,17 +25,17 @@ module.exports = {
         if (params.orderByFields && params.orderByFields !== ''){
           var fld = params.orderByFields.split(' ');
           var order = params.orderByFields;
-          if (fld[fld.length-1] == 'DESC'){
+          if (fld[fld.length-1] === 'DESC'){
             order = '-' + params.orderByFields;
           }
           json.features = this.orderBy(json.features, params.orderByFields, order);
         }
 
-        if ( ( params.returnGeometry === false || params.returnGeometry == 'false') && (!params.outFields || params.outFields != '*')){
+        if ( ( params.returnGeometry === false || params.returnGeometry === 'false') && (!params.outFields || params.outFields !== '*')){
           json.features.forEach(function(f){
             delete f.geometry;
           });
-        } else if ( params.outSR && ( params.outSR == '102100' ) ){
+        } else if ( params.outSR && ( params.outSR === '102100' ) ){
           if ( json.spatialReference ){
             json.spatialReference.wkid = params.outSR;
             var coords;
@@ -56,7 +56,7 @@ module.exports = {
         }
 
         // checkout for outfields
-        if ( params.outFields && params.outFields != '*' ){
+        if ( params.outFields && params.outFields !== '*' ){
           var features = [],
             props,
             outFields = params.outFields.split( ',' );
@@ -94,7 +94,7 @@ module.exports = {
     var types = {
       'min': function(field, features){
         var min = features[0][propName][field];
-        features.forEach(function(f,i){
+        features.forEach(function(f){
           if (f[propName][field] < min){
             min = f[propName][field];
           }
@@ -103,7 +103,7 @@ module.exports = {
       },
       'max': function(field, features){
         var max = features[0][propName][field];
-        features.forEach(function(f,i){
+        features.forEach(function(f){
           if (f[propName][field] > max){
             max = f[propName][field];
           }
@@ -112,7 +112,7 @@ module.exports = {
       },
       'count': function(field, features){
         var count = 0;
-        features.forEach(function(f,i){
+        features.forEach(function(f){
           if (f[propName][field]){
             count++;
           }
@@ -121,7 +121,7 @@ module.exports = {
       },
       'sum': function(field, features){
         var sum = 0;
-        features.forEach(function(f,i){
+        features.forEach(function(f){
           if (f[propName][field]){
             sum += parseFloat(f[propName][field]);
           }
@@ -153,7 +153,7 @@ module.exports = {
   },
 
   outStatistics: function( json, params, callback ){
-    var result = {}, value, self = this;
+    var self = this;
     try {
       json.fields = [];
       // replacing slashes in cases where escaped slashes given
@@ -165,7 +165,6 @@ module.exports = {
             if (err){
               return callback("unable to build unique features with property " + params.groupByFieldsForStatistics, null); 
             }
-            var statCollection = [];
             var finalJson = {fields:null, features:[]};
 
             for ( var value in uniques ){
@@ -200,11 +199,10 @@ module.exports = {
   },
 
   buildUniqueFeatures: function( params, features, callback ){
-    var self = this;
     var propName = (features[0].attributes) ? 'attributes' : 'properties';
     var uniqs = {}, prop;
     try {
-      features.forEach(function(feature, i){
+      features.forEach(function(feature){
         prop = feature[propName][params.groupByFieldsForStatistics];
         if (prop){
           if (!uniqs[ prop ]){
@@ -220,13 +218,14 @@ module.exports = {
     } 
   },
 
-  buildStats: function(stats, json, params){
-    var self = this;
+  buildStats: function(stats, json){
+    var self = this,
+      value;
     if (!json.fields) {
      json.fields = [];
     }
     var statFeatures = [{attributes:{}}];
-    stats.forEach(function(stat, i){
+    stats.forEach(function( stat ) {
       value = self.calculateStat( stat.statisticType, stat.onStatisticField, json.features );
       statFeatures[ 0 ].attributes[ stat.outStatisticFieldName ] = value;
       json.fields.push({
@@ -249,7 +248,7 @@ module.exports = {
 
   fieldType: function( value ){
     var type = typeof( value );
-    if ( type == 'number'){
+    if ( type === 'number'){
       type = ( this.isInt( value ) ) ? 'integer' : 'float';
     }
     return this.fieldTypes[ type ];
@@ -257,7 +256,7 @@ module.exports = {
 
   // is the value an integer?
   isInt: function( v ){
-    return Math.round( v ) == v;
+    return Math.round( v ) === v;
   },
 
   geometryTypes: {
@@ -265,17 +264,17 @@ module.exports = {
       var coords = geom.split(',');
       return new terraformer.Point([ coords[0], coords[1] ]);
     },
-    esriGeometryMultipoint: function( geom ){
+    esriGeometryMultipoint: function( ){
       throw '';
     },
-    esriGeometryPolyline: function( geom ){
+    esriGeometryPolyline: function( ){
       // not supported yet
     },
-    esriGeometryPolygon: function( geom ){
+    esriGeometryPolygon: function( ){
       // not supported yet
     },
     esriGeometryEnvelope: function( geom ){
-      if ( typeof( geom ) == 'object' ) {
+      if ( typeof( geom ) === 'object' ) {
         var box = new terraformer.Polygon( [[
           [geom.xmin, geom.ymin],
           [geom.xmin, geom.ymax],
@@ -283,7 +282,7 @@ module.exports = {
           [geom.xmax, geom.ymin],
           [geom.xmin, geom.ymin]
         ]]);
-        if (geom.spatialReference && geom.spatialReference.wkid == '102100'){
+        if (geom.spatialReference && geom.spatialReference.wkid === '102100'){
           return box.toGeographic();
         } else {
           return box;
@@ -328,7 +327,6 @@ module.exports = {
   //========================================================================================================
   spatialFilter: {
     esriSpatialRelContains: function( features, geometry ){
-      var self = this;
       return _.filter( features, function( f ){
         var featureGeom;
         if ( f.geometry.x && f.geometry.y ){
@@ -392,7 +390,7 @@ module.exports = {
       var props = f.attributes || f.properties;
       var param = where.conditions.left.value;
       var val = where.conditions.right.value;
-      if ( ( this.whereOps[ where.conditions.operation ] && props[ param ] && this.whereOps[ where.conditions.operation ]( props[ param ], val ) ) || param == val ) {
+      if ( ( this.whereOps[ where.conditions.operation ] && props[ param ] && this.whereOps[ where.conditions.operation ]( props[ param ], val ) ) || param === val ) {
         features.push( f );
       }
     }, this);
@@ -408,10 +406,10 @@ module.exports = {
       return (param < val);
     },
     '=': function( param, val ){
-      return (param == val);
+      return (param === val);
     },
     '==': function( param, val ){
-      return (param == val);
+      return (param === val);
     },
     '<=': function( param, val ){
       return (param <= val);
@@ -450,7 +448,7 @@ module.exports = {
     if (params.orderByFields && params.orderByFields !== ''){
       var fld = params.orderByFields.split(' ');
       var order = params.orderByFields;
-      if (fld[fld.length-1] == 'DESC'){
+      if (fld[fld.length-1] === 'DESC'){
         order = '-' + params.orderByFields;
       }
       json.features = this.orderBy(json.features, params.orderByFields, order);
