@@ -4,8 +4,8 @@
   "description": "A node module/express middleware for converting GeoJSON to Esri Feature Services.",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha test/models/ -t 20000",
-    "lint": "node_modules/jshint/bin/jshint lib/*"
+    "test": "mocha test/models/ -t 20000",
+    "lint": "gulp"
   },
   "author": {
     "name": "Chris Helm"
