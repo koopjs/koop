@@ -29,10 +29,9 @@ gulp.task('jshint', function () {
   .pipe(jshint({
     lookup: true
   }))
-  .pipe(jshint.reporter('jshint-stylish'))
-  .pipe(jshint.reporter('fail'));
+  .pipe(jshint.reporter('jshint-stylish'));
 });
 
-gulp.task('default', [ 'jshint', 'complexity' ], function () {
+gulp.task('default', [ 'complexity', 'jshint' ], function () {
 
 });
