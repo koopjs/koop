@@ -5,13 +5,8 @@ var snowData, exporter, koop;
 
 before(function (done) {
   snowData = require('../fixtures/snow.geojson');
-  var Exporter = require('../../lib/Exporter.js');
-  koop = require('../../lib/index');
-  koop.config = {
-    data_dir: __dirname + '/output/'
-  };
-  koop.files = require('../../lib/Files.js')( koop );
-  exporter = new Exporter( koop );
+  exporter = require('../../lib/Exporter.js');
+  console.log(exporter);
   done();
 });
 

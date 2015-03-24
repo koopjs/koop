@@ -103,9 +103,9 @@ module.exports = function( config ) {
     for ( handler in defaultRoutes ){
       if ( controller[ handler ] ){
         defaultRoutes[ handler ].forEach(function(route){
-          app[ 'get' ]( '/'+ name + pattern + route, controller[ handler ]);
+          app.get( '/'+ name + pattern + route, controller[ handler ]);
           // add multipart middleware for POSTs to featureservices
-          app[ 'post' ]( '/'+ name + pattern + route, multipart, controller[ handler ]);
+          app.post( '/'+ name + pattern + route, multipart, controller[ handler ]);
         });
       }
     }
@@ -123,17 +123,48 @@ module.exports = function( config ) {
   // ---------------------------------------------------
   // TODO I'd like to change most of what's below here
   // ---------------------------------------------------
-
   // init koop centralized file access
   // this allows us to turn the FS access off globally
   koop.files = new koop.Files( koop );
-
-  // Need the exporter to have access to the cache so we pass it Koop
-  koop.exporter = new koop.Exporter( koop );
-
+  
   // END annoying things that are changing
   // --------------------------------------------------
 
+  // create export workers if configured 
+  // connect the worker queue for large exports
+  if ( koop.config.export_workers ){
+    var kue = require('kue');
+    koop.Exporter.export_q = kue.createQueue({
+      prefix: koop.config.export_workers.redis.prefix,
+      disableSearch: true,
+      redis: {
+        port: koop.config.export_workers.redis.port,
+        host: koop.config.export_workers.redis.host
+      }
+    });
+
+    // remove completed jobs from the queue
+    koop.Exporter.export_q.on('job complete', function(id) {
+      kue.Job.get( id, function( err, job ) {
+         if (err) return;
+         job.remove(function( err ){
+            if (err) {
+              koop.log.debug('Export Workers: could not remove completed job #' + job.id);
+            }
+            koop.log.debug('Export Workers: removed completed job #' + job.id + ' - ' + id);
+         });
+      });
+    });
+
+    koop.Exporter.export_q.on('job failed', function(id, jobErr) {
+      kue.Job.get( id, function( err, job ) {
+         if (err) return;
+         job.remove(function( err ){
+           koop.log.debug( 'Export Workers: removed failed job #' + job.id + ' Error: ' + jobErr);
+         });
+      });
+    });
+  }
 
   koop.Cache = new koop.DataCache( koop );
 
