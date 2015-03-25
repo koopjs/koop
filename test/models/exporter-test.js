@@ -49,5 +49,54 @@ describe('exporter Model', function(){
       });
     });
 
+    describe('when creating paths for exports', function(){
+      it('should return an object with files and paths', function(done){
+        var format = 'csv',
+          dir = 'testdir',
+          key = 'testkey';
+
+        var options = {
+          name: 'dummy'
+        };
+
+        var paths = exporter.createPaths(dir, key, format, options);
+        paths.base.should.equal('.//files/'+dir+'/'+key);
+        paths.newFile.should.equal('dummy.csv');
+        done();
+      });
+    });
+
+    describe('when creating ogr params for exports', function(){
+      it('should create a correct ogr string of commands', function(done){
+        var format = 'csv',
+          inFile = 'infile.json',
+          outFile = 'outfile.csv';
+
+        var options = {
+          name: 'dummy'
+        };
+
+        var params = exporter.getOgrParams(format, inFile, outFile, null, options).split(' ');
+        params[6].should.equal(outFile);
+        params[7].should.equal(inFile);
+        done();
+      });
+
+      it('should create a correct ogr string of commands with a WKID', function(done){
+        var format = 'shp',
+          inFile = 'infile.json',
+          outFile = 'outfile.shp';
+
+        var options = {
+          name: 'dummy',
+          wkid: 2962
+        };
+
+        var params = exporter.getOgrParams(format, inFile, outFile, null, options).split(' ');
+        params[9].should.equal('"EPSG:2962"');
+        done();
+      });
+    });
+
 });
 
