@@ -5,11 +5,12 @@ var jshint = require('gulp-jshint');
 
 var pack = require('./package.json');
 
-gulp.task('complexity', function () {
+gulp.task('complexity', function ( ) {
   gulp.src([
     'index.js',
-    'lib/**'
-  ], {
+    'lib/*.js'
+  ],
+  {
     base: __dirname
   })
   .pipe(complex({
@@ -28,10 +29,9 @@ gulp.task('jshint', function () {
   .pipe(jshint({
     lookup: true
   }))
-  .pipe(jshint.reporter('jshint-stylish'))
-  .pipe(jshint.reporter('fail'));
+  .pipe(jshint.reporter('jshint-stylish'));
 });
 
-gulp.task('default', [ 'jshint', 'complexity' ], function () {
+gulp.task('default', [ 'complexity', 'jshint' ], function () {
 
 });
