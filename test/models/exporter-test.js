@@ -31,8 +31,7 @@ describe('exporter Model', function(){
           key = 'snow-data';
 
         exporter.exportToFormat(format, dir, key, snowData, {}, function( err, res ){
-          var exists = fs.existsSync(res.file);
-          exists.should.equal(true);
+          res.file.should.equal('.//files/json/snow-data.json');
           done();
         });
       });
