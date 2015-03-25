@@ -6,7 +6,6 @@ var snowData, exporter, koop;
 before(function (done) {
   snowData = require('../fixtures/snow.geojson');
   exporter = require('../../lib/Exporter.js');
-  console.log(exporter);
   done();
 });
 
@@ -31,8 +30,8 @@ describe('exporter Model', function(){
           dir = 'json',
           key = 'snow-data';
 
-        exporter.exportToFormat(format, dir, key, snowData, {}, function( err, file ){
-          var exists = fs.existsSync(file);
+        exporter.exportToFormat(format, dir, key, snowData, {}, function( err, res ){
+          var exists = fs.existsSync(res.file);
           exists.should.equal(true);
           done();
         });
@@ -44,7 +43,7 @@ describe('exporter Model', function(){
         var format = null,
           key = 'snow-data';
 
-        exporter.exportLarge(format, 'dummy', key, 'agol', {}, function( err, res ){
+        exporter.exportLarge({}, format, 'dummy', key, 'agol', {}, function(){}, function( err, res ){
           done();
         });
       });
