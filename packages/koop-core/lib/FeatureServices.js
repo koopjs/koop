@@ -1,5 +1,4 @@
-var terraformer = require('terraformer'),
-  terraformerParser = require('terraformer-arcgis-parser'),
+var terraformerParser = require('terraformer-arcgis-parser'),
   fs = require('fs');
 
 var Extent = require('./Extent.js'),
@@ -23,7 +22,7 @@ module.exports = {
     //  return this.fieldTypes[ 'integer' ];
     //} else {
       var type = typeof( value );
-      if ( type == 'number'){
+      if ( type === 'number'){
         type = ( this.isInt( value ) ) ? 'integer' : 'float';
       }
       return this.fieldTypes[ type ];
@@ -32,18 +31,18 @@ module.exports = {
 
   // is the value an integer?
   isInt: function( v ){
-    return Math.round( v ) == v;
+    return Math.round( v ) === v;
   },
 
   fields: function( props, idField ){
     var self = this;
     var fields = [], type;
     Object.keys( props ).forEach(function( key ){
-      if ( key == 'OBJECTID' && !idField){
+      if ( key === 'OBJECTID' && !idField){
         idField = key;
       }
 
-      type = (( idField && key == idField ) ? 'esriFieldTypeOID' : (self.fieldType( props[ key ])||'esriFieldTypeString') );
+      type = (( idField && key === idField ) ? 'esriFieldTypeOID' : (self.fieldType( props[ key ])||'esriFieldTypeString') );
       if (type){
         var fld = {
           name: key,
@@ -51,7 +50,7 @@ module.exports = {
           alias: key
         };
 
-        if (type == 'esriFieldTypeString'){
+        if (type === 'esriFieldTypeString'){
           fld.length = 128;
         }
 
@@ -96,16 +95,16 @@ module.exports = {
   },
 
   setGeomType: function( json, feature ){
-    var tmpl_dir = '/../templates/';
-    if ( feature && feature.geometry && ( feature.geometry.type.toLowerCase() == 'polygon' || feature.geometry.type.toLowerCase() == 'multipolygon')) {
+    var tmplDir = '/../templates/';
+    if ( feature && feature.geometry && ( feature.geometry.type.toLowerCase() === 'polygon' || feature.geometry.type.toLowerCase() === 'multipolygon')) {
       json.geometryType = 'esriGeometryPolygon';
-      json.drawingInfo.renderer = require(__dirname + tmpl_dir + 'renderers/polygon.json');
-    } else if ( feature && feature.geometry && (feature.geometry.type.toLowerCase() == 'linestring' || feature.geometry.type.toLowerCase() == 'multilinestring' )){
+      json.drawingInfo.renderer = require(__dirname + tmplDir + 'renderers/polygon.json');
+    } else if ( feature && feature.geometry && (feature.geometry.type.toLowerCase() === 'linestring' || feature.geometry.type.toLowerCase() === 'multilinestring' )){
       json.geometryType = 'esriGeometryPolyline';
-      json.drawingInfo.renderer = require(__dirname + tmpl_dir + 'renderers/line.json');
+      json.drawingInfo.renderer = require(__dirname + tmplDir + 'renderers/line.json');
     } else {
       json.geometryType = 'esriGeometryPoint';
-      json.drawingInfo.renderer = require(__dirname + tmpl_dir + 'renderers/point.json');
+      json.drawingInfo.renderer = require(__dirname + tmplDir + 'renderers/point.json');
     }
     return json;
   },
@@ -201,8 +200,8 @@ module.exports = {
 
   // processes params based on query params
   query: function( data, params, callback ){
-    var self = this;
-      tmpl_dir = '/../templates/';
+    var self = this,
+      tmplDir = '/../templates/';
 
 
     // only deal with single layer datasets
@@ -215,13 +214,15 @@ module.exports = {
         self.send( json, params, callback );
       });
     } else {
-      var json = this.process( tmpl_dir + 'featureSet.json', data, params );
+      var json = this.process( tmplDir + 'featureSet.json', data, params );
 
       if ( !data.features || !data.features.length ){
         this.send( json, params, callback );
       } else {
         // geojson to esri json
-        if ( !data.type ) data.type = 'FeatureCollection';
+        if ( !data.type ) { 
+          data.type = 'FeatureCollection';
+        }
 
         if ( data.features[0] && data.features[0].properties.OBJECTID ){
           json.features = terraformerParser.convert( data );
@@ -231,13 +232,13 @@ module.exports = {
         //json.features = terraformerParser.convert( data ,{idAttribute: 'id'});
         if ( json.features && json.features.length && ( json.features[0].geometry && json.features[0].geometry.rings )) {
           json.geometryType = 'esriGeometryPolygon';
-          //json.drawingInfo.renderer = require(__dirname + tmpl_dir + 'renderers/polygon.json');
+          //json.drawingInfo.renderer = require(__dirname + tmplDir + 'renderers/polygon.json');
         } else if ( json.features && json.features.length && (json.features[0].geometry && json.features[0].geometry.paths )){
           json.geometryType = 'esriGeometryPolyline';
-          //json.drawingInfo.renderer = require(__dirname + tmpl_dir + 'renderers/line.json');
+          //json.drawingInfo.renderer = require(__dirname + tmplDir + 'renderers/line.json');
         } else {
           json.geometryType = 'esriGeometryPoint';
-          //json.drawingInfo.renderer = require(__dirname + tmpl_dir + 'renderers/point.json');
+          //json.drawingInfo.renderer = require(__dirname + tmplDir + 'renderers/point.json');
         }
 
         // create an id field if not existing
@@ -278,7 +279,9 @@ module.exports = {
       }
     });
     json.features = features;
-    if ( callback ) callback( json );
+    if ( callback ) {
+      callback( json );
+    }
   },
 
   // filter the data based on any given query params

@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.2] - 2015-03-25
+### Added
+* If a provider passes a WKID to the Exporter methods the data will be projected into that ESPG/WKID
+
+### Changed 
+* First pass at a refactored Exporter. Still needs to be revisited but more code is now shared across the exportToFormat and exportLarge methods. Anything that can be shared is now shared, but the logic in the exportLarge method needs another pass.
+
+
 ## [1.1.1] - 2015-03-19
 ### Added 
 * Log files will now rotate automatically
@@ -126,6 +134,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[1.1.2]: https://github.com/Esri/koop/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/Esri/koop/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/Esri/koop/compare/v1.0.19...v1.1.0
 [1.0.19]: https://github.com/Esri/koop/compare/v1.0.18...v1.0.19
