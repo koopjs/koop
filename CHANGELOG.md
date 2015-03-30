@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.1.2] - 2015-03-30
 ### Changed
 * Replaced logic in `lib/Extent.js` with [esri-extent](https://github.com/ngoldman/esri-extent) ([#130](https://github.com/Esri/koop/issues/130)).
 * Exporter does not include json partials in exported zipfiles
@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 * If a provider passes a WKID to the Exporter methods the data will be projected into that ESPG/WKID
+* Added support for coded domain values in exports from services that pass such domains in fields property. Exports from koop will use the coded values (strings) in place of domain codes. 
 
 
 ## [1.1.1] - 2015-03-19
@@ -136,6 +137,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[1.1.3]: https://github.com/Esri/koop/compare/v1.1.1...v1.1.3
 [1.1.1]: https://github.com/Esri/koop/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/Esri/koop/compare/v1.0.19...v1.1.0
 [1.0.19]: https://github.com/Esri/koop/compare/v1.0.18...v1.0.19
