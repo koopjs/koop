@@ -2,16 +2,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Replaced logic in `lib/Extent.js` with [esri-extent](https://github.com/ngoldman/esri-extent) ([#130](https://github.com/Esri/koop/issues/130)).
+
 ## [1.1.2] - 2015-03-25
 ### Added
 * If a provider passes a WKID to the Exporter methods the data will be projected into that ESPG/WKID
 
-### Changed 
+### Changed
 * First pass at a refactored Exporter. Still needs to be revisited but more code is now shared across the exportToFormat and exportLarge methods. Anything that can be shared is now shared, but the logic in the exportLarge method needs another pass.
 
 
 ## [1.1.1] - 2015-03-19
-### Added 
+### Added
 * Log files will now rotate automatically
 
 ### Changed
