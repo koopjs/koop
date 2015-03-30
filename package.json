@@ -17,6 +17,7 @@
     "body-parser": "~1.0.2",
     "config": "~1.8.1",
     "connect-multiparty": "^1.2.5",
+    "esri-extent": "^1.1.0",
     "express": "~4.0.0",
     "kue": "~0.8.9",
     "lodash": "~2.4.1",
