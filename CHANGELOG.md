@@ -15,7 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Added support for coded domain values in exports from services that pass such domains in fields property. Exports from koop will use the coded values (strings) in place of domain codes. 
 
 
-## [1.1.1] - 2015-03-19
+## [1.1.1] - 2015-03-19 [YANKED]
 ### Added
 * Log files will now rotate automatically
 
