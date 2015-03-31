@@ -6,23 +6,28 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 * Replaced logic in `lib/Extent.js` with [esri-extent](https://github.com/ngoldman/esri-extent) ([#130](https://github.com/Esri/koop/issues/130)).
 * Exporter does not include json partials in exported zipfiles
-* First pass at a refactored Exporter. Still needs to be revisited but more code is now shared across the exportToFormat and exportLarge methods. Anything that can be shared is now shared, but the logic in the exportLarge method needs another pass.
 
 ### Added
-* If a provider passes a WKID to the Exporter methods the data will be projected into that ESPG/WKID
 * custom projections are supported with WKT from feature services
 * esri-proj-codes is added to support Esri proj code lookups and pass WKT proj strings
 * Added support for coded domain values in exports from services that pass such domains in fields property. Exports from koop will use the coded values (strings) in place of domain codes. 
 
+## [1.1.2] - 2015-03-25 [DEPRECATED]
+ ### Added
+ * If a provider passes a WKID to the Exporter methods the data will be projected into that ESPG/WKID
+ 
+-### Changed
+-* First pass at a refactored Exporter. Still needs to be revisited but more code is now shared across the exportToFormat and exportLarge methods. Anything that can be shared is now shared, but the logic in the exportLarge method needs another pass.
+-
 
-## [1.1.1] - 2015-03-19 [YANKED]
+## [1.1.1] - 2015-03-19 [DEPRECATED]
 ### Added
 * Log files will now rotate automatically
 
 ### Changed
 * BaseModel will remove unneeded json data from geojson when passing to the tile plugin
 
-## [1.1.0] - 2015-03-17 [YANKED]
+## [1.1.0] - 2015-03-17 [DEPRECATED]
 * Removed due to a breaking change in remove tiles/mapnik from the code module
 ### Changed
 * No more mapnik dependency by default. Instead all tile logic has been moved to the [koop-tiles-plugin](https://github.com/koopjs/koop-tile-plugin) module.
