@@ -101,6 +101,12 @@ var BaseModel = function( koop ){
       koop.files.write( result.paths.path+'/'+key, result.paths.newFile, stream, function( err ){
         if (!options.isFiltered){
           koop.files.write( result.paths.latestPath, result.paths.newFile, fs.createReadStream( result.file ), function( err ){
+            try {
+              // try to clean up local FS
+              fs.unlinkSync(result.paths.rootNewFile);
+            } catch(e){
+              koop.log.debug('Trying to remove non-existant file: %s', e);
+            }
           });
         } 
         sendFile(null, result);

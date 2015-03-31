@@ -51,7 +51,7 @@ module.exports = {
   },
 
   serviceRegister: function( type, key, info, callback ){
-    this.store.services[type + ':' + key + ':' + info.id] = info;
+    this.store.services[type + ':' + info.id] = info;
     callback(null, true);
   },
 
