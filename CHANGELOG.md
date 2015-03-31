@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.1.2] - 2015-03-30
+## [2.0.0] - 2015-03-31
 ### Changed
 * Replaced logic in `lib/Extent.js` with [esri-extent](https://github.com/ngoldman/esri-extent) ([#130](https://github.com/Esri/koop/issues/130)).
 * Exporter does not include json partials in exported zipfiles
@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 * If a provider passes a WKID to the Exporter methods the data will be projected into that ESPG/WKID
+* custom projections are supported with WKT from feature services
+* esri-proj-codes is added to support Esri proj code lookups and pass WKT proj strings
 * Added support for coded domain values in exports from services that pass such domains in fields property. Exports from koop will use the coded values (strings) in place of domain codes. 
 
 
@@ -20,7 +22,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 * BaseModel will remove unneeded json data from geojson when passing to the tile plugin
 
-## [1.1.0] - 2015-03-17
+## [1.1.0] - 2015-03-17 [YANKED]
+* Removed due to a breaking change in remove tiles/mapnik from the code module
 ### Changed
 * No more mapnik dependency by default. Instead all tile logic has been moved to the [koop-tiles-plugin](https://github.com/koopjs/koop-tile-plugin) module.
 * Also better checks for the tile plugin in the BaseModel
@@ -137,7 +140,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
-[1.1.3]: https://github.com/Esri/koop/compare/v1.1.1...v1.1.3
+[2.0.0]: https://github.com/Esri/koop/compare/v1.1.1...v2.0.0
 [1.1.1]: https://github.com/Esri/koop/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/Esri/koop/compare/v1.0.19...v1.1.0
 [1.0.19]: https://github.com/Esri/koop/compare/v1.0.18...v1.0.19
