@@ -1,6 +1,6 @@
 {
   "name": "koop",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "description": "A node module/express middleware for converting GeoJSON to Esri Feature Services.",
   "main": "index.js",
   "scripts": {
@@ -13,26 +13,27 @@
   "license": "Apache-2.0",
   "dependencies": {
     "async": "~0.9.0",
-    "aws-sdk": "~2.0.0",
-    "body-parser": "~1.0.2",
-    "config": "~1.8.1",
+    "aws-sdk": "~2.1.20",
+    "body-parser": "~1.12.2",
+    "config": "~1.12.0",
     "connect-multiparty": "^1.2.5",
     "esri-extent": "^1.1.0",
-    "express": "~4.0.0",
-    "kue": "~0.8.9",
-    "lodash": "~2.4.1",
+    "esri-proj-codes": "^1.0.0",
+    "express": "~4.12.3",
+    "kue": "~0.8.12",
+    "lodash": "~3.6.0",
     "mkdirp": "~0.5.0",
-    "mv": "~2.0.0",
+    "mv": "~2.0.3",
     "node-fs": "~0.1.7",
-    "request": "~2.27.0",
-    "rimraf": "^2.2.8",
-    "sphericalmercator": "~1.0.2",
-    "sql-parser": "~0.4.0",
-    "terraformer": "1.0.3",
+    "request": "~2.54.0",
+    "rimraf": "^2.3.2",
+    "sphericalmercator": "~1.0.3",
+    "sql-parser": "~0.5.0",
+    "terraformer": "1.0.5",
     "terraformer-arcgis-parser": "1.0.4",
     "terraformer-wkt-parser": "~1.0.0",
-    "topojson": "~1.4.3",
-    "winston": "~0.7.3"
+    "topojson": "~1.6.18",
+    "winston": "~0.9.0"
   },
   "repository": {
     "type": "git",
@@ -42,13 +43,13 @@
     "url": "https://github.com/Esri/koop/issues"
   },
   "devDependencies": {
-    "gulp": "^3.8.8",
-    "gulp-escomplex": "^1.0.0",
+    "gulp": "^3.8.11",
+    "gulp-escomplex": "^1.0.1",
     "gulp-escomplex-reporter-html": "^1.0.0",
-    "gulp-jshint": "^1.8.4",
-    "jshint": "~2.5.1",
-    "jshint-stylish": "^0.4.0",
+    "gulp-jshint": "^1.9.4",
+    "jshint": "~2.6.3",
+    "jshint-stylish": "^1.0.1",
     "mocha": "^2.2.1",
-    "should": "~3.3.2"
+    "should": "~5.2.0"
   }
 }
