@@ -14,21 +14,26 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 * custom projections are supported with WKT from feature services
-* esri-proj-codes is added to support Esri proj code lookups and pass WKT proj strings
+* [esri-proj-codes](https://github.com/Esri/esri-proj-codes) is added to support Esri projection code lookups and pass WKT projection strings
 * Added support for coded domain values in exports from services that pass such domains in fields property. Exports from koop will use the coded values (strings) in place of domain codes. 
 
 ### Removed 
 * tile support is no longer included by default, please use [koop-tile-plugin](https://github.com/koopjs/koop-tile-plugin) if needed
 
 ## [1.1.2] - 2015-03-25 [DEPRECATED]
- ### Added
- * If a provider passes a WKID to the Exporter methods the data will be projected into that ESPG/WKID
+
+**This version has been deprecated due to a breaking change introduced in `v1.1.0`.**
+
+### Added
+* If a provider passes a WKID to the Exporter methods the data will be projected into that ESPG/WKID
  
--### Changed
--* First pass at a refactored Exporter. Still needs to be revisited but more code is now shared across the exportToFormat and exportLarge methods. Anything that can be shared is now shared, but the logic in the exportLarge method needs another pass.
--
+### Changed
+* First pass at a refactored Exporter. Still needs to be revisited but more code is now shared across the `exportToFormat` and `exportLarge` methods. Anything that can be shared is now shared, but the logic in the `exportLarge` method needs another pass.
 
 ## [1.1.1] - 2015-03-19 [DEPRECATED]
+
+**This version has been deprecated due to a breaking change introduced in `v1.1.0`.**
+
 ### Added
 * Log files will now rotate automatically
 
@@ -36,9 +41,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * BaseModel will remove unneeded json data from geojson when passing to the tile plugin
 
 ## [1.1.0] - 2015-03-17 [DEPRECATED]
-* Removed due to a breaking change in remove tiles/mapnik from the code module
+
+**Deprecated due to a breaking change: removed tiles/mapnik support**
+
+Please use [koop-tile-plugin](https://github.com/koopjs/koop-tile-plugin) if you need tile support.
+
 ### Changed
-* No more mapnik dependency by default. Instead all tile logic has been moved to the [koop-tiles-plugin](https://github.com/koopjs/koop-tile-plugin) module.
+* No more mapnik dependency by default. Instead all tile logic has been moved to the [koop-tile-plugin](https://github.com/koopjs/koop-tile-plugin) module.
 * Also better checks for the tile plugin in the BaseModel
 
 ## [1.0.19] - 2015-03-04
