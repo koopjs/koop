@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.1] - 2015-04-01
+### Changed
+* Forcing status processing on progress reporting from export worker jobs
+* Wrapping projection WKT in single quotes for calls to ogr2ogr 
+
 ## [2.0.0] - 2015-03-31
 ### Changed
 * Replaced logic in `lib/Extent.js` with [esri-extent](https://github.com/ngoldman/esri-extent) ([#130](https://github.com/Esri/koop/issues/130)).
@@ -148,6 +153,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.0.1]: https://github.com/Esri/koop/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/Esri/koop/compare/v1.1.2...v2.0.0
 [1.1.2]: https://github.com/Esri/koop/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/Esri/koop/compare/v1.1.0...v1.1.1
