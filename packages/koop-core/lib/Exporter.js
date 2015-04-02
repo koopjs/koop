@@ -21,6 +21,7 @@ var ogrFormats = {
 
 // exports large data via multi part file strategy
 exports.exportLarge = function( koop, format, id, key, type, options, finish, done ){
+
   // exports large data via multi part file strategy
   if (!format){
     return done('No format provided', null);
@@ -135,6 +136,7 @@ exports.exportLarge = function( koop, format, id, key, type, options, finish, do
         var task = {};
         task.options = options;
         task.options.key = key;
+        task.options.dir = dir;
         task.dbkey = dbkey;
         task.table = table;
         task.format = format;
