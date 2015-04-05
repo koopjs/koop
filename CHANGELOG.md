@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.3] - 2015-04-03
+### Changed
+* Forcing export shapefiles with Lambert_Conformal_Conic proj strings to use Lambert_Conformal_Conic_1SP. For more info see: http://trac.osgeo.org/gdal/ticket/2072
+
 ## [2.0.2] - 2015-04-02
 ### Changed
 * Small data exports in worker mode now use the regular exportToFormat workflow in Exporter.js  
@@ -166,6 +170,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.0.3]: https://github.com/Esri/koop/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/Esri/koop/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/Esri/koop/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/Esri/koop/compare/v1.1.2...v2.0.0
