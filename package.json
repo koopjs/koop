@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test/models/ -t 20000",
-    "lint": "gulp"
+    "lint": "gulp",
+    "release": "gh-release"
   },
   "author": {
     "name": "Chris Helm"
@@ -43,6 +44,7 @@
     "url": "https://github.com/Esri/koop/issues"
   },
   "devDependencies": {
+    "gh-release": "^1.1.6",
     "gulp": "^3.8.11",
     "gulp-escomplex": "^1.0.1",
     "gulp-escomplex-reporter-html": "^1.0.0",
