@@ -288,7 +288,6 @@ function callOgr(params, geojson, options, callback){
 
   } else {
     var ogrParams = getOgrParams( format, inFile, outFile, geojson, options );
-    
     exec( ogrParams, function (err) {
         if (err) {
           callback( err.message + ' ' + ogrParams, null );
@@ -378,6 +377,11 @@ function moveFile(inFile, newFile, callback){
 
 
 function getOgrParams( format, inFile, outFile, geojson, options ){
+
+  // escape quotes in file names
+  inFile = inFile.replace(/"/g, '\"');  
+  outFile = outFile.replace(/"/g, '\"');  
+
   var cmd = [
     'ogr2ogr',
     '--config',
@@ -399,12 +403,17 @@ function getOgrParams( format, inFile, outFile, geojson, options ){
   } else if (format === 'zip' || format === 'shp'){
     // only project features for shp when wkid != 4326 or 3857 or 102100
     if ( options.wkid ){
-      var wkt = projCodes.lookup(options.wkid).wkt;
-      // always replace Lambert_Conformal_Conic with Lambert_Conformal_Conic_1SP
-      // open ogr2ogr bug: http://trac.osgeo.org/gdal/ticket/2072
-      wkt = wkt.replace('Lambert_Conformal_Conic', 'Lambert_Conformal_Conic_1SP');
-      cmd.push('-t_srs');
-      cmd.push('\''+ wkt +'\'');
+      var proj = projCodes.lookup(options.wkid);
+      if (proj && proj.wkt){
+        // always replace Lambert_Conformal_Conic with Lambert_Conformal_Conic_1SP
+        // open ogr2ogr bug: http://trac.osgeo.org/gdal/ticket/2072
+        var wkt = proj.wkt;
+        wkt = wkt.replace('Lambert_Conformal_Conic', 'Lambert_Conformal_Conic_1SP');
+        cmd.push('-t_srs');
+        cmd.push('\''+ wkt +'\'');
+      } else {
+        console.log('No proj info found for WKID', options.wkid, outFile);
+      }
     } else if (options.wkt){
       cmd.push('-t_srs');
       cmd.push('\''+ options.wkt +'\'');
