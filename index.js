@@ -164,6 +164,47 @@ module.exports = function( config ) {
          });
       });
     });
+
+    koop.collectQStats = function(q, json, type, callback){
+       q[type]( function( err, count ) { 
+        if (err){
+          return callback(err);
+        }
+        json[type.replace('Count', '')] = count;
+        callback(null, json);
+      });
+    }
+
+    app.get('/export-workers', function(req,res){
+      var response = {}, error, count = 0;
+      var jobTypes = ['inactiveCount', 'activeCount', 'completeCount', 'failedCount', 'delayedCount'];
+      //for (var type in jobTypes){
+      function getJobCounts(type){
+        koop.collectQStats(koop.Exporter.export_q, response, type, function(err, json){
+          count++;
+          if (err){
+            error = err;
+          }
+          // save the response
+          response = json;
+
+          // get more if there are more types
+          if (jobTypes[count]){
+            getJobCounts( jobTypes[count] );
+          } else {
+            // return the response
+            if (error){
+              res.status(500).send(err);
+            } else {
+              res.json(response);
+            }
+          }
+        });
+      };
+
+      getJobCounts( jobTypes[count] );
+
+    });
   }
 
   koop.Cache = new koop.DataCache( koop );
