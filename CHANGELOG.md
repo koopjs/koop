@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.0] - 2015-04-09
+### Added 
+* a new route `/export-workers` to inspect the current backlog of export workers if configured to run in worker mode
+
+### Changed
+* Wrapping export worker in node.js domains to protect against stuck worker jobs. Running inside a domain allows the workers to trap every/any uncaught error and return the job as failed.
+* Adding the moveLargeShapefile method in order to support correct shapefile part naming differences between large data and small data exports. 
+ 
+
 ## [2.0.4] - 2015-04-06
 ### Changed
 * Sanitizing export file names to protect again quotes in input params to ogr2ogr
@@ -175,6 +184,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.1.0]: https://github.com/Esri/koop/compare/v2.0.4...v2.1.0
 [2.0.4]: https://github.com/Esri/koop/compare/v2.0.3...v2.0.4
 [2.0.3]: https://github.com/Esri/koop/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/Esri/koop/compare/v2.0.1...v2.0.2
