@@ -5,11 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [2.1.0] - 2015-04-09
 ### Added 
 * a new route `/export-workers` to inspect the current backlog of export workers if configured to run in worker mode
+* added an idFilter to exports to improve query efficiency over limit/offsets
 
 ### Changed
 * Wrapping export worker in node.js domains to protect against stuck worker jobs. Running inside a domain allows the workers to trap every/any uncaught error and return the job as failed.
 * Adding the moveLargeShapefile method in order to support correct shapefile part naming differences between large data and small data exports. 
- 
+* Using Lambert_Conformal_Conic_2SP instead of 1SP to correct projection errors using 1SP.  
+
 
 ## [2.0.4] - 2015-04-06
 ### Changed
