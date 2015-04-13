@@ -69,6 +69,7 @@ jobs.process('exports', 2, function(job, done){
         
         // if we can handle the data in one page 
         if (count < job.data.options.limit) {
+              job.data.options.bypassProcessing = true;
               koop.Cache.db.select(job.data.dbkey, job.data.options, function(err, geojson){
                 delete geojson[0].info;
                 koop.Exporter.exportToFormat( 
@@ -176,12 +177,12 @@ function createFiles(job, done){
     completed = 0;
 
   var workerQ = async.queue(function(task, cb){
+    var idFilter = ' id >= '+ task.offset + ' AND id < ' + (parseInt(task.offset) + parseInt(task.options.limit));
     var opts = {
       layer: task.options.layer,
-      limit: task.options.limit,
       where: task.options.where,
+      idFilter: idFilter,
       geometry: task.options.geometry,
-      offset: task.offset,
       bypassProcessing: true
     };
   

@@ -95,12 +95,15 @@ exports.exportLarge = function( koop, format, id, key, type, options, finish, do
   };
 
   var q = async.queue(function (task, cb) {
+    // instead of passing a limit and offset 
+    // we use a WHERE clause 
+    var idFilter = ' id >= '+ options.offset + ' AND id < ' + options.offset + options.limit;
+    var idFilter = ' id >= '+ task.offset + ' AND id < ' + (parseInt(task.offset) + parseInt(task.options.limit));
     var opts = {
+      ifFilter: idFilter,
       layer: options.layer,
-      limit: options.limit,
       where: options.where,
       geometry: options.geometry,
-      offset: task.offset,
       bypassProcessing: true
     };
     koop.Cache.db.select(dbkey, opts, function(err, data){
@@ -132,19 +135,20 @@ exports.exportLarge = function( koop, format, id, key, type, options, finish, do
         // return immediately with state: processing
         done(null, info);
 
-        // do all the work inside the worker
-        var task = {};
-        task.options = options;
-        task.options.key = key;
-        task.options.dir = dir;
-        task.dbkey = dbkey;
-        task.table = table;
-        task.format = format;
-        task.finish = finish;
-        task.ogrFormat = ogrFormats[format];
-        task.files = paths;
-        task.pages = [];
+        options.key = key;
+        options.dir = dir;
 
+        // do all the work inside the worker
+        var task = {
+          options: options,
+          dbkey: dbkey,
+          table: table,
+          format: format,
+          finish: finish,
+          ogrFormat: ogrFormats[format],
+          files: paths,
+          pages: []
+        };
         
         if ( !locked ){
           var job = koop.Exporter.export_q.create( 'exports', task ).save( function( err ){
@@ -153,6 +157,8 @@ exports.exportLarge = function( koop, format, id, key, type, options, finish, do
 
           job.on('progress', function(progress){
             
+            // the question is do we need to get the info from the db here? 
+            // TODO explore this in qa and its impact of DB load
             koop.Cache.getInfo( table, function( err, info ){
               info.status = 'processing';
               if (info.generating) {
@@ -435,7 +441,7 @@ function getOgrParams( format, inFile, outFile, geojson, options ){
         // always replace Lambert_Conformal_Conic with Lambert_Conformal_Conic_1SP
         // open ogr2ogr bug: http://trac.osgeo.org/gdal/ticket/2072
         var wkt = proj.wkt;
-        wkt = wkt.replace('Lambert_Conformal_Conic', 'Lambert_Conformal_Conic_1SP');
+        wkt = wkt.replace('Lambert_Conformal_Conic', 'Lambert_Conformal_Conic_2SP');
         cmd.push('-t_srs');
         cmd.push('\''+ wkt +'\'');
       } else {
