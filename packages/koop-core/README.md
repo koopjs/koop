@@ -87,28 +87,20 @@ Once you've installed koop and chosen a provider to work with you need to "regis
 
 Koop is designed to expose 3rd party services as Feature Services that are consumable within Esri products and services. Currently Koop has the following providers shipped by default:
 
-* [ArcGIS Online](https://github.com/chelm/koop-agol)
-* [GitHub](https://github.com/chelm/koop-github)
-* [GitHub gist](https://github.com/chelm/koop-gist)
-* [Socrata](https://github.com/chelm/koop-socrata)
+* [ArcGIS Online](https://github.com/Esri/koop-agol)
+* [GitHub](https://github.com/koopjs/koop-github)
+* [GitHub gist](https://github.com/koopjs/koop-gist)
+* [Socrata](https://github.com/koopjs/koop-socrata)
 
-Each provider resides in its own git repo (e.g. [koop-github](https://github.com/chelm/koop-github)).
+Each provider resides in its own git repo (e.g. [koop-github](https://github.com/koopjs/koop-github)).
 
 ## Development
 
-To modify [koop-server](https://github.com/esri/koop-server) or develop new koop providers, install them to the `node_modules` directory in the koop application folder:
-
-- Check out [koop-server](https://github.com/esri/koop-server) and link in `node_modules/`
-
-  ```
-  git clone git@github.com:Esri/koop-server.git
-  cd koop-server && npm install
-  cd node_modules && ln -s ../koop-server
-  ```
+To modify [koop](https://github.com/esri/koop) or develop new koop providers, install them to the `node_modules` directory in the koop application folder:
 
 ### Defining a new provider
 
-- Check out providers such as [koop-agol](https://github.com/esri/koop-agol) and link in `node_modules/`
+- Check out providers such as [koop-agol](https://github.com/Esri/koop-agol) and link in `node_modules/`
 
   ```
   git clone git@github.com:Esri/koop-agol.git
