@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 * sending -update to ogr2ogr to support large file exports
 * fixed the idFilter clause for normal, non-worker exports 
+* using the dataset hash key for VRT files to fix a bug with exports
 
 ### Added 
 * added a few jsdocs to the index, the goal is go through all public methods and do this
