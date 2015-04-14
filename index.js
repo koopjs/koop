@@ -55,8 +55,11 @@ module.exports = function( config ) {
     })
   });
 
-  // register providers into the app
-  // sets up models, routes -> controllers/handlers
+  /** 
+   * Register providers into the main Koop app
+   * exposes the provider's routes, controller, and models 
+   * @param {object} the provider to be registered
+   */ 
   app.register = function(provider){
     if (provider.type && provider.type == 'plugin'){
       return app.registerPlugin( provider );
@@ -87,6 +90,12 @@ module.exports = function( config ) {
     }
   };
 
+  /** 
+   * Registers a koop plugin
+   * Plugins can be any function that you want to have global access to 
+   * within koop provider models  
+   * @param {object} any koop plugin
+   */
   app.registerPlugin = function( plugin ){
     koop[plugin.name] = plugin;
   };
@@ -216,17 +225,6 @@ module.exports = function( config ) {
 
   koop.Cache.db = koop.LocalDB; 
  
-  // registers a DB modules  
-  app.registerCache = function( adapter ){
-    if ( config.db && config.db.conn ) {
-      koop.Cache.db = adapter.connect( config.db.conn, koop );
-    } 
-    else {
-      console.log('Cannot register this cache, missing db connection in config');
-    }
-    return;
-  };
-
   // remove the x powered by header from all responses
   app.use(function (req, res, next) {
       res.removeHeader("X-Powered-By");
@@ -240,9 +238,15 @@ module.exports = function( config ) {
   if (!config.db || !config.db.conn){
     console.warn('Warning koop w/o persistent cache means no data will be cached across server sessions.');
   }
+  // the defaul cache is the local in-mem cache 
+  // to persist data you must call registerCache with db adapter 
   koop.Cache.db = koop.LocalDB; 
- 
-  // registers a DB modules  
+
+  /** 
+   * Register DB adapters into the main Koop app
+   * overwrites any existing koop.Cache.db 
+   * @param {object} a koop db adapter
+   */
   app.registerCache = function( adapter ){
     if ( config.db && config.db.conn ) {
       koop.Cache.db = adapter.connect( config.db.conn, koop );
