@@ -97,10 +97,9 @@ exports.exportLarge = function( koop, format, id, key, type, options, finish, do
   var q = async.queue(function (task, cb) {
     // instead of passing a limit and offset 
     // we use a WHERE clause 
-    var idFilter = ' id >= '+ options.offset + ' AND id < ' + options.offset + options.limit;
-    var idFilter = ' id >= '+ task.offset + ' AND id < ' + (parseInt(task.offset) + parseInt(task.options.limit));
+    var idFilter = ' id >= '+ options.offset + ' AND id < ' + (parseInt(options.offset) + parseInt(options.limit));
     var opts = {
-      ifFilter: idFilter,
+      idFilter: idFilter,
       layer: options.layer,
       where: options.where,
       geometry: options.geometry,
@@ -344,7 +343,9 @@ function createPaths(dir, key, format, options){
 
   paths.jsonFile    = (options.name || key) + paths.tmpName+ '.json';
   paths.jsonFileTmp = (options.name || key) + paths.tmpName + '.json';
-  paths.vrtFile     = (options.name || key) + '.vrt';
+  // the VRT file must use the key to support large filters
+  // the file has to be unique to the filter
+  paths.vrtFile     = key + '.vrt';
   paths.newFileTmp  = key + paths.tmpName + '.' + format;
   paths.newFile     = (options.name || key) + '.' + format;
 
@@ -458,6 +459,7 @@ function getOgrParams( format, inFile, outFile, geojson, options ){
 
   }
 
+  cmd.push('-update');
   cmd.push('-append');
   cmd.push('-skipfailures');
   cmd.push('-lco');

@@ -87,7 +87,20 @@ jobs.process('exports', 2, function(job, done){
                       job.data.options.key, 
                       job.data.options, 
                       result, 
-                      done
+                      function(err, path){
+                        koop.Cache.getInfo(job.data.table, function(err, info){
+                          console.log('got info')
+                          delete info.status;
+                          delete info.generating;
+                          delete info.export_lock;
+                          koop.Cache.updateInfo(job.data.table, info, function(e, res){
+                            if (e) {
+                              return done(e);
+                            }
+                            return done();
+                          });      
+                        });      
+                      }
                     );            
                 });
               });
