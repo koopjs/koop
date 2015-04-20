@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.2] - 2015-04-20
+### Changed 
+* fixed an off by one issue in the new export paging strategy. This cropped in testing datasets with exactlye 5000 feature missing one feature. Basically we paged starting at `id === 0` instead of `id === 1`. 
+* using new body-parser methods to parse post bodies for app/json and app/form-urlencoded post bodies
+
 ## [2.1.1] - 2015-04-14
 ### Changed
 * sending -update to ogr2ogr to support large file exports
@@ -196,6 +201,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.1.2]: https://github.com/Esri/koop/compare/v2.1.1...v2.1.2
 [2.1.1]: https://github.com/Esri/koop/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/Esri/koop/compare/v2.0.4...v2.1.0
 [2.0.4]: https://github.com/Esri/koop/compare/v2.0.3...v2.0.4
