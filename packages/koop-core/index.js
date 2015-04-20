@@ -16,7 +16,10 @@ module.exports = function( config ) {
   koop.config = config;
 
   // handle POST requests
-  app.use(bodyParser());
+  // parse application/x-www-form-urlencoded
+  app.use(bodyParser.urlencoded({ extended: false }))
+  // parse application/json
+  app.use(bodyParser.json())
 
   // init the koop log based on config params
   koop.log = new koop.Logger( config );

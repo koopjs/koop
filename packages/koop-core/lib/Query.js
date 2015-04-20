@@ -41,16 +41,18 @@ module.exports = {
             var coords;
             // project each geometry to merator
             json.features.forEach( function( f ){
-              if ( f.geometry.x && f.geometry.y ) {
-                coords = new terraformer.Point( [f.geometry.x, f.geometry.y] ).toMercator().coordinates;
-                f.geometry.x = coords[0];
-                f.geometry.y = coords[1];
-              } else if ( f.geometry.rings ){
-                f.geometry.rings = new terraformer.Polygon( f.geometry.rings ).toMercator().coordinates;
-              } else if ( f.geometry.paths ) {
-                f.geometry.paths = new terraformer.LineString( f.geometry.paths ).toMercator().coordinates;
+              if ( f.geometry ){
+                if ( f.geometry.x && f.geometry.y ) {
+                  coords = new terraformer.Point( [f.geometry.x, f.geometry.y] ).toMercator().coordinates;
+                  f.geometry.x = coords[0];
+                  f.geometry.y = coords[1];
+                } else if ( f.geometry.rings ){
+                  f.geometry.rings = new terraformer.Polygon( f.geometry.rings ).toMercator().coordinates;
+                } else if ( f.geometry.paths ) {
+                  f.geometry.paths = new terraformer.LineString( f.geometry.paths ).toMercator().coordinates;
+                }
+                f.geometry.spatialReference.wkid = params.outSR;
               }
-              f.geometry.spatialReference.wkid = params.outSR;
             });
           }
         }

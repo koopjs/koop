@@ -31,12 +31,12 @@ function koopMap( dom ){
         onEachFeature: function(geojson, layer){
           createPopup(geojson,layer);
         }
-      }).addTo(map);
+    }).addTo(map);
+
     layerFS.metadata(function(err, data){
       var extent = data.extent;
       map.fitBounds([[ extent.ymin, extent.xmin], [ extent.ymax, extent.xmax ] ]);
     });
-    //console.log('ADDING LAYER', layerFS);
   }
 
   function addTileLayer( url ) {
@@ -48,13 +48,13 @@ function koopMap( dom ){
     var utfGrid = new L.UtfGrid( url+ '?callback={cb}');
 
     utfGrid.on('click', function (e) {
-      console.log('click: ', e);
+      //console.log('click: ', e);
     }); 
     utfGrid.on('mouseover', function (e) {
       if (e.data) console.log('mouseover: ', e.data);
     });
     utfGrid.on('mouseout', function (e) {
-//      console.log('mouseout: ', e.data);
+      //console.log('mouseout: ', e.data);
     });
     map.addLayer(utfGrid);
   }
