@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.3] - 2015-04-21
+### Changed
+* applying a datum xform for proj codes 2927. We may need to apply this across all State Plane HARN based projections in the future.
+
 ## [2.1.2] - 2015-04-20
 ### Changed 
 * fixed an off by one issue in the new export paging strategy. This cropped in testing datasets with exactlye 5000 feature missing one feature. Basically we paged starting at `id === 0` instead of `id === 1`. 
@@ -201,6 +205,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.1.3]: https://github.com/Esri/koop/compare/v2.1.2...v2.1.3
 [2.1.2]: https://github.com/Esri/koop/compare/v2.1.1...v2.1.2
 [2.1.1]: https://github.com/Esri/koop/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/Esri/koop/compare/v2.0.4...v2.1.0
