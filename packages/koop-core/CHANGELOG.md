@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.4] - 2015-04-28
+### Changed
+* fixed an issue with export shapefiles from datasets with exactly 5k features
+* fixed table detection for non-geom datasets
+* CSV exports will not include X/Y if the data have an x & y property
+ 
+### Addded 
+* support for a NAD83 to WGS84 datum shift for UTM datasets
+
 ## [2.1.3] - 2015-04-21
 ### Changed
 * applying a datum xform for proj codes 2927. We may need to apply this across all State Plane HARN based projections in the future.
@@ -205,6 +214,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.1.4]: https://github.com/Esri/koop/compare/v2.1.3...v2.1.4
 [2.1.3]: https://github.com/Esri/koop/compare/v2.1.2...v2.1.3
 [2.1.2]: https://github.com/Esri/koop/compare/v2.1.1...v2.1.2
 [2.1.1]: https://github.com/Esri/koop/compare/v2.1.0...v2.1.1
