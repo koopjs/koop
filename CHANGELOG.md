@@ -5,7 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [2.1.4] - 2015-04-28
 ### Changed
 * fixed an issue with export shapefiles from datasets with exactly 5k features
-* fixed table detection for non-geom datasets 
+* fixed table detection for non-geom datasets
+* CSV exports will not include X/Y if the data have an x & y property
+ 
 ### Addded 
 * support for a NAD83 to WGS84 datum shift for UTM datasets
 
