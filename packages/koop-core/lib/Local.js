@@ -50,22 +50,32 @@ module.exports = {
     callback(null, true);
   },
 
-  serviceRegister: function( type, key, info, callback ){
-    this.store.services[type + ':' + info.id] = info;
+  serviceRegister: function( type, info, callback ){
+    if (!this.store.services[type]){
+      this.store.services[type] = {};
+    }
+    this.store.services[type][info.id] = info;
     callback(null, true);
   },
 
   serviceCount:function(type, callback){
-    callback(null, Object.keys(this.store.services).length);
+    var services = this.store.services[type] || {};
+    callback(null, Object.keys(services).length);
   },
 
-  serviceRemove: function( key, id, callback){
-    this.store.services[ key+':'+id ] = null;
+  serviceRemove: function( type, id, callback){
+    if (this.store.services[type] && this.store.services[type][id]){
+      this.store.services[type][id] = null;
+    }
     callback(null, true);
   },
 
   serviceGet: function( type, id, callback){
-    callback(null, this.store.services[type+':'+id] || {});
+    if (!id){
+      callback(null, this.store.services[type] || {}); 
+    } else {
+      callback(null, this.store.services[type][id]);
+    }
   },
 
   remove: function( key, callback){
