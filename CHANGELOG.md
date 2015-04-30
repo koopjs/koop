@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.5] - 2015-04-30
+### Added
+* method for getting geohash grids if the installed cache supports it
+* saveFile method in lib/BaseModel to give providers that ability to save file centrally
+
+### Changed 
+* Fixed registration of services in the lib/Local.js cache
+
 ## [2.1.4] - 2015-04-28
 ### Changed
 * fixed an issue with export shapefiles from datasets with exactly 5k features
@@ -214,6 +222,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.1.5]: https://github.com/Esri/koop/compare/v2.1.4...v2.1.5
 [2.1.4]: https://github.com/Esri/koop/compare/v2.1.3...v2.1.4
 [2.1.3]: https://github.com/Esri/koop/compare/v2.1.2...v2.1.3
 [2.1.2]: https://github.com/Esri/koop/compare/v2.1.1...v2.1.2
