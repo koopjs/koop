@@ -12,7 +12,7 @@ exports.fromCSV = function( csv, callback ){
       headers = row;
       // search a whitelist of lat longs to try to build a geom
       headers.forEach(function(h,i){
-        switch (h.toLowerCase()){
+        switch (h.trim().toLowerCase()){
           case 'lat':
           case 'latitude':
           case 'latitude_deg':
@@ -37,7 +37,6 @@ exports.fromCSV = function( csv, callback ){
       });
       // add an object to CSV data
       feature.properties.OBJECTID = i;
-
       if ( lat && lon ){
         feature.geometry = {
           type: 'Point',

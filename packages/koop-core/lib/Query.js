@@ -24,14 +24,14 @@ module.exports = {
 
         if (params.orderByFields && params.orderByFields !== ''){
           var fld = params.orderByFields.split(' ');
-          var order = params.orderByFields;
+          var order = fld[0];
           if (fld[fld.length-1] === 'DESC'){
-            order = '-' + params.orderByFields;
+            order = '-' + fld[0];
           }
           json.features = this.orderBy(json.features, params.orderByFields, order);
         }
 
-        if ( ( params.returnGeometry === false || params.returnGeometry === 'false') && (!params.outFields || params.outFields !== '*')){
+        if ( ( params.returnGeometry === false || params.returnGeometry === 'false') ) {
           json.features.forEach(function(f){
             delete f.geometry;
           });
@@ -449,9 +449,9 @@ module.exports = {
 
     if (params.orderByFields && params.orderByFields !== ''){
       var fld = params.orderByFields.split(' ');
-      var order = params.orderByFields;
+      var order = fld[0];
       if (fld[fld.length-1] === 'DESC'){
-        order = '-' + params.orderByFields;
+        order = '-' + fld[0];
       }
       json.features = this.orderBy(json.features, params.orderByFields, order);
     }

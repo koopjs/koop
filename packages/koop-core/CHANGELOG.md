@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.6] - 2015-05-13
+### Changed
+* Forcing CSV column headers to be trimmed for leading/trailing whitespace on parse
+* Fixed support for returnGeometry=false
+* Not setting the id attribute if OBJECTID is already present
+* Fixed support for orderByFields on featureservice requests for both ASC and DESC sort orders
+
 ## [2.1.5] - 2015-04-30
 ### Added
 * method for getting geohash grids if the installed cache supports it
@@ -222,6 +229,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.1.6]: https://github.com/Esri/koop/compare/v2.1.5...v2.1.6
 [2.1.5]: https://github.com/Esri/koop/compare/v2.1.4...v2.1.5
 [2.1.4]: https://github.com/Esri/koop/compare/v2.1.3...v2.1.4
 [2.1.3]: https://github.com/Esri/koop/compare/v2.1.2...v2.1.3
