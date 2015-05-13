@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Forcing CSV column headers to be trimmed for leading/trailing whitespace on parse
 * Fixed support for returnGeometry=false
 * Not setting the id attribute if OBJECTID is already present
+* Fixed support for orderByFields on featureservice requests for both ASC and DESC sort orders
 
 ## [2.1.5] - 2015-04-30
 ### Added
