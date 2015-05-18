@@ -260,6 +260,8 @@ module.exports = function( config ) {
     return;
   };
 
+   koop.log.error('Booting up', {someobj: true, key2: 'yes'});
+
   return app;
 
 };

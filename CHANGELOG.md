@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased 
+### Changed 
+* Multiple file transports for debug and error level logging
+* A different log formatter for better inclusion into fluentd 
+
 ## [2.1.6] - 2015-05-13
 ### Changed
 * Forcing CSV column headers to be trimmed for leading/trailing whitespace on parse
