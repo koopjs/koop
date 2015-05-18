@@ -79,11 +79,19 @@ module.exports = {
     if ( !data.length && data.features && data.features.length ){
       fieldObj = this.fields( data.features[0].properties, params.idField ); 
       template.fields = fieldObj.fields;
-      template.objectIdFieldName = fieldObj.oidField;
+      if (template.objectIdFieldName) {
+        template.objectIdFieldName = fieldObj.oidField;
+      } else {
+        template.objectIdField = fieldObj.oidField;
+      }
     } else if (data[0] && data[0].features[0] && data[0].features[0].length ) {
       fieldObj = this.fields( data[0].features[0].properties, params.idField );
       template.fields = fieldObj.fields;
-      template.objectIdFieldName = fieldObj.oidField;
+      if (template.objectIdFieldName) {
+        template.objectIdFieldName = fieldObj.oidField;
+      } else {
+        template.objectIdField = fieldObj.oidField;
+      }
     } else {
       template.fields = [];
     }
