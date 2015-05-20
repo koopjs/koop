@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.8] - 2015-05-19
+### Removed 
+* A misleading error log on start up that was left in the index.js
+
 ## [2.1.7] - 2015-05-18
 ### Changed 
 * Multiple file transports for debug and error level logging
@@ -235,6 +239,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.1.8]: https://github.com/Esri/koop/compare/v2.1.7...v2.1.8
 [2.1.7]: https://github.com/Esri/koop/compare/v2.1.6...v2.1.7
 [2.1.6]: https://github.com/Esri/koop/compare/v2.1.5...v2.1.6
 [2.1.5]: https://github.com/Esri/koop/compare/v2.1.4...v2.1.5
