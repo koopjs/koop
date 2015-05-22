@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.9] - 2015-05-21
+### Changed 
+* Sending any stored header/field lists to the featureserver code to support ordered fields coming from CSVs data.
+* More logic around not exporting X/Y values when data attributes contain an x and y prop. 
+
 ## [2.1.8] - 2015-05-19
 ### Removed 
 * A misleading error log on start up that was left in the index.js
@@ -239,6 +244,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.1.9]: https://github.com/Esri/koop/compare/v2.1.8...v2.1.9
 [2.1.8]: https://github.com/Esri/koop/compare/v2.1.7...v2.1.8
 [2.1.7]: https://github.com/Esri/koop/compare/v2.1.6...v2.1.7
 [2.1.6]: https://github.com/Esri/koop/compare/v2.1.5...v2.1.6
