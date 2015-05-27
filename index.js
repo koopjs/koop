@@ -219,15 +219,6 @@ module.exports = function( config ) {
     });
   }
 
-  koop.Cache = new koop.DataCache( koop );
-
-  // use the default local cache until a DB adapter mod is registered
-  if (!config.db || !config.db.conn){
-    console.warn('Warning koop w/o persistent cache means no data will be cached across server sessions.');
-  }
-
-  koop.Cache.db = koop.LocalDB; 
- 
   // remove the x powered by header from all responses
   app.use(function (req, res, next) {
       res.removeHeader("X-Powered-By");
@@ -236,15 +227,18 @@ module.exports = function( config ) {
 
   // save the koop log onto the app
   app.log = koop.log;
-  
+
+  koop.Cache = new koop.DataCache( koop );
+
   // use the default local cache until a DB adapter mod is registered
   if (!config.db || !config.db.conn){
     console.warn('Warning koop w/o persistent cache means no data will be cached across server sessions.');
   }
-  // the defaul cache is the local in-mem cache 
+
+  // the default cache is the local in-mem cache 
   // to persist data you must call registerCache with db adapter 
   koop.Cache.db = koop.LocalDB; 
-
+  
   /** 
    * Register DB adapters into the main Koop app
    * overwrites any existing koop.Cache.db 
