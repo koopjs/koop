@@ -2,9 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [2.1.10] - 2015-05-28
+## [2.1.10] - 2015-06-02
 ### Changed
 * adding an object id to the list of fields when its missing for CSV data
+* Files from S3 now get a the HEAD request data back when checking if files exist
 
 ## [2.1.9] - 2015-05-21
 ### Changed 
