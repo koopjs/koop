@@ -51,14 +51,16 @@ var Files = function( koop ){
         Bucket: [this.s3Bucket, subdir].join('/'), 
         Key: name 
       };
-      this.s3.getObjectAcl(params, function(err){
-        if (err){
+      this.s3.getObjectAcl(params, function (err) {
+        if (err) {
           koop.log.info('File does not exist on S3 %s %s', self.s3Bucket, subdir, name);
           callback( false );
         } else {
-          self.s3.getSignedUrl( 'getObject', params, function ( err, url ) {
-            koop.log.info('File exists on S3 %s %s', self.s3Bucket, name);
-            callback( true, url.split('?')[0] );
+          self.s3.headObject(params, function (err, info) {
+            self.s3.getSignedUrl( 'getObject', params, function ( err, url, data ) {
+              koop.log.info('File exists on S3 %s %s', self.s3Bucket, name);
+              callback( true, url.split('?')[0], info );
+            });
           });
         }
       });
