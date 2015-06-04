@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.11] - 2015-06-04
+### Changed
+* Local cache get info now returns error if info does not exist
+
 ## [2.1.10] - 2015-06-02
 ### Changed
 * adding an object id to the list of fields when its missing for CSV data
