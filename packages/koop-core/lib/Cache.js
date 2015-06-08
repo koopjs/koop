@@ -40,8 +40,8 @@ var Cache = function( koop ){
           callback( null, data );
         } else {
           // expired, hit the API to check the latest sha
-          if ( global[type] && global[type].checkthis ) {
-            global[type].checkthis( key, data, options, function(err, success){
+          if ( global[type] && global[type].checkCache ) {
+            global[type].checkCache( key, data, options, function(err, success){
               if ( !success ){
                 // false is good -> reset timer and return data
                 // cache returned true, return current data

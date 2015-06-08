@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed 
+* Fixed typo bug with checking for expired caches when timers are set. s/checkthis/checkCache/g
+
 ## [2.1.11] - 2015-06-04
 ### Changed
 * Local cache get info now returns error if info does not exist
@@ -253,6 +257,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.1.11]: https://github.com/Esri/koop/compare/v2.1.10...v2.1.11
 [2.1.10]: https://github.com/Esri/koop/compare/v2.1.9...v2.1.10
 [2.1.9]: https://github.com/Esri/koop/compare/v2.1.8...v2.1.9
 [2.1.8]: https://github.com/Esri/koop/compare/v2.1.7...v2.1.8
