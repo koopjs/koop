@@ -13,3 +13,6 @@ The document is meant to provide transparency in what work is currently planned 
 ## v3.0.0 - September 2015
 ### Changes 
 * Explore removing ogr2ogr as a dep for exporting file formats
+### Additions 
+* Support for OGC WMS and WFS 
+* A koop desktop app built with something like Electron
