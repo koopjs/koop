@@ -91,20 +91,22 @@ describe('Query Model', function(){
         });
       });
 
-      /*it('should return json when outStatistics params is proper', function(done){
+      it('should return json when outStatistics params is proper', function(done){
         var snow = require('../fixtures/snow2.geojson');
-        Query.outStatistics( snow[0], { outStatistics : '[{"statisticType": "min", "onStatisticField": "total precip","outStatisticFieldName":"min_precip"}]' }, function( err, service ){
+        Query.outStatistics( snow[0], { outStatistics : '[{"statisticType":"min","onStatisticField":"total precip","outStatisticFieldName":"min_precip"}]' }, function( err, service ){
           should.not.exist( err );
           should.exist( service );
           service.fields.should.be.an.instanceOf(Array);
           service.features.should.be.an.instanceOf(Array);
           done();
         });
-      });*/
+      });
+    });
 
+    describe('when grouping stats', function(){
       it( 'should return json when grouping stats by a field', function( done ){
-        var snow2 = require('../fixtures/snow2.geojson');
-        Query.outStatistics( snow2[0], { groupByFieldsForStatistics: 'total precip', outStatistics : '[{"statisticType": "count", "onStatisticField": "total precip", "outStatisticFieldName":"total_precip_COUNT"}]' }, function( err, service ){
+        var snow3 = require('../fixtures/snow3.geojson');
+        Query.outStatistics( snow3[0], { groupByFieldsForStatistics: 'total precip', outStatistics : '[{"statisticType":"count","onStatisticField":"total precip","outStatisticFieldName":"total_precip_COUNT"}]' }, function( err, service ){
           should.not.exist( err );
           should.exist( service );
           service.fields.should.be.an.instanceOf(Array);
