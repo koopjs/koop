@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.1.12] - 2015-06-12
 ### Changed 
 * Fixed typo bug with checking for expired caches when timers are set. s/checkthis/checkCache/g
 * Better logic around outSR when requesting 102100 as projected output
