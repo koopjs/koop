@@ -266,6 +266,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.1.12]: https://github.com/Esri/koop/compare/v2.1.11...v2.1.12
 [2.1.11]: https://github.com/Esri/koop/compare/v2.1.10...v2.1.11
 [2.1.10]: https://github.com/Esri/koop/compare/v2.1.9...v2.1.10
 [2.1.9]: https://github.com/Esri/koop/compare/v2.1.8...v2.1.9
