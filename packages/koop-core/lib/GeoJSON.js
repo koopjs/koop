@@ -78,8 +78,8 @@ exports.fromEsri = function( fields, json, callback ){
               delete f.attributes[attr];
             }
             
-            fields.forEach(function(field){
-              if ( field.name === attr && field.domain){
+            fields.forEach(function (field) {
+              if (field.name === attr && field.domain && field.domain.codedValues) {
                 field.domain.codedValues.forEach(function(c){
                   if (f.attributes[attr] === c.code){
                     f.attributes[attr] = c.name;
@@ -90,9 +90,7 @@ exports.fromEsri = function( fields, json, callback ){
           }
         }
         if ( f.geometry ){
-          //console.log('feature', f.geometry.rings)
           feature = terraformerParser.parse( f );
-
 
           // build a new feature
           // 'feature' has bboxes we dont want and 'delete' is slow
