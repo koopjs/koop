@@ -7,6 +7,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Fixed typo bug with checking for expired caches when timers are set. s/checkthis/checkCache/g
 * Better logic around outSR when requesting 102100 as projected output
 * checking for codedValues on field.domains in the lib/GeoJSON - fixes a bug with numeric domains
+* All query model tests are running and passing
+
+### Fixed 
+* Correctly replacing LCC to address an ogr2ogr proj bug
+
+### Added 
+* A project roadmap for laying out upcoming versions and work we want to do in those versions
 
 ## [2.1.11] - 2015-06-04
 ### Changed
