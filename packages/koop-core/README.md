@@ -1,13 +1,18 @@
-# koop
+# Koop
 
-[![npm version](https://img.shields.io/npm/v/koop.svg?style=flat-square)](https://www.npmjs.com/package/koop)
-[![build status](https://img.shields.io/travis/Esri/koop.svg?style=flat-square)](https://travis-ci.org/Esri/koop)
+[![npm version][npm-img]][npm-url]
+[![build status][travis-img]][travis-url]
+
+[npm-img]: https://img.shields.io/npm/v/koop.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/koop
+[travis-img]: https://img.shields.io/travis/Esri/koop.svg?style=flat-square
+[travis-url]: https://travis-ci.org/Esri/koop
 
 **Turn data into Feature Services.**
 
-Koop is a node.js module that exposes an [Express](http://expressjs.com/) server for the purpose of being used as middleware within an Express based application.
+Koop is [Express middleware](http://expressjs.com/guide/using-middleware.html) for simplifying  geographic data consumption across many different providers and in many different formats.
 
-Koop provides a flexible server for exposing 3rd party data sources (APIs) as both [Feature Services](http://resources.arcgis.com/en/help/arcgis-rest-api/#/Query_Feature_Service_Layer/02r3000000r1000000/) and other data formats (GeoJSON). This project is meant to provide a simple / pluggable platform for experimenting with various data within the ArcGIS platform. Koop aims to provide a platform for accessing any API and making it easy to consume within the realm of Esri's geospatial web products.
+Koop provides a flexible server for exposing 3rd party data sources (APIs) as both [Feature Services](http://resources.arcgis.com/en/help/arcgis-rest-api/#/Query_Feature_Service_Layer/02r3000000r1000000/) and standard geographic data formats (GeoJSON, Shapefile, KML, CSV). This project is meant to provide a versatile platform for experimenting and working with various data within the global geospatial data ecosystem. Koop aims to allow easy access to any API and to make it easy to consume within the realm of Esri's geospatial web products.
 
 Visit the demo at [http://koop.dc.esri.com](http://koop.dc.esri.com).
 
@@ -17,166 +22,84 @@ Visit the demo at [http://koop.dc.esri.com](http://koop.dc.esri.com).
 
 ## Dependencies
 
-The following dependencies are needed in order to run Koop on your local machine / server:
+Koop requires [Node.js](http://nodejs.org/) version 0.10.x or greater to run on your server or local machine.
 
-* [Node.js](http://nodejs.org/) (version > 0.10.0)
-* A spatial database
-  * Koop needs a spatial database to act as a cache for data
-  * Currently supports PostGIS (PostgreSQL) and SpatiaLite (SQLite)
+### Recommended for production
 
+Koop uses a local, in-memory object for caching data by default. If you want persistent and performant data caching, Koop needs access to a spatial database. We use and recommend [PostGIS](http://postgis.net) in production, but there is also experimental support for [ElasticSearch](https://www.elastic.co/products/elasticsearch).
 
-## Pre-Installation on Windows
-1. Setup the Python environmental variable
+See the [Caches](https://github.com/koopjs/koopjs.github.io/blob/master/docs/caches.md) section in the documentation for more information.
 
-  ```
-  # Windows
-  SET PYTHON = C:\Python27\python\python.exe
-  ```
+## Install
 
-## Installation
+Koop should be installed as a dependency in a Node.js project like so:
 
-Basic installation would occur within an existing or new node.js project like so
+```
+npm install koop --save
+```
 
-  ```
-  npm install koop
-  ```
+### Pre-Installation on Windows
 
-Then you would install a Koop Provider, like Github (see below for a full list of providers)
+Make sure the `PYTHON` environmental variable is set:
 
-  ```
-  npm install koop-github
-  ```
+```
+SET PYTHON = C:\Python27\python\python.exe
+```
 
-## Registering Providers
+## Usage
 
-Once you've installed koop and chosen a provider to work with you need to "register" the provider with koop
+Koop works as [Express middleware](http://expressjs.com/guide/using-middleware.html). To use Koop you need a combination of Express, Koop, and Koop **providers**. Once Koop is in a project, you can add a Koop provider like [`koop-github`](https://github.com/koopjs/koop-github):
 
-  ```javascript
-  // create a config object that tells koop where to write data and what db to use
-  var config = {
-    "server": { "port": 1337 },
-    "data_dir": "/usr/local/koop/",
-    "db": {
-      "postgis": {
-          "conn": "postgres://localhost/koopdev"
-      }
-    }
-  };
+```
+npm install koop-github --save
+```
 
-  // pass the config to koop
-  var koop = require('koop')( config ),
-  github = require('koop-github');
+For a complete list of providers, see the [documentation](https://github.com/koopjs/koopjs.github.io/blob/master/docs/providers.md).
 
-  // register the provider with koop to bind its routes/handlers
-  koop.register( github );
+### Registering Providers
 
-  // create an express app
-  var express = require("express")
-  var app = express();
+Once you've installed koop and chosen a provider to work with you need to **register** the provider with Koop.
 
-  // add koop middleware to the express app
-  app.use( koop );
+```javascript
+// create a config object that tells koop where to write data and what db to use
+var config = {
+  "data_dir": "/usr/local/koop/",
+  "db": {
+    "conn": "postgres://localhost/koopdev"
+  }
+};
 
-  // start the express server
-  app.listen(process.env.PORT || config.server.port,  function() {
-    console.log("Listening at http://%s:%d/", this.address().address, this.address().port);
-  });
-  ```
+// pass the config to koop
+var koop = require('koop')(config);
 
-## Data Providers
+// require and register the provider to bind its routes and handlers
+var github = require('koop-github');
+koop.register(github);
 
-Koop is designed to expose 3rd party services as Feature Services that are consumable within Esri products and services. Currently Koop has the following providers shipped by default:
+// create an express app
+var app = require('express')();
 
-* [ArcGIS Online](https://github.com/Esri/koop-agol)
-* [GitHub](https://github.com/koopjs/koop-github)
-* [GitHub gist](https://github.com/koopjs/koop-gist)
-* [Socrata](https://github.com/koopjs/koop-socrata)
+// add koop middleware to the express app
+app.use(koop);
 
-Each provider resides in its own git repo (e.g. [koop-github](https://github.com/koopjs/koop-github)).
+// start the express server
+app.listen(process.env.PORT || 1337, function () {
+  console.log('Listening at http://localhost:%d/', this.address().port);
+});
+```
 
-## Development
-
-To modify [koop](https://github.com/esri/koop) or develop new koop providers, install them to the `node_modules` directory in the koop application folder:
-
-### Defining a new provider
-
-- Check out providers such as [koop-agol](https://github.com/Esri/koop-agol) and link in `node_modules/`
-
-  ```
-  git clone git@github.com:Esri/koop-agol.git
-  cd koop-agol && npm install
-  cd node_modules && ln -s ../koop-agol
-  ```
-
-Each provider defines custom routes, a controller, and a model. Each of these uses ``module.exports`` to export an object (common js modules).  Each is then fused into koop at start up time and becomes available within the server.
-
-**Note**: The name of the provider directory is used to define the name of the provider and its controller within koop.
-
-#### Routes
-
-* Define custom routes in the `routes/index.js` file:
-
-  ```javascript
-    // defined in api/providers/sample/routes/index.js
-
-    module.exports = {
-      'get /sample': {
-        controller: 'sample',
-        action: 'index'
-      }
-    }
-  ```
-
-* The above creates a `/sample` route that calls the `index` method on the sample controller (defined in `/api/providers/sample/controller/index.js`)
-
-#### Controller
-
-* Defines the handlers used to respond to routes
-
-  ```javascript
-    module.exports = {
-      // this tells koop to treat this provider like AGS service and show up at the root data provider endpoint
-      provider: false,
-
-      // our index method to simple print text
-      index: function(req, res){
-        res.send('Sample Providers, to make this a real one set provider true');
-      }
-
-    };
-  ```
-
-* Each method takes in a request and response property and needs to send something to the reponse
-
-#### Models
-
-* Should be used to interact directly with 3rd party services and databases
-* Models make the http requests to API and should hand back raw data to the controllers
-
-#### Example URL Structure 1: Gists as a Feature Service
-
-  * [http://koop.dc.esri.com/gist/6021269](http://koop.dc.esri.com/gist/6021269)
-  * [http://koop.dc.esri.com/gist/6021269/FeatureServer](http://koop.dc.esri.com/gist/6021269/FeatureServer)
-  * [http://koop.dc.esri.com/gist/6021269/FeatureServer/0](http://koop.dc.esri.com/gist/6021269/FeatureServer/0)
-  * [http://koop.dc.esri.com/gist/6021269/FeatureServer/0/query](http://koop.dc.esri.com/gist/6021269/FeatureServer/0/query)
-
-#### Example URL Structure 2: Github Repo as a Feature Service
-
-  * [http://koop.dc.esri.com/github/colemanm/hurricanes/fl_2004_hurricanes](http://koop.dc.esri.com/github/colemanm/hurricanes/fl_2004_hurricanes)
-  * [http://koop.dc.esri.com/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer](http://koop.dc.esri.com/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/)
-  * [http://koop.dc.esri.com/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/0/query](http://koop.dc.esri.com/github/colemanm/hurricanes/fl_2004_hurricanes/FeatureServer/0/query)
-  * Note: Repos can of course have directories, and this presents an issue with creating dynamic routes that match arbitrary paths in github. To solve this Koop will replace dashes with slashes in its github routes:
-    * [http://koop.dc.esri.com/github/geobabbler/geodata/geojson-border_crossings/FeatureServer/0/query](http://koop.dc.esri.com/github/geobabbler/geodata/geojson-border_crossings/FeatureServer/0/query)
-    * The above url would pull down this geojson file: [https://github.com/geobabbler/geodata/blob/master/geojson/border_crossings.geojson](https://github.com/geobabbler/geodata/blob/master/geojson/border_crossings.geojson)
+Read more about creating a new provider or modifying an existing provider [here](https://github.com/koopjs/koopjs.github.io/blob/master/docs/specs/provider.md).
 
 ## Roadmap
 
-Not all capabilities of [Feature Services](http://resources.arcgis.com/en/help/arcgis-rest-api/#/Query_Feature_Service_Layer/02r3000000r1000000/) are currently supported. It is planned to extend support for these as well as explore additional output formats.
+See [ROADMAP.md](ROADMAP.md) to view the Koop project roadmap.
 
 ## Resources
 
+* [Koop Documentation](https://github.com/koopjs/koopjs.github.io/tree/master/docs)
 * [ArcGIS REST API Documentation](http://resources.arcgis.com/en/help/arcgis-rest-api/)
 * [ArcGIS for Developers](http://developers.arcgis.com)
+* [@esri](http://twitter.com/esri)
 
 ## Issues
 
@@ -186,9 +109,9 @@ Find a bug or want to request a new feature? Please let us know by submitting an
 
 Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/Esri/contributing).
 
-## Licensing
+## License
 
-Copyright 2014 Esri
+Copyright 2015 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -202,7 +125,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-A copy of the license is available in the repository's [LICENSE](./license.txt) file.
+A copy of the license is available in the repository's [license.txt](license.txt) file.
 
 [](Esri Tags: ArcGIS Web Mapping GeoJson FeatureServices)
 [](Esri Language: JavaScript)
