@@ -1,7 +1,9 @@
 # Roadmap
-The document is meant to provide transparency in what work is currently planned for Koop.
 
-## v2.2.0 - July 2015
+This document is meant to provide transparency in planning and implementation goals for the Koop project.
+
+## July 2015
+
 ### Changes 
 * FeatureService optimizations 
   * Make smarter requests to the DB based on queries 
@@ -12,7 +14,8 @@ The document is meant to provide transparency in what work is currently planned 
 * Address consistency issues in method calls to the Cache from providers 
   - be clear and consitent about passing table names instead of "types" and "keys"
 
-## v3.0.0 - September 2015
+## September 2015
+
 ### Changes 
 * Explore removing ogr2ogr as a dep for exporting file formats
 ### Additions 
