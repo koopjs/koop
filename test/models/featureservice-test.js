@@ -76,6 +76,35 @@ describe('FeatureServices Model', function(){
       });
     });
 
+    describe('when getting feature counts from a given count', function(done){
+      it('should return a correct count json', function (done) {
+        fs.query( {count: 100}, {returnCountOnly: true}, function (err, json) {
+          should.not.exist(err)
+          json.count.should.equal(100);
+          done();
+        });
+      });
+    });
+
+    describe('when overriding params in a feature service', function(){
+      it('should return changed values', function(done){
+        var name = 'MyTestName',
+          desc = 'MyTestDesc';
+        var params = {
+          overrides: {
+            name: name,
+            description: desc
+          }
+        };
+        fs.info( data, 0, params, function( err, service ){
+          service.should.be.an.instanceOf(Object);
+          service.name.should.equal(name);
+          service.description.should.equal(desc);
+          done();
+        });
+      });
+    });
+
     describe('when getting featureserver features from geojson', function(){
       it('should return a valid features', function(done){
         fs.query( data, {}, function( err, service ){
