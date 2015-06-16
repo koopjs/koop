@@ -7,7 +7,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Providers can optionally pass in an `overrides` property to the `processFeatureService` method on controllers. This allows a provider to manually override any templated values in the Feature Service response like names, descriptions, etc.
 * Tests for overriding properties
 * Tests passing in counts to FeatureServices when `returnCountOnly` is true
-* Added wrapper methods on the `lib/Cache.js` for missing cache methods 
+* Added wrapper methods on the `lib/Cache.js` for missing cache methods
+* Added jsdocs to methods in `lib/Cache.js` 
 ### Changed
 * Providers can now optionally pass in an extent that FeatureServices will use instead of looping over features 
 
