@@ -74,6 +74,14 @@ describe('FeatureServices Model', function(){
           done();
         });
       });
+
+      it('should use the passed in extent if present', function(done){
+        polyData.extent = [1, 2, 3, 4]
+        fs.info( polyData, 0, {}, function( err, service ){
+          service.fullExtent[0].should.equal(1);
+          done();
+        });
+      });
     });
 
     describe('when getting feature counts from a given count', function(done){

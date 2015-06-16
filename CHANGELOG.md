@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added 
+* Providers can optionally pass in an `overrides` property to the `processFeatureService` method on controllers. This allows a provider to manually override any templated values in the Feature Service response like names, descriptions, etc.
+* Tests for overriding properties
+* Tests passing in counts to FeatureServices when `returnCountOnly` is true
+### Changed
+* Providers can now optionally pass in an extent that FeatureServices will use instead of looping over features  
+
 ## [2.1.12] - 2015-06-12
 ### Changed 
 * Fixed typo bug with checking for expired caches when timers are set. s/checkthis/checkCache/g
