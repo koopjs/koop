@@ -81,14 +81,16 @@ module.exports = {
         if ( params.outStatistics ){
           this.outStatistics( json, params, callback );
         } else {
+          // providers can pass in an "overrides" param
+          if (params.overrides) {
+            for (var prop in params.overrides) {
+              json[prop] = params.overrides[prop];
+            }
+          }
           callback( null, json );
         }
-
-
       }
-
     }
-
   },
 
   calculateStat: function(type, field, features){
