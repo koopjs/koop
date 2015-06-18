@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Added jsdocs to methods in `lib/Cache.js` 
 ### Changed
 * Providers can now optionally pass in an extent that FeatureServices will use instead of looping over features 
+* If no config is passed in one will get created as an empty object. This protects koop from crashing with no config (#186).
 
 ## [2.1.12] - 2015-06-12
 ### Changed 

@@ -12,7 +12,9 @@ module.exports = function( config ) {
 
   // keep track of the registered services
   app.services = {};
-
+  
+  // if config is undefined, create it
+  config = config || {};
   koop.config = config;
 
   // handle POST requests
