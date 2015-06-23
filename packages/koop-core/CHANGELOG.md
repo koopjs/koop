@@ -9,9 +9,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Tests passing in counts to FeatureServices when `returnCountOnly` is true
 * Added wrapper methods on the `lib/Cache.js` for missing cache methods
 * Added jsdocs to methods in `lib/Cache.js` 
+
 ### Changed
 * Providers can now optionally pass in an extent that FeatureServices will use instead of looping over features 
 * If no config is passed in one will get created as an empty object. This protects koop from crashing with no config (#186).
+* Shapefile parts are deleted after being added to zip
+
+### Fixed
+* Zip exports no longer contain shapefile parts that do not belong
 
 ## [2.1.12] - 2015-06-12
 ### Changed 
