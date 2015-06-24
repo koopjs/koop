@@ -35,7 +35,8 @@ describe('FeatureServices Model', function(){
       var input = {
         propInt: 10,
         propFloat:10.1,
-        propString:'Awesome'
+        propString:'Awesome',
+        propDate: 'Wed Jun 24 2015 08:18:24'
       };
       var fieldObj = fs.fields( input ),
         fields = fieldObj.fields;
@@ -57,10 +58,11 @@ describe('FeatureServices Model', function(){
             f.should.have.property('type');
             f.should.have.property('name');
             f.should.have.property('alias');
-          });
+          })
           fields[0].type.should.equal('esriFieldTypeInteger'); 
           fields[1].type.should.equal('esriFieldTypeDouble'); 
           fields[2].type.should.equal('esriFieldTypeString'); 
+          fields[3].type.should.equal('esriFieldTypeDate'); 
           done();
       });
     });
