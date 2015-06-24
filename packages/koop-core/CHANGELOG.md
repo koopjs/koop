@@ -17,6 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 * Zip exports no longer contain shapefile parts that do not belong
+* Ensuring that date fields are correctly cast as dates in FeatureServices
 
 ## [2.1.12] - 2015-06-12
 ### Changed 
