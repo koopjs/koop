@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.2.1] - 2015-06-29
+### Fixed 
+* Cleaned up the zip command in lib/Exporter.js
+* fixed removeShapefile to actually clean up after itself on zip/shp creation
+
 ## [2.2.0] - 2015-06-24
 ### Added 
 * Providers can optionally pass in an `overrides` property to the `processFeatureService` method on controllers. This allows a provider to manually override any templated values in the Feature Service response like names, descriptions, etc.
@@ -283,6 +288,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.2.1]: https://github.com/Esri/koop/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/Esri/koop/compare/v2.1.12...v2.2.0
 [2.1.12]: https://github.com/Esri/koop/compare/v2.1.11...v2.1.12
 [2.1.11]: https://github.com/Esri/koop/compare/v2.1.10...v2.1.11
