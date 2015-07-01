@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* If a provider passes in a metadata value to the Exporter then it will be used to create a metadata xml file for only shp exports.
+* Added a `exportFile` method to BaseModel that providers a more simple interface to exporting methods. The goal will be to ultimately change the way `exportLarge` and `exportToFormat` are called by providers.  
+
 ## [2.2.1] - 2015-06-29
 ### Fixed 
 * Cleaned up the zip command in lib/Exporter.js
