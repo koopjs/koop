@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.3.0] - 2015-07-02
 ### Added
 * If a provider passes in a metadata value to the Exporter then it will be used to create a metadata xml file for only shp exports.
 * Added a `exportFile` method to BaseModel that providers a more simple interface to exporting methods. The goal will be to ultimately change the way `exportLarge` and `exportToFormat` are called by providers.  
@@ -293,6 +293,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.3.0]: https://github.com/Esri/koop/compare/v2.2.1...v2.3.0
 [2.2.1]: https://github.com/Esri/koop/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/Esri/koop/compare/v2.1.12...v2.2.0
 [2.1.12]: https://github.com/Esri/koop/compare/v2.1.11...v2.1.12
