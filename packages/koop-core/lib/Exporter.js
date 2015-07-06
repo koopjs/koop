@@ -25,7 +25,7 @@ var shapefileParts = [
   'shx',
   'prj',
   'cpg',
-  'xml'
+  'shp.xml'
 ]
 
 
