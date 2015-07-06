@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Made metadata files on shp file exports have a "shp.xml" extension
+
 ## [2.3.0] - 2015-07-02
 ### Added
 * If a provider passes in a metadata value to the Exporter then it will be used to create a metadata xml file for only shp exports.
