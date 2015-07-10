@@ -6,6 +6,7 @@ var fs = require('fs'),
   crypto = require('crypto'),
   projCodes = require('esri-proj-codes'),
   mv = require('mv'),
+  spatialReference = require('./SpatialReference'),
   rm = require('rimraf');
 
 var exec = require('child_process').exec;
@@ -470,17 +471,20 @@ function getOgrParams( format, inFile, outFile, geojson, options ){
     }
   } else if (format === 'zip' || format === 'shp'){
     // only project features for shp when wkid != 4326 or 3857 or 102100
-    if ( options.wkid ){
-      var proj = projCodes.lookup(options.wkid);
-      if (proj && proj.wkt){
+    if ( options.outSR ){
+      var sr = spatialReference.parse(options.outSR);
+      if (sr.wkid) {
+        var proj = projCodes.lookup(sr.wkid);
+        if (proj && proj.wkt) {
+          cmd.push('-t_srs');
+          cmd.push('\''+ fixWkt(proj.wkt, sr.wkid) +'\'');
+        } else {
+          console.log('No proj info found for WKID', sr.wkid, outFile);
+        }
+      } else if (sr.wkt) {
         cmd.push('-t_srs');
-        cmd.push('\''+ fixWkt(proj.wkt, options.wkid) +'\'');
-      } else {
-        console.log('No proj info found for WKID', options.wkid, outFile);
+        cmd.push('\''+ fixWkt(sr.wkt) +'\'');
       }
-    } else if (options.wkt){
-      cmd.push('-t_srs');
-      cmd.push('\''+ fixWkt(options.wkt) +'\'');
     }
 
     // make sure field names are not truncated multiple times
