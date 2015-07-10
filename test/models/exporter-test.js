@@ -93,7 +93,7 @@ describe('exporter Model', function(){
 
         var options = {
           name: 'dummy',
-          wkid: 2962
+          outSR: 2962
         };
 
         var params = exporter.getOgrParams(format, inFile, outFile, null, options).split(' ');
