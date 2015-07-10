@@ -154,6 +154,18 @@ var BaseModel = function( koop ){
     koop.Cache.getExtent(key, options, callback)
   }
 
+  function parseSpatialReference (spatialRef) {
+    if (typeof spatialRef === 'string') {
+      return JSON.parse(spatialRef).wkid
+    } 
+
+    if (typeof spatialRef == 'object') {
+      return spatialRef.wkid
+    }
+
+    return spatialRef
+  }
+
 
   return {
     log: log,
@@ -164,6 +176,7 @@ var BaseModel = function( koop ){
     exportLarge: exportLarge,
     exportFile: exportFile,
     finishExport: finishExport,
+    parseSpatialReference: parseSpatialReference,
     tileGet: tileGet,
     generateThumbnail: generateThumbnail,
     getImageServiceTile: getImageServiceTile,
