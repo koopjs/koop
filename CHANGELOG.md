@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Changed
 * Made metadata files on shp file exports have a "shp.xml" extension
+* Using outSR in place of a URLs wkid to reproject data
+
+### Added 
+* A centralized spatial reference parsing class that is exposed in `lib/BaseModel.js` and used in `lib/Exporter.js` 
 
 ## [2.3.0] - 2015-07-02
 ### Added
