@@ -1,6 +1,7 @@
 // Uses the module pattern for clean inheritance in models
 // exposes shared functionality across providers, typically things that require central code in koop-server
-var fs = require('fs');
+var fs = require('fs'),
+  spatialReference = require('./SpatialReference');
 
 var BaseModel = function( koop ){
 
@@ -154,19 +155,6 @@ var BaseModel = function( koop ){
     koop.Cache.getExtent(key, options, callback)
   }
 
-  function parseSpatialReference (spatialRef) {
-    if (typeof spatialRef === 'string') {
-      return JSON.parse(spatialRef).wkid
-    } 
-
-    if (typeof spatialRef == 'object') {
-      return spatialRef.wkid
-    }
-
-    return spatialRef
-  }
-
-
   return {
     log: log,
     files: files,
@@ -176,7 +164,7 @@ var BaseModel = function( koop ){
     exportLarge: exportLarge,
     exportFile: exportFile,
     finishExport: finishExport,
-    parseSpatialReference: parseSpatialReference,
+    parseSpatialReference: spatialReference.parse,
     tileGet: tileGet,
     generateThumbnail: generateThumbnail,
     getImageServiceTile: getImageServiceTile,
