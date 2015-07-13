@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased 
+## [2.4.1] - 2015-07-14
 ### Fixed
 * Bug when not supplying an outSR the wkid value was still trying to be accessed 
 
@@ -306,6 +306,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.4.1]: https://github.com/Esri/koop/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/Esri/koop/compare/v2.3.0...v2.4.0
 [2.3.0]: https://github.com/Esri/koop/compare/v2.2.1...v2.3.0
 [2.2.1]: https://github.com/Esri/koop/compare/v2.2.0...v2.2.1
