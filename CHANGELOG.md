@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased 
+### Fixed
+* Bug when not supplying an outSR the wkid value was still trying to be accessed 
+
 ## [2.4.0] - 2015-07-13
 ### Changed
 * Made metadata files on shp file exports have a "shp.xml" extension
