@@ -86,6 +86,22 @@ describe('exporter Model', function(){
         done();
       });
 
+      it('should support WKID as an option for shapefiles', function(done){
+        var format = 'zip',
+          inFile = 'infile.json',
+          outFile = 'outfile.shp';
+
+        var options = {
+          name: 'dummy',
+          wkid: 102101
+        };
+    
+        var params = exporter.getOgrParams(format, inFile, outFile, null, options).split(' ');
+        params[7].should.equal(outFile);
+        params[8].should.equal(inFile);
+        done();
+      });
+
       it('should create a correct ogr string of commands with a WKID', function(done){
         var format = 'shp',
           inFile = 'infile.json',
