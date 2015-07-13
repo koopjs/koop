@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added 
 * A centralized spatial reference parsing class that is exposed in `lib/BaseModel.js` and used in `lib/Exporter.js` 
+* Adds support for options.wkid, options.wkt, or options.outSR in lib/Exporter.js
 
 ## [2.3.0] - 2015-07-02
 ### Added
