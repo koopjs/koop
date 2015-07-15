@@ -2,47 +2,46 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.4.2] - 2015-07-15
 ### Fixed
 * Support for timers in the local cache is now working as expected
 
 ### Added
 * Tests for local cache timer logic
 
-
 ## [2.4.1] - 2015-07-14
 ### Fixed
-* Bug when not supplying an outSR the wkid value was still trying to be accessed 
+* Bug when not supplying an outSR the wkid value was still trying to be accessed
 
 ## [2.4.0] - 2015-07-13
 ### Changed
 * Made metadata files on shp file exports have a "shp.xml" extension
 * Using outSR in place of a URLs wkid to reproject data
 
-### Added 
-* A centralized spatial reference parsing class that is exposed in `lib/BaseModel.js` and used in `lib/Exporter.js` 
+### Added
+* A centralized spatial reference parsing class that is exposed in `lib/BaseModel.js` and used in `lib/Exporter.js`
 * Adds support for options.wkid, options.wkt, or options.outSR in lib/Exporter.js
 
 ## [2.3.0] - 2015-07-02
 ### Added
 * If a provider passes in a metadata value to the Exporter then it will be used to create a metadata xml file for only shp exports.
-* Added a `exportFile` method to BaseModel that providers a more simple interface to exporting methods. The goal will be to ultimately change the way `exportLarge` and `exportToFormat` are called by providers.  
+* Added a `exportFile` method to BaseModel that providers a more simple interface to exporting methods. The goal will be to ultimately change the way `exportLarge` and `exportToFormat` are called by providers.
 
 ## [2.2.1] - 2015-06-29
-### Fixed 
+### Fixed
 * Cleaned up the zip command in lib/Exporter.js
 * fixed removeShapefile to actually clean up after itself on zip/shp creation
 
 ## [2.2.0] - 2015-06-24
-### Added 
+### Added
 * Providers can optionally pass in an `overrides` property to the `processFeatureService` method on controllers. This allows a provider to manually override any templated values in the Feature Service response like names, descriptions, etc.
 * Tests for overriding properties
 * Tests passing in counts to FeatureServices when `returnCountOnly` is true
 * Added wrapper methods on the `lib/Cache.js` for missing cache methods
-* Added jsdocs to methods in `lib/Cache.js` 
+* Added jsdocs to methods in `lib/Cache.js`
 
 ### Changed
-* Providers can now optionally pass in an extent that FeatureServices will use instead of looping over features 
+* Providers can now optionally pass in an extent that FeatureServices will use instead of looping over features
 * If no config is passed in one will get created as an empty object. This protects koop from crashing with no config (#186).
 * Shapefile parts are deleted after being added to zip
 
@@ -51,16 +50,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Ensuring that date fields are correctly cast as dates in FeatureServices
 
 ## [2.1.12] - 2015-06-12
-### Changed 
+### Changed
 * Fixed typo bug with checking for expired caches when timers are set. s/checkthis/checkCache/g
 * Better logic around outSR when requesting 102100 as projected output
 * checking for codedValues on field.domains in the lib/GeoJSON - fixes a bug with numeric domains
 * All query model tests are running and passing
 
-### Fixed 
+### Fixed
 * Correctly replacing LCC to address an ogr2ogr proj bug
 
-### Added 
+### Added
 * A project roadmap for laying out upcoming versions and work we want to do in those versions
 
 ## [2.1.11] - 2015-06-04
@@ -73,19 +72,19 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Files from S3 now get a the HEAD request data back when checking if files exist
 
 ## [2.1.9] - 2015-05-21
-### Changed 
+### Changed
 * Sending any stored header/field lists to the featureserver code to support ordered fields coming from CSVs data.
-* More logic around not exporting X/Y values when data attributes contain an x and y prop. 
+* More logic around not exporting X/Y values when data attributes contain an x and y prop.
 
 ## [2.1.8] - 2015-05-19
-### Removed 
+### Removed
 * A misleading error log on start up that was left in the index.js
 
 ## [2.1.7] - 2015-05-18
-### Changed 
+### Changed
 * Multiple file transports for debug and error level logging
 * A different log formatter for better inclusion into fluentd
-* Bug fix for feature service objectID fields names  
+* Bug fix for feature service objectID fields names
 
 ## [2.1.6] - 2015-05-13
 ### Changed
@@ -99,7 +98,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * method for getting geohash grids if the installed cache supports it
 * saveFile method in lib/BaseModel to give providers that ability to save file centrally
 
-### Changed 
+### Changed
 * Fixed registration of services in the lib/Local.js cache
 
 ## [2.1.4] - 2015-04-28
@@ -107,8 +106,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * fixed an issue with export shapefiles from datasets with exactly 5k features
 * fixed table detection for non-geom datasets
 * CSV exports will not include X/Y if the data have an x & y property
- 
-### Addded 
+
+### Addded
 * support for a NAD83 to WGS84 datum shift for UTM datasets
 
 ## [2.1.3] - 2015-04-21
@@ -116,29 +115,29 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * applying a datum xform for proj codes 2927. We may need to apply this across all State Plane HARN based projections in the future.
 
 ## [2.1.2] - 2015-04-20
-### Changed 
-* fixed an off by one issue in the new export paging strategy. This cropped in testing datasets with exactlye 5000 feature missing one feature. Basically we paged starting at `id === 0` instead of `id === 1`. 
+### Changed
+* fixed an off by one issue in the new export paging strategy. This cropped in testing datasets with exactlye 5000 feature missing one feature. Basically we paged starting at `id === 0` instead of `id === 1`.
 * using new body-parser methods to parse post bodies for app/json and app/form-urlencoded post bodies
 
 ## [2.1.1] - 2015-04-14
 ### Changed
 * sending -update to ogr2ogr to support large file exports
-* fixed the idFilter clause for normal, non-worker exports 
+* fixed the idFilter clause for normal, non-worker exports
 * using the dataset hash key for VRT files to fix a bug with exports
-* fixed an issue with large files filtered to less 5k ending in stuck datasets 
+* fixed an issue with large files filtered to less 5k ending in stuck datasets
 
-### Added 
+### Added
 * added a few jsdocs to the index, the goal is go through all public methods and do this
 
 ## [2.1.0] - 2015-04-09
-### Added 
+### Added
 * a new route `/export-workers` to inspect the current backlog of export workers if configured to run in worker mode
 * added an idFilter to exports to improve query efficiency over limit/offsets
 
 ### Changed
 * Wrapping export worker in node.js domains to protect against stuck worker jobs. Running inside a domain allows the workers to trap every/any uncaught error and return the job as failed.
-* Adding the moveLargeShapefile method in order to support correct shapefile part naming differences between large data and small data exports. 
-* Using Lambert_Conformal_Conic_2SP instead of 1SP to correct projection errors using 1SP.  
+* Adding the moveLargeShapefile method in order to support correct shapefile part naming differences between large data and small data exports.
+* Using Lambert_Conformal_Conic_2SP instead of 1SP to correct projection errors using 1SP.
 
 
 ## [2.0.4] - 2015-04-06
@@ -152,12 +151,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [2.0.2] - 2015-04-02
 ### Changed
-* Small data exports in worker mode now use the regular exportToFormat workflow in Exporter.js  
+* Small data exports in worker mode now use the regular exportToFormat workflow in Exporter.js
 
 ## [2.0.1] - 2015-04-01
 ### Changed
 * Forcing status processing on progress reporting from export worker jobs
-* Wrapping projection WKT in single quotes for calls to ogr2ogr 
+* Wrapping projection WKT in single quotes for calls to ogr2ogr
 
 ## [2.0.0] - 2015-03-31
 ### Changed
@@ -167,9 +166,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 * custom projections are supported with WKT from feature services
 * [esri-proj-codes](https://github.com/Esri/esri-proj-codes) is added to support Esri projection code lookups and pass WKT projection strings
-* Added support for coded domain values in exports from services that pass such domains in fields property. Exports from koop will use the coded values (strings) in place of domain codes. 
+* Added support for coded domain values in exports from services that pass such domains in fields property. Exports from koop will use the coded values (strings) in place of domain codes.
 
-### Removed 
+### Removed
 * tile support is no longer included by default, please use [koop-tile-plugin](https://github.com/koopjs/koop-tile-plugin) if needed
 
 ## [1.1.2] - 2015-03-25 [DEPRECATED]
@@ -178,7 +177,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 * If a provider passes a WKID to the Exporter methods the data will be projected into that ESPG/WKID
- 
+
 ### Changed
 * First pass at a refactored Exporter. Still needs to be revisited but more code is now shared across the `exportToFormat` and `exportLarge` methods. Anything that can be shared is now shared, but the logic in the `exportLarge` method needs another pass.
 
@@ -314,6 +313,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.4.2]: https://github.com/Esri/koop/compare/v2.4.1...v2.4.2
 [2.4.1]: https://github.com/Esri/koop/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/Esri/koop/compare/v2.3.0...v2.4.0
 [2.3.0]: https://github.com/Esri/koop/compare/v2.2.1...v2.3.0
