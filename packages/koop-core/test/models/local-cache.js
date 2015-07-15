@@ -32,7 +32,6 @@ describe('Local Cache Tests', function(){
         Cache.remove(key, done);
       });
 
-
       it('should remove the data', function(done){
           Cache.remove(key, function( err, d ){
             should.not.exist( err );
@@ -85,8 +84,8 @@ describe('Local Cache Tests', function(){
     describe('when setting/getting timers', function(){
       var table = 'timer';
       var len = 10000;
-        
-      it('should return on false when no timer exists', function (done) {
+
+      it('should return false when no timer exists', function (done) {
         Cache.timerGet(table, function (err, timer) {
           timer.should.equal(false);
           done();
@@ -103,7 +102,7 @@ describe('Local Cache Tests', function(){
         })
       });
 
-      it('should return the false when a timer expires', function (done) {
+      it('should return false when a timer expires', function (done) {
         Cache.timerSet(table, 100, function () {
           setTimeout(function () {
             Cache.timerGet(table, function (err, timer) {
@@ -115,6 +114,5 @@ describe('Local Cache Tests', function(){
       });
 
     });
-  
 
 });
