@@ -82,4 +82,39 @@ describe('Local Cache Tests', function(){
 
     });
 
+    describe('when setting/getting timers', function(){
+      var table = 'timer';
+      var len = 10000;
+        
+      it('should return on false when no timer exists', function (done) {
+        Cache.timerGet(table, function (err, timer) {
+          timer.should.equal(false);
+          done();
+        })
+      });
+
+      it('should return the timer when a timer is set', function (done) {
+        Cache.timerSet(table, len, function (err, timer) {
+          should.exist(timer);
+          Cache.timerGet(table, function (err, timer) {
+            should.exist(timer);
+            done();
+          });
+        })
+      });
+
+      it('should return the false when a timer expires', function (done) {
+        Cache.timerSet(table, 100, function () {
+          setTimeout(function () {
+            Cache.timerGet(table, function (err, timer) {
+              timer.should.equal(false);
+              done();
+            });
+          }, 500);
+        });
+      });
+
+    });
+  
+
 });
