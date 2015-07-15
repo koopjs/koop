@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Support for timers in the local cache is now working as expected
+
+### Added
+* Tests for local cache timer logic
+
+
 ## [2.4.1] - 2015-07-14
 ### Fixed
 * Bug when not supplying an outSR the wkid value was still trying to be accessed 
