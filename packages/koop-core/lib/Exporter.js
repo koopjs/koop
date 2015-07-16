@@ -89,7 +89,7 @@ exports.exportLarge = function( koop, format, id, key, type, options, finish, do
         vrt += '</OGRVRTDataSource>';
         fs.writeFile(paths.rootVrtFile, vrt, function(){
           // CALL OGR
-          _callOgr(paths.rootVrtFile, paths.rootNewFileTmp, function(err, formatFile){
+          _callOgr(paths.rootVrtFile, paths.rootNewFile, function(err, formatFile){
             koop.Cache.getInfo(table, function(err, info){
               delete info.status;
               delete info.generating;
@@ -108,7 +108,10 @@ exports.exportLarge = function( koop, format, id, key, type, options, finish, do
   var q = async.queue(function (task, cb) {
     // instead of passing a limit and offset 
     // we use a WHERE clause 
-    var idFilter = ' id >= '+ options.offset + ' AND id < ' + (parseInt(options.offset) + parseInt(options.limit));
+    var idFilter;
+    if (options.offset) {
+      idFilter = ' id >= '+ options.offset + ' AND id < ' + (parseInt(options.offset) + parseInt(options.limit));
+    }
     var opts = {
       idFilter: idFilter,
       layer: options.layer,
@@ -195,7 +198,7 @@ exports.exportLarge = function( koop, format, id, key, type, options, finish, do
           // return response 
           done(null, info);
           // create large file from vrt 
-          _callOgr(paths.rootVrtFile, paths.rootNewFileTmp, function(err, formatFile){
+          _callOgr(paths.rootVrtFile, paths.rootNewFile, function(err, formatFile){
             delete info.status;
             delete info.generating;
             finish( format, key, options, { paths: paths, file: formatFile }, function(){
@@ -240,7 +243,6 @@ exports.exportLarge = function( koop, format, id, key, type, options, finish, do
  
 exports.exportToFormat = function( format, dir, key, geojson, options, callback ){
 
-
     if (!format){
       return callback('No format provided', null);
     } 
@@ -265,8 +267,8 @@ exports.exportToFormat = function( format, dir, key, geojson, options, callback 
 
     // create a json file on disk 
     // if we want json just send it back
-    // else use the json file to convert to other formats 
-    mkdirp( paths.root + '/' + paths.path, function(){
+    // else use the json file to convert to other formats
+    mkdirp( paths.base, function () {
       if ( !fs.existsSync( paths.rootJsonFile ) ) {
         delete geojson.info;
         var json = JSON.stringify(geojson).replace(/esri/g,'');
@@ -279,7 +281,7 @@ exports.exportToFormat = function( format, dir, key, geojson, options, callback 
         if (format === 'json' || format === 'geojson'){
           callback(null, paths.rootJsonFile);
         } else {
-          _callOgr( paths.rootJsonFile, paths.rootNewFileTmp, function(err, file){
+          _callOgr( paths.rootJsonFile, paths.rootNewFile, function(err, file){
             callback(err, {paths: paths, file: file});
           });
         }
@@ -334,11 +336,7 @@ function callOgr(params, geojson, options, callback){
                 fs.writeFileSync(paths.base + '/' + options.name + '.xml', metadata);
               }
 
-              if (options.large) {
-                moveLargeShapeFile(outFile, paths.base, paths.tmpName, options.name, createZip);
-              } else {
-                moveShapeFile(outFile, paths.base, options.name, createZip);
-              }
+              moveShapeFile(outFile, paths.base, options.name, createZip);
             });
           } else {
             moveFile(outFile, paths.rootNewFile, callback);
@@ -363,32 +361,17 @@ function createPaths(dir, key, format, options){
   paths.latestPath = ['latest','files', dir].join('/');
   paths.base       = [paths.root, paths.path, key].join('/');
 
-  paths.jsonFile    = (options.name || key) + paths.tmpName+ '.json';
-  paths.jsonFileTmp = (options.name || key) + paths.tmpName + '.json';
+  paths.jsonFile    = (options.name || key) + '.json';
   // the VRT file must use the key to support large filters
   // the file has to be unique to the filter
   paths.vrtFile     = key + '.vrt';
-  paths.newFileTmp  = key + paths.tmpName + '.' + format;
   paths.newFile     = (options.name || key) + '.' + format;
 
-  paths.rootJsonFile    = [paths.root, paths.path, paths.jsonFile].join( '/' );
-  paths.rootVrtFile     = [paths.root, paths.path, paths.vrtFile].join( '/' ),
-  paths.rootJsonFileTmp = [paths.root, paths.path, paths.jsonFileTmp].join( '/' );
-  paths.rootNewFile     = [paths.root, paths.path, paths.newFile].join( '/' );
-  paths.rootNewFileTmp  = [paths.root, paths.path, paths.newFileTmp].join( '/' );
+  paths.rootJsonFile    = [paths.base, paths.jsonFile].join( '/' );
+  paths.rootVrtFile     = [paths.base, paths.vrtFile].join( '/' ),
+  paths.rootNewFile     = [paths.base, paths.newFile].join( '/' );
 
   return paths;
-}
-
-function moveShapeFile( file, base, name, callback){
-  async.each(shapefileParts, function(type, callback) {
-    var source = file.replace('zip', type)
-    moveFile(source, base + '/' + name + '.' + type, function(err) {
-      callback(err)
-    })
-  }, function (err) {
-    callback(err);
-  });
 }
 
 function removeShapeFile( dir, name, callback){
@@ -401,9 +384,10 @@ function removeShapeFile( dir, name, callback){
   });
 }
 
-function moveLargeShapeFile( file, base, tmpName, name, callback){
-  var shpdir = base + tmpName + '.shp';
+function moveShapeFile( file, base, name, callback){
+  var shpdir = base + '/' + name; 
   async.each(shapefileParts, function(type, callback) {
+    
     moveFile(shpdir + '/OGRGeoJSON' + '.' + type, base + '/' + name + '.' + type, function (err) {
       callback(err);
     })
@@ -450,6 +434,9 @@ function getOgrParams( format, inFile, outFile, geojson, options ){
   // escape quotes in file names
   inFile = inFile.replace(/"/g, '\"');  
   outFile = outFile.replace(/"/g, '\"');  
+  
+  // replace the format extension for zip/shp so the shp gets created as a dir
+  outFile = outFile.replace('\.zip','');
 
   var cmd = [
     'ogr2ogr',
@@ -458,7 +445,7 @@ function getOgrParams( format, inFile, outFile, geojson, options ){
     'UTF-8',
     '-f',
     ogrFormats[format],
-    ( format === 'zip' ) ? outFile.replace('zip','shp') : outFile,
+    outFile,
     inFile
   ];
 
