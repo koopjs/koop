@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Shapefile downloads for datasets greater than 1000 features and less than 5000 are now fixed
+
+### Changed 
+* Refactored the way exported files get saved to disk locally. All files for a cache key get created under the same directory.
+
 ## [2.4.2] - 2015-07-15
 ### Fixed
 * Support for timers in the local cache is now working as expected
