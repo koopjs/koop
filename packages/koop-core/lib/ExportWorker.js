@@ -120,13 +120,13 @@ jobs.process('exports', 2, function(job, done){
             };
             koop.Cache.updateInfo(job.data.table, info, function(err, res){
               // create large file from vrt
-              var cmd = ['ogr2ogr', '-f', job.data.ogrFormat, '-update', '-append', ( job.data.format == 'zip' ) ? job.data.files.rootNewFileTmp.replace('.zip','') : job.data.files.rootNewFileTmp, job.data.files.rootVrtFile]; 
+              var cmd = ['ogr2ogr', '-f', job.data.ogrFormat, '-update', '-append', ( job.data.format == 'zip' ) ? job.data.files.rootNewFile.replace('.zip','') : job.data.files.rootNewFile, job.data.files.rootVrtFile]; 
     
               try { 
     
                 var params = {
                   inFile: job.data.files.rootVrtFile,
-                  outFile: job.data.files.rootNewFileTmp,
+                  outFile: job.data.files.rootNewFile,
                   paths: job.data.files,
                   format: job.data.format
                 };
@@ -231,7 +231,7 @@ function createFiles(job, done){
             fs.appendFileSync( task.files.rootVrtFile, '</OGRVRTDataSource>' );
               var params = {
                 inFile: task.files.rootVrtFile,
-                outFile: task.files.rootNewFileTmp,
+                outFile: task.files.rootNewFile,
                 paths: task.files,
                 format: task.format
               };
