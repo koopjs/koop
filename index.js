@@ -1,21 +1,20 @@
-var express = require("express"),
-  bodyParser = require('body-parser'),
-  fs = require('fs'),
-  pjson = require('./package.json'),
-  _ = require("lodash"),
-  child = require('child_process').fork,
-  multipart = require('connect-multiparty')(),
-  koop = require('./lib');
+var express = require('express')
+var bodyParser = require('body-parser')
+var pjson = require('./package.json')
+var _ = require('lodash')
+var multipart = require('connect-multiparty')()
+var koop = require('./lib')
 
-module.exports = function( config ) {
-  var app = express(), route, controller, model;
+module.exports = function (config) {
+  var app = express()
+  var route, controller, model
 
   // keep track of the registered services
-  app.services = {};
-  
+  app.services = {}
+
   // if config is undefined, create it
-  config = config || {};
-  koop.config = config;
+  config = config || {}
+  koop.config = config
 
   // handle POST requests
   // parse application/x-www-form-urlencoded
@@ -24,130 +23,130 @@ module.exports = function( config ) {
   app.use(bodyParser.json())
 
   // init the koop log based on config params
-  koop.log = new koop.Logger( config );
+  koop.log = new koop.Logger(config)
 
-  //request parameters can come from query url or POST body
-  app.use(function(req, res, next) {
-    req.query=_.extend(req.query || {}, req.body || {});
-    next();
-  });
+  // request parameters can come from query url or POST body
+  app.use(function (req, res, next) {
+    req.query = _.extend(req.query || {}, req.body || {})
+    next()
+  })
 
   // store the sha so we know what version of koop this is
   app.status = {
     version: pjson.version,
     providers: {}
-  };
+  }
 
-  // for demos and preview maps in providers 
-  app.set('view engine', 'ejs');
+  // for demos and preview maps in providers
+  app.set('view engine', 'ejs')
 
-  app.use(express.static(__dirname + '/public'));
+  app.use(express.static(__dirname + '/public'))
 
   // serve all the provider json
-  app.get("/providers", function(req, res, next) {
-    res.json(app.services);
-  });
+  app.get('/providers', function (req, res, next) {
+    res.json(app.services)
+  })
 
   // serve up a provider
-  app.get("/providers/:provider", function(req, res, next) {
-    res.json(app.services[req.params.provider]);
-  });
+  app.get('/providers/:provider', function (req, res, next) {
+    res.json(app.services[req.params.provider])
+  })
 
   // gets all the datasets in the cache for a provider
-  app.get("/providers/:provider/datasets", function(req, res, next) {
-    koop.Cache.db._query("select * from koopinfo where id ilike '%" + req.params.provider + "%'", function(err, result){
-      res.json( result.rows );
+  app.get('/providers/:provider/datasets', function (req, res, next) {
+    koop.Cache.db._query("select * from koopinfo where id ilike '%" + req.params.provider + "%'", function (err, result) {
+      if (err) return res.status(500).send(err)
+      res.json(result.rows)
     })
-  });
+  })
 
-  /** 
+  /**
    * Register providers into the main Koop app
-   * exposes the provider's routes, controller, and models 
+   * exposes the provider's routes, controller, and models
    * @param {object} the provider to be registered
-   */ 
-  app.register = function(provider){
-    if (provider.type && provider.type == 'plugin'){
-      return app.registerPlugin( provider );
+   */
+  app.register = function (provider) {
+    if (provider.type && provider.type === 'plugin') {
+      return app.registerPlugin(provider)
     }
 
     // only register if the provider has a name
-    if ( provider.name ) {
-      app.services[provider.name] = provider;
+    if (provider.name) {
+      app.services[provider.name] = provider
 
       // save the provider onto the app
-      model = new provider.model( koop );
+      model = new provider.model(koop) // eslint-disable-line
 
       // pass the model to the controller
-      controller = new provider.controller( model, koop.BaseController );
+      controller = new provider.controller(model, koop.BaseController) // eslint-disable-line
 
       // if a provider has a status object store it
-      if ( provider.status ) {
-        app.status.providers[provider.name] = provider.status;
+      if (provider.status) {
+        app.status.providers[provider.name] = provider.status
       }
 
       // binds a series of standard routes
-      if ( provider.name && provider.pattern ) {
-        app._bindDefaultRoutes(provider.name, provider.pattern, controller );
+      if (provider.name && provider.pattern) {
+        app._bindDefaultRoutes(provider.name, provider.pattern, controller)
       }
 
       // add each route, the routes let us override defaults etc.
-      app._bindRoutes( provider.routes, controller );
+      app._bindRoutes(provider.routes, controller)
     }
-  };
+  }
 
-  /** 
+  /**
    * Registers a koop plugin
-   * Plugins can be any function that you want to have global access to 
-   * within koop provider models  
+   * Plugins can be any function that you want to have global access to
+   * within koop provider models
    * @param {object} any koop plugin
    */
-  app.registerPlugin = function( plugin ){
-    koop[plugin.name] = plugin;
-  };
+  app.registerPlugin = function (plugin) {
+    koop[plugin.name] = plugin
+  }
 
   var defaultRoutes = {
     'featureserver': ['/FeatureServer/:layer/:method', '/FeatureServer/:layer', '/FeatureServer'],
-    'preview':['/preview'],
-    'drop':['/drop']
-  };
+    'preview': ['/preview'],
+    'drop': ['/drop']
+  }
 
   // assigns a series of default routes; assumes
-  app._bindDefaultRoutes = function( name, pattern, controller ){
-    var routes, handler;
-    for ( handler in defaultRoutes ){
-      if ( controller[ handler ] ){
-        defaultRoutes[ handler ].forEach(function(route){
-          app.get( '/'+ name + pattern + route, controller[ handler ]);
+  app._bindDefaultRoutes = function (name, pattern, controller) {
+    var handler
+    for (handler in defaultRoutes) {
+      if (controller[handler]) {
+        defaultRoutes[handler].forEach(function (route) {
+          app.get('/' + name + pattern + route, controller[handler])
           // add multipart middleware for POSTs to featureservices
-          app.post( '/'+ name + pattern + route, multipart, controller[ handler ]);
-        });
+          app.post('/' + name + pattern + route, multipart, controller[handler])
+        })
       }
     }
-  };
-
+  }
 
   // bind each route in a list to controller handler
-  app._bindRoutes = function( routes, controller ){
-    for ( route in routes ){
-      var path = route.split(' ');
-      app[ path[0] ]( path[1], controller[ routes[ route ] ]);
+  app._bindRoutes = function (routes, controller) {
+    for (route in routes) {
+      var path = route.split(' ')
+      app[path[0]](path[1], controller[routes[route]])
     }
-  };
+  }
 
   // ---------------------------------------------------
   // TODO I'd like to change most of what's below here
   // ---------------------------------------------------
   // init koop centralized file access
   // this allows us to turn the FS access off globally
-  koop.files = new koop.Files( koop );
-  
+  koop.files = new koop.Files(koop)
+
   // END annoying things that are changing
   // --------------------------------------------------
 
-  // create export workers if configured 
+  // create export workers if configured
   // connect the worker queue for large exports
-  if ( koop.config.export_workers ){
-    var kue = require('kue');
+  if (koop.config.export_workers) {
+    var kue = require('kue')
     koop.Exporter.export_q = kue.createQueue({
       prefix: koop.config.export_workers.redis.prefix,
       disableSearch: true,
@@ -155,107 +154,114 @@ module.exports = function( config ) {
         port: koop.config.export_workers.redis.port,
         host: koop.config.export_workers.redis.host
       }
-    });
+    })
 
     // remove completed jobs from the queue
-    koop.Exporter.export_q.on('job complete', function(id) {
-      kue.Job.get( id, function( err, job ) {
-         if (err) return;
-         job.remove(function( err ){
-            if (err) {
-              koop.log.debug('Export Workers: could not remove completed job #' + job.id);
-            }
-            koop.log.debug('Export Workers: removed completed job #' + job.id + ' - ' + id);
-         });
-      });
-    });
+    koop.Exporter.export_q.on('job complete', function (id) {
+      kue.Job.get(id, function (err, job) {
+        if (err) return
+        job.remove(function (err) {
+          if (err) {
+            koop.log.debug('Export Workers: could not remove completed job #' + job.id)
+          }
+          koop.log.debug('Export Workers: removed completed job #' + job.id + ' - ' + id)
+        })
+      })
+    })
 
-    koop.Exporter.export_q.on('job failed', function(id, jobErr) {
-      kue.Job.get( id, function( err, job ) {
-         if (err) return;
-         job.remove(function( err ){
-           koop.log.debug( 'Export Workers: removed failed job #' + job.id + ' Error: ' + jobErr);
-         });
-      });
-    });
+    koop.Exporter.export_q.on('job failed', function (id, jobErr) {
+      kue.Job.get(id, function (err, job) {
+        if (err) return
+        job.remove(function (err) {
+          if (err) {
+            koop.log.debug(err)
+            koop.log.debug('Export Workers: failed to remove failed job #' + job.id + ' Error: ' + jobErr)
+          } else {
+            koop.log.debug('Export Workers: removed failed job #' + job.id + ' Error: ' + jobErr)
+          }
+        })
+      })
+    })
 
-    koop.collectQStats = function(q, json, type, callback){
-       q[type]( function( err, count ) { 
-        if (err){
-          return callback(err);
+    koop.collectQStats = function (q, json, type, callback) {
+      q[type](function (err, count) {
+        if (err) {
+          return callback(err)
         }
-        json[type.replace('Count', '')] = count;
-        callback(null, json);
-      });
+        json[type.replace('Count', '')] = count
+        callback(null, json)
+      })
     }
 
-    app.get('/export-workers', function(req,res){
-      var response = {}, error, count = 0;
-      var jobTypes = ['inactiveCount', 'activeCount', 'completeCount', 'failedCount', 'delayedCount'];
-      //for (var type in jobTypes){
-      function getJobCounts(type){
-        koop.collectQStats(koop.Exporter.export_q, response, type, function(err, json){
-          count++;
-          if (err){
-            error = err;
+    app.get('/export-workers', function (req, res) {
+      var response = {}
+      var count = 0
+      var jobTypes = ['inactiveCount', 'activeCount', 'completeCount', 'failedCount', 'delayedCount']
+      var error
+
+      // for (var type in jobTypes){
+      function getJobCounts (type) {
+        koop.collectQStats(koop.Exporter.export_q, response, type, function (err, json) {
+          count++
+          if (err) {
+            error = err
           }
           // save the response
-          response = json;
+          response = json
 
           // get more if there are more types
-          if (jobTypes[count]){
-            getJobCounts( jobTypes[count] );
+          if (jobTypes[count]) {
+            getJobCounts(jobTypes[count])
           } else {
             // return the response
-            if (error){
-              res.status(500).send(err);
+            if (error) {
+              res.status(500).send(err)
             } else {
-              res.json(response);
+              res.json(response)
             }
           }
-        });
-      };
+        })
+      }
 
-      getJobCounts( jobTypes[count] );
+      getJobCounts(jobTypes[count])
 
-    });
+    })
   }
 
   // remove the x powered by header from all responses
   app.use(function (req, res, next) {
-      res.removeHeader("X-Powered-By");
-      next();
-  });
+    res.removeHeader('X-Powered-By')
+    next()
+  })
 
   // save the koop log onto the app
-  app.log = koop.log;
+  app.log = koop.log
 
-  koop.Cache = new koop.DataCache( koop );
+  koop.Cache = new koop.DataCache(koop)
 
   // use the default local cache until a DB adapter mod is registered
-  if (!config.db || !config.db.conn){
-    console.warn('Warning koop w/o persistent cache means no data will be cached across server sessions.');
+  if (!config.db || !config.db.conn) {
+    console.warn('Warning koop w/o persistent cache means no data will be cached across server sessions.')
   }
 
-  // the default cache is the local in-mem cache 
-  // to persist data you must call registerCache with db adapter 
-  koop.Cache.db = koop.LocalDB; 
-  
-  /** 
+  // the default cache is the local in-mem cache
+  // to persist data you must call registerCache with db adapter
+  koop.Cache.db = koop.LocalDB
+
+  /**
    * Register DB adapters into the main Koop app
-   * overwrites any existing koop.Cache.db 
+   * overwrites any existing koop.Cache.db
    * @param {object} a koop db adapter
    */
-  app.registerCache = function( adapter ){
-    if ( config.db && config.db.conn ) {
-      koop.Cache.db = adapter.connect( config.db.conn, koop );
-    } 
-    else {
-      console.log('Cannot register this cache, missing db connection in config');
+  app.registerCache = function (adapter) {
+    if (config.db && config.db.conn) {
+      koop.Cache.db = adapter.connect(config.db.conn, koop)
+    } else {
+      console.log('Cannot register this cache, missing db connection in config')
     }
-    return;
-  };
+    return
+  }
 
-  return app;
+  return app
 
-};
+}
