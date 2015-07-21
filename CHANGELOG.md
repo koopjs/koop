@@ -2,15 +2,19 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Removed
+* deleted errant `pm2.json` file in `lib`
+
 ## [2.5.1] - 2015-07-16
-## Fixed 
+## Fixed
 * a reference to the file tmp names still existed in the export workers
 
 ## [2.5.0] - 2015-07-16
 ### Fixed
 * Shapefile downloads for datasets greater than 1000 features and less than 5000 are now fixed
 
-### Changed 
+### Changed
 * Refactored the way exported files get saved to disk locally. All files for a cache key get created under the same directory.
 
 ## [2.4.2] - 2015-07-15
