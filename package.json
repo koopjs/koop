@@ -41,7 +41,8 @@
     "jshint": "~2.6.3",
     "jshint-stylish": "^1.0.1",
     "mocha": "^2.2.1",
-    "should": "~5.2.0"
+    "should": "~5.2.0",
+    "standard": "*"
   },
   "homepage": "https://github.com/Esri/koop",
   "keywords": [
@@ -63,6 +64,6 @@
   "scripts": {
     "lint": "gulp",
     "release": "gh-release",
-    "test": "mocha test/models/ -t 20000"
+    "test": "standard && mocha test/models/ -t 20000"
   }
 }
