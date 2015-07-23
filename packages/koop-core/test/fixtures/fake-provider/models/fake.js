@@ -1,16 +1,11 @@
+function Fake (koop) {
+  var fake = new koop.BaseModel(koop)
 
-function Fake( koop ){
+  fake.find = function find (id, options, callback) {
+    callback(null, [{}])
+  }
 
-  var fake = {};
+  return fake
+}
 
-  fake.__proto__ = koop.BaseModel( koop );
-
-  fake.find = function find( id, options, callback ){
-    callback( null, [{}] );
-  };
-  
-  return fake;
-};
-
-
-module.exports = Fake;
+module.exports = Fake

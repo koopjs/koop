@@ -2,13 +2,21 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [Unreleased](https://github.com/Esri/koop/compare/v2.5.1...HEAD)
+### Added
+* Using [JavaScript Standard Style](https://github.com/feross/standard)
+
+### Fixed
+* Refactored library modules to catch uncaught errors and return early
+* Updated and improve tests
+
 ### Removed
-* deleted errant `pm2.json` file in `lib`
+* Deleted errant `pm2.json` file in `lib`
+* Removed unused TopoJSON support lib
 
 ## [2.5.1] - 2015-07-16
-## Fixed
-* a reference to the file tmp names still existed in the export workers
+### Fixed
+* Removed a reference to the file tmp names that still existed in the export workers
 
 ## [2.5.0] - 2015-07-16
 ### Fixed

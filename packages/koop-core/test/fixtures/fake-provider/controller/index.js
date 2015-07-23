@@ -1,19 +1,20 @@
+var Controller = function (Model, BaseController) {
+  var controller = {}
 
-var Controller = function( Model, BaseController ){
+  if (typeof BaseController === 'function') {
+    controller = BaseController()
+  }
 
-  var controller = {};
-  controller.__proto__ = BaseController(); 
+  controller.get = function (req, res) {
+    res.send('hello')
+  }
 
-  controller.get = function(req, res){
-    res.send('hello');
-  };
-  
-  controller.featureserver = function(req, res){
-    res.send('hello fs');
-  };
+  controller.featureserver = function (req, res) {
+    res.send('hello fs')
+  }
 
-  return controller;
+  return controller
 
-};
+}
 
-module.exports = Controller;
+module.exports = Controller
