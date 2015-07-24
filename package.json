@@ -1,6 +1,6 @@
 {
   "name": "koop",
-  "description": "A node module/express middleware for converting GeoJSON to Esri Feature Services.",
+  "description": "An Open Geospatial ETL Engine",
   "version": "2.5.1",
   "author": {
     "name": "Chris Helm"
