@@ -1,18 +1,18 @@
 # Koop
 
+> An Open Geospatial ETL Engine
+
 [![npm version][npm-img]][npm-url]
 [![build status][travis-img]][travis-url]
 
 [npm-img]: https://img.shields.io/npm/v/koop.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/koop
-[travis-img]: https://img.shields.io/travis/Esri/koop.svg?style=flat-square
-[travis-url]: https://travis-ci.org/Esri/koop
+[travis-img]: https://img.shields.io/travis/koopjs/koop.svg?style=flat-square
+[travis-url]: https://travis-ci.org/koopjs/koop
 
-**Turn data into Feature Services.**
+Koop is [Express middleware](http://expressjs.com/guide/using-middleware.html) for simplifying geographic data consumption across many different providers and in many different formats.
 
-Koop is [Express middleware](http://expressjs.com/guide/using-middleware.html) for simplifying  geographic data consumption across many different providers and in many different formats.
-
-Koop provides a flexible server for exposing 3rd party data sources (APIs) as both [Feature Services](http://resources.arcgis.com/en/help/arcgis-rest-api/#/Query_Feature_Service_Layer/02r3000000r1000000/) and standard geographic data formats (GeoJSON, Shapefile, KML, CSV). This project is meant to provide a versatile platform for experimenting and working with various data within the global geospatial data ecosystem. Koop aims to allow easy access to any API and to make it easy to consume within the realm of Esri's geospatial web products.
+Koop provides a flexible server for exposing 3rd party data sources (APIs) as both [Feature Services](http://resources.arcgis.com/en/help/arcgis-rest-api/#/Query_Feature_Service_Layer/02r3000000r1000000/) and standard geographic data formats (GeoJSON, Shapefile, KML, CSV). This project is meant to provide a versatile platform for experimenting and working with various datasets within the global geospatial data ecosystem. Koop aims to allow easier access to any open data API and to make third party data easier to use within the realm of Esri's geospatial web products.
 
 Visit the demo at [http://koop.dc.esri.com](http://koop.dc.esri.com).
 
@@ -96,14 +96,14 @@ See [ROADMAP.md](ROADMAP.md) to view the Koop project roadmap.
 
 ## Resources
 
-* [Koop Documentation](https://github.com/koopjs/koopjs.github.io/tree/master/docs)
+* [Koop Documentation](https://koopjs.github.io/docs)
 * [ArcGIS REST API Documentation](http://resources.arcgis.com/en/help/arcgis-rest-api/)
 * [ArcGIS for Developers](http://developers.arcgis.com)
 * [@esri](http://twitter.com/esri)
 
 ## Issues
 
-Find a bug or want to request a new feature? Please let us know by submitting an [issue](https://github.com/Esri/koop/issues).
+Find a bug or want to request a new feature? Please let us know by submitting an [issue](https://github.com/koopjs/koop/issues).
 
 ## Contributing
 
@@ -127,5 +127,5 @@ limitations under the License.
 
 A copy of the license is available in the repository's [license.txt](license.txt) file.
 
-[](Esri Tags: ArcGIS Web Mapping GeoJson FeatureServices)
-[](Esri Language: JavaScript)
+<!-- [](Esri Tags: ArcGIS Web Mapping GeoJson FeatureServices) -->
+<!-- [](Esri Language: JavaScript) -->
