@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 * Deleted errant `pm2.json` file in `lib`
 * Removed unused TopoJSON support lib
+* Removed slashes from shapefile format in `lib/Exporter.js`
 
 ## [2.5.1] - 2015-07-16
 ### Fixed
