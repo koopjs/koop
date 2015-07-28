@@ -15,6 +15,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Removed unused TopoJSON support lib
 * Removed slashes from shapefile format in `lib/Exporter.js`
 
+### Changed
+* Moved repository from https://github.com/Esri/koop to https://github.com/koopjs/koop
+
 ## [2.5.1] - 2015-07-16
 ### Fixed
 * Removed a reference to the file tmp names that still existed in the export workers
