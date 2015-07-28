@@ -6,7 +6,7 @@
     "name": "Chris Helm"
   },
   "bugs": {
-    "url": "https://github.com/Esri/koop/issues"
+    "url": "https://github.com/koopjs/koop/issues"
   },
   "dependencies": {
     "async": "~0.9.0",
@@ -44,7 +44,7 @@
     "should": "~5.2.0",
     "standard": "*"
   },
-  "homepage": "https://github.com/Esri/koop",
+  "homepage": "https://github.com/koopjs/koop",
   "keywords": [
     "etl",
     "feature",
@@ -59,7 +59,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/Esri/koop.git"
+    "url": "git://github.com/koopjs/koop.git"
   },
   "scripts": {
     "lint": "gulp",
