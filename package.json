@@ -1,7 +1,7 @@
 {
   "name": "koop",
   "description": "An Open Geospatial ETL Engine",
-  "version": "2.5.2",
+  "version": "2.5.3",
   "author": {
     "name": "Chris Helm"
   },

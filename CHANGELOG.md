@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/koopjs/koop/compare/v2.5.2...HEAD)
+## [2.5.3] - 2015-07-29
 ### Fixed
 * Fixed module export bug in preview (koopMap) script
 
@@ -347,6 +347,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.5.3]: https://github.com/Esri/koop/compare/v2.5.2...v2.5.3
 [2.5.2]: https://github.com/Esri/koop/compare/v2.5.1...v2.5.2
 [2.5.1]: https://github.com/Esri/koop/compare/v2.5.0...v2.5.1
 [2.5.0]: https://github.com/Esri/koop/compare/v2.4.2...v2.5.0
