@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/koopjs/koop/compare/v2.5.2...HEAD)
 ### Fixed
-* Corrected test log location
+* Fixed module export bug in preview (koopMap) script
 
 ### Added
 * Created `RELEASE.md` for release guidelines
