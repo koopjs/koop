@@ -83,4 +83,5 @@ function koopMap (dom) {
   return koop
 }
 
-if (module && module.exports) module.exports = koopMap
+// export if module is present
+if (typeof module !== 'undefined' && module.exports) module.exports = koopMap
