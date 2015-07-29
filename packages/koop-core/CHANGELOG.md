@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased](https://github.com/koopjs/koop/compare/v2.5.2...HEAD)
+### Fixed
+* Corrected test log location
+
+### Added
+* Created `RELEASE.md` for release guidelines
+
 ## [2.5.2] - 2015-07-28
 ### Added
 * Using [JavaScript Standard Style](https://github.com/feross/standard)
