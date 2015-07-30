@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * refactored preview to incorporate breaking changes in esri-leaflet 1.0.0
 * switched to using L.Icon.Default
 * refactored the idFilter logic into a shared method in Exporter `createIdFilter`
+* logic for returning files was calling the callback with an error and causes a double response on export requests
 
 ### Removed
 * Leaflet image files
