@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 * Leaflet image files
 
+### Fixed
+* Parsing the logpath in `lib/Logger` needed to use slice instead of splice
+
 ## [2.5.3] - 2015-07-29
 ### Fixed
 * Fixed module export bug in preview (koopMap) script
