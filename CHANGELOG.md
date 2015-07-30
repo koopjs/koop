@@ -2,13 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## ## [2.6.0] - 2015-07-30
+## [2.6.0] - 2015-07-30
 ### Fixed
 * Parsing the logpath in `lib/Logger` needed to use slice instead of splice
 * Try to use latest WKID or WKID, whichever is available in esri-proj-codes
 
 ### Added
-* Tests for new method `lib/Exporter.js:createIdFilter` 
+* Tests for new method `lib/Exporter.js:createIdFilter`
 
 ### Changed
 * refactored preview to incorporate breaking changes in esri-leaflet 1.0.0
