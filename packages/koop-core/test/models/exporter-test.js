@@ -33,6 +33,29 @@ describe('exporter Model', function () {
     })
   })
 
+  describe('when creating id filters', function () {
+    it('should create a correct idFilter if given an offset and limit', function (done) {
+      var options = {
+        offset: '1000',
+        limit: 10
+      }
+
+      var filter = exporter.createIdFilter(options)
+      filter.should.equal(' id >= 1000 AND id < 1010')
+      done()
+    })
+
+    it('should return an undefined id filter if given no limit', function (done) {
+      var options = {
+        offset: '1000'
+      }
+
+      var filter = exporter.createIdFilter(options)
+      should.not.exist(filter)
+      done()
+    })
+  })
+
   describe('when creating paths for exports', function () {
     it('should return an object with files and paths', function (done) {
       var format = 'csv'

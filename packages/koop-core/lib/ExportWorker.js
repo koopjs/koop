@@ -1,7 +1,7 @@
 var kue = require('kue')
 var fs = require('node-fs')
 var async = require('async')
-var koopLib = require('.')
+var koopLib = require('./')
 var pgcache = require('koop-pgcache')
 var path = require('path')
 var rimraf = require('rimraf')
@@ -197,17 +197,14 @@ function createFiles (job, done) {
   fs.appendFileSync(job.data.files.rootVrtFile, vrt)
 
   var workerQ = async.queue(function (task, cb) {
-    var idFilter
 
-    if (task.offset) {
-      idFilter = ' id >= ' + task.offset + ' AND id < ' +
-        parseInt(task.offset, 10) + parseInt(task.options.limit, 10)
-    }
+    // make sure offset is in options for creating the idFilter below
+    task.options.offset = task.offset
 
     var opts = {
       layer: task.options.layer,
       where: task.options.where,
-      idFilter: idFilter,
+      idFilter: koopLib.Exporter.createIdFilter(task.options),
       geometry: task.options.geometry,
       bypassProcessing: true
     }
