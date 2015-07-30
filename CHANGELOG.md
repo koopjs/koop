@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Fixed
+* Parsing the logpath in `lib/Logger` needed to use slice instead of splice
+
+### Added
+* Tests for new method `lib/Exporter.js:createIdFilter` 
 
 ### Changed
 * refactored preview to incorporate breaking changes in esri-leaflet 1.0.0
@@ -11,9 +16,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 * Leaflet image files
-
-### Fixed
-* Parsing the logpath in `lib/Logger` needed to use slice instead of splice
 
 ## [2.5.3] - 2015-07-29
 ### Fixed
