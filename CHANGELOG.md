@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Fixed
 * Parsing the logpath in `lib/Logger` needed to use slice instead of splice
+* Try to use latest WKID or WKID, whichever is available in esri-proj-codes
 
 ### Added
 * Tests for new method `lib/Exporter.js:createIdFilter` 
