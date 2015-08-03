@@ -360,13 +360,17 @@ function callOgr (params, geojson, options, callback) {
             function _createZip () {
               var newZipTmp = paths.base + '/' + options.name + paths.tmpName + '.zip'
               var newZip = paths.base + '/' + options.name + '.zip'
-              var cmd = ['zip', '-rj', '"' + newZipTmp + '"', paths.base + '/', '--exclude=*.json*'].join(' ')
-              exec(cmd, function (err) {
+              // don't add the vrt to the zip
+              removeVRT(paths.base, function (err) {
                 if (err) return callback(err)
+                var cmd = ['zip', '-rj', '"' + newZipTmp + '"', paths.base + '/', '--exclude=*.json*'].join(' ')
+                exec(cmd, function (err) {
+                  if (err) return callback(err)
 
-                moveFile(newZipTmp, newZip, callback)
-                removeShapeFile(paths.base, options.name, function (err) {
-                  if (err) console.log('error removing shpfile ' + err)
+                  moveFile(newZipTmp, newZip, callback)
+                  removeShapeFile(paths.base, options.name, function (err) {
+                    if (err) console.log('error removing shpfile ' + err)
+                  })
                 })
               })
             }
@@ -409,6 +413,12 @@ function createPaths (dir, key, format, options) {
   paths.rootNewFile = [paths.base, paths.newFile].join('/')
 
   return paths
+}
+
+function removeVRT (dir, callback) {
+  rm(dir + '/*.vrt', function (err) {
+    callback(err)
+  })
 }
 
 function removeShapeFile (dir, name, callback) {
