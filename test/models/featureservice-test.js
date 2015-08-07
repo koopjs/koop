@@ -128,7 +128,7 @@ describe('FeatureServices Model', function () {
 
   describe('when getting featureserver features by id queries', function () {
     it('should return a proper features', function (done) {
-      FeatureServices.query(data, { objectIds: '1,2,3'}, function (err, service) {
+      FeatureServices.query(data, { objectIds: '1,2,3' }, function (err, service) {
         should.not.exist(err)
         service.should.be.an.instanceOf(Object)
         service.fields.should.be.an.instanceOf(Array)
@@ -139,7 +139,7 @@ describe('FeatureServices Model', function () {
   })
   describe('when getting features with returnCountOnly', function () {
     it('should return only count of features', function (done) {
-      FeatureServices.query(data, { returnCountOnly: true, objectIds: '1,2,3'}, function (err, service) {
+      FeatureServices.query(data, { returnCountOnly: true, objectIds: '1,2,3' }, function (err, service) {
         should.not.exist(err)
         service.should.be.an.instanceOf(Object)
         service.should.have.property('count')
@@ -150,7 +150,7 @@ describe('FeatureServices Model', function () {
   })
   describe('when getting features with returnIdsOnly', function () {
     it('should return only ids of features', function (done) {
-      FeatureServices.query(data, { returnIdsOnly: true, objectIds: '1,2,3'}, function (err, service) {
+      FeatureServices.query(data, { returnIdsOnly: true, objectIds: '1,2,3' }, function (err, service) {
         should.not.exist(err)
         service.should.be.an.instanceOf(Object)
         service.should.have.property('objectIds')
