@@ -62,7 +62,7 @@ describe('Files', function () {
       })
     })
     it('with s3 storage a non-existant', function (done) {
-      var files = new Files({ log: koop.log, config: { s3: { bucket: 'chelm-koop-shoot-local'} } })
+      var files = new Files({ log: koop.log, config: { s3: { bucket: 'chelm-koop-shoot-local' } } })
       files.exists(null, 'dummy.png', function (exists) {
         exists.should.equal(false)
         done()
@@ -91,7 +91,7 @@ describe('Files', function () {
       })
     })
     it('should error with s3 storage and a non-existant file', function (done) {
-      var files = new Files({ log: koop.log, config: { s3: { bucket: 'chelm-koop-shoot-local'} } })
+      var files = new Files({ log: koop.log, config: { s3: { bucket: 'chelm-koop-shoot-local' } } })
       files.path(null, 'dummy.png', function (err, path) {
         should.exist(err)
         should.not.exist(path)
