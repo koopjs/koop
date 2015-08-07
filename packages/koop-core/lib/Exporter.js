@@ -320,7 +320,7 @@ exports.exportToFormat = function (format, dir, key, geojson, options, callback)
       })
     } else {
       if (format === 'json' || format === 'geojson') {
-        callback(null, paths.rootJsonFile)
+        callback(null, {paths: paths, file: paths.rootJsonFile})
       } else {
         _callOgr(paths.rootJsonFile, paths.rootNewFile, function (err, file) {
           callback(err, {paths: paths, file: file})
