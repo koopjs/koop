@@ -2,28 +2,6 @@
 
 This document is meant to provide transparency in planning and implementation goals for the Koop project.
 
-## July 2015
-
-### Changes 
-* FeatureService optimizations 
-  * Make smarter requests to the DB based on queries 
-  * clean up the logic to be easier to grok
-* Refactor the lib/* files on a whole
-  - We want pull out as much non-koop specific code as possible into separate modules
-* Add support for the simple style spec - https://github.com/mapbox/simplestyle-spec
-* Address consistency issues in method calls to the Cache from providers 
-  - be clear and consitent about passing table names instead of "types" and "keys"
-
-## September 2015
-
-### Changes 
-* Explore removing ogr2ogr as a dep for exporting file formats
-
-### Additions 
-* Support for exporting FGDB
-* Support for OGC WMS and WFS 
-* A koop desktop app built with something like Electron
-
 ## v3
 
 Major API changes:
@@ -52,6 +30,10 @@ Ideally a `source` plugin is more focused, meaning that
 
 Defines methods for exporting GeoJSON to a static format. This means KML, CSV, Shapefile, etc. This plugin would exist exclusively to encapsulate logic for downloading data in a specific format.
 
+This would make it easier to support exporting [FGDB](http://www.gdal.org/drv_filegdb.html), and possibly address removing ogr2ogr as a dep for exporting file formats (both previously on the road map).
+
 ### Interface
 
 Defines methods for querying GeoJSON via a third-party API. This means Feature Service, Soda2, OData, etc. This requires a lot of refactoring but would yield a lot of benefits and has the potential to set a standard interface for querying GeoJSON.
+
+This would make it easier to support OGC [WMS](http://www.opengeospatial.org/standards/wms) and [WFS](http://www.opengeospatial.org/standards/wfs) (previously on the roadmap).
