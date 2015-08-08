@@ -29,7 +29,6 @@
     "terraformer": "1.0.5",
     "terraformer-arcgis-parser": "1.0.4",
     "terraformer-wkt-parser": "~1.0.0",
-    "topojson": "~1.6.18",
     "winston": "^1.0.0"
   },
   "devDependencies": {
