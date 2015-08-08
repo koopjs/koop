@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 * Reuse json stored locally on geojson requests
+* Removed unused TopoJSON artifacts
 
 ## [2.6.0] - 2015-07-30
 ### Fixed
