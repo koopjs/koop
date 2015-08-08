@@ -32,6 +32,24 @@ Addresses:
 * better encapsulation
 * BaseModel & BaseController issues & limitations
 
+Module naming convention:
+
+```
+koop-source-*
+
+e.g.
+
+koop-source-agol
+koop-source-socrata
+koop-source-ckan
+```
+
+Methods:
+
+* extract (internal method, can be used by itself, e.g. `require(koop-source-agol/extract)`)
+* transform (internal method, can be used by itself, e.g. `require(koop-source-agol/transform)`)
+* fetch (primary method used by koop core to request data from source)
+
 ### Export
 
 Defines methods for exporting GeoJSON to a static format. This means KML, CSV, Shapefile, etc. This plugin would exist exclusively to encapsulate logic for downloading data in a specific format.
@@ -42,6 +60,20 @@ Addresses:
 * File Geodatabase support
 * Removing ogr2ogr as a dependency for exporting file formats
 * `lib/` refactor
+
+Module naming convention:
+
+```
+koop-export-*
+
+e.g.
+
+koop-export-geojson
+koop-export-topojson
+koop-export-shapefile
+koop-export-kml
+koop-export-csv
+```
 
 ### Interface
 
@@ -55,3 +87,15 @@ Addresses:
 * Support for OData ([#195](https://github.com/koopjs/koop/issues/195))
 * Breaking out Feature Service logic ([#151](https://github.com/koopjs/koop/issues/151))
 * `lib/` refactor
+
+Module naming convention:
+
+```
+koop-api-*
+
+e.g.
+
+koop-api-featureservice
+koop-api-soda2
+koop-api-odata
+```
