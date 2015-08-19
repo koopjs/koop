@@ -1,7 +1,7 @@
 {
   "name": "koop",
   "description": "An Open Geospatial ETL Engine",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "author": {
     "name": "Chris Helm"
   },
@@ -17,7 +17,7 @@
     "esri-extent": "^1.1.0",
     "esri-proj-codes": "^1.0.0",
     "express": "~4.12.3",
-    "kue": "~0.8.12",
+    "kue": "~0.9.4",
     "lodash": "~3.6.0",
     "mkdirp": "~0.5.0",
     "mv": "~2.0.3",
