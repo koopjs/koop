@@ -1,13 +1,12 @@
 var express = require('express')
 var bodyParser = require('body-parser')
-var pjson = require('./package.json')
+var pkg = require('./package.json')
 var _ = require('lodash')
 var multipart = require('connect-multiparty')()
 var koop = require('./lib')
 
 module.exports = function (config) {
   var app = express()
-  var route, controller, model
 
   // keep track of the registered services
   app.services = {}
@@ -19,6 +18,7 @@ module.exports = function (config) {
   // handle POST requests
   // parse application/x-www-form-urlencoded
   app.use(bodyParser.urlencoded({ extended: false }))
+
   // parse application/json
   app.use(bodyParser.json())
 
@@ -33,7 +33,7 @@ module.exports = function (config) {
 
   // store the sha so we know what version of koop this is
   app.status = {
-    version: pjson.version,
+    version: pkg.version,
     providers: {}
   }
 
@@ -74,11 +74,8 @@ module.exports = function (config) {
     if (provider.name) {
       app.services[provider.name] = provider
 
-      // save the provider onto the app
-      model = new provider.model(koop) // eslint-disable-line
-
-      // pass the model to the controller
-      controller = new provider.controller(model, koop.BaseController) // eslint-disable-line
+      var model = new provider.model(koop) // eslint-disable-line
+      var controller = new provider.controller(model, koop.BaseController) // eslint-disable-line
 
       // if a provider has a status object store it
       if (provider.status) {
@@ -127,7 +124,7 @@ module.exports = function (config) {
 
   // bind each route in a list to controller handler
   app._bindRoutes = function (routes, controller) {
-    for (route in routes) {
+    for (var route in routes) {
       var path = route.split(' ')
       app[path[0]](path[1], controller[routes[route]])
     }
