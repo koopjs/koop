@@ -2,11 +2,22 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* `lib/Files` now takes `options` instead of `koop` (only needed koop.config and koop.log)
+* cleaned up `app.register` method logic
+* using `koop.log` in index instead of `console.log`
+* reorganized index for readability & code organization
+
+### Added
+* `app.registerProvider` method for providers
+* `ejs` is now a dependency ([#234](https://github.com/koopjs/koop/pull/234))
+
 ## [2.6.2] - 2015-08-20
 ### Changed
 * Make export worker concurrency configurable and default to 1
 
-## [2.6.1] - 2015-08-19 
+## [2.6.1] - 2015-08-19
 ### Added
 * `plugin` method for accessing plugins via BaseModel ([#226](https://github.com/koopjs/koop/pull/226))
 
