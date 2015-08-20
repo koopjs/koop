@@ -1,4 +1,4 @@
-/* global describe, it, before */
+/* global describe, it */
 
 var should = require('should')
 var koop = require('../../lib')
@@ -8,11 +8,7 @@ var config = { logfile: __dirname + '/../test.log' }
 
 // init the koop log based on config params
 koop.log = new koop.Logger(config)
-
-before(function (done) {
-  koop.config = config
-  done()
-})
+koop.config = config
 
 describe('Files', function () {
   describe('when initializing files', function () {

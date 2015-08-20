@@ -1,8 +1,7 @@
 /* global describe, it */
 
-var config = require('config')
 var provider = require('../fixtures/fake-provider')
-var koop = require('../../')(config)
+var koop = require('../../')()
 
 describe('Index tests for registering providers', function () {
   describe('can register a provider', function () {
