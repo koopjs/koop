@@ -1,6 +1,6 @@
 var express = require('express')
 var bodyParser = require('body-parser')
-var pkg = require('./package.json')
+var pkg = require('./package')
 var _ = require('lodash')
 var multipart = require('connect-multiparty')()
 var koop = require('./lib')
@@ -8,137 +8,36 @@ var koop = require('./lib')
 module.exports = function (config) {
   var app = express()
 
-  // keep track of the registered services
-  app.services = {}
+  /**
+   * koop setup
+   */
 
-  // if config is undefined, create it
-  config = config || {}
-  koop.config = config
-
-  // handle POST requests
-  // parse application/x-www-form-urlencoded
-  app.use(bodyParser.urlencoded({ extended: false }))
-
-  // parse application/json
-  app.use(bodyParser.json())
-
-  // init the koop log based on config params
+  koop.config = config = config || {}
   koop.log = new koop.Logger(config)
 
-  // request parameters can come from query url or POST body
-  app.use(function (req, res, next) {
-    req.query = _.extend(req.query || {}, req.body || {})
-    next()
+  // init koop centralized file access
+  // this allows us to turn the FS access off globally
+  koop.files = new koop.Files({
+    config: config,
+    log: koop.log
   })
 
-  // store the sha so we know what version of koop this is
-  app.status = {
-    version: pkg.version,
-    providers: {}
+  // the default cache is the local in-mem cache
+  // to persist data you must call registerCache with db adapter
+  // use the default local cache until a DB adapter mod is registered
+  koop.Cache = new koop.DataCache(koop)
+  koop.Cache.db = koop.LocalDB
+
+  if (!config.db || !config.db.conn) {
+    koop.log.warn('No cache configured, defaulting to local in-memory cache. No data will be cached across server sessions.')
   }
 
-  // for demos and preview maps in providers
-  app.set('view engine', 'ejs')
-
-  app.use(express.static(__dirname + '/public'))
-
-  // serve all the provider json
-  app.get('/providers', function (req, res, next) {
-    res.json(app.services)
-  })
-
-  // serve up a provider
-  app.get('/providers/:provider', function (req, res, next) {
-    res.json(app.services[req.params.provider])
-  })
-
-  // gets all the datasets in the cache for a provider
-  app.get('/providers/:provider/datasets', function (req, res, next) {
-    koop.Cache.db._query("select * from koopinfo where id ilike '%" + req.params.provider + "%'", function (err, result) {
-      if (err) return res.status(500).send(err)
-      res.json(result.rows)
-    })
-  })
-
-  /**
-   * Register providers into the main Koop app
-   * exposes the provider's routes, controller, and models
-   * @param {object} the provider to be registered
-   */
-  app.register = function (provider) {
-    if (provider.type && provider.type === 'plugin') {
-      return app.registerPlugin(provider)
-    }
-
-    // only register if the provider has a name
-    if (provider.name) {
-      app.services[provider.name] = provider
-
-      var model = new provider.model(koop) // eslint-disable-line
-      var controller = new provider.controller(model, koop.BaseController) // eslint-disable-line
-
-      // if a provider has a status object store it
-      if (provider.status) {
-        app.status.providers[provider.name] = provider.status
-      }
-
-      // binds a series of standard routes
-      if (provider.name && provider.pattern) {
-        app._bindDefaultRoutes(provider.name, provider.pattern, controller)
-      }
-
-      // add each route, the routes let us override defaults etc.
-      app._bindRoutes(provider.routes, controller)
-    }
-  }
-
-  /**
-   * Registers a koop plugin
-   * Plugins can be any function that you want to have global access to
-   * within koop provider models
-   * @param {object} any koop plugin
-   */
-  app.registerPlugin = function (plugin) {
-    koop[plugin.name] = plugin
-  }
-
-  var defaultRoutes = {
+  // expose default routes for later additions & edits by plugins
+  koop.defaultRoutes = {
     'featureserver': ['/FeatureServer/:layer/:method', '/FeatureServer/:layer', '/FeatureServer'],
     'preview': ['/preview'],
     'drop': ['/drop']
   }
-
-  // assigns a series of default routes; assumes
-  app._bindDefaultRoutes = function (name, pattern, controller) {
-    var handler
-    for (handler in defaultRoutes) {
-      if (controller[handler]) {
-        defaultRoutes[handler].forEach(function (route) {
-          app.get('/' + name + pattern + route, controller[handler])
-          // add multipart middleware for POSTs to featureservices
-          app.post('/' + name + pattern + route, multipart, controller[handler])
-        })
-      }
-    }
-  }
-
-  // bind each route in a list to controller handler
-  app._bindRoutes = function (routes, controller) {
-    for (var route in routes) {
-      var path = route.split(' ')
-      app[path[0]](path[1], controller[routes[route]])
-    }
-  }
-
-  // ---------------------------------------------------
-  // TODO I'd like to change most of what's below here
-  // ---------------------------------------------------
-  // init koop centralized file access
-  // this allows us to turn the FS access off globally
-  koop.files = new koop.Files(koop)
-
-  // END annoying things that are changing
-  // --------------------------------------------------
 
   // create export workers if configured
   // connect the worker queue for large exports
@@ -189,7 +88,73 @@ module.exports = function (config) {
         callback(null, json)
       })
     }
+  }
 
+  /**
+   * express middleware setup
+   */
+
+  // save the koop log onto the app
+  app.log = koop.log
+
+  // object for keeping track of registered services
+  // TODO: why not called providers?
+  app.services = {}
+
+  // for demos and preview maps in providers
+  app.set('view engine', 'ejs')
+
+  // handle POST requests
+  // parse application/x-www-form-urlencoded
+  app.use(bodyParser.urlencoded({ extended: false }))
+
+  // parse application/json
+  app.use(bodyParser.json())
+
+  // request parameters can come from query url or POST body
+  app.use(function (req, res, next) {
+    req.query = _.extend(req.query || {}, req.body || {})
+    next()
+  })
+
+  // remove the x powered by header from all responses
+  app.use(function (req, res, next) {
+    res.removeHeader('X-Powered-By')
+    next()
+  })
+
+  app.use(express.static(__dirname + '/public'))
+
+  // store the sha so we know what version of koop this is
+  app.status = {
+    version: pkg.version,
+    providers: {}
+  }
+
+  /**
+   * route definitions
+   */
+
+  // serve all the provider json
+  app.get('/providers', function (req, res, next) {
+    res.json(app.services)
+  })
+
+  // serve up a provider
+  app.get('/providers/:provider', function (req, res, next) {
+    res.json(app.services[req.params.provider])
+  })
+
+  // gets all the datasets in the cache for a provider
+  app.get('/providers/:provider/datasets', function (req, res, next) {
+    koop.Cache.db._query("select * from koopinfo where id ilike '%" + req.params.provider + "%'", function (err, result) {
+      if (err) return res.status(500).send(err)
+      res.json(result.rows)
+    })
+  })
+
+  // add export-workers route if configured
+  if (config.export_workers) {
     app.get('/export-workers', function (req, res) {
       var response = {}
       var count = 0
@@ -221,44 +186,103 @@ module.exports = function (config) {
       }
 
       getJobCounts(jobTypes[count])
-
     })
   }
 
-  // remove the x powered by header from all responses
-  app.use(function (req, res, next) {
-    res.removeHeader('X-Powered-By')
-    next()
-  })
-
-  // save the koop log onto the app
-  app.log = koop.log
-
-  koop.Cache = new koop.DataCache(koop)
-
-  // use the default local cache until a DB adapter mod is registered
-  if (!config.db || !config.db.conn) {
-    console.warn('Warning koop w/o persistent cache means no data will be cached across server sessions.')
-  }
-
-  // the default cache is the local in-mem cache
-  // to persist data you must call registerCache with db adapter
-  koop.Cache.db = koop.LocalDB
+  /**
+   * app methods
+   */
 
   /**
-   * Register DB adapters into the main Koop app
-   * overwrites any existing koop.Cache.db
-   * @param {object} a koop db adapter
+   * registers koop providers, caches, and plugins
+   * @param {object} plugin - module to be registered
    */
-  app.registerCache = function (adapter) {
-    if (config.db && config.db.conn) {
-      koop.Cache.db = adapter.connect(config.db.conn, koop)
-    } else {
-      console.log('Cannot register this cache, missing db connection in config')
+  app.register = function (plugin) {
+    if (typeof plugin === 'undefined') return koop.log.error('Plugin undefined, skipping registration.')
+    if (!plugin.name) return koop.log.error('Plugin missing name, skipping registration.')
+
+    if (plugin.type) {
+      if (plugin.type === 'provider') return app.registerProvider(plugin)
+      if (plugin.type === 'cache') return app.registerCache(plugin)
+      if (plugin.type === 'plugin') return app.registerPlugin(plugin)
+
+      koop.log.warn('Unrecognized plugin type. Defaulting to provider.')
+      return app.registerProvider(plugin)
     }
-    return
+
+    koop.log.warn('Plugin missing type property. Defaulting to provider.')
+    app.registerProvider(plugin)
+  }
+
+  /**
+   * registers koop providers
+   * exposes the provider's routes, controller, and model
+   * @param {object} provider - the provider to be registered
+   */
+  app.registerProvider = function (provider) {
+    app.services[provider.name] = provider
+
+    var model = new provider.model(koop) // eslint-disable-line
+    var controller = new provider.controller(model, koop.BaseController) // eslint-disable-line
+
+    // if a provider has a status object store it
+    if (provider.status) {
+      app.status.providers[provider.name] = provider.status
+    }
+
+    // binds a series of standard routes
+    if (provider.name && provider.pattern) {
+      app._bindDefaultRoutes(provider.name, provider.pattern, controller)
+    }
+
+    // add each route, the routes let us override defaults etc.
+    app._bindRoutes(provider.routes, controller)
+  }
+
+  /**
+   * registers a koop cache
+   * overwrites any existing koop.Cache.db
+   * @param {object} cache - a koop database adapter
+   */
+  app.registerCache = function (cache) {
+    if (!config.db || !config.db.conn) {
+      return koop.log.error('Cannot register cache. Missing db.conn property in config.')
+    }
+
+    koop.Cache.db = cache.connect(config.db.conn, koop)
+  }
+
+  /**
+   * registers a koop plugin
+   * Plugins can be any function that you want to have global access to
+   * within koop provider models
+   * @param {object} any koop plugin
+   */
+  app.registerPlugin = function (plugin) {
+    koop[plugin.name] = plugin
+  }
+
+  // assigns a series of default routes; assumes
+  app._bindDefaultRoutes = function (name, pattern, controller) {
+    var handler
+    for (handler in koop.defaultRoutes) {
+      if (controller[handler]) {
+        koop.defaultRoutes[handler].forEach(function (route) {
+          app.get('/' + name + pattern + route, controller[handler])
+          // add multipart middleware for POSTs to featureservices
+          app.post('/' + name + pattern + route, multipart, controller[handler])
+        })
+      }
+    }
+  }
+
+  // bind each route in a list to controller handler
+  app._bindRoutes = function (routes, controller) {
+    for (var route in routes) {
+      var path = route.split(' ')
+      app[path[0]](path[1], controller[routes[route]])
+    }
   }
 
   return app
-
 }
