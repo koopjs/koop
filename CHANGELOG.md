@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Changed
+* Make export worker concurrency configurable and default to 1
+
 ## [2.6.1] - 2015-08-19 
 ### Added
 * `plugin` method for accessing plugins via BaseModel ([#226](https://github.com/koopjs/koop/pull/226))
