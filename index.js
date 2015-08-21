@@ -39,57 +39,6 @@ module.exports = function (config) {
     'drop': ['/drop']
   }
 
-  // create export workers if configured
-  // connect the worker queue for large exports
-  if (koop.config.export_workers) {
-    var kue = require('kue')
-    koop.Exporter.export_q = kue.createQueue({
-      prefix: koop.config.export_workers.redis.prefix,
-      disableSearch: true,
-      redis: {
-        port: koop.config.export_workers.redis.port,
-        host: koop.config.export_workers.redis.host
-      }
-    })
-
-    // remove completed jobs from the queue
-    koop.Exporter.export_q.on('job complete', function (id) {
-      kue.Job.get(id, function (err, job) {
-        if (err) return
-        job.remove(function (err) {
-          if (err) {
-            koop.log.debug('Export Workers: could not remove completed job #' + job.id)
-          }
-          koop.log.debug('Export Workers: removed completed job #' + job.id + ' - ' + id)
-        })
-      })
-    })
-
-    koop.Exporter.export_q.on('job failed', function (id, jobErr) {
-      kue.Job.get(id, function (err, job) {
-        if (err) return
-        job.remove(function (err) {
-          if (err) {
-            koop.log.debug(err)
-            koop.log.debug('Export Workers: failed to remove failed job #' + job.id + ' Error: ' + jobErr)
-          } else {
-            koop.log.debug('Export Workers: removed failed job #' + job.id + ' Error: ' + jobErr)
-          }
-        })
-      })
-    })
-
-    koop.collectQStats = function (q, json, type, callback) {
-      q[type](function (err, count) {
-        if (err) {
-          return callback(err)
-        }
-        json[type.replace('Count', '')] = count
-        callback(null, json)
-      })
-    }
-  }
-
   /**
    * express middleware setup
    */
@@ -151,8 +100,63 @@ module.exports = function (config) {
     })
   })
 
-  // add export-workers route if configured
-  if (config.export_workers) {
+  /**
+   * export worker setup
+   *
+   * if export workers are configured:
+   * 1. creates exporter workers
+   * 2. connects the worker queue for large exports
+   * 3. adds export-workers route
+   */
+
+  if (koop.config.export_workers) {
+    var kue = require('kue')
+    koop.Exporter.export_q = kue.createQueue({
+      prefix: koop.config.export_workers.redis.prefix,
+      disableSearch: true,
+      redis: {
+        port: koop.config.export_workers.redis.port,
+        host: koop.config.export_workers.redis.host
+      }
+    })
+
+    // remove completed jobs from the queue
+    koop.Exporter.export_q.on('job complete', function (id) {
+      kue.Job.get(id, function (err, job) {
+        if (err) return
+        job.remove(function (err) {
+          if (err) {
+            koop.log.debug('Export Workers: could not remove completed job #' + job.id)
+          }
+          koop.log.debug('Export Workers: removed completed job #' + job.id + ' - ' + id)
+        })
+      })
+    })
+
+    koop.Exporter.export_q.on('job failed', function (id, jobErr) {
+      kue.Job.get(id, function (err, job) {
+        if (err) return
+        job.remove(function (err) {
+          if (err) {
+            koop.log.debug(err)
+            koop.log.debug('Export Workers: failed to remove failed job #' + job.id + ' Error: ' + jobErr)
+          } else {
+            koop.log.debug('Export Workers: removed failed job #' + job.id + ' Error: ' + jobErr)
+          }
+        })
+      })
+    })
+
+    koop.collectQStats = function (q, json, type, callback) {
+      q[type](function (err, count) {
+        if (err) {
+          return callback(err)
+        }
+        json[type.replace('Count', '')] = count
+        callback(null, json)
+      })
+    }
+
     app.get('/export-workers', function (req, res) {
       var response = {}
       var count = 0
