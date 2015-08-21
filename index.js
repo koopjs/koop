@@ -50,14 +50,11 @@ module.exports = function (config) {
   // parse application/json
   app.use(bodyParser.json())
 
-  // request parameters can come from query url or POST body
   app.use(function (req, res, next) {
+    // request parameters can come from query url or POST body
     req.query = _.extend(req.query || {}, req.body || {})
-    next()
-  })
 
-  // remove the x powered by header from all responses
-  app.use(function (req, res, next) {
+    // remove the x powered by header from all responses
     res.removeHeader('X-Powered-By')
     next()
   })

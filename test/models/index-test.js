@@ -8,7 +8,7 @@ describe('Index tests for registering providers', function () {
     it('when the provider has a pattern', function (done) {
       koop.register(provider)
       Object.keys(koop.services).length.should.equal(1)
-      koop._router.stack.length.should.equal(17)
+      koop._router.stack.length.should.equal(16)
       done()
     })
   })
