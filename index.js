@@ -94,11 +94,9 @@ module.exports = function (config) {
    * express middleware setup
    */
 
-  // save the koop log onto the app
-  app.log = koop.log
-
   // object for keeping track of registered services
   // TODO: why not called providers?
+  // if services includes caches and plugins we should put them in here too
   app.services = {}
 
   // for demos and preview maps in providers
@@ -222,8 +220,8 @@ module.exports = function (config) {
   app.registerProvider = function (provider) {
     app.services[provider.name] = provider
 
-    var model = new provider.model(koop) // eslint-disable-line
-    var controller = new provider.controller(model, koop.BaseController) // eslint-disable-line
+    var model = provider.model(koop)
+    var controller = provider.controller(model, koop.BaseController)
 
     // if a provider has a status object store it
     if (provider.status) {
@@ -264,8 +262,7 @@ module.exports = function (config) {
 
   // assigns a series of default routes; assumes
   app._bindDefaultRoutes = function (name, pattern, controller) {
-    var handler
-    for (handler in koop.defaultRoutes) {
+    for (var handler in koop.defaultRoutes) {
       if (controller[handler]) {
         koop.defaultRoutes[handler].forEach(function (route) {
           app.get('/' + name + pattern + route, controller[handler])
