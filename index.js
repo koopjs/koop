@@ -43,14 +43,6 @@ module.exports = function (config) {
    * express middleware setup
    */
 
-  // object for keeping track of registered services
-  // TODO: why not called providers?
-  // if services includes caches and plugins we should put them in here too
-  app.services = {}
-
-  // for demos and preview maps in providers
-  app.set('view engine', 'ejs')
-
   // handle POST requests
   // parse application/x-www-form-urlencoded
   app.use(bodyParser.urlencoded({ extended: false }))
@@ -70,12 +62,117 @@ module.exports = function (config) {
     next()
   })
 
+  // for demos and preview maps in providers
+  app.set('view engine', 'ejs')
   app.use(express.static(__dirname + '/public'))
 
-  // store the sha so we know what version of koop this is
+  // object for keeping track of registered services
+  // TODO: why not called providers?
+  // if services includes caches and plugins we should put them in here too
+  app.services = {}
   app.status = {
     version: pkg.version,
     providers: {}
+  }
+
+  /**
+   * app methods
+   */
+
+  /**
+   * registers koop providers, caches, and plugins
+   * @param {object} plugin - module to be registered
+   */
+  app.register = function (plugin) {
+    if (typeof plugin === 'undefined') return koop.log.error('Plugin undefined, skipping registration.')
+    if (!plugin.name) return koop.log.error('Plugin missing name, skipping registration.')
+
+    if (plugin.type) {
+      if (plugin.type === 'provider') return app.registerProvider(plugin)
+      if (plugin.type === 'cache') return app.registerCache(plugin)
+      if (plugin.type === 'plugin') return app.registerPlugin(plugin)
+
+      koop.log.warn('Unrecognized plugin type. Defaulting to provider.')
+      return app.registerProvider(plugin)
+    }
+
+    koop.log.warn('Plugin missing type property. Defaulting to provider.')
+    app.registerProvider(plugin)
+  }
+
+  /**
+   * registers koop providers
+   * exposes the provider's routes, controller, and model
+   * @param {object} provider - the provider to be registered
+   */
+  app.registerProvider = function (provider) {
+    app.services[provider.name] = provider
+
+    var model = provider.model(koop)
+    var controller = provider.controller(model, koop.BaseController)
+    provider.version = provider.version || '(version missing)'
+
+    // if a provider has a status object store it
+    if (provider.status) {
+      app.status.providers[provider.name] = provider.status
+      provider.version = provider.status.version
+    }
+
+    // binds a series of standard routes
+    if (provider.name && provider.pattern) {
+      app._bindDefaultRoutes(provider.name, provider.pattern, controller)
+    }
+
+    // add each route, the routes let us override defaults etc.
+    app._bindRoutes(provider.routes, controller)
+
+    koop.log.info('registered provider:', provider.name, provider.version)
+  }
+
+  /**
+   * registers a koop cache
+   * overwrites any existing koop.Cache.db
+   * @param {object} cache - a koop database adapter
+   */
+  app.registerCache = function (cache) {
+    if (!config.db || !config.db.conn) {
+      return koop.log.error('Cannot register cache. Missing db.conn property in config.')
+    }
+
+    koop.Cache.db = cache.connect(config.db.conn, koop)
+    koop.log.info('registered cache:', cache.name, cache.version)
+  }
+
+  /**
+   * registers a koop plugin
+   * Plugins can be any function that you want to have global access to
+   * within koop provider models
+   * @param {object} any koop plugin
+   */
+  app.registerPlugin = function (plugin) {
+    koop[plugin.name] = plugin
+    koop.log.info('registered plugin:', plugin.name, plugin.version)
+  }
+
+  // assigns a series of default routes; assumes
+  app._bindDefaultRoutes = function (name, pattern, controller) {
+    for (var handler in koop.defaultRoutes) {
+      if (controller[handler]) {
+        koop.defaultRoutes[handler].forEach(function (route) {
+          app.get('/' + name + pattern + route, controller[handler])
+          // add multipart middleware for POSTs to featureservices
+          app.post('/' + name + pattern + route, multipart, controller[handler])
+        })
+      }
+    }
+  }
+
+  // bind each route in a list to controller handler
+  app._bindRoutes = function (routes, controller) {
+    for (var route in routes) {
+      var path = route.split(' ')
+      app[path[0]](path[1], controller[routes[route]])
+    }
   }
 
   /**
@@ -189,100 +286,6 @@ module.exports = function (config) {
 
       getJobCounts(jobTypes[count])
     })
-  }
-
-  /**
-   * app methods
-   */
-
-  /**
-   * registers koop providers, caches, and plugins
-   * @param {object} plugin - module to be registered
-   */
-  app.register = function (plugin) {
-    if (typeof plugin === 'undefined') return koop.log.error('Plugin undefined, skipping registration.')
-    if (!plugin.name) return koop.log.error('Plugin missing name, skipping registration.')
-
-    if (plugin.type) {
-      if (plugin.type === 'provider') return app.registerProvider(plugin)
-      if (plugin.type === 'cache') return app.registerCache(plugin)
-      if (plugin.type === 'plugin') return app.registerPlugin(plugin)
-
-      koop.log.warn('Unrecognized plugin type. Defaulting to provider.')
-      return app.registerProvider(plugin)
-    }
-
-    koop.log.warn('Plugin missing type property. Defaulting to provider.')
-    app.registerProvider(plugin)
-  }
-
-  /**
-   * registers koop providers
-   * exposes the provider's routes, controller, and model
-   * @param {object} provider - the provider to be registered
-   */
-  app.registerProvider = function (provider) {
-    app.services[provider.name] = provider
-
-    var model = provider.model(koop)
-    var controller = provider.controller(model, koop.BaseController)
-
-    // if a provider has a status object store it
-    if (provider.status) {
-      app.status.providers[provider.name] = provider.status
-    }
-
-    // binds a series of standard routes
-    if (provider.name && provider.pattern) {
-      app._bindDefaultRoutes(provider.name, provider.pattern, controller)
-    }
-
-    // add each route, the routes let us override defaults etc.
-    app._bindRoutes(provider.routes, controller)
-  }
-
-  /**
-   * registers a koop cache
-   * overwrites any existing koop.Cache.db
-   * @param {object} cache - a koop database adapter
-   */
-  app.registerCache = function (cache) {
-    if (!config.db || !config.db.conn) {
-      return koop.log.error('Cannot register cache. Missing db.conn property in config.')
-    }
-
-    koop.Cache.db = cache.connect(config.db.conn, koop)
-  }
-
-  /**
-   * registers a koop plugin
-   * Plugins can be any function that you want to have global access to
-   * within koop provider models
-   * @param {object} any koop plugin
-   */
-  app.registerPlugin = function (plugin) {
-    koop[plugin.name] = plugin
-  }
-
-  // assigns a series of default routes; assumes
-  app._bindDefaultRoutes = function (name, pattern, controller) {
-    for (var handler in koop.defaultRoutes) {
-      if (controller[handler]) {
-        koop.defaultRoutes[handler].forEach(function (route) {
-          app.get('/' + name + pattern + route, controller[handler])
-          // add multipart middleware for POSTs to featureservices
-          app.post('/' + name + pattern + route, multipart, controller[handler])
-        })
-      }
-    }
-  }
-
-  // bind each route in a list to controller handler
-  app._bindRoutes = function (routes, controller) {
-    for (var route in routes) {
-      var path = route.split(' ')
-      app[path[0]](path[1], controller[routes[route]])
-    }
   }
 
   return app
