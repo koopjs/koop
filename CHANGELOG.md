@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * using `koop.log` in index instead of `console.log`
 * reorganized index for readability & code organization
 * throw error on bad provider or cache registration
+* consolidated koop, lib, app ([#237](https://github.com/koopjs/koop/issues/237))
 
 ### Added
 * `app.registerProvider` method for providers
