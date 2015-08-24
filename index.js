@@ -81,15 +81,15 @@ module.exports = function (config) {
    * @param {object} plugin - module to be registered
    */
   app.register = function (plugin) {
-    if (typeof plugin === 'undefined') return koop.log.error('Plugin undefined, skipping registration.')
-    if (!plugin.name) return koop.log.error('Plugin missing name, skipping registration.')
+    if (typeof plugin === 'undefined') throw new Error('Plugin undefined.')
+    if (!plugin.name) throw new Error('Cannot register plugin: missing name.')
 
     if (plugin.type) {
       if (plugin.type === 'provider') return app.registerProvider(plugin)
       if (plugin.type === 'cache') return app.registerCache(plugin)
       if (plugin.type === 'plugin') return app.registerPlugin(plugin)
 
-      koop.log.warn('Unrecognized plugin type. Defaulting to provider.')
+      koop.log.warn('Unrecognized plugin type: "' + plugin.type + '". Defaulting to provider.')
       return app.registerProvider(plugin)
     }
 
@@ -132,9 +132,7 @@ module.exports = function (config) {
    * @param {object} cache - a koop database adapter
    */
   app.registerCache = function (cache) {
-    if (!config.db || !config.db.conn) {
-      return koop.log.error('Cannot register cache. Missing db.conn property in config.')
-    }
+    if (!config.db || !config.db.conn) throw new Error('Cannot register cache: missing config.db.conn.')
 
     koop.Cache.db = cache.connect(config.db.conn, koop)
     koop.log.info('registered cache:', cache.name, cache.version)
