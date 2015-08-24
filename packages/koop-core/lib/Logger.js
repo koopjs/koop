@@ -3,7 +3,10 @@ var winston = require('winston')
 function Logger (config) {
   if (!config.logfile) {
     // no logfile defined, log to console only
-    var debugConsole = new winston.transports.Console({ level: 'debug' })
+    var debugConsole = new winston.transports.Console({
+      colorize: true,
+      level: 'debug'
+    })
     return new winston.Logger({ transports: [debugConsole] })
   }
 

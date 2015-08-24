@@ -11,7 +11,7 @@ module.exports = {
     }
 
     if (!this.store[key]) {
-      callback('Not Found', [])
+      callback(new Error('Not found'), [])
     } else if (this.store[key] && this.store[key].info && this.store[key].info.status === 'processing' && !options.bypassProcessing) {
       callback(null, [{ status: 'processing' }])
     } else {
@@ -27,7 +27,7 @@ module.exports = {
     if (this.store[key] && this.store[key].info) {
       callback(null, this.store[key].info)
     } else {
-      callback('info not found', false)
+      callback(new Error('Info not found'), false)
     }
   },
 
@@ -36,7 +36,7 @@ module.exports = {
       this.store[key].info = info
       callback(null, true)
     } else {
-      callback('info not found', false)
+      callback(new Error('Info not found'), false)
     }
   },
 
@@ -99,7 +99,7 @@ module.exports = {
   },
 
   _query: function (sql, callback) {
-    callback('not implemented with local caches, use an sql based cache like postGIS instead.', false)
+    callback(new Error('Not implemented with local cache. Use a SQL-based cache like postGIS instead.'), false)
   }
 
 }
