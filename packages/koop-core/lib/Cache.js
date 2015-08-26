@@ -1,4 +1,9 @@
-function Cache (koop) {
+/**
+ * Cache constructor.
+ * Exposes methods for managing the underlying database.
+ * @class
+ */
+function Cache () {
   /**
    * Inserts geojson into the DB
    *
