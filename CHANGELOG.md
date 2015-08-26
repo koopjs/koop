@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * reorganized index for readability & code organization
 * throw error on bad provider or cache registration
 * consolidated koop, lib, app ([#237](https://github.com/koopjs/koop/issues/237))
+* logging version and mountpath when express middleware is mounted
 
 ### Added
 * `app.registerProvider` method for providers

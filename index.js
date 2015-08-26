@@ -327,5 +327,9 @@ module.exports = function (config) {
     })
   }
 
+  koop.on('mount', function (parent) {
+    koop.log.info('Koop %s mounted at %s', koop.version, koop.mountpath)
+  })
+
   return koop
 }
