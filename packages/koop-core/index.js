@@ -15,6 +15,7 @@ module.exports = function (config) {
     if (lib.hasOwnProperty(method)) koop[method] = lib[method]
   }
 
+  koop.version = pkg.version
   koop.config = config || {}
   koop.log = new koop.Logger(koop.config)
   koop.files = new koop.Files({
@@ -28,8 +29,15 @@ module.exports = function (config) {
   koop.Cache = new koop.DataCache()
   koop.Cache.db = koop.LocalDB
 
-  if (!koop.config.db || !koop.config.db.conn) {
-    koop.log.warn('No cache configured, defaulting to local in-memory cache. No data will be cached across server sessions.')
+  // object for keeping track of registered services
+  // TODO: why not called providers?
+  // if services includes caches and plugins we should put them in here too
+  koop.services = {}
+
+  // TODO: consolidate status, services, `/providers` routes
+  koop.status = {
+    version: koop.version,
+    providers: {}
   }
 
   // expose default routes for later additions & edits by plugins
@@ -37,6 +45,10 @@ module.exports = function (config) {
     'featureserver': ['/FeatureServer/:layer/:method', '/FeatureServer/:layer', '/FeatureServer'],
     'preview': ['/preview'],
     'drop': ['/drop']
+  }
+
+  if (!koop.config.db || !koop.config.db.conn) {
+    koop.log.warn('No cache configured, defaulting to local in-memory cache. No data will be cached across server sessions.')
   }
 
   /**
@@ -63,17 +75,6 @@ module.exports = function (config) {
   koop.set('view engine', 'ejs')
   koop.use(express.static(__dirname + '/public'))
 
-  // object for keeping track of registered services
-  // TODO: why not called providers?
-  // if services includes caches and plugins we should put them in here too
-  koop.services = {}
-
-  // TODO: consolidate status, services, `/providers` routes
-  koop.status = {
-    version: pkg.version,
-    providers: {}
-  }
-
   /**
    * public methods
    */
@@ -96,7 +97,7 @@ module.exports = function (config) {
       return koop.registerProvider(plugin)
     }
 
-    koop.log.warn('Plugin missing type property. Defaulting to provider.')
+    koop.log.warn('Plugin "%s" missing type property. Defaulting to provider.', plugin.name)
     koop.registerProvider(plugin)
   }
 
@@ -114,6 +115,7 @@ module.exports = function (config) {
     provider.version = provider.version || '(version missing)'
 
     // if a provider has a status object store it
+    // TODO: deprecate & serve more meaningful status reports dynamically.
     if (provider.status) {
       koop.status.providers[provider.name] = provider.status
       provider.version = provider.status.version
@@ -323,6 +325,10 @@ module.exports = function (config) {
       getJobCounts(jobTypes[count])
     })
   }
+
+  koop.on('mount', function (parent) {
+    koop.log.info('Koop %s mounted at %s', koop.version, koop.mountpath)
+  })
 
   return koop
 }
