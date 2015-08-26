@@ -8,24 +8,23 @@ var lib = require('./lib')
 module.exports = function (config) {
   var koop = express()
 
-  // inherit everything from lib ¯\_(ツ)_/¯
+  // inherit everything from lib
+  // TODO: only expose constructors and methods that are used by other modules
+  // TODO: deprecate then remove exposed lib modules from koop
   for (var method in lib) {
     if (lib.hasOwnProperty(method)) koop[method] = lib[method]
   }
 
   koop.config = config || {}
   koop.log = new koop.Logger(koop.config)
-
-  // init koop centralized file access
-  // this allows us to turn the FS access off globally
   koop.files = new koop.Files({
     config: koop.config,
     log: koop.log
   })
 
-  // the default cache is the local in-mem cache
-  // to persist data you must call registerCache with db adapter
-  // use the default local cache until a DB adapter mod is registered
+  // default to LocalDB cache
+  // cache registration overrides this
+  // TODO: instance should be lowercased
   koop.Cache = new koop.DataCache()
   koop.Cache.db = koop.LocalDB
 
@@ -68,6 +67,8 @@ module.exports = function (config) {
   // TODO: why not called providers?
   // if services includes caches and plugins we should put them in here too
   koop.services = {}
+
+  // TODO: consolidate status, services, `/providers` routes
   koop.status = {
     version: pkg.version,
     providers: {}
@@ -78,7 +79,8 @@ module.exports = function (config) {
    */
 
   /**
-   * registers providers, caches, and plugins
+   * general method for registering providers, caches, and plugins
+   *
    * @param {object} plugin - module to be registered
    */
   koop.register = function (plugin) {
@@ -101,6 +103,7 @@ module.exports = function (config) {
   /**
    * registers a provider
    * exposes the provider's routes, controller, and model
+   *
    * @param {object} provider - the provider to be registered
    */
   koop.registerProvider = function (provider) {
@@ -130,6 +133,7 @@ module.exports = function (config) {
   /**
    * registers a cache
    * overwrites any existing koop.Cache.db
+   *
    * @param {object} cache - a koop database adapter
    */
   koop.registerCache = function (cache) {
@@ -143,6 +147,7 @@ module.exports = function (config) {
    * registers a plugin
    * Plugins can be any function that you want to have global access to
    * within koop provider models
+   *
    * @param {object} any koop plugin
    */
   koop.registerPlugin = function (plugin) {
@@ -150,7 +155,13 @@ module.exports = function (config) {
     koop.log.info('registered plugin:', plugin.name, plugin.version)
   }
 
-  // assigns a series of default routes; assumes
+  /**
+   * creates default routes based on pattern from provider
+   *
+   * @param {string} name - provider name
+   * @param {string} pattern - route pattern from provider
+   * @param {object} controller - provider controller
+   */
   koop._bindDefaultRoutes = function (name, pattern, controller) {
     for (var handler in koop.defaultRoutes) {
       if (controller[handler]) {
@@ -163,7 +174,12 @@ module.exports = function (config) {
     }
   }
 
-  // bind each route in a list to controller handler
+  /**
+   * binds each route from provider routes object to corresponding controller handler
+   *
+   * @param {object} routes - provider routes
+   * @param {object} controller - provider controller
+   */
   koop._bindRoutes = function (routes, controller) {
     for (var route in routes) {
       var path = route.split(' ')
@@ -175,19 +191,36 @@ module.exports = function (config) {
    * route definitions
    */
 
-  // serve all the provider json
-  koop.get('/providers', function (req, res, next) {
+  /**
+   * serves koop.services object
+   *
+   * @param {object} req - incoming request
+   * @param {object} res - outgoing response
+   */
+  koop.get('/providers', function (req, res) {
     res.json(koop.services)
   })
 
-  // serve up a provider
-  koop.get('/providers/:provider', function (req, res, next) {
+  /**
+   * serves provider information by name from koop.services
+   *
+   * @param {object} req - incoming request
+   * @param {object} res - outgoing response
+   */
+  koop.get('/providers/:provider', function (req, res) {
     res.json(koop.services[req.params.provider])
   })
 
-  // gets all the datasets in the cache for a provider
-  koop.get('/providers/:provider/datasets', function (req, res, next) {
-    koop.Cache.db._query("select * from koopinfo where id ilike '%" + req.params.provider + "%'", function (err, result) {
+  /**
+   * gets all the datasets in the cache for a provider
+   *
+   * @param {object} req - incoming request
+   * @param {object} res - outgoing response
+   */
+  koop.get('/providers/:provider/datasets', function (req, res) {
+    var sqlQuery = "select * from koopinfo where id ilike '%" + req.params.provider + "%'"
+
+    koop.Cache.db._query(sqlQuery, function (err, result) {
       if (err) return res.status(500).send(err)
       res.json(result.rows)
     })
@@ -197,9 +230,11 @@ module.exports = function (config) {
    * export worker setup
    *
    * if export workers are configured:
-   * 1. creates exporter workers
+   * 1. creates export workers
    * 2. connects the worker queue for large exports
    * 3. adds export-workers route
+   *
+   * TODO: remove worker logic from index
    */
 
   if (koop.config.export_workers) {
@@ -249,6 +284,12 @@ module.exports = function (config) {
       })
     }
 
+    /**
+     * returns information about export workers
+     *
+     * @param {object} req - incoming request
+     * @param {object} res - outgoing response
+     */
     koop.get('/export-workers', function (req, res) {
       var response = {}
       var count = 0
