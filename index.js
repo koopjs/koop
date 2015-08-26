@@ -29,8 +29,15 @@ module.exports = function (config) {
   koop.Cache = new koop.DataCache()
   koop.Cache.db = koop.LocalDB
 
-  if (!koop.config.db || !koop.config.db.conn) {
-    koop.log.warn('No cache configured, defaulting to local in-memory cache. No data will be cached across server sessions.')
+  // object for keeping track of registered services
+  // TODO: why not called providers?
+  // if services includes caches and plugins we should put them in here too
+  koop.services = {}
+
+  // TODO: consolidate status, services, `/providers` routes
+  koop.status = {
+    version: koop.version,
+    providers: {}
   }
 
   // expose default routes for later additions & edits by plugins
@@ -38,6 +45,10 @@ module.exports = function (config) {
     'featureserver': ['/FeatureServer/:layer/:method', '/FeatureServer/:layer', '/FeatureServer'],
     'preview': ['/preview'],
     'drop': ['/drop']
+  }
+
+  if (!koop.config.db || !koop.config.db.conn) {
+    koop.log.warn('No cache configured, defaulting to local in-memory cache. No data will be cached across server sessions.')
   }
 
   /**
@@ -63,17 +74,6 @@ module.exports = function (config) {
   // for demos and preview maps in providers
   koop.set('view engine', 'ejs')
   koop.use(express.static(__dirname + '/public'))
-
-  // object for keeping track of registered services
-  // TODO: why not called providers?
-  // if services includes caches and plugins we should put them in here too
-  koop.services = {}
-
-  // TODO: consolidate status, services, `/providers` routes
-  koop.status = {
-    version: koop.version,
-    providers: {}
-  }
 
   /**
    * public methods
@@ -115,6 +115,8 @@ module.exports = function (config) {
     provider.version = provider.version || '(version missing)'
 
     // if a provider has a status object store it
+    // TODO: deprecate, move version to root of object.
+    //       we should serve more meaningful status reports dynamically.
     if (provider.status) {
       koop.status.providers[provider.name] = provider.status
       provider.version = provider.status.version
