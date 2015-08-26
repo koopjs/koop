@@ -15,6 +15,7 @@ module.exports = function (config) {
     if (lib.hasOwnProperty(method)) koop[method] = lib[method]
   }
 
+  koop.version = pkg.version
   koop.config = config || {}
   koop.log = new koop.Logger(koop.config)
   koop.files = new koop.Files({
@@ -70,7 +71,7 @@ module.exports = function (config) {
 
   // TODO: consolidate status, services, `/providers` routes
   koop.status = {
-    version: pkg.version,
+    version: koop.version,
     providers: {}
   }
 
