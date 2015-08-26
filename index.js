@@ -97,7 +97,7 @@ module.exports = function (config) {
       return koop.registerProvider(plugin)
     }
 
-    koop.log.warn('Plugin missing type property. Defaulting to provider.')
+    koop.log.warn('Plugin "%s" missing type property. Defaulting to provider.', plugin.name)
     koop.registerProvider(plugin)
   }
 
