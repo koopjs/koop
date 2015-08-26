@@ -28,7 +28,6 @@ module.exports = function (config) {
   // use the default local cache until a DB adapter mod is registered
   koop.Cache = new koop.DataCache()
   koop.Cache.db = koop.LocalDB
-  koop.Exporter = koop.Exporter
 
   if (!koop.config.db || !koop.config.db.conn) {
     koop.log.warn('No cache configured, defaulting to local in-memory cache. No data will be cached across server sessions.')
