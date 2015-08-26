@@ -115,8 +115,7 @@ module.exports = function (config) {
     provider.version = provider.version || '(version missing)'
 
     // if a provider has a status object store it
-    // TODO: deprecate, move version to root of object.
-    //       we should serve more meaningful status reports dynamically.
+    // TODO: deprecate & serve more meaningful status reports dynamically.
     if (provider.status) {
       koop.status.providers[provider.name] = provider.status
       provider.version = provider.status.version
