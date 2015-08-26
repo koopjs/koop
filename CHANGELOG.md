@@ -6,10 +6,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 * `lib/Files` now takes `options` instead of `koop` (only needed koop.config and koop.log)
 * cleaned up `app.register` method logic
+  * `app.register` can now register caches and plugins if `type` is specified correctly
+  * delegates to `app.registerProvider`, `app.registerCache`, `app.registerPlugin`
+  * throws error on bad provider or cache registration
 * using `koop.log` in index instead of `console.log`
 * reorganized index for readability & code organization
-* throw error on bad provider or cache registration
 * consolidated koop, lib, app ([#237](https://github.com/koopjs/koop/issues/237))
+* logging version and mountpath when express middleware is mounted
 
 ### Added
 * `app.registerProvider` method for providers
