@@ -2,7 +2,49 @@
 
 This document is meant to provide transparency in planning and implementation goals for the Koop project.
 
+## v2.x / Minor Changes
+
+To be completed in the near future - September/October 2015
+
+### Improvements
+
+#### Error handling, reporting, logging
+
+* https://github.com/koopjs/koop/issues/209
+* https://github.com/koopjs/koop/issues/228
+
+#### Better plugin support
+
+https://github.com/koopjs/koop/issues/195
+
+##### make preview routes a plugin
+
+Identical or near-identical JS & HTML is being duplicated across providers for previews. If we improve plugin support enough in v2, we should be able to remove preview code from all providers and make a simple plugin that adds a preview route to every provider. I think this would be a good candidate for designing a better plugin strategy.
+
+### Changes
+
+#### Provider inheritance
+
+via koop-provider module
+
+* https://github.com/koopjs/koop-provider
+* https://github.com/koopjs/koopjs.github.io/issues/10
+
+#### Worker & Export manangement
+
+Exporter & ExportWorker should be broken out into separate modules.
+
 ## v3
+
+### Removals
+
+* remove from `lib/`: Exporter, ExportWorker, BaseModel, BaseController, FeatureServices, Query, & SpatialReference
+
+These modules will be deprecated in v2 once the koop-provider, koop-exporter, and koop-worker modules are production ready.
+
+--
+
+## Theoretical / tentative discussion
 
 Major API changes:
 
