@@ -6,7 +6,7 @@ var async = require('async')
 var crypto = require('crypto')
 var projCodes = require('esri-proj-codes')
 var mv = require('mv')
-var spatialReference = require('./SpatialReference')
+var formatSpatialRef = require('format-spatial-ref')
 var rm = require('rimraf')
 var exec = require('child_process').exec
 var ogrFormats = {
@@ -501,7 +501,7 @@ function getOgrParams (format, inFile, outFile, geojson, options) {
     var wkt
 
     if (options.outSR) {
-      sr = spatialReference.parse(options.outSR)
+      sr = formatSpatialRef(options.outSR)
     }
 
     var proj = projCodes.lookup(sr.latestWkid) || projCodes.lookup(sr.wkid) || projCodes.lookup(options.wkid)
