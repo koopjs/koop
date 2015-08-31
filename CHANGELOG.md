@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * consolidated koop, lib, app ([#237](https://github.com/koopjs/koop/issues/237))
 * logging version and mountpath when express middleware is mounted
 * broke out `lib/SpatialReference` into [format-spatial-ref](https://github.com/koopjs/format-spatial-ref)
+* 64% speedup in converting esri json to geojson ([#242](https://github.com/koopjs/koop/pull/242))
 
 ### Added
 * `app.registerProvider` method for providers
