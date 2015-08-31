@@ -2,7 +2,8 @@
 
 var should = require('should')
 var GeoJSON = require('../../lib/GeoJSON')
-var esri_json = require('../fixtures/ski.geojson')
+var esri_json = require('../fixtures/esri_json_short.json')
+var date_json = require('../fixtures/esri_date.json')
 
 describe('GeoJSON Model', function () {
   describe('when converting esri style features to geojson', function () {
@@ -11,11 +12,34 @@ describe('GeoJSON Model', function () {
         should.not.exist(err)
         geojson.should.be.an.instanceOf(Object)
         geojson.features.length.should.equal(esri_json.features.length)
+        geojson.features[0].geometry.coordinates.length.should.equal(2)
+        geojson.features[0].geometry.type.should.equal('Point')
+        Object.keys(geojson.features[0].properties).length.should.equal(22)
         done()
       })
     })
   })
 
+  describe('when converting fields with unix timestamps', function () {
+    it('should convert to ISO strings', function (done) {
+      GeoJSON.fromEsri(null, date_json, function (err, geojson) {
+        should.not.exist(err)
+        geojson.features[0].properties.last_edited_date.should.equal('2015-05-20T18:47:50.000Z')
+        done()
+      })
+    })
+  })
+
+  describe('when getting fields with special characters in them', function () {
+    // there is a field going in called (EVT.RT)
+    it('should replace periods and parentheses', function (done) {
+      GeoJSON.fromEsri(null, date_json, function (err, geojson) {
+        should.not.exist(err)
+        geojson.features[0].properties.EVTRT.should.exist
+        done()
+      })
+    })
+  })
   describe('when converting fields with domains', function () {
     it('should return a proper geojson object', function (done) {
       var fields = [{
