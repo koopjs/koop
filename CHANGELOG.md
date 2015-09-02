@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* LocalDB now works properly if `options.layer` is omitted
+
 ## [2.8.5] - 2015-09-24
 ### Fixed
 * catch omission of `new` keyword for `koop.Files`
