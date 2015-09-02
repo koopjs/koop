@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* refactor `lib/Query` (no more `this`)
+* add jsdoc to BaseModel, FeatureServices, Query
+
 ## [2.7.0] - 2015-09-02
 ### Changed
 * `lib/Files` now takes `options` instead of `koop` (only needed koop.config and koop.log)
