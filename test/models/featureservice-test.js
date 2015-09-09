@@ -337,6 +337,5 @@ describe('FeatureServices Model', function () {
         done()
       })
     })
-
   })
 })

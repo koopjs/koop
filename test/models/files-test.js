@@ -160,5 +160,4 @@ describe('Files', function () {
       })
     })
   })
-
 })
