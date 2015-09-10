@@ -40,4 +40,18 @@ describe('Cache Model Tests', function () {
       })
     })
   })
+
+  describe('converting geoservices to sql parts', function () {
+    it('should correctly parse orderByFields', function (done) {
+      var query = {orderByFields: 'water DESC, trees ASC'}
+      var test = Cache.decodeGeoservices(query)
+      test.order_by.length.should.equal(2)
+      Object.keys(test.order_by[0])[0].should.equal('water')
+      Object.keys(test.order_by[1])[0].should.equal('trees')
+      test.order_by[0].water.should.equal('DESC')
+      console.log(test.order_by)
+      test.order_by[1].trees.should.equal('ASC')
+      done()
+    })
+  })
 })
