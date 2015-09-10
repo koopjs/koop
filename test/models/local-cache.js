@@ -77,7 +77,6 @@ describe('Local Cache Tests', function () {
         })
       })
     })
-
   })
 
   describe('when setting/getting timers', function () {
@@ -115,7 +114,5 @@ describe('Local Cache Tests', function () {
         }, 500)
       })
     })
-
   })
-
 })

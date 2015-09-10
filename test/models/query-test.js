@@ -124,5 +124,4 @@ describe('Query Model', function () {
       })
     })
   })
-
 })

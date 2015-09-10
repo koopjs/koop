@@ -14,7 +14,6 @@ var Controller = function (Model, BaseController) {
   }
 
   return controller
-
 }
 
 module.exports = Controller
