@@ -138,7 +138,5 @@ describe('exporter Model', function () {
       outFormat.should.equal('"ESRI Shapefile"')
       done()
     })
-
   })
-
 })

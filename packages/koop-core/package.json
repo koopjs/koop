@@ -47,7 +47,7 @@
     "jshint-stylish": "^1.0.1",
     "mocha": "^2.2.1",
     "should": "~5.2.0",
-    "standard": "*"
+    "standard": "^5.2.2"
   },
   "homepage": "https://github.com/koopjs/koop",
   "keywords": [

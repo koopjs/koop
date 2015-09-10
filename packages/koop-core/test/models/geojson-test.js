@@ -84,5 +84,4 @@ describe('GeoJSON Model', function () {
       })
     })
   })
-
 })

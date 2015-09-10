@@ -12,5 +12,4 @@ describe('Index tests for registering providers', function () {
       done()
     })
   })
-
 })

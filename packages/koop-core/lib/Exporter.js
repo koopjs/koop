@@ -274,7 +274,6 @@ exports.exportLarge = function (koop, format, id, key, type, options, finish, do
               }
             })
           })
-
         })
       })
     }
@@ -328,7 +327,6 @@ exports.exportToFormat = function (format, dir, key, geojson, options, callback)
       }
     }
   })
-
 }
 
 // executes OGR
@@ -339,50 +337,47 @@ function callOgr (params, geojson, options, callback) {
   var outFile = params.outFile
   var metadata = options.metadata
 
-  if (fs.existsSync(outFile)) {
-    // we already have the file, just return it
-    callback(null, outFile)
+  // we already have the file, just return it
+  if (fs.existsSync(outFile)) return callback(null, outFile)
 
-  } else {
-    var ogrParams = getOgrParams(format, inFile, outFile, geojson, options)
-    exec(ogrParams, function (err) {
-      if (err) {
-        callback(err.message + ' ' + ogrParams, null)
-      } else {
-        if (format === 'zip') {
-          // mkdir for base path (dir + key) to store shp
-          mkdirp(paths.base, function () {
-            if (!options.name) {
-              options.name = paths.tmpName
-            }
+  var ogrParams = getOgrParams(format, inFile, outFile, geojson, options)
+  exec(ogrParams, function (err) {
+    if (err) {
+      callback(err.message + ' ' + ogrParams, null)
+    } else {
+      if (format === 'zip') {
+        // mkdir for base path (dir + key) to store shp
+        mkdirp(paths.base, function () {
+          if (!options.name) {
+            options.name = paths.tmpName
+          }
 
-            // cp each file into dir with new name
-            function _createZip () {
-              var newZipTmp = paths.base + '/' + options.name + paths.tmpName + '.zip'
-              var newZip = paths.base + '/' + options.name + '.zip'
-              var cmd = ['zip', '-rj', '"' + newZipTmp + '"', paths.base + '/', '--exclude=*.json*'].join(' ')
-              exec(cmd, function (err) {
-                if (err) return callback(err)
+          // cp each file into dir with new name
+          function _createZip () {
+            var newZipTmp = paths.base + '/' + options.name + paths.tmpName + '.zip'
+            var newZip = paths.base + '/' + options.name + '.zip'
+            var cmd = ['zip', '-rj', '"' + newZipTmp + '"', paths.base + '/', '--exclude=*.json*'].join(' ')
+            exec(cmd, function (err) {
+              if (err) return callback(err)
 
-                moveFile(newZipTmp, newZip, callback)
-                removeShapeFile(paths.base, options.name, function (err) {
-                  if (err) console.log('error removing shpfile ' + err)
-                })
+              moveFile(newZipTmp, newZip, callback)
+              removeShapeFile(paths.base, options.name, function (err) {
+                if (err) console.log('error removing shpfile ' + err)
               })
-            }
+            })
+          }
 
-            if (metadata) {
-              fs.writeFileSync(paths.base + '/' + options.name + '.xml', metadata)
-            }
+          if (metadata) {
+            fs.writeFileSync(paths.base + '/' + options.name + '.xml', metadata)
+          }
 
-            moveShapeFile(outFile, paths.base, options.name, _createZip)
-          })
-        } else {
-          moveFile(outFile, paths.rootNewFile, callback)
-        }
+          moveShapeFile(outFile, paths.base, options.name, _createZip)
+        })
+      } else {
+        moveFile(outFile, paths.rootNewFile, callback)
       }
-    })
-  }
+    }
+  })
 }
 
 function createPaths (dir, key, format, options) {
@@ -522,7 +517,6 @@ function getOgrParams (format, inFile, outFile, geojson, options) {
     // make sure field names are not truncated multiple times
     cmd.push('-fieldmap')
     cmd.push('identity')
-
   }
 
   cmd.push('-update')
