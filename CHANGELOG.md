@@ -4,8 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [2.7.1] - 2015-09-10 
 ### Changed
-* refactor `lib/Query` (no more `this`)
-* add jsdoc to BaseModel, FeatureServices, Query
+* refactored `lib/FeatureServices` & `lib/Query` (no more `this`)
+* added jsdoc to some lib files (BaseModel, FeatureServices, Query, GeoJSON, Logger)
 * does sorting in the DB where available
 
 ## [2.7.0] - 2015-09-02
