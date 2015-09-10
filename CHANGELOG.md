@@ -2,7 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [2.7.1] - 2015-09-10 
+## Unreleased
+### Changed
+* refactored `lib/BaseController`
+  * `BaseController.processFeatureServer` no longer requires `callback` parameter for jsonp
+
+## [2.7.1] - 2015-09-10
 ### Changed
 * refactored `lib/FeatureServices` & `lib/Query` (no more `this`)
 * added jsdoc to some lib files (BaseModel, FeatureServices, Query, GeoJSON, Logger)
