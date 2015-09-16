@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Fix regression in overwriting 2927 WKT string
+
 ## [2.7.1] - 2015-09-10 
 ### Changed
 * refactored `lib/FeatureServices` & `lib/Query` (no more `this`)
