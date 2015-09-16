@@ -499,13 +499,14 @@ function getOgrParams (format, inFile, outFile, geojson, options) {
       sr = formatSpatialRef(options.outSR)
     }
 
+    var wkid = sr.latestWkid || sr.wkid || options.wkid
     var proj = projCodes.lookup(sr.latestWkid) || projCodes.lookup(sr.wkid) || projCodes.lookup(options.wkid)
     wkt = sr.wkt || options.wkt
 
     if (proj) {
-      if (proj && proj.wkt) {
+      if (proj.wkt) {
         cmd.push('-t_srs')
-        cmd.push("'" + fixWkt(proj.wkt, proj.wkid) + "'")
+        cmd.push("'" + fixWkt(proj.wkt, wkid) + "'")
       } else {
         console.log('No proj info found for WKID', proj.wkid, outFile)
       }
