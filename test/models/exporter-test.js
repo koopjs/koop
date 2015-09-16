@@ -138,5 +138,19 @@ describe('exporter Model', function () {
       outFormat.should.equal('"ESRI Shapefile"')
       done()
     })
+
+    it('should apply a datum transformation on 2927', function (done) {
+      var format = 'zip'
+      var inFile = 'infile.json'
+      var outFile = 'outfile.shp'
+
+      var options = {
+        name: 'dummy',
+        outSR: {wkid: 2927, latestWkid: 2927}
+      }
+      var params = exporter.getOgrParams(format, inFile, outFile, null, options).split(' ')
+      params[10].should.equal('\'PROJCS["NAD_1983_HARN_StatePlane_Washington_South_FIPS_4602_Feet",GEOGCS["GCS_North_American_1983_HARN",DATUM["D_North_American_1983_HARN",SPHEROID["GRS_1980",6378137.0,298.257222101],TOWGS84[-0.9956,1.9013,0.5215,0.025915,0.009426,0.011599,-0.00062]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Lambert_Conformal_Conic_2SP"],PARAMETER["False_Easting",1640416.666666667],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-120.5],PARAMETER["Standard_Parallel_1",45.83333333333334],PARAMETER["Standard_Parallel_2",47.33333333333334],PARAMETER["Latitude_Of_Origin",45.33333333333334],UNIT["Foot_US",0.3048006096012192]]\'')
+      done()
+    })
   })
 })
