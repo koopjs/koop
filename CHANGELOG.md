@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Don't include vrt files in shapefile zips
+
 ## [2.7.2] - 2015-09-16 
 ### Fixed
 * Fix regression in overwriting 2927 WKT string
