@@ -20,7 +20,6 @@
     "connect-multiparty": "^1.2.5",
     "ejs": "^2.3.3",
     "esri-extent": "^1.1.0",
-    "esri-proj-codes": "^1.0.0",
     "express": "~4.12.3",
     "format-spatial-ref": "^1.0.0",
     "kue": "~0.9.4",
@@ -30,6 +29,7 @@
     "node-fs": "~0.1.7",
     "request": "~2.54.0",
     "rimraf": "^2.3.2",
+    "spatialreference": "^1.0.0",
     "sphericalmercator": "~1.0.3",
     "sql-parser": "~0.5.0",
     "terraformer": "1.0.5",
@@ -46,6 +46,7 @@
     "jshint": "~2.6.3",
     "jshint-stylish": "^1.0.1",
     "mocha": "^2.2.1",
+    "nock": "^2.12.0",
     "should": "~5.2.0",
     "standard": "^5.2.2"
   },

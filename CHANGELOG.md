@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Fixed
 * Don't include vrt files in shapefile zips
+* OGR2OGR calls with projections use double quotes for Windows compatibility
+
+### Changed
+* Refactored projection support to use [spatialreference](http://github.com/koopjs/spatialreference)
+* Refactored export logic for csv and shapefiles into separate functions
 
 ## [2.7.2] - 2015-09-16 
 ### Fixed
