@@ -132,7 +132,10 @@ jobs.process('exports', concurrency, function (job, done) {
                   format: job.data.format
                 }
 
-                job.data.options.large = true
+                var options = job.data.options
+                options.large = true
+                options.db = koopLib.Cache.db
+                options.logger = koopLib.log
 
                 koopLib.Exporter.callOgr(params, null, job.data.options, function (err, formatFile) {
                   if (err) return done(err)
