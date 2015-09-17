@@ -356,7 +356,7 @@ function callOgr (params, geojson, options, callback) {
           function _createZip () {
             var newZipTmp = paths.base + '/' + options.name + paths.tmpName + '.zip'
             var newZip = paths.base + '/' + options.name + '.zip'
-            var cmd = ['zip', '-rj', '"' + newZipTmp + '"', paths.base + '/', '--exclude=*.json*'].join(' ')
+            var cmd = ['zip', '-rj', '"' + newZipTmp + '"', paths.base + '/', '--exclude=*.json*', '--exclude=*.vrt'].join(' ')
             exec(cmd, function (err) {
               if (err) return callback(err)
 
