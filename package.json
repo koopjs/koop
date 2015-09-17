@@ -46,6 +46,7 @@
     "jshint": "~2.6.3",
     "jshint-stylish": "^1.0.1",
     "mocha": "^2.2.1",
+    "nock": "^2.12.0",
     "should": "~5.2.0",
     "standard": "^5.2.2"
   },
