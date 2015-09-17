@@ -175,7 +175,7 @@ function Model (koop) {
           // try to clean up local FS
           fs.unlinkSync(result.paths.rootNewFile)
           fs.unlinkSync(result.paths.rootJsonFile)
-        } catch(e) {
+        } catch (e) {
           koop.log.debug('Trying to remove non-existant file: %s', e)
         }
 
@@ -203,7 +203,7 @@ function Model (koop) {
             try {
               // try to clean up local FS
               fs.unlinkSync(result.paths.rootNewFile)
-            } catch(e) {
+            } catch (e) {
               koop.log.debug('Trying to remove non-existant file: %s', e)
             }
             sendFile(null, result)

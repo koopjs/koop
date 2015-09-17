@@ -10,7 +10,7 @@ var config
 // get the config from a stdin given dir
 try {
   config = require(path.join(__dirname, process.argv[2]))
-} catch(e) {
+} catch (e) {
   config = require('config')
 }
 
@@ -319,7 +319,7 @@ function finishExport (format, key, options, result, callback) {
       try {
         // try to clean up local FS
         fs.unlinkSync(result.paths.rootJsonFile)
-      } catch(e) {
+      } catch (e) {
         koopLib.log.debug('Trying to remove non-existant file: %s', result.paths.rootJsonFile)
       }
       koopLib.files.exists(result.paths.path + '/' + key, result.paths.newFile, function (exists, path) {
