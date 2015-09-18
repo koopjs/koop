@@ -80,6 +80,13 @@ describe('exporter Model', function () {
       features: [
         {
           type: 'Feature',
+          geometry: null,
+          properties: {
+            name: 'Foo'
+          }
+        },
+        {
+          type: 'Feature',
           geometry: {
             type: 'Point',
             coordinates: [125.6, 10.1]
