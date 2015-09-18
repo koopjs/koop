@@ -29,7 +29,7 @@
     "node-fs": "~0.1.7",
     "request": "~2.54.0",
     "rimraf": "^2.3.2",
-    "spatialreference": "^1.0.0",
+    "spatialreference": "^1.0.1",
     "sphericalmercator": "~1.0.3",
     "sql-parser": "~0.5.0",
     "terraformer": "1.0.5",
