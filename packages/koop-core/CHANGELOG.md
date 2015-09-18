@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unrleased 
+### Fixed
+* Better test and support for null geometry in exports
+
 ## [2.8.0] - 2015-09-18 
 ### Fixed
 * Don't include vrt files in shapefile zips
