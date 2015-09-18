@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 * Don't include vrt files in shapefile zips
 * OGR2OGR calls with projections use double quotes for Windows compatibility
+* Shapefiles are no longer written with null geometry when the first feature's geometry is null
 
 ### Changed
 * Refactored projection support to use [spatialreference](http://github.com/koopjs/spatialreference)

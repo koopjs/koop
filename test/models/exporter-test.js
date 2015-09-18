@@ -75,6 +75,22 @@ describe('exporter Model', function () {
   })
 
   describe('when creating ogr params for exports', function () {
+    var geojson = {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [125.6, 10.1]
+          },
+          properties: {
+            name: 'Dinagat Islands'
+          }
+        }
+      ]
+    }
+
     it('should create a correct ogr string of commands', function (done) {
       var format = 'csv'
       var inFile = 'infile.json'
@@ -84,7 +100,7 @@ describe('exporter Model', function () {
         name: 'dummy'
       }
 
-      exporter.getOgrParams(format, inFile, outFile, null, options, function (err, cmd) {
+      exporter.getOgrParams(format, inFile, outFile, geojson, options, function (err, cmd) {
         should.not.exist(err)
         var params = cmd.split(' ')
         params[6].should.equal(outFile)
@@ -103,9 +119,9 @@ describe('exporter Model', function () {
         wkid: 102101
       }
 
-      exporter.getOgrParams(format, inFile, outFile, null, options, function (err, cmd) {
+      exporter.getOgrParams(format, inFile, outFile, geojson, options, function (err, cmd) {
         should.not.exist(err)
-        cmd.should.equal('ogr2ogr --config SHAPE_ENCODING UTF-8 -f "ESRI Shapefile" outfile.shp infile.json -t_srs "PROJCS["NGO_1948_Norway_Zone_1",GEOGCS["GCS_NGO_1948",DATUM["D_NGO_1948",SPHEROID["Bessel_Modified",6377492.018,299.1528128]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",6.05625],PARAMETER["Scale_Factor",1.0],PARAMETER["Latitude_Of_Origin",58.0],UNIT["Meter",1.0]]" -fieldmap identity -update -append -skipfailures -lco ENCODING=UTF-8')
+        cmd.should.equal('ogr2ogr --config SHAPE_ENCODING UTF-8 -f "ESRI Shapefile" outfile.shp infile.json -t_srs "PROJCS["NGO_1948_Norway_Zone_1",GEOGCS["GCS_NGO_1948",DATUM["D_NGO_1948",SPHEROID["Bessel_Modified",6377492.018,299.1528128]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",6.05625],PARAMETER["Scale_Factor",1.0],PARAMETER["Latitude_Of_Origin",58.0],UNIT["Meter",1.0]]" -fieldmap identity -nlt POINT -update -append -skipfailures -lco ENCODING=UTF-8')
         done()
       })
     })
@@ -123,9 +139,9 @@ describe('exporter Model', function () {
       var fixture = nock('http://spatialreference.org')
       fixture.get('/ref/epsg/2962/ogcwkt/').reply(200, 'PROJCS["NAD83(CSRS) / UTM zone 21N",GEOGCS["NAD83(CSRS)",DATUM["NAD83_Canadian_Spatial_Reference_System",SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6140"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4617"]],UNIT["metre",1,AUTHORITY["EPSG","9001"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-57],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],AUTHORITY["EPSG","2962"],AXIS["Easting",EAST],AXIS["Northing",NORTH]]')
 
-      exporter.getOgrParams(format, inFile, outFile, null, options, function (err, cmd) {
+      exporter.getOgrParams(format, inFile, outFile, geojson, options, function (err, cmd) {
         should.not.exist(err)
-        cmd.should.equal('ogr2ogr --config SHAPE_ENCODING UTF-8 -f "ESRI Shapefile" outfile.shp infile.json -t_srs "PROJCS["NAD83(CSRS) / UTM zone 21N",GEOGCS["NAD83(CSRS)",DATUM["NAD83_Canadian_Spatial_Reference_System",SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],TOWGS84[-0.9956,1.9013,0.5215,0.025915,0.009426,0.011599,-0.00062],AUTHORITY["EPSG","6140"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4617"]],UNIT["metre",1,AUTHORITY["EPSG","9001"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-57],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],AUTHORITY["EPSG","2962"],AXIS["Easting",EAST],AXIS["Northing",NORTH]]" -fieldmap identity -update -append -skipfailures -lco ENCODING=UTF-8')
+        cmd.should.equal('ogr2ogr --config SHAPE_ENCODING UTF-8 -f "ESRI Shapefile" outfile.shp infile.json -t_srs "PROJCS["NAD83(CSRS) / UTM zone 21N",GEOGCS["NAD83(CSRS)",DATUM["NAD83_Canadian_Spatial_Reference_System",SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],TOWGS84[-0.9956,1.9013,0.5215,0.025915,0.009426,0.011599,-0.00062],AUTHORITY["EPSG","6140"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4617"]],UNIT["metre",1,AUTHORITY["EPSG","9001"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-57],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],AUTHORITY["EPSG","2962"],AXIS["Easting",EAST],AXIS["Northing",NORTH]]" -fieldmap identity -nlt POINT -update -append -skipfailures -lco ENCODING=UTF-8')
         done()
       })
     })
@@ -143,9 +159,9 @@ describe('exporter Model', function () {
       var fixture = nock('http://spatialreference.org')
       fixture.get('/ref/epsg/2230/ogcwkt/').reply(200, 'PROJCS["NAD83 / California zone 6 (ftUS)",GEOGCS["NAD83",DATUM["North_American_Datum_1983",SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6269"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4269"]],UNIT["US survey foot",0.3048006096012192,AUTHORITY["EPSG","9003"]],PROJECTION["Lambert_Conformal_Conic_2SP"],PARAMETER["standard_parallel_1",33.88333333333333],PARAMETER["standard_parallel_2",32.78333333333333],PARAMETER["latitude_of_origin",32.16666666666666],PARAMETER["central_meridian",-116.25],PARAMETER["false_easting",6561666.667],PARAMETER["false_northing",1640416.667],AUTHORITY["EPSG","2230"],AXIS["X",EAST],AXIS["Y",NORTH]]')
 
-      exporter.getOgrParams(format, inFile, outFile, null, options, function (err, cmd) {
+      exporter.getOgrParams(format, inFile, outFile, geojson, options, function (err, cmd) {
         should.not.exist(err)
-        cmd.should.equal('ogr2ogr --config SHAPE_ENCODING UTF-8 -f "ESRI Shapefile" outfile.shp infile.json -t_srs "PROJCS["NAD83 / California zone 6 (ftUS)",GEOGCS["NAD83",DATUM["North_American_Datum_1983",SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6269"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4269"]],UNIT["US survey foot",0.3048006096012192,AUTHORITY["EPSG","9003"]],PROJECTION["Lambert_Conformal_Conic_2SP"],PARAMETER["standard_parallel_1",33.88333333333333],PARAMETER["standard_parallel_2",32.78333333333333],PARAMETER["latitude_of_origin",32.16666666666666],PARAMETER["central_meridian",-116.25],PARAMETER["false_easting",6561666.667],PARAMETER["false_northing",1640416.667],AUTHORITY["EPSG","2230"],AXIS["X",EAST],AXIS["Y",NORTH]]" -fieldmap identity -update -append -skipfailures -lco ENCODING=UTF-8')
+        cmd.should.equal('ogr2ogr --config SHAPE_ENCODING UTF-8 -f "ESRI Shapefile" outfile.shp infile.json -t_srs "PROJCS["NAD83 / California zone 6 (ftUS)",GEOGCS["NAD83",DATUM["North_American_Datum_1983",SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6269"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4269"]],UNIT["US survey foot",0.3048006096012192,AUTHORITY["EPSG","9003"]],PROJECTION["Lambert_Conformal_Conic_2SP"],PARAMETER["standard_parallel_1",33.88333333333333],PARAMETER["standard_parallel_2",32.78333333333333],PARAMETER["latitude_of_origin",32.16666666666666],PARAMETER["central_meridian",-116.25],PARAMETER["false_easting",6561666.667],PARAMETER["false_northing",1640416.667],AUTHORITY["EPSG","2230"],AXIS["X",EAST],AXIS["Y",NORTH]]" -fieldmap identity -nlt POINT -update -append -skipfailures -lco ENCODING=UTF-8')
         done()
       })
     })
@@ -163,9 +179,9 @@ describe('exporter Model', function () {
       var fixture = nock('http://spatialreference.org')
       fixture.get('/ref/epsg/2927/ogcwkt/').reply(200, 'PROJCS["NAD83(HARN) / Washington South (ftUS)",GEOGCS["NAD83(HARN)",DATUM["NAD83_High_Accuracy_Regional_Network",SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6152"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4152"]],UNIT["US survey foot",0.3048006096012192,AUTHORITY["EPSG","9003"]],PROJECTION["Lambert_Conformal_Conic_2SP"],PARAMETER["standard_parallel_1",47.33333333333334],PARAMETER["standard_parallel_2",45.83333333333334],PARAMETER["latitude_of_origin",45.33333333333334],PARAMETER["central_meridian",-120.5],PARAMETER["false_easting",1640416.667],PARAMETER["false_northing",0],AUTHORITY["EPSG","2927"],AXIS["X",EAST],AXIS["Y",NORTH]]')
 
-      exporter.getOgrParams(format, inFile, outFile, null, options, function (err, cmd) {
+      exporter.getOgrParams(format, inFile, outFile, geojson, options, function (err, cmd) {
         should.not.exist(err)
-        cmd.should.equal('ogr2ogr --config SHAPE_ENCODING UTF-8 -f "ESRI Shapefile" outfile.shp infile.json -t_srs "PROJCS["NAD83(HARN) / Washington South (ftUS)",GEOGCS["NAD83(HARN)",DATUM["NAD83_High_Accuracy_Regional_Network",SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],TOWGS84[-0.9956,1.9013,0.5215,0.025915,0.009426,0.011599,-0.00062],AUTHORITY["EPSG","6152"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4152"]],UNIT["US survey foot",0.3048006096012192,AUTHORITY["EPSG","9003"]],PROJECTION["Lambert_Conformal_Conic_2SP"],PARAMETER["standard_parallel_1",47.33333333333334],PARAMETER["standard_parallel_2",45.83333333333334],PARAMETER["latitude_of_origin",45.33333333333334],PARAMETER["central_meridian",-120.5],PARAMETER["false_easting",1640416.667],PARAMETER["false_northing",0],AUTHORITY["EPSG","2927"],AXIS["X",EAST],AXIS["Y",NORTH]]" -fieldmap identity -update -append -skipfailures -lco ENCODING=UTF-8')
+        cmd.should.equal('ogr2ogr --config SHAPE_ENCODING UTF-8 -f "ESRI Shapefile" outfile.shp infile.json -t_srs "PROJCS["NAD83(HARN) / Washington South (ftUS)",GEOGCS["NAD83(HARN)",DATUM["NAD83_High_Accuracy_Regional_Network",SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],TOWGS84[-0.9956,1.9013,0.5215,0.025915,0.009426,0.011599,-0.00062],AUTHORITY["EPSG","6152"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4152"]],UNIT["US survey foot",0.3048006096012192,AUTHORITY["EPSG","9003"]],PROJECTION["Lambert_Conformal_Conic_2SP"],PARAMETER["standard_parallel_1",47.33333333333334],PARAMETER["standard_parallel_2",45.83333333333334],PARAMETER["latitude_of_origin",45.33333333333334],PARAMETER["central_meridian",-120.5],PARAMETER["false_easting",1640416.667],PARAMETER["false_northing",0],AUTHORITY["EPSG","2927"],AXIS["X",EAST],AXIS["Y",NORTH]]" -fieldmap identity -nlt POINT -update -append -skipfailures -lco ENCODING=UTF-8')
         done()
       })
     })
@@ -183,9 +199,9 @@ describe('exporter Model', function () {
       var fixture = nock('http://spatialreference.org')
       fixture.get('/ref/epsg/28992/ogcwkt/').reply(200, 'PROJCS["Amersfoort / RD New",GEOGCS["Amersfoort",DATUM["Amersfoort",SPHEROID["Bessel 1841",6377397.155,299.1528128,AUTHORITY["EPSG","7004"]],TOWGS84[565.417,50.3319,465.552,-0.398957,0.343988,-1.8774,4.0725],AUTHORITY["EPSG","6289"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4289"]],UNIT["metre",1,AUTHORITY["EPSG","9001"]],PROJECTION["Oblique_Stereographic"],PARAMETER["latitude_of_origin",52.15616055555555],PARAMETER["central_meridian",5.38763888888889],PARAMETER["scale_factor",0.9999079],PARAMETER["false_easting",155000],PARAMETER["false_northing",463000],AUTHORITY["EPSG","28992"],AXIS["X",EAST],AXIS["Y",NORTH]]')
 
-      exporter.getOgrParams(format, inFile, outFile, null, options, function (err, cmd) {
+      exporter.getOgrParams(format, inFile, outFile, geojson, options, function (err, cmd) {
         should.not.exist(err)
-        cmd.should.equal('ogr2ogr --config SHAPE_ENCODING UTF-8 -f "ESRI Shapefile" outfile.shp infile.json -t_srs "+title=Amersfoort/Amersfoort +proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.999908 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs +towgs84=565.2369,50.0087,465.658,-0.406857330322398,0.350732676542563,-1.8703473836068,4.0812" -fieldmap identity -update -append -skipfailures -lco ENCODING=UTF-8')
+        cmd.should.equal('ogr2ogr --config SHAPE_ENCODING UTF-8 -f "ESRI Shapefile" outfile.shp infile.json -t_srs "+title=Amersfoort/Amersfoort +proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.999908 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs +towgs84=565.2369,50.0087,465.658,-0.406857330322398,0.350732676542563,-1.8703473836068,4.0812" -fieldmap identity -nlt POINT -update -append -skipfailures -lco ENCODING=UTF-8')
         done()
       })
     })
