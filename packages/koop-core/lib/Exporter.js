@@ -471,15 +471,22 @@ function getOgrParams (format, inFile, outFile, geojson, options, callback) {
 
   var cmd = ['ogr2ogr', '--config', 'SHAPE_ENCODING', 'UTF-8', '-f', ogrFormats[format], outFile, inFile]
 
+  var feature = _.find(geojson.features, function (feature) {
+    return feature.geometry !== null
+  })
+
+  if (feature && feature.geometry) {
+    options.geometryType = feature.geometry.type
+  } else {
+    options.geometryType = 'NONE'
+  }
+
   if (format === 'csv') {
-    cmd = csvParams(geojson, cmd)
+    options.fields = Object.keys(geojson.features[0].properties)
+    cmd = csvParams(cmd, options)
     callback(null, finishOgrParams(cmd))
   } else if (format === 'zip' || format === 'shp') {
     // only project features for shp when wkid != 4326 or 3857 or 102100
-    var feature = _.find(geojson.features, function (feature) {
-      return feature.geometry !== null
-    })
-    options.geometryType = feature.geometry.type
     shapefileParams(cmd, options, function (err, cmd) {
       if (err) callback(err)
       callback(null, finishOgrParams(cmd))
@@ -489,21 +496,20 @@ function getOgrParams (format, inFile, outFile, geojson, options, callback) {
   }
 }
 
-function csvParams (geojson, cmd) {
-  // how would we even get here without geojson?? leaving this in only to prevent regressions
-  if (!geojson) return cmd
-  var hasPointGeom = geojson.features && geojson.features.length & geojson.features[0].geometry && geojson.features[0].geometry.type === 'Point'
-  var hasXY = (geojson.features[0].properties['x'] && geojson.features[0].properties['y']) || (geojson.features[0].properties['X'] && geojson.features[0].properties['Y'])
+function csvParams (cmd, options) {
+  var hasPointGeom = options.geometryType === 'Point'
+  var fields = options.fields.join('|').toLowerCase().split('|')
+  var hasXY = _.include(fields, 'x') || _.include(fields, 'y')
   if (hasPointGeom && !hasXY) {
-    cmd.push('-lco')
-    cmd.push('WRITE_BOM=YES')
-    cmd.push('-lco')
-    cmd.push('GEOMETRY=AS_XY')
+    cmd.push('-lco WRITE_BOM=YES')
+    cmd.push('-lco GEOMETRY=AS_XY')
   }
   return cmd
 }
 
 function shapefileParams (cmd, options, callback) {
+  // make sure geometries are still written even if the first is null
+  cmd.push('-nlt ' + options.geometryType.toUpperCase())
   if (options.outSR) options.sr = formatSpatialRef(options.outSR)
   if (options.sr || options.wkid) {
     addProjection(options, function (err, wkt) {
@@ -511,13 +517,10 @@ function shapefileParams (cmd, options, callback) {
       cmd.push('-t_srs' + ' "' + wkt + '"')
       // make sure field names are not truncated multiple times
       cmd.push('-fieldmap identity')
-      // make sure geometries are still written even if the first is null
-      cmd.push('-nlt ' + options.geometryType.toUpperCase())
       callback(null, cmd)
     })
   } else {
-    cmd.push('-fieldmap')
-    cmd.push('identity')
+    cmd.push('-fieldmap identity')
     callback(null, cmd)
   }
 }
