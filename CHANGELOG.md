@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Travis tests against stable Node
+
+### Fixed
+* Set geometry type on export when there is no srid
+* Never overwrrite existing X or Y fields in CSV
+* CSV written with geometry fields even if first geometry is null
+
 ## [2.8.1] - 2015-09-18 
 ### Fixed
 * Better test and support for null geometry in exports
