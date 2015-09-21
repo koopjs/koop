@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Removed
+* Got rid of gulp and its dependencies (no longer in use)
+
 ## [2.8.2] - 2015-09-21
 ### Changed
 * Travis tests against stable Node
@@ -12,11 +16,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * CSV is now written with geometry fields even if first geometry is null
 * No longer throwing an execption on datasets with no geometry at all
 
-## [2.8.1] - 2015-09-18 
+## [2.8.1] - 2015-09-18
 ### Fixed
 * Better test and support for null geometry in exports
 
-## [2.8.0] - 2015-09-18 
+## [2.8.0] - 2015-09-18
 ### Fixed
 * Don't include vrt files in shapefile zips
 * OGR2OGR calls with projections use double quotes for Windows compatibility
@@ -26,11 +30,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Refactored projection support to use [spatialreference](http://github.com/koopjs/spatialreference)
 * Refactored export logic for csv and shapefiles into separate functions
 
-## [2.7.2] - 2015-09-16 
+## [2.7.2] - 2015-09-16
 ### Fixed
 * Fix regression in overwriting 2927 WKT string
 
-## [2.7.1] - 2015-09-10 
+## [2.7.1] - 2015-09-10
 ### Changed
 * refactored `lib/FeatureServices` & `lib/Query` (no more `this`)
 * added jsdoc to some lib files (BaseModel, FeatureServices, Query, GeoJSON, Logger)
