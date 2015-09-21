@@ -39,12 +39,6 @@
   },
   "devDependencies": {
     "gh-release": "^1.1.6",
-    "gulp": "^3.8.11",
-    "gulp-escomplex": "^1.0.1",
-    "gulp-escomplex-reporter-html": "^1.0.0",
-    "gulp-jshint": "^1.9.4",
-    "jshint": "~2.6.3",
-    "jshint-stylish": "^1.0.1",
     "mocha": "^2.2.1",
     "nock": "^2.12.0",
     "should": "~5.2.0",
@@ -68,7 +62,6 @@
     "url": "git://github.com/koopjs/koop.git"
   },
   "scripts": {
-    "lint": "gulp",
     "release": "gh-release",
     "test": "standard && mocha test/models/ -t 20000"
   }
