@@ -128,13 +128,32 @@ describe('exporter Model', function () {
         name: 'dummy'
       }
 
-      var json = _.clone(geojson)
+      var json = _.cloneDeep(geojson)
       delete json.features[0].properties.X
       delete json.features[0].properties.Y
 
-      exporter.getOgrParams(format, inFile, outFile, geojson, options, function (err, cmd) {
+      exporter.getOgrParams(format, inFile, outFile, json, options, function (err, cmd) {
         should.not.exist(err)
         cmd.should.equal('ogr2ogr --config SHAPE_ENCODING UTF-8 -f CSV outfile.csv infile.json -lco WRITE_BOM=YES -lco GEOMETRY=AS_XY -update -append -skipfailures -lco ENCODING=UTF-8')
+        done()
+      })
+    })
+
+    it('should create a valid ogr string for csv when there is no geometry', function (done) {
+      var format = 'csv'
+      var inFile = 'infile.json'
+      var outFile = 'outfile.csv'
+
+      var options = {
+        name: 'dummy'
+      }
+      var json = _.cloneDeep(geojson)
+      json.features[0].geometry = null
+      json.features[1].geometry = null
+
+      exporter.getOgrParams(format, inFile, outFile, json, options, function (err, cmd) {
+        should.not.exist(err)
+        cmd.should.equal('ogr2ogr --config SHAPE_ENCODING UTF-8 -f CSV outfile.csv infile.json -update -append -skipfailures -lco ENCODING=UTF-8')
         done()
       })
     })

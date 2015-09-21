@@ -9,7 +9,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 * Set geometry type on export when there is no srid
 * Never overwrrite existing X or Y fields in CSV
-* CSV written with geometry fields even if first geometry is null
+* CSV is now written with geometry fields even if first geometry is null
+* No longer throwing an execption on datasets with no geometry at all
 
 ## [2.8.1] - 2015-09-18 
 ### Fixed
