@@ -136,8 +136,8 @@ jobs.process('exports', concurrency, function (job, done) {
                 options.large = true
                 options.db = koopLib.Cache.db
                 options.logger = koopLib.log
-
-                var geojson = JSON.parse(fs.readFileSync(path.dirname(params.inFile) + 'part1.json'))
+                var fileLoc = path.join(path.dirname(params.inFile), 'part.0.json')
+                var geojson = JSON.parse(fs.readFileSync(fileLoc))
                 koopLib.Exporter.callOgr(params, geojson, job.data.options, function (err, formatFile) {
                   if (err) return done(err)
 
@@ -254,7 +254,8 @@ function createFiles (job, done) {
             }
 
             try {
-              var geojson = JSON.parse(fs.readFileSync(path.dirname(params.inFile) + 'part1.json'))
+              var fileLoc = path.join(path.dirname(params.inFile), 'part.0.json')
+              var geojson = JSON.parse(fs.readFileSync(fileLoc))
               job.data.options.large = true
               koopLib.Exporter.callOgr(params, geojson, job.data.options, function (err, formatFile) {
                 if (err) return done(err)
