@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 * Got rid of gulp and its dependencies (no longer in use)
 
+### Fixed
+* Export Workers send geojson to callOgr so it can properly infer feature type
+
 ## [2.8.2] - 2015-09-21
 ### Changed
 * Travis tests against stable Node
