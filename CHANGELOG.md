@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Fix path to json part 0
+
 ## [2.8.3] - 2015-09-23
 ### Removed
 * Got rid of gulp and its dependencies (no longer in use)
