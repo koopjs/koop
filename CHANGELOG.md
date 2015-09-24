@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Gracefully handle malformed esri geoms in geojson conversion
+
 ## [2.8.4] - 2015-09-24
 ### Fixed
 * Fix path to json part 0
