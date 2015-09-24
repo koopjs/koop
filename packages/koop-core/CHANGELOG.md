@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Fixed
+* catch omission of `new` keyword for `koop.Files`
 * Gracefully handle malformed esri geoms in geojson conversion
 * Revert Windows command line escaping, it was done improperly
 
