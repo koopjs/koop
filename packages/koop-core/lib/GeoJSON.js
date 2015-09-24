@@ -101,11 +101,26 @@ function transformFeature (feature, fields) {
     })
   }
 
-  var geometry = feature.geometry ? terraformer.parse(feature.geometry) : null
   return {
     type: 'Feature',
     properties: attributes,
-    geometry: geometry
+    geometry: parseGeometry(feature.geometry)
+  }
+}
+
+/**
+ * Convert an esri geometry to a geojson geometry
+ *
+ * @param {object} geometry - an esri geometry object
+ * @return {object} geojson geometry
+ * @private
+ */
+function parseGeometry (geometry) {
+  try {
+    return geometry ? terraformer.parse(geometry) : null
+  } catch (e) {
+    console.error(e)
+    return null
   }
 }
 

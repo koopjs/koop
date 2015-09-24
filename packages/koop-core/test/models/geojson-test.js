@@ -3,6 +3,7 @@
 var should = require('should')
 var GeoJSON = require('../../lib/GeoJSON')
 var esri_json = require('../fixtures/esri_json_short.json')
+var esri_with_null = require('../fixtures/esri_json_null.json')
 var date_json = require('../fixtures/esri_date.json')
 
 describe('GeoJSON Model', function () {
@@ -15,6 +16,14 @@ describe('GeoJSON Model', function () {
         geojson.features[0].geometry.coordinates.length.should.equal(2)
         geojson.features[0].geometry.type.should.equal('Point')
         Object.keys(geojson.features[0].properties).length.should.equal(22)
+        done()
+      })
+    })
+
+    it('should handle malformed null geometries gracefully', function (done) {
+      GeoJSON.fromEsri([], esri_with_null, function (err, geojson) {
+        should.not.exist(err)
+        geojson.features.length.should.equal(1)
         done()
       })
     })
