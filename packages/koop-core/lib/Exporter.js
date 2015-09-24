@@ -514,7 +514,7 @@ function shapefileParams (cmd, options, callback) {
   if (options.sr || options.wkid) {
     addProjection(options, function (err, wkt) {
       if (err) return callback(err)
-      cmd.push('-t_srs' + ' "' + wkt + '"')
+      cmd.push('-t_srs \'' + wkt + '\'')
       // make sure field names are not truncated multiple times
       cmd.push('-fieldmap identity')
       callback(null, cmd)
