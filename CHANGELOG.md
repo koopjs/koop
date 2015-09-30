@@ -4,7 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Fixed
-* LocalDB now works properly if `options.layer` is omitted
+* LocalDB `select` method now works properly if `options.layer` is omitted or included in key string
+
+### Removed
+* removed `processing` status from LocalDB
 
 ## [2.8.5] - 2015-09-24
 ### Fixed
