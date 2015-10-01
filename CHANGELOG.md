@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.8.6] - 2015-10-01
 ### Fixed
 * LocalDB `select` method now works properly if `options.layer` is omitted or included in key string
 
@@ -454,6 +454,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.8.6]: https://github.com/koopjs/koop/compare/v2.8.5...v2.8.6
 [2.8.5]: https://github.com/koopjs/koop/compare/v2.8.4...v2.8.5
 [2.8.4]: https://github.com/koopjs/koop/compare/v2.8.3...v2.8.4
 [2.8.3]: https://github.com/koopjs/koop/compare/v2.8.2...v2.8.3
