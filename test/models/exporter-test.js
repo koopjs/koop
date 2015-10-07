@@ -272,4 +272,3 @@ describe('exporter Model', function () {
     })
   })
 })
-

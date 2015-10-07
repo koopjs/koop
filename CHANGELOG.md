@@ -2,6 +2,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Resources are no longer set to `processing` when export jobs are running.
+* Resources have progress reported on specific option keys
+* Export generation locks are set only on specific option keys instead of the entire resource
+* New class handles export job creation
+* Broke ExportWorker into multiple subjobs
+* Queue creation logic is moved out of the index
+* The ExportWorker only updates the DB if the job failed
+* All ExportWorker errors are saved to the resource info doc.
+
+### Fixed
+* Typo no longer prevents s3 filesystem from initializing
+
 ## [2.8.6] - 2015-10-01
 ### Fixed
 * LocalDB `select` method now works properly if `options.layer` is omitted or included in key string
