@@ -10,6 +10,7 @@ var rm = require('rimraf')
 var exec = require('child_process').exec
 var SR = require('spatialreference')
 var _ = require('lodash')
+var ExportJob = require('./ExportJob')
 var ogrFormats = {
   kml: 'KML',
   zip: '"ESRI Shapefile"',
@@ -44,14 +45,20 @@ function createIdFilter (options) {
   return idFilter
 }
 
-// exports large data via multi part file strategy
+/**
+ * Exports a file by collecting geojson chunks from the database and using VRT files as input
+ *
+ * @param {object} koop - a Koop object passed in for its cache methods
+ * @param {string} format - the format of file to export
+ * @param {string} id - the item item used to select from the cache and update info
+ * @param {string} key - a unique hash representing the filters used to select data from the cache
+ * @param {string} type - the provider type being exported
+ * @param {object} options - options used to filter the data from the db
+ * @param {function} finish - a function used to complete the export operation
+ * @param {function} done - a callback to execute
+ */
 exports.exportLarge = function (koop, format, id, key, type, options, finish, done) {
-  // exports large data via multi part file strategy
-  if (!format) {
-    return done('No format provided', null)
-  } else if (!ogrFormats[format]) {
-    return done('Unknown format', null)
-  }
+  if (!format || !ogrFormats[format]) return done('Bad format', null)
 
   // limit for file chunks
   options.limit = 5000
@@ -62,6 +69,32 @@ exports.exportLarge = function (koop, format, id, key, type, options, finish, do
   var dbkey = type + ':' + id
   var table = dbkey + ':' + (options.layer || 0)
   var vrt = '<OGRVRTDataSource>'
+  // create the files for out output
+  // we always create a json file, then use it to convert to a file
+  var paths = createPaths(dir, key, format, options)
+
+  if (koop.config.export_workers) {
+    var job = {
+      options: options,
+      table: table,
+      paths: paths,
+      format: format,
+      key: key,
+      dir: dir,
+      finish: finish,
+      dbKey: dbkey,
+      ogrFormat: ogrFormats[format],
+      pages: []
+    }
+    var helpers = {
+      cache: koop.Cache,
+      log: koop.log,
+      queue: koop.Exporter.export_q
+    }
+    koop.log.debug(_.omit(job, 'finish'))
+    var exportJob = new ExportJob(helpers, job, done)
+    return exportJob.start()
+  }
 
   function _update (info, cb) {
     koop.Cache.updateInfo(table, info, function (err, success) {
@@ -140,147 +173,77 @@ exports.exportLarge = function (koop, format, id, key, type, options, finish, do
     })
   }, 1)
 
-  // create the files for out output
-  // we always create a json file, then use it to convert to a file
-  var paths = createPaths(dir, key, format, options)
-
-  if (koop.config.export_workers) {
+  // proceed with logic here
+  if (fs.existsSync(paths.rootVrtFile) && !options.ignore_cache) {
+    // if we already have the vrtfile and we want a diff format
     koop.Cache.getInfo(table, function (err, info) {
       if (err) return done(err)
 
-      var locked = false
+      info.generating[key][format] = true
+      _update(info, function (err, res) {
+        if (err) return done(err)
 
-      if (!info.export_lock) {
-        info.export_lock = true
-      } else {
-        locked = true
-      }
+        // return response
+        done(null, info)
 
-      info.status = 'processing'
-      info.generating = {
-        progress: 0 + '%'
-      }
+        // create large file from vrt
+        _callOgr(paths.rootVrtFile, paths.rootNewFile, function (err, formatFile) {
+          if (err) return done(err)
+
+          delete info.generating[key][format]
+
+          finish(format, key, options, { paths: paths, file: formatFile }, function () {
+            _update(info, function (err, res) {
+              if (err) return done(err)
+            })
+          })
+        })
+      })
+    })
+  } else {
+    // we have nothing; generate new data
+    koop.Cache.getInfo(table, function (err, info) {
+      if (err) return done(err)
+      info.generating[key].progress = 0 + '%'
 
       _update(info, function (err, res) {
         if (err) return done(err)
 
-        // return immediately with state: processing
+        // return info and move on as async
         done(null, info)
 
-        options.key = key
-        options.dir = dir
+        mkdirp(paths.base, function () {
+          koop.Cache.getCount(table, options, function (err, count) {
+            if (err) {
+              console.log('error getting count')
+              return done(err)
+            }
 
-        // do all the work inside the worker
-        var task = {
-          options: options,
-          dbkey: dbkey,
-          table: table,
-          format: format,
-          finish: finish,
-          ogrFormat: ogrFormats[format],
-          files: paths,
-          pages: []
-        }
+            pages = Math.ceil(count / options.limit)
+            var noop = function () {}
 
-        if (!locked) {
-          var job = koop.Exporter.export_q.create('exports', task).save(function (err) {
-            if (err) return done(err)
-            koop.log.debug('added job to export queue ' + job.id)
+            for (var i = 0; i < pages; i++) {
+              var offset = (i * (options.limit)) + 1
+              var op = { file: paths.base + '/part.' + i + '.json', offset: offset }
+              q.push(op, noop)
+            }
           })
-
-          job.on('progress', function (progress) {
-            // the question is do we need to get the info from the db here?
-            // TODO explore this in qa and its impact of DB load
-            koop.Cache.getInfo(table, function (err, info) {
-              if (err) return done(err)
-
-              info.status = 'processing'
-
-              if (info.generating) {
-                info.generating.progress = progress + '%'
-              }
-
-              _update(info, function (err, res) {
-                if (err) return done(err)
-                koop.log.debug('job progress' + job.id + ' ' + progress + '%')
-              })
-            })
-          })
-        }
+        })
       })
     })
-  } else {
-    // proceed with logic here
-    if (fs.existsSync(paths.rootVrtFile) && !options.ignore_cache) {
-      // if we already have the vrtfile and we want a diff format
-      koop.Cache.getInfo(table, function (err, info) {
-        if (err) return done(err)
-
-        info.status = 'processing'
-        info.generating = {
-          progress: 0 + '%'
-        }
-
-        _update(info, function (err, res) {
-          if (err) return done(err)
-
-          // return response
-          done(null, info)
-
-          // create large file from vrt
-          _callOgr(paths.rootVrtFile, paths.rootNewFile, function (err, formatFile) {
-            if (err) return done(err)
-
-            delete info.status
-            delete info.generating
-
-            finish(format, key, options, { paths: paths, file: formatFile }, function () {
-              _update(info, function (err, res) {
-                if (err) return done(err)
-              })
-            })
-          })
-        })
-      })
-    } else {
-      // we have nothing; generate new data
-      koop.Cache.getInfo(table, function (err, info) {
-        if (err) return done(err)
-
-        info.status = 'processing'
-        info.generating = {
-          progress: 0 + '%'
-        }
-
-        _update(info, function (err, res) {
-          if (err) return done(err)
-
-          // return info and move on as async
-          done(null, info)
-
-          mkdirp(paths.base, function () {
-            koop.Cache.getCount(table, options, function (err, count) {
-              if (err) {
-                console.log('error getting count')
-                return done(err)
-              }
-
-              pages = Math.ceil(count / options.limit)
-              var noop = function () {}
-
-              for (var i = 0; i < pages; i++) {
-                var offset = (i * (options.limit)) + 1
-                var op = { file: paths.base + '/part.' + i + '.json', offset: offset }
-                q.push(op, noop)
-              }
-            })
-          })
-        })
-      })
-    }
   }
 }
 
+/**
+ * Exports geojson to another format
+ *
+ * @param {string} format - the file format to return
+ * @param {string} dir - the directory to export the file into
+ * @param {string} key - a unique hash representing filters placed on the data
+ * @param {object} geojson - geojson used as input
+ * @param {object} options - options to pass to callOGR
+ * @param {function} callback - calls back with an error or a file path
+ */
 exports.exportToFormat = function (format, dir, key, geojson, options, callback) {
   if (!format) {
     return callback('No format provided', null)
@@ -309,7 +272,7 @@ exports.exportToFormat = function (format, dir, key, geojson, options, callback)
   // else use the json file to convert to other formats
   mkdirp(paths.base, function () {
     if (!fs.existsSync(paths.rootJsonFile)) {
-      delete geojson.info
+      if (geojson.info) delete geojson.info
       var json = JSON.stringify(geojson).replace(/esri/g, '')
       fs.writeFile(paths.rootJsonFile, json, function (err) {
         if (err) return callback(err)
@@ -330,7 +293,14 @@ exports.exportToFormat = function (format, dir, key, geojson, options, callback)
   })
 }
 
-// executes OGR
+/**
+ * Wrapper around command line utility OGR2OGR
+ *
+ * @param {object} params - parameters including the format and file paths
+ * @param {object} geojson - a sample of the geojson that will be exported to another format
+ * @param {object} options - contains a name for the file and metadata if it exists
+ * @param {function} callback - calls back with an error or the exported file
+ */
 function callOgr (params, geojson, options, callback) {
   var format = params.format
   var paths = params.paths
@@ -373,7 +343,7 @@ function callOgr (params, geojson, options, callback) {
               fs.writeFileSync(paths.base + '/' + options.name + '.xml', metadata)
             }
 
-            moveShapeFile(outFile, paths.base, options.name, _createZip)
+            moveShapeFile(paths.base, options.name, _createZip)
           })
         } else {
           moveFile(outFile, paths.rootNewFile, callback)
@@ -383,6 +353,14 @@ function callOgr (params, geojson, options, callback) {
   })
 }
 
+/**
+ * Creates a set of paths used in the export process
+ *
+ * @param {string} dir - the base directory to create paths
+ * @param {string} key - a unique key representing filters placed on the data
+ * @param {string} format - the format to be exported
+ * @param {object} options - contains a name and/or a root directory
+ */
 function createPaths (dir, key, format, options) {
   var paths = {}
   // we use temp names to write new files then move
@@ -409,6 +387,13 @@ function createPaths (dir, key, format, options) {
   return paths
 }
 
+/**
+ * Removes the shapefile parts from the local disk after a zip has been written
+ *
+ * @param {string} dir - the directory where the shapefile parts are stored
+ * @param {string} name - the name of the shapefile parts
+ * @param {function} callback - calls back with an error or nothing
+ */
 function removeShapeFile (dir, name, callback) {
   async.each(shapefileParts, function (type, callback) {
     rm(dir + '/' + name + '.' + type, function (err) {
@@ -419,10 +404,17 @@ function removeShapeFile (dir, name, callback) {
   })
 }
 
-function moveShapeFile (file, base, name, callback) {
+/**
+ * Moves shapefile parts into a folder
+ *
+ * @param {string} base - the base directory where files are stored
+ * @param {string} name - the name of the file to move
+ * @param {function} callback - calls back with an error or nothing
+ */
+function moveShapeFile (base, name, callback) {
   var shpdir = base + '/' + name
   async.each(shapefileParts, function (type, callback) {
-    moveFile(shpdir + '/OGRGeoJSON' + '.' + type, base + '/' + name + '.' + type, function (err) {
+    moveFile(shpdir + '/OGRGeoJSON' + '.' + type, shpdir + '.' + type, function (err) {
       callback(err)
     })
   }, function (err) {
@@ -430,6 +422,13 @@ function moveShapeFile (file, base, name, callback) {
   })
 }
 
+/**
+ * Moves a file into a new directory
+ *
+ * @param {string} inFile - the old file path
+ * @param {string} newFile - the new filepath to write
+ * @param {function} callback - calls back with an error or the new file path
+ */
 function moveFile (inFile, newFile, callback) {
   mv(inFile, newFile, function (err) {
     if (err) {

@@ -230,55 +230,28 @@ module.exports = function (config) {
 
   /**
    * export worker setup
-   *
-   * if export workers are configured:
-   * 1. creates export workers
-   * 2. connects the worker queue for large exports
-   * 3. adds export-workers route
-   *
-   * TODO: remove worker logic from index
    */
 
   if (koop.config.export_workers) {
-    var kue = require('kue')
+    var workerConfig = koop.config.export_workers
+    workerConfig.log = koop.log
+    koop.Exporter.export_q = koop.ExportQueue.create(workerConfig)
+  }
 
-    koop.Exporter.export_q = kue.createQueue({
-      prefix: koop.config.export_workers.redis.prefix,
-      disableSearch: true,
-      redis: {
-        port: koop.config.export_workers.redis.port,
-        host: koop.config.export_workers.redis.host
-      }
-    })
+  /**
+   * returns information about export workers
+   *
+   * @param {object} req - incoming request
+   * @param {object} res - outgoing response
+   */
+  koop.get('/export-workers', function (req, res) {
+    if (!koop.config.export_workers) return res.status(400).json({error: 'Export workers are not enabled. Check your configuration.'})
+    var response = {}
+    var count = 0
+    var jobTypes = ['inactiveCount', 'activeCount', 'completeCount', 'failedCount', 'delayedCount']
+    var error
 
-    // remove completed jobs from the queue
-    koop.Exporter.export_q.on('job complete', function (id) {
-      kue.Job.get(id, function (err, job) {
-        if (err) return // TODO: should we do more than just return here?
-        job.remove(function (err) {
-          if (err) {
-            koop.log.debug('Export Workers: could not remove completed job #' + job.id)
-          }
-          koop.log.debug('Export Workers: removed completed job #' + job.id + ' - ' + id)
-        })
-      })
-    })
-
-    koop.Exporter.export_q.on('job failed', function (id, jobErr) {
-      kue.Job.get(id, function (err, job) {
-        if (err) return // TODO: should we do more than just return here?
-        job.remove(function (err) {
-          if (err) {
-            koop.log.debug(err)
-            koop.log.debug('Export Workers: failed to remove failed job #' + job.id + ' Error: ' + jobErr)
-          } else {
-            koop.log.debug('Export Workers: removed failed job #' + job.id + ' Error: ' + jobErr)
-          }
-        })
-      })
-    })
-
-    koop.collectQStats = function (q, json, type, callback) {
+    function collectQStats (q, json, type, callback) {
       q[type](function (err, count) {
         if (err) return callback(err)
         json[type.replace('Count', '')] = count
@@ -286,45 +259,32 @@ module.exports = function (config) {
       })
     }
 
-    /**
-     * returns information about export workers
-     *
-     * @param {object} req - incoming request
-     * @param {object} res - outgoing response
-     */
-    koop.get('/export-workers', function (req, res) {
-      var response = {}
-      var count = 0
-      var jobTypes = ['inactiveCount', 'activeCount', 'completeCount', 'failedCount', 'delayedCount']
-      var error
+    // for (var type in jobTypes){
+    function getJobCounts (type) {
+      collectQStats(koop.Exporter.export_q, response, type, function (err, json) {
+        count++
+        if (err) {
+          error = err
+        }
+        // save the response
+        response = json
 
-      // for (var type in jobTypes){
-      function getJobCounts (type) {
-        koop.collectQStats(koop.Exporter.export_q, response, type, function (err, json) {
-          count++
-          if (err) {
-            error = err
-          }
-          // save the response
-          response = json
-
-          // get more if there are more types
-          if (jobTypes[count]) {
-            getJobCounts(jobTypes[count])
+        // get more if there are more types
+        if (jobTypes[count]) {
+          getJobCounts(jobTypes[count])
+        } else {
+          // return the response
+          if (error) {
+            res.status(500).send(err)
           } else {
-            // return the response
-            if (error) {
-              res.status(500).send(err)
-            } else {
-              res.json(response)
-            }
+            res.json(response)
           }
-        })
-      }
+        }
+      })
+    }
 
-      getJobCounts(jobTypes[count])
-    })
-  }
+    getJobCounts(jobTypes[count])
+  })
 
   koop.on('mount', function (parent) {
     koop.log.info('Koop %s mounted at %s', koop.version, koop.mountpath)
