@@ -128,7 +128,9 @@ function singlePage (job, done) {
       if (err) throw err
       finishExport(format, key, options, result, function (err, path) {
         if (err) throw err
-        job.progress(1, 1)
+        // just send over the pageLength in the third parameter
+        // this API is wonky so we just calc the progess on our own
+        job.progress(null, null, 1)
         done()
       })
     })

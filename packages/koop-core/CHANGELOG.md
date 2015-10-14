@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Progress is reported correctly for single page export jobs
+
 ## [2.9.0] - 2015-10-12
 ### Changed
 * Resources are no longer set to `processing` when export jobs are running.
