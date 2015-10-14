@@ -145,7 +145,6 @@ function Cache () {
     var query = _.clone(options)
     if (query.orderByFields && query.orderByFields.length) {
       query.order_by = this._convertOrderByFields(query.orderByFields)
-      delete query.orderByFields
     }
     return query
   }
