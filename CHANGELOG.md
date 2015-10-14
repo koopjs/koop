@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Roll back change made to support geoservices. Koop-pgcache is not ready to handle sorting on its own.
+
 ## [2.9.1] - 2015-10-14
 ### Fixed
 * Progress is reported correctly for single page export jobs
