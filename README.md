@@ -1,6 +1,6 @@
 # Koop
 
-> An Open Geospatial ETL Engine
+> Transform, query, & download geospatial data on the web.
 
 [![npm version][npm-img]][npm-url]
 [![build status][travis-img]][travis-url]

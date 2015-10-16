@@ -1,6 +1,6 @@
 {
   "name": "koop",
-  "description": "An Open Geospatial ETL Engine",
+  "description": "Transform, query, & download geospatial data on the web",
   "version": "2.9.2",
   "author": {
     "name": "Chris Helm"
