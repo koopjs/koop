@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Null date fields are no longer set to 1970
+
 ## [2.9.2] - 2015-10-14
 ### Changed
 * Roll back change made to support geoservices. Koop-pgcache is not ready to handle sorting on its own.

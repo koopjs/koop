@@ -93,4 +93,27 @@ describe('GeoJSON Model', function () {
       })
     })
   })
+  describe('converting date fields', function () {
+    it('should not convert null fields to "1970"', function (done) {
+      var fields = [{
+        name: 'date',
+        type: 'esriFieldTypeDate',
+        alias: 'date'
+      }]
+
+      var json = {
+        features: [{
+          attributes: {
+            date: null
+          }
+        }]
+      }
+
+      GeoJSON.fromEsri(fields, json, function (err, geojson) {
+        should.not.exist(err)
+        should.not.exist(geojson.features[0].properties.date)
+        done()
+      })
+    })
+  })
 })
