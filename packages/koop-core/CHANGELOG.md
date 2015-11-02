@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.9.3] - 2015-11-2
 ### Fixed
 * Null date fields are no longer set to 1970
 * Projections changes are added to OGR call
@@ -481,6 +481,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.9.3]: https://github.com/koopjs/koop/compare/v2.9.2...v2.9.3
 [2.9.2]: https://github.com/koopjs/koop/compare/v2.9.1...v2.9.2
 [2.9.1]: https://github.com/koopjs/koop/compare/v2.9.0...v2.9.1
 [2.9.0]: https://github.com/koopjs/koop/compare/v2.8.6...v2.9.0
