@@ -198,7 +198,7 @@ describe('exporter Model', function () {
 
       var options = {
         name: 'dummy',
-        outSR: 2962
+        outSr: 2962
       }
 
       var fixture = nock('http://epsg.io')
@@ -218,7 +218,7 @@ describe('exporter Model', function () {
 
       var options = {
         name: 'dummy',
-        outSR: {wkid: 102646, latestWkid: 2230}
+        outSr: {wkid: 102646, latestWkid: 2230}
       }
 
       var fixture = nock('http://epsg.io')
@@ -238,7 +238,7 @@ describe('exporter Model', function () {
 
       var options = {
         name: 'dummy',
-        outSR: {wkid: 2927, latestWkid: 2927}
+        outSr: {wkid: 2927, latestWkid: 2927}
       }
 
       var fixture = nock('http://epsg.io')
@@ -258,7 +258,7 @@ describe('exporter Model', function () {
 
       var options = {
         name: 'dummy',
-        outSR: {wkid: 28992, latestWkid: 28992}
+        outSr: {wkid: 28992, latestWkid: 28992}
       }
 
       var fixture = nock('http://epsg.io')
