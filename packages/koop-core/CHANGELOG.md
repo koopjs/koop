@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Fixed
 * Null date fields are no longer set to 1970
+* Projections changes are added to OGR call
 
 ## [2.9.2] - 2015-10-14
 ### Changed

@@ -539,7 +539,7 @@ function csvParams (cmd, options) {
 function shapefileParams (cmd, options, callback) {
   // make sure geometries are still written even if the first is null
   cmd.push('-nlt ' + options.geometryType.toUpperCase())
-  if (options.outSR) options.sr = formatSpatialRef(options.outSR)
+  if (options.outSr) options.sr = formatSpatialRef(options.outSr)
   if (options.sr || options.wkid) {
     addProjection(options, function (err, wkt) {
       if (err) return callback(err)
