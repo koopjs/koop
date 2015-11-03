@@ -121,29 +121,52 @@ describe('Files', function () {
   // -------------- WRITES ---------------
 
   describe('when writing a file', function () {
-    it('with local storage', function (done) {
-      var dir = __dirname + '/output'
-      var name = 'test.json'
-      var files = new Files({ log: koop.log, config: { data_dir: dir } })
-      files.write(null, name, JSON.stringify({'say': 'yes'}), function (err, success) {
-        should.not.exist(err)
-        files.exists(null, name, function (exists) {
-          exists.should.equal(true)
-          done()
+    describe('with local storage', function () {
+      it('should write a file correctly with no subdir', function (done) {
+        var dir = __dirname + '/output'
+        var name = 'test.json'
+        var files = new Files({ log: koop.log, config: { data_dir: dir } })
+        files.write(null, name, JSON.stringify({'say': 'yes'}), function (err, success) {
+          should.not.exist(err)
+          files.exists(null, name, function (exists) {
+            exists.should.equal(true)
+            done()
+          })
+        })
+      })
+
+      it('should write a file correctly when there is a subdir', function (done) {
+        var dir = __dirname + '/output'
+        var name = 'test.json'
+        var subdir = 'testfiles'
+
+        var files = new Files({ log: koop.log, config: { data_dir: dir } })
+        files.write(subdir, name, JSON.stringify({'say': 'yes'}), function (err, success) {
+          should.not.exist(err)
+          files.exists(subdir, name, function (exists) {
+            exists.should.equal(true)
+            done()
+          })
         })
       })
     })
+    describe('with S3 storage', function () {
+      it('should use the correct params uploading a file', function (done) {
+        var files = new Files({ log: koop.log, config: { s3: { bucket: 'chelm-koop-shoot-local' } } })
+        var name = 'test.json'
+        var subdir = 'testfiles'
+        sinon.stub(files, '_createS3Obj', function (params) {
+          return {upload: function (options, callback) {
+            callback(null)
+          }}
+        })
 
-    it('with local storage and a subdir', function (done) {
-      var dir = __dirname + '/output'
-      var name = 'test.json'
-      var subdir = 'testfiles'
-
-      var files = new Files({ log: koop.log, config: { data_dir: dir } })
-      files.write(subdir, name, JSON.stringify({'say': 'yes'}), function (err, success) {
-        should.not.exist(err)
-        files.exists(subdir, name, function (exists) {
-          exists.should.equal(true)
+        files.write(subdir, name, '', function (err, params) {
+          should.not.exist(err)
+          params.Bucket.should.equal('chelm-koop-shoot-local/testfiles')
+          params.Key.should.equal(name)
+          params.ACL.should.equal('public-read')
+          files._createS3Obj.restore()
           done()
         })
       })
