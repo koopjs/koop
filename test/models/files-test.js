@@ -1,9 +1,12 @@
-/* global describe, it */
+/* global describe, it, after */
 
 var should = require('should')
 var koop = require('../../lib')
 var Files = require('../../lib/Files')
-
+var fs = require('fs')
+var path = require('path')
+var rimraf = require('rimraf')
+var sinon = require('sinon')
 var config = { logfile: __dirname + '/../test.log' }
 
 // init the koop log based on config params
@@ -11,6 +14,11 @@ koop.log = new koop.Logger(config)
 koop.config = config
 
 describe('Files', function () {
+  after(function (done) {
+    rimraf(path.join(__dirname, 'output'), function () {
+      done()
+    })
+  })
   describe('when initializing files', function () {
     it('local and S3 storage should be false when nothing is configured', function (done) {
       // init with an empty dir
@@ -142,6 +150,59 @@ describe('Files', function () {
     })
   })
 
+  // -------------- COPIES ----------------
+
+  describe('when copying a file', function () {
+    describe('with local storage', function () {
+      it('should copy the file correctly', function (done) {
+        fs.writeFileSync(__dirname + '/output/testfiles/testCopy.json', '')
+        var options = {
+          from: 'testfiles',
+          to: 'testfiles/copy',
+          fileName: 'testCopy.json'
+        }
+        var files = new Files({ log: koop.log, config: { data_dir: __dirname + '/output' } })
+        files.copy(options, function (err) {
+          should.not.exist(err)
+          console.log(__dirname, 'output', options.to, options.fileName)
+          var copiedPath = path.join(__dirname, 'output', options.to, options.fileName)
+          fs.stat(copiedPath, function (err) {
+            should.not.exist(err)
+            done()
+          })
+        })
+      })
+    })
+
+    describe('with S3 stroage', function () {
+      it('should copy the file correctly', function (done) {
+        var files = new Files({ log: koop.log, config: { s3: { bucket: 'chelm-koop-shoot-local' } } })
+        sinon.stub(files.s3, 'createBucket', function (options, callback) {
+          callback(null)
+        })
+
+        sinon.stub(files.s3, 'copyObject', function (options, callback) {
+          callback(null)
+        })
+
+        var options = {
+          from: 'copyFrom',
+          to: 'copyTo',
+          fileName: 'fileName'
+        }
+        files.copy(options, function (err, params) {
+          should.not.exist(err)
+          params.Bucket.should.equal('chelm-koop-shoot-local/copyTo')
+          params.Key.should.equal('fileName')
+          params.ACL.should.equal('public-read')
+          params.CopySource.should.equal('chelm-koop-shoot-local/copyFrom/fileName')
+          files.s3.copyObject.restore()
+          files.s3.createBucket.restore()
+          done()
+        })
+      })
+    })
+  })
   // -------------- REMOVES ---------------
   describe('when removing a file', function () {
     it('with local storage', function (done) {

@@ -1,9 +1,0 @@
-{"name":"koop-log","hostname":"chelm-retina.local","pid":82865,"level":30,"msg":"forking worker process","time":"2014-09-24T15:18:03.599Z","v":0}
-{"name":"koop-log","hostname":"chelm-retina.local","pid":84663,"level":30,"msg":"forking worker process","time":"2014-09-24T16:44:11.777Z","v":0}
-{"name":"koop-log","hostname":"chelm-retina.local","pid":85854,"level":30,"msg":"forking worker process","time":"2014-09-24T17:44:54.762Z","v":0}
-{"name":"koop-log","hostname":"chelm-retina.local","pid":24375,"level":30,"msg":"forking worker process","time":"2014-10-03T18:48:28.143Z","v":0}
-{"name":"koop-log","hostname":"chelm-retina.local","pid":24456,"level":30,"msg":"forking worker process","time":"2014-10-03T18:51:51.453Z","v":0}
-{"name":"koop-log","hostname":"chelm-retina.local","pid":24862,"level":30,"msg":"forking worker process","time":"2014-10-03T19:10:45.599Z","v":0}
-{"name":"koop-log","hostname":"chelm-retina.local","pid":24926,"level":30,"msg":"forking worker process","time":"2014-10-03T19:13:13.540Z","v":0}
-{"name":"koop-log","hostname":"chelm-retina.local","pid":24953,"level":30,"msg":"forking worker process","time":"2014-10-03T19:13:32.702Z","v":0}
-{"name":"koop-log","hostname":"chelm-retina.local","pid":25181,"level":30,"msg":"forking worker process","time":"2014-10-03T19:23:55.580Z","v":0}

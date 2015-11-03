@@ -9,7 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 * Handle saving exported files to S3 outside of the job process, so they can happen concurrently
 * Export workers take on new jobs as soon as they have finished OGR
-* Using the S3 managed uploader -> multipart uploads with built in retrying
+* Using the S3 managed uploader -> multipart uploads with built-in retrying
 * Retry upload to S3 one time if it fails
 * Copy exported files to latest path instead of uploading
 * Removed unnecessary test files
