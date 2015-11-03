@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Added
 * Support for copying files from one folder to another on the local filesystem or S3
+* Log error when uploading or copying to S3 fails
 
 ### Changed
 * Handle saving exported files to S3 outside of the job process, so they can happen concurrently
