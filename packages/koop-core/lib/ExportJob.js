@@ -34,7 +34,9 @@ ExportJob.prototype.start = function () {
         }
         self.log.debug('Added job to export queue ' + self.job.id)
       })
-      self.job.on('progress', self._updateProgress.bind(self)) // TODO is this binding necessary?
+      // TODO are these bindings necessary
+      self.job.on('progress', self._updateProgress.bind(self))
+      self.job.on('complete', self._handleComplete.bind(self))
     })
   })
 }
@@ -99,7 +101,25 @@ ExportJob.prototype._updateProgress = function (pages, length) {
     info.generating[self.options.key].progress = progress + '%'
     self.cache.updateInfo(self.options.table, info, function (err) {
       if (err) return self.done(err)
-      self.log.debug('job progress: ' + self.job.id + ' ' + progress + '%')
+      self.log.info('job progress: ' + self.job.id + ' ' + progress + '%')
+    })
+  })
+}
+
+/**
+ * Sets progress to 100% and format to 'generated' when a job is complete
+ *
+ * @private
+ */
+ExportJob.prototype._handleComplete = function () {
+  var self = this
+  self.cache.getInfo(self.options.table, function (err, info) {
+    if (err) return self.log.error(err)
+    info.generating[self.options.key].progress = '100%'
+    info.generating[self.options.key][self.options.format] = 'generated'
+    self.cache.updateInfo(self.options.table, info, function (err) {
+      if (err) return self.log.error(err, self.options.table, self.options.key)
+      self.log.info('job completed:', self.job.id)
     })
   })
 }
