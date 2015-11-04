@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Fixed
 * Job progress is always set to 100% on completion
+* Removed cause of unhandled exception when deleting files from S3
 
 ## [2.9.3] - 2015-11-2
 ### Fixed

@@ -206,14 +206,16 @@ var Files = function (options) {
 
       this.s3.listObjects({Bucket: this.s3Bucket, Marker: dir}, function (err, data) {
         if (err) return callback(err)
-        data.Contents.forEach(function (obj) {
-          var objKey = obj.Key.split('/')
-          if (objKey.splice(0, len).join('/') === dir) {
-            self.s3.deleteObject({Bucket: self.s3Bucket, Key: obj.Key}, function () {
-              log.debug('Delete %s %s', dir, obj.Key)
-            })
-          }
-        })
+        if (data && data.Contents) {
+          data.Contents.forEach(function (obj) {
+            var objKey = obj.Key.split('/')
+            if (objKey.splice(0, len).join('/') === dir) {
+              self.s3.deleteObject({Bucket: self.s3Bucket, Key: obj.Key}, function () {
+                log.debug('Delete %s %s', dir, obj.Key)
+              })
+            }
+          })
+        }
         self.removeBucket(params, function (err) {
           log.info('Removed Bucket from s3 %s %s', dir)
           if (self.localDir) {
