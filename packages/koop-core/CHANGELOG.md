@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Error messages are saved correctly when export jobs fail
+
 ## [2.9.4] - 2015-11-04
 ### Fixed
 * Job progress is always set to 100% on completion

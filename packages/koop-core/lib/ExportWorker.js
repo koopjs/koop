@@ -85,7 +85,7 @@ jobs.process('exports', concurrency, function (job, done) {
 function handleError (table, key, error) {
   cache.getInfo(table, function (err, info) {
     if (err) koop.log.error(err)
-    info.generating[key].error = JSON.stringify(error)
+    info.generating[key].error = {message: error.message}
     cache.updateInfo(table, info, function (err) {
       if (err) koop.log.error(err)
     })
