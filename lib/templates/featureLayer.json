@@ -17,7 +17,7 @@
     "supportsQueryWithDistance": true,
     "supportsReturningQueryExtent": true,
     "supportsStatistics": true,
-    "supportsOrderBy": true,
+    "supportsOrderBy": false,
     "supportsDistinct": true
   },
 	"geometryType" : "esriGeometryPoint",
@@ -39,7 +39,7 @@
 		"labelingInfo": null
 	},
 
-	"hasM":  false, 
+	"hasM":  false,
 	"hasZ":  false,
 	"allowGeometryUpdates": true,
 	"hasAttachments" : false,
