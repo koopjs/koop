@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 * Error messages are saved correctly when export jobs fail
+* Hard-code correct WKT for SRID 5514
 
 ## [2.9.4] - 2015-11-04
 ### Fixed
