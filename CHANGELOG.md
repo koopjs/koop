@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Better wkt for SRID 5514
+
 ## [2.10.0] - 2015-11-06
 ### Added
 * Support for copying files from one folder to another on the local filesystem or S3
