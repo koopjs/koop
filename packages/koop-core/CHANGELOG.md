@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Support for copying files from one folder to another on the local filesystem or S3
+* Log error when uploading or copying to S3 fails
+
+### Changed
+* Handle saving exported files to S3 outside of the job process, so they can happen concurrently
+* Export workers take on new jobs as soon as they have finished OGR
+* Using the S3 managed uploader -> multipart uploads with built-in retrying
+* Retry upload to S3 one time if it fails
+* Copy exported files to latest path instead of uploading
+* Removed unnecessary test files
+
 ## [2.9.5] - 2015-11-05
 ### Changed
 * Set supportsOrderBy on feature service to false. The implementation is flawed
