@@ -324,7 +324,12 @@ function saveFile (table, format, key, options, result, retried) {
       koop.log.error('Failed to write file to S3', err)
       handleError(table, key, new Error('Error while writing to S3'))
     }
-
+    try {
+      var filePath = path.join(config.data_dir, uploadPath, fileName)
+      fs.unlinkSync(filePath)
+    } catch (e) {
+      koop.log.debug('Tried to remove non-existant file', filePath)
+    }
     // only write the latest file if there has been no filters applied
     if (!options.filtered) {
       var copyOpts = {
