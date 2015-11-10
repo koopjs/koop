@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Clean up file on local disk after single page export
+
 ## [2.10.1] - 2015-11-06
 ### Fixed
 * Better wkt for SRID 5514
