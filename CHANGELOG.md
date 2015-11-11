@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Remove 3 causes of unhandled exceptions in lib/geojson
+
 ## [2.10.2] - 2015-11-10
 ### Fixed
 * Clean up file on local disk after single page export
