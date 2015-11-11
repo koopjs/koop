@@ -97,7 +97,11 @@ function transformFeature (feature, fields) {
       // convert attribute expects an actual object and not just the values
       var attr = {}
       attr[name] = feature.attributes[name]
-      attributes[fields[name].outName] = convertAttribute(attr, fields[name])
+      try {
+        attributes[fields[name].outName] = convertAttribute(attr, fields[name])
+      } catch (e) {
+        console.error('Field was missing from attribute')
+      }
     })
   }
 
@@ -164,10 +168,14 @@ function convertAttribute (attribute, field) {
   var inValue = attribute[field.name]
   var value
   if (inValue === null) return inValue
-  if (field.domain) {
+  if (field.domain && field.domain.type === 'codedValue') {
     value = cvd(inValue, field)
   } else if (field.type === 'esriFieldTypeDate') {
-    value = new Date(inValue).toISOString()
+    try {
+      value = new Date(inValue).toISOString()
+    } catch (e) {
+      value = inValue
+    }
   } else {
     value = inValue
   }
