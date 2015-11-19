@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Return when calling back with an error in `local/getInfo`
+
 ## [2.10.4] - 2015-11-18
 ### Changed
 * Increase logging of errors in export worker
