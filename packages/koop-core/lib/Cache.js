@@ -308,6 +308,18 @@ function Cache () {
     this.db.addIndexes(table, options, callback)
   }
 
+	/**
+	 * Creates a stream of features from the cache
+	 *
+	 * @param {string} table - the name of the table to write from
+	 * @param {object} options - includes where clauses and the format of output
+	 * @return {object} a stream that emits a single feature a time
+	 */
+  this.createStream = function (table, options) {
+    if (!this.db.createExportStream) throw new Error('Stream output is not supported by this cache')
+    return this.db.createExportStream(table, options)
+  }
+
   return this
 }
 

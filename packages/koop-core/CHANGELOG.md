@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Added
 * New methods `files.createReadStream` & `files.createWriteStream` read/write from local disk or S3
+* New methood `cache.createStream` creates a stream that emits 1 feature at a time from the cache
 
 ## [2.11.0] - 2015-12-03
 ### Added
