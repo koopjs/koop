@@ -3,6 +3,10 @@ var fs = require('fs-extra')
 var child = require('child_process')
 var mkdirp = require('mkdirp')
 var path = require('path')
+var request = require('request')
+var _ = require('highland')
+var zlib = require('zlib')
+
 /**
  * constructor for interacting with s3 or local disk storage
  *
@@ -133,6 +137,95 @@ var Files = function (options) {
       })
     } else {
       callback('No filesystem configured', null)
+    }
+  }
+
+	/**
+	 * Creates a readable stream from local disk or S3
+	 *
+	 * @param {string} file - the file to read
+	 * @return {object} a readable stream
+	 */
+  this.createReadStream = function (file) {
+    if (this.s3) return this._createS3ReadStream(file)
+    return fs.createReadStream(path.join(this.localDir, file))
+  }
+
+	/**
+	 * Creates a readable stream from a file stored on S3
+	 *
+	 * @param {string} file - the file to read off S3
+	 * @return {object} a readable stream
+	 * @private
+	 */
+  this._createS3ReadStream = function (file) {
+    var dir = path.dirname(file)
+    var fileName = path.basename(file)
+    var params = {
+      Bucket: path.join(this.s3Bucket, dir),
+      Key: fileName
+    }
+    var url = this.s3.getSignedUrl('getObject', params)
+    var output = _()
+    request(url)
+    .on('error', function (e) { output.emit('error', e) })
+    .pipe(zlib.createGunzip())
+    .on('error', function (e) { output.emit('error', e) })
+    .pipe(output)
+    .done(function () { output.emit('finish') })
+    return output
+  }
+
+	/**
+	 * Creates a writeable stream that is saved locally or on S3
+	 *
+	 * @param {string} name - the name of the file to write to
+	 * @return {object} a writeable stream
+	 */
+  this.createWriteStream = function (name) {
+    if (this.s3) return this._createS3WriteStream(name)
+    var filePath = path.join(this.localDir, name)
+    mkdirp.sync(path.dirname(filePath))
+    return fs.createWriteStream(filePath)
+  }
+
+	/**
+	 * Creates a writeable stream that goes to S3
+	 *
+	 * @param {string} name - the name of file to write to
+	 * @return {object} a writeable stream
+	 * @private
+	 */
+  this._createS3WriteStream = function (name) {
+    var self = this
+    var input = _()
+    var params = s3Params(self.s3Bucket, name)
+    params.Body = input.pipe(zlib.createGzip())
+    self.s3.createBucket({Bucket: params.Bucket}, function (err) {
+      if (err) return input.emit('error', err)
+      self.s3.upload(params, function (err, data) {
+        if (err) return input.emit('error', err)
+        input.emit('finish')
+        input.end()
+      })
+    })
+    return input
+  }
+
+	/**
+	 * Create paramters to upload to S3
+	 *
+	 * @param {string} bucket - the S3 bucket
+	 * @param {string} name the filename to write to
+	 * @private
+	 */
+  function s3Params (bucket, name) {
+    var dir = path.dirname(name)
+    var fileName = path.basename(name)
+    return {
+      Bucket: path.join(bucket, dir),
+      Key: fileName,
+      ACL: 'public-read'
     }
   }
 
