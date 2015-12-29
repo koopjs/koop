@@ -143,6 +143,7 @@ function Cache () {
    */
   this.decodeGeoservices = function (options) {
     var query = _.clone(options)
+    query.layer = query.layer || 0
     if (query.orderByFields && query.orderByFields.length) {
       query.order_by = this._convertOrderByFields(query.orderByFields)
     }
