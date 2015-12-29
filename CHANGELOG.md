@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* New methods `files.createReadStream` & `files.createWriteStream` read/write from local disk or S3
+
 ## [2.11.0] - 2015-12-03
 ### Added
 * Support for adding indexes to a feature table
