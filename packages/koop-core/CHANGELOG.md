@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Layer defaults to 0 when not specified when selecting features
+
 ## [2.12.0] - 2015-12-29
 ### Added
 * New methods `files.createReadStream` & `files.createWriteStream` read/write from local disk or S3
