@@ -1,0 +1,27 @@
+{
+  "name": "koop-logger",
+  "version": "0.0.1",
+  "description": "A shared logger for Koop",
+  "main": "index.js",
+  "scripts": {
+    "compile": "babel src --out-dir .",
+    "test": "standard src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://www.github.com/koopjs/koop-logger.git"
+  },
+  "keywords": [
+    "koop",
+    "logging"
+  ],
+  "author": "Daniel Fenton <dfenton@esri.com>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "winston": "^2.1.1"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.3.13",
+    "standard": "^5.4.1"
+  }
+}
