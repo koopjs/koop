@@ -1,6 +1,6 @@
 {
   "name": "koop-logger",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A shared logger for Koop",
   "main": "index.js",
   "scripts": {
