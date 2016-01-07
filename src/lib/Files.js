@@ -166,13 +166,13 @@ var Files = function (options) {
       Key: fileName
     }
     var url = this.s3.getSignedUrl('getObject', params)
+    console.log('here?')
     var output = _()
     request(url)
     .on('error', function (e) { output.emit('error', e) })
     .pipe(zlib.createGunzip())
     .on('error', function (e) { output.emit('error', e) })
     .pipe(output)
-    .done(function () { output.emit('finish') })
     return output
   }
 
@@ -206,7 +206,7 @@ var Files = function (options) {
       self.s3.upload(params, function (err, data) {
         if (err) return input.emit('error', err)
         input.emit('finish')
-        input.end()
+        input.destroy()
       })
     })
     return input
