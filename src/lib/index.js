@@ -10,8 +10,6 @@ var lib = {
   Query: require('./Query.js'),
 
   Files: require('./Files.js'),
-
-  Logger: require('./Logger.js')
 }
 
 module.exports = lib

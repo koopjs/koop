@@ -2,7 +2,8 @@ var kooplib = require('../../src/lib')
 var config = { logfile: __dirname + '/../test.log' }
 
 // init the koop log based on config params
-kooplib.log = new kooplib.Logger(config)
+const Logger = require('koop-logger')
+kooplib.log = new Logger(config)
 
 var Cache = new kooplib.DataCache(kooplib)
 Cache.db = kooplib.LocalDB

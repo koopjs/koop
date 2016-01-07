@@ -19,7 +19,8 @@ module.exports = function (config) {
 
   koop.version = pkg.version
   koop.config = config || {}
-  koop.log = new koop.Logger(koop.config)
+  const Logger = require('koop-logger')
+  koop.log = new Logger(koop.config)
   koop.files = new koop.Files({
     config: koop.config,
     log: koop.log

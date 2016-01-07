@@ -10,7 +10,8 @@ var sinon = require('sinon')
 var config = { logfile: __dirname + '/../test.log' }
 
 // init the koop log based on config params
-koop.log = new koop.Logger(config)
+const Logger = require('koop-logger')
+koop.log = new Logger(config)
 koop.config = config
 
 describe('Files', function () {
