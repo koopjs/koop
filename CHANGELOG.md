@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.0.0-alpha] - 2016-01-07
 ### Changed
 * Koop will now be written in ES > 5 and compile with babel
 * New plugin system
@@ -547,6 +547,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[3.0.0-alpha]: https://github.com/koopjs/koop/compare/v2.12.0...v3.0.0-alpha
 [2.12.1]: https://github.com/koopjs/koop/compare/v2.12.0...v2.12.1
 [2.12.0]: https://github.com/koopjs/koop/compare/v2.11.0...v2.12.0
 [2.11.0]: https://github.com/koopjs/koop/compare/v2.10.5...v2.11.0
