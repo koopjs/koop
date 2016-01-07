@@ -10,4 +10,4 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 Extracted Koop-Logger from Koop/lib
 
-[1.0.0](https://www.github.com/koopjs/koop-logger/tree/v1.0.0)
+[1.0.0]: https://www.github.com/koopjs/koop-logger/tree/v1.0.0
