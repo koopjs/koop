@@ -1,7 +1,7 @@
 /* global describe, it */
 
 var should = require('should')
-var Query = require('../../lib').Query
+var Query = require('../../src/lib').Query
 var snowData1 = require('../fixtures/snow.geojson')
 var snowData2 = require('../fixtures/snow2.geojson')
 var snowData3 = require('../fixtures/snow3.geojson')

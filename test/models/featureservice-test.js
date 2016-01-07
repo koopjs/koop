@@ -1,7 +1,7 @@
 /* global describe, it */
 
 var should = require('should')
-var FeatureServices = require('../../lib/FeatureServices')
+var FeatureServices = require('../../src/lib/FeatureServices')
 var data = require('../fixtures/snow.geojson')
 var polyData = require('../fixtures/polygon.geojson')
 

@@ -1,4 +1,4 @@
-var kooplib = require('../../lib')
+var kooplib = require('../../src/lib')
 var config = { logfile: __dirname + '/../test.log' }
 
 // init the koop log based on config params

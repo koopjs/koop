@@ -1,8 +1,8 @@
 /* global describe, it, after */
 
 var should = require('should')
-var koop = require('../../lib')
-var Files = require('../../lib/Files')
+var koop = require('../../src/lib')
+var Files = require('../../src/lib/Files')
 var fs = require('fs')
 var path = require('path')
 var rimraf = require('rimraf')

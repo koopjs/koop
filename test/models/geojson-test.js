@@ -1,7 +1,7 @@
 /* global describe, it */
 
 var should = require('should')
-var GeoJSON = require('../../lib/GeoJSON')
+var GeoJSON = require('../../src/lib/GeoJSON')
 var esri_json = require('../fixtures/esri_json_short.json')
 var esri_with_null = require('../fixtures/esri_json_null.json')
 var date_json = require('../fixtures/esri_date.json')

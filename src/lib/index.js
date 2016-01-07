@@ -9,9 +9,7 @@ var lib = {
   GeoJSON: require('./GeoJSON.js'),
   Query: require('./Query.js'),
 
-  Exporter: require('./Exporter.js'),
   Files: require('./Files.js'),
-  ExportQueue: require('./ExportQueue.js'),
 
   Logger: require('./Logger.js')
 }

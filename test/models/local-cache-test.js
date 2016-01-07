@@ -1,7 +1,7 @@
 /* global describe, it, beforeEach, afterEach */
 
 var should = require('should')
-var LocalDB = require('../../lib/Local')
+var LocalDB = require('../../src/lib/Local')
 var repoData = require('../fixtures/repo.geojson')
 var insertKey = 'test:repo:file'
 var key = 'test:repo:file:0'

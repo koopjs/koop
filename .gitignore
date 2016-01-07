@@ -1,5 +1,9 @@
 node_modules
 npm-debug.log
 complexity
-
+/index.js
+/lib
+/public
 test/test.log.**
+.flowconfig
+.vscode
