@@ -4,9 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Changed
-* Koop will not be written in ES > 5 and compile with babel
+* Koop will now be written in ES > 5 and compile with babel
 * New plugin system
 * Extract Logger, Queue and Exporter into seperate packages
+* Remove timers from koop.Cache
 
 ## [2.12.1] - 2015-12-29
 ### Fixed
