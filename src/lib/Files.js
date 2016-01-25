@@ -1,18 +1,19 @@
-var AWS = require('aws-sdk')
-var fs = require('fs-extra')
-var child = require('child_process')
-var mkdirp = require('mkdirp')
-var path = require('path')
-var request = require('request')
-var _ = require('highland')
-var zlib = require('zlib')
+const AWS = require('aws-sdk')
+const fs = require('fs-extra')
+const child = require('child_process')
+const mkdirp = require('mkdirp')
+const path = require('path')
+const request = require('request')
+const _ = require('highland')
+const zlib = require('zlib')
+const gunzip = require('gunzip-maybe')
 
 /**
  * constructor for interacting with s3 or local disk storage
  *
  * @param {object} options - log (koop.Logger instance), config (koop config)
  */
-var Files = function (options) {
+const Files = function (options) {
   // catch omission of `new` keyword
   if (!(this instanceof Files)) {
     return new Files(options)
@@ -166,11 +167,10 @@ var Files = function (options) {
       Key: fileName
     }
     var url = this.s3.getSignedUrl('getObject', params)
-    console.log('here?')
     var output = _()
     request(url)
     .on('error', function (e) { output.emit('error', e) })
-    .pipe(zlib.createGunzip())
+    .pipe(gunzip())
     .on('error', function (e) { output.emit('error', e) })
     .pipe(output)
     return output
