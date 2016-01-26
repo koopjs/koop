@@ -68,7 +68,7 @@
   },
   "scripts": {
     "release": "gh-release",
-    "compile": "babel src --out-dir .",
+    "compile": "babel src --out-dir . && cp -r src/lib/templates/ lib",
     "test": "standard src && mocha test/models/ -t 20000"
   }
 }
