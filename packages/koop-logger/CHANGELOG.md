@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.1.0] - 2016-01-08
 ### Added
 * `LOG_LEVEL` ENV determines whether to log above error level
 
@@ -14,5 +14,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 Extracted Koop-Logger from Koop/lib
 
-[1.0.1]: https://www.github.com/joopjs/koop-logger/compare/v1.0.0..v1.0.1
+[1.1.0]: https://www.github.com/koopjs/koop-logger/compare/v1.0.1..v1.1.0
+[1.0.1]: https://www.github.com/koopjs/koop-logger/compare/v1.0.0..v1.0.1
 [1.0.0]: https://www.github.com/koopjs/koop-logger/tree/v1.0.0
