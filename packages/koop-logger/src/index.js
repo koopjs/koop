@@ -41,7 +41,12 @@ function createLogger (config) {
     formatter: formatter
   })
 
-  return new winston.Logger({ transports: [logAll, logError] })
+	const transports = [logError]
+  if (process.env['LOG_LEVEL'] && PROCESS.ENV['LOG_LEVEL'] === 'debug') {
+    transports.push(logAll)
+  }
+
+  return new winston.Logger({ transports })
 }
 
 /**
