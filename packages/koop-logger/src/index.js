@@ -41,8 +41,8 @@ function createLogger (config) {
     formatter: formatter
   })
 
-	const transports = [logError]
-  if (process.env['LOG_LEVEL'] && PROCESS.ENV['LOG_LEVEL'] === 'debug') {
+  const transports = [logError]
+  if (process.env['LOG_LEVEL'] && process.env['LOG_LEVEL'] === 'debug') {
     transports.push(logAll)
   }
 
