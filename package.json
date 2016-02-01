@@ -13,6 +13,7 @@
     "Nate Goldman <nate@ngoldman.me>"
   ],
   "dependencies": {
+    "arcgis-to-geojson-utils": "^1.0.1",
     "async": "~0.9.0",
     "aws-sdk": "~2.1.20",
     "body-parser": "~1.12.3",

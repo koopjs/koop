@@ -1,4 +1,4 @@
-var terraformer = require('terraformer-arcgis-parser')
+var arcgisToGeoJSON = require('arcgis-to-geojson-utils').arcgisToGeoJSON
 var _ = require('lodash')
 var toGeoJSON = {}
 
@@ -104,7 +104,6 @@ function transformFeature (feature, fields) {
       }
     })
   }
-
   return {
     type: 'Feature',
     properties: attributes,
@@ -121,7 +120,7 @@ function transformFeature (feature, fields) {
  */
 function parseGeometry (geometry) {
   try {
-    return geometry ? terraformer.parse(geometry) : null
+    return geometry ? arcgisToGeoJSON(geometry) : null
   } catch (e) {
     console.error(e)
     return null

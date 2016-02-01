@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Use ArcGIS To GeoJSON utils
+
 ## [3.0.0-alpha.3] - 2016-01-26
 ### Fixed
 * Include templates in build
