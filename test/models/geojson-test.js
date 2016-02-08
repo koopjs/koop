@@ -92,6 +92,53 @@ describe('GeoJSON Model', function () {
         done()
       })
     })
+
+    it('should not translate an empty field that has a domain', function (done) {
+      var fields = [{
+        name: 'ST_PREFIX',
+        type: 'esriFieldTypeString',
+        alias: 'ST_PREFIX',
+        length: 3,
+        domain: {
+          type: 'codedValue',
+          name: 'Prefix',
+          codedValues: [
+            {
+              name: 'N',
+              code: 'N'
+            },
+            {
+              name: 'S',
+              code: 'S'
+            },
+            {
+              name: 'E',
+              code: 'E'
+            },
+            {
+              name: 'W',
+              code: 'W'
+            }
+          ]
+        }
+      }]
+
+      var json = {
+        features: [{
+          attributes: {
+            ST_PREFIX: ' '
+          }
+        }]
+      }
+
+      GeoJSON.fromEsri(fields, json, function (err, geojson) {
+        should.not.exist(err)
+        geojson.should.be.an.instanceOf(Object)
+        geojson.features.length.should.equal(json.features.length)
+        geojson.features[0].properties.ST_PREFIX.should.equal(json.features[0].attributes.ST_PREFIX)
+        done()
+      })
+    })
   })
   describe('converting date fields', function () {
     it('should not convert null fields to "1970"', function (done) {

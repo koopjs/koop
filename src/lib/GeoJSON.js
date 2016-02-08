@@ -190,12 +190,10 @@ function convertAttribute (attribute, field) {
  * @private
  */
 function cvd (value, field) {
-  var decoded
-  field.domain.codedValues.some(function (d) {
-    decoded = d.name
+  var domain = _.find(field.domain.codedValues, d => {
     return value === d.code
   })
-  return decoded
+  return domain ? domain.name : value
 }
 
 module.exports = toGeoJSON

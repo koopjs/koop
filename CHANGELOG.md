@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Fix CVD decoding when value is not in the domain
+
 ## [3.0.0-alpha.6] - 2016-02-02
 ### Fixed
 * Compile process run correctly
