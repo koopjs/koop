@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.0.0-alpha.8] - 2016-02-10
 ### Fixed
 * Sanitize geometry to null when malformed
 
@@ -579,6 +579,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[3.0.0-alpha.8]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.7...v3.0.0-alpha.8
 [3.0.0-alpha.7]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.6...v3.0.0-alpha.7
 [3.0.0-alpha.6]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.5...v3.0.0-alpha.6
 [3.0.0-alpha.5]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.4...v3.0.0-alpha.5
