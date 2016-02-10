@@ -31,7 +31,7 @@ describe('FeatureServices Model', function () {
       propInt: 10,
       propFloat: 10.1,
       propString: 'Awesome',
-      propDate: 'Wed Jun 24 2015 08:18:24'
+      propDate: '2015-06-22T13:17:21+0000'
     }
     var fieldObj = FeatureServices.fields(input)
     var fields = fieldObj.fields
