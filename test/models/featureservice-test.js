@@ -61,6 +61,23 @@ describe('FeatureServices Model', function () {
     })
   })
 
+  describe('proper dates get through, improper dates fail', () => {
+    const input = {
+      properDate: '2015-06-22T13:17:21+0000',
+      improperDate1: 'Thisisafaildate 1',
+      improperDate2: '06/22/2015'
+    }
+    const fieldObj = FeatureServices.fields(input)
+    const fields = fieldObj.fields
+
+    it('Should not allow improper date formats through', (done) => {
+      fields[0].type.should.equal('esriFieldTypeDate')
+      fields[1].type.should.equal('esriFieldTypeString')
+      fields[2].type.should.equal('esriFieldTypeString')
+      done()
+    })
+  })
+
   describe('when getting featureserver info from geojson', function (done) {
     it('should return a feature service with the proper geom type', function (done) {
       FeatureServices.info(polyData, 0, {}, function (err, service) {
