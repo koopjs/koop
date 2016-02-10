@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Sanitize geometry to null when malformed
+
 ## [3.0.0-alpha.7] - 2016-02-08
 ### Fixed
 * Fix CVD decoding when value is not in the domain

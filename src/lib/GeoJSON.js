@@ -120,7 +120,10 @@ function transformFeature (feature, fields) {
  */
 function parseGeometry (geometry) {
   try {
-    return geometry ? arcgisToGeoJSON(geometry) : null
+    const parsed = geometry ? arcgisToGeoJSON(geometry) : null
+    if (parsed && parsed.type && parsed.coordinates) return parsed
+    else return null
+    return parsed
   } catch (e) {
     console.error(e)
     return null

@@ -4,6 +4,7 @@ var should = require('should')
 var GeoJSON = require('../../src/lib/GeoJSON')
 var esri_json = require('../fixtures/esri_json_short.json')
 var esri_with_null = require('../fixtures/esri_json_null.json')
+var esri_with_invalid = require('../fixtures/esri_json_invalid.json')
 var date_json = require('../fixtures/esri_date.json')
 
 describe('GeoJSON Model', function () {
@@ -24,6 +25,14 @@ describe('GeoJSON Model', function () {
       GeoJSON.fromEsri([], esri_with_null, function (err, geojson) {
         should.not.exist(err)
         geojson.features.length.should.equal(1)
+        done()
+      })
+    })
+
+    it('should return null when the geometry is invalid', function (done) {
+      GeoJSON.fromEsri([], esri_with_invalid, function (err, geojson) {
+        should.not.exist(err)
+        should.not.exist(geojson.features[0].geometry)
         done()
       })
     })
