@@ -31,7 +31,7 @@ describe('FeatureServices Model', function () {
       propInt: 10,
       propFloat: 10.1,
       propString: 'Awesome',
-      propDate: 'Wed Jun 24 2015 08:18:24'
+      propDate: '2015-06-22T13:17:21+0000'
     }
     var fieldObj = FeatureServices.fields(input)
     var fields = fieldObj.fields
@@ -57,6 +57,23 @@ describe('FeatureServices Model', function () {
       fields[1].type.should.equal('esriFieldTypeDouble')
       fields[2].type.should.equal('esriFieldTypeString')
       fields[3].type.should.equal('esriFieldTypeDate')
+      done()
+    })
+  })
+
+  describe('proper dates get through, improper dates fail', () => {
+    const input = {
+      properDate: '2015-06-22T13:17:21+0000',
+      improperDate1: 'Thisisafaildate 1',
+      improperDate2: '06/22/2015'
+    }
+    const fieldObj = FeatureServices.fields(input)
+    const fields = fieldObj.fields
+
+    it('Should not allow improper date formats through', (done) => {
+      fields[0].type.should.equal('esriFieldTypeDate')
+      fields[1].type.should.equal('esriFieldTypeString')
+      fields[2].type.should.equal('esriFieldTypeString')
       done()
     })
   })
