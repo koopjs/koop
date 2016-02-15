@@ -44,6 +44,28 @@ function isInt (value) {
 }
 
 /**
+ * Sanitize Column name
+ *
+ * @param {String} value
+ * @return {String} Sanitized name
+ */
+
+function sanitizeFieldName(colName) {
+  const lower = colName.toLowerCase()
+  const upper = colName.toUpperCase()
+
+  var res = ""
+
+  for (var i = 0; i<lower.length; ++i) {
+    if (lower[i] != upper[i]) {
+      res += colName[i]
+    }
+  }
+  return res
+}
+
+
+/**
  * builds esri json fields object from geojson properties
  *
  * @param  {object} props
@@ -71,6 +93,10 @@ function fields (props, idField, list) {
     if (key === 'OBJECTID' && !idField) {
       idField = key
     }
+    console.log(key)
+    console.log('bob')
+    key = sanitizeFieldName(key);
+    console.log(key)
 
     type = ((idField && key === idField) ? 'esriFieldTypeOID' : (fieldType(props[key]) || 'esriFieldTypeString'))
 
