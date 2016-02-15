@@ -57,7 +57,9 @@ function sanitizeFieldName(colName) {
   var res = ""
 
   for (var i = 0; i<lower.length; ++i) {
-    if (lower[i] != upper[i]) {
+    if (lower[i] == upper[i] && lower[i] === ' ') {
+      res += '-'
+    } else if (lower[i] != upper[i]) {
       res += colName[i]
     }
   }
