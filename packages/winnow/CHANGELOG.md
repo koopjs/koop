@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.0.0] - 02-19-2016
+## [1.0.0-alpha] - 02-19-2016
 ### Added
 * Initial release
 
