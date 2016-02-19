@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/koopjs/winnow.git"
+    "url": "git+https://github.com/dmfenton/winnow.git"
   },
   "keywords": [
     "geojson",
@@ -25,9 +25,9 @@
   "author": "Daniel Fenton <dfenton@esri.com>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/koopjs/winnow/issues"
+    "url": "https://github.com/dmfenton/winnow/issues"
   },
-  "homepage": "https://github.com/koopjs/winnow#readme",
+  "homepage": "https://github.com/dmfenton/winnow#readme",
   "dependencies": {
     "alasql": "^0.2.3",
     "terraformer": "^1.0.5"
