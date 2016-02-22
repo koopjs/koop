@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Field type declared as string only for ISO
+* Query parameters 'false' and 'true' work as expected in feature service requests
+
 ## [3.0.0-alpha.8] - 2016-02-10
 ### Fixed
 * Sanitize geometry to null when malformed

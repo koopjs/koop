@@ -314,17 +314,19 @@ function queryData (data, params, callback) {
     data = data[0]
   }
 
-  if (params.objectIds) {
+  const queryParams = coerceQuery(params)
+
+  if (queryParams.objectIds) {
     queryIds(data, params, function (json) {
       send(json, params, callback)
     })
-  } else if (params.returnCountOnly && data.count) {
+  } else if (queryParams.returnCountOnly && data.count) {
     callback(null, { count: data.count })
   } else {
-    var json = processTemplate('featureSet.json', data, params)
+    var json = processTemplate('featureSet.json', data, queryParams)
 
     if (!data.features || !data.features.length) {
-      send(json, params, callback)
+      send(json, queryParams, callback)
     } else {
       // geojson to esri json
       if (!data.type) {
@@ -346,7 +348,7 @@ function queryData (data, params, callback) {
       }
 
       // create an id field if not existing
-      if (!params.idField) {
+      if (!queryParams.idField) {
         json.features.forEach(function (f, i) {
           if (!f.attributes.id && !f.attributes.OBJECTID) {
             f.attributes.id = i + 1
@@ -358,6 +360,20 @@ function queryData (data, params, callback) {
       send(json, params, callback)
     }
   }
+}
+
+/**
+ * Coorces true/false strings to boolean
+ *
+ * @param {object} params - query parameters from the fs request
+ * @return {object} modified params
+ */
+function coerceQuery (params) {
+  Object.keys(params).forEach(param => {
+    if (params[param] === 'false') params[param] = false
+    else if (params[param] === 'true') params[param] = true
+  })
+  return params
 }
 
 /**
