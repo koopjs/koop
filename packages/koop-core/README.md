@@ -4,11 +4,14 @@
 
 [![npm version][npm-img]][npm-url]
 [![build status][travis-img]][travis-url]
+[![js-standard-style][standard-img]][standard-url]
 
 [npm-img]: https://img.shields.io/npm/v/koop.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/koop
 [travis-img]: https://img.shields.io/travis/koopjs/koop/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/koopjs/koop
+[standard-img]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
+[standard-url]: http://standardjs.com/
 
 Koop is [Express middleware](http://expressjs.com/guide/using-middleware.html) for simplifying geographic data consumption across many different providers and in many different formats.
 
