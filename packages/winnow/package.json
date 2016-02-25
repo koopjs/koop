@@ -30,7 +30,10 @@
   "homepage": "https://github.com/dmfenton/winnow#readme",
   "dependencies": {
     "alasql": "^0.2.3",
-    "terraformer": "^1.0.5"
+    "lodash": "^4.5.1",
+    "ngeohash": "^0.6.0",
+    "terraformer": "^1.0.5",
+    "turf-centroid": "^1.1.3"
   },
   "devDependencies": {
     "babel-cli": "^6.5.1",

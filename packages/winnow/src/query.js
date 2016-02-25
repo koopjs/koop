@@ -2,18 +2,50 @@
 const Terraformer = require('terraformer')
 const operators = ['>', '<', '=', '>=', '<=', 'like', 'ilike', 'in']
 
-function create (where, geometry, options) {
-  where = parseWhere(where)
-  let query = `SELECT * FROM ? WHERE ${where}`
-  const geomFilter = geometryClause(geometry)
-  if (geometry && !where) query += geomFilter
-  if (geometry && where) query += ` AND ${geomFilter}`
+function create (options) {
+  let query = selectClause(options)
+  const where = whereClause(options)
+  const geomFilter = geometryClause(options)
+  if (options.where || options.geometry) query += ' WHERE '
+  if (options.where) query += where
+  if (options.geometry && !where) query += geomFilter
+  if (options.geometry && where) query += ` AND ${geomFilter}`
+  if (options.limit) query += ` LIMIT ${options.limit}`
+  if (options.offset) query += ` OFFSET ${options.offset}`
   return query
 }
 
-function geometryClause (geometry) {
-  if (!geometry) return
-  return `${geometry.predicate}(geometry, ?)`
+function selectClause (options) {
+  if (options.aggregates) return aggSelect(options.aggregates)
+  else if (options.fields) return fieldSelect(options.fields)
+  else return 'SELECT * FROM ?'
+}
+
+function aggSelect (aggregates) {
+  const select = aggregates.reduce((sql, agg) => {
+    const name = agg.name || `${agg.type}_${agg.field}`
+    let func
+    if (agg.options) {
+      func = `${agg.type}(properties->${agg.field}, ${agg.options})`
+    } else {
+      func = `${agg.type}(properties->${agg.field})`
+    }
+    return `${sql} ${func} as ${name},`
+  }, 'SELECT')
+  return `${select.slice(0, -1)} FROM ?`
+}
+
+function fieldSelect (fields, options) {
+  options = options || {}
+  if (typeof fields !== 'string') fields = fields.join(',')
+  else fields = fields.replace(/,\s+/g, ',')
+  const type = options.esri ? 'attributes' : 'properties'
+  return `SELECT type, pick(properties, "${fields}") as ${type}, geometry FROM ?`
+}
+
+function geometryClause (options) {
+  if (!options.geometry) return
+  return `${options.geometry.predicate}(geometry, ?)`
 }
 
 function params (features, geometry) {
@@ -56,13 +88,14 @@ function transformEnvelope (geom) {
  * @param {Array} fields - a list of fields in to support coded value domains
  * @return {string} sql
  */
-function parseWhere (where, fields) {
-  if (!where) return ''
-  let tokens = tokenize(where)
-  if (fields) {
-    tokens = decodeDomains(tokens, fields)
+function whereClause (options) {
+  options = options || {}
+  if (!options.where) return ''
+  let tokens = tokenize(options.where)
+  if (options.fields) {
+    tokens = decodeDomains(tokens, options.fields)
   }
-  return translate(tokens)
+  return translate(tokens, options)
 }
 
 /**
@@ -151,12 +184,12 @@ function applyDomain (fieldName, value, fields) {
 /**
  * Translate tokens to be compatible with postgres json
  */
-function translate (tokens) {
+function translate (tokens, options) {
   const parts = tokens.map(function (token, i) {
     const middle = tokens[i + 1]
     if (!middle) return token
     // if this is a field name wrap it in postgres json
-    const left = jsonify(token, middle)
+    const left = jsonify(token, middle, options)
     const right = removeTrailingParen(tokens[i + 2])
     // if this is a numeric operation cast to float
     return cast(left, middle, right)
@@ -186,15 +219,17 @@ function removeTrailingParen (token) {
 /**
  * Apply postgres JSON selects where appropriate
  */
-function jsonify (token, next) {
+function jsonify (token, next, options) {
+  options = options || {}
   let leading = ''
   const lastPar = token.lastIndexOf('(')
   if (lastPar > -1) {
     leading = token.slice(0, lastPar + 1)
     token = token.replace(/\(/g, '')
   }
+  const selector = options.esri ? 'attributes' : 'properties'
   if (next) next = next.toLowerCase()
-  if (operators.indexOf(next) > -1) return `${leading} properties->${token.replace(/'|"/g, '')}`
+  if (operators.indexOf(next) > -1) return `${leading} ${selector}->${token.replace(/'|"/g, '')}`
   else return leading + token
 }
 
