@@ -45,7 +45,8 @@ function fieldSelect (fields, options) {
 
 function geometryClause (options) {
   if (!options.geometry) return
-  return `${options.geometry.predicate}(geometry, ?)`
+  const spatialPredicate = options.spatialPredicate || 'ST_Within'
+  return `${spatialPredicate}(geometry, ?)`
 }
 
 function params (features, geometry) {
@@ -57,7 +58,6 @@ function params (features, geometry) {
 function setGeometry (geom) {
   if (!geom) return
   const geometry = (geom.xmin && geom.ymax) ? transformEnvelope(geom) : geom
-  geometry.predicate = geometry.predicate || 'ST_Within'
   return geometry
 }
 
