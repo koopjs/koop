@@ -37,7 +37,6 @@ sql.fn.pick = function (properties, fields) {
 
 sql.aggr.hash = function (value, obj, acc) {
   obj = obj || {}
-  // console.log(geometry, hash, previous, acc)
   if (obj[value]) obj[value]++
   else obj[value] = 1
   return obj

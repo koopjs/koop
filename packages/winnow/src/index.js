@@ -19,7 +19,6 @@ winnow.query = function (input, options) {
   options.geometry = Query.setGeometry(options.geometry)
   // The following two functions are query preprocessing steps
   const query = Query.create(options)
-  console.log(query)
   const params = Query.params(features, options.geometry)
   const filtered = sql(query, params)
   return finishQuery(filtered, options)

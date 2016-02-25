@@ -89,9 +89,9 @@ test('With a ST_Within geometry predicate', t => {
   const options = {
     geometry: {
       type: 'Polygon',
-      coordinates: [[[-118.163, 34.162], [-118.108, 34.162], [-118.108, 34.173], [-118.163, 34.173], [-118.163, 34.162]]],
-      predicate: 'ST_Within'
-    }
+      coordinates: [[[-118.163, 34.162], [-118.108, 34.162], [-118.108, 34.173], [-118.163, 34.173], [-118.163, 34.162]]]
+    },
+    spatialPredicate: 'ST_Within'
   }
   run('trees', options, 9878, t)
 })
@@ -100,9 +100,9 @@ test('With a ST_Contains geometry predicate', t => {
   const options = {
     geometry: {
       type: 'Polygon',
-      coordinates: [[[-118.163, 34.162], [-118.108, 34.162], [-118.108, 34.173], [-118.163, 34.173], [-118.163, 34.162]]],
-      predicate: 'ST_Contains'
-    }
+      coordinates: [[[-118.163, 34.162], [-118.108, 34.162], [-118.108, 34.173], [-118.163, 34.173], [-118.163, 34.162]]]
+    },
+    spatialPredicate: 'ST_Contains'
   }
   run('states', options, 1, t)
 })
@@ -111,9 +111,9 @@ test('With a ST_Intersects geometry predicate', t => {
   const options = {
     geometry: {
       type: 'LineString',
-      coordinates: [[-85.983201784023521, 34.515410848143297, 204.5451898127248], [-121.278821256198796, 39.823566607727578, 1173.189682061974963]],
-      predicate: 'ST_Intersects'
-    }
+      coordinates: [[-85.983201784023521, 34.515410848143297, 204.5451898127248], [-121.278821256198796, 39.823566607727578, 1173.189682061974963]]
+    },
+    spatialPredicate: 'ST_Intersects'
   }
   run('states', options, 9, t)
 })
@@ -133,7 +133,6 @@ function run (data, options, expected, t) {
   let failed = false
   t.plan(1)
   const featureCollection = path.join(__dirname, 'fixtures', `${data}.min.geojson`)
-  console.log()
   _(fs.createReadStream(featureCollection))
   .pipe(featureParser.parse())
   .map(JSON.parse)
