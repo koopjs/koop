@@ -57,7 +57,9 @@ function sanitizeFieldName(colName) {
   var res = ""
 
   for (var i = 0; i<lower.length; ++i) {
-    if (lower[i] == upper[i] && lower[i] === ' ') {
+    if (lower[i] == upper[i] && lower[i] === '-' || lower[i] === '_') {
+      res += colName[i]
+    } else if (lower[i] == upper[i] && lower[i] === ' ') {
       res += '-'
     } else if (lower[i] != upper[i]) {
       res += colName[i]
@@ -95,12 +97,10 @@ function fields (props, idField, list) {
     if (key === 'OBJECTID' && !idField) {
       idField = key
     }
-    console.log(key)
-    console.log('bob')
-    key = sanitizeFieldName(key);
-    console.log(key)
 
     type = ((idField && key === idField) ? 'esriFieldTypeOID' : (fieldType(props[key]) || 'esriFieldTypeString'))
+
+    key = sanitizeFieldName(key);
 
     // check for a date; set type
     if (typeof props[key] === 'string' && (new Date(props[key]) !== 'Invalid Date' && !isNaN(new Date(props[key])))) {

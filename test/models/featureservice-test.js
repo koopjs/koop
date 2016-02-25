@@ -28,10 +28,10 @@ describe('FeatureServices Model', function () {
 
   describe('when building esri fields', function () {
     var input = {
-      propInt: 10,
-      propFloat: 10.1,
-      propString: 'Awesome',
-      propDate: 'Wed Jun 24 2015 08:18:24'
+      'prop Int': 10,
+      'prop%Float': 10.1,
+      'prop_String': 'Awesome',
+      'propDate': 'Wed Jun 24 2015 08:18:24'
     }
     var fieldObj = FeatureServices.fields(input)
     var fields = fieldObj.fields
@@ -57,6 +57,12 @@ describe('FeatureServices Model', function () {
       fields[1].type.should.equal('esriFieldTypeDouble')
       fields[2].type.should.equal('esriFieldTypeString')
       fields[3].type.should.equal('esriFieldTypeDate')
+      done()
+    })
+    it('field names with spaces / illegal characters should be sanitized', function(done) {
+      fields[0].name.should.equal('prop-Int')
+      fields[1].name.should.equal('propFloat')
+      fields[2].name.should.equal('prop_String')
       done()
     })
   })
