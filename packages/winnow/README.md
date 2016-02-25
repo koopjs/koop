@@ -1,6 +1,17 @@
 # Project Goal
 *Winnow* is made for applying sql to geojson in memory. It is useful for working against geojson objects but also has built-in primitives for piping streams.
 
+[![npm version][npm-img]][npm-url]
+[![build status][travis-img]][travis-url]
+[![js-standard-style][standard-img]][standard-url]
+
+[npm-img]: https://img.shields.io/npm/v/winnow.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/winnow
+[travis-img]: https://img.shields.io/travis/dmfenton/winnow/master.svg?style=flat-square
+[travis-url]: https://travis-ci.org/dmfenton/winnow
+[standard-img]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
+[standard-url]: http://standardjs.com/
+
 # API
 ## `winnow.query`
 Build and apply a query to a feature collection object or an array of features
