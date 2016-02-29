@@ -44,6 +44,19 @@ function isInt (value) {
 }
 
 /**
+ * is the column name compatible
+ *
+ * @param {String} colName
+ * @return {Boolean} is it compatible/valid
+ * */
+
+function isCompatible(colName) {
+  const re = /^[a-zA-Z0-9_]+$/
+
+  return colName.match(re) ? true : false
+}
+
+/**
  * Sanitize Column name
  *
  * @param {String} value
@@ -51,21 +64,10 @@ function isInt (value) {
  */
 
 function sanitizeFieldName(colName) {
-  const lower = colName.toLowerCase()
-  const upper = colName.toUpperCase()
+  const re = /[^a-zA-Z0-9_]+/
 
-  var res = ""
-
-  for (var i = 0; i<lower.length; ++i) {
-    if (lower[i] == upper[i] && lower[i] === '-' || lower[i] === '_') {
-      res += colName[i]
-    } else if (lower[i] == upper[i] && lower[i] === ' ') {
-      res += '-'
-    } else if (lower[i] != upper[i]) {
-      res += colName[i]
-    }
-  }
-  return res
+  return colName.replace(/ /g, '_')
+      .replace(re, '');
 }
 
 
@@ -100,7 +102,7 @@ function fields (props, idField, list) {
 
     type = ((idField && key === idField) ? 'esriFieldTypeOID' : (fieldType(props[key]) || 'esriFieldTypeString'))
 
-    key = sanitizeFieldName(key);
+    if (!isCompatible(key)) key = sanitizeFieldName(key);
 
     // check for a date; set type
     if (typeof props[key] === 'string' && (new Date(props[key]) !== 'Invalid Date' && !isNaN(new Date(props[key])))) {

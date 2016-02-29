@@ -60,7 +60,7 @@ describe('FeatureServices Model', function () {
       done()
     })
     it('field names with spaces / illegal characters should be sanitized', function(done) {
-      fields[0].name.should.equal('prop-Int')
+      fields[0].name.should.equal('prop_Int')
       fields[1].name.should.equal('propFloat')
       fields[2].name.should.equal('prop_String')
       done()
