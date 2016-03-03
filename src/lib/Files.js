@@ -186,7 +186,10 @@ const Files = function (options) {
     if (this.s3) return this._createS3WriteStream(name)
     var filePath = path.join(this.localDir, name)
     mkdirp.sync(path.dirname(filePath))
-    return fs.createWriteStream(filePath)
+    const input = _()
+    input.abort = () => fs.unlink(filePath)
+    input.pipe(fs.createWriteStream(filePath))
+    return input
   }
 
 	/**
@@ -201,7 +204,7 @@ const Files = function (options) {
     var input = _()
     var params = s3Params(self.s3Bucket, name)
     params.Body = input.pipe(zlib.createGzip())
-    self.s3.createBucket({Bucket: params.Bucket}, function (err) {
+    const upload = self.s3.createBucket({Bucket: params.Bucket}, function (err) {
       if (err) return input.emit('error', err)
       self.s3.upload(params, function (err, data) {
         if (err) return input.emit('error', err)
@@ -209,6 +212,7 @@ const Files = function (options) {
         input.destroy()
       })
     })
+    input.abort = upload.abort
     return input
   }
 
