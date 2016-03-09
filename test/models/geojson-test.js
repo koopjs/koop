@@ -6,6 +6,7 @@ var esri_json = require('../fixtures/esri_json_short.json')
 var esri_with_null = require('../fixtures/esri_json_null.json')
 var esri_with_invalid = require('../fixtures/esri_json_invalid.json')
 var date_json = require('../fixtures/esri_date.json')
+var sub_type = require('../fixtures/sub_type.json')
 
 describe('GeoJSON Model', function () {
   describe('when converting esri style features to geojson', function () {
@@ -58,7 +59,17 @@ describe('GeoJSON Model', function () {
       })
     })
   })
+
   describe('when converting fields with domains', function () {
+    it('should not overwrite a field that is not in the domain', function (done) {
+      GeoJSON.fromEsri(sub_type.fields, sub_type, function (err, geojson) {
+        should.not.exist(err)
+        console.log(geojson.features[2])
+        geojson.features[2].properties.ZONEFIELD.should.equal('D')
+        done()
+      })
+    })
+
     it('should return a proper geojson object', function (done) {
       var fields = [{
         name: 'NAME',
