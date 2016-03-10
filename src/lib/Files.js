@@ -1,3 +1,4 @@
+'use strict'
 const AWS = require('aws-sdk')
 const fs = require('fs-extra')
 const child = require('child_process')
@@ -200,13 +201,13 @@ const Files = function (options) {
 	 * @private
 	 */
   this._createS3WriteStream = function (name) {
-    var self = this
-    var input = _()
-    var params = s3Params(self.s3Bucket, name)
+    const input = _()
+    const params = s3Params(this.s3Bucket, name)
+    let upload
     params.Body = input.pipe(zlib.createGzip())
-    const upload = self.s3.createBucket({Bucket: params.Bucket}, function (err) {
+    this.s3.createBucket({Bucket: params.Bucket}, err => {
       if (err) return input.emit('error', err)
-      self.s3.upload(params, function (err, data) {
+      upload = this.s3.upload(params, (err, data) => {
         if (err) return input.emit('error', err)
         input.emit('finish')
         input.destroy()

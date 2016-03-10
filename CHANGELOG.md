@@ -7,6 +7,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Refactor processFeatureServer chain to only take a single geojson layer and fewer parameters
 * Refactor lib/FeatureServices for speed and clarity
 
+### Fixed
+* Call abort on the correct upload object when writing files to S3
+
 ## [3.0.0-alpha.11] - 2016-03-02
 ### Added
 * Can now call `abort` on files.createWriteStream to delete partial file
