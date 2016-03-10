@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.0.0-alpha.12] - 2016-03-09
 ### Changed
 * Refactor processFeatureServer chain to only take a single geojson layer and fewer parameters
 * Refactor lib/FeatureServices for speed and clarity
