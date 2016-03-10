@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Refactor processFeatureServer chain to only take a single geojson layer and fewer parameters
+* Refactor lib/FeatureServices for speed and clarity
+
 ## [3.0.0-alpha.11] - 2016-03-02
 ### Added
 * Can now call `abort` on files.createWriteStream to delete partial file
