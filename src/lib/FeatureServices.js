@@ -1,8 +1,8 @@
+'use strict'
 /**
  * utility functions for dealing with feature services
  */
 
-var fs = require('fs')
 var path = require('path')
 var moment = require('moment')
 var terraformerParser = require('terraformer-arcgis-parser')
@@ -22,6 +22,18 @@ var fieldTypes = {
 var formats = [
   moment.ISO_8601
 ]
+
+const renderers = {
+  polygon: require(path.join(__dirname, 'templates', 'renderers', 'polygon.json')),
+  line: require(path.join(__dirname, 'templates', 'renderers', 'line.json')),
+  point: require(path.join(__dirname, 'templates', 'renderers', 'point.json'))
+}
+
+const templates = {
+  featureLayer: require(path.join(__dirname, 'templates', 'featureLayer.json')),
+  featureService: require(path.join(__dirname, 'templates', 'featureService.json')),
+  featureSet: require(path.join(__dirname, 'templates', 'featureSet.json'))
+}
 
 /**
  * returns esri field type based on type of value passed
@@ -123,33 +135,14 @@ function fields (props, idField, list) {
  * @param {object} params
  * @return {object} template
  */
-function processTemplate (tmpl, data, params) {
-  var tplPath = path.join(__dirname, 'templates', tmpl)
-  var template = JSON.parse(fs.readFileSync(tplPath).toString())
-  var fieldObj
-
-  if (!data.length && data.features && data.features.length) {
-    fieldObj = fields(data.features[0].properties, params.idField, (data.info) ? data.info.fields : null)
+function processTemplate (tmpl, geojson, params) {
+  const template = templates[tmpl]
+  if (tmpl !== 'featureService') {
+    const fieldObj = fields(geojson.features[0].properties, params.idField)
     template.fields = fieldObj.fields
-
-    if (template.objectIdFieldName) {
-      template.objectIdFieldName = fieldObj.oidField
-    } else {
-      template.objectIdField = fieldObj.oidField
-    }
-  } else if (data[0] && data[0].features[0] && data[0].features[0].length) {
-    fieldObj = fields(data[0].features[0].properties, params.idField, (data[0].info) ? data[0].info.fields : null)
-    template.fields = fieldObj.fields
-
-    if (template.objectIdFieldName) {
-      template.objectIdFieldName = fieldObj.oidField
-    } else {
-      template.objectIdField = fieldObj.oidField
-    }
-  } else {
-    template.fields = []
+    template.objectIdFieldName = fieldObj.oidField
+    template.objectIdField = fieldObj.oidField
   }
-
   return template
 }
 
@@ -160,19 +153,18 @@ function processTemplate (tmpl, data, params) {
  * @param {object} feature
  */
 function setGeomType (json, feature) {
-  var tplDir = '/templates/renderers/'
   var isPolygon = feature && feature.geometry && (feature.geometry.type.toLowerCase() === 'polygon' || feature.geometry.type.toLowerCase() === 'multipolygon')
   var isLine = feature && feature.geometry && (feature.geometry.type.toLowerCase() === 'linestring' || feature.geometry.type.toLowerCase() === 'multilinestring')
 
   if (isPolygon) {
     json.geometryType = 'esriGeometryPolygon'
-    json.drawingInfo.renderer = require(__dirname + tplDir + 'polygon.json')
+    json.drawingInfo.renderer = renderers['polygon']
   } else if (isLine) {
     json.geometryType = 'esriGeometryPolyline'
-    json.drawingInfo.renderer = require(__dirname + tplDir + 'line.json')
+    json.drawingInfo.renderer = renderers['line']
   } else {
     json.geometryType = 'esriGeometryPoint'
-    json.drawingInfo.renderer = require(__dirname + tplDir + 'point.json')
+    json.drawingInfo.renderer = renderers['point']
   }
 
   return json
@@ -186,75 +178,46 @@ function setGeomType (json, feature) {
  * @param {object} params
  * @param {function} callback
  */
-function info (data, layer, params, callback) {
-  var lyr, json
+function info (geojson, layer, params, callback) {
+  let json
 
-  if (layer !== undefined) {
-    // send the layer json
-    data = (data && data[layer]) ? data[layer] : data
-
-    json = processTemplate('featureLayer.json', data, params)
-    json.name = data.name || 'Layer ' + layer
-
-    // set the geometry based on the first feature
-    // TODO: could clean this up or use a flag in the url to pull out feature of specific type like nixta
-    json = setGeomType(json, (data && data.features) ? data.features[0] : null)
-
-    if (data.extent) {
-      json.fullExtent = json.initialExtent = json.extent = data.extent
-    } else {
-      json.fullExtent = json.initialExtent = json.extent = esriExtent((!data.length) ? data.features : data[0].features)
-    }
-
-    if (isTable(json, data)) {
-      json.type = 'Table'
-    }
-  } else {
-    // no layer, send the service json
-    json = processTemplate('featureService.json', (data && data[0]) ? data[0] : data, params)
-
-    if (data.extent) {
-      json.fullExtent = json.initialExtent = json.extent = data.extent
-    } else {
-      json.fullExtent = json.initialExtent = json.extent = esriExtent((!data.length) ? data.features : data[0].features)
-    }
-
-    if (data.length) {
-      data.forEach(function (d, i) {
-        lyr = {
-          id: i,
-          name: d.name || 'layer ' + i,
-          parentLayerId: -1,
-          defaultVisibility: true,
-          subLayerIds: null,
-          minScale: 99999.99,
-          maxScale: 0
-        }
-        if (isTable(json, data)) {
-          json.tables[i] = lyr
-        } else {
-          json.layers[i] = lyr
-        }
-      })
-    } else {
-      lyr = {
-        id: 0,
-        name: data.name || 'layer 1',
-        parentLayerId: -1,
-        defaultVisibility: true,
-        subLayerIds: null,
-        minScale: 99999.99,
-        maxScale: 0
-      }
-      if (isTable(json, data)) {
-        json.tables[0] = lyr
-      } else {
-        json.layers[0] = lyr
-      }
-    }
-  }
-
+  if (layer !== undefined) json = layerInfo(geojson, params, layer)
+  else json = serviceInfo(geojson, params, layer)
   send(json, params, callback)
+}
+
+function layerInfo (geojson, params, layer) {
+  let json = processTemplate('featureLayer', geojson, params)
+  json.name = geojson.name || 'Layer ' + layer
+
+  // set the geometry based on the first feature
+  // TODO: could clean this up or use a flag in the url to pull out feature of specific type like nixta
+  json = setGeomType(json, (geojson && geojson.features) ? geojson.features[0] : null)
+
+  json.fullExtent = json.initialExtent = json.extent = geojson.extent || esriExtent(geojson.features)
+
+  if (isTable(json, geojson)) json.type = 'Table'
+
+  return json
+}
+
+function serviceInfo (geojson, params, layer) {
+  // no layer, send the service json
+  let json = processTemplate('featureService', geojson, params)
+
+  json.fullExtent = json.initialExtent = json.extent = esriExtent(geojson)
+  const lyr = {
+    id: 0,
+    name: geojson.name || 'layer 1',
+    parentLayerId: -1,
+    defaultVisibility: true,
+    subLayerIds: null,
+    minScale: 99999.99,
+    maxScale: 0
+  }
+  if (isTable(json, geojson)) json.tables[0] = lyr
+  else json.layers[0] = lyr
+  return json
 }
 
 /**
@@ -323,7 +286,7 @@ function queryData (data, params, callback) {
   } else if (queryParams.returnCountOnly && data.count) {
     callback(null, { count: data.count })
   } else {
-    var json = processTemplate('featureSet.json', data, queryParams)
+    var json = processTemplate('featureSet', data, queryParams)
 
     if (!data.features || !data.features.length) {
       send(json, queryParams, callback)
@@ -384,7 +347,7 @@ function coerceQuery (params) {
  * @param {function} callback
  */
 function queryIds (data, params, callback) {
-  var json = processTemplate('featureSet.json', data, params)
+  var json = processTemplate('featureSet', data, params)
   var allFeatures = terraformerParser.convert(data)
   var features = []
 

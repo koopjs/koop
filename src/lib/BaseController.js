@@ -16,8 +16,6 @@ function Controller () {
   function processFeatureServer (req, res, geojson) {
     delete req.query.geometry
 
-    if (!geojson) return res.status(400).send('There a problem accessing this repo')
-
     // check for info requests and respond like ArcGIS Server would
     if (isInfoReq(req)) return res.status(200).send(serverInfoResponse)
     // if this is for a method we can handle like query
@@ -57,6 +55,7 @@ function execServerMethod (method, req, res, geojson) {
   method(geojson, req.query || {}, function (err, d) {
     // limit response to 1000
     if (err) return res.status(400).send(err)
+    if (!geojson) return res.status(400).json({error: 'No data passed to feature server method'})
     if (d.features && d.features.length > 1000) d.features = d.features.splice(0, 1000)
     if (req.query.callback) return res.send(req.query.callback + '(' + JSON.stringify(d) + ')')
     res.status(200).json(d)
