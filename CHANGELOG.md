@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.0.0-alpha.13] - 2016-03-10
 ### Added
 * Short circuit to avoid filtering with processFeatureServer
 
@@ -607,6 +607,8 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[3.0.0-alpha.13]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.12...v3.0.0-alpha.13
+[3.0.0-alpha.12]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.11...v3.0.0-alpha.12
 [3.0.0-alpha.11]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.10...v3.0.0-alpha.11
 [3.0.0-alpha.10]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.9...v3.0.0-alpha.10
 [3.0.0-alpha.9]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.8...v3.0.0-alpha.9

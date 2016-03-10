@@ -1,7 +1,7 @@
 {
   "name": "koop",
   "description": "Transform, query, & download geospatial data on the web",
-  "version": "3.0.0-alpha.12",
+  "version": "3.0.0-alpha.13",
   "author": {
     "name": "Chris Helm"
   },
