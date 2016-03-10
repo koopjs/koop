@@ -118,7 +118,6 @@ var whereOps = {
  * @param {Function} callback
  */
 function filter (json, params, callback) {
-  console.log(json, params)
   if (params.geometry && !params.skipFilter) {
     geometryFilter(json, params, callback)
   } else if (params.where && !params.skipFilter) {
