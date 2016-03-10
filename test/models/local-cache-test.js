@@ -111,7 +111,7 @@ describe('Local Cache Tests', function () {
             timer.should.equal(false)
             done()
           })
-        }, 500)
+        }, 150)
       })
     })
   })
