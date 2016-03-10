@@ -118,9 +118,10 @@ var whereOps = {
  * @param {Function} callback
  */
 function filter (json, params, callback) {
-  if (params.geometry) {
+  console.log(json, params)
+  if (params.geometry && !params.skipFilter) {
     geometryFilter(json, params, callback)
-  } else if (params.where) {
+  } else if (params.where && !params.skipFilter) {
     whereFilter(json, params, callback)
   } else {
     // probably better to parse all params upfront and confirm valid types
@@ -129,7 +130,7 @@ function filter (json, params, callback) {
     } else if (params.returnIdsOnly === 'true' || params.returnIdsOnly) {
       getIds(json, params.idField, params, callback)
     } else {
-      if (params.orderByFields && params.orderByFields !== '') {
+      if (params.orderByFields && params.orderByFields !== '' && !params.skipOrder) {
         var fld = params.orderByFields.split(' ')
         var order = fld[0]
         if (fld[fld.length - 1] === 'DESC') order = '-' + fld[0]

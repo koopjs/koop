@@ -135,14 +135,16 @@ function fields (props, idField, list) {
  * @param {object} params
  * @return {object} template
  */
-function processTemplate (tmpl, geojson, params) {
+function processTemplate (tmpl, data, params) {
   const template = templates[tmpl]
+
   if (tmpl !== 'featureService') {
-    const fieldObj = fields(geojson.features[0].properties, params.idField)
+    const fieldObj = fields(data.features[0].properties, params.idField, (data.info) ? data.info.fields : null)
     template.fields = fieldObj.fields
-    template.objectIdFieldName = fieldObj.oidField
-    template.objectIdField = fieldObj.oidField
+    if (template.objectIdFieldName) template.objectIdFieldName = fieldObj.oidField
+    else template.objectIdField = fieldObj.oidField
   }
+
   return template
 }
 
@@ -183,6 +185,7 @@ function info (geojson, layer, params, callback) {
 
   if (layer !== undefined) json = layerInfo(geojson, params, layer)
   else json = serviceInfo(geojson, params, layer)
+
   send(json, params, callback)
 }
 
@@ -205,7 +208,7 @@ function serviceInfo (geojson, params, layer) {
   // no layer, send the service json
   let json = processTemplate('featureService', geojson, params)
 
-  json.fullExtent = json.initialExtent = json.extent = esriExtent(geojson)
+  json.fullExtent = json.initialExtent = json.extent = geojson.extent || esriExtent(geojson)
   const lyr = {
     id: 0,
     name: geojson.name || 'layer 1',
