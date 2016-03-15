@@ -189,7 +189,9 @@ const Files = function (options) {
     mkdirp.sync(path.dirname(filePath))
     const input = _()
     input.abort = () => fs.unlink(filePath)
-    input.pipe(fs.createWriteStream(filePath))
+    input
+    .pipe(fs.createWriteStream(filePath))
+    .on('finish', () => input.emit('finish'))
     return input
   }
 
@@ -201,19 +203,19 @@ const Files = function (options) {
 	 * @private
 	 */
   this._createS3WriteStream = function (name) {
+    let aborted = false
     const input = _()
     const params = s3Params(this.s3Bucket, name)
-    let upload
     params.Body = input.pipe(zlib.createGzip())
-    this.s3.createBucket({Bucket: params.Bucket}, err => {
-      if (err) return input.emit('error', err)
-      upload = this.s3.upload(params, (err, data) => {
-        if (err) return input.emit('error', err)
-        input.emit('finish')
-        input.destroy()
-        input.abort = upload.abort
-      })
+    const upload = this.s3.upload(params, (err, data) => {
+      if (err && !aborted) input.emit('error', err)
+      else if (!err) input.emit('finish')
+      input.destroy()
     })
+    input.abort = function () {
+      aborted = true
+      upload.abort()
+    }
     return input
   }
 

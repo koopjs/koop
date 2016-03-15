@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Don't emit error on S3 abort
+
+### Fixed
+* Emit finish event on local writeStream
+
 ## [3.0.0-alpha.14] - 2016-03-14
 ### Fixed
 * Fix abort on S3
