@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.0.0-alpha.15] - 2016-03-15
 ### Changed
 * Don't emit error on S3 abort
 * Increase max post size to 10mb
@@ -620,6 +620,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[3.0.0-alpha.15]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.14...v3.0.0-alpha.15
 [3.0.0-alpha.14]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.13...v3.0.0-alpha.14
 [3.0.0-alpha.13]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.12...v3.0.0-alpha.13
 [3.0.0-alpha.12]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.11...v3.0.0-alpha.12
