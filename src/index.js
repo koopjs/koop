@@ -57,12 +57,12 @@ module.exports = function (config) {
    * express middleware setup
    */
 
+   // parse application/json
+  koop.use(bodyParser.json({limit: '10mb'}))
+
   // handle POST requests
   // parse application/x-www-form-urlencoded
   koop.use(bodyParser.urlencoded({ extended: false }))
-
-  // parse application/json
-  koop.use(bodyParser.json())
 
   koop.use(function (req, res, next) {
     // request parameters can come from query url or POST body
@@ -153,7 +153,7 @@ module.exports = function (config) {
    * @param {object} any koop plugin
    */
   koop.registerPlugin = function (Plugin) {
-    if (!Plugin.plugin_name) throw new Error('Passed in db does not support getWKT or insertWKT')
+    if (!Plugin.plugin_name) throw new Error('Plugin is missing name')
     let dependencies
     if (typeof Plugin.dependencies && Plugin.dependencies.length) {
       dependencies = Plugin.dependencies.reduce((deps, dep) => {

@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Changed
 * Don't emit error on S3 abort
+* Increase max post size to 10mb
 
 ### Fixed
 * Emit finish event on local writeStream
