@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changd
+* Fix abort on S3
+
 ## [3.0.0-alpha.13] - 2016-03-10
 ### Added
 * Short circuit to avoid filtering with processFeatureServer

@@ -211,9 +211,9 @@ const Files = function (options) {
         if (err) return input.emit('error', err)
         input.emit('finish')
         input.destroy()
+        input.abort = upload.abort
       })
     })
-    input.abort = upload.abort
     return input
   }
 
