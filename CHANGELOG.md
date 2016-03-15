@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.0-alpah.16] - 2016-03-15
+### Changed
+* Rebuild
+
 ## [3.0.0-alpha.15] - 2016-03-15
 ### Changed
 * Don't emit error on S3 abort
