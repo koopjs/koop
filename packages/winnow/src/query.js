@@ -72,9 +72,10 @@ function transformEnvelope (geom) {
       [geom.xmin, geom.ymin]
     ]]
   })
-  if (geom.spatialReference && geom.spatialReference.wkid === 102100) {
+  const isMercator = geom.spatialReference && (geom.spatialReference.wkid === 102100 || geom.spatialReference.latestWkid === 3857)
+  if (isMercator) {
     return Terraformer.toGeographic(polygon)
-  } else if (geom.spatialReference.wkid) {
+  } else if (geom.spatialReference && geom.spatialReference.wkid) {
     throw new Error(`Spatial Reference: ${geom.spatialReference.wkid} not supported`)
   } else {
     return polygon
