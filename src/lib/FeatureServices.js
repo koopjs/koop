@@ -138,7 +138,7 @@ function fields (props, idField, list) {
 function processTemplate (tmpl, data, params) {
   const template = templates[tmpl]
 
-  if (tmpl !== 'featureService') {
+  if (tmpl !== 'featureService' && data && data.features && data.features.length) {
     const fieldObj = fields(data.features[0].properties, params.idField, (data.info) ? data.info.fields : null)
     template.fields = fieldObj.fields
     if (template.objectIdFieldName) template.objectIdFieldName = fieldObj.oidField
@@ -299,7 +299,7 @@ function queryData (data, params, callback) {
         data.type = 'FeatureCollection'
       }
 
-      if (data.features[0] && data.features[0].properties.OBJECTID) {
+      if (data.features && data.features[0] && data.features[0].properties.OBJECTID) {
         json.features = terraformerParser.convert(data)
       } else {
         json.features = terraformerParser.convert(data, { idAttribute: 'id' })
