@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Handle esri-style envelopes without a spatialReference
+
 ## [1.0.0] - 02-25-2016
 ### Added
 * New prepared query options

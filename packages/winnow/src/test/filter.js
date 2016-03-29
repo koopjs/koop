@@ -85,6 +85,18 @@ test('With an esri style envelope', t => {
   run('trees', options, 29744, t)
 })
 
+test('Without a spatialReference property on an Esri-style Envelope ', t => {
+  const options = {
+    geometry: {
+      xmin: -118.18055376275225,
+      ymin: 34.14141744789609,
+      xmax: -118.07069048150241,
+      ymax: 34.162726215637875
+    }
+  }
+  run('trees', options, 29744, t)
+})
+
 test('With a ST_Within geometry predicate', t => {
   const options = {
     geometry: {
