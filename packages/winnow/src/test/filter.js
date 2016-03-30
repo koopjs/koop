@@ -70,6 +70,13 @@ test('With an equality parameter', t => {
   run('trees', options, 6498, t)
 })
 
+test('With date inputs', t => {
+  const options = {
+    where: `Date1 >= '2012-03-14T04:00:00.000Z' AND Date1 <= '2012-03-18T03:59:59.000Z'`
+  }
+  run('dates', options, 3, t)
+})
+
 test('With an esri style envelope', t => {
   const options = {
     geometry: {
