@@ -229,11 +229,12 @@ const Files = function (options) {
   function s3Params (bucket, name, options) {
     var dir = path.dirname(name)
     var fileName = path.basename(name)
+    options = options || {}
     return {
       Bucket: path.join(bucket, dir),
       Key: fileName,
       ACL: 'public-read',
-      Metdata: options.metadata
+      Metadata: options.metadata
     }
   }
 
