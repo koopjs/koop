@@ -183,8 +183,8 @@ const Files = function (options) {
 	 * @param {string} name - the name of the file to write to
 	 * @return {object} a writeable stream
 	 */
-  this.createWriteStream = function (name) {
-    if (this.s3) return this._createS3WriteStream(name)
+  this.createWriteStream = function (name, options) {
+    if (this.s3) return this._createS3WriteStream(name, options)
     var filePath = path.join(this.localDir, name)
     mkdirp.sync(path.dirname(filePath))
     const input = _()
@@ -202,10 +202,10 @@ const Files = function (options) {
 	 * @return {object} a writeable stream
 	 * @private
 	 */
-  this._createS3WriteStream = function (name) {
+  this._createS3WriteStream = function (name, options) {
     let aborted = false
     const input = _()
-    const params = s3Params(this.s3Bucket, name)
+    const params = s3Params(this.s3Bucket, name, options)
     params.Body = input.pipe(zlib.createGzip())
     const upload = this.s3.upload(params, (err, data) => {
       if (err && !aborted) input.emit('error', err)
@@ -226,13 +226,14 @@ const Files = function (options) {
 	 * @param {string} name the filename to write to
 	 * @private
 	 */
-  function s3Params (bucket, name) {
+  function s3Params (bucket, name, options) {
     var dir = path.dirname(name)
     var fileName = path.basename(name)
     return {
       Bucket: path.join(bucket, dir),
       Key: fileName,
-      ACL: 'public-read'
+      ACL: 'public-read',
+      Metdata: options.metadata
     }
   }
 

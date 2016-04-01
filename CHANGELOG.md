@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.0-apha.18] - 2016-04-01
+### Added
+* S3 Uploads support adding metadata
+
 ## [3.0.0-alpha.17] - 2016-03-29
 ### Fixed
 * Dont throw an exception when feature service response has no features
@@ -628,6 +632,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[3.0.0-alpha.18]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.17...v3.0.0-alpha.18
 [3.0.0-alpha.17]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.16...v3.0.0-alpha.17
 [3.0.0-alpha.16]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.15...v3.0.0-alpha.16
 [3.0.0-alpha.15]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.14...v3.0.0-alpha.15
