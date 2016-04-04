@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Added default/configurable endpoint for S3 filesystem
+
 ## [3.0.0-alpha.19] - 2016-04-01
 ### Fixed
 * params are optional in s3 read/write streams
