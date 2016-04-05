@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Fixed a case where S3 write streams could be prematurely closed when files are less than 5 MB
+
 ## [3.0.0-alpha.20] - 2016-04-04
 ### Changed
 * Added default/configurable endpoint for S3 filesystem

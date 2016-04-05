@@ -195,19 +195,27 @@ const Files = function (options) {
     return input
   }
 
-	/**
-	 * Creates a writeable stream that goes to S3
-	 *
-	 * @param {string} name - the name of file to write to
-	 * @return {object} a writeable stream
-	 * @private
-	 */
+   /**
+    * Creates a writeable stream that goes to S3
+    *
+    * @param {string} name - the name of file to write to
+    * @return {object} a writeable stream
+    * @private
+    */
   this._createS3WriteStream = function (name, options) {
-    let aborted = false
-    const input = _()
-    const params = s3Params(this.s3Bucket, name, options)
-    params.Body = input.pipe(zlib.createGzip())
-    const upload = this.s3.upload(params, (err, data) => {
+    var aborted = false
+    var input = _()
+    input.on('data', function (chunk) {
+      through.write(chunk)
+    })
+    input.end = function (chunk) {
+      if (chunk) through.write(chunk)
+      through.write(_.nil)
+    }
+    var through = _()
+    var params = s3Params(this.s3Bucket, name, options)
+    params.Body = through.pipe(zlib.createGzip())
+    var upload = this.s3.upload(params, function (err, data) {
       if (err && !aborted) input.emit('error', err)
       else if (!err) input.emit('finish')
       input.destroy()
