@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.0.0-alpha.21] - 2016-04-04
 ### Fixed
 * Fixed a case where S3 write streams could be prematurely closed when files are less than 5 MB
 
