@@ -7,13 +7,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * New plugin type `filesystem` with overwrite `koop.fs`
 * Koop.fs defaults to node's built-in filesystem API
 
-## [3.0.0-alpha.23] - 2016-04-12
-### Changed
-* Sanitize jsonp callback in processFeatureServer
-
 ### Changed
 * Renamed `koop.files` to `koop.fs`
 * Removed `lib/files`
+* Removed references to plugins that refer to `koop.files`
+
+## [3.0.0-alpha.23] - 2016-04-12
+### Changed
+* Sanitize jsonp callback in processFeatureServer
 
 ## [3.0.0-alpha.22] - 2016-04-04
 ### Fixed

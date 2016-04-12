@@ -22,18 +22,14 @@ module.exports = function (config) {
   koop.config = config || {}
   const Logger = require('koop-logger')
   koop.log = new Logger(koop.config)
-  koop.files = new koop.Files({
-    config: koop.config,
-    log: koop.log
-  })
+
+  // default to node's build in fs
+  koop.fs = fs
 
   // default to LocalDB cache
   // cache registration overrides this
   koop.cache = new koop.DataCache()
   koop.cache.db = koop.LocalDB
-
-  // default to node's build in fs
-  koop.fs = fs
 
   // object for keeping track of registered services
   // TODO: why not called providers?
@@ -158,7 +154,7 @@ module.exports = function (config) {
    * @param {object} filesystem - a koop filesystem adapter
    */
   koop.registerFilesystem = function (filesystem) {
-    koop.files = filesystem
+    koop.fs = filesystem
     koop.log.info('registered filesystem:', filesystem.plugin_name, filesystem.version)
   }
 
