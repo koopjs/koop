@@ -20,7 +20,7 @@ function Controller () {
 
     if (err) return res.status(500).json(err)
     if (!data) return res.status(400).send('There a problem accessing this repo')
-
+    if (callback) callback = sanitizeCallback(callback)
     // check for info requests and respond like ArcGIS Server would
     if (req._parsedUrl.pathname.substr(-4) === 'info') {
       var arcGisServerLikeResponse = {
@@ -101,6 +101,10 @@ function Controller () {
   return {
     processFeatureServer: processFeatureServer
   }
+}
+
+function sanitizeCallback (callback) {
+  return callback.replace(/[^\w\d\.\(\)\[\]]/g, '')
 }
 
 module.exports = Controller
