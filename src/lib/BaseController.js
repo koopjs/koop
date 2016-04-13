@@ -57,7 +57,10 @@ function execServerMethod (method, req, res, geojson) {
     if (err) return res.status(400).send(err)
     if (!geojson) return res.status(400).json({error: 'No data passed to feature server method'})
     if (d.features && d.features.length > 1000) d.features = d.features.splice(0, 1000)
-    if (req.query.callback) return res.send(req.query.callback + '(' + JSON.stringify(d) + ')')
+    if (req.query.callback) {
+      const callback = sanitizeCallback(req.query.callback)
+      return res.send(callback + '(' + JSON.stringify(d) + ')')
+    }
     res.status(200).json(d)
   })
 }
@@ -68,6 +71,10 @@ function execInfo (geojson, layer, query, res) {
     if (query.callback) return res.send(query.callback + '(' + JSON.stringify(d) + ')')
     res.status(200).json(d)
   })
+}
+
+function sanitizeCallback (callback) {
+  return callback.replace(/[^\w\d\.\(\)\[\]]/g, '')
 }
 
 module.exports = Controller

@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.0-alpha.23] - 2016-04-12
+### Changed
+* Sanitize jsonp callback in processFeatureServer
+
 ## [3.0.0-alpha.22] - 2016-04-04
 ### Fixed
 * Remove duplicate json templates
@@ -648,6 +652,9 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[3.0.0-alpha.23]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.22...v3.0.0-alpha.23
+[3.0.0-alpha.22]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.21...v3.0.0-alpha.22
+[3.0.0-alpha.21]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.20...v3.0.0-alpha.21
 [3.0.0-alpha.20]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.19...v3.0.0-alpha.20
 [3.0.0-alpha.19]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.18...v3.0.0-alpha.19
 [3.0.0-alpha.18]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.17...v3.0.0-alpha.18
