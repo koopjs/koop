@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.12.3] - 2016-04-12
+### Changed
+* Sanitize jsonp callback
+
 ## [2.12.2] - 2016-04-06
 ### Fixed
 * Don't create esriFieldTypeDate unless the value is an ISO String
@@ -544,6 +548,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[2.12.3]: https://github.com/koopjs/koop/compare/v2.12.2...v2.12.3
 [2.12.2]: https://github.com/koopjs/koop/compare/v2.12.1...v2.12.2
 [2.12.1]: https://github.com/koopjs/koop/compare/v2.12.0...v2.12.1
 [2.12.0]: https://github.com/koopjs/koop/compare/v2.11.0...v2.12.0
