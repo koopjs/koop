@@ -7,9 +7,8 @@ var lib = {
 
   FeatureServices: require('./FeatureServices.js'),
   GeoJSON: require('./GeoJSON.js'),
-  Query: require('./Query.js'),
+  Query: require('./Query.js')
 
-  Files: require('./Files.js')
 }
 
 module.exports = lib

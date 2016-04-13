@@ -6,6 +6,7 @@ const pkg = require('./package.json')
 const _ = require('lodash')
 const multipart = require('connect-multiparty')()
 const lib = require('./lib')
+const fs = require('fs')
 
 module.exports = function (config) {
   const koop = express()
@@ -21,10 +22,9 @@ module.exports = function (config) {
   koop.config = config || {}
   const Logger = require('koop-logger')
   koop.log = new Logger(koop.config)
-  koop.files = new koop.Files({
-    config: koop.config,
-    log: koop.log
-  })
+
+  // default to node's build in fs
+  koop.fs = fs
 
   // default to LocalDB cache
   // cache registration overrides this
@@ -89,17 +89,19 @@ module.exports = function (config) {
   koop.register = function (plugin) {
     if (typeof plugin === 'undefined') throw new Error('Plugin undefined.')
 
-    if (plugin.type) {
-      if (plugin.type === 'provider') return koop.registerProvider(plugin)
-      if (plugin.type === 'cache') return koop.registerCache(plugin)
-      if (plugin.type === 'plugin') return koop.registerPlugin(plugin)
-
-      koop.log.warn('Unrecognized plugin type: "' + plugin.type + '". Defaulting to provider.')
-      return koop.registerProvider(plugin)
+    switch (plugin.type) {
+      case 'provider':
+        return koop.registerProvider(plugin)
+      case 'cache':
+        return koop.registerCache(plugin)
+      case 'plugin':
+        return koop.registerPlugin(plugin)
+      case 'filesystem':
+        return koop.registerFilesystem(plugin)
+      default:
+        koop.log.warn('Unrecognized plugin type: "' + plugin.type + '". Defaulting to provider.')
+        return koop.registerProvider(plugin)
     }
-
-    koop.log.warn('Plugin "%s" missing type property. Defaulting to provider.', plugin.plugin_name)
-    koop.registerProvider(plugin)
   }
 
   /**
@@ -143,6 +145,17 @@ module.exports = function (config) {
     if (!koop.config.db || !koop.config.db.conn) throw new Error('Cannot register cache: missing config.db.conn.')
     koop.cache.db = cache.connect(koop.config.db.conn, { log: koop.log })
     koop.log.info('registered cache:', cache.plugin_name, cache.version)
+  }
+
+  /**
+   * registers a filesystem
+   * overwrites the default filesystem
+   *
+   * @param {object} filesystem - a koop filesystem adapter
+   */
+  koop.registerFilesystem = function (filesystem) {
+    koop.fs = filesystem
+    koop.log.info('registered filesystem:', filesystem.plugin_name, filesystem.version)
   }
 
   /**
