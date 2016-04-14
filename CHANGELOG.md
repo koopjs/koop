@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Filesystem is initialized properly
+
 ## [3.0.0-alpha.24] - 2016-04-13
 ### Added
 * New plugin type `filesystem` with overwrite `koop.fs`

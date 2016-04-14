@@ -153,9 +153,9 @@ module.exports = function (config) {
    *
    * @param {object} filesystem - a koop filesystem adapter
    */
-  koop.registerFilesystem = function (filesystem) {
-    koop.fs = filesystem
-    koop.log.info('registered filesystem:', filesystem.plugin_name, filesystem.version)
+  koop.registerFilesystem = function (Filesystem) {
+    koop.fs = new Filesystem()
+    koop.log.info('registered filesystem:', Filesystem.plugin_name, Filesystem.version)
   }
 
   /**
