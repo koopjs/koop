@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.0.0-alpha.25] - 2016-04-14
 ### Fixed
 * Filesystem is initialized properly
 
@@ -666,6 +666,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[3.0.0-alpha.25]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.24...v3.0.0-alpha.25
 [3.0.0-alpha.24]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.23...v3.0.0-alpha.24
 [3.0.0-alpha.23]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.22...v3.0.0-alpha.23
 [3.0.0-alpha.22]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.21...v3.0.0-alpha.22
