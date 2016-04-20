@@ -6,7 +6,6 @@ var lib = {
   LocalDB: require('./Local.js'),
 
   FeatureServices: require('./FeatureServices.js'),
-  GeoJSON: require('./GeoJSON.js'),
   Query: require('./Query.js')
 
 }
