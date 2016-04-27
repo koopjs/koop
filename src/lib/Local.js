@@ -53,7 +53,7 @@ module.exports = {
    * @param  {function} callback - info object
    */
   getInfo: function (key, callback) {
-    if (!this.store[key] || !this.store[key].info) return callback(new Error('Info not found'))
+    if (!this.store[key] || !this.store[key].info) return callback(new Error('Resource not found'))
     callback(null, this.store[key].info)
   },
 
@@ -65,7 +65,7 @@ module.exports = {
    * @param  {function} callback - returns error or true on success
    */
   updateInfo: function (key, info, callback) {
-    if (!this.store[key]) return callback(new Error('Info not found'))
+    if (!this.store[key]) return callback(new Error('Resource not found'))
     this.store[key].info = info
     callback(null, true)
   },
