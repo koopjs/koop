@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Removed `lib/GeoJSON`
+* Removed geojson tests
+* `lib/Local` select and getCount return 'Resource not found' on errors
+
 ## [3.0.0-alpha.25] - 2016-04-14
 ### Fixed
 * Filesystem is initialized properly

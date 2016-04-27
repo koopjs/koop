@@ -29,7 +29,7 @@ module.exports = {
     var keys = key.split(':')
 
     if (isNaN(keys[keys.length - 1])) key += ':' + (options.layer || 0)
-    if (!this.store[key]) return callback(new Error('Not found'))
+    if (!this.store[key]) return callback(new Error('Resource not found'))
 
     callback(null, [this.store[key]])
   },
@@ -42,7 +42,7 @@ module.exports = {
    * @param  {function} callback - feature count (number)
    */
   getCount: function (key, options, callback) {
-    if (!this.store[key]) return callback(new Error('Not found'))
+    if (!this.store[key]) return callback(new Error('Resource not found'))
     callback(null, this.store[key].features.length)
   },
 
