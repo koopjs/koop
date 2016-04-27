@@ -29,7 +29,7 @@ module.exports = {
     var keys = key.split(':')
 
     if (isNaN(keys[keys.length - 1])) key += ':' + (options.layer || 0)
-    if (!this.store[key]) return callback(new Error('Not found'))
+    if (!this.store[key]) return callback(new Error('Resource not found'))
 
     callback(null, [this.store[key]])
   },
@@ -42,7 +42,7 @@ module.exports = {
    * @param  {function} callback - feature count (number)
    */
   getCount: function (key, options, callback) {
-    if (!this.store[key]) return callback(new Error('Not found'))
+    if (!this.store[key]) return callback(new Error('Resource not found'))
     callback(null, this.store[key].features.length)
   },
 
@@ -53,7 +53,7 @@ module.exports = {
    * @param  {function} callback - info object
    */
   getInfo: function (key, callback) {
-    if (!this.store[key] || !this.store[key].info) return callback(new Error('Info not found'))
+    if (!this.store[key] || !this.store[key].info) return callback(new Error('Resource not found'))
     callback(null, this.store[key].info)
   },
 
@@ -65,7 +65,7 @@ module.exports = {
    * @param  {function} callback - returns error or true on success
    */
   updateInfo: function (key, info, callback) {
-    if (!this.store[key]) return callback(new Error('Info not found'))
+    if (!this.store[key]) return callback(new Error('Resource not found'))
     this.store[key].info = info
     callback(null, true)
   },
