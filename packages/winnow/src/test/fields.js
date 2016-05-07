@@ -3,9 +3,9 @@ const test = require('tape')
 const fs = require('fs')
 const winnow = require('../')
 const path = require('path')
-const features = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', `trees.min.geojson`))).features
+const features = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'trees.min.geojson'))).features
 
-test('Select a single field', t => {
+test('Select a single field', (t) => {
   t.plan(1)
   const options = {
     fields: ['Trunk_Diameter'],
@@ -16,7 +16,7 @@ test('Select a single field', t => {
   t.equal(fields[0], 'Trunk_Diameter')
 })
 
-test('Select a single field with string input', t => {
+test('Select a single field with string input', (t) => {
   t.plan(1)
   const options = {
     fields: 'Trunk_Diameter',
@@ -27,7 +27,7 @@ test('Select a single field with string input', t => {
   t.equal(fields[0], 'Trunk_Diameter')
 })
 
-test('Select multiple fields', t => {
+test('Select multiple fields', (t) => {
   t.plan(2)
   const options = {
     fields: ['Trunk_Diameter', 'Genus'],
@@ -39,7 +39,7 @@ test('Select multiple fields', t => {
   t.equal(fields[1], 'Genus')
 })
 
-test('Select multiple fields with string input', t => {
+test('Select multiple fields with string input', (t) => {
   t.plan(2)
   const options = {
     fields: 'Trunk_Diameter, Genus',
