@@ -3,8 +3,8 @@ const test = require('tape')
 const fs = require('fs')
 const winnow = require('../')
 const path = require('path')
-const trees = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', `trees.min.geojson`)))
-test('Return a feature collection when a collection is passed in', t => {
+const trees = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'trees.geojson')))
+test('Return a feature collection when a collection is passed in', (t) => {
   t.plan(1)
   const options = { where: 'Trunk_Diameter > 120' }
   const input = trees
@@ -12,7 +12,7 @@ test('Return a feature collection when a collection is passed in', t => {
   t.equal(filtered.type, 'FeatureCollection')
 })
 
-test('Return a feature array when an array is passed in', t => {
+test('Return a feature array when an array is passed in', (t) => {
   t.plan(2)
   const options = { where: 'Trunk_Diameter > 120' }
   const input = trees.features
@@ -21,7 +21,7 @@ test('Return a feature array when an array is passed in', t => {
   t.equal(filtered[0].type, 'Feature')
 })
 
-test('Return a feature collection when a feature collection is passed into a compiled query', t => {
+test('Return a feature collection when a feature collection is passed into a compiled query', (t) => {
   t.plan(1)
   const options = { where: 'Trunk_Diameter > 120' }
   const query = winnow.prepareQuery(options)
@@ -29,7 +29,7 @@ test('Return a feature collection when a feature collection is passed into a com
   t.equal(filtered.type, 'FeatureCollection')
 })
 
-test('Return a feature array when an array is passed into a compiled query', t => {
+test('Return a feature array when an array is passed into a compiled query', (t) => {
   t.plan(2)
   const options = { where: 'Trunk_Diameter > 120' }
   const query = winnow.prepareQuery(options)
@@ -38,7 +38,7 @@ test('Return a feature array when an array is passed into a compiled query', t =
   t.equal(filtered[0].type, 'Feature')
 })
 
-test('Return an array when a single feature is passed into a compiled query', t => {
+test('Return an array when a single feature is passed into a compiled query', (t) => {
   t.plan(2)
   const options = { where: 'Trunk_Diameter > 0' }
   const query = winnow.prepareQuery(options)
@@ -47,7 +47,7 @@ test('Return an array when a single feature is passed into a compiled query', t 
   t.equal(filtered[0].type, 'Feature')
 })
 
-test('Return a feature array when an array is passed into a compiled statement', t => {
+test('Return a feature array when an array is passed into a compiled statement', (t) => {
   t.plan(2)
   const statement = 'SELECT * FROM ? WHERE properties->Trunk_Diameter > 120'
   const query = winnow.prepareSql(statement)
@@ -56,7 +56,7 @@ test('Return a feature array when an array is passed into a compiled statement',
   t.equal(filtered[0].type, 'Feature')
 })
 
-test('Return an array when a single feature is passed into a compiled statement', t => {
+test('Return an array when a single feature is passed into a compiled statement', (t) => {
   t.plan(2)
   const statement = 'SELECT * FROM ? WHERE properties->Trunk_Diameter > 0'
   const query = winnow.prepareSql(statement)
