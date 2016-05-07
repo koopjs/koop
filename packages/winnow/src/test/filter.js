@@ -6,78 +6,78 @@ const fs = require('fs')
 const winnow = require('../')
 const path = require('path')
 
-test('With a where option', t => {
+test('With a where option', (t) => {
   const options = {
-    where: `Genus like '%Quercus%'`
+    where: "Genus like '%Quercus%'"
   }
   run('trees', options, 12105, t)
 })
 
-test('With esri json', t => {
+test('With esri json', (t) => {
   const options = {
-    where: `Genus like '%Quercus%'`,
+    where: "Genus like '%Quercus%'",
     esri: true
   }
   run('esri', options, 267, t)
 })
 
-test('With multiple like clauses', t => {
+test('With multiple like clauses', (t) => {
   const options = {
-    where: `Genus like '%Quercus%' AND Common_Name like '%Live Oak%' AND Street_Type like '%AVE%'`
+    where: "Genus like '%Quercus%' AND Common_Name like '%Live Oak%' AND Street_Type like '%AVE%'"
   }
   run('trees', options, 3330, t)
 })
 
-test('With an in parameter', t => {
+test('With an in parameter', (t) => {
   const options = {
-    where: `Genus IN ('QUERCUS', 'EUGENIA')`
+    where: "Genus IN ('QUERCUS', 'EUGENIA')"
   }
   run('trees', options, 13134, t)
 })
 
-test('With an > parameter', t => {
+test('With an > parameter', (t) => {
   const options = {
-    where: `Trunk_Diameter>10`
+    where: 'Trunk_Diameter>10'
   }
   run('trees', options, 35961, t)
 })
 
-test('With an >= parameter', t => {
+test('With an >= parameter', (t) => {
   const options = {
-    where: `Trunk_Diameter>=10`
+    where: 'Trunk_Diameter>=10'
   }
   run('trees', options, 37777, t)
 })
 
-test('With an in parameter and a numeric test', t => {
+test('With an in parameter and a numeric test', (t) => {
   const options = {
-    where: `Genus IN ('QUERCUS', 'EUGENIA') AND Trunk_Diameter=10`
+    where: "Genus IN ('QUERCUS', 'EUGENIA') AND Trunk_Diameter=10"
   }
   run('trees', options, 409, t)
 })
 
-test('With an AND and an OR', t => {
+test('With an AND and an OR', (t) => {
   const options = {
-    where: `(Genus like '%Quercus%' AND Common_Name like '%Live Oak%') OR Street_Type like '%AVE%'`
+    where: "(Genus like '%Quercus%' AND Common_Name like '%Live Oak%') OR Street_Type like '%AVE%'"
   }
   run('trees', options, 31533, t)
 })
 
-test('With an equality parameter', t => {
+test('With an equality parameter', (t) => {
   const options = {
-    where: `Common_Name = 'LIVE OAK'`
+    where: "Common_Name = 'LIVE OAK'"
   }
   run('trees', options, 6498, t)
 })
 
-test('With date inputs', t => {
+test('With date inputs', (t) => {
   const options = {
-    where: `Date1 >= '2012-03-14T04:00:00.000Z' AND Date1 <= '2012-03-18T03:59:59.000Z'`
+    where: "Date1 >= '2012-03-14T04:00:00.000Z' AND Date1 <= '2012-03-18T03:59:59.000Z'"
   }
   run('dates', options, 3, t)
 })
 
-test('With an esri style envelope', t => {
+test('With an esri style envelope', (t) => {
   const options = {
     geometry: {
       xmin: -13155799.066536672,
@@ -92,7 +92,7 @@ test('With an esri style envelope', t => {
   run('trees', options, 29744, t)
 })
 
-test('Without a spatialReference property on an Esri-style Envelope ', t => {
+test('Without a spatialReference property on an Esri-style Envelope ', (t) => {
   const options = {
     geometry: {
       xmin: -118.18055376275225,
@@ -104,7 +104,7 @@ test('Without a spatialReference property on an Esri-style Envelope ', t => {
   run('trees', options, 29744, t)
 })
 
-test('With a ST_Within geometry predicate', t => {
+test('With a ST_Within geometry predicate', (t) => {
   const options = {
     geometry: {
       type: 'Polygon',
@@ -115,7 +115,7 @@ test('With a ST_Within geometry predicate', t => {
   run('trees', options, 9878, t)
 })
 
-test('With a ST_Contains geometry predicate', t => {
+test('With a ST_Contains geometry predicate', (t) => {
   const options = {
     geometry: {
       type: 'Polygon',
@@ -126,7 +126,7 @@ test('With a ST_Contains geometry predicate', t => {
   run('states', options, 1, t)
 })
 
-test('With a ST_Intersects geometry predicate', t => {
+test('With a ST_Intersects geometry predicate', (t) => {
   const options = {
     geometry: {
       type: 'LineString',
@@ -137,9 +137,9 @@ test('With a ST_Intersects geometry predicate', t => {
   run('states', options, 9, t)
 })
 
-test('With a where and a geometry option', t => {
+test('With a where and a geometry option', (t) => {
   const options = {
-    where: `Genus like '%Quercus%'`,
+    where: "Genus like '%Quercus%'",
     geometry: {
       type: 'Polygon',
       coordinates: [[[-118.163, 34.162], [-118.108, 34.162], [-118.108, 34.173], [-118.163, 34.173], [-118.163, 34.162]]]
@@ -156,14 +156,14 @@ function run (data, options, expected, t) {
   .pipe(featureParser.parse())
   .map(JSON.parse)
   .batch(80000)
-  .map(features => { return winnow.query(features, options) })
-  .errors(e => {
+  .map((features) => { return winnow.query(features, options) })
+  .errors((e) => {
     if (failed) return
     failed = true
     if (!failed) return t.end()
   })
   .sequence()
-  .toArray(features => {
+  .toArray((features) => {
     t.equal(features.length, expected)
   })
 }
