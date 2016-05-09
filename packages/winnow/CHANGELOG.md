@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 * Support fields like `total precip`
+* downcased `var` and `stddev` work
 
 ## [1.0.1] - 03-29-2016
 ### Fixed

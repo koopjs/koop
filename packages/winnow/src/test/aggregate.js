@@ -43,6 +43,18 @@ test('Get an aggregate on a field with a space', (t) => {
   t.equal(results.sum_total_precip, 135.69000000000003)
 })
 
+test('Get the variance of a field', (t) => {
+  t.plan(1)
+  const options = {
+    aggregates: [{
+      type: 'var',
+      field: 'total precip'
+    }]
+  }
+  const results = winnow.query(snowFeatures, options)
+  t.equal(results.var_total_precip, 0.07661480700055341)
+})
+
 test('Get an aggregate with a where clause', (t) => {
   t.plan(1)
   const options = {

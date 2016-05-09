@@ -27,9 +27,9 @@ function aggSelect (aggregates) {
     const name = agg.name || `${agg.type}_${agg.field}`.replace(/\s/g, '_')
     let func
     if (agg.options) {
-      func = `${agg.type}(properties->\`${agg.field}\`, ${agg.options})`
+      func = `${agg.type.toUpperCase()}(properties->\`${agg.field}\`, ${agg.options})`
     } else {
-      func = `${agg.type}(properties->\`${agg.field}\`)`
+      func = `${agg.type.toUpperCase()}(properties->\`${agg.field}\`)`
     }
     return `${sql} ${func} as ${name},`
   }, 'SELECT')
