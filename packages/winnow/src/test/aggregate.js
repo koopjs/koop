@@ -4,6 +4,7 @@ const fs = require('fs')
 const winnow = require('../')
 const path = require('path')
 const features = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'trees.geojson')))
+const snowFeatures = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'snow.geojson')))
 
 test('Get a sum', (t) => {
   t.plan(1)
@@ -28,6 +29,18 @@ test('Get a named aggregate', (t) => {
   }
   const results = winnow.query(features, options)
   t.equal(results.total_diameter, 850305)
+})
+
+test('Get an aggregate on a field with a space', (t) => {
+  t.plan(1)
+  const options = {
+    aggregates: [{
+      type: 'sum',
+      field: 'total precip'
+    }]
+  }
+  const results = winnow.query(snowFeatures, options)
+  t.equal(results.sum_total_precip, 135.69000000000003)
 })
 
 test('Get an aggregate with a where clause', (t) => {

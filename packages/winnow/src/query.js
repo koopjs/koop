@@ -27,9 +27,9 @@ function aggSelect (aggregates) {
     const name = agg.name || `${agg.type}_${agg.field}`.replace(/\s/g, '_')
     let func
     if (agg.options) {
-      func = `${agg.type}(properties->${agg.field}, ${agg.options})`
+      func = `${agg.type}(properties->\`${agg.field}\`, ${agg.options})`
     } else {
-      func = `${agg.type}(properties->${agg.field})`
+      func = `${agg.type}(properties->\`${agg.field}\`)`
     }
     return `${sql} ${func} as ${name},`
   }, 'SELECT')
@@ -38,9 +38,6 @@ function aggSelect (aggregates) {
 
 function outStatSelect (outStats) {
   if (typeof outStats === 'string') outStats = JSON.parse(outStats)
-  // onStatisticField
-  // statisticType
-  // outStatisticFieldName
   const aggregates = outStats.map((agg) => {
     return {
       type: agg.statisticType,
@@ -129,7 +126,7 @@ function tokenize (sql) {
   sql = pad(sql)
   let temp
   // find any multi-word tokens and replace the spaces with a special character
-  const regex = /'\S+\s\S+'/g
+  const regex = /['"]\S+\s\S+['"]/g
   while ((temp = regex.exec(sql)) !== null) {
     const field = temp[0].replace(/\s/, '|@')
     sql = sql.replace(temp[0], field)
@@ -240,7 +237,7 @@ function removeTrailingParen (token) {
 }
 
 /**
- * Apply postgres JSON selects where appropriate
+ * Apply JSON selectors where appropriate
  */
 function jsonify (token, next, options) {
   options = options || {}
@@ -252,7 +249,7 @@ function jsonify (token, next, options) {
   }
   const selector = options.esri ? 'attributes' : 'properties'
   if (next) next = next.toLowerCase()
-  if (operators.indexOf(next) > -1) return `${leading} ${selector}->${token.replace(/'|"/g, '')}`
+  if (operators.indexOf(next) > -1) return `${leading} ${selector}->\`${token.replace(/'|"/g, '')}\``
   else return leading + token
 }
 
