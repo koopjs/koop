@@ -17,13 +17,14 @@ function create (options) {
 
 function selectClause (options) {
   if (options.aggregates) return aggSelect(options.aggregates)
+  else if (options.outStatistics) return outStatSelect(options.outStatistics)
   else if (options.fields) return fieldSelect(options.fields)
   else return 'SELECT * FROM ?'
 }
 
 function aggSelect (aggregates) {
   const select = aggregates.reduce((sql, agg) => {
-    const name = agg.name || `${agg.type}_${agg.field}`
+    const name = agg.name || `${agg.type}_${agg.field}`.replace(/\s/g, '_')
     let func
     if (agg.options) {
       func = `${agg.type}(properties->${agg.field}, ${agg.options})`
@@ -33,6 +34,21 @@ function aggSelect (aggregates) {
     return `${sql} ${func} as ${name},`
   }, 'SELECT')
   return `${select.slice(0, -1)} FROM ?`
+}
+
+function outStatSelect (outStats) {
+  if (typeof outStats === 'string') outStats = JSON.parse(outStats)
+  // onStatisticField
+  // statisticType
+  // outStatisticFieldName
+  const aggregates = outStats.map((agg) => {
+    return {
+      type: agg.statisticType,
+      field: agg.onStatisticField,
+      name: agg.outStatisticFieldName
+    }
+  })
+  return aggSelect(aggregates)
 }
 
 function fieldSelect (fields, options) {
@@ -45,8 +61,14 @@ function fieldSelect (fields, options) {
 
 function geometryClause (options) {
   if (!options.geometry) return
-  const spatialPredicate = options.spatialPredicate || 'ST_Within'
+  const spatialPredicate = options.spatialPredicate || esriPredicates[options.spatialRel] || 'ST_Within'
   return `${spatialPredicate}(geometry, ?)`
+}
+
+const esriPredicates = {
+  esriSpatialRelContains: 'ST_Contains',
+  esriSpatialRelWithin: 'ST_Within',
+  esriSpatialRelIntersects: 'ST_Intersects'
 }
 
 function params (features, geometry) {
@@ -75,7 +97,7 @@ function transformEnvelope (geom) {
   const isMercator = geom.spatialReference && (geom.spatialReference.wkid === 102100 || geom.spatialReference.latestWkid === 3857)
   if (isMercator) {
     return Terraformer.toGeographic(polygon)
-  } else if (geom.spatialReference && geom.spatialReference.wkid) {
+  } else if (geom.spatialReference && geom.spatialReference.wkid && geom.spatialReference.wkid !== 4326) {
     throw new Error(`Spatial Reference: ${geom.spatialReference.wkid} not supported`)
   } else {
     return polygon

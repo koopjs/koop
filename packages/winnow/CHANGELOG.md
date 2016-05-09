@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Support esri-style spatial predicates
+* Support esri-style aggregations
+
 ## [1.0.1] - 03-29-2016
 ### Fixed
 * Handle esri-style envelopes without a spatialReference

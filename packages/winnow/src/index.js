@@ -20,6 +20,7 @@ winnow.query = function (input, options) {
   // The following two functions are query preprocessing steps
   const query = Query.create(options)
   const params = Query.params(features, options.geometry)
+  if (process.env.NODE_ENV === 'test') console.log(query, options)
   const filtered = sql(query, params)
   return finishQuery(filtered, options)
 }
@@ -86,7 +87,7 @@ function isEsriFeatures (candidate) {
 }
 
 function finishQuery (features, options) {
-  if (options.aggregates) {
+  if (options.aggregates || options.outStatistics) {
     return features[0]
   } else if (options.collection) {
     const collection = options.collection

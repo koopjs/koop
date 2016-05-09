@@ -151,7 +151,7 @@ test('With a where and a geometry option', (t) => {
 function run (data, options, expected, t) {
   let failed = false
   t.plan(1)
-  const featureCollection = path.join(__dirname, 'fixtures', `${data}.min.geojson`)
+  const featureCollection = path.join(__dirname, 'fixtures', `${data}.geojson`)
   _(fs.createReadStream(featureCollection))
   .pipe(featureParser.parse())
   .map(JSON.parse)

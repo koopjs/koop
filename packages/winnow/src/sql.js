@@ -5,18 +5,21 @@ const centroid = require('turf-centroid')
 const _ = require('lodash')
 
 sql.fn.ST_Within = function (feature, filterGeom) {
+  if (!feature || !feature.type) return false
   const filter = new Terraformer.Primitive(filterGeom)
   const TfFeature = new Terraformer.Primitive(feature)
   return TfFeature.within(filter)
 }
 
 sql.fn.ST_Contains = function (feature, filterGeom) {
+  if (!feature || !feature.type) return false
   const filter = new Terraformer.Primitive(filterGeom)
   const TfFeature = new Terraformer.Primitive(feature)
   return TfFeature.contains(filter)
 }
 
 sql.fn.ST_Intersects = function (feature, filterGeom) {
+  if (!feature || !feature.type) return false
   const filter = new Terraformer.Primitive(filterGeom)
   const TfFeature = new Terraformer.Primitive(feature)
   return TfFeature.intersects(filter)
