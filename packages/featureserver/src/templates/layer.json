@@ -1,0 +1,57 @@
+{
+	"currentVersion": 10.21,
+	"id" : 0,
+	"name" : "Not Set",
+	"type" : "Feature Layer",
+	"displayField" : "",
+	"description" : "",
+	"copyrightText" : "",
+	"defaultVisibility": true,
+	"relationships": [],
+	"isDataVersioned": false,
+	"supportsRollbackOnFailureParameter": true,
+	"supportsStatistics": true,
+  "supportsAdvancedQueries": true,
+  "advancedQueryCapabilities": {
+    "supportsPagination": true,
+    "supportsQueryWithDistance": true,
+    "supportsReturningQueryExtent": true,
+    "supportsStatistics": true,
+    "supportsOrderBy": false,
+    "supportsDistinct": true
+  },
+	"geometryType" : "esriGeometryPoint",
+	"minScale" : 0,
+	"maxScale" : 0,
+	"extent" :  {
+		"xmin": -180,
+		"ymin": -90,
+		"xmax": 180,
+		"ymax": 90,
+		"spatialReference": {
+		"wkid": 4326,
+		"latestWkid": 4326
+		}
+	},
+
+	"drawingInfo" : {
+		"renderer": {},
+		"labelingInfo": null
+	},
+
+	"hasM":  false,
+	"hasZ":  false,
+	"allowGeometryUpdates": true,
+	"hasAttachments" : false,
+	"htmlPopupType" : "esriServerHTMLPopupTypeNone",
+	"objectIdField" : "id",
+	"globalIdField" : "",
+	"typeIdField" : "",
+	"fields" : [],
+	"types" : [],
+	"templates" : [],
+	"maxRecordCount": 1000,
+	"supportedQueryFormats": "JSON",
+	"hasStaticData" : true,
+	"capabilities" : "Query"
+}

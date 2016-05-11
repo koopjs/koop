@@ -1,0 +1,11 @@
+{
+  "currentVersion": 10.21,
+  "fullVersion": "10.2.1",
+  "soapUrl": "http://sampleserver6.arcgisonline.com/arcgis/services",
+  "secureSoapUrl": "https://sampleserver6.arcgisonline.com/arcgis/services",
+  "authInfo": {
+    "isTokenBasedSecurity": true,
+    "tokenServicesUrl": "https://sampleserver6.arcgisonline.com/arcgis/tokens/",
+    "shortLivedTokenValidity": 60
+  }
+}

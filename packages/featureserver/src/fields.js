@@ -1,0 +1,59 @@
+'use strict'
+const moment = require('moment')
+module.exports = fields
+
+/** @type {Array} accepted date formats used by moment.js */
+const DATE_FORMATS = [
+  moment.ISO_8601
+]
+
+const defaultIdField = { name: 'OBJECTID', type: 'esriFieldTypeOID', alias: 'OBJECTID' }
+
+/**
+ * returns esri field type based on type of value passed
+ *
+ * @param {*} value - object to evaluate
+ * @return {string} esri field type
+ */
+function fieldType (value) {
+  var type = typeof value
+
+  if (type === 'number') {
+    return isInt(value) ? 'esriFieldTypeInteger' : 'esriFieldTypeDouble'
+  } else if (typeof value === 'string' && moment(value, DATE_FORMATS, true).isValid()) {
+    return 'esriFieldTypeDate'
+  } else {
+    return 'esriFieldTypeString'
+  }
+}
+
+/**
+ * is the value an integer?
+ *
+ * @param  {Number} value
+ * @return {Boolean} is it an integer
+ */
+function isInt (value) {
+  return Math.round(value) === value
+}
+
+/**
+ * builds esri json fields object from geojson properties
+ *
+ * @param  {object} props
+ * @param  {string} template
+ * @param  {object} options
+ * @return {object} fields
+ */
+function fields (props, template, options) {
+  const fields = Object.keys(props).map((key, i) => {
+    const type = fieldType(props[key])
+    const field = {name: key, type: type, alias: key}
+
+    if (type === 'esriFieldTypeString') field.length = 128
+    return field
+  })
+
+  if (template !== 'statistics') fields.push(defaultIdField)
+  return { oidField: 'OBJECTID', fields }
+}
