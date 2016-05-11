@@ -63,6 +63,8 @@ Specifies the relationship between the passed-in geometry and the features in th
 - ST_Contains: Features in the data must completely contain the passed-in geometry
 - ST_Intersects: Features in the data must intersect the passed-in geometry
 
+Can also specify the esri-style predicates `esriSpatialRelWithin, esriSpatialRelContains, esriSpatialRelIntersects`
+
 ### `fields`
 An array that specifies fields should be returned from each features properties or attributes. Will also accept a comma-delimited string.
 
@@ -87,6 +89,27 @@ e.g:
   }
 ]
 ```
+
+### `outStatistics`
+Like aggregates but follows esri's query API
+
+e.g:
+```javascript
+[
+  {
+    statisticType: 'sum',
+    onStatisticField: 'Trunk_Diameter',
+    outStatisticFieldName: 'Total_Trunk_Diameter'
+  },
+  {
+    statisticType: 'avg',
+    onStatisticField: 'Trunk_Diameter'
+  }
+]
+```
+
+### `toEsri`
+If true, the object returned will be an esri feature collection
 
 ## `winnow.prepareQuery`
 Returns a function that can be applied directly to a feature collection object an array of features, or a single feature. Useful when you want to pass a stream of features through a filter.
