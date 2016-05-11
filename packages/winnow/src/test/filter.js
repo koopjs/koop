@@ -13,6 +13,14 @@ test('With a where option', (t) => {
   run('trees', options, 12105, t)
 })
 
+test('With the toEsri option', (t) => {
+  const options = {
+    toEsri: true,
+    where: "Genus like '%Quercus%'"
+  }
+  run('trees', options, 12105, t)
+})
+
 test('With a field with a space', (t) => {
   const options = {
     where: '"total precip" > 1'

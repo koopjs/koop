@@ -7,9 +7,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Support esri-style spatial predicates
 * Support esri-style aggregations
 
+### Changed
+* Default spatial predicate to ST_Intersects
+
 ### Fixed
 * Support fields like `total precip`
 * downcased `var` and `stddev` work
+* within and contains were flipped
 
 ## [1.0.1] - 03-29-2016
 ### Fixed

@@ -18,7 +18,8 @@ function create (options) {
 function selectClause (options) {
   if (options.aggregates) return aggSelect(options.aggregates)
   else if (options.outStatistics) return outStatSelect(options.outStatistics)
-  else if (options.fields) return fieldSelect(options.fields)
+  else if (options.fields) return fieldSelect(options.fields, options)
+  else if (options.toEsri) return 'SELECT properties as attributes, esriGeom(geometry) as geometry FROM ?'
   else return 'SELECT * FROM ?'
 }
 
@@ -52,13 +53,22 @@ function fieldSelect (fields, options) {
   options = options || {}
   if (typeof fields !== 'string') fields = fields.join(',')
   else fields = fields.replace(/,\s+/g, ',')
-  const type = options.esri ? 'attributes' : 'properties'
-  return `SELECT type, pick(properties, "${fields}") as ${type}, geometry FROM ?`
+  let propType
+  let geomType
+  if (options.toEsri) {
+    propType = 'attributes'
+    geomType = 'esriGeom(geometry) as geometry'
+  } else {
+    propType = 'properties'
+    geomType = 'geometry'
+  }
+
+  return `SELECT type, pick(properties, "${fields}") as ${propType}, ${geomType} FROM ?`
 }
 
 function geometryClause (options) {
   if (!options.geometry) return
-  const spatialPredicate = options.spatialPredicate || esriPredicates[options.spatialRel] || 'ST_Within'
+  const spatialPredicate = options.spatialPredicate || esriPredicates[options.spatialRel] || 'ST_Intersects'
   return `${spatialPredicate}(geometry, ?)`
 }
 
