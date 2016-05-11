@@ -1,4 +1,5 @@
 const Terraformer = require('terraformer')
+const TfParser = require('terraformer-arcgis-parser')
 const sql = require('alasql')
 const geohash = require('ngeohash')
 const centroid = require('turf-centroid')
@@ -8,21 +9,21 @@ sql.fn.ST_Within = function (feature, filterGeom) {
   if (!feature || !feature.type) return false
   const filter = new Terraformer.Primitive(filterGeom)
   const TfFeature = new Terraformer.Primitive(feature)
-  return TfFeature.within(filter)
+  return filter.within(TfFeature)
 }
 
 sql.fn.ST_Contains = function (feature, filterGeom) {
   if (!feature || !feature.type) return false
   const filter = new Terraformer.Primitive(filterGeom)
   const TfFeature = new Terraformer.Primitive(feature)
-  return TfFeature.contains(filter)
+  return filter.contains(TfFeature)
 }
 
 sql.fn.ST_Intersects = function (feature, filterGeom) {
   if (!feature || !feature.type) return false
   const filter = new Terraformer.Primitive(filterGeom)
   const TfFeature = new Terraformer.Primitive(feature)
-  return TfFeature.intersects(filter)
+  return filter.intersects(TfFeature)
 }
 
 sql.fn.geohash = function (geometry, precision) {
@@ -36,6 +37,10 @@ sql.fn.geohash = function (geometry, precision) {
 sql.fn.pick = function (properties, fields) {
   fields = fields.split(',')
   return _.pick(properties, fields)
+}
+
+sql.fn.esriGeom = function (geometry) {
+  return TfParser.convert(geometry)
 }
 
 sql.aggr.hash = function (value, obj, acc) {
