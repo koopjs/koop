@@ -21,6 +21,7 @@ sql.fn.ST_Contains = function (feature, filterGeom) {
 
 sql.fn.ST_Intersects = function (feature, filterGeom) {
   if (!feature || !feature.type) return false
+  if (feature.type === 'Point') return sql.fn.ST_Contains(feature, filterGeom)
   const filter = new Terraformer.Primitive(filterGeom)
   const TfFeature = new Terraformer.Primitive(feature)
   return filter.intersects(TfFeature)

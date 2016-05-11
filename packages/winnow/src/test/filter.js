@@ -119,17 +119,6 @@ test('Without a spatialReference property on an Esri-style Envelope ', (t) => {
   run('trees', options, 29744, t)
 })
 
-test('With a ST_Within geometry predicate', (t) => {
-  const options = {
-    geometry: {
-      type: 'Polygon',
-      coordinates: [[[-118.163, 34.162], [-118.108, 34.162], [-118.108, 34.173], [-118.163, 34.173], [-118.163, 34.162]]]
-    },
-    spatialPredicate: 'ST_Within'
-  }
-  run('trees', options, 9878, t)
-})
-
 test('With a ST_Contains geometry predicate', (t) => {
   const options = {
     geometry: {
@@ -137,6 +126,17 @@ test('With a ST_Contains geometry predicate', (t) => {
       coordinates: [[[-118.163, 34.162], [-118.108, 34.162], [-118.108, 34.173], [-118.163, 34.173], [-118.163, 34.162]]]
     },
     spatialPredicate: 'ST_Contains'
+  }
+  run('trees', options, 9878, t)
+})
+
+test('With a ST_Within geometry predicate', (t) => {
+  const options = {
+    geometry: {
+      type: 'Polygon',
+      coordinates: [[[-118.163, 34.162], [-118.108, 34.162], [-118.108, 34.173], [-118.163, 34.173], [-118.163, 34.162]]]
+    },
+    spatialPredicate: 'ST_Within'
   }
   run('states', options, 1, t)
 })
