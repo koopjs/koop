@@ -2,8 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.1.0] - 05-11-2016
 ### Added
+* Options `toEsri` causes Winnow to return an esri feature collectio
 * Support esri-style spatial predicates
 * Support esri-style aggregations
 
@@ -32,6 +33,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 * Initial release
 
+[1.1.0]: https://github.com/dmfenton/winnow/compare/v1.0.1..v1.1.0
 [1.0.1]: https://github.com/dmfenton/winnow/compare/v1.0.0..v1.0.1
 [1.0.0]: https://github.com/dmfenton/winnow/compare/v1.0.0-alpha..v1.0.0
 [1.0.0-alpha]: https://github.com/dmfenton/winnow/releases/tag/v1.0.0-alpha
