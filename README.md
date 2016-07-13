@@ -38,7 +38,7 @@ See the [Caches](https://github.com/koopjs/koopjs.github.io/blob/master/docs/cac
 Koop should be installed as a dependency in a Node.js project like so:
 
 ```
-npm install koop --save
+npm install koop@^2 --save
 ```
 
 ### Pre-Installation on Windows
