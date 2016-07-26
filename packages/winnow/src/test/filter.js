@@ -13,6 +13,13 @@ test('With a where option', (t) => {
   run('trees', options, 12105, t)
 })
 
+test('With a field that has been uppercased', (t) => {
+  const options = {
+    where: "UPPER(Genus) like '%Quercus%'"
+  }
+  run('trees', options, 12105, t)
+})
+
 test('With the toEsri option', (t) => {
   const options = {
     toEsri: true,

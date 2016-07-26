@@ -1,6 +1,6 @@
 'use strict'
 const Terraformer = require('terraformer')
-const operators = ['>', '<', '=', '>=', '<=', 'like', 'ilike', 'in']
+const OPERATORS = ['>', '<', '=', '>=', '<=', 'like', 'ilike', 'in']
 
 function create (options) {
   let query = selectClause(options)
@@ -186,7 +186,7 @@ function decodeDomains (tokens, fields) {
  */
 function isBinaryOp (left, middle, right) {
   if (!left || !middle || !right) return false
-  return operators.indexOf(middle) > -1
+  return OPERATORS.indexOf(middle) > -1
 }
 
 /**
@@ -255,12 +255,18 @@ function jsonify (token, next, options) {
   const lastPar = token.lastIndexOf('(')
   if (lastPar > -1) {
     leading = token.slice(0, lastPar + 1)
-    token = token.replace(/\(/g, '')
+    token = token.slice(lastPar + 1, token.length)
+  }
+  const trailingParens = token.match(/\)+\s*$/)
+  let trailing = ''
+  if (trailingParens) {
+    trailing = trailingParens[0]
+    token = token.slice(0, trailingParens.index)
   }
   const selector = options.esri ? 'attributes' : 'properties'
   if (next) next = next.toLowerCase()
-  if (operators.indexOf(next) > -1) return `${leading} ${selector}->\`${token.replace(/'|"/g, '')}\``
-  else return leading + token
+  if (OPERATORS.indexOf(next) > -1) return `${leading}${selector}->\`${token.replace(/'|"/g, '')}\`${trailing}`
+  else return leading + token + trailing
 }
 
 function isNumeric (num) {

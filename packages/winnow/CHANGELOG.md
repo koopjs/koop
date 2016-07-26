@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Support calling functions on fields like `UPPER`
+
 ## [1.1.0] - 05-11-2016
 ### Added
 * Options `toEsri` causes Winnow to return an esri feature collectio
