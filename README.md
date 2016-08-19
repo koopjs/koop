@@ -13,7 +13,7 @@
 [standard-img]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
 [standard-url]: http://standardjs.com/
 
-<strong>NOTE: The 3.x branch is unstable at this time. Please use the 2.x branch unless you know what you are doing/strong>
+<strong>NOTE: The 3.x branch is unstable at this time. Please use the 2.x branch unless you know what you are doing</strong>
 
 Koop is [Express middleware](http://expressjs.com/guide/using-middleware.html) for simplifying geographic data consumption across many different providers and in many different formats.
 
