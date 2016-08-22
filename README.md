@@ -13,7 +13,7 @@
 [standard-img]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
 [standard-url]: http://standardjs.com/
 
-<strong>NOTE: The 3.x branch is unstable at this time. Please use the 2.x branch unless you know what you are doing/strong>
+**NOTE: The 3.x branch is currently unstable. Please use the 2.x branch unless you know what you are doing**
 
 Koop is [Express middleware](http://expressjs.com/guide/using-middleware.html) for simplifying geographic data consumption across many different providers and in many different formats.
 
@@ -35,9 +35,11 @@ Koop uses a local, in-memory object for caching data by default. If you want per
 
 See the [Caches](https://github.com/koopjs/koopjs.github.io/blob/master/docs/caches.md) section in the documentation for more information.
 
+
 ## Install
 
-Koop should be installed as a dependency in a Node.js project like so:
+Koop should be installed as a dependency in a Node.js project:
+
 
 ```
 npm install koop@^2 --save
@@ -51,22 +53,46 @@ Make sure the `PYTHON` environmental variable is set:
 SET PYTHON = C:\Python27\python\python.exe
 ```
 
-## Usage
+## Install Providers
 
-Koop works as [Express middleware](http://expressjs.com/guide/using-middleware.html). To use Koop you need a combination of Express, Koop, and Koop **providers**. Once Koop is in a project, you can add a Koop provider like [`koop-github`](https://github.com/koopjs/koop-github):
+Koop requires **providers** which connect to specific API. For example, to install [`koop-github`](https://github.com/koopjs/koop-github):
 
 ```
 npm install koop-github --save
 ```
 
-For a complete list of providers, see the [documentation](https://github.com/koopjs/koopjs.github.io/blob/master/docs/providers.md).
+For a complete list of providers, see the [documentation](https://github.com/koopjs/koopjs.github.io/blob/master/docs/providers.md). Read more about creating a new provider or modifying an existing provider [here](https://github.com/koopjs/koopjs.github.io/blob/master/docs/specs/provider.md).
 
-### Registering Providers
 
-Once you've installed koop and chosen a provider to work with you need to **register** the provider with Koop.
+## Creating a project
+
+
+Koop works as [Express middleware](http://expressjs.com/guide/using-middleware.html). To use Koop you need a combination of Express, Koop, and Koop **providers**.
+
+### Starting a new project
+
+If you don't yet have a Node project started:
+
+```
+mkdir project-directory
+cd !$
+npm init
+```
+
+### Install Koop and providers
+
+```
+npm install koop@^2 --save
+npm install koop-github --save
+```
+
+### Create a entry-point
+
+Create and modify _index.js_
 
 ```javascript
-// create a config object that tells koop where to write data and what db to use
+// create a config object that tells koop where to write data
+// and optionally what database cache to use
 var config = {
   "data_dir": "/usr/local/koop/",
   "db": {
@@ -93,7 +119,19 @@ app.listen(process.env.PORT || 1337, function () {
 });
 ```
 
-Read more about creating a new provider or modifying an existing provider [here](https://github.com/koopjs/koopjs.github.io/blob/master/docs/specs/provider.md).
+### Start the server and load data
+
+```
+node index.js
+```
+
+Then visit:
+
+- [Installed Providers](http://localhost:1337/providers/)
+- [GitHub Preview](http://localhost:1337/github/)
+- [View GitHub File](http://localhost:1337/github/CityOfPhiladelphia/phl-open-geodata/school_facilities::philadelphiaschool_facilities201302/preview)
+- [FeeatureServer Metadata](http://localhost:1337/github/CityOfPhiladelphia/phl-open-geodata/school_facilities::philadelphiaschool_facilities201302/FeatureServer)
+- [Layer Query](http://localhost:1337/github/CityOfPhiladelphia/phl-open-geodata/school_facilities::philadelphiaschool_facilities201302/FeatureServer/0/query)
 
 ## Roadmap
 
