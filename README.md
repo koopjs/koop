@@ -94,10 +94,10 @@ Create and modify _index.js_
 // create a config object that tells koop where to write data
 // and optionally what database cache to use
 var config = {
-  "data_dir": "/usr/local/koop/",
-  "db": {
-    "conn": "postgres://localhost/koopdev"
-  }
+  // "data_dir": "/usr/local/koop/",
+  // "db": {
+  //   "conn": "postgres://localhost/koopdev"
+  // }
 };
 
 // pass the config to koop
