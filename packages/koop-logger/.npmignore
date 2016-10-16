@@ -4,3 +4,4 @@ test
 .gitignore
 .flowconfig
 .travis.yml
+*.log
