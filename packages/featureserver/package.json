@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "standard && mocha test"
   },
   "author": "Daniel Fenton <dfenton@esri.com>",
   "license": "Apache-2.0",

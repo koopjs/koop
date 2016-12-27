@@ -15,6 +15,7 @@ module.exports = query
  */
 function query (data, params) {
   // TODO how do I support passing in the actual values in a more reasonable way
+  if (data.statistics) return statisticsResponse(data.statistics)
   if (params.returnCountOnly && data.count) return {count: data.count}
   let geomType
   const queryParams = coerceQuery(params)
@@ -25,10 +26,8 @@ function query (data, params) {
   // TODO this should happen within winnow
   // add objectIds as long as this is not a stats request
   if (!queryParams.outStatistics) {
-    console.log(queryParams)
-    queriedData.features = queriedData.features.map((f, i) => {
+    queriedData.features.forEach((f, i) => {
       f.attributes.OBJECTID = i
-      return f
     })
   }
 
@@ -71,6 +70,50 @@ function queryStatistics (data, queryParams) {
   })
   const json = Templates.render('statistics', statResponse, queryParams)
   return json
+}
+
+function statisticsResponse (stats) {
+  if (!Array.isArray(stats)) stats = [stats]
+  return {
+    displayFieldName: '',
+    fieldAliases: createFieldAliases(stats),
+    fields: createStatFields(stats),
+    features: createStatFeatures(stats)
+  }
+}
+
+function createFieldAliases (stats) {
+  const fields = Object.keys(stats[0])
+  return fields.reduce((aliases, field) => {
+    aliases[field] = field
+    return aliases
+  }, {})
+}
+
+function createStatFeatures(stats) {
+  return stats.map(attributes => { return { attributes }})
+}
+
+function createStatFields (stats) {
+  return Object.keys(stats[0]).map((field) => {
+    const sample = _.find(stats, (s => {
+        return stats[field] !== null
+      }
+    ))
+    const statField = {
+      name: field,
+      type: detectType(sample[field]),
+      alias: field
+    }
+    if (statField.type === 'esriFieldTypeString') statField.length = 254
+    return statField
+  }, {})
+}
+
+function detectType (value) {
+  if (!value) return null
+  else if (typeof value === 'string') return 'esriFieldTypeString'
+  else if (typeof value === 'number') return 'esriFieldTypeDouble'
 }
 
 function idsOnly (data) {

@@ -8,7 +8,6 @@ describe('Query operatons', function () {
   describe('when getting featureserver features from geojson', function () {
     it('should return a valid features', (done) => {
       const response = FeatureServer.query(data, {})
-      // console.log(response)
       response.should.be.an.instanceOf(Object)
       response.fields.should.be.an.instanceOf(Array)
       response.features.should.be.an.instanceOf(Array)
@@ -127,67 +126,102 @@ describe('Query operatons', function () {
     })
   })
 
-  describe('when querying for statistics', function () {
-    it('should return correct fields and features for one stat', (done) => {
-      const response = FeatureServer.query(data, {
-        outStatistics: '[{"statisticType": "MIN", "onStatisticField": "total precip","outStatisticFieldName":"min_precip"}]'
+  describe('querying for statistics', function () {
+    describe('results are passed in', function () {
+      it('should properly render a group-by response', function (done) {
+        const input = require('./fixtures/stats-in.json')
+        const response = FeatureServer.query({statistics: input})
+        const expected = require('./fixtures/stats-out.json')
+        JSON.stringify(response).should.equal(JSON.stringify(expected))
+        done()
       })
-      response.should.be.an.instanceOf(Object)
-      response.fields.length.should.equal(1)
-      response.features.length.should.equal(1)
-      response.features[0]['attributes']['min_precip'].should.equal(0)
-      done()
+
+      it('should properly render a regular response', function (done) {
+        const response = FeatureServer.query({
+          statistics: {
+            TOTAL_STUD_SUM: 5421,
+            ZIP_CODE_COUNT: 18
+          }
+        })
+        const expected = require('./fixtures/stats-out-single.json')
+        JSON.stringify(response).should.equal(JSON.stringify(expected))
+        done()
+      })
     })
 
-    it('should return correct number of fields and features for 2 stats', (done) => {
-      const response = FeatureServer.query(data, {
-        outStatistics: '[{"statisticType": "min", "onStatisticField": "total precip","outStatisticFieldName":"min_precip"},{"statisticType": "max", "onStatisticField": "total precip","outStatisticFieldName":"max_precip"}]'
+    describe('calculating from geojson', function () {
+      it('should return correct fields and features for one stat', (done) => {
+        const response = FeatureServer.query(data, {
+          outStatistics: '[{"statisticType": "MIN", "onStatisticField": "total precip","outStatisticFieldName":"min_precip"}]'
+        })
+        response.should.be.an.instanceOf(Object)
+        response.fields.length.should.equal(1)
+        response.features.length.should.equal(1)
+        response.features[0]['attributes']['min_precip'].should.equal(0)
+        done()
       })
-      response.should.be.an.instanceOf(Object)
-      response.fields.length.should.equal(2)
-      response.features.length.should.equal(1)
-      response.features[0]['attributes']['min_precip'].should.equal(0)
-      response.features[0]['attributes']['max_precip'].should.equal(1.5)
-      done()
-    })
 
-    it('should return correct statistics for a count operation', (done) => {
-      const response = FeatureServer.query(data, {
-        outStatistics: '[{"statisticType": "count", "onStatisticField": "total precip","outStatisticFieldName":"count_precip"}]'
+      it('should return correct fields and features for one stat when input is an object', (done) => {
+        const response = FeatureServer.query(data, {
+          outStatistics: [{'statisticType': 'MIN', 'onStatisticField': 'total precip', 'outStatisticFieldName': 'min_precip'}]
+        })
+        response.should.be.an.instanceOf(Object)
+        response.fields.length.should.equal(1)
+        response.features.length.should.equal(1)
+        response.features[0]['attributes']['min_precip'].should.equal(0)
+        done()
       })
-      response.should.be.an.instanceOf(Object)
-      response.fields.length.should.equal(1)
-      response.features.length.should.equal(1)
-      response.features[0]['attributes']['count_precip'].should.not.equal(0)
-      done()
-    })
 
-    it('should return correct number of fields and features for sum stats', (done) => {
-      const response = FeatureServer.query(data, {
-        outStatistics: '[{"statisticType": "sum", "onStatisticField": "total precip","outStatisticFieldName": "sum_precip"}]'
+      it('should return correct number of fields and features for 2 stats', (done) => {
+        const response = FeatureServer.query(data, {
+          outStatistics: '[{"statisticType": "min", "onStatisticField": "total precip","outStatisticFieldName":"min_precip"},{"statisticType": "max", "onStatisticField": "total precip","outStatisticFieldName":"max_precip"}]'
+        })
+        response.should.be.an.instanceOf(Object)
+        response.fields.length.should.equal(2)
+        response.features.length.should.equal(1)
+        response.features[0]['attributes']['min_precip'].should.equal(0)
+        response.features[0]['attributes']['max_precip'].should.equal(1.5)
+        done()
       })
-      response.should.be.an.instanceOf(Object)
-      response.fields.length.should.equal(1)
-      response.features.length.should.equal(1)
-      response.features[0]['attributes']['sum_precip'].should.equal(135.69000000000003)
-      done()
-    })
 
-    it('should return correct number of fields and features for avg stats', (done) => {
-      const response = FeatureServer.query(data, {
-        outStatistics: '[{"statisticType": "avg", "onStatisticField": "total precip","outStatisticFieldName":"avg_precip"}]'
+      it('should return correct statistics for a count operation', (done) => {
+        const response = FeatureServer.query(data, {
+          outStatistics: '[{"statisticType": "count", "onStatisticField": "total precip","outStatisticFieldName":"count_precip"}]'
+        })
+        response.should.be.an.instanceOf(Object)
+        response.fields.length.should.equal(1)
+        response.features.length.should.equal(1)
+        response.features[0]['attributes']['count_precip'].should.not.equal(0)
+        done()
       })
-      response.features[0]['attributes']['avg_precip'].should.equal(0.3253956834532375)
-      done()
-    })
 
-    it('should return correct number of fields and features for var/stddev stats', (done) => {
-      const response = FeatureServer.query(data, {
-        outStatistics: '[{"statisticType":"var","onStatisticField":"total precip","outStatisticFieldName":"var_precip"},{"statisticType":"stddev","onStatisticField": "total precip","outStatisticFieldName":"stddev_precip"}]'
+      it('should return correct number of fields and features for sum stats', (done) => {
+        const response = FeatureServer.query(data, {
+          outStatistics: '[{"statisticType": "sum", "onStatisticField": "total precip","outStatisticFieldName": "sum_precip"}]'
+        })
+        response.should.be.an.instanceOf(Object)
+        response.fields.length.should.equal(1)
+        response.features.length.should.equal(1)
+        response.features[0]['attributes']['sum_precip'].should.equal(135.69000000000003)
+        done()
       })
-      response.features[0]['attributes']['var_precip'].should.equal(0.07661480700055341)
-      response.features[0]['attributes']['stddev_precip'].should.equal(0.27646171244241985)
-      done()
+
+      it('should return correct number of fields and features for avg stats', (done) => {
+        const response = FeatureServer.query(data, {
+          outStatistics: '[{"statisticType": "avg", "onStatisticField": "total precip","outStatisticFieldName":"avg_precip"}]'
+        })
+        response.features[0]['attributes']['avg_precip'].should.equal(0.3253956834532375)
+        done()
+      })
+
+      it('should return correct number of fields and features for var/stddev stats', (done) => {
+        const response = FeatureServer.query(data, {
+          outStatistics: '[{"statisticType":"var","onStatisticField":"total precip","outStatisticFieldName":"var_precip"},{"statisticType":"stddev","onStatisticField": "total precip","outStatisticFieldName":"stddev_precip"}]'
+        })
+        response.features[0]['attributes']['var_precip'].should.equal(0.07661480700055341)
+        response.features[0]['attributes']['stddev_precip'].should.equal(0.27646171244241985)
+        done()
+      })
     })
   })
 
