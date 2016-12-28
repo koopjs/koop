@@ -2,11 +2,14 @@
   "name": "featureserver",
   "version": "1.0.0",
   "description": "",
-  "main": "featureserver.js",
+  "main": "dist/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
+    "clean": "rm -rf dist",
+    "compile": "buble -i src -o dist",
+    "package": "npm run clean && npm run compile",
     "test": "standard && mocha test"
   },
   "author": "Daniel Fenton <dfenton@esri.com>",
@@ -20,6 +23,7 @@
     "winnow": "^1.0.1"
   },
   "devDependencies": {
+    "buble": "^0.15.1",
     "mocha": "^2.4.5",
     "should": "^8.3.1",
     "standard": "^7.0.1"
