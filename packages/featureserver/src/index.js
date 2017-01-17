@@ -2,7 +2,7 @@
 const info = require('./info.js')
 
 module.exports = {
-  route: require('./controller.js').route,
+  route: require('./route.js'),
   serverInfo: info.serverInfo,
   serviceInfo: info.serviceInfo,
   layerInfo: info.layerInfo,

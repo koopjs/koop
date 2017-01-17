@@ -1,5 +1,6 @@
-const fsInfo = require('./info.js')
-const fsQuery = require('./query.js')
+const FsInfo = require('./info.js')
+const FsQuery = require('./query.js')
+const Templates = require('./templates')
 
 module.exports = route
 
@@ -12,48 +13,44 @@ module.exports = route
  * @param  {Object}   geojson
  */
 function route (req, res, geojson, options) {
-  delete req.query.geometry
   if (req.query.callack) req.query.callback = sanitizeCallback(req.query.callback)
 
   // check for info requests and respond like ArcGIS Server would
   if (isInfoReq(req)) return res.status(200).send(Templates.render('server'))
   // if this is for a method we can handle like query
-  const serverMethod = getServerMethod(req.params)
-  if (serverMethod) return execServerMethod(serverMethod, req, res, geojson)
-  else return execInfo(res, req.query, geojson)
+  const method = req.params && req.params.method
+  switch (method) {
+    case 'query': return execQuery(req, res, geojson)
+    default: return execInfo(req, res, method, geojson)
+  }
 }
-
 
 function isInfoReq (req) {
   req._parsedUrl.pathname.substr(-4) === 'info'
 }
 
-function getServerMethod (params) {
-  if (params.method && featureServices[params.method]) return featureServices[params.method]
-  else return false
-}
-
-function execServerMethod (method, req, res, geojson) {
+function execQuery (method, req, res, geojson) {
+  let response
   try {
-    const response = method(geojson, req.query || {})
-
-    if (req.query.callback) res.send(`${callback}(${JSON.stringify(d)})`)
-    else res.status(200).json(d)
-
+    response = FsQuery(geojson, req.query || {})
   } catch (e) {
     res.status(500).json({error: e.message})
   }
-
+  if (req.query.callback) res.send(`${req.query.callback}(${JSON.stringify(response)})`)
+  else res.status(200).json(response)
 }
 
-function execInfo (res, query, geojson) {
+function execInfo (req, res, method, geojson) {
+  const infoFunc = FsInfo[method]
+  if (!infoFunc) return res.status(500).json({error: 'Method not supported'})
+  let info
   try {
-    const info = fsInfo(geojson, query)
-    if (query.callback) res.send(`${query.callback}(${JSON.stringify(info)})`)
-    else res.status(200).json(info)
+    info = infoFunc(geojson, req.query)
   } catch (e) {
     res.status(500).json({error: e.message})
   }
+  if (req.query.callback) res.send(`${req.query.callback}(${JSON.stringify(info)})`)
+  else res.status(200).json(info)
 }
 
 function sanitizeCallback (callback) {
