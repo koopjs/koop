@@ -1,12 +1,11 @@
-/* global describe, it */
-const FeatureServer = require('../src/FeatureServer.js')
-const should = require('should')
-var data = require('./fixtures/snow.json')
-var polyData = require('./fixtures/polygon.json')
+const FeatureServer = require('../src')
+const data = require('./fixtures/snow.json')
+const should = require('should') // eslint-disable-line
+const polyData = require('./fixtures/polygon.json')
 
 describe('Query operatons', function () {
   describe('when getting featureserver features from geojson', function () {
-    it('should return a valid features', (done) => {
+    it('should return a valid features', () => {
       const response = FeatureServer.query(data, {})
       response.should.be.an.instanceOf(Object)
       response.fields.should.be.an.instanceOf(Array)
@@ -15,64 +14,58 @@ describe('Query operatons', function () {
         feature.should.have.property('geometry')
         feature.should.have.property('attributes')
       })
-      done()
     })
   })
 
   describe('when getting featureserver features by id queries', function () {
-    it('should return a proper features', (done) => {
+    it('should return a proper features', () => {
       const response = FeatureServer.query(data, { objectIds: '1,2,3' })
       response.should.be.an.instanceOf(Object)
       response.fields.should.be.an.instanceOf(Array)
       response.features.should.have.length(3)
-      done()
     })
 
-    it('should return only count of features', (done) => {
+    it('should return only count of features', () => {
       const response = FeatureServer.query(data, { returnCountOnly: true, objectIds: '1,2,3' })
       response.should.be.an.instanceOf(Object)
       response.should.have.property('count')
       response.count.should.equal(3)
-      done()
     })
   })
 
   describe('when getting features with returnIdsOnly', function () {
-    it('should return only ids of features', (done) => {
+    it('should return only ids of features', () => {
       const response = FeatureServer.query(data, { returnIdsOnly: true, objectIds: '1,2,3' })
       response.should.be.an.instanceOf(Object)
       response.should.have.property('objectIds')
       response.objectIds.length.should.equal(3)
-      done()
     })
   })
 
   describe('when filtering features with a geometry', function () {
-    it('should return geometries that are contained', (done) => {
+    it('should return geometries that are contained', () => {
       const response = FeatureServer.query(data, {
         geometry: {xmin: -110, ymin: 30, xmax: -106, ymax: 50},
         geometryType: 'esriGeometryEnvelope'
       })
       response.should.be.an.instanceOf(Object)
       response.features.length.should.equal(100)
-      done()
     })
   })
 
   describe('when filtering features with a geometry and outSR', function () {
-    it('should return geometries that are contained', (done) => {
+    it('should return geometries that are contained', () => {
       const response = FeatureServer.query(data, {
         geometry: {xmin: -110, ymin: 30, xmax: -106, ymax: 50, spatialReference: { wkid: 4326 }},
         geometryType: 'esriGeometryEnvelope'
       })
       response.should.be.an.instanceOf(Object)
       response.features.length.should.equal(100)
-      done()
     })
   })
 
   describe('when filtering features with a geometry and outSR', function () {
-    it('should return geometries that are contained', (done) => {
+    it('should return geometries that are contained', () => {
       const response = FeatureServer.query(data, {
         geometry: {xmin: -110, ymin: 30, xmax: -106, ymax: 50, spatialReference: { wkid: 4326 }},
         geometryType: 'esriGeometryEnvelope',
@@ -80,12 +73,11 @@ describe('Query operatons', function () {
       })
       response.should.be.an.instanceOf(Object)
       response.features.length.should.equal(100)
-      done()
     })
   })
 
   describe('when filtering polygon features with a geometry', function () {
-    it('should return geometries that are contained by given bounds', (done) => {
+    it('should return geometries that are contained by given bounds', () => {
       const response = FeatureServer.query(polyData, {
         geometry: {xmin: -180, ymin: -90, xmax: 180, ymax: 90, spatialReference: { wkid: 4326 }},
         geometryType: 'esriGeometryEnvelope',
@@ -93,50 +85,45 @@ describe('Query operatons', function () {
       })
       response.should.be.an.instanceOf(Object)
       response.features.length.should.equal(1)
-      done()
     })
   })
 
   describe('when filtering features with where clauses', function () {
-    it('should return filtered features with less than', (done) => {
+    it('should return filtered features with less than', () => {
       const response = FeatureServer.query(data, {
         where: 'latitude < 39.9137'
       })
       response.should.be.an.instanceOf(Object)
       response.features.length.should.equal(261)
-      done()
     })
 
-    it('should return filtered features with greater than', (done) => {
+    it('should return filtered features with greater than', () => {
       const response = FeatureServer.query(data, {
         where: 'latitude > 39.9137'
       })
       response.should.be.an.instanceOf(Object)
       response.features.length.should.equal(144)
-      done()
     })
 
-    it('should return filtered features with equal', (done) => {
+    it('should return filtered features with equal', () => {
       const response = FeatureServer.query(data, {
         where: 'latitude = 39.9137'
       })
       response.should.be.an.instanceOf(Object)
       response.features.length.should.equal(1)
-      done()
     })
   })
 
   describe('querying for statistics', function () {
     describe('results are passed in', function () {
-      it('should properly render a group-by response', function (done) {
+      it('should properly render a group-by response', function () {
         const input = require('./fixtures/stats-in.json')
         const response = FeatureServer.query({statistics: input})
         const expected = require('./fixtures/stats-out.json')
         JSON.stringify(response).should.equal(JSON.stringify(expected))
-        done()
       })
 
-      it('should properly render a regular response', function (done) {
+      it('should properly render a regular response', function () {
         const response = FeatureServer.query({
           statistics: {
             TOTAL_STUD_SUM: 5421,
@@ -145,12 +132,11 @@ describe('Query operatons', function () {
         })
         const expected = require('./fixtures/stats-out-single.json')
         JSON.stringify(response).should.equal(JSON.stringify(expected))
-        done()
       })
     })
 
     describe('calculating from geojson', function () {
-      it('should return correct fields and features for one stat', (done) => {
+      it('should return correct fields and features for one stat', () => {
         const response = FeatureServer.query(data, {
           outStatistics: '[{"statisticType": "MIN", "onStatisticField": "total precip","outStatisticFieldName":"min_precip"}]'
         })
@@ -158,10 +144,9 @@ describe('Query operatons', function () {
         response.fields.length.should.equal(1)
         response.features.length.should.equal(1)
         response.features[0]['attributes']['min_precip'].should.equal(0)
-        done()
       })
 
-      it('should return correct fields and features for one stat when input is an object', (done) => {
+      it('should return correct fields and features for one stat when input is an object', () => {
         const response = FeatureServer.query(data, {
           outStatistics: [{'statisticType': 'MIN', 'onStatisticField': 'total precip', 'outStatisticFieldName': 'min_precip'}]
         })
@@ -169,10 +154,9 @@ describe('Query operatons', function () {
         response.fields.length.should.equal(1)
         response.features.length.should.equal(1)
         response.features[0]['attributes']['min_precip'].should.equal(0)
-        done()
       })
 
-      it('should return correct number of fields and features for 2 stats', (done) => {
+      it('should return correct number of fields and features for 2 stats', () => {
         const response = FeatureServer.query(data, {
           outStatistics: '[{"statisticType": "min", "onStatisticField": "total precip","outStatisticFieldName":"min_precip"},{"statisticType": "max", "onStatisticField": "total precip","outStatisticFieldName":"max_precip"}]'
         })
@@ -181,10 +165,9 @@ describe('Query operatons', function () {
         response.features.length.should.equal(1)
         response.features[0]['attributes']['min_precip'].should.equal(0)
         response.features[0]['attributes']['max_precip'].should.equal(1.5)
-        done()
       })
 
-      it('should return correct statistics for a count operation', (done) => {
+      it('should return correct statistics for a count operation', () => {
         const response = FeatureServer.query(data, {
           outStatistics: '[{"statisticType": "count", "onStatisticField": "total precip","outStatisticFieldName":"count_precip"}]'
         })
@@ -192,10 +175,9 @@ describe('Query operatons', function () {
         response.fields.length.should.equal(1)
         response.features.length.should.equal(1)
         response.features[0]['attributes']['count_precip'].should.not.equal(0)
-        done()
       })
 
-      it('should return correct number of fields and features for sum stats', (done) => {
+      it('should return correct number of fields and features for sum stats', () => {
         const response = FeatureServer.query(data, {
           outStatistics: '[{"statisticType": "sum", "onStatisticField": "total precip","outStatisticFieldName": "sum_precip"}]'
         })
@@ -203,24 +185,21 @@ describe('Query operatons', function () {
         response.fields.length.should.equal(1)
         response.features.length.should.equal(1)
         response.features[0]['attributes']['sum_precip'].should.equal(135.69000000000003)
-        done()
       })
 
-      it('should return correct number of fields and features for avg stats', (done) => {
+      it('should return correct number of fields and features for avg stats', () => {
         const response = FeatureServer.query(data, {
           outStatistics: '[{"statisticType": "avg", "onStatisticField": "total precip","outStatisticFieldName":"avg_precip"}]'
         })
         response.features[0]['attributes']['avg_precip'].should.equal(0.3253956834532375)
-        done()
       })
 
-      it('should return correct number of fields and features for var/stddev stats', (done) => {
+      it('should return correct number of fields and features for var/stddev stats', () => {
         const response = FeatureServer.query(data, {
           outStatistics: '[{"statisticType":"var","onStatisticField":"total precip","outStatisticFieldName":"var_precip"},{"statisticType":"stddev","onStatisticField": "total precip","outStatisticFieldName":"stddev_precip"}]'
         })
         response.features[0]['attributes']['var_precip'].should.equal(0.07661480700055341)
         response.features[0]['attributes']['stddev_precip'].should.equal(0.27646171244241985)
-        done()
       })
     })
   })

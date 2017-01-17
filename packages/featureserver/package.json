@@ -1,6 +1,6 @@
 {
   "name": "featureserver",
-  "version": "1.0.0",
+  "version": "0.0.0-alpha",
   "description": "",
   "main": "dist/index.js",
   "directories": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "compile": "buble -i src -o dist",
+    "compile": "buble -i src -o dist && cp -r src/templates dist",
     "package": "npm run clean && npm run compile",
     "test": "standard && mocha test"
   },
@@ -27,5 +27,8 @@
     "mocha": "^2.4.5",
     "should": "^8.3.1",
     "standard": "^7.0.1"
+  },
+  "standard": {
+    "globals": ["describe", "it", "before", "after", "beforeEach", "afterEach"]
   }
 }

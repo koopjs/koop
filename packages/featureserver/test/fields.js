@@ -10,18 +10,16 @@ describe('when building esri fields', function () {
   var fieldObj = createFields(input)
   var fields = fieldObj.fields
 
-  it('fields should be an array', (done) => {
+  it('fields should be an array', () => {
     fieldObj.should.be.an.instanceOf(Object)
     fields.should.be.an.instanceOf(Array)
-    done()
   })
 
-  it('IOD field should equal OBJECTID', (done) => {
+  it('IOD field should equal OBJECTID', () => {
     fieldObj.oidField.should.equal('OBJECTID')
-    done()
   })
 
-  it('attributes should contain a double, int, and string', (done) => {
+  it('attributes should contain a double, int, and string', () => {
     fields.forEach(function (f) {
       f.should.have.property('type')
       f.should.have.property('name')
@@ -31,7 +29,6 @@ describe('when building esri fields', function () {
     fields[1].type.should.equal('esriFieldTypeDouble')
     fields[2].type.should.equal('esriFieldTypeString')
     fields[3].type.should.equal('esriFieldTypeDate')
-    done()
   })
 
   describe('proper dates get through, improper dates fail', () => {
@@ -43,12 +40,10 @@ describe('when building esri fields', function () {
     const fieldObj = createFields(input)
     const fields = fieldObj.fields
 
-    it('Should not allow improper date formats through', (done) => {
+    it('Should not allow improper date formats through', () => {
       fields[0].type.should.equal('esriFieldTypeDate')
       fields[1].type.should.equal('esriFieldTypeString')
       fields[2].type.should.equal('esriFieldTypeString')
-      done()
     })
   })
-
 })
