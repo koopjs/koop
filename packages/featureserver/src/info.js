@@ -15,7 +15,6 @@ function layerInfo (geojson, params) {
   json = Utils.setGeomType(json, (geojson && geojson.features) ? geojson.features[0] : null)
 
   json.fullExtent = json.initialExtent = json.extent = geojson.extent || esriExtent(geojson.features)
-
   if (Utils.isTable(json, geojson)) json.type = 'Table'
 
   return json
@@ -54,18 +53,16 @@ function serviceInfo (geojson, params) {
 function layers (data, params) {
   let layerJson
   let json
-
   if (!data.length) {
-    layerJson = Templates.render('layer.json', data, params)
+    layerJson = Templates.render('layer', data, params)
     layerJson.extent = layerJson.fullExtent = layerJson.initialExtent = esriExtent(data.features)
     json = { layers: [layerJson], tables: [] }
-
     return json
   } else {
     json = { layers: [], tables: [] }
 
     data.forEach(function (layer, i) {
-      layerJson = Templates.render('layer.json', layer, params)
+      layerJson = Templates.render('layer', layer, params)
       layerJson.id = i
       layerJson.extent = layerJson.fullExtent = layerJson.initialExtent = esriExtent(layer.features)
       json.layers.push(layerJson)

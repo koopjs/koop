@@ -17,9 +17,9 @@ function query (data, params) {
   // TODO how do I support passing in the actual values in a more reasonable way
   if (data.statistics) return statisticsResponse(data.statistics)
   if (params.returnCountOnly && data.count) return {count: data.count}
-  let geomType
+  if (params.where === '1=1') delete params.where
   const queryParams = coerceQuery(params)
-  geomType = Utils.setGeomType(data.features[0])
+  const geomType = Utils.setGeomType(data.features[0])
   queryParams.toEsri = true
   const queriedData = Winnow.query(data, queryParams)
 

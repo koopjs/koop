@@ -23,12 +23,22 @@
     "winnow": "^1.0.1"
   },
   "devDependencies": {
+    "async": "^2.1.4",
     "buble": "^0.15.1",
+    "express": "^4.14.0",
     "mocha": "^2.4.5",
     "should": "^8.3.1",
-    "standard": "^7.0.1"
+    "standard": "^7.0.1",
+    "supertest": "^2.0.1"
   },
   "standard": {
-    "globals": ["describe", "it", "before", "after", "beforeEach", "afterEach"]
+    "globals": [
+      "describe",
+      "it",
+      "before",
+      "after",
+      "beforeEach",
+      "afterEach"
+    ]
   }
 }

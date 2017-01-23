@@ -39,5 +39,6 @@ function setGeomType (json, feature) {
 function isTable (json, data) {
   var noExtent = (!json.fullExtent.xmin && !json.fullExtent.ymin) || json.fullExtent.xmin === Infinity
   var hasFeatures = data.features || data[0].features
-  return !!(noExtent && hasFeatures)
+  if (noExtent && !hasFeatures) return true
+  else return false
 }
