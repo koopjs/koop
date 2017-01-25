@@ -1,5 +1,4 @@
 var FeatureServer = require('featureserver')
-var express = require('express')
 
 function Plugin () {}
 

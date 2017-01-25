@@ -25,6 +25,6 @@
     "standard": "^8.6.0"
   },
   "dependencies": {
-    "featureserver": *
+    "featureserver": "*"
   }
 }
