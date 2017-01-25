@@ -1,7 +1,7 @@
 {
   "name": "featureserver",
-  "version": "0.0.0-alpha",
-  "description": "",
+  "version": "1.0.0",
+  "description": "*An open source implementation of the GeoServices specification*",
   "main": "dist/index.js",
   "directories": {
     "test": "test"
@@ -40,5 +40,19 @@
       "beforeEach",
       "afterEach"
     ]
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FeatureServer/FeatureServer.git"
+  },
+  "keywords": [
+    "featureserver",
+    "geoservices",
+    "geojson",
+    "sql"
+  ],
+  "bugs": {
+    "url": "https://github.com/FeatureServer/FeatureServer/issues"
+  },
+  "homepage": "https://github.com/FeatureServer/FeatureServer#readme"
 }
