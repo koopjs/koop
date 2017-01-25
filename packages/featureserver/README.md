@@ -40,7 +40,28 @@ Supports: '/FeatureServer', '/FeatureServer/layers', '/FeatureServer/:layer', '/
 Note: only `query` and `info` are supported methods at this type
 
 ```js
-FeatureServer.route(req, res, options)
+FeatureServer.route(req, res, data, options)
+```
+
+Data is a geojson object extended with some additional properties. These properties are optional and can be used to provide more specific metadata or to shortcut the built in filtering mechanism.
+
+e.g.
+```js
+{
+  type: 'FeatureCollection'
+  features: Array,
+  statistics: Object, // pass statistics to an outStatistics request to or else they will be calculated from geojson features passed in
+  metadata: {
+    name: String, //
+    extent:  Object || Array // valid extent object or 2 coord array
+    id: String // unique identifier field
+  },
+  filtersApplied: {
+    geometry: Boolean, // true if a geometric filter has already been applied to the data
+    where: Boolean // true if a sql-like where filter has already been applied to the data
+  }
+  count: Number // pass count if the number of features in a query has been precalculated
+}
 ```
 
 ### FeatureServer.query

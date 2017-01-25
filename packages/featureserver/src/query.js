@@ -14,10 +14,11 @@ module.exports = query
  * @param {function} callback
  */
 function query (data, params) {
-  // TODO how do I support passing in the actual values in a more reasonable way
+  // TODO clean up this series of if statements
+  if (data.filtersApplied.geometry) delete params.geometry
+  if (data.filtersApplied.where || params.where === '1=1') delete params.where
   if (data.statistics) return statisticsResponse(data.statistics)
   if (params.returnCountOnly && data.count) return {count: data.count}
-  if (params.where === '1=1') delete params.where
   const queryParams = coerceQuery(params)
   const geomType = Utils.setGeomType(data.features[0])
   queryParams.toEsri = true
