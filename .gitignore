@@ -8,3 +8,4 @@ test/test.log.**
 .flowconfig
 .vscode
 .idea
+dist

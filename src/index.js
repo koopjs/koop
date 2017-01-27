@@ -2,255 +2,223 @@
 'use strict'
 const express = require('express')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 const pkg = require('./package.json')
 const _ = require('lodash')
-const multipart = require('connect-multiparty')()
-const lib = require('./lib')
 const fs = require('fs')
+const Cache = require('./Cache')
+const LocalDb = require('./Local')
+const Logger = require('koop-logger')
+const BaseController = require('./Controller')
+const Events = require('events')
+const Util = require('util')
+const path = require('path')
+const FeatureServer = require('koop-featureserver-plugin')
 
-module.exports = function (config) {
-  const koop = express()
-
-  // inherit everything from lib
-  // TODO: only expose constructors and methods that are used by other modules
-  // TODO: deprecate then remove exposed lib modules from koop
-  for (let method in lib) {
-    if (lib.hasOwnProperty(method)) koop[method] = lib[method]
-  }
-
-  koop.version = pkg.version
-  koop.config = config || {}
-  const Logger = require('koop-logger')
-  koop.log = new Logger(koop.config)
-
-  // default to node's build in fs
-  koop.fs = fs
-
+function Koop (config) {
+  this.version = pkg.version
+  this.server = initServer()
+  this.config = require('config')
   // default to LocalDB cache
   // cache registration overrides this
-  koop.cache = new koop.DataCache()
-  koop.cache.db = koop.LocalDB
-
+  this.cache = initDefaultCache()
+  this.log = new Logger(config)
+  this.pluginRoutes = []
+  this._registerOutput(FeatureServer)
+  this.fs = fs
   // object for keeping track of registered services
   // TODO: why not called providers?
   // if services includes caches and plugins we should put them in here too
-  koop.services = {}
-
+  this.services = {}
   // TODO: consolidate status, services, `/providers` routes
-  koop.status = {
-    version: koop.version,
+  this.status = {
+    version: this.version,
     providers: {}
   }
 
-  // expose default routes for later additions & edits by plugins
-  koop.defaultRoutes = {
-    'featureserver': ['/FeatureServer/:layer/:method', '/FeatureServer/:layer', '/FeatureServer'],
-    'preview': ['/preview'],
-    'drop': ['/drop']
-  }
+  this.server.get('/status', (req, res) => res.json(this.status))
 
-  if (!koop.config.db || !koop.config.db.conn) {
-    koop.log.warn('No cache configured, defaulting to local in-memory cache. No data will be cached across server sessions.')
-  }
+  this.server.on('mount', () => {
+    // put this on a handler
+    if (!this.config.db || !this.config.db.conn) {
+      this.log.warn('No cache configured, defaulting to local in-memory cache. No data will be cached across server sessions.')
+    }
+    this.log.info(`Koop ${this.version} mounted at ${this.server.mountpath}`)
+  })
+}
 
-  /**
-   * express middleware setup
-   */
+Util.inherits(Koop, Events)
 
-   // parse application/json
-  koop.use(bodyParser.json({limit: '10mb'}))
+function initDefaultCache () {
+  const cache = new Cache()
+  cache.db = LocalDb
+  return cache
+}
 
-  // handle POST requests
+Koop.Controller = require('./controller')
+
+/**
+ * express middleware setup
+ */
+function initServer () {
+  return express()
+  // parse application/json
+  .use(bodyParser.json({limit: '10000kb'}))
   // parse application/x-www-form-urlencoded
-  koop.use(bodyParser.urlencoded({ extended: false }))
-
-  koop.use(function (req, res, next) {
+  .use(bodyParser.urlencoded({ extended: false }))
+  .disable('X-Powered-By')
+  // TODO this should just live inside featureserver
+  .use((req, res, next) => {
     // request parameters can come from query url or POST body
     req.query = _.extend(req.query || {}, req.body || {})
-
-    // remove the x powered by header from all responses
-    res.removeHeader('X-Powered-By')
     next()
   })
-
   // for demos and preview maps in providers
-  koop.set('view engine', 'ejs')
-  koop.use(express.static(__dirname + '/public'))
+  .set('view engine', 'ejs')
+  .use(express.static(__dirname + '/public'))
+  .use(cors())
+}
 
-  /**
-   * public methods
-   */
+Koop.prototype.register = function (plugin) {
+  if (typeof plugin === 'undefined') throw new Error('Plugin undefined.')
+  switch (plugin.type) {
+    case 'provider':
+      return this._registerProvider(plugin)
+    case 'cache':
+      return this._registerCache(plugin)
+    case 'plugin':
+      return this._registerPlugin(plugin)
+    case 'filesystem':
+      return this._registerFilesystem(plugin)
+    case 'output':
+      return this._registerOutput(plugin)
+    default:
+      this.log.warn('Unrecognized plugin type: "' + plugin.type + '". Defaulting to provider.')
+      return this._registerProvider(plugin)
+  }
+}
 
-  /**
-   * general method for registering providers, caches, and plugins
-   *
-   * @param {object} plugin - module to be registered
-   */
-  koop.register = function (plugin) {
-    if (typeof plugin === 'undefined') throw new Error('Plugin undefined.')
+/**
+ * registers a provider
+ * exposes the provider's routes, controller, and model
+ *
+ * @param {object} provider - the provider to be registered
+ */
+Koop.prototype._registerProvider = function (provider) {
+  this.services[provider.plugin_name] = provider
 
-    switch (plugin.type) {
-      case 'provider':
-        return koop.registerProvider(plugin)
-      case 'cache':
-        return koop.registerCache(plugin)
-      case 'plugin':
-        return koop.registerPlugin(plugin)
-      case 'filesystem':
-        return koop.registerFilesystem(plugin)
-      default:
-        koop.log.warn('Unrecognized plugin type: "' + plugin.type + '". Defaulting to provider.')
-        return koop.registerProvider(plugin)
+  const model = new provider.Model(this)
+  // controller is optional
+  let controller
+  if (provider.Controller) {
+    Util.inherits(provider.Controller, BaseController)
+    controller = new provider.Controller(model)
+  } else {
+    controller = new BaseController(model)
+  }
+  provider.version = provider.version || '(version missing)'
+
+  // if a provider has a status object store it
+  // TODO: deprecate & serve more meaningful status reports dynamically.
+  if (provider.status) {
+    this.status.providers[provider.plugin_name] = provider.status
+    provider.version = provider.status.version
+  }
+
+  // add each route, the routes let us override defaults etc.
+  bindRoutes(provider, controller, this.server, this.pluginRoutes)
+
+  this.log.info('registered provider:', provider.plugin_name, provider.version)
+}
+
+/**
+ * registers a provider
+ * exposes the provider's routes, controller, and model
+ *
+ * @param {object} output - the output plugin to be registered
+ */
+Koop.prototype._registerOutput = function (Output) {
+  Util.inherits(BaseController, Output)
+  this.pluginRoutes = this.pluginRoutes.concat(Output.routes)
+  this.log.info('registered output:', Output.plugin_name, Output.version)
+}
+
+/**
+ * binds each route from provider routes object to corresponding controller handler
+ *
+ * @param {object} provider - a registered koop provider
+ * @param {object} controller - the initiated provider's controller
+ * @param {object} server - the koop express server
+ */
+function bindRoutes (provider, controller, server, pluginRoutes) {
+  bindPluginOverrides(provider, controller, server, pluginRoutes)
+  bindProviderOverrides(provider, controller, server)
+}
+
+function bindPluginOverrides (provider, controller, server, pluginRoutes) {
+  const namespace = provider.namespace || provider.plugin_name.replace(/\s/g, '').toLowerCase()
+  pluginRoutes.forEach(route => {
+    let fullRoute
+    if (provider.hosts) {
+      fullRoute = path.join('/', namespace, ':host', ':id', route.path)
+    } else {
+      fullRoute = path.join('/', namespace, ':id', route.path)
     }
-  }
-
-  /**
-   * registers a provider
-   * exposes the provider's routes, controller, and model
-   *
-   * @param {object} provider - the provider to be registered
-   */
-  koop.registerProvider = function (provider) {
-    koop.services[provider.plugin_name] = provider
-
-    const model = provider.model(koop)
-    const controller = provider.controller(model, koop.BaseController)
-    provider.version = provider.version || '(version missing)'
-
-    // if a provider has a status object store it
-    // TODO: deprecate & serve more meaningful status reports dynamically.
-    if (provider.status) {
-      koop.status.providers[provider.plugin_name] = provider.status
-      provider.version = provider.status.version
-    }
-
-    // binds a series of standard routes
-    if (provider.name && provider.pattern) {
-      koop._bindDefaultRoutes(provider.plugin_name, provider.pattern, controller)
-    }
-
-    // add each route, the routes let us override defaults etc.
-    koop._bindRoutes(provider.routes, controller)
-
-    koop.log.info('registered provider:', provider.plugin_name, provider.version)
-  }
-
-  /**
-   * registers a cache
-   * overwrites any existing koop.Cache.db
-   *
-   * @param {object} cache - a koop database adapter
-   */
-  koop.registerCache = function (cache) {
-    if (!koop.config.db || !koop.config.db.conn) throw new Error('Cannot register cache: missing config.db.conn.')
-    koop.cache.db = cache.connect(koop.config.db.conn, { log: koop.log })
-    koop.log.info('registered cache:', cache.plugin_name, cache.version)
-  }
-
-  /**
-   * registers a filesystem
-   * overwrites the default filesystem
-   *
-   * @param {object} filesystem - a koop filesystem adapter
-   */
-  koop.registerFilesystem = function (Filesystem) {
-    koop.fs = new Filesystem()
-    koop.log.info('registered filesystem:', Filesystem.plugin_name, Filesystem.version)
-  }
-
-  /**
-   * registers a plugin
-   * Plugins can be any function that you want to have global access to
-   * within koop provider models
-   *
-   * @param {object} any koop plugin
-   */
-  koop.registerPlugin = function (Plugin) {
-    if (!Plugin.plugin_name) throw new Error('Plugin is missing name')
-    let dependencies
-    if (typeof Plugin.dependencies && Plugin.dependencies.length) {
-      dependencies = Plugin.dependencies.reduce((deps, dep) => {
-        deps[dep] = koop[dep]
-        return deps
-      }, {})
-    }
-    koop[Plugin.plugin_name] = new Plugin(dependencies)
-    koop.log.info('registered plugin:', Plugin.plugin_name, Plugin.version)
-  }
-
-  /**
-   * creates default routes based on pattern from provider
-   *
-   * @param {string} name - provider name
-   * @param {string} pattern - route pattern from provider
-   * @param {object} controller - provider controller
-   */
-  koop._bindDefaultRoutes = function (name, pattern, controller) {
-    for (const handler in koop.defaultRoutes) {
-      if (controller[handler]) {
-        koop.defaultRoutes[handler].forEach(function (route) {
-          koop.get('/' + name + pattern + route, controller[handler])
-          // add multipart middleware for POSTs to featureservices
-          koop.post('/' + name + pattern + route, multipart, controller[handler])
-        })
-      }
-    }
-  }
-
-  /**
-   * binds each route from provider routes object to corresponding controller handler
-   *
-   * @param {object} routes - provider routes
-   * @param {object} controller - provider controller
-   */
-  koop._bindRoutes = function (routes, controller) {
-    for (const route in routes) {
-      const path = route.split(' ')
-      koop[path[0]](path[1], controller[routes[route]])
-    }
-  }
-
-  /**
-   * route definitions
-   */
-
-  /**
-   * serves koop.services object
-   *
-   * @param {object} req - incoming request
-   * @param {object} res - outgoing response
-   */
-  koop.get('/providers', function (req, res) {
-    res.json(koop.services)
-  })
-
-  /**
-   * serves provider information by name from koop.services
-   *
-   * @param {object} req - incoming request
-   * @param {object} res - outgoing response
-   */
-  koop.get('/providers/:provider', function (req, res) {
-    res.json(koop.services[req.params.provider])
-  })
-
-  /**
-   * gets all the datasets in the cache for a provider
-   *
-   * @param {object} req - incoming request
-   * @param {object} res - outgoing response
-   */
-  koop.get('/providers/:provider/datasets', function (req, res) {
-    const sqlQuery = "select * from koopinfo where id ilike '%" + req.params.provider + "%'"
-
-    koop.cache.db._query(sqlQuery, function (err, result) {
-      if (err) return res.status(500).send(err)
-      res.json(result.rows)
+    route.methods.forEach(method => {
+      server[method](fullRoute, controller[route.handler].bind(controller))
     })
   })
-
-  koop.on('mount', function (parent) {
-    koop.log.info('Koop %s mounted at %s', koop.version, koop.mountpath)
-  })
-  return koop
 }
+
+function bindProviderOverrides (provider, controller, server) {
+  provider.routes.forEach(route => {
+    route.methods.forEach(method => {
+      server[method](route.path, controller[route.handler])
+    })
+  })
+}
+
+/**
+ * registers a cache
+ * overwrites any existing koop.Cache.db
+ *
+ * @param {object} cache - a koop database adapter
+ */
+Koop.prototype._registerCache = function (cache) {
+  if (!this.config.db || !this.config.db.conn) throw new Error('Cannot register cache: missing config.db.conn.')
+  this.cache.db = cache.connect(this.config.db.conn, { log: this.log })
+  this.log.info('registered cache:', cache.plugin_name, cache.version)
+}
+
+/**
+ * registers a filesystem
+ * overwrites the default filesystem
+ *
+ * @param {object} filesystem - a koop filesystem adapter
+ */
+Koop.prototype._registerFilesystem = function (Filesystem) {
+  this.fs = new Filesystem()
+  this.log.info('registered filesystem:', Filesystem.plugin_name, Filesystem.version)
+}
+
+/**
+ * registers a plugin
+ * Plugins can be any function that you want to have global access to
+ * within koop provider models
+ *
+ * @param {object} any koop plugin
+ */
+Koop.prototype._registerPlugin = function (Plugin) {
+  if (!Plugin.plugin_name) throw new Error('Plugin is missing name')
+  let dependencies
+  if (typeof Plugin.dependencies && Plugin.dependencies.length) {
+    dependencies = Plugin.dependencies.reduce((deps, dep) => {
+      deps[dep] = this[dep]
+      return deps
+    }, {})
+  }
+  this[Plugin.plugin_name] = new Plugin(dependencies)
+  this.log.info('registered plugin:', Plugin.plugin_name, Plugin.version)
+}
+
+module.exports = Koop
