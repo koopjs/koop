@@ -3,7 +3,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const pkg = require('./package.json')
+const pkg = require('../package.json')
 const _ = require('lodash')
 const fs = require('fs')
 const Cache = require('./Cache')
@@ -156,7 +156,8 @@ function bindRoutes (provider, controller, server, pluginRoutes) {
 }
 
 function bindPluginOverrides (provider, controller, server, pluginRoutes) {
-  const namespace = provider.namespace || provider.plugin_name.replace(/\s/g, '').toLowerCase()
+  const name = provider.namespace || provider.plugin_name || provider.name
+  const namespace = name.replace(/\s/g, '').toLowerCase()
   pluginRoutes.forEach(route => {
     let fullRoute
     if (provider.hosts) {
