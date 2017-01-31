@@ -2,6 +2,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* New plugin type `Output` extends BaseController
+
+### Changed
+* Koop exposes an express server at `koop.server`
+* Overhauled provider construction
+* Removed internal Featureservices code in favor of Featureserver
+* Removed internal Query code in favor of Winnow
+* Removed `pattern` parameter
+
 ## [3.0.0-alpha.26] - 2016-04-27
 ### Changed
 * Removed `lib/GeoJSON`
