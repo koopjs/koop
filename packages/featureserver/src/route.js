@@ -65,5 +65,5 @@ function execInfo (req, res, method, geojson) {
 }
 
 function sanitizeCallback (callback) {
-  return callback.replace(/[^\w\d\.\(\)\[\]]/g, '')
+  return callback.replace(/[^\w\d\.\(\)\[\]]/g, '') // eslint-disable-line
 }
