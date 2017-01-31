@@ -35,6 +35,8 @@ function isInfoReq (req) {
 function execQuery (req, res, geojson, options) {
   let response
   try {
+    req.query = req.query || {}
+    if (req.query.geometry) req.query.geometry = parseGeometry(req.query.geometry)
     response = FsQuery(geojson, req.query || {})
   } catch (e) {
     res.status(500).json({error: e.message})
@@ -66,4 +68,12 @@ function execInfo (req, res, method, geojson) {
 
 function sanitizeCallback (callback) {
   return callback.replace(/[^\w\d\.\(\)\[\]]/g, '') // eslint-disable-line
+}
+
+function parseGeometry (g) {
+  try {
+    return JSON.parse(g)
+  } catch (e) {
+    return g
+  }
 }

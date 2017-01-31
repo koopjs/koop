@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Geometry query is parsed as json
+
 ## [1.0.1] - 2017-01-31
 ### Fixed
 * Remove Standard from deps
