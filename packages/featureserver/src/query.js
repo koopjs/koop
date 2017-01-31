@@ -13,10 +13,10 @@ module.exports = query
  * @param {object} params
  * @param {function} callback
  */
-function query (data, params) {
+function query (data, params = {}) {
   // TODO clean up this series of if statements
-  if (data.filtersApplied.geometry) delete params.geometry
-  if (data.filtersApplied.where || params.where === '1=1') delete params.where
+  if (data.filtersApplied && data.filtersApplied.geometry) delete params.geometry
+  if (data.filtersApplied && data.filtersApplied.where || params.where === '1=1') delete params.where
   if (data.statistics) return statisticsResponse(data.statistics)
   if (params.returnCountOnly && data.count) return {count: data.count}
   const queryParams = coerceQuery(params)
