@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.0.0-alpha.28] - 2017-01-31
 ### Changed
 * Use Koop-Localfs instead of default filesystem
 * Expose provider controllers under `koop.controllers` to facilitate testing
