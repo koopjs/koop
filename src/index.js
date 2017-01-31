@@ -5,7 +5,6 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const pkg = require('../package.json')
 const _ = require('lodash')
-const fs = require('fs')
 const Cache = require('./cache')
 const LocalDb = require('./local')
 const Logger = require('koop-logger')
@@ -14,6 +13,7 @@ const Events = require('events')
 const Util = require('util')
 const path = require('path')
 const FeatureServer = require('koop-featureserver-plugin')
+const LocalFS = require('koop-localfs')
 
 function Koop (config) {
   this.version = pkg.version
@@ -24,12 +24,9 @@ function Koop (config) {
   this.cache = initDefaultCache()
   this.log = new Logger(config)
   this.pluginRoutes = []
-  this._registerOutput(FeatureServer)
-  this.fs = fs
-  // object for keeping track of registered services
-  // TODO: why not called providers?
-  // if services includes caches and plugins we should put them in here too
-  this.services = {}
+  this.register(FeatureServer)
+  this.register(LocalFS)
+  this.controllers = {}
   // TODO: consolidate status, services, `/providers` routes
   this.status = {
     version: this.version,
@@ -105,8 +102,6 @@ Koop.prototype.register = function (plugin) {
  * @param {object} provider - the provider to be registered
  */
 Koop.prototype._registerProvider = function (provider) {
-  this.services[provider.plugin_name] = provider
-
   const model = new provider.Model(this)
   // controller is optional
   let controller
@@ -116,6 +111,7 @@ Koop.prototype._registerProvider = function (provider) {
   } else {
     controller = new BaseController(model)
   }
+  this.controllers[provider.plugin_name] = controller
   provider.version = provider.version || '(version missing)'
 
   // if a provider has a status object store it

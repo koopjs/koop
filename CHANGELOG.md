@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Use Koop-Localfs instead of default filesystem
+* Expose provider controllers under `koop.controllers` to facilitate testing
+
 ## [3.0.0-alpha.27] - 2017-01-31
 ### Added
 * New plugin type `Output` extends BaseController
