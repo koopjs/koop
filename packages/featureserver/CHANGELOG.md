@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Reorganize templates
+
 ## [1.0.3] - 2017-02-01
 ### Fixed
 * Dont overwrite templates/index in compile step

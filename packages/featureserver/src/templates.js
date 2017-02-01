@@ -1,13 +1,13 @@
-const fields = require('../fields.js')
+const fields = require('./fields.js')
 
 module.exports = { render }
 
 const templates = {
-  server: require('./server.json'),
-  layer: require('./layer.json'),
-  service: require('./server.json'),
-  features: require('./features.json'),
-  statistics: require('./statistics.json')
+  server: require('../templates/server.json'),
+  layer: require('../templates/layer.json'),
+  service: require('../templates/server.json'),
+  features: require('../templates/features.json'),
+  statistics: require('../templates/statistics.json')
 }
 
 /**

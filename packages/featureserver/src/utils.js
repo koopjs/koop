@@ -1,7 +1,7 @@
 const renderers = {
-  polygon: require('./templates/renderers/polygon.json'),
-  line: require('./templates/renderers/line.json'),
-  point: require('./templates/renderers/point.json')
+  polygon: require('../templates/renderers/polygon.json'),
+  line: require('../templates/renderers/line.json'),
+  point: require('../templates/renderers/point.json')
 }
 
 module.exports = { setGeomType, isTable }
