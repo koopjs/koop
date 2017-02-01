@@ -1,6 +1,6 @@
 {
   "name": "featureserver",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "*An open source implementation of the GeoServices specification*",
   "main": "dist/index.js",
   "directories": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "compile": "buble -i src -o dist && cp -r src/templates dist",
+    "compile": "buble -i src -o dist",
     "package": "npm run clean && npm run compile",
     "test": "standard && mocha test"
   },
