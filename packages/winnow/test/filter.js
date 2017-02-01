@@ -3,7 +3,7 @@ const test = require('tape')
 const featureParser = require('feature-parser')
 const _ = require('highland')
 const fs = require('fs')
-const winnow = require('../')
+const winnow = require('../src')
 const path = require('path')
 
 test('With a where option', (t) => {

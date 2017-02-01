@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npm run compile && standard src && tape test/*.js | tap-spec",
+    "test": "standard src && tape test/*.js | tap-spec",
     "clean": "rm -rf dist",
     "compile": "buble -i src -o dist"
   },

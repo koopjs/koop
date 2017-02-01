@@ -1,7 +1,7 @@
 'use strict'
 const test = require('tape')
 const fs = require('fs')
-const winnow = require('../')
+const winnow = require('../src')
 const path = require('path')
 const trees = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'trees.geojson')))
 test('Return a feature collection when a collection is passed in', (t) => {
