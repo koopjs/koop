@@ -2,7 +2,7 @@ const Terraformer = require('terraformer')
 const TfParser = require('terraformer-arcgis-parser')
 const sql = require('alasql')
 const geohash = require('ngeohash')
-const centroid = require('turf-centroid')
+const centroid = require('@turf/centroid')
 const _ = require('lodash')
 
 sql.fn.ST_Within = function (feature, filterGeom) {

@@ -2,13 +2,14 @@
   "name": "winnow",
   "version": "1.2.0",
   "description": "Apply sql-like filters to streams of GeoJSON",
-  "main": "index.js",
+  "main": "dist/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
     "test": "npm run compile && standard src && tape test/*.js | tap-spec",
-    "compile": "babel src --out-dir ."
+    "clean": "rm -rf dist",
+    "compile": "buble -i src -o dist"
   },
   "repository": {
     "type": "git",
@@ -29,21 +30,19 @@
   },
   "homepage": "https://github.com/dmfenton/winnow#readme",
   "dependencies": {
-    "alasql": "^0.2.3",
-    "lodash": "^4.5.1",
+    "@turf/centroid": "^3.7.5",
+    "alasql": "^0.3.6",
+    "highland": "^3.0.0-beta.3",
+    "lodash": "^4.17.4",
     "ngeohash": "^0.6.0",
-    "terraformer": "^1.0.5",
-    "terraformer-arcgis-parser": "^1.0.4",
-    "turf-centroid": "^1.1.3"
+    "terraformer": "^1.0.7",
+    "terraformer-arcgis-parser": "^1.0.5"
   },
   "devDependencies": {
-    "babel-cli": "^6.5.1",
-    "babel-preset-es2015": "^6.5.0",
+    "buble": "^0.15.2",
     "feature-parser": "^1.0.1",
-    "highland": "^2.6.0",
-    "standard": "^6.0.7",
+    "standard": "^8.6.0",
     "tap-spec": "^4.1.1",
-    "tape": "^4.4.0",
-    "turf-bbox-polygon": "^1.0.2"
+    "tape": "^4.6.3"
   }
 }
