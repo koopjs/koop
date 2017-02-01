@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.5] - 2017-02-01
+### Fixed
+* Build error
+
 ## [1.0.4] - 2017-02-01
 ### Changed
 * Reorganize templates
@@ -22,6 +26,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[1.0.5]: https://github.com/featureserver/featureserver/compare/v1.0.4..v1.0.5
 [1.0.4]: https://github.com/featureserver/featureserver/compare/v1.0.3..v1.0.4
 [1.0.3]: https://github.com/featureserver/featureserver/compare/v1.0.2..v1.0.3
 [1.0.2]: https://github.com/featureserver/featureserver/compare/v1.0.1..v1.0.2
