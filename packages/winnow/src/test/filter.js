@@ -114,6 +114,21 @@ test('With an esri style envelope', (t) => {
   run('trees', options, 29744, t)
 })
 
+test('With an empty multipolygon', (t) => {
+  const options = {
+    geometry: {
+      xmin: -8968940.494006854,
+      ymin: 2943609.5726516787,
+      xmax: -8944480.644955631,
+      ymax: 2949342.3497730596,
+      spatialReference: {
+        wkid: 102100
+      }
+    }
+  }
+  run('emptyMultiPolygon', options, 1, t)
+})
+
 test('Without a spatialReference property on an Esri-style Envelope ', (t) => {
   const options = {
     geometry: {

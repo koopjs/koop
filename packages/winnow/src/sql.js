@@ -6,21 +6,21 @@ const centroid = require('@turf/centroid')
 const _ = require('lodash')
 
 sql.fn.ST_Within = function (feature, filterGeom) {
-  if (!feature || !feature.type) return false
+  if (!(feature && feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
   const filter = new Terraformer.Primitive(filterGeom)
   const TfFeature = new Terraformer.Primitive(feature)
   return filter.within(TfFeature)
 }
 
 sql.fn.ST_Contains = function (feature, filterGeom) {
-  if (!feature || !feature.type) return false
+  if (!(feature && feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
   const filter = new Terraformer.Primitive(filterGeom)
   const TfFeature = new Terraformer.Primitive(feature)
   return filter.contains(TfFeature)
 }
 
 sql.fn.ST_Intersects = function (feature, filterGeom) {
-  if (!feature || !feature.type) return false
+  if (!(feature && feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
   if (feature.type === 'Point') return sql.fn.ST_Contains(feature, filterGeom)
   const filter = new Terraformer.Primitive(filterGeom)
   const TfFeature = new Terraformer.Primitive(feature)
@@ -28,7 +28,7 @@ sql.fn.ST_Intersects = function (feature, filterGeom) {
 }
 
 sql.fn.geohash = function (geometry, precision) {
-  if (!geometry || !geometry.type) return
+  if (!geometry || !geometry.type || !geometry.coordinates) return
   precision = precision || 8
   if (geometry.type !== 'Point') geometry = centroid(geometry).geometry
   const pnt = geometry.coordinates
