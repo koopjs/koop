@@ -28,6 +28,13 @@ test('With the toEsri option', (t) => {
   run('trees', options, 12105, t)
 })
 
+test('With the toEsri option and a null geometry', (t) => {
+  const options = {
+    toEsri: true
+  }
+  run('nogeom', options, 100, t)
+})
+
 test('With a field with a space', (t) => {
   const options = {
     where: '"total precip" > 1'

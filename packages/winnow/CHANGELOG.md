@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Handle case when geometry is null and `toEsri` is true
+
 ## [1.2.1] - 10-14-2016
 ### Fixed
 * Can now handle multiPolygons with empty coords array

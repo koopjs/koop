@@ -41,7 +41,9 @@ sql.fn.pick = function (properties, fields) {
 }
 
 sql.fn.esriGeom = function (geometry) {
-  return TfParser.convert(geometry)
+  if (geometry && geometry.type) {
+    return TfParser.convert(geometry)
+  }
 }
 
 sql.aggr.hash = function (value, obj, acc) {
