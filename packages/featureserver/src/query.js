@@ -55,7 +55,7 @@ function query (data, params = {}) {
 function queryFeatures (data, queryParams, geomType) {
   let json = Templates.render('features', data, queryParams)
   if (!data.features || !data.features.length) return json
-  json = Object.assign(json, geomType)
+  json = _.merge(json, geomType)
 
   return json
 }
