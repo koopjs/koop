@@ -170,7 +170,7 @@ function bindPluginOverrides (provider, controller, server, pluginRoutes) {
 function bindProviderOverrides (provider, controller, server) {
   provider.routes.forEach(route => {
     route.methods.forEach(method => {
-      server[method](route.path, controller[route.handler])
+      server[method](route.path, controller[route.handler].bind(controller))
     })
   })
 }
