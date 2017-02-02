@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.0.7] - 2017-02-02
 ### Fixed
 * Coerce all query parameters to true or false before any function is executed
 
@@ -34,6 +34,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[1.0.7]: https://github.com/featureserver/featureserver/compare/v1.0.6..v1.0.7
 [1.0.6]: https://github.com/featureserver/featureserver/compare/v1.0.5..v1.0.6
 [1.0.5]: https://github.com/featureserver/featureserver/compare/v1.0.4..v1.0.5
 [1.0.4]: https://github.com/featureserver/featureserver/compare/v1.0.3..v1.0.4
