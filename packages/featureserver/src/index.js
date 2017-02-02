@@ -1,4 +1,3 @@
-'use strict'
 const info = require('./info.js')
 
 module.exports = {

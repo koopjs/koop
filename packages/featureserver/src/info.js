@@ -1,4 +1,3 @@
-'use strict'
 const Utils = require('./utils.js')
 const esriExtent = require('esri-extent')
 const Templates = require('./templates')

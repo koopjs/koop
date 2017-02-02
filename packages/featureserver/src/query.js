@@ -1,4 +1,3 @@
-'use strict'
 const Templates = require('./templates')
 const Winnow = require('winnow')
 const Utils = require('./utils.js')
