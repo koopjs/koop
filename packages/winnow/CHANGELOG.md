@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Escape statistics out name
+
 ## [1.2.2] - 02-01-2017
 ### Fixed
 * Handle case when geometry is null and `toEsri` is true

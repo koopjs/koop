@@ -32,7 +32,7 @@ function aggSelect (aggregates) {
     } else {
       func = `${agg.type.toUpperCase()}(properties->\`${agg.field}\`)`
     }
-    return `${sql} ${func} as ${name},`
+    return `${sql} ${func} as \`${name}\`,`
   }, 'SELECT')
   return `${select.slice(0, -1)} FROM ?`
 }

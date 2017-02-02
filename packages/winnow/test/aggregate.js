@@ -5,6 +5,7 @@ const winnow = require('../src')
 const path = require('path')
 const features = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'trees.geojson')))
 const snowFeatures = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'snow.geojson')))
+const budgetTable = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'budgetTable.geojson')))
 
 test('Get a sum', (t) => {
   t.plan(1)
@@ -41,6 +42,19 @@ test('Get an aggregate on a field with a space', (t) => {
   }
   const results = winnow.query(snowFeatures, options)
   t.equal(results.sum_total_precip, 135.69000000000003)
+})
+
+test('Get an aggregate on a field with a /', (t) => {
+  t.plan(1)
+  const options = {
+    aggregates: [{
+      type: 'count',
+      field: 'Full/Part',
+      name: 'Full/Part_COUNT'
+    }]
+  }
+  const results = winnow.query(budgetTable, options)
+  t.equal(results['Full/Part_COUNT'], 6885)
 })
 
 test('Get the variance of a field', (t) => {
