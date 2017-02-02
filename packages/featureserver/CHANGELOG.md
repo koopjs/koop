@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Exclude features from layer info response
+
 ## [1.0.7] - 2017-02-02
 ### Fixed
 * Coerce all query parameters to true or false before any function is executed

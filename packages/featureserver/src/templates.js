@@ -21,7 +21,7 @@ function render (template, data, options) {
   const json = templates[template]
   if (!json) throw new Error('Unsupported operation')
 
-  if (!template.match(/serv/) && data && data.features && data.features.length) {
+  if (!template.match(/(serv|layer)/) && data && data.features && data.features.length) {
     const props = data.features[0].properties || data.features[0].attributes
     const fieldObj = fields(props, template, options)
     json.features = data.features

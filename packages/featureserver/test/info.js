@@ -1,12 +1,14 @@
 const FeatureServer = require('../src')
 const polyData = require('./fixtures/polygon.json')
 const data = require('./fixtures/snow.json')
+const should = require('should')
 
 describe('Info operations', () => {
   describe('when getting featureserver info from geojson', () => {
     it('should return a feature service with the proper geom type', () => {
       const service = FeatureServer.layerInfo(polyData, 0, {})
       service.geometryType.should.equal('esriGeometryPolygon')
+      should.not.exist(service.features)
     })
 
     it('should use the passed in extent if present', () => {
