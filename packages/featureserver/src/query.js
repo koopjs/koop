@@ -19,48 +19,47 @@ function query (data, params = {}) {
   if (data.filtersApplied && data.filtersApplied.where || params.where === '1=1') delete params.where
   if (data.statistics) return statisticsResponse(data.statistics)
   if (params.returnCountOnly && data.count) return {count: data.count}
-  const queryParams = coerceQuery(params)
   const geomType = Utils.setGeomType(data.features[0])
-  queryParams.toEsri = true
-  const queriedData = Winnow.query(data, queryParams)
+  params.toEsri = true
+  const queriedData = Winnow.query(data, params)
 
   // TODO this should happen within winnow
   // add objectIds as long as this is not a stats request
-  if (!queryParams.outStatistics) {
+  if (!params.outStatistics) {
     queriedData.features.forEach((f, i) => {
       f.attributes.OBJECTID = i
     })
   }
 
   // options.objectIds works alongside returnCountOnly but not statistics
-  if (queryParams.objectIds && !queryParams.outStatistics) {
-    let oids = typeof queryParams.objectIds === 'string' ? queryParams.objectIds.split(',') : queryParams.objectIds
+  if (params.objectIds && !params.outStatistics) {
+    let oids = typeof params.objectIds === 'string' ? params.objectIds.split(',') : params.objectIds
     oids = oids.map(i => { return parseInt(i, 10) })
     queriedData.features = queriedData.features.filter(f => {
       return oids.indexOf(f.attributes.OBJECTID) > -1
     })
   }
 
-  if (queryParams.returnCountOnly) {
+  if (params.returnCountOnly) {
     return { count: queriedData.features.length }
-  } else if (queryParams.returnIdsOnly) {
+  } else if (params.returnIdsOnly) {
     return idsOnly(queriedData)
-  } else if (queryParams.outStatistics) {
-    return queryStatistics(queriedData, queryParams)
+  } else if (params.outStatistics) {
+    return queryStatistics(queriedData, params)
   } else {
-    return queryFeatures(queriedData, queryParams, geomType)
+    return queryFeatures(queriedData, params, geomType)
   }
 }
 
-function queryFeatures (data, queryParams, geomType) {
-  let json = Templates.render('features', data, queryParams)
+function queryFeatures (data, params, geomType) {
+  let json = Templates.render('features', data, params)
   if (!data.features || !data.features.length) return json
   json = _.merge(json, geomType)
 
   return json
 }
 
-function queryStatistics (data, queryParams) {
+function queryStatistics (data, params) {
   // This little dance is in place because the stat response from Winnow is different
   // TODO make winnow come out as expected
   // or move this into templates.render
@@ -69,7 +68,7 @@ function queryStatistics (data, queryParams) {
   statResponse.features = features.map(row => {
     return {attributes: row}
   })
-  const json = Templates.render('statistics', statResponse, queryParams)
+  const json = Templates.render('statistics', statResponse, params)
   return json
 }
 
@@ -122,18 +121,4 @@ function idsOnly (data) {
     resp.objectIds.push(f.attributes.OBJECTID)
     return resp
   }, { objectIdField: 'OBJECTID', objectIds: [] })
-}
-
-/**
- * Coorces true/false strings to boolean
- *
- * @param {object} params - query parameters from the fs request
- * @return {object} modified params
- */
-function coerceQuery (params) {
-  Object.keys(params).forEach(param => {
-    if (params[param] === 'false') params[param] = false
-    else if (params[param] === 'true') params[param] = true
-  })
-  return params
 }

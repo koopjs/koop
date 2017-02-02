@@ -14,7 +14,9 @@ module.exports = route
  */
 function route (req, res, geojson, options) {
   req.query = req.query || {}
+  req.query = coerceQuery(req.query)
   req.params = req.params || {}
+
   if (req.query.callback) req.query.callback = sanitizeCallback(req.query.callback)
 
   // check for info requests and respond like ArcGIS Server would
@@ -34,9 +36,10 @@ function isInfoReq (req) {
 
 function execQuery (req, res, geojson, options) {
   let response
+  req.query = req.query || {}
+  // TODO move this to winnow
+  if (req.query.geometry) req.query.geometry = parseGeometry(req.query.geometry)
   try {
-    req.query = req.query || {}
-    if (req.query.geometry) req.query.geometry = parseGeometry(req.query.geometry)
     response = FsQuery(geojson, req.query || {})
   } catch (e) {
     res.status(500).json({error: e.message})
@@ -76,4 +79,12 @@ function parseGeometry (g) {
   } catch (e) {
     return g
   }
+}
+
+function coerceQuery (params) {
+  Object.keys(params).forEach(param => {
+    if (params[param] === 'false') params[param] = false
+    else if (params[param] === 'true') params[param] = true
+  })
+  return params
 }
