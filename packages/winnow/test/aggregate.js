@@ -19,6 +19,22 @@ test('Get a sum', (t) => {
   t.equal(results.sum_Trunk_Diameter, 850305)
 })
 
+test('Use a group by', (t) => {
+  t.plan(3)
+  const options = {
+    aggregates: [{
+      type: 'avg',
+      field: 'Trunk_Diameter'
+    }],
+    groupBy: 'Genus',
+    order: {}
+  }
+  const results = winnow.query(features, options)
+  t.equal(results.length, 162)
+  t.ok(results[0].Genus)
+  t.ok(results[0].avg_Trunk_Diameter)
+})
+
 test('Get a named aggregate', (t) => {
   t.plan(1)
   const options = {

@@ -1,10 +1,11 @@
 'use strict'
 const sql = require('./sql')
 const Query = require('./query')
+const Geometry = require('./geometry')
 const _ = require('lodash')
-const winnow = {}
+const Winnow = {}
 
-winnow.query = function (input, options) {
+Winnow.query = function (input, options) {
   /* First step is detect what kind of input this is.
   i.e. is it a collection object or an array of features?
   If it's a collection object we'll want to return it as such.
@@ -16,7 +17,7 @@ winnow.query = function (input, options) {
   }
   // TODO detect and compile geoservices options to winnow options
   options = _.cloneDeep(options || {})
-  options.geometry = Query.setGeometry(options.geometry)
+  options.geometry = Geometry.set(options.geometry)
   // The following two functions are query preprocessing steps
   const query = Query.create(options)
   const params = Query.params(features, options.geometry)
@@ -25,8 +26,8 @@ winnow.query = function (input, options) {
   return finishQuery(filtered, options)
 }
 
-winnow.prepareQuery = function (options) {
-  options.geometry = Query.setGeometry(options.geometry)
+Winnow.prepareQuery = function (options) {
+  options.geometry = Geometry.set(options.geometry)
   const statement = Query.create(options)
   const query = sql.compile(statement)
   const params = [null, options.geometry]
@@ -51,11 +52,11 @@ winnow.prepareQuery = function (options) {
   }
 }
 
-winnow.querySql = function (statement, params) {
+Winnow.querySql = function (statement, params) {
   return sql(statement, params)
 }
 
-winnow.prepareSql = function (statement) {
+Winnow.prepareSql = function (statement) {
   const query = sql.compile(statement)
 
   return function (inParams) {
@@ -87,7 +88,9 @@ function isEsriFeatures (candidate) {
 }
 
 function finishQuery (features, options) {
-  if (options.aggregates || options.outStatistics) {
+  if (options.groupBy) {
+    return features
+  } else if (options.aggregates || options.outStatistics) {
     return features[0]
   } else if (options.collection) {
     const collection = options.collection
@@ -98,4 +101,4 @@ function finishQuery (features, options) {
   }
 }
 
-module.exports = winnow
+module.exports = Winnow
