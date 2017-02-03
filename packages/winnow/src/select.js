@@ -1,6 +1,6 @@
 function createClause (options) {
-  if (options.aggregates) return aggSelect(options.aggregates, options.groupBy, options.toEsri)
-  else if (options.outStatistics) return outStatSelect(options.outStatistics)
+  if (options.aggregates) return aggSelect(options.aggregates, options.groupBy, options.esri)
+  else if (options.outStatistics) return outStatSelect(options.outStatistics, options.groupByFieldsForStatistics, options.toEsri)
   else if (options.fields) return fieldSelect(options.fields, options)
   else if (options.toEsri) return 'SELECT properties as attributes, esriGeom(geometry) as geometry FROM ?'
   else return 'SELECT * FROM ?'
@@ -18,15 +18,28 @@ function aggSelect (aggregates, groupBy, esri) {
     }
     return `${sql} ${func} as \`${name}\`,`
   }, 'SELECT')
-  if (groupBy) {
-    const gb = `${selector}->\`${groupBy}\``
-    return `${select.slice(0, -1)}, ${gb} as ${groupBy} FROM ? GROUP BY ${gb}`
-  } else {
-    return `${select.slice(0, -1)} FROM ?`
-  }
+  if (groupBy) return addGroupBy(select, groupBy, selector)
+  else return `${select.slice(0, -1)} FROM ?`
 }
 
-function outStatSelect (outStats) {
+function addGroupBy (select, groupBy, selector) {
+  groupBy = normalizeGroupBy(groupBy)
+  const groups = groupBy.reduce((fragment, group) => {
+    return `${fragment} ${selector}->\`${group}\`,`
+  }, '').slice(0, -1)
+
+  const fields = groupBy.reduce((fragment, group) => {
+    return `${fragment} ${selector}->\`${group}\` as \`${group}\`,`
+  }, '').slice(0, -1)
+
+  return `${select.slice(0, -1)}, ${fields} FROM ? GROUP BY ${groups}`
+}
+
+function normalizeGroupBy (groupBy) {
+  return typeof groupBy === 'string' ? [groupBy] : groupBy
+}
+
+function outStatSelect (outStats, groupBy, esri) {
   if (typeof outStats === 'string') outStats = JSON.parse(outStats)
   const aggregates = outStats.map((agg) => {
     return {
@@ -35,7 +48,7 @@ function outStatSelect (outStats) {
       name: agg.outStatisticFieldName
     }
   })
-  return aggSelect(aggregates)
+  return aggSelect(aggregates, groupBy, esri)
 }
 
 function fieldSelect (fields, options) {

@@ -35,6 +35,40 @@ test('Use a group by', (t) => {
   t.ok(results[0].avg_Trunk_Diameter)
 })
 
+test('Use a group by esri style', (t) => {
+  t.plan(3)
+  const options = {
+    outStatistics: [
+      {
+        statisticType: 'avg',
+        onStatisticField: 'Trunk_Diameter'
+      }
+    ],
+    groupByFieldsForStatistics: ['Genus']
+  }
+  const results = winnow.query(features, options)
+  t.equal(results.length, 162)
+  t.ok(results[0].Genus)
+  t.ok(results[0].avg_Trunk_Diameter)
+})
+
+test('Use multiple group bys', (t) => {
+  t.plan(4)
+  const options = {
+    aggregates: [{
+      type: 'avg',
+      field: 'Trunk_Diameter'
+    }],
+    groupBy: ['Genus', 'Common_Name'],
+    order: {}
+  }
+  const results = winnow.query(features, options)
+  t.equal(results.length, 310)
+  t.ok(results[0].Genus)
+  t.ok(results[0].Common_Name)
+  t.ok(results[0].avg_Trunk_Diameter)
+})
+
 test('Get a named aggregate', (t) => {
   t.plan(1)
   const options = {

@@ -23,6 +23,7 @@ const options = {
   spatialPredicate: String // ST_Within || ST_Contains || ST_Intersects
   fields: Array // Set of fields to select from feature properties
   aggregates: Object // Describes the set of aggregations to perform on fields
+  groupBu: Array // Set of fields for grouping statistics
 }
 winnow.query(features, options)
 // Returns the set of features that match the query

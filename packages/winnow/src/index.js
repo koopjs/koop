@@ -88,7 +88,7 @@ function isEsriFeatures (candidate) {
 }
 
 function finishQuery (features, options) {
-  if (options.groupBy) {
+  if (options.groupBy || options.groupByFieldsForStatistics) {
     return features
   } else if (options.aggregates || options.outStatistics) {
     return features[0]
