@@ -112,7 +112,7 @@ e.g:
 If true, the object returned will be an esri feature collection
 
 ## `winnow.prepareQuery`
-Returns a function that can be applied directly to a feature collection object an array of features, or a single feature. Useful when you want to pass a stream of features through a filter.
+Returns a function that can be applied directly to a feature collection object, an array of features, or a single feature. Useful when you want to pass a stream of features through a filter.
 
 ```javascript
 const options = {
