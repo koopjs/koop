@@ -4,7 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
-* Support groupBy and groupByFieldsForStatistics
+* Support groupBy/groupByFieldsForStatistics
+* Support for order/orderByFields
+
+### Changed
+* Remove support for options as JSON strings
 
 ### Fixed
 * Escape statistics out name
