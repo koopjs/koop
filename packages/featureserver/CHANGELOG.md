@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Enable orderByFields
+
 ## [1.0.10] - 2017-02-06
 ### Fixed
 * Create correct response for group by statistics

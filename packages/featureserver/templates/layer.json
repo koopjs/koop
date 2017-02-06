@@ -17,7 +17,7 @@
     "supportsQueryWithDistance": true,
     "supportsReturningQueryExtent": true,
     "supportsStatistics": true,
-    "supportsOrderBy": false,
+    "supportsOrderBy": true,
     "supportsDistinct": true
   },
 	"geometryType" : "esriGeometryPoint",
