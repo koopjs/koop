@@ -16,8 +16,10 @@ function route (req, res, geojson, options) {
   req.query = req.query || {}
   req.query = coerceQuery(req.query)
   req.params = req.params || {}
-
   if (req.query.callback) req.query.callback = sanitizeCallback(req.query.callback)
+  Object.keys(req.query).forEach(key => {
+    req.query[key] = tryParse(req.query[key])
+  })
 
   // check for info requests and respond like ArcGIS Server would
   if (isInfoReq(req)) return res.status(200).send(Templates.render('server'))
@@ -36,9 +38,6 @@ function isInfoReq (req) {
 
 function execQuery (req, res, geojson, options) {
   let response
-  req.query = req.query || {}
-  // TODO move this to winnow
-  if (req.query.geometry) req.query.geometry = parseGeometry(req.query.geometry)
   try {
     response = FsQuery(geojson, req.query || {})
   } catch (e) {
@@ -73,11 +72,11 @@ function sanitizeCallback (callback) {
   return callback.replace(/[^\w\d\.\(\)\[\]]/g, '') // eslint-disable-line
 }
 
-function parseGeometry (g) {
+function tryParse (json) {
   try {
-    return JSON.parse(g)
+    return JSON.parse(json)
   } catch (e) {
-    return g
+    return json
   }
 }
 

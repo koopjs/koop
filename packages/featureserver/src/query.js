@@ -95,10 +95,7 @@ function createStatFeatures (stats) {
 
 function createStatFields (stats) {
   return Object.keys(stats[0]).map((field) => {
-    const sample = _.find(stats, s => {
-      return stats[field] !== null
-    }
-    )
+    const sample = _.find(stats, s => { return stats[field] !== null })
     const statField = {
       name: field,
       type: detectType(sample[field]),
