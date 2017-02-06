@@ -2,10 +2,12 @@
 const sql = require('./sql')
 const Query = require('./query')
 const Geometry = require('./geometry')
+const Params = require('./params')
+const Options = require('./options')
 const _ = require('lodash')
 const Winnow = {}
 
-Winnow.query = function (input, options) {
+Winnow.query = function (input, options = {}) {
   /* First step is detect what kind of input this is.
   i.e. is it a collection object or an array of features?
   If it's a collection object we'll want to return it as such.
@@ -15,9 +17,9 @@ Winnow.query = function (input, options) {
     options.collection = _.omit(input, 'features')
     features = input.features
   }
-  // TODO detect and compile geoservices options to winnow options
-  options = _.cloneDeep(options || {})
-  options.geometry = Geometry.set(options.geometry)
+
+  options = Options.prepare(options)
+
   // The following two functions are query preprocessing steps
   const query = Query.create(options)
   const params = Query.params(features, options.geometry)
@@ -27,7 +29,7 @@ Winnow.query = function (input, options) {
 }
 
 Winnow.prepareQuery = function (options) {
-  options.geometry = Geometry.set(options.geometry)
+  options = Options.prepare(options)
   const statement = Query.create(options)
   const query = sql.compile(statement)
   const params = [null, options.geometry]
@@ -60,37 +62,16 @@ Winnow.prepareSql = function (statement) {
   const query = sql.compile(statement)
 
   return function (inParams) {
-    const params = prepareParams(inParams)
+    const params = Params.prepare(inParams)
     const results = query(params)
     return results
   }
 }
 
-function prepareParams (inParams) {
-  let params
-  // If this is just a passed in feature
-  if (!inParams.length) params = [[inParams]]
-  // If this is an array of features
-  if (isGeoJSONFeatures(inParams) || isEsriFeatures(inParams)) params = [inParams]
-  return params
-}
-
-function isGeoJSONFeatures (candidate) {
-  const feature = candidate[0] || {}
-  if (feature.type && feature.type.toLowerCase() === 'feature') return true
-  else return false
-}
-
-function isEsriFeatures (candidate) {
-  const feature = candidate[0] || {}
-  if (feature.attributes || feature.geometry) return true
-  else return false
-}
-
 function finishQuery (features, options) {
-  if (options.groupBy || options.groupByFieldsForStatistics) {
+  if (options.groupBy) {
     return features
-  } else if (options.aggregates || options.outStatistics) {
+  } else if (options.aggregates) {
     return features[0]
   } else if (options.collection) {
     const collection = options.collection

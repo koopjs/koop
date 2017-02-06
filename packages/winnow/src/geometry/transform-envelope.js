@@ -1,24 +1,6 @@
 const Terraformer = require('terraformer')
 
-const esriPredicates = {
-  esriSpatialRelContains: 'ST_Contains',
-  esriSpatialRelWithin: 'ST_Within',
-  esriSpatialRelIntersects: 'ST_Intersects'
-}
-
-function createClause (options) {
-  if (!options.geometry) return
-  const spatialPredicate = options.spatialPredicate || esriPredicates[options.spatialRel] || 'ST_Intersects'
-  return `${spatialPredicate}(geometry, ?)`
-}
-
-function set (geom) {
-  if (!geom) return
-  const geometry = (geom.xmin && geom.ymax) ? transformEnvelope(geom) : geom
-  return geometry
-}
-
-function transformEnvelope (geom) {
+module.exports = function (geom) {
   const polygon = new Terraformer.Polygon({
     type: 'Polygon',
     coordinates: [[
@@ -37,9 +19,4 @@ function transformEnvelope (geom) {
   } else {
     return polygon
   }
-}
-
-module.exports = {
-  createClause,
-  set
 }

@@ -26,13 +26,27 @@ test('Use a group by', (t) => {
       type: 'avg',
       field: 'Trunk_Diameter'
     }],
-    groupBy: 'Genus',
-    order: {}
+    groupBy: 'Genus'
   }
   const results = winnow.query(features, options)
   t.equal(results.length, 162)
   t.ok(results[0].Genus)
   t.ok(results[0].avg_Trunk_Diameter)
+})
+
+test('Use an order and a group by', (t) => {
+  t.plan(2)
+  const options = {
+    aggregates: [{
+      type: 'avg',
+      field: 'Trunk_Diameter'
+    }],
+    groupBy: 'Genus',
+    order: 'avg_Trunk_Diameter DESC'
+  }
+  const results = winnow.query(features, options)
+  t.equal(results.length, 162)
+  t.equal(results[0].avg_Trunk_Diameter, 37)
 })
 
 test('Use a group by esri style', (t) => {
@@ -59,8 +73,7 @@ test('Use multiple group bys', (t) => {
       type: 'avg',
       field: 'Trunk_Diameter'
     }],
-    groupBy: ['Genus', 'Common_Name'],
-    order: {}
+    groupBy: ['Genus', 'Common_Name']
   }
   const results = winnow.query(features, options)
   t.equal(results.length, 310)
@@ -169,27 +182,6 @@ test('Get multiple aggregates specified in the esri way', (t) => {
         outStatisticFieldName: 'max_diameter'
       }
     ]
-  }
-  const results = winnow.query(features, options)
-  t.equal(results.total_diameter, 850305)
-  t.equal(results.max_diameter, 130)
-})
-
-test('Get multiple aggregates specified in the esri way when the input is a string', (t) => {
-  t.plan(2)
-  const options = {
-    outStatistics: JSON.stringify([
-      {
-        statisticType: 'sum',
-        onStatisticField: 'Trunk_Diameter',
-        outStatisticFieldName: 'total_diameter'
-      },
-      {
-        statisticType: 'max',
-        onStatisticField: 'Trunk_Diameter',
-        outStatisticFieldName: 'max_diameter'
-      }
-    ])
   }
   const results = winnow.query(features, options)
   t.equal(results.total_diameter, 850305)

@@ -38,15 +38,3 @@ test('Select multiple fields', (t) => {
   t.equal(fields[0], 'Trunk_Diameter')
   t.equal(fields[1], 'Genus')
 })
-
-test('Select multiple fields with string input', (t) => {
-  t.plan(2)
-  const options = {
-    fields: 'Trunk_Diameter, Genus',
-    limit: 1
-  }
-  const filtered = winnow.query(features, options)
-  const fields = Object.keys(filtered[0].properties)
-  t.equal(fields[0], 'Trunk_Diameter')
-  t.equal(fields[1], 'Genus')
-})
