@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.1.0] - 2017-02-06
 ### Changed
 * Enable orderByFields
 
@@ -50,6 +50,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[1.1.0]: https://github.com/featureserver/featureserver/compare/v1.0.10..v1.1.0
 [1.0.10]: https://github.com/featureserver/featureserver/compare/v1.0.9..v1.0.10
 [1.0.9]: https://github.com/featureserver/featureserver/compare/v1.0.8..v1.0.9
 [1.0.8]: https://github.com/featureserver/featureserver/compare/v1.0.7..v1.0.8
