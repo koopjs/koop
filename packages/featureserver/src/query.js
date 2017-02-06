@@ -63,11 +63,13 @@ function queryStatistics (data, params) {
   // TODO make winnow come out as expected
   // or move this into templates.render
   const statResponse = {}
-  const features = Array.isArray(statResponse) ? _.cloneDeep(data) : [_.cloneDeep(data)]
+  const features = Array.isArray(data) ? _.cloneDeep(data) : [_.cloneDeep(data)]
   statResponse.features = features.map(row => {
     return {attributes: row}
   })
   const json = Templates.render('statistics', statResponse, params)
+  // TODO move to render?
+  json.displayFieldName = json.fields[0].name
   return json
 }
 

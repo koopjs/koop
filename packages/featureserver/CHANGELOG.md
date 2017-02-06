@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Create correct response for group by statistics
+
 ## [1.0.9] - 2017-02-06
 ### Added
 * Handle JSON parameters in all query options

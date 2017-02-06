@@ -2,6 +2,7 @@ const FeatureServer = require('../src')
 const data = require('./fixtures/snow.json')
 const should = require('should') // eslint-disable-line
 const polyData = require('./fixtures/polygon.json')
+const budgetTable = require('./fixtures/budgetTable.json')
 
 describe('Query operatons', function () {
   describe('when getting featureserver features from geojson', function () {
@@ -207,6 +208,29 @@ describe('Query operatons', function () {
         })
         response.features[0]['attributes']['var_precip'].should.equal(0.07661480700055341)
         response.features[0]['attributes']['stddev_precip'].should.equal(0.27646171244241985)
+      })
+
+      it.only('should return a correct response when there are multiple stats returned', () => {
+        const options = {
+          where: '1=1',
+          returnGeometry: false,
+          returnDistinctValues: false,
+          returnIdsOnly: false,
+          returnCountOnly: false,
+          outFields: '*',
+          sqlFormat: 'standard',
+          f: 'json',
+          groupByFieldsForStatistics: 'Full/Part',
+          outStatistics:
+          [ { statisticType: 'count', onStatisticField: 'Full/Part', outStatisticFieldName: 'Full/Part_COUNT' } ],
+          orderByFields: 'Full/Part_COUNT DESC'
+        }
+
+        const response = FeatureServer.query(budgetTable, options)
+        response.features[0]['attributes']['Full/Part_COUNT'].should.equal(6644)
+        response.fields[0].name.should.equal('Full/Part_COUNT')
+        response.fields[1].name.should.equal('Full/Part')
+        response.displayFieldName.should.equal('Full/Part_COUNT')
       })
     })
   })
