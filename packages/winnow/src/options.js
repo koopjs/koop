@@ -14,6 +14,8 @@ function prepare (options) {
     order: normalizeOrder(options),
     aggregates: normalizeAggregates(options),
     groupBy: normalizeGroupBy(options),
+    limit: normalizeLimit(options),
+    offset: normalizeOffset(options),
     esri: options.esri,
     toEsri: options.toEsri,
     collection: options.collection
@@ -68,6 +70,14 @@ function normalizeGeometry (options) {
   const geom = options.geometry
   const geometry = (geom.xmin && geom.ymax) ? transformEnvelope(geom) : geom
   return geometry
+}
+
+function normalizeLimit (options) {
+  return options.limit || options.resultRecordCount
+}
+
+function normalizeOffset (options) {
+  return options.offset || options.resultOffset
 }
 
 module.exports = { prepare }
