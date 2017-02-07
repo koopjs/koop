@@ -7,7 +7,7 @@ const esriPredicates = {
 
 function prepare (options) {
   return {
-    where: options.where,
+    where: normalizeWhere(options),
     geometry: normalizeGeometry(options),
     spatialPredicate: normalizeSpatialPredicate(options),
     fields: normalizeFields(options),
@@ -22,6 +22,11 @@ function prepare (options) {
   }
 }
 
+function normalizeWhere (options) {
+  if (/1\s*=\s*1/.test(options.where)) return undefined
+  else return options.where
+}
+
 function normalizeSpatialPredicate (options) {
   const predicate = options.spatialPredicate || options.spatialRel
 
@@ -30,6 +35,7 @@ function normalizeSpatialPredicate (options) {
 
 function normalizeFields (options) {
   const fields = options.fields || options.outFields
+  if (fields === '*') return undefined
   return typeof fields === 'string' ? [fields] : fields
 }
 

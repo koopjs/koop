@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Correctly handle esri style options.outFields and options.where
+
 ## [1.4.0] - 02-06-2017
 * Support resultRecordCount and resultOffset
 
