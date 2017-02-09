@@ -41,6 +41,7 @@ function execQuery (req, res, geojson, options) {
   try {
     response = FsQuery(geojson, req.query || {})
   } catch (e) {
+    if (process.env.NODE_ENV === 'test') console.trace(e)
     res.status(500).json({error: e.message})
   }
   if (req.query.callback) res.send(`${req.query.callback}(${JSON.stringify(response)})`)

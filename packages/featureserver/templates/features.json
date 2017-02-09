@@ -1,5 +1,5 @@
 {
-  "objectIdFieldName" : "id",
+  "objectIdFieldName" : "OBJECTID",
   "globalIdFieldName" : "",
   "hasZ": false,
   "hasM": false,

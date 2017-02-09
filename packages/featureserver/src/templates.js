@@ -1,4 +1,5 @@
 const fields = require('./fields.js')
+const _ = require('lodash')
 
 module.exports = { render }
 
@@ -18,7 +19,7 @@ const templates = {
  * @return {object} template
  */
 function render (template, data, options) {
-  const json = templates[template]
+  const json = _.cloneDeep(templates[template])
   if (!json) throw new Error('Unsupported operation')
 
   if (!template.match(/(serv|layer)/) && data && data.features && data.features.length) {

@@ -18,12 +18,12 @@ describe('Routing feature server requests', () => {
     data.name = 'Snow'
   })
 
-  describe('Query', () => {
+  describe.only('Query', () => {
     it('should properly route and handle a query', done => {
       request(app)
-      .get('/FeatureServer/0/query?f=json&where=&returnGeometry=true&spatialRel=esriSpatialRelIntersects&geometry=%7B%22xmin%22%3A-9764371.741274796%2C%22ymin%22%3A4813698.293307044%2C%22xmax%22%3A-9744803.862033816%2C%22ymax%22%3A4833266.172548024%2C%22spatialReference%22%3A%7B%22wkid%22%3A102100%2C%22latestWkid%22%3A3857%7D%7D&geometryType=esriGeometryEnvelope&inSR=102100&outFields=*&outSR=102100')
+      .get('/FeatureServer/0/query?f=json&where=1%3D1')
       .expect(res => {
-        res.body.features.length.should.equal(1)
+        res.body.features.length.should.equal(417)
       })
       .expect('Content-Type', /json/)
       .expect(200, done)

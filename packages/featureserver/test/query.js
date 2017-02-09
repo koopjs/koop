@@ -113,6 +113,22 @@ describe('Query operatons', function () {
       response.should.be.an.instanceOf(Object)
       response.features.length.should.equal(1)
     })
+
+    it('should return well formed features', () => {
+      const options = {
+        f: 'json',
+        where: `Full/Part = 'P'`,
+        returnGeometry: false,
+        resultOffset: 0,
+        resultRecordCount: 10,
+        outFields: '*'
+      }
+
+      const response = FeatureServer.query(budgetTable, options)
+      response.fields.length.should.equal(9)
+      response.features.length.should.equal(10)
+      Object.keys(response.features[0].attributes).length.should.equal(9)
+    })
   })
 
   describe('querying for statistics', function () {
@@ -210,7 +226,7 @@ describe('Query operatons', function () {
         response.features[0]['attributes']['stddev_precip'].should.equal(0.27646171244241985)
       })
 
-      it.only('should return a correct response when there are multiple stats returned', () => {
+      it('should return a correct response when there are multiple stats returned', () => {
         const options = {
           where: '1=1',
           returnGeometry: false,

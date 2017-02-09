@@ -6,8 +6,6 @@ const DATE_FORMATS = [
   moment.ISO_8601
 ]
 
-const defaultIdField = { name: 'OBJECTID', type: 'esriFieldTypeOID', alias: 'OBJECTID' }
-
 /**
  * returns esri field type based on type of value passed
  *
@@ -53,6 +51,5 @@ function fields (props, template, options) {
     return field
   })
 
-  if (template !== 'statistics') fields.push(defaultIdField)
   return { oidField: 'OBJECTID', fields }
 }

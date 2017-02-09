@@ -18,10 +18,10 @@ function query (data, params = {}) {
   if (data.filtersApplied && data.filtersApplied.where || params.where === '1=1') delete params.where
   if (data.statistics) return statisticsResponse(data.statistics)
   if (params.returnCountOnly && data.count) return {count: data.count}
-  const geomType = Utils.setGeomType(data.features[0])
+  const geomType = Utils.setGeomType({}, data.features[0])
   params.toEsri = true
   const queriedData = Winnow.query(data, params)
-
+  console.log('hi', queriedData)
   // TODO this should happen within winnow
   // add objectIds as long as this is not a stats request
   if (!params.outStatistics) {
@@ -54,7 +54,6 @@ function queryFeatures (data, params, geomType) {
   let json = Templates.render('features', data, params)
   if (!data.features || !data.features.length) return json
   json = _.merge(json, geomType)
-
   return json
 }
 
