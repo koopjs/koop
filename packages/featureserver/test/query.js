@@ -18,6 +18,16 @@ describe('Query operatons', function () {
     })
   })
 
+  describe('when using an outSR', function () {
+    it('should translate the data properly', function () {
+      const response = FeatureServer.query(data, { outSR: { latestWkid: 3857 }, limit: 1, returnGeometry: true })
+      response.features.length.should.equal(1)
+      response.features[0].geometry.x.should.equal(-11682713.391976157)
+      response.features[0].geometry.y.should.equal(4857924.005275469)
+      response.spatialReference.wkid.should.equal(3857)
+    })
+  })
+
   describe('when getting featureserver features by id queries', function () {
     it('should return a proper features', () => {
       const response = FeatureServer.query(data, { objectIds: '1,2,3' })

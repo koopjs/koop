@@ -36,6 +36,8 @@ function render (template, featureCollection = {}, options = {}) {
   else if (json.extent) json.extent = data.metadata.extent || options.extent
 
   if (json.geometryType) json.geometryType = options.geometryType
+  if (json.spatialReference && options.spatialReference) json.spatialReference = options.spatialReference
+  if (json.spatialReference && json.spatialReference.latestWkid) json.spatialReference.wkid = json.spatialReference.latestWkid
   if (json.name && data.metadata.name) json.name = data.metadata.name
   if (json.description && data.metadata.description) json.description = data.metadata.description
   if (json.extent && data.metadata.extent) json.extent = data.metadata.extent

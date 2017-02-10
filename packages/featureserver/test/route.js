@@ -23,6 +23,7 @@ describe('Routing feature server requests', () => {
       request(app)
       .get('/FeatureServer/0/query?f=json&where=1%3D1')
       .expect(res => {
+        Object.keys(res.body.features[0].attributes).length.should.equal(10)
         res.body.features.length.should.equal(417)
       })
       .expect('Content-Type', /json/)
@@ -35,7 +36,6 @@ describe('Routing feature server requests', () => {
       request(app)
       .get('/FeatureServer?f=json')
       .expect(res => {
-        console.log(res.body)
         should.exist(res.body.secureSoapUrl)
       })
       .expect('Content-Type', /json/)
