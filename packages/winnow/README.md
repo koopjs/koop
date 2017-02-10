@@ -25,6 +25,7 @@ const options = {
   aggregates: Object // Describes the set of aggregations to perform on fields
   groupBy: Array // Set of fields for grouping statistics
   order: Array // Set of fields or aggregates by which to order results
+  projection: Number || String // An EPSG code, an OGC WKT or an ESRI WKT used to convert geometry
 }
 winnow.query(features, options)
 // Returns the set of features that match the query
@@ -92,23 +93,17 @@ e.g:
 ]
 ```
 
-### `outStatistics`
-Like aggregates but follows esri's query API
+### `groupBy`
+An array of fields used to group the results. Must be used with aggregates. Note this will not return any geometry
 
-e.g:
-```javascript
-[
-  {
-    statisticType: 'sum',
-    onStatisticField: 'Trunk_Diameter',
-    outStatisticFieldName: 'Total_Trunk_Diameter'
-  },
-  {
-    statisticType: 'avg',
-    onStatisticField: 'Trunk_Diameter'
-  }
-]
-```
+### `limit`
+The total number of results to return
+
+### `order`
+An array of fields use to sort the output
+
+### `projection`
+Can be an epsg code, an ogc wkt or an esri wkt. This parameter controls how the geometry will be projected to another coordinate system.
 
 ### `toEsri`
 If true, the object returned will be an esri feature collection

@@ -19,9 +19,15 @@ function create (options) {
   return query
 }
 
-function params (features, geometry) {
-  const params = Array.isArray(features) ? [features] : [[features]]
-  if (geometry) params.push(geometry)
+function params (features, options) {
+  const params = []
+  // NOTE: order matters here
+  // Fields stage
+  if (options.projection) params.push(options.projection)
+  // From stage
+  params.push(Array.isArray(features) ? features : [features])
+  // Where stage
+  if (options.geometry) params.push(options.geometry)
   return params
 }
 

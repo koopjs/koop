@@ -22,7 +22,7 @@ Winnow.query = function (input, options = {}) {
 
   // The following two functions are query preprocessing steps
   const query = Query.create(options)
-  const params = Query.params(features, options.geometry)
+  const params = Query.params(features, options)
   if (process.env.NODE_ENV === 'test') console.log(query, options)
   const filtered = sql(query, params)
   return finishQuery(filtered, options)

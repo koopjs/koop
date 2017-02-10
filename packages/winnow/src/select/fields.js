@@ -6,10 +6,10 @@ module.exports = function (fields, options) {
   let geomType
   if (options.toEsri) {
     propType = 'attributes'
-    geomType = 'esriGeom(geometry) as geometry'
+    geomType = options.projection ? 'esriGeom(project(geometry, ?)) as geometry' : 'esriGeom(geometry) as geometry'
   } else {
     propType = 'properties'
-    geomType = 'geometry'
+    geomType = options.projection ? 'project(geometry, ?) as geometry' : 'geometry'
   }
 
   return `SELECT type, pick(properties, "${fields}") as ${propType}, ${geomType} FROM ?`

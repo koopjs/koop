@@ -4,6 +4,7 @@ const sql = require('alasql')
 const geohash = require('ngeohash')
 const centroid = require('@turf/centroid')
 const _ = require('lodash')
+const proj4 = require('proj4')
 
 sql.fn.ST_Within = function (feature, filterGeom) {
   if (!(feature && feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
@@ -43,6 +44,16 @@ sql.fn.pick = function (properties, fields) {
 sql.fn.esriGeom = function (geometry) {
   if (geometry && geometry.type) {
     return TfParser.convert(geometry)
+  }
+}
+
+sql.fn.project = function (geometry, projection) {
+  if (geometry && geometry.coordinates) {
+    const coordinates = proj4(projection).forward(geometry.coordinates)
+    return {
+      type: geometry.type,
+      coordinates
+    }
   }
 }
 

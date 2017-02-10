@@ -35,6 +35,7 @@
     "highland": "^3.0.0-beta.3",
     "lodash": "^4.17.4",
     "ngeohash": "^0.6.0",
+    "proj4": "^2.3.17",
     "terraformer": "^1.0.7",
     "terraformer-arcgis-parser": "^1.0.5"
   },

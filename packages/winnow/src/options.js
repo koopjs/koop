@@ -1,4 +1,5 @@
 const transformEnvelope = require('./geometry/transform-envelope')
+
 const esriPredicates = {
   esriSpatialRelContains: 'ST_Contains',
   esriSpatialRelWithin: 'ST_Within',
@@ -16,6 +17,7 @@ function prepare (options) {
     groupBy: normalizeGroupBy(options),
     limit: normalizeLimit(options),
     offset: normalizeOffset(options),
+    projection: normalizeProjection(options),
     esri: options.esri,
     toEsri: options.toEsri,
     collection: options.collection
@@ -84,6 +86,14 @@ function normalizeLimit (options) {
 
 function normalizeOffset (options) {
   return options.offset || options.resultOffset
+}
+
+function normalizeProjection (options) {
+  const projection = options.projection || options.outSR
+  // Support the old esri code for web mercator
+  if (projection === 102100) return `EPSG:3857`
+  if (typeof projection !== 'number') return projection
+  else return `EPSG:${projection}`
 }
 
 module.exports = { prepare }

@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+###
+* Support for geometry projections and the esri `outSR` parameter
+
 ## [1.4.2] - 02-06-2017
 ### Fixed
 * Rebuild
