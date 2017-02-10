@@ -1,7 +1,6 @@
 'use strict'
 const sql = require('./sql')
 const Query = require('./query')
-const Geometry = require('./geometry')
 const Params = require('./params')
 const Options = require('./options')
 const _ = require('lodash')

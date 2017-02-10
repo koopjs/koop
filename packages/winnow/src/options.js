@@ -89,7 +89,12 @@ function normalizeOffset (options) {
 }
 
 function normalizeProjection (options) {
-  const projection = options.projection || options.outSR
+  let projection
+  if (options.projection) {
+    projection = options.projection
+  } else if (options.outSR) {
+    projection = options.outSR.latestWkid || options.outSR.wkid || options.outSR.wkt
+  }
   // Support the old esri code for web mercator
   if (projection === 102100) return `EPSG:3857`
   if (typeof projection !== 'number') return projection
