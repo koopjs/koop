@@ -15,6 +15,16 @@ test('Project to Web Mercator using 3857', t => {
   t.deepEqual(results[0].geometry.coordinates, [-11682713.391976157, 4857924.005275469])
 })
 
+test('Project to Web Mercator using 3857 with an esri style outSR', t => {
+  t.plan(1)
+  const options = {
+    outSR: {latestWkid: 3857},
+    limit: 1
+  }
+  const results = winnow.query(features, options)
+  t.deepEqual(results[0].geometry.coordinates, [-11682713.391976157, 4857924.005275469])
+})
+
 test('Project to Web Mercator using 3857 with a geo filter', t => {
   t.plan(1)
   const options = {
