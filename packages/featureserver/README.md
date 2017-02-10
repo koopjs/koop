@@ -53,7 +53,9 @@ e.g.
   statistics: Object, // pass statistics to an outStatistics request to or else they will be calculated from geojson features passed in
   metadata: {
     name: String, //
+    description: String
     extent:  Object || Array // valid extent object or 2 coord array
+    displayField: String // The display field to be used by a client
     id: String // unique identifier field
   },
   filtersApplied: {

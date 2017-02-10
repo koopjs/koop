@@ -1,22 +1,10 @@
 const Utils = require('./utils.js')
-const esriExtent = require('esri-extent')
 const Templates = require('./templates')
 
-module.exports = { serverInfo, serviceInfo, layerInfo, layers }
-
 function layerInfo (geojson, params) {
-  let json = Templates.render('layer', geojson, params)
-  json.name = geojson.name || 'Layer 0'
-  json.description = geojson.description || ''
-
-  // set the geometry based on the first feature
-  // TODO: could clean this up or use a flag in the url to pull out feature of specific type like nixta
-  json = Utils.setGeomType(json, (geojson && geojson.features) ? geojson.features[0] : null)
-
-  json.fullExtent = json.initialExtent = json.extent = geojson.extent || esriExtent(geojson.features)
-  if (Utils.isTable(json, geojson)) json.type = 'Table'
-
-  return json
+  params.extent = Utils.getExtent(geojson)
+  params.geometryType = Utils.getGeomType(geojson)
+  return Templates.render('layer', geojson, params)
 }
 
 function serverInfo () {
@@ -25,12 +13,13 @@ function serverInfo () {
 
 function serviceInfo (geojson, params) {
   // no layer, send the service json
+  params.extent = Utils.getExtent(geojson)
+  params.geometryType = Utils.getGeomType(geojson)
   const json = Templates.render('service', geojson, params)
-
-  json.fullExtent = json.initialExtent = json.extent = geojson.extent || esriExtent(geojson)
+  // TODO move this to a rendered template
   const lyr = {
     id: 0,
-    name: geojson.name || 'layer 1',
+    name: geojson.metadata && geojson.metadata.name || 'layer 1',
     parentLayerId: -1,
     defaultVisibility: true,
     subLayerIds: null,
@@ -44,7 +33,6 @@ function serviceInfo (geojson, params) {
 
 /**
  * deals with `/layers` method call
- * TODO: support many layers
  *
  * @param {object} data
  * @param {object} params
@@ -53,19 +41,22 @@ function layers (data, params) {
   let layerJson
   let json
   if (!data.length) {
+    params.extent = Utils.getExtent(data)
+    params.geometryType = Utils.getGeomType((data && data.features) ? data.features[0] : null)
     layerJson = Templates.render('layer', data, params)
-    layerJson.extent = layerJson.fullExtent = layerJson.initialExtent = esriExtent(data.features)
     json = { layers: [layerJson], tables: [] }
-    return json
   } else {
     json = { layers: [], tables: [] }
-
     data.forEach(function (layer, i) {
+      params.extent = Utils.getExtent(layer)
+      params.geometryType = Utils.getGeomType((layer && layer.features) ? layer.features[0] : null)
       layerJson = Templates.render('layer', layer, params)
+      // TODO move this to a rendered template
       layerJson.id = i
-      layerJson.extent = layerJson.fullExtent = layerJson.initialExtent = esriExtent(layer.features)
       json.layers.push(layerJson)
     })
-    return json
   }
+  return json
 }
+
+module.exports = { serverInfo, serviceInfo, layerInfo, layers }

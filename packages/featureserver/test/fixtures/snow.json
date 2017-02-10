@@ -1,8 +1,9 @@
 {
-  "name": "snow.geojson",
-  "next_feature": null,
   "type": "FeatureCollection",
-  "start": 0,
+  "metadata": {
+    "name": "Snow",
+    "description": "MyTestDesc"
+  },
   "features": [
     {
       "type": "Feature",

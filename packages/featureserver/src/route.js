@@ -63,6 +63,7 @@ function execInfo (req, res, method, geojson) {
       throw new Error('Method not supported')
     }
   } catch (e) {
+    if (process.env.NODE_ENV === 'test') console.trace(e)
     res.status(500).json({error: e.message})
   }
   if (req.query.callback) res.send(`${req.query.callback}(${JSON.stringify(info)})`)

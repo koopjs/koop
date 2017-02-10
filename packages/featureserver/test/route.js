@@ -18,7 +18,7 @@ describe('Routing feature server requests', () => {
     data.name = 'Snow'
   })
 
-  describe.only('Query', () => {
+  describe('Query', () => {
     it('should properly route and handle a query', done => {
       request(app)
       .get('/FeatureServer/0/query?f=json&where=1%3D1')
@@ -35,6 +35,7 @@ describe('Routing feature server requests', () => {
       request(app)
       .get('/FeatureServer?f=json')
       .expect(res => {
+        console.log(res.body)
         should.exist(res.body.secureSoapUrl)
       })
       .expect('Content-Type', /json/)

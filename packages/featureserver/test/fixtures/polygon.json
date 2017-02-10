@@ -1,5 +1,8 @@
 {
   "type": "FeatureCollection",
+  "metadata": {
+    "name": "map"
+  },
   "features": [
     {
       "type": "Feature",
@@ -36,7 +39,5 @@
         ]
       }
     }
-  ],
-  "name": "map.geojson",
-  "updated_at": "2013-07-17T14:49:41Z"
+  ]
 }

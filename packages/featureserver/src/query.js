@@ -1,6 +1,6 @@
 const Templates = require('./templates')
 const Winnow = require('winnow')
-const Utils = require('./utils.js')
+const Utils = require('./utils')
 const _ = require('lodash')
 
 module.exports = query
@@ -18,10 +18,8 @@ function query (data, params = {}) {
   if (data.filtersApplied && data.filtersApplied.where || params.where === '1=1') delete params.where
   if (data.statistics) return statisticsResponse(data.statistics)
   if (params.returnCountOnly && data.count) return {count: data.count}
-  const geomType = Utils.setGeomType({}, data.features[0])
   params.toEsri = true
   const queriedData = Winnow.query(data, params)
-  console.log('hi', queriedData)
   // TODO this should happen within winnow
   // add objectIds as long as this is not a stats request
   if (!params.outStatistics) {
@@ -46,30 +44,23 @@ function query (data, params = {}) {
   } else if (params.outStatistics) {
     return queryStatistics(queriedData, params)
   } else {
-    return queryFeatures(queriedData, params, geomType)
+    params.extent = Utils.getExtent(data)
+    params.geometryType = Utils.getGeomType((data && data.features) ? data.features[0] : null)
+    return Templates.render('features', queriedData, params)
   }
-}
-
-function queryFeatures (data, params, geomType) {
-  let json = Templates.render('features', data, params)
-  if (!data.features || !data.features.length) return json
-  json = _.merge(json, geomType)
-  return json
 }
 
 function queryStatistics (data, params) {
   // This little dance is in place because the stat response from Winnow is different
   // TODO make winnow come out as expected
   // or move this into templates.render
-  const statResponse = {}
-  const features = Array.isArray(data) ? _.cloneDeep(data) : [_.cloneDeep(data)]
-  statResponse.features = features.map(row => {
-    return {attributes: row}
-  })
-  const json = Templates.render('statistics', statResponse, params)
-  // TODO move to render?
-  json.displayFieldName = json.fields[0].name
-  return json
+  const statResponse = {
+    type: 'FeatureCollection',
+    features: []
+  }
+  const features = Array.isArray(data) ? data : [data]
+  statResponse.features = features.map(row => { return { attributes: row } })
+  return Templates.render('statistics', statResponse, params)
 }
 
 function statisticsResponse (stats) {
