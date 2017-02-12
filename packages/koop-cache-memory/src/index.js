@@ -11,7 +11,7 @@ function Cache (options = {}) {
   this.catalog.store = new Map()
 }
 
-Cache.plugin_name = 'memory cache'
+Cache.name = 'Memory Cache'
 Cache.type = 'cache'
 Cache.version = require('../package.json').version
 
@@ -91,7 +91,7 @@ Cache.prototype.catalog.retrieve = function (key, callback = noop) {
 }
 
 Cache.prototype.catalog.delete = function (key, callback = noop) {
-  if (this.store.has(key)) return callback(new Error('Cannot delete catalog entry while data is still in store.'))
+  if (this.store.has(key)) return callback(new Error('Cannot delete catalog entry while data is still in cache'))
   this.store.delete(key)
   callback()
 }
