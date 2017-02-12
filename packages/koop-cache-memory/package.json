@@ -1,0 +1,36 @@
+{
+  "name": "koop-cache-memory",
+  "version": "1.0.0",
+  "description": "An in-memory cache for KOop",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "standard src && tape test/*.js | tap-spec",
+    "clean": "rm -rf dist",
+    "compile": "buble -i src -o dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koopjs/koop-cache-memory.git"
+  },
+  "keywords": [
+    "koop",
+    "cache",
+    "memory"
+  ],
+  "author": "Daniel Fenton <dfenton@esri.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/koopjs/koop-cache-memory/issues"
+  },
+  "homepage": "https://github.com/koopjs/koop-cache-memory#readme",
+  "devDependencies": {
+    "buble": "^0.15.2",
+    "standard": "^8.6.0",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.3"
+  },
+  "dependencies": {
+    "highland": "^3.0.0-beta.2",
+    "lodash": "^4.17.4"
+  }
+}
