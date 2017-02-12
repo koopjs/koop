@@ -9,6 +9,7 @@ function noop () {}
 function Cache (options = {}) {
   this.store = new Map()
   this.catalog.store = new Map()
+  this.catalog.dataStore = this.store
 }
 
 Cache.name = 'Memory Cache'
@@ -71,12 +72,14 @@ Cache.prototype.delete = function (key, options = {}, callback = noop) {
 Cache.prototype.catalog = {}
 
 Cache.prototype.catalog.insert = function (key, metadata, callback = noop) {
+  if (this.store.has(key)) return callback(new Error('Catalog key is already in use'))
   metadata.updated = Date.now()
   this.store.set(key, metadata)
   callback()
 }
 
 Cache.prototype.catalog.update = function (key, update, callback = noop) {
+  if (!this.store.has(key)) return callback(new Error('Resource not found'))
   const existing = this.store.get(key)
   const metadata = _.merge(existing, update)
   metadata.updated = Date.now()
@@ -85,13 +88,14 @@ Cache.prototype.catalog.update = function (key, update, callback = noop) {
 }
 
 Cache.prototype.catalog.retrieve = function (key, callback = noop) {
+  if (!this.store.has(key)) return callback(new Error('Resource not found'))
   const metadata = this.store.get(key)
   callback(null, metadata)
   return metadata
 }
 
 Cache.prototype.catalog.delete = function (key, callback = noop) {
-  if (this.store.has(key)) return callback(new Error('Cannot delete catalog entry while data is still in cache'))
+  if (this.dataStore.has(key)) return callback(new Error('Cannot delete catalog entry while data is still in cache'))
   this.store.delete(key)
   callback()
 }
