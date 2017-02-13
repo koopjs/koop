@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Remove Koop Local Cache in favor of [koop-cache-memory](https://github.com/koopjs/koop-cache-memory)
+
 ## [3.0.0-alpha.29] - 2017-02-02
 ### Fixed
 * Maintain context in provider controllers

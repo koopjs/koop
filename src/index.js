@@ -5,8 +5,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const pkg = require('../package.json')
 const _ = require('lodash')
-const Cache = require('./cache')
-const LocalDb = require('./local')
+const Cache = require('koop-cache-memory')
 const Logger = require('koop-logger')
 const BaseController = require('./controller')
 const Events = require('events')
@@ -21,7 +20,7 @@ function Koop (config) {
   this.config = require('config')
   // default to LocalDB cache
   // cache registration overrides this
-  this.cache = initDefaultCache()
+  this.cache = new Cache()
   this.log = new Logger(config)
   this.pluginRoutes = []
   this.register(FeatureServer)
@@ -46,12 +45,6 @@ function Koop (config) {
 
 Util.inherits(Koop, Events)
 
-function initDefaultCache () {
-  const cache = new Cache()
-  cache.db = LocalDb
-  return cache
-}
-
 Koop.Controller = require('./controller')
 
 /**
@@ -72,7 +65,7 @@ function initServer () {
   })
   // for demos and preview maps in providers
   .set('view engine', 'ejs')
-  .use(express.static(__dirname + '/public'))
+  .use(express.static(path.join(__dirname, '/public')))
   .use(cors())
 }
 
@@ -111,20 +104,21 @@ Koop.prototype._registerProvider = function (provider) {
   } else {
     controller = new BaseController(model)
   }
-  this.controllers[provider.plugin_name] = controller
+  const name = provider.name || provider.plugin_name
+  this.controllers[name] = controller
   provider.version = provider.version || '(version missing)'
 
   // if a provider has a status object store it
   // TODO: deprecate & serve more meaningful status reports dynamically.
   if (provider.status) {
-    this.status.providers[provider.plugin_name] = provider.status
+    this.status.providers[name] = provider.status
     provider.version = provider.status.version
   }
 
   // add each route, the routes let us override defaults etc.
   bindRoutes(provider, controller, this.server, this.pluginRoutes)
 
-  this.log.info('registered provider:', provider.plugin_name, provider.version)
+  this.log.info('registered provider:', name, provider.version)
 }
 
 /**
@@ -181,10 +175,9 @@ function bindProviderOverrides (provider, controller, server) {
  *
  * @param {object} cache - a koop database adapter
  */
-Koop.prototype._registerCache = function (cache) {
-  if (!this.config.db || !this.config.db.conn) throw new Error('Cannot register cache: missing config.db.conn.')
-  this.cache.db = cache.connect(this.config.db.conn, { log: this.log })
-  this.log.info('registered cache:', cache.plugin_name, cache.version)
+Koop.prototype._registerCache = function (Cache) {
+  this.cache = new Cache()
+  this.log.info('registered cache:', Cache.name, Cache.version)
 }
 
 /**
@@ -206,7 +199,8 @@ Koop.prototype._registerFilesystem = function (Filesystem) {
  * @param {object} any koop plugin
  */
 Koop.prototype._registerPlugin = function (Plugin) {
-  if (!Plugin.plugin_name) throw new Error('Plugin is missing name')
+  const name = Plugin.name || Plugin.plugin_name
+  if (name) throw new Error('Plugin is missing name')
   let dependencies
   if (typeof Plugin.dependencies && Plugin.dependencies.length) {
     dependencies = Plugin.dependencies.reduce((deps, dep) => {
@@ -214,8 +208,8 @@ Koop.prototype._registerPlugin = function (Plugin) {
       return deps
     }, {})
   }
-  this[Plugin.plugin_name] = new Plugin(dependencies)
-  this.log.info('registered plugin:', Plugin.plugin_name, Plugin.version)
+  this[name] = new Plugin(dependencies)
+  this.log.info('registered plugin:', name, Plugin.version)
 }
 
 module.exports = Koop

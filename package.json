@@ -18,6 +18,7 @@
     "cors": "^2.8.1",
     "ejs": "^2.3.3",
     "express": "^4.14.1",
+    "koop-cache-memory": "^1.0.1",
     "koop-featureserver-plugin": "^1.0.0",
     "koop-localfs": "^1.1.1",
     "koop-logger": "^1.0.1",
@@ -51,6 +52,6 @@
   "scripts": {
     "release": "gh-release",
     "compile": "buble -i src -o dist",
-    "test": "standard src && mocha test/models/ -t 20000"
+    "test": "NODE_ENV=test standard src && mocha test/index.js -t 20000"
   }
 }
