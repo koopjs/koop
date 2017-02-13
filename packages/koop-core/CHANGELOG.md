@@ -2,6 +2,162 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Remove Koop Local Cache in favor of [koop-cache-memory](https://github.com/koopjs/koop-cache-memory)
+
+## [3.0.0-alpha.29] - 2017-02-02
+### Fixed
+* Maintain context in provider controllers
+
+## [3.0.0-alpha.28] - 2017-01-31
+### Changed
+* Use Koop-Localfs instead of default filesystem
+* Expose provider controllers under `koop.controllers` to facilitate testing
+
+## [3.0.0-alpha.27] - 2017-01-31
+### Added
+* New plugin type `Output` extends BaseController
+
+### Changed
+* Koop exposes an express server at `koop.server`
+* Overhauled provider construction
+* Removed `lib/featureservices` in favor of [Featureserver](https://github.com/featureserver/featureserver)
+* Removed internal Query code in favor of [Winnow](https://github.com/dmfenton/winnow)
+* Removed `pattern` parameter on prioviders
+
+## [3.0.0-alpha.26] - 2016-04-27
+### Changed
+* Removed `lib/GeoJSON`
+* Removed geojson tests
+* `lib/Local` select, getCount, getInfo, updateInfo return 'Resource not found' on errors
+
+## [3.0.0-alpha.25] - 2016-04-14
+### Fixed
+* Filesystem is initialized properly
+
+## [3.0.0-alpha.24] - 2016-04-13
+### Added
+* New plugin type `filesystem` with overwrite `koop.fs`
+* Koop.fs defaults to node's built-in filesystem API
+
+### Changed
+* Renamed `koop.files` to `koop.fs`
+* Removed `lib/files`
+* Removed references to plugins that refer to `koop.files`
+
+## [3.0.0-alpha.23] - 2016-04-12
+### Changed
+* Sanitize jsonp callback in processFeatureServer
+
+## [3.0.0-alpha.22] - 2016-04-04
+### Fixed
+* Remove duplicate json templates
+
+## [3.0.0-alpha.21] - 2016-04-04
+### Fixed
+* Fixed a case where S3 write streams could be prematurely closed when files are less than 5 MB
+
+## [3.0.0-alpha.20] - 2016-04-04
+### Changed
+* Added default/configurable endpoint for S3 filesystem
+
+## [3.0.0-alpha.19] - 2016-04-01
+### Fixed
+* params are optional in s3 read/write streams
+
+## [3.0.0-alpha.18] - 2016-04-01
+### Added
+* S3 Uploads support adding metadata
+
+## [3.0.0-alpha.17] - 2016-03-29
+### Fixed
+* Dont throw an exception when feature service response has no features
+
+## [3.0.0-alpha.16] - 2016-03-15
+### Changed
+* Rebuild
+
+## [3.0.0-alpha.15] - 2016-03-15
+### Changed
+* Don't emit error on S3 abort
+* Increase max post size to 10mb
+* Removed node-fs dependency
+
+### Fixed
+* Emit finish event on local writeStream
+
+## [3.0.0-alpha.14] - 2016-03-14
+### Fixed
+* Fix abort on S3
+
+## [3.0.0-alpha.13] - 2016-03-10
+### Added
+* Short circuit to avoid filtering with processFeatureServer
+
+### Changed
+* Remove for logic from processTemplate for multiple layers
+
+## [3.0.0-alpha.12] - 2016-03-09
+### Changed
+* Refactor processFeatureServer chain to only take a single geojson layer and fewer parameters
+* Refactor lib/FeatureServices for speed and clarity
+
+### Fixed
+* Call abort on the correct upload object when writing files to S3
+
+## [3.0.0-alpha.11] - 2016-03-02
+### Added
+* Can now call `abort` on files.createWriteStream to delete partial file
+
+## [3.0.0-alpha.10] - 2016-02-22
+### Fixed
+* Rebuild
+
+## [3.0.0-alpha.9] - 2016-02-22
+### Fixed
+* Field type declared as string only for ISO
+* Query parameters 'false' and 'true' work as expected in feature service requests
+
+## [3.0.0-alpha.8] - 2016-02-10
+### Fixed
+* Sanitize geometry to null when malformed
+
+## [3.0.0-alpha.7] - 2016-02-08
+### Fixed
+* Fix CVD decoding when value is not in the domain
+
+## [3.0.0-alpha.6] - 2016-02-02
+### Fixed
+* Compile process run correctly
+
+## [3.0.0-alpha.5] - 2016-02-02
+### Fixed
+* Rebuild
+
+## [3.0.0-alpha.4] - 2016-02-01
+### Changed
+* Use ArcGIS To GeoJSON utils
+
+## [3.0.0-alpha.3] - 2016-01-26
+### Fixed
+* Include templates in build
+
+## [3.0.0-alpha.2] - 2016-01-25
+### Changed
+* Use `gunzip-maybe` for s3 read streams
+
+## [3.0.0-alpha.1] - 2016-01-19
+### Fixed
+* Add files missing from build
+
+## [3.0.0-alpha] - 2016-01-07
+### Changed
+* Koop will now be written in ES > 5 and compile with babel
+* New plugin system
+* Extract Logger, Queue and Exporter into seperate packages
+* Remove timers from koop.Cache
+
 ## [2.12.3] - 2016-04-12
 ### Changed
 * Sanitize jsonp callback
@@ -548,6 +704,35 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[3.0.0-alpha.28]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.27...v3.0.0-alpha.28
+[3.0.0-alpha.27]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.26...v3.0.0-alpha.27
+[3.0.0-alpha.26]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.25...v3.0.0-alpha.26
+[3.0.0-alpha.25]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.24...v3.0.0-alpha.25
+[3.0.0-alpha.24]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.23...v3.0.0-alpha.24
+[3.0.0-alpha.23]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.22...v3.0.0-alpha.23
+[3.0.0-alpha.22]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.21...v3.0.0-alpha.22
+[3.0.0-alpha.21]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.20...v3.0.0-alpha.21
+[3.0.0-alpha.20]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.19...v3.0.0-alpha.20
+[3.0.0-alpha.19]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.18...v3.0.0-alpha.19
+[3.0.0-alpha.18]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.17...v3.0.0-alpha.18
+[3.0.0-alpha.17]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.16...v3.0.0-alpha.17
+[3.0.0-alpha.16]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.15...v3.0.0-alpha.16
+[3.0.0-alpha.15]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.14...v3.0.0-alpha.15
+[3.0.0-alpha.14]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.13...v3.0.0-alpha.14
+[3.0.0-alpha.13]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.12...v3.0.0-alpha.13
+[3.0.0-alpha.12]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.11...v3.0.0-alpha.12
+[3.0.0-alpha.11]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.10...v3.0.0-alpha.11
+[3.0.0-alpha.10]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.9...v3.0.0-alpha.10
+[3.0.0-alpha.9]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.8...v3.0.0-alpha.9
+[3.0.0-alpha.8]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.7...v3.0.0-alpha.8
+[3.0.0-alpha.7]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.6...v3.0.0-alpha.7
+[3.0.0-alpha.6]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.5...v3.0.0-alpha.6
+[3.0.0-alpha.5]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.4...v3.0.0-alpha.5
+[3.0.0-alpha.4]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.3...v3.0.0-alpha.4
+[3.0.0-alpha.3]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.2...v3.0.0-alpha.3
+[3.0.0-alpha.2]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.1...v3.0.0-alpha.2
+[3.0.0-alpha.1]: https://github.com/koopjs/koop/compare/v3.0.0-alpha...v3.0.0-alpha.1
+[3.0.0-alpha]: https://github.com/koopjs/koop/compare/v2.12.0...v3.0.0-alpha
 [2.12.3]: https://github.com/koopjs/koop/compare/v2.12.2...v2.12.3
 [2.12.2]: https://github.com/koopjs/koop/compare/v2.12.1...v2.12.2
 [2.12.1]: https://github.com/koopjs/koop/compare/v2.12.0...v2.12.1
