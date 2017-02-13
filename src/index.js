@@ -7,7 +7,10 @@ const pkg = require('../package.json')
 const _ = require('lodash')
 const Cache = require('koop-cache-memory')
 const Logger = require('koop-logger')
-const BaseController = require('./controller')
+const defaultRoutes = require('./routes')
+const BaseController = require('./controllers/base')
+const DatasetController = require('./controllers/dataset')
+const Dataset = require('./models/dataset')
 const Events = require('events')
 const Util = require('util')
 const path = require('path')
@@ -26,7 +29,11 @@ function Koop (config) {
   this.register(FeatureServer)
   this.register(LocalFS)
   this.controllers = {}
-  // TODO: consolidate status, services, `/providers` routes
+  const dataset = new Dataset(this)
+  const datasetController = new DatasetController(dataset)
+  this.controllers.dataset = datasetController
+  bindRouteSet(defaultRoutes, datasetController, this.server)
+
   this.status = {
     version: this.version,
     providers: {}
@@ -44,8 +51,6 @@ function Koop (config) {
 }
 
 Util.inherits(Koop, Events)
-
-Koop.Controller = require('./controller')
 
 /**
  * express middleware setup
@@ -142,7 +147,7 @@ Koop.prototype._registerOutput = function (Output) {
  */
 function bindRoutes (provider, controller, server, pluginRoutes) {
   bindPluginOverrides(provider, controller, server, pluginRoutes)
-  bindProviderOverrides(provider, controller, server)
+  bindRouteSet(provider.routes, controller, server)
 }
 
 function bindPluginOverrides (provider, controller, server, pluginRoutes) {
@@ -161,8 +166,8 @@ function bindPluginOverrides (provider, controller, server, pluginRoutes) {
   })
 }
 
-function bindProviderOverrides (provider, controller, server) {
-  provider.routes.forEach(route => {
+function bindRouteSet (routes, controller, server) {
+  routes.forEach(route => {
     route.methods.forEach(method => {
       server[method](route.path, controller[route.handler].bind(controller))
     })

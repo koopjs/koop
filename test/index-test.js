@@ -10,7 +10,7 @@ describe('Index tests for registering providers', function () {
     it('should register successfully', function () {
       koop.register(provider)
       const routeCount = (koop.server._router.stack.length)
-      routeCount.should.equal(17)
+      routeCount.should.equal(23)
     })
   })
 })
