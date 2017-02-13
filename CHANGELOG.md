@@ -2,7 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.0.0] - 2017-02-13
+### Added
+* First stable release of Koop 3.0
+
 ### Changed
 * Remove Koop Local Cache in favor of [koop-cache-memory](https://github.com/koopjs/koop-cache-memory)
 
@@ -704,6 +707,8 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[3.0.0]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.28...v3.0.0
+[3.0.0-alpha.29]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.28...v3.0.0-alpha.29
 [3.0.0-alpha.28]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.27...v3.0.0-alpha.28
 [3.0.0-alpha.27]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.26...v3.0.0-alpha.27
 [3.0.0-alpha.26]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.25...v3.0.0-alpha.26
