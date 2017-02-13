@@ -26,7 +26,6 @@ Cache.prototype.insert = function (key, geojson, options = {}, callback = noop) 
   const metadata = geojson.metadata || {}
   if (options.ttl) metadata.expires = Date.now() + (options.ttl * 1000)
   this.catalog.insert(key, metadata, callback)
-  callback()
 }
 
 Cache.prototype.update = function (key, geojson, options = {}, callback = noop) {

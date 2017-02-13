@@ -31,6 +31,18 @@ test('Inserting and retreiving from the cache', t => {
   t.end()
 })
 
+test('Inserting and retreiving from the cache callback style', t => {
+  cache.insert('keyb', geojson, {ttl: 600}, (err) => {
+    t.error(err, 'no error')
+    const cached = cache.retrieve('keyb')
+    t.equal(cached.features[0].properties.key, 'value', 'retrieved features')
+    t.equal(cached.metadata.name, 'Test', 'retrieved metadata')
+    t.ok(cached.metadata.expires, 'expiration set')
+    t.ok(cached.metadata.updated, 'updated set')
+    t.end()
+  })
+})
+
 test('Inserting and appending to the cache', t => {
   cache.insert('key2', geojson, {ttl: 600})
   cache.append('key2', geojson)

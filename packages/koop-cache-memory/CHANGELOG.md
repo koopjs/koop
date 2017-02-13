@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Remove double callback in cache insert
+
 ## [1.0.1] - 2017-02-13
 ### Changed
 * Build NPM package without src or test
