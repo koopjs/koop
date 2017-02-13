@@ -1,11 +1,13 @@
-var kooplib = require('../../lib')
-var config = { logfile: __dirname + '/../test.log' }
+const Cache = require('../../src/cache')
+const local = require('../../src/local')
+const path = require('path')
+var config = { logfile: path.join(__dirname, '/../test.log') }
 
 // init the koop log based on config params
-kooplib.log = new kooplib.Logger(config)
+const Logger = require('koop-logger')
+const log = new Logger(config)
 
-var Cache = new kooplib.DataCache(kooplib)
-Cache.db = kooplib.LocalDB
-Cache.db.log = kooplib.log
+exports.cache = new Cache()
 exports.config = config
-exports.cache = Cache
+exports.cache.db = local
+exports.cache.db.log = log
