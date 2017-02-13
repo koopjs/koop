@@ -31,6 +31,7 @@ Cache.prototype.insert = function (key, geojson, options = {}, callback = noop) 
 
 Cache.prototype.update = function (key, geojson, options = {}, callback = noop) {
   // support a feature collection or an array of features
+  if (!this.store.has(key)) return callback(new Error('Resource not found'))
   const features = geojson.features ? geojson.features : geojson
   this.store.set(key, features)
   const existingMetadata = this.catalog.store.get(key)
@@ -60,7 +61,8 @@ Cache.prototype.createStream = function (key, options = {}) {
   return h(this.store.get(key))
 }
 
-Cache.prototype.delete = function (key, options = {}, callback = noop) {
+Cache.prototype.delete = function (key, callback = noop) {
+  if (!this.store.has(key)) return callback(new Error('Resource not found'))
   this.store.delete(key)
   const metadata = this.catalog.store.get(key)
   metadata.status = 'deleted'
