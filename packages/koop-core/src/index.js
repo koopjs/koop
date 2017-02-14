@@ -163,6 +163,8 @@ function bindPluginOverrides (provider, controller, server, pluginRoutes) {
     let fullRoute
     if (provider.hosts) {
       fullRoute = path.join('/', namespace, ':host', ':id', route.path)
+    } else if (provider.disableIdParam) {
+      fullRoute = path.join('/', namespace, route.path)
     } else {
       fullRoute = path.join('/', namespace, ':id', route.path)
     }

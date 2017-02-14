@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Option for Provider not to use an ID parameter
+
 ## [3.1.1] - 2017-02-13
 ### Fixed
 * Allow providers without routes to be registered
