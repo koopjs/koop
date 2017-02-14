@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.1.0] - 2017-02-13
 ### Added
 * CRD API for datasets in cache at  `/datasets/:id`
 * CRD API for metadata in cache at `/datasets/:id/metadata`
@@ -713,6 +713,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[3.1.0]: https://github.com/koopjs/koop/compare/v3.0.0...v3.1.0
 [3.0.0]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.28...v3.0.0
 [3.0.0-alpha.29]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.28...v3.0.0-alpha.29
 [3.0.0-alpha.28]: https://github.com/koopjs/koop/compare/v3.0.0-alpha.27...v3.0.0-alpha.28
