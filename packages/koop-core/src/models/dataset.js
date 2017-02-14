@@ -6,6 +6,10 @@ Dataset.prototype.getFromCache = function (key, options, callback) {
   this.koop.cache.retrieve(key, options, callback)
 }
 
+Dataset.prototype.getData = function (req, callback) {
+  this.koop.cache.retrieve(req.params.id, req.query, callback)
+}
+
 Dataset.prototype.insertIntoCache = function (key, geojson, options, callback) {
   this.koop.cache.insert(key, geojson, options, callback)
 }

@@ -7,7 +7,7 @@ const pkg = require('../package.json')
 const _ = require('lodash')
 const Cache = require('koop-cache-memory')
 const Logger = require('koop-logger')
-const defaultRoutes = require('./routes')
+const routes = require('./routes')
 const BaseController = require('./controllers/base')
 const DatasetController = require('./controllers/dataset')
 const Dataset = require('./models/dataset')
@@ -32,7 +32,17 @@ function Koop (config) {
   const dataset = new Dataset(this)
   const datasetController = new DatasetController(dataset)
   this.controllers.dataset = datasetController
-  bindRouteSet(defaultRoutes, datasetController, this.server)
+  bindRouteSet(routes, datasetController, this.server)
+
+  const fsRoutes = routes.concat(FeatureServer.routes.map(route => {
+    return {
+      path: `/datasets/:id/${route.path}`,
+      handler: route.handler,
+      methods: route.methods
+    }
+  }))
+
+  bindRouteSet(fsRoutes, datasetController, this.server)
 
   this.status = {
     version: this.version,
@@ -42,10 +52,6 @@ function Koop (config) {
   this.server.get('/status', (req, res) => res.json(this.status))
 
   this.server.on('mount', () => {
-    // put this on a handler
-    if (!this.config.db || !this.config.db.conn) {
-      this.log.warn('No cache configured, defaulting to local in-memory cache. No data will be cached across server sessions.')
-    }
     this.log.info(`Koop ${this.version} mounted at ${this.server.mountpath}`)
   })
 }

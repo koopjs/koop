@@ -4,8 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
-* CRD API fom `/datasets/:id`
-* CRD API for `/datasets/:id/metadata`
+* CRD API for datasets in cache at  `/datasets/:id`
+* CRD API for metadata in cache at `/datasets/:id/metadata`
+* FeatureServer API for datasets in cache at `/datasets/:id/FeatureServer`
 
 ## [3.0.0] - 2017-02-13
 ### Added

@@ -6,7 +6,7 @@ const should = require('should') // eslint-disable-line
 
 describe('Datsets API', function () {
   describe('Cache CRUD', function () {
-    it('should insert data on PUT', function (done) {
+    it('should insert data on PUT', done => {
       request(koop.server)
       .put('/datasets/key')
       .set('Content-Type', 'application/json')
@@ -22,7 +22,7 @@ describe('Datsets API', function () {
       })
     })
 
-    it('should read data on GET', function (done) {
+    it('should read data on GET', done => {
       koop.cache.insert('getKey', geojson)
       request(koop.server)
       .get('/datasets/getKey')
@@ -34,7 +34,7 @@ describe('Datsets API', function () {
       })
     })
 
-    it('should delete data on DELETE', function (done) {
+    it('should delete data on DELETE', done => {
       koop.cache.insert('deleteKey', geojson)
       request(koop.server)
       .delete('/datasets/deleteKey')
@@ -48,7 +48,7 @@ describe('Datsets API', function () {
   })
 
   describe('Metadata CRUD', function () {
-    it('should insert metadata on PUT', function (done) {
+    it('should insert metadata on PUT', done => {
       request(koop.server)
       .put('/datasets/metaKey/metadata')
       .set('Content-Type', 'application/json')
@@ -62,7 +62,7 @@ describe('Datsets API', function () {
       })
     })
 
-    it('should read metadata on GET', function (done) {
+    it('should read metadata on GET', done => {
       koop.cache.catalog.insert('metadataInsert', {name: 'Test'})
       request(koop.server)
       .get('/datasets/metadataInsert/metadata')
@@ -74,7 +74,7 @@ describe('Datsets API', function () {
       })
     })
 
-    it('should delete metadata on DELETE', function (done) {
+    it('should delete metadata on DELETE', done => {
       koop.cache.insert('deleteMetaKey', {foo: 'bar'})
       request(koop.server)
       .delete('/datasets/deleteMetaKey/metadata')
@@ -82,6 +82,20 @@ describe('Datsets API', function () {
       .end((req, res) => {
         const meta = koop.cache.catalog.retrieve('deleteMetaKey')
         should.not.exist(meta)
+        done()
+      })
+    })
+  })
+
+  describe('FeatureServer', function () {
+    it('should get features at /FeatureServer/0/query', done => {
+      koop.cache.insert('fsKey', geojson)
+      request(koop.server)
+      .get('/datasets/fsKey/FeatureServer/0/query?where=1=1')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end((req, res) => {
+        res.body.features.length.should.equal(417)
         done()
       })
     })
