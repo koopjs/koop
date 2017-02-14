@@ -24,7 +24,16 @@ describe('Query operatons', function () {
       response.features.length.should.equal(1)
       response.features[0].geometry.x.should.equal(-11682713.391976157)
       response.features[0].geometry.y.should.equal(4857924.005275469)
-      response.spatialReference.wkid.should.equal(3857)
+      response.spatialReference.latestWkid.should.equal(3857)
+      response.spatialReference.wkid.should.equal(102100)
+    })
+
+    it('should translate the data properly when outSR is just a number', function () {
+      const response = FeatureServer.query(data, { outSR: 102100, limit: 1, returnGeometry: true })
+      response.features.length.should.equal(1)
+      response.features[0].geometry.x.should.equal(-11682713.391976157)
+      response.features[0].geometry.y.should.equal(4857924.005275469)
+      response.spatialReference.wkid.should.equal(102100)
     })
   })
 

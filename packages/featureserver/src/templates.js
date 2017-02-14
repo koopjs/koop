@@ -18,6 +18,9 @@ const renderers = {
   esriGeometryPoint: require('../templates/renderers/point.json')
 }
 
+const defaultSR = { wkid: 4326 }
+const mercatorSR = { wkid: 102100, latestWkid: 3857 }
+
 /**
  * loads a template json file and attaches fields
  *
@@ -36,8 +39,7 @@ function render (template, featureCollection = {}, options = {}) {
   else if (json.extent) json.extent = data.metadata.extent || options.extent
 
   if (json.geometryType) json.geometryType = options.geometryType
-  if (json.spatialReference && options.spatialReference) json.spatialReference = options.spatialReference
-  if (json.spatialReference && json.spatialReference.latestWkid) json.spatialReference.wkid = json.spatialReference.latestWkid
+  if (json.spatialReference) json.spatialReference = computeSpatialReference(options.spatialReference)
   if (json.name && data.metadata.name) json.name = data.metadata.name
   if (json.description && data.metadata.description) json.description = data.metadata.description
   if (json.extent && data.metadata.extent) json.extent = data.metadata.extent
@@ -51,4 +53,17 @@ function render (template, featureCollection = {}, options = {}) {
   if (json.drawingInfo) json.drawingInfo.renderer = renderers[json.geometryType]
   if (json.displayFieldName) json.displayFieldName = data.metadata.displayField || json.fields[0].name
   return json
+}
+
+function computeSpatialReference (sr) {
+  if (!sr) return defaultSR
+  else if (sr === 4326 || sr.wkid === 4326 || sr.latestWkid === 4326) return defaultSR
+  else if (sr === 102100 || sr === 3857 || sr.wkid === 102100 || sr.latestWkid === 3857) return mercatorSR
+  else if (typeof sr === 'number') return {wkid: sr}
+  else {
+    return {
+      wkid: sr.wkid || sr.latestWkid,
+      latestWkid: sr.latestWkid || sr.wkid
+    }
+  }
 }
