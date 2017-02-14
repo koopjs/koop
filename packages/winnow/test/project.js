@@ -15,6 +15,19 @@ test('Project to Web Mercator using 3857', t => {
   t.deepEqual(results[0].geometry.coordinates, [-11682713.391976157, 4857924.005275469])
 })
 
+test('Project to Web Mercator using 3857 and translating to esri', t => {
+  t.plan(3)
+  const options = {
+    projection: 3857,
+    limit: 1,
+    toEsri: true
+  }
+  const results = winnow.query(features, options)
+  t.equal(results.length, 1)
+  t.equal(results[0].geometry.x, -11682713.391976157)
+  t.equal(results[0].geometry.y, 4857924.005275469)
+})
+
 test('Project to Web Mercator using 3857 with an esri style outSR', t => {
   t.plan(1)
   const options = {
@@ -23,6 +36,18 @@ test('Project to Web Mercator using 3857 with an esri style outSR', t => {
   }
   const results = winnow.query(features, options)
   t.deepEqual(results[0].geometry.coordinates, [-11682713.391976157, 4857924.005275469])
+})
+
+test('Project to Web Mercator using 102100 when outSR is just a number', t => {
+  t.plan(2)
+  const options = {
+    outSR: 102100,
+    limit: 1,
+    toEsri: true
+  }
+  const results = winnow.query(features, options)
+  t.equal(results[0].geometry.x, -11682713.391976157)
+  t.equal(results[0].geometry.y, 4857924.005275469)
 })
 
 test('Project to Web Mercator using 3857 with a geo filter', t => {

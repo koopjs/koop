@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Handle outSR when it's just a number
+
 ## [1.5.2] - 02-10-2017
 ### Fixed
 * Rebuild
