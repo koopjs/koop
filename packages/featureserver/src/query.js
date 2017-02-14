@@ -45,7 +45,7 @@ function query (data, params = {}) {
     return queryStatistics(queriedData, params)
   } else {
     params.extent = Utils.getExtent(data)
-    params.geometryType = Utils.getGeomType((data && data.features) ? data.features[0] : null)
+    params.geometryType = Utils.getGeomType(data)
     params.spatialReference = params.outSR
     return Templates.render('features', queriedData, params)
   }

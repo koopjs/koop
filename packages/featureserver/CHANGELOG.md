@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Set geometry type correctly on query
+
 ## [1.2.1] - 2017-02-14
 ### Fixed
 * Correctly compute spatialReference field
