@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Bring in code from terraformer-arcgis-parser, modify to remove spatialReference
+
+### Fixed
+* Projected esri geometries no longer contain incorrect spatial reference objects
+
 ## [1.5.3] - 02-14-2017
 ### Fixed
 * Handle outSR when it's just a number

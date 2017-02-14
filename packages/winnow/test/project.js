@@ -6,13 +6,14 @@ const path = require('path')
 const features = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'snow.geojson'))).features
 
 test('Project to Web Mercator using 3857', t => {
-  t.plan(1)
+  t.plan(2)
   const options = {
     projection: 3857,
     limit: 1
   }
   const results = winnow.query(features, options)
   t.deepEqual(results[0].geometry.coordinates, [-11682713.391976157, 4857924.005275469])
+  t.equal(results[0].geometry.spatialReference, undefined)
 })
 
 test('Project to Web Mercator using 3857 and translating to esri', t => {

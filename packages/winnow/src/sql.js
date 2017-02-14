@@ -1,5 +1,5 @@
 const Terraformer = require('terraformer')
-const TfParser = require('terraformer-arcgis-parser')
+const convertToEsri = require('./geometry/convertToEsri')
 const sql = require('alasql')
 const geohash = require('ngeohash')
 const centroid = require('@turf/centroid')
@@ -43,7 +43,7 @@ sql.fn.pick = function (properties, fields) {
 
 sql.fn.esriGeom = function (geometry) {
   if (geometry && geometry.type) {
-    return TfParser.convert(geometry)
+    return convertToEsri(geometry)
   }
 }
 
