@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Allow providers without routes to be registered
+
 ## [3.1.0] - 2017-02-13
 ### Added
 * CRD API for datasets in cache at  `/datasets/:id`
