@@ -1,4 +1,4 @@
-# Koop FeatureServer Plugin
+# Koop Geoservices Output Plugin
 
 Wraps [FeatureServer](https://github.com/featureserver/featureserver) into a [Koop](http://koopjs.github.io) Output plugin.
 
