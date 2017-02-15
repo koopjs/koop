@@ -70,6 +70,24 @@ cache.update('key', geojson, options, err => {
 })
 ```
 
+### `upsert`
+Update a cached feature collection with new features or insert if the features are not there.
+
+```js
+const geojson = {
+  type: 'FeatureCollection',
+  features: []
+}
+
+const options = {
+  ttl: 1000
+}
+
+cache.upsert('key', geojson, options, err => {
+  // This function will call back with an error if the cache key does not exist
+})
+```
+
 ### `retrieve`
 Retrieve a cached feature collection
 

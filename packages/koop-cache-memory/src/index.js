@@ -28,6 +28,14 @@ Cache.prototype.insert = function (key, geojson, options = {}, callback = noop) 
   this.catalog.insert(key, metadata, callback)
 }
 
+Cache.prototype.upsert = function (key, geojson, options = {}, callback = noop) {
+  if (this.store.has(key)) {
+    this.update(key, geojson, options, callback)
+  } else {
+    this.insert(key, geojson, options, callback)
+  }
+}
+
 Cache.prototype.update = function (key, geojson, options = {}, callback = noop) {
   // support a feature collection or an array of features
   if (!this.store.has(key)) return callback(new Error('Resource not found'))

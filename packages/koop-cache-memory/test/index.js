@@ -31,6 +31,29 @@ test('Inserting and retreiving from the cache', t => {
   t.end()
 })
 
+test('Inserting and retreiving from the cache using upsert when the cache is empty', t => {
+  cache.upsert('keyupsert', geojson, {ttl: 600})
+  const cached = cache.retrieve('keyupsert')
+  t.equal(cached.features[0].properties.key, 'value', 'retrieved features')
+  t.equal(cached.metadata.name, 'Test', 'retrieved metadata')
+  t.ok(cached.metadata.expires, 'expiration set')
+  t.ok(cached.metadata.updated, 'updated set')
+  t.end()
+})
+
+test('Inserting and retreiving from the cache using upsert when the cache is filled', t => {
+  cache.insert('keyupsertupdate', geojson, {ttl: 600})
+  const geojson2 = _.cloneDeep(geojson)
+  geojson2.features[0].properties['key'] = 'updated'
+  cache.upsert('keyupsertupdate', geojson2, {ttl: 600})
+  const cached = cache.retrieve('keyupsertupdate')
+  t.equal(cached.features[0].properties.key, 'updated', 'retrieved features')
+  t.equal(cached.metadata.name, 'Test', 'retrieved metadata')
+  t.ok(cached.metadata.expires, 'expiration set')
+  t.ok(cached.metadata.updated, 'updated set')
+  t.end()
+})
+
 test('Inserting and retreiving from the cache callback style', t => {
   cache.insert('keyb', geojson, {ttl: 600}, (err) => {
     t.error(err, 'no error')

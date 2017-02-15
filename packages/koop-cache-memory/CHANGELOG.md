@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Upsert API
+
 ## [1.0.2] - 2017-02-13
 ### Fixed
 * Remove double callback in cache insert
