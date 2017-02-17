@@ -13,6 +13,8 @@
 [standard-img]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
 [standard-url]: http://standardjs.com/
 
+**Note: Koop 3.0 was just released and these docs are going to get an overhaul. For now please see [this deck](https://goo.gl/ERLzM1) **
+
 Koop is [Express middleware](http://expressjs.com/guide/using-middleware.html) for simplifying geographic data consumption across many different providers and in many different formats.
 
 Koop provides a flexible server for dynamically transforming 3rd party data sources (APIs) into [Feature Services](http://resources.arcgis.com/en/help/arcgis-rest-api/#/Query_Feature_Service_Layer/02r3000000r1000000/) and standard geographic data formats (GeoJSON, Shapefile, KML, CSV). This project is meant to provide a versatile platform for experimenting and working with various datasets within the global geospatial data ecosystem. Koop aims to allow easier access to any open data API and to make third party data easier to use within the realm of Esri's geospatial web products.
