@@ -1,0 +1,7 @@
+language: node_js
+sudo: false
+branches:
+  only:
+  - master
+script:
+  - scripts/travis-update
