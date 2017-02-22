@@ -1,10 +1,12 @@
 # Koop
 
-*Transform, query, & download geospatial data on the web*
+*Translate, query, & integrate any geospatial API on the web*
 
 [![npm version][npm-img]][npm-url]
 [![build status][travis-img]][travis-url]
 [![js-standard-style][standard-img]][standard-url]
+
+Koop is a highly-extensible toolkit for connecting incompatible spatial APIs. Out of the box it exposes a server that can translate [GeoJSON](http://geojson.org/) into the [Geoservices specification](https://geoservices.github.io) supported by the [ArcGIS](http://www.esri.com/arcgis/about-arcgis) family of products. Koop can be extended to translate data from any source to any API specification. Don't let API incompatiblity get in your way, start using one of Koop's data providers or write your own.
 
 Visit the demo at [http://koop.dc.esri.com](http://koop.dc.esri.com).
 
