@@ -50,6 +50,8 @@ Find a bug or want to request a new feature? Please let us know by submitting an
 
 ## Contributing
 
+This repository is a collection of all the official Koop projects. All of the real coding will happen in the linked submodules, so there's no real need to clone or fork *this* repo. If you want to add a new data source to Koop, create a provider. If you want to add features to Koop itself check out [Koop-Core](https://github.com/koopjs/koop-core). Otherwise, check out the different plugin types.
+
 Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/Esri/contributing).
 
 ## License
