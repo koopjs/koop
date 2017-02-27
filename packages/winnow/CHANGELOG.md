@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.6.0] - 02-27-2017
 ### Added
 * Support for geometry filters specified as arrays
 
@@ -94,6 +94,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 * Initial release
 
+[1.6.0]: https://github.com/dmfenton/winnow/compare/v1.6.0...v1.5.4
 [1.5.4]: https://github.com/dmfenton/winnow/compare/v1.5.3...v1.5.4
 [1.5.3]: https://github.com/dmfenton/winnow/compare/v1.5.2...v1.5.3
 [1.5.2]: https://github.com/dmfenton/winnow/compare/v1.5.1...v1.5.2
