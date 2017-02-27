@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Support for geometry filters specified as strings
+
 ## [1.6.0] - 02-27-2017
 ### Added
 * Support for geometry filters specified as arrays

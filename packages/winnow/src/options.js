@@ -76,6 +76,9 @@ function normalizeGroupBy (options) {
 function normalizeGeometry (options) {
   if (!options.geometry) return
   let geometry = options.geometry
+  if (typeof geometry === 'string') {
+    geometry = geometry.split(',').map(parseFloat)
+  }
   if (Array.isArray(geometry)) {
     geometry = transformArray(geometry)
   } else if (geometry.xmin && geometry.ymax) {
