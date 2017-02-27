@@ -7,7 +7,7 @@ module.exports = { render }
 const templates = {
   server: require('../templates/server.json'),
   layer: require('../templates/layer.json'),
-  service: require('../templates/server.json'),
+  service: require('../templates/service.json'),
   features: require('../templates/features.json'),
   statistics: require('../templates/statistics.json')
 }

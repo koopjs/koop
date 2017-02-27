@@ -36,7 +36,7 @@ describe('Routing feature server requests', () => {
       request(app)
       .get('/FeatureServer?f=json')
       .expect(res => {
-        should.exist(res.body.secureSoapUrl)
+        res.body.layers.length.should.equal(1)
       })
       .expect('Content-Type', /json/)
       .expect(200, done)

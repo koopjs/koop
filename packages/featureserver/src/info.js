@@ -11,7 +11,7 @@ function serverInfo () {
   return Templates.render('server')
 }
 
-function serviceInfo (geojson, params) {
+function serviceInfo (geojson, params = {}) {
   // no layer, send the service json
   params.extent = Utils.getExtent(geojson)
   params.geometryType = Utils.getGeomType(geojson)

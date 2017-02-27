@@ -22,7 +22,7 @@ function route (req, res, geojson, options) {
   })
 
   // check for info requests and respond like ArcGIS Server would
-  if (isInfoReq(req)) return res.status(200).send(Templates.render('server'))
+  if (isInfoReq(req)) return res.status(200).send(Templates.render('info'))
   // if this is for a method we can handle like query
   const method = req.params && req.params.method
   switch (method) {
@@ -56,7 +56,7 @@ function execInfo (req, res, method, geojson) {
     if (layerPat.test(url)) {
       info = FsInfo.layers(geojson, req.query)
     } else if (!method && !req.params.layer) {
-      info = FsInfo.serverInfo(geojson)
+      info = FsInfo.serviceInfo(geojson, req.params)
     } else if (!method) {
       info = FsInfo.layerInfo(geojson, req.params)
     } else {
