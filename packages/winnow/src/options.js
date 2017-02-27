@@ -1,4 +1,5 @@
 const transformEnvelope = require('./geometry/transform-envelope')
+const transformArray = require('./geometry/transform-array')
 const esriPredicates = {
   esriSpatialRelContains: 'ST_Contains',
   esriSpatialRelWithin: 'ST_Within',
@@ -74,8 +75,12 @@ function normalizeGroupBy (options) {
 
 function normalizeGeometry (options) {
   if (!options.geometry) return
-  const geom = options.geometry
-  const geometry = (geom.xmin && geom.ymax) ? transformEnvelope(geom) : geom
+  let geometry = options.geometry
+  if (Array.isArray(geometry)) {
+    geometry = transformArray(geometry)
+  } else if (geometry.xmin && geometry.ymax) {
+    geometry = transformEnvelope(geometry)
+  }
   return geometry
 }
 

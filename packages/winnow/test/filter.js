@@ -148,6 +148,13 @@ test('Without a spatialReference property on an Esri-style Envelope ', (t) => {
   run('trees', options, 29744, t)
 })
 
+test('With an array-style geometry', (t) => {
+  const options = {
+    geometry: [-118.18055376275225, 34.14141744789609, -118.07069048150241, 34.162726215637875]
+  }
+  run('trees', options, 29744, t)
+})
+
 test('With a ST_Contains geometry predicate', (t) => {
   const options = {
     geometry: {

@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Support for geometry filters specified as arrays
+
 ## [1.5.4] - 02-14-2017
 ### Changed
 * Bring in code from terraformer-arcgis-parser, modify to remove spatialReference
