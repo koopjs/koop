@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dmfenton/winnow.git"
+    "url": "git+https://github.com/FeatureServer/winnow.git"
   },
   "keywords": [
     "geojson",
@@ -26,9 +26,9 @@
   "author": "Daniel Fenton <dfenton@esri.com>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/dmfenton/winnow/issues"
+    "url": "https://github.com/FeatureServer/winnow/issues"
   },
-  "homepage": "https://github.com/dmfenton/winnow#readme",
+  "homepage": "https://github.com/FeatureServer/winnow#readme",
   "dependencies": {
     "@turf/bbox-polygon": "^3.10.3",
     "@turf/centroid": "^3.7.5",
