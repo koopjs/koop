@@ -45,8 +45,9 @@ function render (template, featureCollection = {}, options = {}) {
   if (json.extent && data.metadata.extent) json.extent = data.metadata.extent
   if (json.features) json.features = data.features
   if (json.fields) {
-    const props = data.features[0].properties || data.features[0].attributes || options.attributeSample
-    const fieldObj = fields(props, template, options)
+    const feature = data.features && data.features[0]
+    const properties = feature ? (feature.properties || feature.attributes) : options.attributeSample
+    const fieldObj = fields(properties, template, options)
     json.fields = fieldObj.fields
   }
   if (json.type) json.type = Utils.isTable(json, data) ? 'Table' : 'Feature Layer'

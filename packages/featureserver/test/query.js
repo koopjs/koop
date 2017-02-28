@@ -271,11 +271,20 @@ describe('Query operatons', function () {
     })
   })
 
-  describe('when getting feature counts from a given count', (done) => {
-    it('should return a correct count json', (done) => {
+  describe('when getting feature counts from a given count', () => {
+    it('should return a correct count json', () => {
       const json = FeatureServer.query({count: 100}, {returnCountOnly: true})
       json.count.should.equal(100)
-      done()
+    })
+  })
+
+  describe('query that results in 0 features', () => {
+    it('should still return fields', () => {
+      const json = FeatureServer.query(data, {
+        where: '"total precip" > 10000'
+      })
+      json.fields.length.should.equal(10)
+      json.features.length.should.equal(0)
     })
   })
 })
