@@ -2,9 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Prevent exception in computing when passed in geojson has no features
+
 ## [1.2.5] - 2017-02-28
 ### Fixed
-* Prevent error on queries with no features
+* Prevent exception on queries with no features
 
 ## [1.2.4] - 2017-02-27
 ### Fixed

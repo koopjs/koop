@@ -44,12 +44,7 @@ function render (template, featureCollection = {}, options = {}) {
   if (json.description && data.metadata.description) json.description = data.metadata.description
   if (json.extent && data.metadata.extent) json.extent = data.metadata.extent
   if (json.features) json.features = data.features
-  if (json.fields) {
-    const feature = data.features && data.features[0]
-    const properties = feature ? (feature.properties || feature.attributes) : options.attributeSample
-    const fieldObj = fields(properties, template, options)
-    json.fields = fieldObj.fields
-  }
+  if (json.fields) json.fields = computeFieldObject(data, template, options)
   if (json.type) json.type = Utils.isTable(json, data) ? 'Table' : 'Feature Layer'
   if (json.drawingInfo) json.drawingInfo.renderer = renderers[json.geometryType]
   if (json.displayFieldName) json.displayFieldName = data.metadata.displayField || json.fields[0].name
@@ -67,4 +62,11 @@ function computeSpatialReference (sr) {
       latestWkid: sr.latestWkid || sr.wkid
     }
   }
+}
+
+function computeFieldObject (data, template, options) {
+  const feature = data.features && data.features[0]
+  const properties = feature ? (feature.properties || feature.attributes) : options.attributeSample
+  if (properties) return fields(properties, template, options).fields
+  else return []
 }
