@@ -18,15 +18,15 @@ function query (data, params = {}) {
   if (data.filtersApplied && data.filtersApplied.where || params.where === '1=1') delete params.where
   if (data.statistics) return statisticsResponse(data.statistics)
   if (params.returnCountOnly && data.count) return {count: data.count}
-  params.toEsri = true
-  const queriedData = Winnow.query(data, params)
   // TODO this should happen within winnow
   // add objectIds as long as this is not a stats request
   if (!params.outStatistics) {
-    queriedData.features.forEach((f, i) => {
-      f.attributes.OBJECTID = i
+    data.features.forEach((f, i) => {
+      f.properties.OBJECTID = i
     })
   }
+  params.toEsri = true
+  const queriedData = Winnow.query(data, params)
 
   // options.objectIds works alongside returnCountOnly but not statistics
   if (params.objectIds && !params.outStatistics) {
@@ -47,6 +47,7 @@ function query (data, params = {}) {
     params.extent = Utils.getExtent(data)
     params.geometryType = Utils.getGeomType(data)
     params.spatialReference = params.outSR
+    params.attributeSample = data.features[0] && data.features[0].properties
     return Templates.render('features', queriedData, params)
   }
 }

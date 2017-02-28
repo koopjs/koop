@@ -45,7 +45,7 @@ function render (template, featureCollection = {}, options = {}) {
   if (json.extent && data.metadata.extent) json.extent = data.metadata.extent
   if (json.features) json.features = data.features
   if (json.fields) {
-    const props = data.features[0].properties || data.features[0].attributes
+    const props = data.features[0].properties || data.features[0].attributes || options.attributeSample
     const fieldObj = fields(props, template, options)
     json.fields = fieldObj.fields
   }
