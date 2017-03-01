@@ -1,10 +1,10 @@
 {
-  "name": "koop-featureserver-plugin",
+  "name": "koop-output-geoservices",
   "version": "1.0.0",
-  "description": "Wraps featureserver to plugin into koop",
+  "description": "Wraps https://github.com/featureserver/featureserver as a plugin for koop",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "standard"
   },
   "repository": {
     "type": "git",
@@ -13,7 +13,9 @@
   "keywords": [
     "koop",
     "featureserver",
-    "plugin"
+    "plugin",
+    "output",
+    "geoservices"
   ],
   "author": "Daniel Fenton <dfenton@esri.com>",
   "license": "Apache-2.0",
