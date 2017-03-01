@@ -38,7 +38,7 @@
 	path = plugins/exporter
 	url = git://github.com/koopjs/koop-exporter.git
 [submodule "plugins/geoservices"]
-	path = plugins/geoservices
+	path = outputs/geoservices
 	url = git://github.com/koopjs/koop-output-geoservices.git
 [submodule "documentation/homepage"]
 	path = documentation/homepage
