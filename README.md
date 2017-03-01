@@ -6,7 +6,7 @@
 [![build status][travis-img]][travis-url]
 [![js-standard-style][standard-img]][standard-url]
 
-Koop is a highly-extensible Javascript toolkit for connecting incompatible spatial APIs. Out of the box it exposes a Node.js server that can translate [GeoJSON](http://geojson.org/) into the [Geoservices specification](https://geoservices.github.io) supported by the [ArcGIS](http://www.esri.com/arcgis/about-arcgis) family of products. Koop can be extended to translate data from any source to any API specification. Don't let API incompatiblity get in your way, start using one of Koop's data providers or write your own.
+Koop is a highly-extensible Javascript toolkit for connecting incompatible spatial APIs. Out of the box it exposes a Node.js server that can translate [GeoJSON](http://geojson.org/) into the [Geoservices specification](https://geoservices.github.io) supported by the [ArcGIS](http://www.esri.com/arcgis/about-arcgis) family of products. Koop can be extended to translate data from any source to any API specification. Don't let API incompatiblity get in your way, start using one of Koop's data providers or [write your own](https://koopjs.github.io/docs/specs/provider.html).
 
 Visit the demo at [http://koop.dc.esri.com](http://koop.dc.esri.com).
 
@@ -30,6 +30,7 @@ Visit the demo at [http://koop.dc.esri.com](http://koop.dc.esri.com).
 
 - **Providers**: adapt any third party API our data source to Koop
   - Example: [Koop-Provider-Yelp](https://github.com/koopjs/koop-provider-yelp)
+  - Docs: https://koopjs.github.io/docs/specs/provider.html
 - **Outputs**: server data from Koop using any API format like Geoservices, SODA, or WFS
   - Example: [Koop-Output-Geoservices](https://github.com/koopjs/koop-output-geoservices)
 - **Caches**: store, process and query GeoJSON
