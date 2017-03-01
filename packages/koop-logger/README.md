@@ -1,6 +1,8 @@
 # Koop-Logger
 * A shared logger for Koop
 
+[![Build Status](https://travis-ci.org/koopjs/koop-logger.svg?branch=master)](https://travis-ci.org/koopjs/koop-logger)
+
 ## Usage
 `npm install koop-logger`
 ```javascript
