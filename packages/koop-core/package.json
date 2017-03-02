@@ -48,7 +48,7 @@
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/koopjs/koop.git"
+    "url": "git://github.com/koopjs/koop-core.git"
   },
   "scripts": {
     "release": "gh-release",
