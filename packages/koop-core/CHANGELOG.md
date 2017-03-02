@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Dataset model `upsert`
+
+### Changed
+* `PUT` to cache uses upsert
+
 ## [3.2.0] - 2017-02-14
 ### Added
 * Option for Provider not to use an ID parameter

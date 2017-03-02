@@ -17,6 +17,13 @@ Controller.prototype.insertIntoCache = function (req, res) {
   })
 }
 
+Controller.prototype.upsertIntoCache = function (req, res) {
+  this.model.upsertIntoCache(req.params.id, req.body, req.query, (err) => {
+    if (err) res.status(err.code || 500).json({error: err.message})
+    else res.status(200).json({status: 'Cached'})
+  })
+}
+
 Controller.prototype.getFromCache = function (req, res) {
   this.model.getFromCache(req.params.id, req.query, (err, geojson) => {
     if (err) res.status(err.code || 500).json({error: err.message})

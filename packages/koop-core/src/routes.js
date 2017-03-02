@@ -7,7 +7,7 @@ module.exports = [
   {
     path: '/datasets/:id',
     methods: ['put'],
-    handler: 'insertIntoCache'
+    handler: 'upsertIntoCache'
   },
   {
     path: '/datasets/:id',

@@ -14,6 +14,10 @@ Dataset.prototype.insertIntoCache = function (key, geojson, options, callback) {
   this.koop.cache.insert(key, geojson, options, callback)
 }
 
+Dataset.prototype.upsertIntoCache = function (key, geojson, options, callback) {
+  this.koop.cache.upsert(key, geojson, options, callback)
+}
+
 Dataset.prototype.deleteFromCache = function (key, callback) {
   this.koop.cache.delete(key, callback)
 }
