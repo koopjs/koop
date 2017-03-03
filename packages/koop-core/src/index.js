@@ -108,9 +108,8 @@ Koop.prototype.register = function (plugin) {
  */
 Koop.prototype._registerProvider = function (provider) {
   // Need a new copy of Model otherwise providers will step on each other
-  const ThisModel = _.cloneDeep(Model)
-  Util.inherits(ThisModel, provider.Model)
-  const model = new ThisModel(this)
+
+  const model = this._initProviderModel(provider)
   // controller is optional
   let controller
   if (provider.Controller) {
@@ -134,6 +133,18 @@ Koop.prototype._registerProvider = function (provider) {
   bindRoutes(provider, controller, this.server, this.pluginRoutes)
 
   this.log.info('registered provider:', name, provider.version)
+}
+
+Koop.prototype._initProviderModel = function (provider) {
+  function ThisModel (options) {
+    this.cache = options.cache
+    ThisModel.super_.call(this, options)
+  }
+
+  ThisModel.prototype = Model.prototype
+  Util.inherits(ThisModel, provider.Model)
+
+  return new ThisModel(this)
 }
 
 /**
