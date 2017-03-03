@@ -1,4 +1,6 @@
-function Model (options) {}
+function Model (options) {
+  this.cache = options.cache
+}
 
 Model.prototype.pull = function (req, callback) {
   const key = createKey(req)

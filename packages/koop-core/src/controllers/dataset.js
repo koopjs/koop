@@ -1,14 +1,9 @@
-const Util = require('util')
-const FeatureServerController = require('koop-featureserver-plugin')
-
 /**
  * A base controller that we can use as a prototype
  */
 function Controller (model) {
   this.model = model
 }
-
-Util.inherits(Controller, FeatureServerController)
 
 Controller.prototype.insertIntoCache = function (req, res) {
   this.model.insertIntoCache(req.params.id, req.body, req.query, (err) => {

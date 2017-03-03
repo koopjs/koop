@@ -155,6 +155,7 @@ Koop.prototype._initProviderModel = function (provider) {
  */
 Koop.prototype._registerOutput = function (Output) {
   Util.inherits(Controller, Output)
+  Util.inherits(DatasetController, Output)
   this.pluginRoutes = this.pluginRoutes.concat(Output.routes)
   this.log.info('registered output:', Output.name, Output.version)
 }

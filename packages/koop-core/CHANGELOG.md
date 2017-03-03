@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Any registered Output Plugin can access the cache directly.
+
+### Fixed
+* Removed reference to koop-featureserver-plugin
+
 ## [3.4.0] - 2017-03-03
 ### Added
 * Providers can leverage the cache implicitly
