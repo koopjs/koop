@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.5.0] - 2017-03-03
 ### Added
 * Any registered Output Plugin can access the cache directly.
 
@@ -742,6 +742,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[3.5.0]: https://github.com/koopjs/koop/compare/v3.5.0...v3.4.0
 [3.4.0]: https://github.com/koopjs/koop/compare/v3.3.0...v3.4.0
 [3.3.0]: https://github.com/koopjs/koop/compare/v3.3.0...v3.2.0
 [3.2.0]: https://github.com/koopjs/koop/compare/v3.1.1...v3.2.0
