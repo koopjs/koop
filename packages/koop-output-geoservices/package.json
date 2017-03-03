@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/koopjs/koop-featureserver-plugin.git"
+    "url": "git+https://github.com/koopjs/koop-output-geoservices.git"
   },
   "keywords": [
     "koop",
@@ -20,13 +20,16 @@
   "author": "Daniel Fenton <dfenton@esri.com>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/koopjs/koop-featureserver-plugin/issues"
+    "url": "https://github.com/koopjs/koop-output-geoservices/issues"
   },
-  "homepage": "https://github.com/koopjs/koop-featureserver-plugin#readme",
+  "homepage": "https://github.com/koopjs/koop-output-geoservices#readme",
   "devDependencies": {
     "standard": "^8.6.0"
   },
   "dependencies": {
     "featureserver": "*"
+  },
+  "peerDependencies": {
+   "koop": "^3.4.0" 
   }
 }

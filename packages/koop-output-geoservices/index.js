@@ -1,16 +1,16 @@
 var FeatureServer = require('featureserver')
 
-function Plugin () {}
+function Output () {}
 
-Plugin.prototype.featureServer = function (req, res) {
+Output.prototype.featureServer = function (req, res) {
   // model will be available when this is instantiated with the Koop controller
-  this.model.getData(req, function (err, data) {
+  this.model.pull(req, function (err, data) {
     if (err) res.status(500).json({error: err.message})
     else FeatureServer.route(req, res, data)
   })
 }
 
-Plugin.routes = [
+Output.routes = [
   {
     path: 'FeatureServer/:layer/:method',
     methods: ['get', 'post'],
@@ -33,9 +33,8 @@ Plugin.routes = [
   }
 ]
 
-Plugin.dependencies = 'cache'
-Plugin.plugin_name = 'FeatureServer'
-Plugin.type = 'output'
-Plugin.version = require('./package.json').version
+Output.name = 'geoservices'
+Output.type = 'output'
+Output.version = require('./package.json').version
 
-module.exports = Plugin
+module.exports = Output
