@@ -1,8 +1,8 @@
 var FeatureServer = require('featureserver')
 
-function Output () {}
+function Geoservices () {}
 
-Output.prototype.featureServer = function (req, res) {
+Geoservices.prototype.featureServer = function (req, res) {
   // model will be available when this is instantiated with the Koop controller
   this.model.pull(req, function (err, data) {
     if (err) res.status(500).json({error: err.message})
@@ -10,7 +10,7 @@ Output.prototype.featureServer = function (req, res) {
   })
 }
 
-Output.routes = [
+Geoservices.routes = [
   {
     path: 'FeatureServer/:layer/:method',
     methods: ['get', 'post'],
@@ -33,8 +33,7 @@ Output.routes = [
   }
 ]
 
-Output.name = 'geoservices'
-Output.type = 'output'
-Output.version = require('./package.json').version
+Geoservices.type = 'output'
+Geoservices.version = require('./package.json').version
 
-module.exports = Output
+module.exports = Geoservices
