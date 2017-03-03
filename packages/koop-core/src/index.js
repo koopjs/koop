@@ -8,13 +8,14 @@ const _ = require('lodash')
 const Cache = require('koop-cache-memory')
 const Logger = require('koop-logger')
 const routes = require('./routes')
-const BaseController = require('./controllers/base')
+const Controller = require('./controllers')
+const Model = require('./models')
 const DatasetController = require('./controllers/dataset')
 const Dataset = require('./models/dataset')
 const Events = require('events')
 const Util = require('util')
 const path = require('path')
-const FeatureServer = require('koop-featureserver-plugin')
+const geoservices = require('koop-output-geoservices')
 const LocalFS = require('koop-localfs')
 
 function Koop (config) {
@@ -26,15 +27,15 @@ function Koop (config) {
   this.cache = new Cache()
   this.log = new Logger(config)
   this.pluginRoutes = []
-  this.register(FeatureServer)
+  this.register(geoservices)
   this.register(LocalFS)
   this.controllers = {}
+
   const dataset = new Dataset(this)
   const datasetController = new DatasetController(dataset)
-  this.controllers.dataset = datasetController
   bindRouteSet(routes, datasetController, this.server)
 
-  const fsRoutes = routes.concat(FeatureServer.routes.map(route => {
+  const fsRoutes = routes.concat(geoservices.routes.map(route => {
     return {
       path: `/datasets/:id/${route.path}`,
       handler: route.handler,
@@ -49,11 +50,11 @@ function Koop (config) {
     providers: {}
   }
 
-  this.server.get('/status', (req, res) => res.json(this.status))
-
-  this.server.on('mount', () => {
+  this.server
+  .on('mount', () => {
     this.log.info(`Koop ${this.version} mounted at ${this.server.mountpath}`)
   })
+  .get('/status', (req, res) => res.json(this.status))
 }
 
 Util.inherits(Koop, Events)
@@ -67,7 +68,7 @@ function initServer () {
   .use(bodyParser.json({limit: '10000kb'}))
   // parse application/x-www-form-urlencoded
   .use(bodyParser.urlencoded({ extended: false }))
-  .disable('X-Powered-By')
+  .disable('x-powered-by')
   // TODO this should just live inside featureserver
   .use((req, res, next) => {
     // request parameters can come from query url or POST body
@@ -106,14 +107,17 @@ Koop.prototype.register = function (plugin) {
  * @param {object} provider - the provider to be registered
  */
 Koop.prototype._registerProvider = function (provider) {
-  const model = new provider.Model(this)
+  // Need a new copy of Model otherwise providers will step on each other
+  const ThisModel = _.cloneDeep(Model)
+  Util.inherits(ThisModel, provider.Model)
+  const model = new ThisModel(this)
   // controller is optional
   let controller
   if (provider.Controller) {
-    Util.inherits(provider.Controller, BaseController)
+    Util.inherits(provider.Controller, Controller)
     controller = new provider.Controller(model)
   } else {
-    controller = new BaseController(model)
+    controller = new Controller(model)
   }
   const name = provider.name || provider.plugin_name
   this.controllers[name] = controller
@@ -139,9 +143,9 @@ Koop.prototype._registerProvider = function (provider) {
  * @param {object} output - the output plugin to be registered
  */
 Koop.prototype._registerOutput = function (Output) {
-  Util.inherits(BaseController, Output)
+  Util.inherits(Controller, Output)
   this.pluginRoutes = this.pluginRoutes.concat(Output.routes)
-  this.log.info('registered output:', Output.plugin_name, Output.version)
+  this.log.info('registered output:', Output.name, Output.version)
 }
 
 /**

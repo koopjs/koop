@@ -19,7 +19,7 @@
     "ejs": "^2.3.3",
     "express": "^4.14.1",
     "koop-cache-memory": "^1.0.2",
-    "koop-featureserver-plugin": "^1.0.0",
+    "koop-output-geoservices": "^1.0.0",
     "koop-localfs": "^1.1.1",
     "koop-logger": "^1.0.1",
     "lodash": "^4.17.4"
