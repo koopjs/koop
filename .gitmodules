@@ -40,12 +40,6 @@
 [submodule "plugins/geoservices"]
 	path = outputs/geoservices
 	url = git://github.com/koopjs/koop-output-geoservices.git
-[submodule "documentation/homepage"]
-	path = documentation/homepage
-	url = git://github.com/koopjs/koopjs.github.io.git
-[submodule "documentation/api"]
-	path = documentation/api
-	url = git://github.com/koopjs/koop-api.git
 [submodule "yelp"]
 	path = providers/yelp
 	url = git://github.com/koopjs/koop-provider-yelp.git
@@ -112,3 +106,7 @@
 [submodule "plugins/tiles"]
 	path = plugins/tiles
 	url = git://github.com/koopjs/koop-tile-plugin.git
+
+[submodule "documentation"]
+	path = documentation
+	url = https://github.com/koopjs/koopjs.github.io.git
