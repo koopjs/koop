@@ -106,7 +106,10 @@
 [submodule "plugins/tiles"]
 	path = plugins/tiles
 	url = git://github.com/koopjs/koop-tile-plugin.git
-
 [submodule "documentation"]
 	path = documentation
 	url = https://github.com/koopjs/koopjs.github.io.git
+
+[submodule "samples/kubernetes"]
+	path = samples/kubernetes
+	url = https://github.com/koopjs/kubernetes-example.git
