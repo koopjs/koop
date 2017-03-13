@@ -6,6 +6,8 @@ const centroid = require('@turf/centroid')
 const _ = require('lodash')
 const proj4 = require('proj4')
 
+sql.MAXSQLCACHESIZE = 0
+
 sql.fn.ST_Within = function (feature, filterGeom) {
   if (!(feature && feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
   const filter = new Terraformer.Primitive(filterGeom)

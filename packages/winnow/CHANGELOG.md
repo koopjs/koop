@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Disable alasql sqlCache to prevent memory leak
+
 ## [1.7.0] - 02-27-2017
 ### Added
 * Support for geometry filters specified as strings
