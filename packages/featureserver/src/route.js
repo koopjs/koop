@@ -42,7 +42,7 @@ function execQuery (req, res, geojson, options) {
     response = FsQuery(geojson, req.query || {})
   } catch (e) {
     if (process.env.NODE_ENV === 'test') console.trace(e)
-    res.status(500).json({error: e.message})
+    return res.status(500).json({error: e.message})
   }
   if (req.query.callback) res.send(`${req.query.callback}(${JSON.stringify(response)})`)
   else res.status(200).json(response)
@@ -64,7 +64,7 @@ function execInfo (req, res, method, geojson) {
     }
   } catch (e) {
     if (process.env.NODE_ENV === 'test') console.trace(e)
-    res.status(500).json({error: e.message})
+    return res.status(500).json({error: e.message})
   }
   if (req.query.callback) res.send(`${req.query.callback}(${JSON.stringify(info)})`)
   else res.status(200).json(info)
