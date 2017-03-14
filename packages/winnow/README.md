@@ -8,7 +8,7 @@
 [npm-img]: https://img.shields.io/npm/v/winnow.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/winnow
 [travis-img]: https://img.shields.io/travis/featureserver/winnow/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/featuresever/winnow
+[travis-url]: https://travis-ci.org/featureserver/winnow
 [standard-img]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
 [standard-url]: http://standardjs.com/
 
