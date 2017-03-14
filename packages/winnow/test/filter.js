@@ -136,7 +136,7 @@ test('With an empty multipolygon', (t) => {
   run('emptyMultiPolygon', options, 1, t)
 })
 
-test('Without a spatialReference property on an Esri-style Envelope ', (t) => {
+test('Without a spatialReference property on an Esri-style Envelope', (t) => {
   const options = {
     geometry: {
       xmin: -118.18055376275225,
@@ -207,21 +207,8 @@ test('With a where and a geometry option', (t) => {
 })
 
 function run (data, options, expected, t) {
-  let failed = false
   t.plan(1)
-  const featureCollection = path.join(__dirname, 'fixtures', `${data}.geojson`)
-  _(fs.createReadStream(featureCollection))
-  .pipe(featureParser.parse())
-  .map(JSON.parse)
-  .batch(80000)
-  .map((features) => { return winnow.query(features, options) })
-  .errors((e) => {
-    if (failed) return
-    failed = true
-    if (!failed) return t.end()
-  })
-  .sequence()
-  .toArray((features) => {
-    t.equal(features.length, expected)
-  })
+  const features = require(`./fixtures/${data}.json`).features
+  const filtered = winnow.query(features, options)
+  t.equal(filtered.length, expected)
 }

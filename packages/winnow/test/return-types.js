@@ -1,9 +1,7 @@
 'use strict'
 const test = require('tape')
-const fs = require('fs')
 const winnow = require('../src')
-const path = require('path')
-const trees = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'trees.geojson')))
+const trees = require('./fixtures/trees.json')
 test('Return a feature collection when a collection is passed in', (t) => {
   t.plan(1)
   const options = { where: 'Trunk_Diameter > 120' }

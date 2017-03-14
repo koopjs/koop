@@ -1,11 +1,9 @@
 'use strict'
 const test = require('tape')
-const fs = require('fs')
 const winnow = require('../src')
-const path = require('path')
-const features = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'trees.geojson')))
-const snowFeatures = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'snow.geojson')))
-const budgetTable = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'budgetTable.geojson')))
+const features = require('./fixtures/trees.json')
+const snowFeatures = require('./fixtures/snow.json')
+const budgetTable = require('./fixtures/budgetTable.json')
 
 test('Get a sum', (t) => {
   t.plan(1)

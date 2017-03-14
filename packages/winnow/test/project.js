@@ -1,9 +1,7 @@
 'use strict'
 const test = require('tape')
-const fs = require('fs')
 const winnow = require('../src')
-const path = require('path')
-const features = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'snow.geojson'))).features
+const features = require('./fixtures/snow.json').features
 
 test('Project to Web Mercator using 3857', t => {
   t.plan(2)
