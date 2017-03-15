@@ -1,5 +1,7 @@
-const transformEnvelope = require('./geometry/transform-envelope')
+const proj4 = require('proj4')
+const convertFromEsri = require('./geometry/convertFromEsri')
 const transformArray = require('./geometry/transform-array')
+const transformEnvelope = require('./geometry/transform-envelope')
 const esriPredicates = {
   esriSpatialRelContains: 'ST_Contains',
   esriSpatialRelWithin: 'ST_Within',
@@ -81,9 +83,12 @@ function normalizeGeometry (options) {
   }
   if (Array.isArray(geometry)) {
     geometry = transformArray(geometry)
-  } else if (geometry.xmin && geometry.ymax) {
+  } else if (geometry.xmin) {
     geometry = transformEnvelope(geometry)
+  } else if (geometry.x || geometry.rings || geometry.paths || geometry.points) {
+    geometry = convertFromEsri(geometry)
   }
+  if (options.inSR) geometry.coordinates = projectCoordinates(options.inSR, geometry.coordinates)
   return geometry
 }
 
@@ -106,6 +111,16 @@ function normalizeProjection (options) {
   if (projection === 102100) return 'EPSG:3857'
   if (typeof projection !== 'number') return projection
   else return `EPSG:${projection}`
+}
+
+function projectCoordinates (inSR, coordinates) {
+  if (inSR === 102100) inSR = 3857
+  if (Array.isArray(coordinates[0])) {
+    return [coordinates[0].map(a => { return projectCoordinates(inSR, a) })]
+  } else {
+    const coords = proj4(`EPSG:${inSR}`, 'EPSG:4326', coordinates)
+    return coords
+  }
 }
 
 module.exports = { prepare }

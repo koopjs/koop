@@ -1,10 +1,6 @@
 'use strict'
 const test = require('tape')
-const featureParser = require('feature-parser')
-const _ = require('highland')
-const fs = require('fs')
 const winnow = require('../src')
-const path = require('path')
 
 test('With a where option', (t) => {
   const options = {
@@ -146,6 +142,39 @@ test('Without a spatialReference property on an Esri-style Envelope', (t) => {
     }
   }
   run('trees', options, 29744, t)
+})
+
+test('With a an Esri-style Polygon', (t) => {
+  const options = {
+    geometry: {
+      rings: [
+        [
+          [
+            -12993071.816030473,
+            3913575.8482084945
+          ],
+          [
+            -12836528.782102507,
+            3913575.8482084945
+          ],
+          [
+            -12836528.782102507,
+            4070118.8821364585
+          ],
+          [
+            -12993071.816030473,
+            4070118.8821364585
+          ],
+          [
+            -12993071.816030473,
+            3913575.8482084945
+          ]
+        ]
+      ]
+    },
+    inSR: 102100
+  }
+  run('restaurants', options, 249, t)
 })
 
 test('With an array-style geometry', (t) => {
