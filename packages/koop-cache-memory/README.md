@@ -16,7 +16,7 @@ koop.register(cache)
 ```
 
 ## Cache API
-The cache is a javascript object that lives in-memory. It is used to store geojson features
+The cache is a JavaScript object that lives in-memory. It is used to store geojson features.
 
 ### `insert`
 Insert geojson into the cache
