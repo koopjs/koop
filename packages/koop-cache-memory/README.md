@@ -6,7 +6,7 @@
 
 ## Usage
 
-This is the default cache for [Koop](https://github.com/koopjs/koop) so you won't need to instantiate yourself. If you really wanted to, it would look like this:
+This is the default cache for [Koop](https://github.com/koopjs/koop) so you won't need to instantiate it yourself. If you really wanted to, it would look like this:
 
 ```js
 const Koop = require('koop')
