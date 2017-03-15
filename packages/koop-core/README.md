@@ -1,5 +1,7 @@
 # Koop
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/koopjs/koop-core.svg)](https://greenkeeper.io/)
+
 > Transform, query, & download geospatial data on the web.
 
 [![npm version][npm-img]][npm-url]

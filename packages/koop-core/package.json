@@ -29,8 +29,8 @@
     "gh-release": "^2.2.0",
     "mocha": "^3.2.0",
     "should": "^11.2.0",
-    "sinon": "^1.17.1",
-    "standard": "^8.6.0",
+    "sinon": "^2.0.0",
+    "standard": "^9.0.1",
     "supertest": "^3.0.0"
   },
   "homepage": "https://github.com/koopjs/koop",
