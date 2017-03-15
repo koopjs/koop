@@ -2,6 +2,8 @@
 
 # Koop Memory Cache
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/koopjs/koop-cache-memory.svg)](https://greenkeeper.io/)
+
 ## Usage
 
 This is the default cache for (Koop)[https://github.com/koopjs/koop] so you won't need to instantiate yourself. If you really wanted to, it would look like this:
