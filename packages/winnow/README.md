@@ -1,18 +1,11 @@
 # Project Goal
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/FeatureServer/winnow.svg)](https://greenkeeper.io/)
 *Winnow* is made for applying sql to geojson in memory. It is useful for working against geojson objects but also has built-in primitives for piping streams.
 
 [![npm version][npm-img]][npm-url]
 [![build status][travis-img]][travis-url]
 [![js-standard-style][standard-img]][standard-url]
-
-[npm-img]: https://img.shields.io/npm/v/winnow.svg?style=flat-square
-[npm-url]: https://www.npmjs.com/package/winnow
-[travis-img]: https://img.shields.io/travis/FeatureServer/winnow/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/FeatureServer/winnow
-[standard-img]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
-[standard-url]: http://standardjs.com/
+[![Greenkeeper badge][greenkeeper-image]][greenkeeper-url]
 
 # API
 ## `winnow.query`
@@ -162,3 +155,12 @@ Esri welcomes contributions from anyone and everyone. Please see our [guidelines
 # License
 
 [Apache 2.0](LICENSE)
+
+[npm-img]: https://img.shields.io/npm/v/winnow.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/winnow
+[travis-img]: https://img.shields.io/travis/FeatureServer/winnow/master.svg?style=flat-square
+[travis-url]: https://travis-ci.org/FeatureServer/winnow
+[standard-img]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
+[standard-url]: http://standardjs.com/
+[greenkeeper-image]: https://badges.greenkeeper.io/FeatureServer/winnow.svg
+[greenkeeper-url]: https://greenkeeper.io/
