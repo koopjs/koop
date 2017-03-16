@@ -19,7 +19,7 @@ function serviceInfo (geojson, params = {}) {
   // TODO move this to a rendered template
   const lyr = {
     id: 0,
-    name: geojson.metadata && geojson.metadata.name || 'layer 1',
+    name: (geojson.metadata && geojson.metadata.name) || 'layer 1',
     parentLayerId: -1,
     defaultVisibility: true,
     subLayerIds: null,

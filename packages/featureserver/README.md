@@ -1,4 +1,6 @@
 # FeatureServer
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/FeatureServer/FeatureServer.svg)](https://greenkeeper.io/)
 *An open source implementation of the GeoServices specification*
 
 ## Usage

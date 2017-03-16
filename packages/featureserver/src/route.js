@@ -33,7 +33,7 @@ function route (req, res, geojson, options) {
 
 function isInfoReq (req) {
   const url = req.originalUrl || req.url
-  url.substr(-4) === 'info'
+  return url.substr(-4) === 'info'
 }
 
 function execQuery (req, res, geojson, options) {
