@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Correct regex error on Windows
+
 ## [3.5.0] - 2017-03-03
 ### Added
 * Any registered Output Plugin can access the cache directly.
