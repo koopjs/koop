@@ -1,7 +1,17 @@
 # FeatureServer
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/FeatureServer/FeatureServer.svg)](https://greenkeeper.io/)
 *An open source implementation of the GeoServices specification*
+
+[![npm][npm-image]][npm-url]
+[![travis][travis-image]][travis-url]
+[![Greenkeeper badge][greenkeeper-image]][greenkeeper-url]
+
+[npm-image]: https://img.shields.io/npm/v/FeatureServer.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/FeatureServer
+[travis-image]: https://img.shields.io/travis/FeatureServer/FeatureServer.svg?style=flat-square
+[travis-url]: https://travis-ci.org/FeatureServer/FeatureServer
+[greenkeeper-image]: https://badges.greenkeeper.io/FeatureServer/FeatureServer.svg
+[greenkeeper-url]: https://greenkeeper.io/
 
 ## Usage
 
