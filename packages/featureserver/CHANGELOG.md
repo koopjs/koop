@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.3.0] - 2017-03-16
 ### Added
 * Support for `f=geojson`
 
@@ -82,6 +82,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[1.3.0]: https://github.com/featureserver/featureserver/compare/v1.2.5...v1.3.0
 [1.2.5]: https://github.com/featureserver/featureserver/compare/v1.2.5...v1.2.4
 [1.2.4]: https://github.com/featureserver/featureserver/compare/v1.2.3...v1.2.4
 [1.2.3]: https://github.com/featureserver/featureserver/compare/v1.2.3...v1.2.2
