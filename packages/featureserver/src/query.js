@@ -19,15 +19,22 @@ function query (data, params = {}) {
   if (data.statistics) return statisticsResponse(data.statistics)
   if (params.returnCountOnly && data.count) return {count: data.count}
   // TODO this should happen within winnow
+  // TODO support datasets that already have an integer unique ID
   // add objectIds as long as this is not a stats request
   if (!params.outStatistics) {
     data.features.forEach((f, i) => {
       f.properties.OBJECTID = i
     })
   }
-  params.toEsri = true
+
+  if (params.f !== 'geojson') params.toEsri = true
   const queriedData = Winnow.query(data, params)
 
+  if (params.f === 'geojson') return { type: 'FeatureCollection', features: queriedData.features }
+  else return geoservicesPostQuery(data, queriedData, params)
+}
+
+function geoservicesPostQuery (data, queriedData, params) {
   // options.objectIds works alongside returnCountOnly but not statistics
   if (params.objectIds && !params.outStatistics) {
     let oids = typeof params.objectIds === 'string' ? params.objectIds.split(',') : params.objectIds
@@ -44,8 +51,9 @@ function query (data, params = {}) {
   } else if (params.outStatistics) {
     return queryStatistics(queriedData, params)
   } else {
-    params.extent = Utils.getExtent(data)
+    params.extent = Utils.getExtent(queriedData)
     params.geometryType = Utils.getGeomType(data)
+    // TODO should these be calculated using the whole dataset?
     params.spatialReference = params.outSR
     params.attributeSample = data.features[0] && data.features[0].properties
     return Templates.render('features', queriedData, params)

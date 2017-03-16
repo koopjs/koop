@@ -287,4 +287,18 @@ describe('Query operatons', function () {
       json.features.length.should.equal(0)
     })
   })
+
+  describe('geojson output', () => {
+    it('should respect f=geojson when querying for features', () => {
+      const json = FeatureServer.query(data, {
+        where: '"total precip" > 1',
+        f: 'geojson'
+      })
+      json.type.should.equal('FeatureCollection')
+      json.features.length.should.equal(4)
+      json.features[0].type.should.equal('Feature')
+      should.exist(json.features[0].properties)
+      should.exist(json.features[0].geometry)
+    })
+  })
 })
