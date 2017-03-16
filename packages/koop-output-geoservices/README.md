@@ -1,4 +1,5 @@
 # Koop Geoservices Output Plugin
+[![Build Status](https://travis-ci.org/koopjs/koop-output-geoservices.svg?branch=master)](https://travis-ci.org/koopjs/koop-output-geoservices)
 
 Wraps [FeatureServer](https://github.com/featureserver/featureserver) into a [Koop](http://koopjs.github.io) Output plugin.
 
