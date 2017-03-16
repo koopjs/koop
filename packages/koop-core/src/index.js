@@ -178,11 +178,11 @@ function bindPluginOverrides (provider, controller, server, pluginRoutes) {
   pluginRoutes.forEach(route => {
     let fullRoute
     if (provider.hosts) {
-      fullRoute = path.join('/', namespace, ':host', ':id', route.path)
+      fullRoute = path.posix.join('/', namespace, ':host', ':id', route.path)
     } else if (provider.disableIdParam) {
-      fullRoute = path.join('/', namespace, route.path)
+      fullRoute = path.posix.join('/', namespace, route.path)
     } else {
-      fullRoute = path.join('/', namespace, ':id', route.path)
+      fullRoute = path.posix.join('/', namespace, ':id', route.path)
     }
     route.methods.forEach(method => {
       server[method](fullRoute, controller[route.handler].bind(controller))
