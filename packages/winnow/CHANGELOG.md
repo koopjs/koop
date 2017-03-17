@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Return correct features for envelope queries with an inSR and spatialReference specified on the envelope
+
 ## [1.8.0] - 03-14-2017
 ### Added
 * Support all esri geometry types

@@ -88,8 +88,17 @@ function normalizeGeometry (options) {
   } else if (geometry.x || geometry.rings || geometry.paths || geometry.points) {
     geometry = convertFromEsri(geometry)
   }
-  if (options.inSR) geometry.coordinates = projectCoordinates(options.inSR, geometry.coordinates)
+  const inSR = normalizeInSR(options)
+  if (inSR) geometry.coordinates = projectCoordinates(inSR, geometry.coordinates)
   return geometry
+}
+
+function normalizeInSR (options) {
+  if (options.inSR) {
+    return options.inSR
+  } else if (options.geometry.spatialReference) {
+    return options.geometry.spatialReference.latestWkid || options.geometry.spatialReference.wkid
+  }
 }
 
 function normalizeLimit (options) {
@@ -115,12 +124,9 @@ function normalizeProjection (options) {
 
 function projectCoordinates (inSR, coordinates) {
   if (inSR === 102100) inSR = 3857
-  if (Array.isArray(coordinates[0])) {
-    return [coordinates[0].map(a => { return projectCoordinates(inSR, a) })]
-  } else {
-    const coords = proj4(`EPSG:${inSR}`, 'EPSG:4326', coordinates)
-    return coords
-  }
+
+  if (Array.isArray(coordinates[0])) return [coordinates[0].map(a => { return projectCoordinates(inSR, a) })]
+  else return proj4(`EPSG:${inSR}`, 'EPSG:4326', coordinates)
 }
 
 module.exports = { prepare }

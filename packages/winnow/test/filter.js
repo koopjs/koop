@@ -235,6 +235,29 @@ test('With a where and a geometry option', (t) => {
   run('trees', options, 2315, t)
 })
 
+test('With an envelope, an inSR and an outSR', t => {
+  const options = {
+    f: 'json',
+    returnGeometry: true,
+    spatialRel: 'esriSpatialRelIntersects',
+    geometry: {
+      'xmin': -8570731.10757695,
+      'ymin': 4710966.9272944275,
+      'xmax': -8565839.137766706,
+      'ymax': 4715858.897104671,
+      'spatialReference': {
+        'wkid': 102100,
+        'latestWkid': 3857
+      }
+    },
+    geometryType: 'esriGeometryEnvelope',
+    inSR: 102100,
+    outFields: '*',
+    outSR: 102100
+  }
+  run('apartments', options, 24, t)
+})
+
 function run (data, options, expected, t) {
   t.plan(1)
   const features = require(`./fixtures/${data}.json`).features
