@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.8.1] - 03-17-2017
 ### Fixed
 * Return correct features for envelope queries with an inSR and spatialReference specified on the envelope
 
@@ -111,6 +111,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 * Initial release
 
+[1.8.1]: https://github.com/featureserver/winnow/compare/v1.8.1...v1.8.0
 [1.8.0]: https://github.com/featureserver/winnow/compare/v1.7.1...v1.8.0
 [1.7.1]: https://github.com/featureserver/winnow/compare/v1.7.1...v1.7.0
 [1.7.0]: https://github.com/featureserver/winnow/compare/v1.6.0...v1.7.0
