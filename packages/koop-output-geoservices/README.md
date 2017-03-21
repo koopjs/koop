@@ -10,7 +10,7 @@ Wraps [FeatureServer](https://github.com/featureserver/featureserver) into a [Ko
 const Koop = require('koop')
 const config = require('config')
 const koop = new Koop(config)
-const FeatureServer = require('koop-featureserver-plugin')
+const FeatureServer = require('koop-output-geoservices')
 const Provider = require('koop-agol') // any koop provider here
 
 // All output plugins must be registered before any providers are registered
