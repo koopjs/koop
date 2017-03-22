@@ -185,7 +185,12 @@ function bindPluginOverrides (provider, controller, server, pluginRoutes) {
       fullRoute = path.posix.join('/', namespace, ':id', route.path)
     }
     route.methods.forEach(method => {
-      server[method](fullRoute, controller[route.handler].bind(controller))
+      try {
+        server[method](fullRoute, controller[route.handler].bind(controller))
+      } catch (e) {
+        console.error(`error=controller does not contain specified method method=${method} path=${route.path} handler=${route.handler}`)
+        process.exit(1)
+      }  
     })
   })
 }
@@ -193,7 +198,12 @@ function bindPluginOverrides (provider, controller, server, pluginRoutes) {
 function bindRouteSet (routes = [], controller, server) {
   routes.forEach(route => {
     route.methods.forEach(method => {
-      server[method](route.path, controller[route.handler].bind(controller))
+      try {
+        server[method](route.path, controller[route.handler].bind(controller))
+      } catch (e) {
+        console.error(`error=controller does not contain specified method method=${method} path=${route.path} handler=${route.handler}`)
+        process.exit(1)
+      }  
     })
   })
 }
