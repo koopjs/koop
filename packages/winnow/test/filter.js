@@ -258,6 +258,62 @@ test('With an envelope, an inSR and an outSR', t => {
   run('apartments', options, 24, t)
 })
 
+test('With a multi-ring geometry and an inSR', t => {
+  const options = {
+    geometry: {
+      rings: [
+        [
+          [
+            19930537.269606635,
+            -1018885.7633881811
+          ],
+          [
+            19930537.269606635,
+            13148258.807095852
+          ],
+          [
+            20037508.342788905,
+            13148258.807095852
+          ],
+          [
+            20037508.342788905,
+            -1018885.7633881811
+          ],
+          [
+            19930537.269606635,
+            -1018885.7633881811
+          ]
+        ],
+        [
+          [
+            -20037508.342788905,
+            -1018885.7633881811
+          ],
+          [
+            -20037508.342788905,
+            13148258.807095852
+          ],
+          [
+            -4568447.54013514,
+            13148258.807095852
+          ],
+          [
+            -4568447.54013514,
+            -1018885.7633881811
+          ],
+          [
+            -20037508.342788905,
+            -1018885.7633881811
+          ]
+        ]
+      ]
+    },
+    geometryType: 'esriGeometryPolygon',
+    inSR: 102100
+  }
+  run('ringbug', options, 30, t)
+})
+
 function run (data, options, expected, t) {
   t.plan(1)
   const features = require(`./fixtures/${data}.json`).features

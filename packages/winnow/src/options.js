@@ -124,8 +124,8 @@ function normalizeProjection (options) {
 
 function projectCoordinates (inSR, coordinates) {
   if (inSR === 102100) inSR = 3857
-
-  if (Array.isArray(coordinates[0])) return [coordinates[0].map(a => { return projectCoordinates(inSR, a) })]
+  if (Array.isArray(coordinates[0]) && Array.isArray(coordinates[0][0])) return coordinates.map(a => { return projectCoordinates(inSR, a) })
+  else if (Array.isArray(coordinates[0]) && typeof coordinates[0][0] === 'number') return coordinates.map(a => { return projectCoordinates(inSR, a) })
   else return proj4(`EPSG:${inSR}`, 'EPSG:4326', coordinates)
 }
 
