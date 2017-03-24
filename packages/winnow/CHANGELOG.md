@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.8.2] - 03-24-2017
 ### Fixed
 * Properly reproject input geometries that have multiple polygons
 
@@ -115,6 +115,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 * Initial release
 
+[1.8.2]: https://github.com/featureserver/winnow/compare/v1.8.1...v1.8.2
 [1.8.1]: https://github.com/featureserver/winnow/compare/v1.8.1...v1.8.0
 [1.8.0]: https://github.com/featureserver/winnow/compare/v1.7.1...v1.8.0
 [1.7.1]: https://github.com/featureserver/winnow/compare/v1.7.1...v1.7.0
