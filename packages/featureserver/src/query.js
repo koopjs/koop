@@ -21,7 +21,7 @@ function query (data, params = {}) {
   // TODO this should happen within winnow
   // TODO support datasets that already have an integer unique ID
   // add objectIds as long as this is not a stats request
-  if (!params.outStatistics && !data.features[0].OBJECTID) {
+  if (!params.outStatistics && data.features[0].OBJECTID !== undefined) {
     data.features.forEach((f, i) => {
       f.properties.OBJECTID = i
     })

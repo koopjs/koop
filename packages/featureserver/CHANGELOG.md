@@ -2,7 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.3.1] - 2017-03-16
+## [1.3.2] - 2017-03-28
+### Changed
+* Better way of handling oid overwrite
+
+## [1.3.1] - 2017-03-28
 ### Fixed
 * Don't overwrite OBJECTID field if it already exists
 
