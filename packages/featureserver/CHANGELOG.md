@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Don't overwrite OBJECTID field if it already exists
+
 ## [1.3.0] - 2017-03-16
 ### Added
 * Support for `f=geojson`
