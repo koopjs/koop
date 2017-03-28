@@ -11,8 +11,8 @@ function createClause (options) {
   options = options || {}
   if (!options.where) return ''
   let tokens = tokenize(options.where)
-  if (options.fields) {
-    tokens = decodeDomains(tokens, options.fields)
+  if (options.esriFields) {
+    tokens = decodeDomains(tokens, options.esriFields)
   }
   return translate(tokens, options)
 }
@@ -87,11 +87,11 @@ function isBinaryOp (left, middle, right) {
  * @param {Array} fields - a list of fields to use for coded value replacements
  */
 function applyDomain (fieldName, value, fields) {
-  const temp = value.replace(/^\(+|\)+$/, '')
+  const temp = value.replace(/['"]/g, '')
   fields.forEach(function (field) {
     if (field.domain && (field.domain.name && field.domain.name === fieldName)) {
       field.domain.codedValues.forEach(function (coded) {
-        if (parseInt(coded.code, 10) === parseInt(temp, 10)) {
+        if (parseInt(coded.code) === parseInt(temp)) {
           value = value.replace(temp, coded.name)
         }
       })

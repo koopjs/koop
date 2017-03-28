@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Handle coded value domains with esriFields passed in
+
 ## [1.8.2] - 03-24-2017
 ### Fixed
 * Properly reproject input geometries that have multiple polygons

@@ -22,6 +22,7 @@ function prepare (options) {
     projection: normalizeProjection(options),
     esri: options.esri,
     toEsri: options.toEsri,
+    esriFields: options.esriFields,
     collection: options.collection
   }
 }
