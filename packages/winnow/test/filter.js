@@ -347,6 +347,47 @@ test('with a coded value domain', t => {
   run('cvd', options, 2, t)
 })
 
+test('with a numeric coded value domain', t => {
+  const options = {
+    where: 'State = 1',
+    esriFields: [
+      {
+        name: 'State',
+        type: 'esriFieldTypeString',
+        alias: 'State',
+        sqlType: 'sqlTypeOther',
+        length: 50,
+        nullable: true,
+        editable: true,
+        domain: {
+          type: 'codedValue',
+          name: 'State',
+          codedValues: [
+            {
+              name: 'Virginia',
+              code: 1
+            },
+            {
+              name: 'Maryland',
+              code: 2
+            }
+          ]
+        },
+        defaultValue: null
+      }
+    ]
+  }
+  run('cvd', options, 2, t)
+})
+
+test('with a coded value domain', t => {
+  const options = {
+    where: "ZONING_S = 'INST'",
+    esriFields: require('./fixtures/esriFields.json')
+  }
+  run('cvd2', options, 10, t)
+})
+
 function run (data, options, expected, t) {
   t.plan(1)
   const features = require(`./fixtures/${data}.json`).features

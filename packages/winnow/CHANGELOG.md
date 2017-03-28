@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Refactor CVD code, handle more types
+
 ## [1.8.3] - 03-27-2017
 ### Fixed
 * Handle coded value domains with esriFields passed in

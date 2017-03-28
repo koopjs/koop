@@ -87,17 +87,9 @@ function isBinaryOp (left, middle, right) {
  * @param {Array} fields - a list of fields to use for coded value replacements
  */
 function applyDomain (fieldName, value, fields) {
-  const temp = value.replace(/['"]/g, '')
-  fields.forEach(function (field) {
-    if (field.domain && (field.domain.name && field.domain.name === fieldName)) {
-      field.domain.codedValues.forEach(function (coded) {
-        if (parseInt(coded.code) === parseInt(temp)) {
-          value = value.replace(temp, coded.name)
-        }
-      })
-    }
-  })
-  return value
+  const domain = fields.filter(f => { return f.name === fieldName })[0].domain
+  const decoded = domain.codedValues.filter(cv => { return value.match(cv.code) })[0].name
+  return typeof decoded === 'string' ? `'${decoded}'` : decoded
 }
 
 /**
