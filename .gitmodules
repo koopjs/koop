@@ -113,3 +113,6 @@
 [submodule "samples/kubernetes"]
 	path = samples/kubernetes
 	url = https://github.com/koopjs/kubernetes-example.git
+[submodule "providers/google-sheets"]
+	path = providers/google-sheets
+	url = git://github.com/koopjs/koop-provider-google-sheets.git
