@@ -1,6 +1,6 @@
 {
   "name": "featureserver",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "*An open source implementation of the GeoServices specification*",
   "main": "dist/index.js",
   "directories": {
