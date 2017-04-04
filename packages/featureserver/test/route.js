@@ -2,7 +2,10 @@ const FeatureServer = require('../src')
 const request = require('supertest')
 const express = require('express')
 const should = require('should')
+const _ = require('lodash')
+const snow = require('./fixtures/snow.json')
 const app = express()
+
 let data
 
 const handler = (req, res) => FeatureServer.route(req, res, data)
@@ -14,7 +17,7 @@ app.get('/FeatureServer/:layer/:method', handler)
 
 describe('Routing feature server requests', () => {
   beforeEach(() => {
-    data = require('./fixtures/snow.json')
+    data = _.cloneDeep(snow)
     data.name = 'Snow'
   })
 
@@ -23,20 +26,8 @@ describe('Routing feature server requests', () => {
       request(app)
       .get('/FeatureServer/0/query?f=json&where=1%3D1')
       .expect(res => {
-        Object.keys(res.body.features[0].attributes).length.should.equal(10)
+        res.body.features[1].attributes.OBJECTID.should.equal(1)
         res.body.features.length.should.equal(417)
-      })
-      .expect('Content-Type', /json/)
-      .expect(200, done)
-    })
-  })
-
-  describe('Server Info', () => {
-    it('should properly route and handle a server info`', done => {
-      request(app)
-      .get('/FeatureServer?f=json')
-      .expect(res => {
-        res.body.layers.length.should.equal(1)
       })
       .expect('Content-Type', /json/)
       .expect(200, done)
@@ -50,7 +41,20 @@ describe('Routing feature server requests', () => {
       .expect(res => {
         res.body.type.should.equal('Feature Layer')
         res.body.name.should.equal('Snow')
+        res.body.fields.filter(f => { return f.name === 'OBJECTID' }).length.should.equal(1)
         should.exist(res.body.extent)
+      })
+      .expect('Content-Type', /json/)
+      .expect(200, done)
+    })
+  })
+
+  describe('Server Info', () => {
+    it('should properly route and handle a server info`', done => {
+      request(app)
+      .get('/FeatureServer?f=json')
+      .expect(res => {
+        res.body.layers.length.should.equal(1)
       })
       .expect('Content-Type', /json/)
       .expect(200, done)
