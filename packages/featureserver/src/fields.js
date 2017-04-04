@@ -50,6 +50,13 @@ function fields (props, template, options) {
     if (type === 'esriFieldTypeString') field.length = 128
     return field
   })
+  if (template === 'layer' && Object.keys(props).indexOf('OBJECTID') < 0) {
+    fields.push({
+      name: 'OBJECTID',
+      type: 'esriFieldTypeInteger',
+      alias: 'OBJECTID'
+    })
+  }
 
   return { oidField: 'OBJECTID', fields }
 }

@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fix
+* OBJECTID is in the fields array only layer request
+
 ## [1.3.3] - 2017-03-28
 ### Fixed
 * OID rewrite is now correct
