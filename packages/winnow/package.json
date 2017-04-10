@@ -42,7 +42,7 @@
   "devDependencies": {
     "buble": "^0.15.2",
     "feature-parser": "^1.0.1",
-    "standard": "^9.0.1",
+    "standard": "^10.0.1",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3"
   }
