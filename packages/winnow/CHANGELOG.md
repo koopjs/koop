@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.8.5] - 04-12-2017
 ### Added
 * Handle esri style geometries with web mercator as a wkt
 
@@ -127,6 +127,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 * Initial release
 
+[1.8.5]: https://github.com/featureserver/winnow/compare/v1.8.5...v1.8.4
 [1.8.4]: https://github.com/featureserver/winnow/compare/v1.8.3...v1.8.4
 [1.8.3]: https://github.com/featureserver/winnow/compare/v1.8.3...v1.8.2
 [1.8.2]: https://github.com/featureserver/winnow/compare/v1.8.1...v1.8.2
