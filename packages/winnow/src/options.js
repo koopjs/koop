@@ -98,7 +98,11 @@ function normalizeInSR (options) {
   if (options.inSR) {
     return options.inSR
   } else if (options.geometry.spatialReference) {
-    return options.geometry.spatialReference.latestWkid || options.geometry.spatialReference.wkid
+    if (/WGS_1984_Web_Mercator_Auxiliary_Sphere/.test(options.geometry.spatialReference.wkt)) {
+      return 102100
+    } else {
+      return options.geometry.spatialReference.latestWkid || options.geometry.spatialReference.wkid
+    }
   }
 }
 

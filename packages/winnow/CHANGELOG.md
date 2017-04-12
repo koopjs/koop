@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Handle esri style geometries with web mercator as a wkt
+
 ## [1.8.4] - 03-28-2017
 ### Changed
 * Refactor CVD code, handle more types
