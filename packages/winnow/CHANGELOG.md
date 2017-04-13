@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.8.6] - 04-13-2017
 ### Fixed
 * Handle esri domains that are null
 
@@ -131,6 +131,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 * Initial release
 
+[1.8.6]: https://github.com/featureserver/winnow/compare/v1.8.5...v1.8.6
 [1.8.5]: https://github.com/featureserver/winnow/compare/v1.8.5...v1.8.4
 [1.8.4]: https://github.com/featureserver/winnow/compare/v1.8.3...v1.8.4
 [1.8.3]: https://github.com/featureserver/winnow/compare/v1.8.3...v1.8.2
