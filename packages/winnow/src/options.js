@@ -29,7 +29,16 @@ function prepare (options) {
 
 function normalizeWhere (options) {
   if (/1\s*=\s*1/.test(options.where)) return undefined
+  else if (/(?!date )('?\d\d\d\d-\d\d-\d\d'?)/.test(options.where)) return normalizeDate(options.where)
   else return options.where
+}
+
+function normalizeDate (where) {
+  const matches = where.match(/(?!date )('?\d\d\d\d-\d\d-\d\d'?)/g)
+  matches.forEach(match => {
+    where = where.replace(`date ${match}`, `'${new Date(match.toString()).toISOString()}'`)
+  })
+  return where
 }
 
 function normalizeSpatialPredicate (options) {

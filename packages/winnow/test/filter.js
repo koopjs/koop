@@ -403,6 +403,20 @@ test('with a coded value domain', t => {
   run('cvd2', options, 10, t)
 })
 
+test('with a date query', t => {
+  const options = {
+    where: 'ISSUE_DATE >= date 2017-01-05'
+  }
+  run('permits', options, 211, t)
+})
+
+test('with an esri-style date query', t => {
+  const options = {
+    where: "ISSUE_DATE >= '2017-01-05T00:00:00.000Z' AND ISSUE_DATE <= '2017-04-08T23:59:59.000Z'"
+  }
+  run('permits', options, 211, t)
+})
+
 function run (data, options, expected, t) {
   t.plan(1)
   const features = require(`./fixtures/${data}.json`).features

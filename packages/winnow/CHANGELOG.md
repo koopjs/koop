@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Handle esri-style date queries
+
 ## [1.8.6] - 04-13-2017
 ### Fixed
 * Handle esri domains that are null
