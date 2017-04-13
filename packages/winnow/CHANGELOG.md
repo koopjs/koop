@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.8.7] - 04-13-2017
 ### Fixed
 * Handle esri-style date queries
 
