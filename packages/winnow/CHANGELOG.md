@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Handle esri domains that are null
+
 ## [1.8.5] - 04-12-2017
 ### Added
 * Handle esri style geometries with web mercator as a wkt

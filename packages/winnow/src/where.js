@@ -88,8 +88,12 @@ function isBinaryOp (left, middle, right) {
  */
 function applyDomain (fieldName, value, fields) {
   const domain = fields.filter(f => { return f.name === fieldName })[0].domain
-  const decoded = domain.codedValues.filter(cv => { return value.match(cv.code) })[0].name
-  return typeof decoded === 'string' ? `'${decoded}'` : decoded
+  if (domain && domain.codedValues) {
+    const decoded = domain.codedValues.filter(cv => { return value.match(cv.code) })[0].name
+    return typeof decoded === 'string' ? `'${decoded}'` : decoded
+  } else {
+    return value
+  }
 }
 
 /**
