@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Added
 * Support outSR for polygons and lines
+* Support selected geometry precision
 
 ## [1.8.8] - 04-26-2017
 ### Fixed

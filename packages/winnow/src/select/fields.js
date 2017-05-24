@@ -1,16 +1,14 @@
-module.exports = function (fields, options) {
-  options = options || {}
-  if (typeof fields !== 'string') fields = fields.join(',')
-  else fields = fields.replace(/,\s+/g, ',')
-  let propType
-  let geomType
-  if (options.toEsri) {
-    propType = 'attributes'
-    geomType = options.projection ? 'esriGeom(project(geometry, ?)) as geometry' : 'esriGeom(geometry) as geometry'
-  } else {
-    propType = 'properties'
-    geomType = options.projection ? 'project(geometry, ?) as geometry' : 'geometry'
-  }
+function createClause (options = {}) {
+  const propType = options.toEsri ? 'attributes' : 'properties'
 
-  return `SELECT type, pick(properties, "${fields}") as ${propType}, ${geomType} FROM ?`
+  if (options.fields) {
+    let fields
+    if (typeof options.fields !== 'string') fields = options.fields.join(',')
+    else fields = options.fields.replace(/,\s+/g, ',')
+    return `type, pick(properties, "${fields}") as ${propType}`
+  } else {
+    return `type, properties as ${propType}`
+  }
 }
+
+module.exports = { createClause }

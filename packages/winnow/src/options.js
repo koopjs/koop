@@ -1,4 +1,5 @@
-const convertFromEsri = require('./geometry/convertFromEsri')
+const _ = require('lodash')
+const convertFromEsri = require('./geometry/convert-from-esri')
 const transformArray = require('./geometry/transform-array')
 const transformEnvelope = require('./geometry/transform-envelope')
 const projectCoordinates = require('./geometry/project-coordinates')
@@ -9,7 +10,7 @@ const esriPredicates = {
 }
 
 function prepare (options) {
-  return {
+  return _.merge({}, options, {
     where: normalizeWhere(options),
     geometry: normalizeGeometry(options),
     spatialPredicate: normalizeSpatialPredicate(options),
@@ -19,12 +20,8 @@ function prepare (options) {
     groupBy: normalizeGroupBy(options),
     limit: normalizeLimit(options),
     offset: normalizeOffset(options),
-    projection: normalizeProjection(options),
-    esri: options.esri,
-    toEsri: options.toEsri,
-    esriFields: options.esriFields,
-    collection: options.collection
-  }
+    projection: normalizeProjection(options)
+  })
 }
 
 function normalizeWhere (options) {

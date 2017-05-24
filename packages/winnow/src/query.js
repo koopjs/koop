@@ -24,6 +24,7 @@ function params (features, options) {
   // NOTE: order matters here
   // Fields stage
   if (options.projection) params.push(options.projection)
+  if (options.geometryPrecision) params.push(options.geometryPrecision)
   // From stage
   params.push(Array.isArray(features) ? features : [features])
   // Where stage
@@ -31,4 +32,4 @@ function params (features, options) {
   return params
 }
 
-module.exports = {create, params}
+module.exports = { create, params }

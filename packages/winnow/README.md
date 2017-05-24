@@ -21,6 +21,7 @@ const options = {
   groupBy: Array // Set of fields for grouping statistics
   order: Array // Set of fields or aggregates by which to order results
   projection: Number || String // An EPSG code, an OGC WKT or an ESRI WKT used to convert geometry
+  geometryPrecision: Number // number of digits to appear after decimal point for geometry
 }
 winnow.query(features, options)
 // Returns the set of features that match the query

@@ -1,12 +1,13 @@
-const fields = require('./fields')
 const aggregates = require('./aggregates')
-const toEsri = require('./toEsri')
+const createGeometryClause = require('./geometry').createClause
+const createFieldsClause = require('./fields').createClause
 
 function createClause (options) {
   if (options.aggregates) return aggregates(options.aggregates, options.groupBy, options.esri)
-  else if (options.fields) return fields(options.fields, options)
-  else if (options.toEsri) return toEsri(options.projection)
-  else return options.projection ? 'SELECT properties, project(geometry, ?) as geometry FROM ?' : 'SELECT * FROM ?'
+  const geometryClause = createGeometryClause(options)
+  const fieldsClause = createFieldsClause(options)
+
+  return `SELECT ${fieldsClause}, ${geometryClause} FROM ?`
 }
 
 module.exports = { createClause }

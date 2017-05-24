@@ -1,10 +1,11 @@
 const Terraformer = require('terraformer')
-const convertToEsri = require('./geometry/convertToEsri')
+const convertToEsri = require('./geometry/convert-to-esri')
 const sql = require('alasql')
 const geohash = require('ngeohash')
 const centroid = require('@turf/centroid')
 const _ = require('lodash')
 const projectCoordinates = require('./geometry/project-coordinates')
+const reducePrecision = require('./geometry/reduce-precision')
 
 sql.MAXSQLCACHESIZE = 0
 
@@ -54,6 +55,14 @@ sql.fn.project = function (geometry, projection) {
   return {
     type: geometry.type,
     coordinates: projectCoordinates(geometry.coordinates, { outSR: projection })
+  }
+}
+
+sql.fn.reducePrecision = function (geometry, precision) {
+  if (!(geometry && geometry.coordinates)) return geometry
+  return {
+    type: geometry.type,
+    coordinates: reducePrecision(geometry.coordinates, precision)
   }
 }
 

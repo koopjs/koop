@@ -31,7 +31,10 @@ Winnow.prepareQuery = function (options) {
   options = Options.prepare(options)
   const statement = Query.create(options)
   const query = sql.compile(statement)
-  const params = [null, options.geometry]
+  const params = [null]
+  if (options.projection) params.push(options.projection)
+  if (options.geometryPrecision) params.push(options.geometryPrecision)
+  if (options.geometry) params.push(options.geometry)
 
   return function (input) {
     /* Prepared queries can take either a collection object,
