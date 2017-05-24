@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Support outSR for polygons and lines
+
 ## [1.8.8] - 04-26-2017
 ### Fixed
 * Handle possible exception when field domains are null

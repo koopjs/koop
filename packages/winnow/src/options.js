@@ -1,7 +1,7 @@
-const proj4 = require('proj4')
 const convertFromEsri = require('./geometry/convertFromEsri')
 const transformArray = require('./geometry/transform-array')
 const transformEnvelope = require('./geometry/transform-envelope')
+const projectCoordinates = require('./geometry/project-coordinates')
 const esriPredicates = {
   esriSpatialRelContains: 'ST_Contains',
   esriSpatialRelWithin: 'ST_Within',
@@ -61,7 +61,7 @@ function normalizeOrder (options) {
 function normalizeAggregates (options) {
   let aggregates = options.aggregates
   if (options.outStatistics) {
-    aggregates = options.outStatistics.map((agg) => {
+    aggregates = options.outStatistics.map(agg => {
       return {
         type: agg.statisticType,
         field: agg.onStatisticField,
@@ -99,20 +99,25 @@ function normalizeGeometry (options) {
     geometry = convertFromEsri(geometry)
   }
   const inSR = normalizeInSR(options)
-  if (inSR) geometry.coordinates = projectCoordinates(inSR, geometry.coordinates)
+  if (inSR) geometry.coordinates = projectCoordinates(geometry.coordinates, { inSR, outSR: 'EPSG:4326' })
   return geometry
 }
 
 function normalizeInSR (options) {
+  let SR
   if (options.inSR) {
-    return options.inSR
+    SR = options.inSR
   } else if (options.geometry.spatialReference) {
     if (/WGS_1984_Web_Mercator_Auxiliary_Sphere/.test(options.geometry.spatialReference.wkt)) {
-      return 102100
+      SR = 3857
     } else {
-      return options.geometry.spatialReference.latestWkid || options.geometry.spatialReference.wkid
+      SR = options.geometry.spatialReference.latestWkid || options.geometry.spatialReference.wkid
     }
   }
+
+  if (SR === 102100) return `EPSG:3857`
+  else if (SR) return `EPSG:${SR}`
+  else return 'EPSG:4326'
 }
 
 function normalizeLimit (options) {
@@ -134,13 +139,6 @@ function normalizeProjection (options) {
   if (projection === 102100) return 'EPSG:3857'
   if (typeof projection !== 'number') return projection
   else return `EPSG:${projection}`
-}
-
-function projectCoordinates (inSR, coordinates) {
-  if (inSR === 102100) inSR = 3857
-  if (Array.isArray(coordinates[0]) && Array.isArray(coordinates[0][0])) return coordinates.map(a => { return projectCoordinates(inSR, a) })
-  else if (Array.isArray(coordinates[0]) && typeof coordinates[0][0] === 'number') return coordinates.map(a => { return projectCoordinates(inSR, a) })
-  else return proj4(`EPSG:${inSR}`, 'EPSG:4326', coordinates)
 }
 
 module.exports = { prepare }

@@ -4,7 +4,7 @@ const sql = require('alasql')
 const geohash = require('ngeohash')
 const centroid = require('@turf/centroid')
 const _ = require('lodash')
-const proj4 = require('proj4')
+const projectCoordinates = require('./geometry/project-coordinates')
 
 sql.MAXSQLCACHESIZE = 0
 
@@ -50,12 +50,10 @@ sql.fn.esriGeom = function (geometry) {
 }
 
 sql.fn.project = function (geometry, projection) {
-  if (geometry && geometry.coordinates) {
-    const coordinates = proj4(projection).forward(geometry.coordinates)
-    return {
-      type: geometry.type,
-      coordinates
-    }
+  if (!(geometry && geometry.coordinates) || !projection) return geometry
+  return {
+    type: geometry.type,
+    coordinates: projectCoordinates(geometry.coordinates, { outSR: projection })
   }
 }
 
