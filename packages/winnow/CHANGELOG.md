@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.9.0] - 05-24-2017
 ### Added
 * Support outSR for polygons and lines
 * Support selected geometry precision
@@ -144,6 +144,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 * Initial release
 
+[1.9.0]: https://github.com/featureserver/winnow/compare/v1.9.0...v1.8.8
 [1.8.8]: https://github.com/featureserver/winnow/compare/v1.8.7...v1.8.8
 [1.8.7]: https://github.com/featureserver/winnow/compare/v1.8.7...v1.8.6
 [1.8.6]: https://github.com/featureserver/winnow/compare/v1.8.5...v1.8.6
