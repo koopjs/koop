@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* /FeatureServer supports multiple layers
+
+### Breaking
+* rename `serviceInfo` => `serverInfo`
+* remove `serviceInfo` public API
+* rename `layers` => `layersInfo`
+
 ## [1.3.4] - 2017-04-03
 ### Fix
 * OBJECTID is in the fields array only layer request

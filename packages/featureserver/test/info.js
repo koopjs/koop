@@ -4,6 +4,22 @@ const data = require('./fixtures/snow.json')
 const should = require('should')
 
 describe('Info operations', () => {
+  describe('server info', () => {
+    it('should work with geojson passed in', () => {
+      const server = FeatureServer.serverInfo(data)
+      server.layers.length.should.equal(1)
+      server.initialExtent.xmin.should.equal(-108.9395)
+      server.fullExtent.xmin.should.equal(-108.9395)
+    })
+  })
+
+  describe('layers info', () => {
+    it('should work with simple geojson passed in', () => {
+      const layers = FeatureServer.layersInfo(data)
+      layers.layers.length.should.equal(1)
+    })
+  })
+
   describe('when getting featureserver info from geojson', () => {
     it('should return a feature service with the proper geom type', () => {
       const service = FeatureServer.layerInfo(polyData, {})

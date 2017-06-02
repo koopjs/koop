@@ -26,8 +26,10 @@ function route (req, res, geojson, options) {
   // if this is for a method we can handle like query
   const method = req.params && req.params.method
   switch (method) {
-    case 'query': return execQuery(req, res, geojson, options)
-    default: return execInfo(req, res, method, geojson)
+    case 'query':
+      return execQuery(req, res, geojson, options)
+    default:
+      return execInfo(req, res, method, geojson)
   }
 }
 
@@ -42,7 +44,7 @@ function execQuery (req, res, geojson, options) {
     response = FsQuery(geojson, req.query || {})
   } catch (e) {
     if (process.env.NODE_ENV === 'test') console.trace(e)
-    return res.status(500).json({error: e.message})
+    return res.status(500).json({ error: e.message })
   }
   if (req.query.callback) res.send(`${req.query.callback}(${JSON.stringify(response)})`)
   else res.status(200).json(response)
@@ -50,21 +52,20 @@ function execQuery (req, res, geojson, options) {
 
 function execInfo (req, res, method, geojson) {
   let info
-  const layerPat = new RegExp(/FeatureServer\/layers/i)
-  const url = req.url || req.originalUrl
+  const url = (req.url || req.originalUrl).split('?')[0]
   try {
-    if (layerPat.test(url)) {
-      info = FsInfo.layers(geojson, req.query)
-    } else if (!method && !req.params.layer) {
-      info = FsInfo.serviceInfo(geojson, req.params)
-    } else if (!method) {
+    if (/\/FeatureServer$/i.test(url)) {
+      info = FsInfo.serverInfo(geojson, req.params)
+    } else if (/\/FeatureServer\/\d+/i.test(url)) {
       info = FsInfo.layerInfo(geojson, req.params)
+    } else if (/\/FeatureServer\/layers/i.test(url)) {
+      info = FsInfo.layersInfo(geojson, req.query)
     } else {
       throw new Error('Method not supported')
     }
   } catch (e) {
     if (process.env.NODE_ENV === 'test') console.trace(e)
-    return res.status(500).json({error: e.message})
+    return res.status(500).json({ error: e.message })
   }
   if (req.query.callback) res.send(`${req.query.callback}(${JSON.stringify(info)})`)
   else res.status(200).json(info)

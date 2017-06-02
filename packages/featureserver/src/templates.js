@@ -2,12 +2,11 @@ const fields = require('./fields.js')
 const _ = require('lodash')
 const Utils = require('./utils')
 
-module.exports = { render }
+module.exports = { render, renderServer }
 
 const templates = {
   server: require('../templates/server.json'),
   layer: require('../templates/layer.json'),
-  service: require('../templates/service.json'),
   features: require('../templates/features.json'),
   statistics: require('../templates/statistics.json')
 }
@@ -51,11 +50,20 @@ function render (template, featureCollection = {}, options = {}) {
   return json
 }
 
+function renderServer (server, { layers, tables }) {
+  const json = _.cloneDeep(templates.server)
+  json.fullExtent = json.initialExtent = server.extent || json.fullExtent
+  json.serviceDescription = server.description
+  json.layers = layers
+  json.tables = tables
+  return json
+}
+
 function computeSpatialReference (sr) {
   if (!sr) return defaultSR
   else if (sr === 4326 || sr.wkid === 4326 || sr.latestWkid === 4326) return defaultSR
   else if (sr === 102100 || sr === 3857 || sr.wkid === 102100 || sr.latestWkid === 3857) return mercatorSR
-  else if (typeof sr === 'number') return {wkid: sr}
+  else if (typeof sr === 'number') return { wkid: sr }
   else {
     return {
       wkid: sr.wkid || sr.latestWkid,
@@ -66,7 +74,7 @@ function computeSpatialReference (sr) {
 
 function computeFieldObject (data, template, options) {
   const feature = data.features && data.features[0]
-  const properties = feature ? (feature.properties || feature.attributes) : options.attributeSample
+  const properties = feature ? feature.properties || feature.attributes : options.attributeSample
   if (properties) return fields(properties, template, options).fields
   else return []
 }
