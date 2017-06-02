@@ -59,7 +59,7 @@ e.g.
   metadata: {
     name: String, //
     description: String
-    extent:  Object || Array // valid extent object or 2 coord array
+    extent: Array // valid extent array e.g. [[180,90],[-180,-90]]
     displayField: String // The display field to be used by a client
     id: String // unique identifier field
   },
@@ -82,25 +82,29 @@ FeatureServer.query(geojson, options)
 Generate version `10.21` Geoservices server info
 ```js
 const server = {
-  name: 'Koop server',
-  description: 'Layers translated by Koop',
-  layers: [
-    {
-      type: 'FeatureCollection',
-      features: [
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [125.6, 10.1]
-          },
-          properties: {
-            name: 'Dinagat Islands'
-          }
-        }
-      ]
+  description: String // Describes the collection of layers below,
+  layers: [{ // A collection of all the layers managed by the server
+    type: 'FeatureCollection',
+    metadata: {
+      name: String, // The name of the layer
+      description: String // The description of the layer
+      extent: Array // valid extent array e.g. [[180,90],[-180,-90]]
+      displayField: String // The display field to be used by a client
+      id: String // unique identifier field
     }
-  ]
+    features: [// If all the metadata provided above is provided features are optional.
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [125.6, 10.1]
+        },
+        properties: {
+          name: 'Dinagat Islands'
+        }
+      }]
+    }
+  }]
 }
 
 FeatureServer.serverInfo(server)
@@ -112,14 +116,13 @@ Generate version `10.21` Geoservices information about a single layer
 FeatureServer.layerInfo(geojson, options)
 ```
 
-### FeatureServer.layersInfo
+### FeatureServer.layers
 Generate version `10.21` Geoservices information about one or many layers
 
 Can pass a single geojson object or an array of geojson objects
 ```js
-FeatureServer.layersInfo([geojson], options)
+FeatureServer.layers(geojson, options)
 ```
-
 
 [npm-image]: https://img.shields.io/npm/v/featureserver.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/featureserver

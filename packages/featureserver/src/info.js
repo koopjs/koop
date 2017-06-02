@@ -2,6 +2,7 @@ module.exports = { serverInfo, layerInfo, layersInfo }
 
 const Utils = require('./utils.js')
 const Templates = require('./templates')
+const geometryMap = require('./geometry-map')
 
 function serverInfo (server, params = {}) {
   let layers
@@ -42,7 +43,7 @@ function serverLayerInfo (geojson = {}, id) {
     subLayerIds: null,
     minScale: 0,
     maxScale: 0,
-    geometryType
+    geometryType: geometryMap[geometryType] || geometryType
   }
 }
 

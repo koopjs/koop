@@ -2,6 +2,7 @@ const FeatureServer = require('../src')
 const polyData = require('./fixtures/polygon.json')
 const data = require('./fixtures/snow.json')
 const should = require('should')
+const _ = require('lodash')
 
 describe('Info operations', () => {
   describe('server info', () => {
@@ -11,12 +12,67 @@ describe('Info operations', () => {
       server.initialExtent.xmin.should.equal(-108.9395)
       server.fullExtent.xmin.should.equal(-108.9395)
     })
+
+    it('should support a passed in extent and description', () => {
+      const input = {
+        description: 'test',
+        extent: [[11, 12], [13, 14]],
+        layers: [_.cloneDeep(data)]
+      }
+      const server = FeatureServer.serverInfo(input)
+      server.serviceDescription.should.equal('test')
+      server.layers.length.should.equal(1)
+      server.initialExtent.xmin.should.equal(11)
+      server.initialExtent.ymax.should.equal(14)
+    })
+
+    it('should support a passed in geometry type', () => {
+      const input = {
+        description: 'test',
+        extent: [[11, 12], [13, 14]],
+        layers: [
+          {
+            type: 'FeatureCollection',
+            metadata: {
+              name: 'test',
+              geometryType: 'Point'
+            }
+          }
+        ]
+      }
+      const server = FeatureServer.serverInfo(input)
+      server.serviceDescription.should.equal('test')
+      server.layers.length.should.equal(1)
+      server.initialExtent.xmin.should.equal(11)
+      server.initialExtent.ymax.should.equal(14)
+      server.layers[0].name.should.equal('test')
+      server.layers[0].geometryType.should.equal('esriGeometryPoint')
+    })
   })
 
   describe('layers info', () => {
     it('should work with simple geojson passed in', () => {
       const layers = FeatureServer.layersInfo(data)
       layers.layers.length.should.equal(1)
+    })
+  })
+
+  describe('getting layer info without features', () => {
+    it('should work with only metadata', () => {
+      const input = {
+        metadata: {
+          name: 'test',
+          description: 'test',
+          extent: [[11, 12], [13, 14]],
+          geometryType: 'Polygon'
+        }
+      }
+      const layer = FeatureServer.layerInfo(input, {})
+      layer.name.should.equal('test')
+      layer.description.should.equal('test')
+      layer.extent.xmin.should.equal(11)
+      layer.extent.ymax.should.equal(14)
+      layer.geometryType.should.equal('esriGeometryPolygon')
     })
   })
 
@@ -33,7 +89,7 @@ describe('Info operations', () => {
     it('should use the passed in extent if present', () => {
       polyData.metadata.extent = [1, 2, 3, 4]
       const service = FeatureServer.layerInfo(polyData, {})
-      service.extent[0].should.equal(1)
+      service.extent.xmin.should.equal(1)
     })
   })
 

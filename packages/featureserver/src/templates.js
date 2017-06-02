@@ -30,29 +30,29 @@ const mercatorSR = { wkid: 102100, latestWkid: 3857 }
 function render (template, featureCollection = {}, options = {}) {
   const json = _.cloneDeep(templates[template])
   const data = featureCollection
-  data.metadata = data.metadata || {}
+  const metadata = data.metadata || {}
   if (!json) throw new Error('Unsupported operation')
 
   // These two rely on geojson, while everything else relies on the source data
-  if (json.fullExtent) json.fullExtent = json.initialExtent = json.extent = data.metadata.extent || options.extent
-  else if (json.extent) json.extent = data.metadata.extent || options.extent
+  if (json.fullExtent) json.fullExtent = json.initialExtent = json.extent = metadata.extent || options.extent
+  else if (json.extent) json.extent = metadata.extent || options.extent
 
   if (json.geometryType) json.geometryType = options.geometryType
   if (json.spatialReference) json.spatialReference = computeSpatialReference(options.spatialReference)
-  if (json.name && data.metadata.name) json.name = data.metadata.name
-  if (json.description && data.metadata.description) json.description = data.metadata.description
-  if (json.extent && data.metadata.extent) json.extent = data.metadata.extent
+  if (json.name && metadata.name) json.name = metadata.name
+  if (json.description && metadata.description) json.description = metadata.description
+  if (json.extent && metadata.extent) json.extent = computeExtent(metadata.extent)
   if (json.features) json.features = data.features
   if (json.fields) json.fields = computeFieldObject(data, template, options)
   if (json.type) json.type = Utils.isTable(json, data) ? 'Table' : 'Feature Layer'
   if (json.drawingInfo) json.drawingInfo.renderer = renderers[json.geometryType]
-  if (json.displayFieldName) json.displayFieldName = data.metadata.displayField || json.fields[0].name
+  if (json.displayFieldName) json.displayFieldName = metadata.displayField || json.fields[0].name
   return json
 }
 
 function renderServer (server, { layers, tables }) {
   const json = _.cloneDeep(templates.server)
-  json.fullExtent = json.initialExtent = server.extent || json.fullExtent
+  json.fullExtent = json.initialExtent = computeExtent(server.extent || json.fullExtent)
   json.serviceDescription = server.description
   json.layers = layers
   json.tables = tables
@@ -68,6 +68,27 @@ function computeSpatialReference (sr) {
     return {
       wkid: sr.wkid || sr.latestWkid,
       latestWkid: sr.latestWkid || sr.wkid
+    }
+  }
+}
+
+function computeExtent (input) {
+  let coords
+  if (input.xmin) return input
+  if (Array.isArray(input)) {
+    if (Array.isArray(input[0])) coords = input
+    else coords = [[input[0], input[1]], [input[2], input[3]]]
+  } else {
+    throw new Error('invalid extent passed in metadata')
+  }
+  return {
+    xmin: coords[0][0],
+    ymin: coords[0][1],
+    xmax: coords[1][0],
+    ymax: coords[1][1],
+    spatialReference: {
+      wkid: 4326,
+      latestWkid: 4326
     }
   }
 }
