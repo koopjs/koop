@@ -38,10 +38,10 @@
 		"renderer": {},
 		"labelingInfo": null
 	},
-
 	"hasM":  false,
 	"hasZ":  false,
 	"allowGeometryUpdates": true,
+	"timeInfo": {},
 	"hasAttachments" : false,
 	"htmlPopupType" : "esriServerHTMLPopupTypeNone",
 	"objectIdField" : "OBJECTID",

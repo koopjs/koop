@@ -64,7 +64,13 @@ describe('Info operations', () => {
           name: 'test',
           description: 'test',
           extent: [[11, 12], [13, 14]],
-          geometryType: 'Polygon'
+          geometryType: 'Polygon',
+          maxRecordCount: 100,
+          displayField: 'test',
+          idField: 'test',
+          timeInfo: {
+            test: 'test'
+          }
         }
       }
       const layer = FeatureServer.layerInfo(input, {})
@@ -73,6 +79,10 @@ describe('Info operations', () => {
       layer.extent.xmin.should.equal(11)
       layer.extent.ymax.should.equal(14)
       layer.geometryType.should.equal('esriGeometryPolygon')
+      layer.maxRecordCount.should.equal(100)
+      layer.objectIdField.should.equal('test')
+      layer.displayField.should.equal('test')
+      layer.timeInfo.test.should.equal('test')
     })
   })
 

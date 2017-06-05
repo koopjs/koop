@@ -57,17 +57,19 @@ e.g.
   features: Array,
   statistics: Object, // pass statistics to an outStatistics request to or else they will be calculated from geojson features passed in
   metadata: {
-    name: String, //
-    description: String
-    extent: Array // valid extent array e.g. [[180,90],[-180,-90]]
-    displayField: String // The display field to be used by a client
-    id: String // unique identifier field
+    name: String, // The name of the layer
+    description: String, // The description of the layer
+    extent: Array, // valid extent array e.g. [[180,90],[-180,-90]]
+    displayField: String, // The display field to be used by a client
+    idField: String, // unique identifier field,
+    maxRecordCount: Number, // the maximum number of features a provider can return at once
+    timeInfo: Object // describes the time extent and capabilities of the layer
   },
   filtersApplied: {
     geometry: Boolean, // true if a geometric filter has already been applied to the data
     where: Boolean // true if a sql-like where filter has already been applied to the data
   }
-  count: Number // pass count if the number of features in a query has been precalculated
+  count: Number // pass count if the number of features in a query has been pre-calculated
 }
 ```
 
@@ -83,6 +85,7 @@ Generate version `10.21` Geoservices server info
 ```js
 const server = {
   description: String // Describes the collection of layers below,
+  maxRecordCount: Number // the maximum number of features a provider can return at once
   layers: [{ // A collection of all the layers managed by the server
     type: 'FeatureCollection',
     metadata: {
@@ -90,7 +93,9 @@ const server = {
       description: String // The description of the layer
       extent: Array // valid extent array e.g. [[180,90],[-180,-90]]
       displayField: String // The display field to be used by a client
-      id: String // unique identifier field
+      idField: String // unique identifier field,
+      maxRecordCount: Number // the maximum number of features a provider can return at once
+      timeInfo: Object // describes the time extent and capabilities of the layer
     }
     features: [// If all the metadata provided above is provided features are optional.
       {
