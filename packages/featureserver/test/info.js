@@ -13,13 +13,17 @@ describe('Info operations', () => {
       server.fullExtent.xmin.should.equal(-108.9395)
     })
 
-    it('should support a passed in extent and description', () => {
+    it('should support a passed in metadata', () => {
       const input = {
+        hasStaticData: true,
+        maxRecordCount: 100,
         description: 'test',
         extent: [[11, 12], [13, 14]],
         layers: [_.cloneDeep(data)]
       }
       const server = FeatureServer.serverInfo(input)
+      server.hasStaticData.should.equal(true)
+      server.maxRecordCount.should.equal(100)
       server.serviceDescription.should.equal('test')
       server.layers.length.should.equal(1)
       server.initialExtent.xmin.should.equal(11)

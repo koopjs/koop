@@ -85,7 +85,8 @@ Generate version `10.21` Geoservices server info
 ```js
 const server = {
   description: String // Describes the collection of layers below,
-  maxRecordCount: Number // the maximum number of features a provider can return at once
+  maxRecordCount: Number // the maximum number of features a provider can return at once,
+  hasStaticData: Boolean // whether or not the server contains any data that is not changing
   layers: [{ // A collection of all the layers managed by the server
     type: 'FeatureCollection',
     metadata: {

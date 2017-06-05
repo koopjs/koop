@@ -60,6 +60,7 @@ function renderServer (server, { layers, tables }) {
   json.layers = layers
   json.tables = tables
   json.maxRecordCount = server.maxRecordCount || (layers[0].metadata && layers[0].metadata.maxRecordCount) || 1000
+  json.hasStaticData = !!server.hasStaticData
   return json
 }
 
