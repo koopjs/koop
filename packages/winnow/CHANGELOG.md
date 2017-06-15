@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.10.0] - 06-15-2017
 ### Added
 - Detect field types if they are not passed in with `geojson.metadata`
 - Translate ISO Date Strings to Unix Timestamps when `options.toEsri` is true
@@ -150,6 +150,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 * Initial release
 
+[1.10.0]: https://github.com/featureserver/winnow/compare/v1.9.0...v1.10.0
 [1.9.0]: https://github.com/featureserver/winnow/compare/v1.9.0...v1.8.8
 [1.8.8]: https://github.com/featureserver/winnow/compare/v1.8.7...v1.8.8
 [1.8.7]: https://github.com/featureserver/winnow/compare/v1.8.7...v1.8.6
