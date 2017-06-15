@@ -102,7 +102,40 @@ An array of fields use to sort the output
 Can be an epsg code, an ogc wkt or an esri wkt. This parameter controls how the geometry will be projected to another coordinate system.
 
 ### `toEsri`
-If true, the object returned will be an esri feature collection
+If true, the object returned will be an esri feature collection.
+
+Winnow will automatically determine field types from the first feature passed in. If a given attribute is null, Winnow will assume it is a string.
+
+You can also pass in a metadata object that describes the fields in the feature collection. This is recommended if you know your schema ahead of time
+
+e.g.
+
+```js
+{
+  type: 'FeatureCollection',
+  features: [],
+  metadata: {
+    fields: [
+      {
+        name: 'SomeDateField',
+        type: 'Date'
+      },
+      {
+        name: 'SomeDoubleField',
+        type: 'Double'
+      },
+      {
+        name: 'SomeIntegerField',
+        type: 'Integer'
+      },
+      {
+        name: 'SomeStringField',
+        type: 'String'
+      }
+    ]
+  }
+}
+```
 
 ## `winnow.prepareQuery`
 Returns a function that can be applied directly to a feature collection object, an array of features, or a single feature. Useful when you want to pass a stream of features through a filter.

@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+- Detect field types if they are not passed in with `geojson.metadata`
+- Translate ISO Date Strings to Unix Timestamps when `options.toEsri` is true
+
 ## [1.9.0] - 05-24-2017
 ### Added
 * Support outSR for polygons and lines

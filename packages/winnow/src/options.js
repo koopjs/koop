@@ -3,14 +3,16 @@ const convertFromEsri = require('./geometry/convert-from-esri')
 const transformArray = require('./geometry/transform-array')
 const transformEnvelope = require('./geometry/transform-envelope')
 const projectCoordinates = require('./geometry/project-coordinates')
+const detectFieldsType = require('./detect-fields-type')
 const esriPredicates = {
   esriSpatialRelContains: 'ST_Contains',
   esriSpatialRelWithin: 'ST_Within',
   esriSpatialRelIntersects: 'ST_Intersects'
 }
 
-function prepare (options) {
-  return _.merge({}, options, {
+function prepare (options, features) {
+  const prepared = _.merge({}, options, {
+    collection: normalizeCollection(options, features),
     where: normalizeWhere(options),
     geometry: normalizeGeometry(options),
     spatialPredicate: normalizeSpatialPredicate(options),
@@ -22,6 +24,27 @@ function prepare (options) {
     offset: normalizeOffset(options),
     projection: normalizeProjection(options)
   })
+  prepared.dateFields = normalizeDateFields(prepared.collection)
+  return prepared
+}
+
+function normalizeCollection (options, features) {
+  if (!options.collection) return undefined
+  const collection = _.cloneDeep(options.collection)
+  const metadata = collection.metadata || {}
+  if (!metadata.fields) metadata.fields = detectFieldsType(features[0].properties)
+  collection.metadata = metadata
+  return collection
+}
+
+function normalizeDateFields (collection) {
+  let dateFields = []
+  if (collection && collection.metadata && collection.metadata.fields) {
+    collection.metadata.fields.forEach((field, i) => {
+      if (field.type === 'Date') dateFields.push(field.name)
+    })
+  }
+  return dateFields
 }
 
 function normalizeWhere (options) {

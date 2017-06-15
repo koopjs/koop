@@ -17,14 +17,14 @@ Winnow.query = function (input, options = {}) {
     features = input.features
   }
 
-  options = Options.prepare(options)
+  options = Options.prepare(options, features)
 
-  // The following two functions are query preprocessing steps
   const query = Query.create(options)
-  const params = Query.params(features, options)
   if (process.env.NODE_ENV === 'test') console.log(query, options)
-  const filtered = sql(query, params)
-  return finishQuery(filtered, options)
+
+  if (options.aggregates) return aggregateQuery(features, query, options)
+  else if (options.limit) return limitQuery(features, query, options)
+  else return standardQuery(features, query, options)
 }
 
 Winnow.prepareQuery = function (options) {
@@ -82,6 +82,43 @@ function finishQuery (features, options) {
   } else {
     return features
   }
+}
+
+function aggregateQuery (features, query, options) {
+  const params = Query.params(features, options)
+  const filtered = sql(query, params)
+  return finishQuery(filtered, options)
+}
+
+function limitQuery (features, query, options) {
+  const filtered = []
+  features.some(feature => {
+    const result = processQuery(feature, query, options)
+    if (result) filtered.push(result)
+    return filtered.length === options.limit
+  })
+  return finishQuery(filtered, options)
+}
+
+function standardQuery (features, query, options) {
+  const filtered = features.reduce((filteredFeatures, feature, i) => {
+    // TODO used passed in fields if available
+    const result = processQuery(feature, query, options)
+    if (result) filteredFeatures.push(result)
+    return filteredFeatures
+  }, [])
+  return finishQuery(filtered, options)
+}
+
+function processQuery (feature, query, options) {
+  const params = Query.params([feature], options)
+  const result = sql(query, params)[0]
+  if (options.dateFields.length && options.toEsri) {
+    options.dateFields.forEach(field => {
+      result.attributes[field] = new Date(result.attributes[field]).getTime()
+    })
+  }
+  return result
 }
 
 module.exports = Winnow
