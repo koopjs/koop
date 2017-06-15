@@ -70,25 +70,7 @@ Winnow.prepareSql = function (statement) {
   }
 }
 
-function finishQuery (features, options) {
-  if (options.groupBy) {
-    return features
-  } else if (options.aggregates) {
-    return features[0]
-  } else if (options.collection) {
-    const collection = options.collection
-    collection.features = features
-    return collection
-  } else {
-    return features
-  }
-}
-
-function aggregateQuery (features, query, options) {
-  const params = Query.params(features, options)
-  const filtered = sql(query, params)
-  return finishQuery(filtered, options)
-}
+// TODO move these functions to a new file
 
 function limitQuery (features, query, options) {
   const filtered = []
@@ -102,23 +84,53 @@ function limitQuery (features, query, options) {
 
 function standardQuery (features, query, options) {
   const filtered = features.reduce((filteredFeatures, feature, i) => {
-    // TODO used passed in fields if available
-    const result = processQuery(feature, query, options)
+    const result = processQuery(feature, query, options, i)
     if (result) filteredFeatures.push(result)
     return filteredFeatures
   }, [])
   return finishQuery(filtered, options)
 }
 
-function processQuery (feature, query, options) {
+function aggregateQuery (features, query, options) {
+  const params = Query.params(features, options)
+  const filtered = sql(query, params)
+  return finishQuery(filtered, options)
+}
+
+function processQuery (feature, query, options, i) {
   const params = Query.params([feature], options)
   const result = sql(query, params)[0]
-  if (options.dateFields.length && options.toEsri) {
+
+  if (result && options.toEsri) return esriFy(result, options, i)
+  else return result
+}
+
+function esriFy (result, options, i) {
+  if (options.dateFields.length) {
     options.dateFields.forEach(field => {
       result.attributes[field] = new Date(result.attributes[field]).getTime()
     })
   }
+
+  const metadata = (options.collection && options.collection.metadata) || {}
+  if (!metadata.idField) {
+    result.attributes.OBJECTID = i
+  }
   return result
+}
+
+function finishQuery (features, options) {
+  if (options.groupBy) {
+    return features
+  } else if (options.aggregates) {
+    return features[0]
+  } else if (options.collection) {
+    const collection = options.collection
+    collection.features = features
+    return collection
+  } else {
+    return features
+  }
 }
 
 module.exports = Winnow

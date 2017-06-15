@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Detect field types if they are not passed in with `geojson.metadata`
 - Translate ISO Date Strings to Unix Timestamps when `options.toEsri` is true
+- Add Object IDs if there is no ID field set with `options.toEsri` is true
 
 ## [1.9.0] - 05-24-2017
 ### Added
