@@ -1,6 +1,6 @@
 module.exports = {
   string: 'esriFieldTypeString',
   double: 'esriFieldTypeDouble',
-  integer: 'esrifieldTypeInteger',
+  integer: 'esriFieldTypeInteger',
   date: 'esriFieldTypeDate'
 }

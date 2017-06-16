@@ -6,8 +6,18 @@ const polyData = require('./fixtures/polygon.json')
 const budgetTable = require('./fixtures/budget-table.json')
 const dateInMeta = require('./fixtures/date-with-metadata.json')
 const dateNoMeta = require('./fixtures/date-no-metadata.json')
+const oneOfEach = require('./fixtures/one-of-each.json')
 
-describe('Query operatons', function () {
+describe('Query operatons', () => {
+  it('should serialize all the types correctly', () => {
+    const response = FeatureServer.query(oneOfEach, {})
+    response.fields[0].type.should.equal('esriFieldTypeDouble')
+    response.fields[1].type.should.equal('esriFieldTypeInteger')
+    response.fields[2].type.should.equal('esriFieldTypeString')
+    response.fields[3].type.should.equal('esriFieldTypeDate')
+    response.fields[4].type.should.equal('esriFieldTypeOID')
+  })
+
   describe('when getting featureserver features from geojson', function () {
     it('should return a valid features', () => {
       const response = FeatureServer.query(data, {})
@@ -17,6 +27,7 @@ describe('Query operatons', function () {
       response.features.forEach(function (feature) {
         feature.should.have.property('geometry')
         feature.should.have.property('attributes')
+        feature.attributes.should.have.property('OBJECTID')
       })
     })
   })

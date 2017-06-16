@@ -1,3 +1,4 @@
+/* global describe, it */
 const FeatureServer = require('../src')
 const polyData = require('./fixtures/polygon.json')
 const data = require('./fixtures/snow.json')

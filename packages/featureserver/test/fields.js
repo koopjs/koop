@@ -1,3 +1,4 @@
+/* global describe, it */
 const createFields = require('../src/fields')
 
 describe('when building esri fields', function () {

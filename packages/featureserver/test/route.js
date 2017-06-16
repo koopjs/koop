@@ -1,3 +1,4 @@
+/* global describe, it, beforeEach */
 const FeatureServer = require('../src')
 const request = require('supertest')
 const express = require('express')
