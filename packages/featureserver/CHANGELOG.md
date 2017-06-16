@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Fixed
 * correct typo: esrifieldTypeInteger => esriFieldTypeInteger
+* object ids no longer undefined on limit queries
 
 ## [2.3.1] - 2017-06-15
 ### Fixed

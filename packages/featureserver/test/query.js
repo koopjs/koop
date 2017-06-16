@@ -37,6 +37,7 @@ describe('Query operatons', () => {
       const response = FeatureServer.query(data, { outSR: { latestWkid: 3857 }, limit: 1, returnGeometry: true })
       response.geometryType.should.equal('esriGeometryPoint')
       response.features.length.should.equal(1)
+      response.features[0].attributes.OBJECTID.should.equal(0)
       response.features[0].geometry.x.should.equal(-11682713.391976157)
       response.features[0].geometry.y.should.equal(4857924.005275469)
       response.spatialReference.latestWkid.should.equal(3857)
