@@ -71,11 +71,10 @@ Winnow.prepareSql = function (statement) {
 }
 
 // TODO move these functions to a new file
-
 function limitQuery (features, query, options) {
   const filtered = []
-  features.some(feature => {
-    const result = processQuery(feature, query, options)
+  features.some((feature, i) => {
+    const result = processQuery(feature, query, options, i)
     if (result) filtered.push(result)
     return filtered.length === options.limit
   })
