@@ -18,15 +18,6 @@ function query (data, params = {}) {
   if ((data.filtersApplied && data.filtersApplied.where) || params.where === '1=1') delete params.where
   if (data.statistics) return statisticsResponse(data.statistics)
   if (params.returnCountOnly && data.count) return { count: data.count }
-  // TODO this should happen within winnow
-  const metadata = data.metadata || {}
-  const oidField = metadata.idField || 'OBJECTID'
-  // add objectIds as long as this is not a stats request
-  if (!params.outStatistics && data.features[0] && data.features[0].properties[oidField] === undefined) {
-    data.features.forEach((f, i) => {
-      f.properties.OBJECTID = i
-    })
-  }
 
   if (params.f !== 'geojson') params.toEsri = true
   const queriedData = Winnow.query(data, params)
@@ -41,7 +32,7 @@ function geoservicesPostQuery (data, queriedData, params) {
   if (params.objectIds && !params.outStatistics) {
     let oids = typeof params.objectIds === 'string' ? params.objectIds.split(',') : params.objectIds
     oids = oids.map(i => {
-      return parseInt(i, 10)
+      return parseInt(i)
     })
     queriedData.features = queriedData.features.filter(f => {
       return oids.indexOf(f.attributes[oidField]) > -1

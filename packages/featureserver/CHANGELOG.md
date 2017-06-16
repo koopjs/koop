@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Serialize date fields as UNIX timestamps
+
 ## [2.3.0] - 2017-06-05
 ### Added
 * Server metadata supports `hasStaticData` and `maxRecordCount`

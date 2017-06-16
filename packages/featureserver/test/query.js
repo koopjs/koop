@@ -1,8 +1,11 @@
+/* global describe, it */
 const FeatureServer = require('../src')
 const data = require('./fixtures/snow.json')
 const should = require('should') // eslint-disable-line
 const polyData = require('./fixtures/polygon.json')
-const budgetTable = require('./fixtures/budgetTable.json')
+const budgetTable = require('./fixtures/budget-table.json')
+const dateInMeta = require('./fixtures/date-with-metadata.json')
+const dateNoMeta = require('./fixtures/date-no-metadata.json')
 
 describe('Query operatons', function () {
   describe('when getting featureserver features from geojson', function () {
@@ -300,6 +303,20 @@ describe('Query operatons', function () {
       json.features[0].type.should.equal('Feature')
       should.exist(json.features[0].properties)
       should.exist(json.features[0].geometry)
+    })
+  })
+
+  describe('with a date fields', () => {
+    it('should respect a date field in the metadata', () => {
+      const json = FeatureServer.query(dateInMeta, {})
+      json.features[0].attributes.dateField.should.equal(1497578316179)
+      json.fields[0].type.should.equal('esriFieldTypeDate')
+    })
+
+    it('should detect a date field', () => {
+      const json = FeatureServer.query(dateNoMeta, {})
+      json.features[0].attributes.dateField.should.equal(1497578316179)
+      json.fields[0].type.should.equal('esriFieldTypeDate')
     })
   })
 })

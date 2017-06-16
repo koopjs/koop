@@ -1,6 +1,7 @@
-const fields = require('./fields.js')
 const _ = require('lodash')
 const Utils = require('./utils')
+const fieldMap = require('./field-map')
+const fields = require('./fields')
 
 module.exports = { render, renderServer }
 
@@ -8,7 +9,9 @@ const templates = {
   server: require('../templates/server.json'),
   layer: require('../templates/layer.json'),
   features: require('../templates/features.json'),
-  statistics: require('../templates/statistics.json')
+  statistics: require('../templates/statistics.json'),
+  field: require('../templates/field.json'),
+  objectIDField: require('../templates/oid-field.json')
 }
 
 const renderers = {
@@ -99,6 +102,25 @@ function computeExtent (input) {
 }
 
 function computeFieldObject (data, template, options) {
+  let oid = false
+  const metadata = data.metadata || {}
+  if (!metadata.fields) return computeAggFieldObject(data, template, options)
+
+  const fields = metadata.fields.map(field => {
+    if (field.name === metadata.idField || field.name.toLowerCase() === 'objectid') oid = true
+    const template = _.cloneDeep(templates.field)
+    return Object.assign({}, template, {
+      name: field.name,
+      alias: field.alias || field.name,
+      type: fieldMap[field.type.toLowerCase()] || field.type
+    })
+  })
+
+  if (!oid) fields.push(templates.objectIDField)
+  return fields
+}
+
+function computeAggFieldObject (data, template, options) {
   const feature = data.features && data.features[0]
   const properties = feature ? feature.properties || feature.attributes : options.attributeSample
   if (properties) return fields(properties, template, options).fields
