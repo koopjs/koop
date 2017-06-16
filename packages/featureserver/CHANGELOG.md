@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Fixed
 * Serialize date fields as UNIX timestamps
+* Response when objectids query is for a single feature
 
 ## [2.3.0] - 2017-06-05
 ### Added

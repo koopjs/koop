@@ -49,6 +49,13 @@ describe('Query operatons', function () {
       response.features.should.have.length(3)
     })
 
+    it('should work with single id', () => {
+      const response = FeatureServer.query(data, { objectIds: 1 })
+      response.should.be.an.instanceOf(Object)
+      response.fields.should.be.an.instanceOf(Array)
+      response.features.should.have.length(1)
+    })
+
     it('should return only count of features', () => {
       const response = FeatureServer.query(data, { returnCountOnly: true, objectIds: '1,2,3' })
       response.should.be.an.instanceOf(Object)

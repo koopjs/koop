@@ -30,12 +30,17 @@ function geoservicesPostQuery (data, queriedData, params) {
   // options.objectIds works alongside returnCountOnly but not statistics
   const oidField = (data.metadata && data.metadata.idField) || 'OBJECTID'
   if (params.objectIds && !params.outStatistics) {
-    let oids = typeof params.objectIds === 'string' ? params.objectIds.split(',') : params.objectIds
+    let oids
+
+    if (typeof params.objectIds === 'string') oids = params.objectIds.split(',')
+    else if (typeof params.objectIds === 'number') oids = [params.objectIds]
+    else oids = params.objectIds
+
     oids = oids.map(i => {
       return parseInt(i)
     })
     queriedData.features = queriedData.features.filter(f => {
-      return oids.indexOf(f.attributes[oidField]) > -1
+      return oids.includes(f.attributes[oidField])
     })
   }
 
