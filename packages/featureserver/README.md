@@ -53,8 +53,8 @@ Data is a geojson object extended with some additional properties. These propert
 e.g.
 ```js
 {
-  type: 'FeatureCollection'
-  features: Array,
+  type: 'FeatureCollection' // Static
+  features: Array, // GeoJSON features
   statistics: Object, // pass statistics to an outStatistics request to or else they will be calculated from geojson features passed in
   metadata: {
     name: String, // The name of the layer
@@ -63,7 +63,14 @@ e.g.
     displayField: String, // The display field to be used by a client
     idField: String, // unique identifier field,
     maxRecordCount: Number, // the maximum number of features a provider can return at once
-    timeInfo: Object // describes the time extent and capabilities of the layer
+    timeInfo: Object // describes the time extent and capabilities of the layer,
+    fields: [ 
+     { // Subkeys are optional
+       name: String, 
+       type: String, // 'Date' || 'Double' || 'Integer' || 'String'
+       alias: String, // how should clients display this field name,
+     }
+    ]
   },
   filtersApplied: {
     geometry: Boolean, // true if a geometric filter has already been applied to the data
