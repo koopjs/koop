@@ -33,6 +33,8 @@ function normalizeCollection (options, features) {
   const collection = _.cloneDeep(options.collection)
   const metadata = collection.metadata || {}
   if (!metadata.fields) metadata.fields = detectFieldsType(features[0].properties)
+  const oidField = Object.keys(features[0].properties).filter(key => { return /objectid/i.test(key) })[0]
+  if (oidField && !metadata.idFIeld) metadata.idField = oidField
   collection.metadata = metadata
   return collection
 }

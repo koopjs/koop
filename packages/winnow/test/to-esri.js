@@ -1,5 +1,15 @@
 const test = require('tape')
 const geojson = require('./fixtures/to-esri-fixture.json')
+const oidFeature = require('./fixtures/oid-feature.json')
+test('adding an object id', t => {
+  const options = {
+    toEsri: true
+  }
+  const fixture = _.cloneDeep(geojson)
+  const result = Winnow.query(fixture, options)
+  t.equal(result.features[0].attributes.OBJECTID, 0)
+  t.end()
+})
 const Winnow = require('../src')
 const _ = require('lodash')
 
@@ -11,6 +21,17 @@ test('detecting fields', t => {
   t.equal(metadata.fields[1].type, 'Integer')
   t.equal(metadata.fields[2].type, 'String')
   t.equal(metadata.fields[3].type, 'Date')
+  t.end()
+})
+
+test('checking if an object id exists', t => {
+  const options = {
+    toEsri: true
+  }
+  const fixture = _.cloneDeep(oidFeature)
+  const result = Winnow.query(fixture, options)
+  t.equal(result.features[0].attributes.objectid, 1)
+  t.equal(result.metadata.idField, 'objectid')
   t.end()
 })
 
