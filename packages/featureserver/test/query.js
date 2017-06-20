@@ -7,6 +7,7 @@ const budgetTable = require('./fixtures/budget-table.json')
 const dateInMeta = require('./fixtures/date-with-metadata.json')
 const dateNoMeta = require('./fixtures/date-no-metadata.json')
 const oneOfEach = require('./fixtures/one-of-each.json')
+const fullySpecified = require('./fixtures/fully-specified-metadata.json')
 
 describe('Query operatons', () => {
   it('should serialize all the types correctly', () => {
@@ -73,6 +74,13 @@ describe('Query operatons', () => {
       response.should.be.an.instanceOf(Object)
       response.should.have.property('count')
       response.count.should.equal(3)
+    })
+
+    it('should work with a single OID', () => {
+      const response = FeatureServer.query(fullySpecified, {
+        objectIds: 1
+      })
+      response.features.length.should.equal(1)
     })
   })
 

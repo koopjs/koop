@@ -40,7 +40,7 @@ function geoservicesPostQuery (data, queriedData, params) {
       return parseInt(i)
     })
     queriedData.features = queriedData.features.filter(f => {
-      return oids.includes(f.attributes[oidField])
+      return oids.indexOf(f.attributes[oidField]) > -1
     })
   }
 
