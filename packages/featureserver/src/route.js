@@ -6,7 +6,7 @@ module.exports = route
 
 /**
  * shared logic for handling Feature Service requests
- * most providers will use this mehtod to figure out what request is being made
+ * most providers will use this method to figure out what request is being made
  *
  * @param  {Object}   req
  * @param  {Object}   res

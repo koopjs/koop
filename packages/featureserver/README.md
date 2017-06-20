@@ -14,7 +14,7 @@ This is meant to be used as a plugin to Express
 ```js
 const express = require('express')
 const app = express() // set up a basic express server
-const featureServer = require('featureserver')
+const FeatureServer = require('featureserver')
 const cache = require('cache')
 
 // We only need one handler because FeatureServer.route is going to do all the work
@@ -64,9 +64,9 @@ e.g.
     idField: String, // unique identifier field,
     maxRecordCount: Number, // the maximum number of features a provider can return at once
     timeInfo: Object // describes the time extent and capabilities of the layer,
-    fields: [ 
+    fields: [
      { // Subkeys are optional
-       name: String, 
+       name: String,
        type: String, // 'Date' || 'Double' || 'Integer' || 'String'
        alias: String, // how should clients display this field name,
      }
