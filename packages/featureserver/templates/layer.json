@@ -1,16 +1,16 @@
 {
-	"currentVersion": 10.21,
-	"id" : 0,
-	"name" : "Not Set",
-	"type" : "Feature Layer",
-	"displayField" : "OBJECTID",
-	"description" : "This is a feature service powered by https://github.com/featureserver/featureserver",
-	"copyrightText" : " ",
-	"defaultVisibility": true,
-	"relationships": [],
-	"isDataVersioned": false,
-	"supportsRollbackOnFailureParameter": true,
-	"supportsStatistics": true,
+  "currentVersion": 10.21,
+  "id": 0,
+  "name": "Not Set",
+  "type": "Feature Layer",
+  "displayField": "OBJECTID",
+  "description": "This is a feature service powered by https://github.com/featureserver/featureserver",
+  "copyrightText": " ",
+  "defaultVisibility": true,
+  "relationships": [],
+  "isDataVersioned": false,
+  "supportsRollbackOnFailureParameter": true,
+  "supportsStatistics": true,
   "supportsAdvancedQueries": true,
   "advancedQueryCapabilities": {
     "supportsPagination": true,
@@ -20,38 +20,38 @@
     "supportsOrderBy": true,
     "supportsDistinct": true
   },
-	"geometryType" : "esriGeometryPoint",
-	"minScale" : 0,
-	"maxScale" : 0,
-	"extent" :  {
-		"xmin": -180,
-		"ymin": -90,
-		"xmax": 180,
-		"ymax": 90,
-		"spatialReference": {
-		"wkid": 4326,
-		"latestWkid": 4326
-		}
-	},
-
-	"drawingInfo" : {
-		"renderer": {},
-		"labelingInfo": null
-	},
-	"hasM":  false,
-	"hasZ":  false,
-	"allowGeometryUpdates": true,
-	"timeInfo": {},
-	"hasAttachments" : false,
-	"htmlPopupType" : "esriServerHTMLPopupTypeNone",
-	"objectIdField" : "OBJECTID",
-	"globalIdField" : "",
-	"typeIdField" : "",
-	"fields" : [],
-	"types" : [],
-	"templates" : [],
-	"maxRecordCount": 1000,
-	"supportedQueryFormats": "JSON",
-	"hasStaticData" : true,
-	"capabilities" : "Query"
+  "geometryType": "esriGeometryPoint",
+  "minScale": 0,
+  "maxScale": 0,
+  "extent": {
+    "xmin": -180,
+    "ymin": -90,
+    "xmax": 180,
+    "ymax": 90,
+    "spatialReference": {
+      "wkid": 4326,
+      "latestWkid": 4326
+    }
+  },
+  "drawingInfo": {
+    "renderer": {},
+    "labelingInfo": null
+  },
+  "hasM": false,
+  "hasZ": false,
+  "allowGeometryUpdates": true,
+  "timeInfo": {},
+  "hasAttachments": false,
+  "htmlPopupType": "esriServerHTMLPopupTypeNone",
+  "objectIdField": "OBJECTID",
+  "globalIdField": "",
+  "typeIdField": "",
+  "fields": [],
+  "types": [],
+  "templates": [],
+  "maxRecordCount": 1000,
+  "supportedQueryFormats": "JSON",
+  "hasStaticData": true,
+  "capabilities": "Query",
+  "dateFieldsTimeReference": null
 }
