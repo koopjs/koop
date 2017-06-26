@@ -2,9 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.10.3] - 06-26-2017
 ### Fixed
-* Deep clone for dates since mutating dates has down stream consequences if reused
+Deep clone for dates since mutating dates has down stream consequences if reused
 * correct typo: winnow.sql => winnow.querySql
 
 ## [1.10.2] - 06-20-2017
