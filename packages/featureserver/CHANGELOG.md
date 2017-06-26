@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.3.4] - 2017-06-26
 ### Fixed
 * Date fields show up in webmap viewer
 
@@ -138,6 +138,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.3.4]: https://github.com/featureserver/featureserver/compare/v2.3.3...v2.3.4
 [2.3.3]: https://github.com/featureserver/featureserver/compare/v2.3.2...v2.3.3
 [2.3.2]: https://github.com/featureserver/featureserver/compare/v2.3.1...v2.3.2
 [2.3.1]: https://github.com/featureserver/featureserver/compare/v2.3.1...v2.3.0
