@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Date fields show up in webmap viewer
+
 ## [2.3.3] - 2017-06-20
 ### Fixed
 * Use indexOf instead of includes to compile to es5

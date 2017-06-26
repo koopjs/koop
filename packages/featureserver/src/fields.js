@@ -2,9 +2,7 @@ const moment = require('moment')
 module.exports = fields
 
 /** @type {Array} accepted date formats used by moment.js */
-const DATE_FORMATS = [
-  moment.ISO_8601
-]
+const DATE_FORMATS = [moment.ISO_8601]
 
 /**
  * returns esri field type based on type of value passed
@@ -45,9 +43,10 @@ function isInt (value) {
 function fields (props, template, options) {
   const fields = Object.keys(props).map((key, i) => {
     const type = fieldType(props[key])
-    const field = {name: key, type: type, alias: key}
+    const field = { name: key, type: type, alias: key }
 
     if (type === 'esriFieldTypeString') field.length = 128
+    else if (type === 'esriFieldTypeDate') field.length = 36
     return field
   })
   if (template === 'layer' && Object.keys(props).indexOf('OBJECTID') < 0) {
