@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### unreleased
+* correct typo: winnow.sql => winnow.querySql
+
 ## [1.10.2] - 06-20-2017
 ### Fixed
 - Do not overwrite existing OID

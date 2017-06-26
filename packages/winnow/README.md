@@ -153,7 +153,7 @@ filter(geojson)
 // returns the set of feature that match the query
 ```
 
-## `winnow.sql`
+## `winnow.querySql`
 Execute sql directly against the query engine.
 
 - Replace any variables with ?
@@ -165,7 +165,7 @@ Execute sql directly against the query engine.
  const statement = 'Select * from ? where Genus in ?'
  const data = geojson
  const genus = ['Quercus']
- winnow.sql(statement, [geojson, genus])
+ winnow.querySql(statement, [geojson, genus])
  // returns all features that match the query
  ```
 
