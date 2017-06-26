@@ -2,12 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-### unreleased
+## Unreleased
+### Fixed
+* Deep clone for dates since mutating dates has down stream consequences if reused
 * correct typo: winnow.sql => winnow.querySql
 
 ## [1.10.2] - 06-20-2017
 ### Fixed
-- Do not overwrite existing OID
+* Do not overwrite existing OID
 
 ## [1.10.1] - 06-16-2017
 ### Fixed
@@ -161,6 +163,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 * Initial release
 
+[1.10.3]: https://github.com/featureserver/winnow/compare/v1.10.2...v1.10.3
 [1.10.2]: https://github.com/featureserver/winnow/compare/v1.10.1...v1.10.2
 [1.10.1]: https://github.com/featureserver/winnow/compare/v1.10.0...v1.10.1
 [1.10.0]: https://github.com/featureserver/winnow/compare/v1.9.0...v1.10.0

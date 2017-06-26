@@ -106,6 +106,8 @@ function processQuery (feature, query, options, i) {
 
 function esriFy (result, options, i) {
   if (options.dateFields.length) {
+    // mutating dates has down stream consequences if the data is reused
+    result.attributes = _.cloneDeep(result.attributes)
     options.dateFields.forEach(field => {
       result.attributes[field] = new Date(result.attributes[field]).getTime()
     })
