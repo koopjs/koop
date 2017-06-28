@@ -1,9 +1,9 @@
 const _ = require('lodash')
+const moment = require('moment')
 const Utils = require('./utils')
-const fieldMap = require('./field-map')
-const fields = require('./fields')
+const field = require('./field')
 
-module.exports = { render, renderServer }
+module.exports = { render, renderServer, renderStatistics }
 
 const templates = {
   server: require('../templates/server.json'),
@@ -46,7 +46,7 @@ function render (template, featureCollection = {}, options = {}) {
   if (json.description && metadata.description) json.description = metadata.description
   if (json.extent && metadata.extent) json.extent = computeExtent(metadata.extent)
   if (json.features) json.features = data.features
-  if (json.fields) json.fields = computeFieldObject(data, template, options)
+  if (json.fields) json.fields = field.computeFieldObject(data, template, options)
   if (json.type) json.type = Utils.isTable(json, data) ? 'Table' : 'Feature Layer'
   if (json.drawingInfo) json.drawingInfo.renderer = renderers[json.geometryType]
   if (json.timeInfo) json.timeInfo = metadata.timeInfo
@@ -65,6 +65,18 @@ function renderServer (server, { layers, tables }) {
   json.maxRecordCount = server.maxRecordCount || (layers[0].metadata && layers[0].metadata.maxRecordCount) || 1000
   json.hasStaticData = !!server.hasStaticData
   return json
+}
+
+function renderStatistics (data) {
+  let stats = data.statistics
+  if (!Array.isArray(stats)) stats = [stats]
+  const fields = data.metadata ? field.computeFieldObject(data) : createStatFields(stats)
+  return {
+    displayFieldName: '',
+    fieldAliases: createFieldAliases(stats),
+    fields,
+    features: createStatFeatures(stats)
+  }
 }
 
 function computeSpatialReference (sr) {
@@ -101,28 +113,46 @@ function computeExtent (input) {
   }
 }
 
-function computeFieldObject (data, template, options) {
-  let oid = false
-  const metadata = data.metadata || {}
-  if (!metadata.fields) return computeAggFieldObject(data, template, options)
-
-  const fields = metadata.fields.map(field => {
-    if (field.name === metadata.idField || field.name.toLowerCase() === 'objectid') oid = true
-    const template = _.cloneDeep(templates.field)
-    return Object.assign({}, template, {
-      name: field.name,
-      alias: field.alias || field.name,
-      type: fieldMap[field.type.toLowerCase()] || field.type
-    })
-  })
-
-  if (!oid) fields.push(templates.objectIDField)
-  return fields
+function createFieldAliases (stats) {
+  const fields = Object.keys(stats[0])
+  return fields.reduce((aliases, field) => {
+    aliases[field] = field
+    return aliases
+  }, {})
 }
 
-function computeAggFieldObject (data, template, options) {
-  const feature = data.features && data.features[0]
-  const properties = feature ? feature.properties || feature.attributes : options.attributeSample
-  if (properties) return fields(properties, template, options).fields
-  else return []
+function createStatFields (stats) {
+  return Object.keys(stats[0]).map(field => {
+    const sample = _.find(stats, s => {
+      return stats[field] !== null
+    })
+    const statField = {
+      name: field,
+      type: detectType(sample[field]),
+      alias: field
+    }
+    if (statField.type === 'esriFieldTypeString') statField.length = 254
+    return statField
+  }, {})
+}
+
+function detectType (value) {
+  if (!value) return null
+  else if (moment(value, [moment.ISO_8601], true).isValid()) return 'esriFieldTypeDate'
+  else if (typeof value === 'string') return 'esriFieldTypeString'
+  else if (typeof value === 'number') return 'esriFieldTypeDouble'
+}
+
+function createStatFeatures (stats) {
+  return stats.map(attributes => {
+    const transformed = Object.keys(attributes).reduce((attrs, key) => {
+      if (attributes[key] instanceof Date || moment(attributes[key], [moment.ISO_8601], true).isValid()) {
+        attrs[key] = new Date(attributes[key]).getTime()
+      } else {
+        attrs[key] = attributes[key]
+      }
+      return attrs
+    }, {})
+    return { attributes: transformed }
+  })
 }

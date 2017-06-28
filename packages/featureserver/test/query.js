@@ -6,8 +6,13 @@ const polyData = require('./fixtures/polygon.json')
 const budgetTable = require('./fixtures/budget-table.json')
 const dateInMeta = require('./fixtures/date-with-metadata.json')
 const dateNoMeta = require('./fixtures/date-no-metadata.json')
+const statsDateInMeta = require('./fixtures/stats-date-with-metadata.json')
+const statsDateNoMeta = require('./fixtures/stats-date-no-metadata.json')
+const statsDateInMetaValue = require('./fixtures/stats-date-with-metadata-value.json')
 const oneOfEach = require('./fixtures/one-of-each.json')
 const fullySpecified = require('./fixtures/fully-specified-metadata.json')
+
+// const moment = require('moment')
 
 describe('Query operatons', () => {
   it('should serialize all the types correctly', () => {
@@ -199,6 +204,24 @@ describe('Query operatons', () => {
         })
         const expected = require('./fixtures/stats-out-single.json')
         JSON.stringify(response).should.equal(JSON.stringify(expected))
+      })
+
+      it('should respect metadata when converting a date string type to a date type', () => {
+        const response = FeatureServer.query(statsDateInMeta)
+        response.features[0].attributes.dateField.should.equal(1497578316179)
+        response.fields[0].type.should.equal('esriFieldTypeDate')
+      })
+
+      it('should convert a date string type to a date type', () => {
+        const response = FeatureServer.query(statsDateNoMeta)
+        response.features[0].attributes.dateField.should.equal(1497578316179)
+        response.fields[0].type.should.equal('esriFieldTypeDate')
+      })
+
+      it('should respect metadata when date field is passed in', () => {
+        const response = FeatureServer.query(statsDateInMetaValue)
+        response.features[0].attributes.dateField.should.equal(1497578316179)
+        response.fields[0].type.should.equal('esriFieldTypeDate')
       })
     })
 

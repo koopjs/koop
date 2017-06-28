@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+* Date fields are properly converted while using statistics
+
 ## [2.3.4] - 2017-06-26
 ### Fixed
 * Date fields show up in webmap viewer
