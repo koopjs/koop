@@ -8,7 +8,7 @@ describe('when building esri fields', function () {
     propString: 'Awesome',
     propDate: '2015-06-22T13:17:21+0000'
   }
-  var fieldObj = field.fields(input)
+  var fieldObj = field.computeFields(input)
   var fields = fieldObj.fields
 
   it('fields should be an array', () => {
@@ -38,7 +38,7 @@ describe('when building esri fields', function () {
       improperDate1: 'Thisisafaildate 1',
       improperDate2: '06/22/2015'
     }
-    const fieldObj = field.fields(input)
+    const fieldObj = field.computeFields(input)
     const fields = fieldObj.fields
 
     it('Should not allow improper date formats through', () => {

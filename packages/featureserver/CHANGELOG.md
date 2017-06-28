@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* fixed out statistics when statistics are passed in
+
 ## [2.3.5] - 2017-06-28
 ### Fixed
 * Date fields are properly converted while using statistics

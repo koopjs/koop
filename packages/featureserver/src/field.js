@@ -2,7 +2,7 @@ const _ = require('lodash')
 const moment = require('moment')
 const fieldMap = require('./field-map')
 
-module.exports = { fields, computeFieldObject }
+module.exports = { computeFields, computeFieldObject }
 
 const templates = {
   server: require('../templates/server.json'),
@@ -24,7 +24,7 @@ const DATE_FORMATS = [moment.ISO_8601]
  * @param  {object} options
  * @return {object} fields
  */
-function fields (props, template, options) {
+function computeFields (props, template, options) {
   const fields = Object.keys(props).map((key, i) => {
     const type = fieldType(props[key])
     const field = { name: key, type: type, alias: key }
@@ -75,7 +75,9 @@ function isInt (value) {
 function computeFieldObject (data, template, options) {
   let oid = false
   const metadata = data.metadata || {}
-  if (!metadata.fields) return computeAggFieldObject(data, template, options)
+
+  if (!metadata.fields && data.statistics) return computeFields(data.statistics[0], template, options).fields
+  else if (!metadata.fields) return computeAggFieldObject(data, template, options)
 
   const fields = metadata.fields.map(field => {
     if (field.name === metadata.idField || field.name.toLowerCase() === 'objectid') oid = true
@@ -91,9 +93,9 @@ function computeFieldObject (data, template, options) {
   return fields
 }
 
-function computeAggFieldObject (data, template, options) {
-  const feature = data.features && data.features[0]
+function computeAggFieldObject (data, template, options = {}) {
+  const feature = (data.features && data.features[0])
   const properties = feature ? feature.properties || feature.attributes : options.attributeSample
-  if (properties) return fields(properties, template, options).fields
+  if (properties) return computeFields(properties, template, options).fields
   else return []
 }
