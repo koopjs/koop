@@ -1,6 +1,6 @@
 {
   "name": "winnow",
-  "version": "1.10.3",
+  "version": "1.10.4",
   "description": "Apply sql-like filters to GeoJSON",
   "main": "dist/index.js",
   "directories": {
