@@ -225,3 +225,41 @@ test('Get multiple aggregates with a where clause', t => {
   t.equal(results.total_diameter, 735026)
   t.equal(results.max_diameter, 130)
 })
+
+test('ignore projection when getting an aggregate', t => {
+  t.plan(3)
+  const options = {
+    aggregates: [
+      {
+        type: 'count',
+        field: 'Trunk_Diameter',
+        name: 'count_trunk_Diameter'
+      }
+    ],
+    groupBy: 'Trunk_Diameter',
+    outSR: 102100
+  }
+  const results = winnow.query(features, options)
+  t.equal(results[0].count_trunk_Diameter, 1905)
+  t.ok(results[0].Trunk_Diameter)
+  t.ok(results[0].count_trunk_Diameter)
+})
+
+test('ignore projection when getting an aggregate specified in the esri way', t => {
+  t.plan(3)
+  const options = {
+    outStatistics: [
+      {
+        statisticType: 'count',
+        onStatisticField: 'Trunk_Diameter',
+        'outStatisticFieldName': 'count_trunk_Diameter'
+      }
+    ],
+    groupByFieldsForStatistics: ['Trunk_Diameter'],
+    outSR: 102100
+  }
+  const results = winnow.query(features, options)
+  t.equal(results[0].count_trunk_Diameter, 1905)
+  t.ok(results[0].Trunk_Diameter)
+  t.ok(results[0].count_trunk_Diameter)
+})
