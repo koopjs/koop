@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "buble": "^0.15.2",
-    "gh-release": "^2.2.0",
+    "gh-release": "^3.0.0",
     "mocha": "^3.2.0",
     "should": "^11.2.0",
     "sinon": "^2.0.0",
