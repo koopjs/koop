@@ -54,7 +54,7 @@ describe('Routing feature server requests', () => {
         .expect(200, done)
     })
 
-    it.only('should ignore empty query parameters', done => {
+    it('should ignore empty query parameters', done => {
       request(app)
         .get('/FeatureServer/0/query?f=json&orderByFields=')
         .expect(res => {
