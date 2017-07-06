@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+## Fixed
+* Query doesn't throw an error when no feature results found
+
 ## [1.10.4] - 06-28-2017
 ### Fixed
 * Query ignores projection parameter when getting an aggregate
