@@ -54,16 +54,29 @@ describe('Routing feature server requests', () => {
         .expect(200, done)
     })
 
+    it.only('should ignore empty query parameters', done => {
+      request(app)
+        .get('/FeatureServer/0/query?f=json&orderByFields=')
+        .expect(res => {
+          res.body.features[1].attributes.OBJECTID.should.equal(1)
+          res.body.features.length.should.equal(417)
+        })
+        .expect('Content-Type', /json/)
+        .expect(200, done)
+    })
+
     it('should handle when a provider passes in statistics', done => {
       data = require('./fixtures/provider-statistics.json')
       request(app)
-        .get('/FeatureServer/0/query?f=json' +
-         'geometry={"xmin":-15576031.875835987,"ymin":-14167144.570483988,"xmax":15576031.875835987,"ymax":14167144.570483988}&' +
-         'geometryType=esriGeometryEnvelope&' +
-         'inSR=102100&' +
-         'spatialRel=esriSpatialRelIntersects&' +
-         'outStatistics=[{"onStatisticField":"OBJECTID","statisticType":"min","outStatisticFieldName":"min_2"},{"onStatisticField":"OBJECTID","statisticType":"max","outStatisticFieldName":"max_2"},{"onStatisticField":"OBJECTID","statisticType":"count","outStatisticFieldName":"count_2"}]&' +
-         'where=1=1')
+        .get(
+          '/FeatureServer/0/query?f=json' +
+            'geometry={"xmin":-15576031.875835987,"ymin":-14167144.570483988,"xmax":15576031.875835987,"ymax":14167144.570483988}&' +
+            'geometryType=esriGeometryEnvelope&' +
+            'inSR=102100&' +
+            'spatialRel=esriSpatialRelIntersects&' +
+            'outStatistics=[{"onStatisticField":"OBJECTID","statisticType":"min","outStatisticFieldName":"min_2"},{"onStatisticField":"OBJECTID","statisticType":"max","outStatisticFieldName":"max_2"},{"onStatisticField":"OBJECTID","statisticType":"count","outStatisticFieldName":"count_2"}]&' +
+            'where=1=1'
+        )
         .expect(res => {
           res.body.features[0].attributes.min_2.should.equal(0)
           res.body.features[0].attributes.max_2.should.equal(57611)

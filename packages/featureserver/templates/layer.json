@@ -48,7 +48,7 @@
     "supportsStatistics": true,
     "supportsOrderBy": true,
     "supportsDistinct": true,
-    "supportsPagination": false,
+    "supportsPagination": true,
     "supportsTrueCurve": false,
     "supportsReturningQueryExtent": true,
     "supportsQueryWithDistance": true

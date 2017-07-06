@@ -21,6 +21,8 @@ function route (req, res, geojson, options) {
     req.query[key] = tryParse(req.query[key])
   })
 
+  console.log(req.query)
+
   // check for info requests and respond like ArcGIS Server would
   if (isInfoReq(req)) return res.status(200).send(Templates.render('info'))
   // if this is for a method we can handle like query
