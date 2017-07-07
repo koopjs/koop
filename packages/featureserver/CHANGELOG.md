@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.3.10] - 2017-07-07
+### Rebase
+* Added package details from [2.3.9]
+
 ## [2.3.9] - 2017-07-07
 ### Fixed
 * Import function error in dist
