@@ -1,6 +1,6 @@
 {
   "name": "winnow",
-  "version": "1.10.5",
+  "version": "1.10.6",
   "description": "Apply sql-like filters to GeoJSON",
   "main": "dist/index.js",
   "directories": {
@@ -15,14 +15,7 @@
     "type": "git",
     "url": "git+https://github.com/FeatureServer/winnow.git"
   },
-  "keywords": [
-    "geojson",
-    "filter",
-    "stream",
-    "sql",
-    "geoservices",
-    "query"
-  ],
+  "keywords": ["geojson", "filter", "stream", "sql", "geoservices", "query"],
   "author": "Daniel Fenton <dfenton@esri.com>",
   "license": "Apache-2.0",
   "bugs": {
