@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
-## Unreleased
+## [2.3.8] - 2017-07-07
 ### Fixed
 * Save id property when rendering layer
 ### Changed
@@ -158,6 +158,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.3.8]: https://github.com/featureserver/featureserver/compare/v2.3.7...v2.3.8
+[2.3.7]: https://github.com/featureserver/featureserver/compare/v2.3.6...v2.3.7
 [2.3.6]: https://github.com/featureserver/featureserver/compare/v2.3.5...v2.3.6
 [2.3.5]: https://github.com/featureserver/featureserver/compare/v2.3.4...v2.3.5
 [2.3.4]: https://github.com/featureserver/featureserver/compare/v2.3.3...v2.3.4
