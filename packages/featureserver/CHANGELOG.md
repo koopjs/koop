@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.3.9] - 2017-07-07
+### Fixed
+* Import function error in dist
 
 ## [2.3.8] - 2017-07-07
 ### Fixed
@@ -158,6 +161,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.3.9]: https://github.com/featureserver/featureserver/compare/v2.3.8...v2.3.9
 [2.3.8]: https://github.com/featureserver/featureserver/compare/v2.3.7...v2.3.8
 [2.3.7]: https://github.com/featureserver/featureserver/compare/v2.3.6...v2.3.7
 [2.3.6]: https://github.com/featureserver/featureserver/compare/v2.3.5...v2.3.6
