@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Correct typo with idField setting
+
 ## [1.10.5] - 07-06-2017
 ### Fixed
 * Query doesn't throw an error when no feature results found
