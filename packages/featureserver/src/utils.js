@@ -1,5 +1,7 @@
 const esriExtent = require('esri-extent')
-const geometryMap = require('./geometry-map')
+const { geometryMap } = require('./geometry')
+
+module.exports = { isTable, getExtent, getGeomType }
 
 /**
  * if we have no extent, but we do have features, then it should be Table
@@ -36,5 +38,3 @@ function getGeomType (geojson = {}) {
   const type = esriGeomTypes[feature.geometry.type.toLowerCase()]
   return type
 }
-
-module.exports = { isTable, getExtent, getGeomType }

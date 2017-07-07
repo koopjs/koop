@@ -93,10 +93,11 @@ describe('Routing feature server requests', () => {
   describe('Layer Info', () => {
     it('should properly route and handle a layer info request`', done => {
       request(app)
-        .get('/FeatureServer/0?f=json')
+        .get('/FeatureServer/3?f=json')
         .expect(res => {
           res.body.type.should.equal('Feature Layer')
           res.body.name.should.equal('Snow')
+          res.body.id.should.equal(3)
           res.body.fields
             .filter(f => {
               return f.name === 'OBJECTID'

@@ -1,8 +1,8 @@
-module.exports = { serverInfo, layerInfo, layersInfo }
-
 const Utils = require('./utils.js')
-const Templates = require('./templates')
-const geometryMap = require('./geometry-map')
+const { renderLayer, renderServer } = require('./templates')
+const { geometryMap } = require('./geometry')
+
+module.exports = { serverInfo, layerInfo, layersInfo }
 
 function serverInfo (server, params = {}) {
   let layers
@@ -23,13 +23,13 @@ function serverInfo (server, params = {}) {
     { layers: [], tables: [] }
   )
 
-  return Templates.renderServer(server, serverLayers)
+  return renderServer(server, serverLayers)
 }
 
 function layerInfo (geojson, params) {
   params.extent = Utils.getExtent(geojson)
   params.geometryType = Utils.getGeomType(geojson)
-  return Templates.render('layer', geojson, params)
+  return renderLayer(geojson, params)
 }
 
 function serverLayerInfo (geojson = {}, id) {
@@ -59,14 +59,14 @@ function layersInfo (data, params = {}) {
   if (!data.length) {
     params.extent = Utils.getExtent(data)
     params.geometryType = Utils.getGeomType(data && data.features ? data.features[0] : null)
-    layerJson = Templates.render('layer', data, params)
+    layerJson = renderLayer(data, params)
     json = { layers: [layerJson], tables: [] }
   } else {
     json = { layers: [], tables: [] }
     data.forEach(function (layer, i) {
       params.extent = Utils.getExtent(layer)
       params.geometryType = Utils.getGeomType(layer && layer.features ? layer.features[0] : null)
-      layerJson = Templates.render('layer', layer, params)
+      layerJson = renderLayer(layer, params)
       // TODO move this to a rendered template
       layerJson.id = i
       json.layers.push(layerJson)

@@ -1,16 +1,18 @@
 const _ = require('lodash')
 const moment = require('moment')
 const fieldMap = require('./field-map')
+const createFieldAliases = require('./aliases')
+const createStatFields = require('./statFields')
 
-module.exports = { computeFields, computeFieldObject }
+module.exports = { computeFields, computeFieldObject, createStatFields, createFieldAliases }
 
 const templates = {
-  server: require('../templates/server.json'),
-  layer: require('../templates/layer.json'),
-  features: require('../templates/features.json'),
-  statistics: require('../templates/statistics.json'),
-  field: require('../templates/field.json'),
-  objectIDField: require('../templates/oid-field.json')
+  server: require('../../templates/server.json'),
+  layer: require('../../templates/layer.json'),
+  features: require('../../templates/features.json'),
+  statistics: require('../../templates/statistics.json'),
+  field: require('../../templates/field.json'),
+  objectIDField: require('../../templates/oid-field.json')
 }
 
 /** @type {Array} accepted date formats used by moment.js */

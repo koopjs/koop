@@ -1,6 +1,5 @@
 const FsInfo = require('./info.js')
 const FsQuery = require('./query.js')
-const Templates = require('./templates')
 
 module.exports = route
 
@@ -21,8 +20,6 @@ function route (req, res, geojson, options) {
     req.query[key] = tryParse(req.query[key])
   })
 
-  // check for info requests and respond like ArcGIS Server would
-  if (isInfoReq(req)) return res.status(200).send(Templates.render('info'))
   // if this is for a method we can handle like query
   const method = req.params && req.params.method
   switch (method) {
@@ -31,11 +28,6 @@ function route (req, res, geojson, options) {
     default:
       return execInfo(req, res, method, geojson)
   }
-}
-
-function isInfoReq (req) {
-  const url = req.originalUrl || req.url
-  return url.substr(-4) === 'info'
 }
 
 function execQuery (req, res, geojson, options) {
