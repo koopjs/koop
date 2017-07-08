@@ -4,7 +4,7 @@ const fieldMap = require('./field-map')
 const createFieldAliases = require('./aliases')
 const createStatFields = require('./statFields')
 
-module.exports = { computeFields, computeFieldObject, createStatFields, createFieldAliases }
+module.exports = { computeFieldsFromProperties, computeFieldObject, createStatFields, createFieldAliases }
 
 const templates = {
   server: require('../../templates/server.json'),
@@ -13,6 +13,32 @@ const templates = {
   statistics: require('../../templates/statistics.json'),
   field: require('../../templates/field.json'),
   objectIDField: require('../../templates/oid-field.json')
+}
+
+// TODO this should be the only exported function
+function computeFieldObject (data, template, options) {
+  let oid = false
+  const metadata = data.metadata || {}
+
+  if (!metadata.fields && data.statistics) return computeFieldsFromProperties(data.statistics[0], template, options).fields
+  else if (!metadata.fields) return computeAggFieldObject(data, template, options)
+
+  const fields = metadata.fields.map(field => {
+    let type
+    if (field.name === metadata.idField || (!metadata.idField && field.name.toLowerCase() === 'objectid')) {
+      type = 'esriFieldTypeOID'
+      oid = true
+    }
+    const template = _.cloneDeep(templates.field)
+    return Object.assign({}, template, {
+      name: field.name,
+      type: type || fieldMap[field.type.toLowerCase()] || field.type,
+      alias: field.alias || field.name
+    })
+  })
+
+  if (!oid) fields.push(templates.objectIDField)
+  return fields
 }
 
 /** @type {Array} accepted date formats used by moment.js */
@@ -26,7 +52,7 @@ const DATE_FORMATS = [moment.ISO_8601]
  * @param  {object} options
  * @return {object} fields
  */
-function computeFields (props, template, options) {
+function computeFieldsFromProperties (props, template, options = {}) {
   const fields = Object.keys(props).map((key, i) => {
     const type = fieldType(props[key])
     const field = { name: key, type: type, alias: key }
@@ -38,7 +64,7 @@ function computeFields (props, template, options) {
   if (template === 'layer' && Object.keys(props).indexOf('OBJECTID') < 0) {
     fields.push({
       name: 'OBJECTID',
-      type: 'esriFieldTypeInteger',
+      type: 'esriFieldTypeOID',
       alias: 'OBJECTID'
     })
   }
@@ -74,30 +100,9 @@ function isInt (value) {
   return Math.round(value) === value
 }
 
-function computeFieldObject (data, template, options) {
-  let oid = false
-  const metadata = data.metadata || {}
-
-  if (!metadata.fields && data.statistics) return computeFields(data.statistics[0], template, options).fields
-  else if (!metadata.fields) return computeAggFieldObject(data, template, options)
-
-  const fields = metadata.fields.map(field => {
-    if (field.name === metadata.idField || field.name.toLowerCase() === 'objectid') oid = true
-    const template = _.cloneDeep(templates.field)
-    return Object.assign({}, template, {
-      name: field.name,
-      type: fieldMap[field.type.toLowerCase()] || field.type,
-      alias: field.alias || field.name
-    })
-  })
-
-  if (!oid) fields.push(templates.objectIDField)
-  return fields
-}
-
 function computeAggFieldObject (data, template, options = {}) {
-  const feature = (data.features && data.features[0])
+  const feature = data.features && data.features[0]
   const properties = feature ? feature.properties || feature.attributes : options.attributeSample
-  if (properties) return computeFields(properties, template, options).fields
+  if (properties) return computeFieldsFromProperties(properties, template, options).fields
   else return []
 }

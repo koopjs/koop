@@ -89,6 +89,24 @@ describe('Info operations', () => {
       layer.displayField.should.equal('test')
       layer.timeInfo.test.should.equal('test')
     })
+
+    it('should assign esriFieldTypeOID to the idField', () => {
+      const input = {
+        metadata: {
+          idField: 'test',
+          geometryType: 'Polygon',
+          extent: [[11, 12], [13, 14]],
+          fields: [
+            {
+              name: 'test',
+              type: 'integer'
+            }
+          ]
+        }
+      }
+      const layer = FeatureServer.layerInfo(input, {})
+      layer.fields[0].type.should.equal('esriFieldTypeOID')
+    })
   })
 
   describe('when getting featureserver info from geojson', () => {
