@@ -25,7 +25,7 @@
     "async": "^2.1.4",
     "buble": "^0.15.1",
     "express": "^4.14.0",
-    "mocha": "^3.2.0",
+    "mocha": "^3.4.2",
     "should": "^11.2.1",
     "standard": "^10.0.0",
     "supertest": "^3.0.0"
