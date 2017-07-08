@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.3.11] - 2017-07-08
 ### Fixed
 * ObjectID Fields set to esriFieldTypeOID
 
@@ -169,6 +169,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.3.11]: https://github.com/featureserver/featureserver/compare/v2.3.10...v2.3.11
+[2.3.10]: https://github.com/featureserver/featureserver/compare/v2.3.9...v2.3.10
 [2.3.9]: https://github.com/featureserver/featureserver/compare/v2.3.8...v2.3.9
 [2.3.8]: https://github.com/featureserver/featureserver/compare/v2.3.7...v2.3.8
 [2.3.7]: https://github.com/featureserver/featureserver/compare/v2.3.6...v2.3.7
