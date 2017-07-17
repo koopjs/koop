@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.10.7] 07-17-2017
+### Fixed
+* Where clause handles multiple conditions
+
 ## [1.10.6] 07-07-2017
 ### Fixed
 * Correct typo with idField setting
@@ -175,6 +179,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[1.10.7]: https://github.com/featureserver/winnow/compare/v1.10.6...v1.10.7
 [1.10.6]: https://github.com/featureserver/winnow/compare/v1.10.5...v1.10.6
 [1.10.5]: https://github.com/featureserver/winnow/compare/v1.10.4...v1.10.5
 [1.10.4]: https://github.com/featureserver/winnow/compare/v1.10.3...v1.10.4
