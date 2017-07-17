@@ -9,6 +9,13 @@ test('With a where option', t => {
   run('trees', options, 12105, t)
 })
 
+test('With a where option with multiple statements', t => {
+  const options = {
+    where: "Genus like '%Quercus%' AND Street_Name = 'CLAREMONT' AND House_Number < 600 AND Trunk_Diameter = 9"
+  }
+  run('trees', options, 1, t)
+})
+
 test('With a field that has been uppercased', t => {
   const options = {
     where: "UPPER(Genus) like '%Quercus%'"

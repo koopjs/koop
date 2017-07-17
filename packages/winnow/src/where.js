@@ -38,11 +38,11 @@ function tokenize (sql) {
  */
 function pad (sql) {
   const operators = [
-    {regex: />=/, string: '>='},
-    {regex: /<=/, string: '<='},
-    {regex: /=/, string: '='},
-    {regex: />(?!=)/, string: '>'},
-    {regex: /<(?!=)/, string: '<'}
+    {regex: />=/g, string: '>='},
+    {regex: /<=/g, string: '<='},
+    {regex: /=/g, string: '='},
+    {regex: />(?!=)/g, string: '>'},
+    {regex: /<(?!=)/g, string: '<'}
   ]
   const padded = operators.reduce(function (statement, op) {
     const pad = statement.replace(op.regex, ` ${op.string} `)
