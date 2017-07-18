@@ -15,32 +15,7 @@ const templates = {
   objectIDField: require('../../templates/oid-field.json')
 }
 
-// // TODO this should be the only exported function
-// function computeFieldObject (data, template, options) {
-//   let oid = false
-//   const metadata = data.metadata || {}
-//
-//   if (!metadata.fields && data.statistics) return computeFieldsFromProperties(data.statistics[0], template, options).fields
-//   else if (!metadata.fields) return computeAggFieldObject(data, template, options)
-//
-//   const fields = metadata.fields.map(field => {
-//     let type
-//     if (field.name === metadata.idField || (!metadata.idField && field.name.toLowerCase() === 'objectid')) {
-//       type = 'esriFieldTypeOID'
-//       oid = true
-//     }
-//     const template = _.cloneDeep(templates.field)
-//     return Object.assign({}, template, {
-//       name: field.name,
-//       type: type || fieldMap[field.type.toLowerCase()] || field.type,
-//       alias: field.alias || field.name
-//     })
-//   })
-//
-//   if (!oid) fields.push(templates.objectIDField)
-//   return fields
-// }
-
+// TODO this should be the only exported function
 function computeFieldObject (data, template, options = {}) {
   let oid = false
   const metadata = data.metadata || {}
