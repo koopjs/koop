@@ -184,6 +184,25 @@ describe('Query operatons', () => {
       response.features.length.should.equal(10)
       Object.keys(response.features[0].attributes).length.should.equal(9)
     })
+
+    it('should return correct out fields', () => {
+      const options = {
+        f: 'json',
+        where: `Full/Part = 'P'`,
+        returnGeometry: false,
+        resultOffset: 0,
+        resultRecordCount: 10,
+        outFields: 'OBJECTID,Name,Dept'
+      }
+
+      const response = FeatureServer.query(budgetTable, options)
+      response.fields.length.should.equal(3)
+      response.fields[0].name.should.equal('Name')
+      response.fields[1].name.should.equal('Dept')
+      response.fields[2].name.should.equal('OBJECTID')
+      response.features.length.should.equal(10)
+      Object.keys(response.features[0].attributes).length.should.equal(3)
+    })
   })
 
   describe('querying for statistics', function () {
