@@ -10,7 +10,7 @@ Koop is a highly-extensible Javascript toolkit for connecting incompatible spati
 
 Visit the demo at [http://koop.dc.esri.com](http://koop.dc.esri.com).
 
-![lots of geojson into feature services](https://cloud.githubusercontent.com/assets/351164/2530456/333495b0-b526-11e3-8f9b-c1ebeb75b044.png)
+![lots of geojson into feature services](https://user-images.githubusercontent.com/7832202/28444721-43eb6ea6-6d8d-11e7-8d56-3af46fd5bf88.png)
 
 ## New @ Version 3.0
 
