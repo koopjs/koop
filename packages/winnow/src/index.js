@@ -3,6 +3,7 @@ const sql = require('./sql')
 const Query = require('./query')
 const Params = require('./params')
 const Options = require('./options')
+const { breaksQuery, aggregateQuery, limitQuery, standardQuery, finishQuery } = require('./executeQuery')
 const _ = require('lodash')
 const Winnow = {}
 
@@ -16,12 +17,12 @@ Winnow.query = function (input, options = {}) {
     options.collection = _.omit(input, 'features')
     features = input.features
   }
-
   options = Options.prepare(options, features)
 
   const query = Query.create(options)
   if (process.env.NODE_ENV === 'test') console.log(query, options)
 
+  if (options.classification) return breaksQuery(features, query, options)
   if (options.aggregates) return aggregateQuery(features, query, options)
   else if (options.limit) return limitQuery(features, query, options)
   else return standardQuery(features, query, options)
@@ -67,70 +68,6 @@ Winnow.prepareSql = function (statement) {
     const params = Params.prepare(inParams)
     const results = query(params)
     return results
-  }
-}
-
-// TODO move these functions to a new file
-function limitQuery (features, query, options) {
-  const filtered = []
-  features.some((feature, i) => {
-    const result = processQuery(feature, query, options, i)
-    if (result) filtered.push(result)
-    return filtered.length === options.limit
-  })
-  return finishQuery(filtered, options)
-}
-
-function standardQuery (features, query, options) {
-  const filtered = features.reduce((filteredFeatures, feature, i) => {
-    const result = processQuery(feature, query, options, i)
-    if (result) filteredFeatures.push(result)
-    return filteredFeatures
-  }, [])
-  return finishQuery(filtered, options)
-}
-
-function aggregateQuery (features, query, options) {
-  const params = Query.params(features, options)
-  const filtered = sql(query, params)
-  return finishQuery(filtered, options)
-}
-
-function processQuery (feature, query, options, i) {
-  const params = Query.params([feature], options)
-  const result = sql(query, params)[0]
-
-  if (result && options.toEsri) return esriFy(result, options, i)
-  else return result
-}
-
-function esriFy (result, options, i) {
-  if (options.dateFields.length) {
-    // mutating dates has down stream consequences if the data is reused
-    result.attributes = _.cloneDeep(result.attributes)
-    options.dateFields.forEach(field => {
-      result.attributes[field] = new Date(result.attributes[field]).getTime()
-    })
-  }
-
-  const metadata = (options.collection && options.collection.metadata) || {}
-  if (!metadata.idField) {
-    result.attributes.OBJECTID = i
-  }
-  return result
-}
-
-function finishQuery (features, options) {
-  if (options.groupBy) {
-    return features
-  } else if (options.aggregates) {
-    return features[0]
-  } else if (options.collection) {
-    const collection = options.collection
-    collection.features = features
-    return collection
-  } else {
-    return features
   }
 }
 

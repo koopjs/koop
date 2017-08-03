@@ -1,0 +1,11 @@
+{
+  "classification": {
+    "type": "classes",
+    "field": "Trunk_Diameter",
+    "method": "equalInterval",
+    "breakCount": 7,
+    "norm": "log"
+  },
+  "where": "Trunk_Diameter<15",
+  "f": "pjson"
+}

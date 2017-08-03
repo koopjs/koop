@@ -1,31 +1,13 @@
 const _ = require('lodash')
-const convertFromEsri = require('./geometry/convert-from-esri')
-const transformArray = require('./geometry/transform-array')
-const transformEnvelope = require('./geometry/transform-envelope')
-const projectCoordinates = require('./geometry/project-coordinates')
-const detectFieldsType = require('./detect-fields-type')
+const convertFromEsri = require('../geometry/convert-from-esri')
+const transformArray = require('../geometry/transform-array')
+const transformEnvelope = require('../geometry/transform-envelope')
+const projectCoordinates = require('../geometry/project-coordinates')
+const detectFieldsType = require('../detect-fields-type')
 const esriPredicates = {
   esriSpatialRelContains: 'ST_Contains',
   esriSpatialRelWithin: 'ST_Within',
   esriSpatialRelIntersects: 'ST_Intersects'
-}
-
-function prepare (options, features) {
-  const prepared = _.merge({}, options, {
-    collection: normalizeCollection(options, features),
-    where: normalizeWhere(options),
-    geometry: normalizeGeometry(options),
-    spatialPredicate: normalizeSpatialPredicate(options),
-    fields: normalizeFields(options),
-    order: normalizeOrder(options),
-    aggregates: normalizeAggregates(options),
-    groupBy: normalizeGroupBy(options),
-    limit: normalizeLimit(options),
-    offset: normalizeOffset(options),
-    projection: normalizeProjection(options)
-  })
-  prepared.dateFields = normalizeDateFields(prepared.collection)
-  return prepared
 }
 
 function normalizeCollection (options, features = []) {
@@ -54,62 +36,9 @@ function normalizeDateFields (collection) {
   return dateFields
 }
 
-function normalizeWhere (options) {
-  if (/1\s*=\s*1/.test(options.where)) return undefined
-  else if (/(?!date )('?\d\d\d\d-\d\d-\d\d'?)/.test(options.where)) return normalizeDate(options.where)
-  else return options.where
-}
-
-function normalizeDate (where) {
-  const matches = where.match(/(?!date )('?\d\d\d\d-\d\d-\d\d'?)/g)
-  matches.forEach(match => {
-    where = where.replace(`date ${match}`, `'${new Date(match.toString()).toISOString()}'`)
-  })
-  return where
-}
-
 function normalizeSpatialPredicate (options) {
   const predicate = options.spatialPredicate || options.spatialRel
-
   return esriPredicates[predicate] || predicate
-}
-
-function normalizeFields (options) {
-  const fields = options.fields || options.outFields
-  if (fields === '*') return undefined
-  return typeof fields === 'string' ? [fields] : fields
-}
-
-function normalizeOrder (options) {
-  const order = options.order || options.orderByFields
-  return typeof order === 'string' ? [order] : order
-}
-
-function normalizeAggregates (options) {
-  let aggregates = options.aggregates
-  if (options.outStatistics) {
-    aggregates = options.outStatistics.map(agg => {
-      return {
-        type: agg.statisticType,
-        field: agg.onStatisticField,
-        name: agg.outStatisticFieldName
-      }
-    })
-  }
-
-  if (aggregates) {
-    aggregates.forEach(agg => {
-      if (!agg.name) agg.name = `${agg.type}_${agg.field}`
-      agg.name = agg.name.replace(/\s/g, '_')
-    })
-  }
-
-  return aggregates
-}
-
-function normalizeGroupBy (options) {
-  const groupBy = options.groupBy || options.groupByFieldsForStatistics
-  return typeof groupBy === 'string' ? [groupBy] : groupBy
 }
 
 function normalizeGeometry (options) {
@@ -132,9 +61,8 @@ function normalizeGeometry (options) {
 
 function normalizeInSR (options) {
   let SR
-  if (options.inSR) {
-    SR = options.inSR
-  } else if (options.geometry.spatialReference) {
+  if (options.inSR) SR = options.inSR
+  else if (options.geometry.spatialReference) {
     if (/WGS_1984_Web_Mercator_Auxiliary_Sphere/.test(options.geometry.spatialReference.wkt)) {
       SR = 3857
     } else {
@@ -168,4 +96,12 @@ function normalizeProjection (options) {
   else return `EPSG:${projection}`
 }
 
-module.exports = { prepare }
+module.exports = {
+  normalizeCollection,
+  normalizeDateFields,
+  normalizeSpatialPredicate,
+  normalizeLimit,
+  normalizeGeometry,
+  normalizeOffset,
+  normalizeProjection
+}

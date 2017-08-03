@@ -15,7 +15,14 @@
     "type": "git",
     "url": "git+https://github.com/FeatureServer/winnow.git"
   },
-  "keywords": ["geojson", "filter", "stream", "sql", "geoservices", "query"],
+  "keywords": [
+    "geojson",
+    "filter",
+    "stream",
+    "sql",
+    "geoservices",
+    "query"
+  ],
   "author": "Daniel Fenton <dfenton@esri.com>",
   "license": "Apache-2.0",
   "bugs": {
@@ -26,6 +33,7 @@
     "@turf/bbox-polygon": "^4.1.0",
     "@turf/centroid": "^4.1.0",
     "alasql": "^0.4.0",
+    "classybrew": "0.0.3",
     "highland": "^3.0.0-beta.3",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",

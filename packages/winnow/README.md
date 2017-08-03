@@ -10,6 +10,7 @@
 # API
 ## `winnow.query`
 Build and apply a query to a feature collection object or an array of features
+
 ```javascript
 const features = Object
 const options = {
@@ -22,6 +23,7 @@ const options = {
   order: Array // Set of fields or aggregates by which to order results
   projection: Number || String // An EPSG code, an OGC WKT or an ESRI WKT used to convert geometry
   geometryPrecision: Number // number of digits to appear after decimal point for geometry
+  classification: Object // GeoJSON or geoservices classification Object
 }
 winnow.query(features, options)
 // Returns the set of features that match the query
@@ -137,6 +139,81 @@ e.g.
 }
 ```
 
+### `Classification`
+An object for classification aggregation. Classification ouputs an array of breaks on features. There are two supported classification types: _Class Breaks_ and _Unique Value_. Classification supports input from FeatureServer's [generateRenderer](https://github.com/FeatureServer/FeatureServer#generateRenderer) _classificationDef_.
+
+##### `Class Breaks`
+_Class Breaks_ is used to classify numeric data based on a number of breaks and a statistical method. Features can also be normalized before being classified.
+
+```js
+{
+  *type: 'classes',
+  *field: '<field1>',
+  *method: 'equalInterval' | 'naturalBreaks' | 'quantile' | 'std',
+  *breakCount: 7,
+   normType: 'field' | 'log' | 'percent',
+   normField: '<field2>' // mandatory if normType === 'field'
+}
+*required
+```
+e.g. An example feature collection has a field called _field1_ ranging in value from 0 - 29.
+
+Input:
+
+```js
+{
+  type: 'classes',
+  field: 'field1',
+  method: 'equalInterval',
+  breakCount: 5,
+}
+```
+
+Output (array of class intervals):
+
+```js
+[ [0-5],
+  [6-11],
+  [12-17],
+  [18-23],
+  [24-29] ]
+```
+
+##### `Unique Value`
+_Unique Value_ is used to classify data based on a unique field(s). The output is an array of objects for each unique value combination. Each object contains an instance count, and the classifying unqiue field names and values.
+
+```js
+{
+  *type: 'unique',
+  *fields: ['<field1>', '<field2>', '<field3>'] // up to three fields
+}
+*required
+```
+
+e.g. An example feature collection has unique fields called _employeeID_ and _customerID_.
+
+Input:
+
+```js
+{
+  type: 'unique',
+  fields: ['employeeID', 'customerID']
+}
+```
+
+Output (array of instance objects):
+
+```js
+[
+  {count: 3, employeeID: 'A', customerID: 'M'},
+  {count: 1, employeeID: 'A', customerID: 'N'},
+  {count: 1, employeeID: 'B', customerID: 'M'},
+  {count: 2, employeeID: 'B', customerID: 'N'},
+  {count: 2, employeeID: 'B', customerID: 'O'},
+  {count: 1, employeeID: 'C', customerID: 'O'},
+]
+```
+
 ## `winnow.prepareQuery`
 Returns a function that can be applied directly to a feature collection object, an array of features, or a single feature. Useful when you want to pass a stream of features through a filter.
 
@@ -180,7 +257,7 @@ filter(geojson)
 ```
 # Issues
 
-Find a bug or want to request a new feature? Please let us know by submitting an [issue](https://github.com/dmfenton/winnow/issues).
+Find a bug or want to request a new feature? Please let us know by submitting an [issue](https://github.com/FeatureServer/winnow/issues).
 
 # Contributing
 

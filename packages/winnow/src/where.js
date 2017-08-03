@@ -25,6 +25,7 @@ function tokenize (sql) {
   sql = pad(sql)
   let temp
   // find any multi-word tokens and replace the spaces with a special character
+  // note: only 1 or 2 word tokens are accepted. Anything larger does not work
   const regex = /['"]\S+\s\S+['"]/g
   while ((temp = regex.exec(sql)) !== null) {
     const field = temp[0].replace(/\s/, '|@')
