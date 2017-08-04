@@ -1,0 +1,33 @@
+{
+  "params": {
+    "classificationDef": {
+      "type": "classBreaksDef",
+      "classificationField": "daily snow total",
+      "classificationMethod": "esriClassifyEqualInterval",
+      "breakCount": 9,
+      "baseSymbol": {
+        "type": "esriSLS",
+        "style": "esriSLSSolid",
+        "width": 2
+      },
+      "colorRamp": {
+        "type": "algorithmic",
+        "fromColor": [115, 76, 0, 255],
+        "toColor": [255, 25, 86, 255],
+        "algorithm": "esriHSVAlgorithm"
+      }
+    },
+    "collection": {}
+  },
+  "classBreaks": [
+    [ 0, 0.1241412550728627 ],
+    [ 0.1241412550728627, 0.2482825101457254 ],
+    [ 0.2482825101457254, 0.3724237652185881 ],
+    [ 0.3724237652185881, 0.4965650202914508 ],
+    [ 0.4965650202914508, 0.6207062753643134 ],
+    [ 0.6207062753643134, 0.7448475304371761 ],
+    [ 0.7448475304371761, 0.8689887855100388 ],
+    [ 0.8689887855100388, 0.9931300405829014 ],
+    [ 0.9931300405829014, 1.1172712956557642 ]
+  ]
+}

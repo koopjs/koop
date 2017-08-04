@@ -1,0 +1,30 @@
+{
+  "params": {
+    "classificationDef": {
+      "type": "uniqueValueDef",
+      "uniqueValueFields": ["Species"],
+      "fieldDelimiter": ",",
+      "baseSymbol":
+      {
+        "type": "esriSLS",
+        "style": "esriSLSSolid",
+        "width": 2
+      },
+      "colorRamp":
+      {
+        "type": "algorithmic",
+        "fromColor": [115,76,0,255],
+        "toColor": [255,25,86,255],
+        "algorithm": "esriHSVAlgorithm"
+      }
+    },
+    "collection": {}
+  },
+  "uniqueValue" : [
+    {"count": 10, "Species": "MIMOSIFOLIA"},
+    {"count": 5, "Species": "AGRIFOLIA"},
+    {"count": 3, "Species": "CONGESTUM"},
+    {"count": 2, "Species": "GRANDIFLORA"},
+    {"count": 50, "Species": "FORTUNEI"}
+  ]
+}

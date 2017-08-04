@@ -5,6 +5,7 @@ const express = require('express')
 const should = require('should')
 const _ = require('lodash')
 const snow = require('./fixtures/snow.json')
+const ProviderStatsClassBreaks = require('./fixtures/generateRenderer/provider-statistics-with-classBreaks.json')
 const app = express()
 
 let data
@@ -69,7 +70,7 @@ describe('Routing feature server requests', () => {
       data = require('./fixtures/provider-statistics.json')
       request(app)
         .get(
-          '/FeatureServer/0/query?f=json' +
+          '/FeatureServer/0/query?f=json&' +
             'geometry={"xmin":-15576031.875835987,"ymin":-14167144.570483988,"xmax":15576031.875835987,"ymax":14167144.570483988}&' +
             'geometryType=esriGeometryEnvelope&' +
             'inSR=102100&' +
@@ -118,6 +119,77 @@ describe('Routing feature server requests', () => {
           res.body.layers.length.should.equal(1)
           res.body.tables.length.should.equal(0)
           res.body.layers[0].name.should.equal('Snow')
+        })
+        .expect('Content-Type', /json/)
+        .expect(200, done)
+    })
+  })
+
+  describe('generateRenderer', () => {
+    describe('when statistics are passed in', () => {
+      beforeEach(() => {
+        data = _.cloneDeep(ProviderStatsClassBreaks)
+      })
+      it('should properly route and handle when a provider passes in class breaks statistics', done => {
+        request(app)
+          .get('/FeatureServer/3/generateRenderer?')
+          .expect(res => {
+            res.body.type.should.equal('classBreaks')
+            res.body.classBreakInfos.length.should.equal(9)
+            res.body.classBreakInfos[0].symbol.color.should.deepEqual([0, 255, 0])
+            res.body.classBreakInfos[0].label.should.equal('80-147')
+            res.body.classBreakInfos[4].symbol.color.should.deepEqual([0, 255, 255])
+            res.body.classBreakInfos[8].symbol.color.should.deepEqual([0, 0, 255])
+          })
+          .expect('Content-Type', /json/)
+          .expect(200, done)
+      })
+      it('should ignore options when statistics are passed in', done => {
+        request(app)
+          .get('/FeatureServer/3/generateRenderer?' +
+          'classificationDef={' +
+            '"type": "classBreaksDef",' +
+            '"classificationField": "daily snow total",' +
+            '"classificationMethod": "esriClassifyEqualInterval",' +
+            '"breakCount": 9}&' +
+           'where=&' +
+           'gdbVersion=&' +
+           'f=json')
+          .expect(res => {
+            res.body.type.should.equal('classBreaks')
+            res.body.classBreakInfos.length.should.equal(9)
+            res.body.classBreakInfos[0].symbol.color.should.deepEqual([0, 255, 0])
+            res.body.classBreakInfos[0].label.should.equal('80-147')
+            res.body.classBreakInfos[4].symbol.color.should.deepEqual([0, 255, 255])
+            res.body.classBreakInfos[8].symbol.color.should.deepEqual([0, 0, 255])
+          })
+          .expect('Content-Type', /json/)
+          .expect(200, done)
+      })
+    })
+    it('should properly route and handle a generate renderer request', done => {
+      request(app)
+        .get('/FeatureServer/3/generateRenderer?' +
+        'classificationDef={' +
+          '"type": "classBreaksDef",' +
+          '"classificationField": "daily snow total",' +
+          '"classificationMethod": "esriClassifyEqualInterval",' +
+          '"breakCount": 7,' +
+          '"colorRamp": {' +
+            '"type": "algorithmic",' +
+            '"fromColor": [0, 100, 0, 255],' +
+            '"toColor": [0, 0, 255, 255],' +
+            '"algorithm": "esriHSVAlgorithm"}' +
+          '}&' +
+         'where=latitude < 39 AND latitude > 38.5&' +
+         'f=json')
+        .expect(res => {
+          res.body.type.should.equal('classBreaks')
+          res.body.classBreakInfos.length.should.equal(7)
+          res.body.classBreakInfos[0].symbol.color.should.deepEqual([0, 100, 0])
+          res.body.classBreakInfos[0].label.should.equal('0-0.7571428571428571')
+          res.body.classBreakInfos[3].symbol.color.should.deepEqual([0, 177, 178])
+          res.body.classBreakInfos[6].symbol.color.should.deepEqual([0, 0, 255])
         })
         .expect('Content-Type', /json/)
         .expect(200, done)

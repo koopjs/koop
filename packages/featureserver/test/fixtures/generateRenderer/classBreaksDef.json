@@ -1,0 +1,22 @@
+{
+  "classificationDef": {
+    "type": "classBreaksDef",
+    "classificationField": "daily snow total",
+    "classificationMethod": "esriClassifyEqualInterval",
+    "breakCount": 9,
+    "baseSymbol": {
+      "type": "esriSMS",
+      "style": "esriSMSCircle",
+      "width": 2
+    },
+    "colorRamp": {
+      "type": "algorithmic",
+      "fromColor": [115,76,0,255],
+      "toColor": [255,25,86,255],
+      "algorithm": "esriHSVAlgorithm"
+    }
+  },
+  "where": "latitude>39",
+  "gdbVersion": "",
+  "f": "pjson"
+}

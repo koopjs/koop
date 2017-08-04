@@ -114,7 +114,7 @@ describe('Info operations', () => {
       const service = FeatureServer.layerInfo(polyData, {})
       service.name.should.equal('map')
       service.displayField.should.equal('OBJECTID')
-      service.drawingInfo.renderer.should.equal(require('../templates/renderers/polygon.json'))
+      service.drawingInfo.renderer.should.equal(require('../templates/renderers/symbology/polygon.json'))
       service.geometryType.should.equal('esriGeometryPolygon')
       should.not.exist(service.features)
     })

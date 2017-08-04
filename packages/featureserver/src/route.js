@@ -1,5 +1,6 @@
 const FsInfo = require('./info.js')
 const FsQuery = require('./query.js')
+const FsGenerateRenderer = require('./generateRenderer')
 
 module.exports = route
 
@@ -25,6 +26,8 @@ function route (req, res, geojson, options) {
   switch (method) {
     case 'query':
       return execQuery(req, res, geojson, options)
+    case 'generateRenderer':
+      return execGenerateRenderer(req, res, geojson, options)
     default:
       return execInfo(req, res, method, geojson)
   }
@@ -34,6 +37,18 @@ function execQuery (req, res, geojson, options) {
   let response
   try {
     response = FsQuery(geojson, req.query || {})
+  } catch (e) {
+    if (process.env.NODE_ENV === 'test') console.trace(e)
+    return res.status(500).json({ error: e.message })
+  }
+  if (req.query.callback) res.send(`${req.query.callback}(${JSON.stringify(response)})`)
+  else res.status(200).json(response)
+}
+
+function execGenerateRenderer (req, res, geojson, options) {
+  let response
+  try {
+    response = FsGenerateRenderer(geojson, req.query || {})
   } catch (e) {
     if (process.env.NODE_ENV === 'test') console.trace(e)
     return res.status(500).json({ error: e.message })
