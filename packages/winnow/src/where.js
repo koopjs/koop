@@ -1,4 +1,4 @@
-const OPERATORS = ['>', '<', '=', '>=', '<=', 'like', 'ilike', 'in']
+const OPERATORS = ['>', '<', '=', '>=', '<=', 'like', 'ilike', 'in', 'is']
 
 /**
  * Creates a viable SQL where clause from a passed in SQL (from a url "where" param)

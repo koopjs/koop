@@ -67,6 +67,20 @@ test('With an in parameter', t => {
   run('trees', options, 13134, t)
 })
 
+test('With an is parameter', t => {
+  const options = {
+    where: 'Species IS NULL'
+  }
+  run('trees', options, 2872, t)
+})
+
+test('With two is and one and parameters', t => {
+  const options = {
+    where: 'Genus IS NULL AND Street_Direction IS NOT NULL'
+  }
+  run('trees', options, 22, t)
+})
+
 test('With an > parameter', t => {
   const options = {
     where: 'Trunk_Diameter>10'
