@@ -181,6 +181,24 @@ test('Without a spatialReference property on an Esri-style Envelope', t => {
   run('trees', options, 29744, t)
 })
 
+test('With an esri style envelope with xmin = 0, ans esri features', t => {
+  const options = {
+    outSr: 4326,
+    inSr: 4326,
+    geometry: {
+      xmin: 0,
+      ymin: 40,
+      xmax: 90,
+      ymax: 85,
+      spatialReference: {
+        wkid: 4326
+      }
+    },
+    esri: true
+  }
+  run('startups', options, 2, t)
+})
+
 test('With a an Esri-style Polygon', t => {
   const options = {
     geometry: {

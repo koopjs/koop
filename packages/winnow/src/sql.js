@@ -1,5 +1,6 @@
 const Terraformer = require('terraformer')
 const convertToEsri = require('./geometry/convert-to-esri')
+const convertFromEsri = require('./geometry/convert-from-esri')
 const sql = require('alasql')
 const geohash = require('ngeohash')
 const centroid = require('@turf/centroid')
@@ -24,6 +25,7 @@ sql.fn.ST_Contains = function (feature, filterGeom) {
 }
 
 sql.fn.ST_Intersects = function (feature, filterGeom) {
+  if (!(feature.type || feature.coordinates)) feature = convertFromEsri(feature) // TODO: remove ? temporary esri geometry conversion
   if (!(feature && feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
   if (feature.type === 'Point') return sql.fn.ST_Contains(feature, filterGeom)
   const filter = new Terraformer.Primitive(filterGeom)

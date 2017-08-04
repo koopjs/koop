@@ -1,0 +1,64 @@
+{
+  "objectIdFieldName": "OBJECTID",
+  "globalIdFieldName": "",
+  "hasZ": false,
+  "hasM": false,
+  "geometryType": "esriGeometryPoint",
+  "spatialReference": {
+    "wkid": 4326
+  },
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeInteger",
+      "alias": "OBJECTID"
+    },
+    {
+      "name": "COMPANY",
+      "type": "esriFieldTypeString",
+      "alias": "COMPANY",
+      "length": 128
+    },
+    {
+      "name": "AVATAR",
+      "type": "esriFieldTypeString",
+      "alias": "AVATAR",
+      "length": 128
+    }
+  ],
+  "features": [
+    {
+      "attributes": {
+        "OBJECTID": 1,
+        "COMPANY": "TEST1",
+        "AVATAR": null
+      },
+      "geometry": {
+        "x": 8.6241263,
+        "y": 49.8707774
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID": 2,
+        "COMPANY": "TEST2",
+        "AVATAR": null
+      },
+      "geometry": {
+        "x": 80,
+        "y": 60
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID": 3,
+        "COMPANY": "TEST3",
+        "AVATAR": null
+      },
+      "geometry": {
+        "x": -30,
+        "y": 100
+      }
+    }
+  ]
+}
