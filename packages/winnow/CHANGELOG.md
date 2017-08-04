@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.11.1] 08-03-2017
+### Fixed
+* added is sql operator
+* added sql checks for 0 value and Esri geometry
+
 ## [1.11.0] 08-03-2017
 ### Added
 * Support for creating class and unique value breaks
@@ -183,6 +188,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[1.11.1]: https://github.com/featureserver/winnow/compare/v1.11.0...v1.11.1
 [1.11.0]: https://github.com/featureserver/winnow/compare/v1.10.7...v1.11.0
 [1.10.7]: https://github.com/featureserver/winnow/compare/v1.10.6...v1.10.7
 [1.10.6]: https://github.com/featureserver/winnow/compare/v1.10.5...v1.10.6
