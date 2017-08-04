@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.4.0] 08-04-2017
+### Added
+* Support for generateRenderer
+
 ## [2.3.12] 07-18-2017
 ### Fixed
 * Query returns correct fields when outFields specified
@@ -173,6 +177,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.4.0]: https://github.com/featureserver/featureserver/compare/v2.3.12...v2.4.0
 [2.3.12]: https://github.com/featureserver/featureserver/compare/v2.3.11...v2.3.12
 [2.3.11]: https://github.com/featureserver/featureserver/compare/v2.3.10...v2.3.11
 [2.3.10]: https://github.com/featureserver/featureserver/compare/v2.3.9...v2.3.10

@@ -169,7 +169,7 @@ FeatureServer.layers(geojson, options)
 ```
 
 ### FeatureServer.generateRenderer
-Pass in `geojson` and `options`, and the function will return a valid generateRenderer object. Two `classificationDef` classification types are supported, _classBreaksDef_ and _uniqueValueDef_. 
+Pass in `geojson` and `options`, and the function will return a valid generateRenderer object. Two `classificationDef` classification types are supported, _classBreaksDef_ and _uniqueValueDef_.
 
 _classBreaksDef_ is used to classify numeric data based on a number of breaks and a statistical method. Features can also be normalized before being classified. _uniqueValueDef_ is used to classify data based on a unique field(s). If classification breaks are not supplied through in `statistics`, they will be generated using `classificationDef` options. The output is a _generateRenderer_ object.
 
@@ -288,16 +288,16 @@ Output:
   defaultSymbol: {},
   defaultLabel: '',
   uniqueValueInfos: [
-    { 
-  	   value: 'MAGNOLIA',
+    {
+      value: 'MAGNOLIA',
       count: 5908,
       label: 'MAGNOLIA',
       description: '',
       symbol: {
-     	 type: 'esriSMS',
-  		 style: 'esriSMSCircle',
-  		 width: 2,
-  		 color: [115, 76, 0]
+        type: 'esriSMS',
+        style: 'esriSMSCircle',
+        width: 2,
+        color: [115, 76, 0]
   	   }
     },
     {
@@ -306,10 +306,10 @@ Output:
       label: 'QUERCUS',
       description: '',
       symbol: {
-     	 type: 'esriSMS',
-  		 style: 'esriSMSCircle',
-  		 width: 2,
-  		 color: [116, 76, 0]
+        type: 'esriSMS',
+        style: 'esriSMSCircle',
+        width: 2,
+        color: [116, 76, 0]
   	  }
    },
    ...
