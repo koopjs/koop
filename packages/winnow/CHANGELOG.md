@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.11.2] 08-08-2017
+### Fixed
+* where clause ignores `1=1` condition when other conditions present
+
 ## [1.11.1] 08-03-2017
 ### Fixed
 * added is sql operator
@@ -188,6 +192,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[1.11.2]: https://github.com/featureserver/winnow/compare/v1.11.1...v1.11.2
 [1.11.1]: https://github.com/featureserver/winnow/compare/v1.11.0...v1.11.1
 [1.11.0]: https://github.com/featureserver/winnow/compare/v1.10.7...v1.11.0
 [1.10.7]: https://github.com/featureserver/winnow/compare/v1.10.6...v1.10.7
