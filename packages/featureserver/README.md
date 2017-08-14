@@ -318,7 +318,7 @@ Output:
 
 [npm-image]: https://img.shields.io/npm/v/featureserver.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/featureserver
-[travis-image]: https://img.shields.io/travis/FeatureServer/FeatureServer.svg?style=flat-square
-[travis-url]: https://travis-ci.org/FeatureServer/FeatureServer
-[greenkeeper-image]: https://badges.greenkeeper.io/FeatureServer/FeatureServer.svg
+[travis-image]: https://img.shields.io/travis/koopjs/FeatureServer.svg?style=flat-square
+[travis-url]: https://travis-ci.org/koopjs/FeatureServer
+[greenkeeper-image]: https://badges.greenkeeper.io/koopjs/FeatureServer.svg
 [greenkeeper-url]: https://greenkeeper.io/
