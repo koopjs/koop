@@ -42,10 +42,13 @@ function normalizeSpatialPredicate (options) {
 }
 
 function normalizeGeometry (options) {
-  if (!options.geometry) return
-  let geometry = options.geometry
+  let geometry = options.geometry || options.bbox
+  if (!geometry) return // ABORT
+  let bboxCRS
   if (typeof geometry === 'string') {
-    geometry = geometry.split(',').map(parseFloat)
+    const split = geometry.split(',')
+    geometry = split.slice(0, 4).map(parseFloat)
+    bboxCRS = split[4]
   }
   if (Array.isArray(geometry)) {
     geometry = transformArray(geometry)
@@ -54,7 +57,7 @@ function normalizeGeometry (options) {
   } else if (geometry.x || geometry.rings || geometry.paths || geometry.points) {
     geometry = convertFromEsri(geometry)
   }
-  const inSR = normalizeInSR(options)
+  const inSR = bboxCRS || normalizeInSR(options)
   if (inSR) geometry.coordinates = projectCoordinates(geometry.coordinates, { inSR, outSR: 'EPSG:4326' })
   return geometry
 }
@@ -70,13 +73,14 @@ function normalizeInSR (options) {
     }
   }
 
-  if (SR === 102100) return `EPSG:3857`
+  if (/EPSG:/.test(SR)) return SR
+  else if (SR === 102100) return `EPSG:3857`
   else if (SR) return `EPSG:${SR}`
   else return 'EPSG:4326'
 }
 
 function normalizeLimit (options) {
-  return options.limit || options.resultRecordCount
+  return options.limit || options.resultRecordCount || options.count || options.maxFeatures
 }
 
 function normalizeOffset (options) {
@@ -85,8 +89,12 @@ function normalizeOffset (options) {
 
 function normalizeProjection (options) {
   let projection
+  // WFS :)
+  if (options.srsname || options.srsName) return options.srsname || options.srsName
+  // Winnow native
   if (options.projection) {
     projection = options.projection
+  // GeoServices
   } else if (options.outSR) {
     projection = options.outSR.latestWkid || options.outSR.wkid || options.outSR.wkt || options.outSR
   }

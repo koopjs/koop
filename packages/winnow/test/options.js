@@ -11,6 +11,20 @@ test('normalize a where query with an esri-style date', t => {
   t.equal(prepared.where, `foo='bar' AND ISSUE_DATE >= '2017-01-05T00:00:00.000Z' AND ISSUE_DATE <= '2018-01-05T00:00:00.000Z'`)
 })
 
+test('normalize a wfs srsName', t => {
+  t.plan(1)
+  const options = { srsName: 'EPSG:3857' }
+  const prepared = prepare(options)
+  t.equal(prepared.projection, 'EPSG:3857')
+})
+
+test('normalize a wfs srsname', t => {
+  t.plan(1)
+  const options = { srsname: 'EPSG:3857' }
+  const prepared = prepare(options)
+  t.equal(prepared.projection, 'EPSG:3857')
+})
+
 test('handle a query with no returned features', t => {
   t.plan(1)
   const options = { toEsri: true, collection: { type: 'FeatureCollection' } }

@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+- Basic WFS support: bbox query and geojson output
+
 ## [1.11.2] 08-08-2017
 ### Fixed
 * where clause ignores `1=1` condition when other conditions present
