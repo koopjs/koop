@@ -1,4 +1,4 @@
-# Project Goal
+# Winnow
 
 *Winnow* is made for applying sql to geojson in memory. It is useful for working against geojson objects but also has built-in primitives for piping streams.
 
@@ -20,8 +20,11 @@ const options = {
   fields: Array // Set of fields to select from feature properties
   aggregates: Object // Describes the set of aggregations to perform on fields
   groupBy: Array // Set of fields for grouping statistics
+  limit: Number // number of results to return
+  offset: Number // number of return features to offset
   order: Array // Set of fields or aggregates by which to order results
   projection: Number || String // An EPSG code, an OGC WKT or an ESRI WKT used to convert geometry
+  toEsri: Boolean // return Esri feature collection
   geometryPrecision: Number // number of digits to appear after decimal point for geometry
   classification: Object // GeoJSON or geoservices classification Object
 }
@@ -97,6 +100,9 @@ An array of fields used to group the results. Must be used with aggregates. Note
 ### `limit`
 The total number of results to return
 
+### `offset`
+The amount to offset returned features (e.g., `10` will skip the first 10 returned features). `limit` is required to used `offset`.
+
 ### `order`
 An array of fields use to sort the output
 
@@ -139,7 +145,10 @@ e.g.
 }
 ```
 
-### `Classification`
+### `geometryPrecision`
+A number for geometry precision. Geometry values will be truncated to the supplied decimal place.
+
+### `classification`
 An object for classification aggregation. Classification ouputs an array of breaks on features. There are two supported classification types: _Class Breaks_ and _Unique Value_. Classification supports input from FeatureServer's [generateRenderer](https://github.com/FeatureServer/FeatureServer#generateRenderer) _classificationDef_.
 
 ##### `Class Breaks`
