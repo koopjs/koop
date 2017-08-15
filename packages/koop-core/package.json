@@ -1,7 +1,7 @@
 {
   "name": "koop",
   "description": "Transform, query, & download geospatial data on the web",
-  "version": "3.5.1",
+  "version": "3.5.2",
   "author": {
     "name": "Chris Helm"
   },
@@ -26,11 +26,11 @@
   },
   "devDependencies": {
     "buble": "^0.15.2",
-    "gh-release": "^3.0.0",
+    "gh-release": "^2.2.0",
     "mocha": "^3.2.0",
     "should": "^11.2.0",
-    "sinon": "^3.1.0",
-    "standard": "^10.0.1",
+    "sinon": "^2.0.0",
+    "standard": "^9.0.1",
     "supertest": "^3.0.0"
   },
   "homepage": "https://github.com/koopjs/koop",
