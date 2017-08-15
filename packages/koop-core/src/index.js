@@ -154,8 +154,10 @@ Koop.prototype._initProviderModel = function (provider) {
  * @param {object} output - the output plugin to be registered
  */
 Koop.prototype._registerOutput = function (Output) {
-  Util.inherits(Controller, Output)
-  Util.inherits(DatasetController, Output)
+  for (const p in Output.prototype) {
+    Controller.prototype[p] = Output.prototype[p]
+    DatasetController.prototype[p] = Output.prototype[p]
+  }
   this.pluginRoutes = this.pluginRoutes.concat(Output.routes)
   this.log.info('registered output:', Output.name, Output.version)
 }
@@ -186,11 +188,12 @@ function bindPluginOverrides (provider, controller, server, pluginRoutes) {
     }
     route.methods.forEach(method => {
       try {
+        console.log(`provider=${provider.name} fullRoute:${fullRoute}`)
         server[method](fullRoute, controller[route.handler].bind(controller))
       } catch (e) {
         console.error(`error=controller does not contain specified method method=${method} path=${route.path} handler=${route.handler}`)
         process.exit(1)
-      }  
+      }
     })
   })
 }
@@ -203,7 +206,7 @@ function bindRouteSet (routes = [], controller, server) {
       } catch (e) {
         console.error(`error=controller does not contain specified method method=${method} path=${route.path} handler=${route.handler}`)
         process.exit(1)
-      }  
+      }
     })
   })
 }
