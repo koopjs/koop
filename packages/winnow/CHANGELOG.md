@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.12.0] - 08-14-2017
 ### Added
 - Basic WFS support: bbox query and geojson output
 
@@ -196,6 +196,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[1.12.0]: https://github.com/featureserver/winnow/compare/v1.12.0...v1.11.2
 [1.11.2]: https://github.com/featureserver/winnow/compare/v1.11.1...v1.11.2
 [1.11.1]: https://github.com/featureserver/winnow/compare/v1.11.0...v1.11.1
 [1.11.0]: https://github.com/featureserver/winnow/compare/v1.10.7...v1.11.0
