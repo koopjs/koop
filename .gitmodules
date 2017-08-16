@@ -116,3 +116,6 @@
 [submodule "providers/google-sheets"]
 	path = providers/google-sheets
 	url = git://github.com/koopjs/koop-provider-google-sheets.git
+[submodule "outputs/wfs"]
+	path = outputs/wfs
+	url = https://github.com/koopjs/koop-output-wfs.git
