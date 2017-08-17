@@ -119,3 +119,9 @@
 [submodule "outputs/wfs"]
 	path = outputs/wfs
 	url = https://github.com/koopjs/koop-output-wfs.git
+[submodule "demos/FOSS4G-2017"]
+	path = demos/FOSS4G-2017
+	url = https://github.com/koopjs/FOSS4G-2017-Demo.git
+[submodule "outputs/vector-tiles"]
+	path = outputs/vector-tiles
+	url = https://github.com/koopjs/koop-output-vector-tiles.git
