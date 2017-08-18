@@ -31,6 +31,7 @@ function prepare (options, features) {
     classification: normalizeClassification(options)
   })
   prepared.dateFields = normalizeDateFields(prepared.collection)
+  if (prepared.where === '1=1') delete prepared.where
   return prepared
 }
 

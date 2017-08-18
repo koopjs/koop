@@ -3,7 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
-### Fixed
+## Fixed
+* handle NaN, null, undefined, '' values when classifying
 * properly handle offset
 
 ## [1.12.0] - 08-14-2017

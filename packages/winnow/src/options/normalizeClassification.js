@@ -11,6 +11,7 @@ function normalizeGeoservicesClassBreaks (options) {
       type: 'classes',
       field: inClass.classificationField,
       method: normalizeGeoservicesMethod(inClass.classificationMethod),
+      stddev_intv: inClass.standardDeviationInterval || undefined,
       breakCount: inClass.breakCount,
       normType: normalizeGeoservicesNorm(inClass.normalizationType),
       normField: inClass.normalizationField ? inClass.normalizationField : undefined
@@ -29,7 +30,7 @@ function normalizeGeoservicesMethod (method) {
     case 'esriClassifyNaturalBreaks': return 'naturalBreaks'
     case 'esriClassifyQuantile': return 'quantile'
     case 'esriClassifyGeometricalInterval': return 'geomInterval'
-    case 'esriClassifyStandardDeviation': return 'std'
+    case 'esriClassifyStandardDeviation': return 'stddev'
     default: return undefined
   }
 }

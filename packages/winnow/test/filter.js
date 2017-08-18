@@ -9,6 +9,13 @@ test('With a where option', t => {
   run('trees', options, 12105, t)
 })
 
+test('With a where options 1=1', t => {
+  const options = {
+    where: '1=1'
+  }
+  run('trees_subset', options, 24, t)
+})
+
 test('With a where option with multiple statements', t => {
   const options = {
     where: "Genus like '%Quercus%' AND Street_Name = 'CLAREMONT' AND House_Number < 600 AND Trunk_Diameter = 9"
