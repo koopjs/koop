@@ -26,7 +26,11 @@ function aggregateQuery (features, query, options) {
 }
 
 function limitQuery (features, query, options) {
-  const filtered = []
+  let filtered = []
+  if (options.offset) {
+    if (options.offset >= features.length) throw new Error('OFFSET >= features length: ' + options)
+    options.limit += options.offset
+  }
   features.some((feature, i) => {
     const result = processQuery(feature, query, options, i)
     if (result) filtered.push(result)
@@ -69,6 +73,10 @@ function esriFy (result, options, i) {
 }
 
 function finishQuery (features, options) {
+  if (options.offset) {
+    if (options.offset >= features.length) throw new Error('OFFSET >= features length: ' + options)
+    features = features.slice(options.offset)
+  }
   if (options.groupBy) {
     return features
   } else if (options.aggregates) {

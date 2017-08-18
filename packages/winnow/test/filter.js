@@ -282,6 +282,88 @@ test('With a where and a geometry option', t => {
   run('trees', options, 2315, t)
 })
 
+test('With a limit option', t => {
+  t.plan(3)
+  const data = 'trees'
+  const options = {
+    limit: 10
+  }
+  const features = require(`./fixtures/${data}.json`).features
+  const filtered = winnow.query(features, options)
+  t.equal(filtered.length, 10)
+  t.equal(filtered[0].properties.Common_Name, 'SOUTHERN MAGNOLIA')
+  t.equal(filtered[9].properties.Common_Name, 'WINDMILL PALM')
+})
+
+test('With an offset option', t => {
+  t.plan(3)
+  const data = 'trees'
+  const options = {
+    offset: 10
+  }
+  const features = require(`./fixtures/${data}.json`).features
+  const filtered = winnow.query(features, options)
+  t.equal(filtered.length, 71122)
+  t.equal(filtered[0].properties.Common_Name, 'SOUTHERN MAGNOLIA')
+  t.equal(filtered[9].properties.Common_Name, 'JACARANDA')
+})
+
+test('With a limit and an offset option', t => {
+  t.plan(3)
+  const data = 'trees'
+  const options = {
+    limit: 10,
+    offset: 11
+  }
+  const features = require(`./fixtures/${data}.json`).features
+  const filtered = winnow.query(features, options)
+  t.equal(filtered.length, 10)
+  t.equal(filtered[0].properties.Common_Name, 'JACARANDA')
+  t.equal(filtered[9].properties.Common_Name, 'LIVE OAK')
+})
+
+test('With an offset larger than returned features', t => {
+  t.plan(1)
+  const data = 'trees'
+  const options = {
+    offset: 100000
+  }
+  const features = require(`./fixtures/${data}.json`).features
+  t.throws(function () { winnow.query(features, options) })
+})
+
+test('With a limit and an offset larger than returned features', t => {
+  t.plan(1)
+  const data = 'trees'
+  const options = {
+    limit: 10,
+    offset: 100000
+  }
+  const features = require(`./fixtures/${data}.json`).features
+  t.throws(function () { winnow.query(features, options) })
+})
+
+test('With a where, geometry, limit and offset option', t => {
+  t.plan(5)
+  const data = 'trees'
+  const options = {
+    where: "Genus like '%Quercus%'",
+    geometry: {
+      type: 'Polygon',
+      coordinates: [[[-118.163, 34.162], [-118.108, 34.162], [-118.108, 34.173], [-118.163, 34.173], [-118.163, 34.162]]]
+    },
+    limit: 4,
+    offset: 1
+  }
+  const features = require(`./fixtures/${data}.json`).features
+  const filtered = winnow.query(features, options)
+  t.equal(filtered.length, 4)
+  t.equal(filtered[0].properties.Common_Name, 'LIVE OAK')
+  t.equal(filtered[0].properties.Trunk_Diameter, 1)
+  t.equal(filtered[3].properties.Common_Name, 'LIVE OAK')
+  t.equal(filtered[3].properties.Trunk_Diameter, 18)
+})
+
 test('With an envelope, an inSR and an outSR', t => {
   const options = {
     f: 'json',

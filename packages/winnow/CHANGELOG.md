@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* properly handle offset
+
 ## [1.12.0] - 08-14-2017
 ### Added
 - Basic WFS support: bbox query and geojson output
