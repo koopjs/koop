@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.4.1] -08-22-2017
 ### Fixed
 * Don't bomb out /FeatureServer calls when metadata with no extent is passed in
 
@@ -181,6 +181,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.4.1]: https://github.com/koopjs/featureserver/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/featureserver/featureserver/compare/v2.3.12...v2.4.0
 [2.3.12]: https://github.com/featureserver/featureserver/compare/v2.3.11...v2.3.12
 [2.3.11]: https://github.com/featureserver/featureserver/compare/v2.3.10...v2.3.11
