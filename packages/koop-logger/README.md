@@ -1,4 +1,6 @@
 # Koop-Logger
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/koopjs/koop-logger.svg)](https://greenkeeper.io/)
 * A shared logger for Koop
 
 [![Build Status](https://travis-ci.org/koopjs/koop-logger.svg?branch=master)](https://travis-ci.org/koopjs/koop-logger)
