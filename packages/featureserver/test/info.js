@@ -31,6 +31,20 @@ describe('Info operations', () => {
       server.initialExtent.ymax.should.equal(14)
     })
 
+    it('should support a passed in metadata with no extent', () => {
+      const input = {
+        hasStaticData: true,
+        maxRecordCount: 100,
+        description: 'test',
+        layers: [_.cloneDeep(data)]
+      }
+      const server = FeatureServer.serverInfo(input)
+      server.hasStaticData.should.equal(true)
+      server.maxRecordCount.should.equal(100)
+      server.serviceDescription.should.equal('test')
+      server.layers.length.should.equal(1)
+    })
+
     it('should support a passed in geometry type', () => {
       const input = {
         description: 'test',

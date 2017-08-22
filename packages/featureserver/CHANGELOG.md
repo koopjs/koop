@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Don't bomb out /FeatureServer calls when metadata with no extent is passed in
+
 ## [2.4.0] 08-04-2017
 ### Added
 * Support for generateRenderer

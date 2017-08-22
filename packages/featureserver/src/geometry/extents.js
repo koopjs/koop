@@ -1,5 +1,6 @@
 module.exports = function (input) {
   let coords
+  if (!input) return undefined
   if (input.xmin) return input
   if (Array.isArray(input)) {
     if (Array.isArray(input[0])) coords = input
