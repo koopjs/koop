@@ -1,7 +1,7 @@
 module.exports = function (input) {
   let coords
   if (!input) return undefined
-  if (input.xmin) return input
+  if (!isNaN(input.xmin)) return input
   if (Array.isArray(input)) {
     if (Array.isArray(input[0])) coords = input
     else coords = [[input[0], input[1]], [input[2], input[3]]]
