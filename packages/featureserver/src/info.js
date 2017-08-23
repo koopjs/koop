@@ -58,14 +58,16 @@ function layersInfo (data, params = {}) {
   let json
   if (!data.length) {
     params.extent = Utils.getExtent(data)
-    params.geometryType = Utils.getGeomType(data && data.features ? data.features[0] : null)
+    const metadata = data.metadata || {}
+    params.geometryType = metadata.geometryType || Utils.getGeomType(data)
     layerJson = renderLayer(data, params)
     json = { layers: [layerJson], tables: [] }
   } else {
     json = { layers: [], tables: [] }
     data.forEach(function (layer, i) {
       params.extent = Utils.getExtent(layer)
-      params.geometryType = Utils.getGeomType(layer && layer.features ? layer.features[0] : null)
+      const metadata = layer.metadata || {}
+      params.geometryType = metadata.geometryType || Utils.getGeomType(layer)
       layerJson = renderLayer(layer, params)
       // TODO move this to a rendered template
       layerJson.id = i

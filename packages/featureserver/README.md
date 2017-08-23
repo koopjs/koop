@@ -61,6 +61,7 @@ e.g.
     description: String, // The description of the layer
     extent: Array, // valid extent array e.g. [[180,90],[-180,-90]]
     displayField: String, // The display field to be used by a client
+    geometryType: String // REQUIRED if no features are returned with this object Point || MultiPoint || LineString || MultiLineString || Polygon || MultiPolygon
     idField: String, // unique identifier field,
     maxRecordCount: Number, // the maximum number of features a provider can return at once
     timeInfo: Object // describes the time extent and capabilities of the layer,
@@ -133,6 +134,7 @@ const server = {
       extent: Array // valid extent array e.g. [[180,90],[-180,-90]]
       displayField: String // The display field to be used by a client
       idField: String // unique identifier field,
+      geometryType: String // REQUIRED if no features are returned with this object Point || MultiPoint || LineString || MultiLineString || Polygon || MultiPolygon
       maxRecordCount: Number // the maximum number of features a provider can return at once
       timeInfo: Object // describes the time extent and capabilities of the layer
     }

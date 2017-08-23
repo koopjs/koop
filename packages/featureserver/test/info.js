@@ -31,6 +31,15 @@ describe('Info operations', () => {
       server.initialExtent.ymax.should.equal(14)
     })
 
+    it('should not bomb out on this thing', () => {
+      const input = {
+        layers: [require('./fixtures/polygon-metadata-error.json')]
+      }
+      const server = FeatureServer.serverInfo(input)
+      server.layers.length.should.equal(0)
+      server.tables.length.should.equal(1)
+    })
+
     it('should support a passed in metadata with no extent', () => {
       const input = {
         hasStaticData: true,
