@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.4.3] 08-23-2017
+### Fixed
+* Don't throw an exception when response includes only tables
+* Allow geometryType to be passed in for layer responses
+
 ## [2.4.2] 08-22-2017
 ### Fixed
 * check isNaN instead of falsy for extent validity
@@ -185,6 +190,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.4.3]: https://github.com/koopjs/featureserver/compare/v2.4.2...v2.4.3
 [2.4.2]: https://github.com/koopjs/featureserver/compare/v2.4.1...v2.4.2
 [2.4.1]: https://github.com/koopjs/featureserver/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/featureserver/featureserver/compare/v2.3.12...v2.4.0
