@@ -278,9 +278,9 @@ Esri welcomes contributions from anyone and everyone. Please see our [guidelines
 
 [npm-img]: https://img.shields.io/npm/v/winnow.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/winnow
-[travis-img]: https://img.shields.io/travis/FeatureServer/winnow/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/FeatureServer/winnow
+[travis-img]: https://img.shields.io/travis/koopjs/winnow/master.svg?style=flat-square
+[travis-url]: https://travis-ci.org/koopjs/winnow
 [standard-img]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
 [standard-url]: http://standardjs.com/
-[greenkeeper-image]: https://badges.greenkeeper.io/FeatureServer/winnow.svg
+[greenkeeper-image]: https://badges.greenkeeper.io/koopjs/winnow.svg
 [greenkeeper-url]: https://greenkeeper.io/
