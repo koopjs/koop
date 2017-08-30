@@ -147,3 +147,16 @@ test('Project to Web Mercator using WKT', t => {
   const results = winnow.query(features, options)
   t.deepEqual(results[0].geometry.coordinates, [-11682713.391976157, 4857924.005275469])
 })
+
+test('Do not project NaN coordinate values', t => {
+  t.plan(2)
+  const options = {
+    projection: 3857
+  }
+  let modifiedFeatures = features
+  modifiedFeatures[0].geometry.coordinates[0] = null
+  modifiedFeatures[0].geometry.coordinates[1] = null
+  const results = winnow.query(features, options)
+  t.equal(results.length, 417)
+  t.deepEqual(results[0].geometry.coordinates, [null, null])
+})

@@ -7,6 +7,10 @@ module.exports = function projectCoordinates (coordinates, options = {}) {
   if (inSR === outSR) return coordinates
 
   return transformCoordinates(coordinates, { inSR, outSR }, (coordinates, options) => {
-    return proj4(options.inSR, options.outSR, coordinates)
+    if (coordinates[0]) {
+      return proj4(options.inSR, options.outSR, coordinates)
+    } else {
+      return coordinates
+    }
   })
 }
