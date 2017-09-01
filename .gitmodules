@@ -125,3 +125,9 @@
 [submodule "outputs/vector-tiles"]
 	path = outputs/vector-tiles
 	url = https://github.com/koopjs/koop-output-vector-tiles.git
+[submodule "providers/google-fusion-tables"]
+	path = providers/google-fusion-tables
+	url = https://github.com/koopjs/koop-provider-google-fusion-tables
+[submodule "providers/geojson"]
+	path = providers/geojson
+	url = https://github.com/koopjs/koop-provider-geojson.git
