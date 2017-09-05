@@ -28,7 +28,7 @@
     "buble": "^0.15.2",
     "gh-release": "^2.2.0",
     "mocha": "^3.2.0",
-    "should": "^12.0.0",
+    "should": "^13.0.0",
     "sinon": "^3.2.1",
     "standard": "^9.0.1",
     "supertest": "^3.0.0"
