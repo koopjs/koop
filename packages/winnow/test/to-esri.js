@@ -62,6 +62,20 @@ test('do not overwrite the object id', t => {
   t.end()
 })
 
+test('do not include Type', t => {
+  const options = {
+    toEsri: true
+  }
+
+  const fixture = _.cloneDeep(geojson)
+  fixture.features[0].properties.OBJECTID = 1
+  fixture.metadata = { idField: 'OBJECTID' }
+
+  const result = Winnow.query(fixture, options)
+  t.notOk(result.features[0].type)
+  t.end()
+})
+
 test('converting date fields', t => {
   const options = {
     toEsri: true
