@@ -16,10 +16,14 @@ function route (req, res, geojson, options) {
   req.query = req.query || {}
   req.query = coerceQuery(req.query)
   req.params = req.params || {}
-  if (req.query.callback) req.query.callback = sanitizeCallback(req.query.callback)
+  const metadata = geojson.metadata || {}
+
   Object.keys(req.query).forEach(key => {
     req.query[key] = tryParse(req.query[key])
   })
+
+  if (req.query.callback) req.query.callback = sanitizeCallback(req.query.callback)
+  if (isNaN(req.query.limit)) req.query.limit = metadata.maxRecordCount || 2000
 
   // if this is for a method we can handle like query
   const method = req.params && req.params.method

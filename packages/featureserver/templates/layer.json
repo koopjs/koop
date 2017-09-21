@@ -35,7 +35,7 @@
   "canScaleSymbols": false,
   "hasLabels": false,
   "capabilities": "Query",
-  "maxRecordCount": 1000,
+  "maxRecordCount": 2000,
   "supportsStatistics": true,
   "supportsAdvancedQueries": true,
   "supportedQueryFormats": "JSON",

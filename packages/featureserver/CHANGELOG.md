@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Limit to max record count
+
 ## [2.4.3] 08-23-2017
 ### Fixed
 * Don't throw an exception when response includes only tables

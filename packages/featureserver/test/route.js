@@ -55,6 +55,18 @@ describe('Routing feature server requests', () => {
         .expect(200, done)
     })
 
+    it('should respect passed in max record count', done => {
+      data.metadata.maxRecordCount = 2
+      request(app)
+        .get('/FeatureServer/0/query?f=json&where=1%3D1')
+        .expect(res => {
+          res.body.features[1].attributes.OBJECTID.should.equal(1)
+          res.body.features.length.should.equal(2)
+        })
+        .expect('Content-Type', /json/)
+        .expect(200, done)
+    })
+
     it('should ignore empty query parameters', done => {
       request(app)
         .get('/FeatureServer/0/query?f=json&orderByFields=')
