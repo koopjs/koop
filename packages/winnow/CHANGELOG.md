@@ -2,6 +2,8 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
 ## [1.12.2] - 08-30-2017
 ### Fixed
 * Do not project non-numeric coordinates

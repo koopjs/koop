@@ -54,9 +54,13 @@ sql.fn.esriGeom = function (geometry) {
 
 sql.fn.project = function (geometry, projection) {
   if (!(geometry && geometry.coordinates) || !projection) return geometry
-  return {
-    type: geometry.type,
-    coordinates: projectCoordinates(geometry.coordinates, { outSR: projection })
+  try {
+    return {
+      type: geometry.type,
+      coordinates: projectCoordinates(geometry.coordinates, { outSR: projection })
+    }
+  } catch (e) {
+    return null
   }
 }
 
