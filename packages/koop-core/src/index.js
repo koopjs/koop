@@ -141,7 +141,7 @@ Koop.prototype._initProviderModel = function (provider) {
     ThisModel.super_.call(this, options)
   }
 
-  ThisModel.prototype = Model.prototype
+  extend(ThisModel, Model)
   Util.inherits(ThisModel, provider.Model)
 
   return new ThisModel(this)
@@ -154,12 +154,17 @@ Koop.prototype._initProviderModel = function (provider) {
  * @param {object} output - the output plugin to be registered
  */
 Koop.prototype._registerOutput = function (Output) {
-  for (const p in Output.prototype) {
-    Controller.prototype[p] = Output.prototype[p]
-    DatasetController.prototype[p] = Output.prototype[p]
-  }
+  extend(Controller, Output)
+  extend(DatasetController, Output)
+
   this.pluginRoutes = this.pluginRoutes.concat(Output.routes)
   this.log.info('registered output:', Output.name, Output.version)
+}
+
+function extend (klass, extender) {
+  for (const p in extender.prototype) {
+    klass.prototype[p] = extender.prototype[p]
+  }
 }
 
 /**

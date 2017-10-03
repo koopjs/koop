@@ -2,9 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* multiple provider installation
+
 ## [3.5.2] - 2017-08-14
 ### Fixed
-* fix multiple output installation
+* multiple output installation
 
 ## [3.5.1] - 2017-03-16
 ### Fixed
