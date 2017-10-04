@@ -47,7 +47,7 @@ Pass in an `incoming request object`, an `outgoing response object`, a `geojson`
 FeatureServer.route(req, res, data, options)
 ```
 
-- **data** is a geojson object extended with some additional properties. These properties are optional and can be used to provide more specific metadata or to shortcut the built in filtering mechanism.
+- **data** is either a geojson object extended with some additional properties or an object with a layers property which an array of extended geojson objects. These properties are optional and can be used to provide more specific metadata or to shortcut the built in filtering mechanism.
 
 e.g.
 
@@ -79,6 +79,22 @@ e.g.
   }
   count: Number // pass count if the number of features in a query has been pre-calculated
 }
+```
+
+or
+
+```js
+{
+  layers: [
+    {
+      type: 'FeatureCollection'
+      ...
+    },
+    {
+      type: 'FeatureCollection' 
+      ...
+    }
+]
 ```
 - **options** is an object that dictates method actions. See `FeatureServer.query` and `FeatureServer.generateRenderer` for more details.
 
