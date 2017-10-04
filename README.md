@@ -34,7 +34,7 @@ Visit the demo at [http://koop.dc.esri.com](http://koop.dc.esri.com).
 - **Outputs**: server data from Koop using any API format like Geoservices, SODA, or WFS
   - Example: [Koop-Output-Geoservices](https://github.com/koopjs/koop-output-geoservices)
 - **Caches**: store, process and query GeoJSON
-  - Example: [Koop-Cache-Memory](https:/github.com/koopjs/koop-cache-memory)
+  - Example: [Koop-Cache-Memory](https://github.com/koopjs/koop-cache-memory)
 - **Filesytems**: write exported data, tiles and more to disk or to cloud storage like AWS S3
   - Example: [Koop-FileSystem-S3](https://github.com/koopjs/koop-filesystem-s3)
 - **Plugins**: extend the Koop API in any way
