@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.12.4] - 10-5-2017
 ### Changed
 * Add metadata.limitExceeded true/false on limit queries to denote whether the limit restricted the number of features returned
 
@@ -213,6 +213,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[1.12.4]: https://github.com/featureserver/winnow/compare/v1.12.3...v1.12.4
 [1.12.3]: https://github.com/featureserver/winnow/compare/v1.12.2...v1.12.3
 [1.12.2]: https://github.com/featureserver/winnow/compare/v1.12.1...v1.12.2
 [1.12.1]: https://github.com/featureserver/winnow/compare/v1.12.0...v1.12.1
