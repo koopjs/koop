@@ -53,8 +53,14 @@ function serverLayerInfo (geojson = {}, id) {
  * @param {object} data
  * @param {object} params
  */
-function layersInfo (data, params = {}) {
+function layersInfo (server, params = {}) {
   let layerJson
+  let data
+  if (server.type === 'FeatureCollection') {
+    data = [server]
+  } else {
+    data = server.layers
+  }
   let json
   if (!data.length) {
     params.extent = Utils.getExtent(data)
