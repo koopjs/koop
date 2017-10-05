@@ -27,6 +27,7 @@ function aggregateQuery (features, query, options) {
 
 function limitQuery (features, query, options) {
   let filtered = []
+  let limitExceeded = false
   if (options.offset) {
     if (options.offset >= features.length) throw new Error('OFFSET >= features length: ' + options)
     options.limit += options.offset
@@ -34,8 +35,18 @@ function limitQuery (features, query, options) {
   features.some((feature, i) => {
     const result = processQuery(feature, query, options, i)
     if (result) filtered.push(result)
-    return filtered.length === options.limit
+    if (filtered.length === (options.limit + 1)) {
+      limitExceeded = true
+      return true
+    }
   })
+
+  if (limitExceeded) filtered = filtered.slice(0, -1)
+
+  if (options.collection) {
+    options.collection.metadata = Object.assign({}, options.collection.metadata, { limitExceeded })
+  }
+
   return finishQuery(filtered, options)
 }
 

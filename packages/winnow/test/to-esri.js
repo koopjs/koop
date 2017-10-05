@@ -1,4 +1,5 @@
 const test = require('tape')
+const trees = require('./fixtures/trees.json')
 const geojson = require('./fixtures/to-esri-fixture.json')
 const oidFeature = require('./fixtures/oid-feature.json')
 const emptyCollection = require('./fixtures/emptyCollection.json')
@@ -13,6 +14,41 @@ test('detecting fields', t => {
   t.equal(metadata.fields[1].type, 'Integer')
   t.equal(metadata.fields[2].type, 'String')
   t.equal(metadata.fields[3].type, 'Date')
+  t.end()
+})
+
+test('With a where option and a limit smaller than the filter', t => {
+  const options = {
+    where: "Genus like '%Quercus%'",
+    limit: 1,
+    toEsri: true
+  }
+  const result = Winnow.query(trees, options)
+  const metadata = result.metadata
+  t.ok(metadata.limitExceeded)
+  t.end()
+})
+
+test('With a where option and a limit larger than the filter', t => {
+  const options = {
+    where: "Genus like '%Quercus%'",
+    toEsri: true
+  }
+  const result = Winnow.query(trees, options)
+  const metadata = result.metadata
+  t.notOk(metadata.limitExceeded)
+  t.end()
+})
+
+test('With a where option and a limit the same as the the filter', t => {
+  const options = {
+    where: "Genus like '%Quercus%'",
+    toEsri: true,
+    limit: 12105
+  }
+  const result = Winnow.query(trees, options)
+  const metadata = result.metadata
+  t.notOk(metadata.limitExceeded)
   t.end()
 })
 

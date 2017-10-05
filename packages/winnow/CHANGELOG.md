@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Add metadata.limitExceeded true/false on limit queries to denote whether the limit restricted the number of features returned
+
 ## [1.12.3] - 09-22-2017
 ### Fixed
 * Do not throw error on geometries that cannot be projected
