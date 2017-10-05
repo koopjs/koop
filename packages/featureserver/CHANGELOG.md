@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Server info works when metadata.name is undefined
+
 ## [2.4.5] 10-05-2017
 ### Changed
 * set `exceededTransferLimit = true` when the number of features returned is limited by the maxRecordCount

@@ -37,7 +37,7 @@ function serverLayerInfo (geojson = {}, id) {
   const geometryType = metadata.geometryType || Utils.getGeomType(geojson)
   return {
     id,
-    name: geojson.metadata.name,
+    name: metadata.name || `Layer_${id}`,
     parentLayerId: -1,
     defaultVisibility: true,
     subLayerIds: null,
