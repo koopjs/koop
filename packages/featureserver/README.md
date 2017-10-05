@@ -64,6 +64,7 @@ e.g.
     geometryType: String // REQUIRED if no features are returned with this object Point || MultiPoint || LineString || MultiLineString || Polygon || MultiPolygon
     idField: String, // unique identifier field,
     maxRecordCount: Number, // the maximum number of features a provider can return at once
+    limitExceeded: Boolean, // whether or not the server has limited the features returned
     timeInfo: Object // describes the time extent and capabilities of the layer,
     fields: [
      { // Subkeys are optional
@@ -91,7 +92,7 @@ or
       ...
     },
     {
-      type: 'FeatureCollection' 
+      type: 'FeatureCollection'
       ...
     }
 ]
@@ -152,6 +153,7 @@ const server = {
       idField: String // unique identifier field,
       geometryType: String // REQUIRED if no features are returned with this object Point || MultiPoint || LineString || MultiLineString || Polygon || MultiPolygon
       maxRecordCount: Number // the maximum number of features a provider can return at once
+      limitExceeded: Boolean, // whether or not the server has limited the features returned
       timeInfo: Object // describes the time extent and capabilities of the layer
     }
     features: [// If all the metadata provided above is provided features are optional.
