@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* set `exceededTransferLimit = true` when the number of features returned is limited by the maxRecordCount
+
 ## [2.4.4] 09-21-17
 ### Fixed
 * Limit to max record count

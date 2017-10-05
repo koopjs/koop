@@ -51,7 +51,7 @@ function renderLayer (featureCollection = {}, options = {}) {
   if (json.type) json.type = isTable(json, data) ? 'Table' : 'Feature Layer'
   if (json.drawingInfo) json.drawingInfo.renderer = renderers[json.geometryType]
   if (json.timeInfo) json.timeInfo = metadata.timeInfo
-  if (json.maxRecordCount) json.maxRecordCount = metadata.maxRecordCount || 1000
+  if (json.maxRecordCount) json.maxRecordCount = metadata.maxRecordCount || 2000
   if (json.displayField) json.displayField = metadata.displayField || json.fields[0].name
   if (json.objectIdField) json.objectIdField = metadata.idField || 'OBJECTID'
   return json
@@ -59,13 +59,17 @@ function renderLayer (featureCollection = {}, options = {}) {
 
 function renderFeatures (featureCollection = {}, options = {}) {
   const json = _.cloneDeep(templates.features)
-  const data = featureCollection
   if (!json) throw new Error('Unsupported operation')
+  const data = featureCollection
+  const metadata = data.metadata || {}
+  const maxRecordCount = metadata.maxRecordCount || 2000
 
   if (json.geometryType) json.geometryType = options.geometryType
   if (json.spatialReference) json.spatialReference = computeSpatialReference(options.spatialReference)
   if (json.fields) json.fields = computeFieldObject(data, 'layer', options)
   if (json.features) json.features = data.features
+  if (metadata.limitExceeded && (options.limit >= maxRecordCount)) json.exceededTransferLimit = true
+
   return json
 }
 
@@ -85,7 +89,7 @@ function renderServer (server, { layers, tables }) {
   json.serviceDescription = server.description
   json.layers = layers
   json.tables = tables
-  json.maxRecordCount = server.maxRecordCount || (layers[0] && layers[0].metadata && layers[0].metadata.maxRecordCount) || 1000
+  json.maxRecordCount = server.maxRecordCount || (layers[0] && layers[0].metadata && layers[0].metadata.maxRecordCount) || 2000
   json.hasStaticData = !!server.hasStaticData
   return json
 }

@@ -6,5 +6,6 @@
   "geometryType" : "esriGeometryPoint",
   "spatialReference" : {"wkid" : 4326},
   "fields" : [],
-  "features" : []
+  "features" : [],
+  "exceededTransferLimit": false
 }

@@ -50,6 +50,7 @@ describe('Routing feature server requests', () => {
         .expect(res => {
           res.body.features[1].attributes.OBJECTID.should.equal(1)
           res.body.features.length.should.equal(417)
+          res.body.exceededTransferLimit.should.equal(false)
         })
         .expect('Content-Type', /json/)
         .expect(200, done)
@@ -62,6 +63,7 @@ describe('Routing feature server requests', () => {
         .expect(res => {
           res.body.features[1].attributes.OBJECTID.should.equal(1)
           res.body.features.length.should.equal(2)
+          res.body.exceededTransferLimit.should.equal(true)
         })
         .expect('Content-Type', /json/)
         .expect(200, done)
