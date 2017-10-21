@@ -131,3 +131,6 @@
 [submodule "providers/geojson"]
 	path = providers/geojson
 	url = https://github.com/koopjs/koop-provider-geojson.git
+[submodule "providers/composite"]
+	path = providers/composite
+	url = https://github.com/koopjs/koop-provider-composite.git
