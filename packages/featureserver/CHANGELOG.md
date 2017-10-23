@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.5.0] 10-23-2017
 ### Added
 * `filtersApplied.offset` in metadata
 
@@ -209,6 +209,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.5.0]: https://github.com/koopjs/featureserver/compare/v2.4.6...v2.5.0
 [2.4.6]: https://github.com/koopjs/featureserver/compare/v2.4.5...v2.4.6
 [2.4.5]: https://github.com/koopjs/featureserver/compare/v2.4.4...v2.4.5
 [2.4.4]: https://github.com/koopjs/featureserver/compare/v2.4.3...v2.4.4
