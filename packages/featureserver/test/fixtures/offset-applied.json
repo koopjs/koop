@@ -1,0 +1,14 @@
+{
+  "filtersApplied": {
+    "offset": true
+  },
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+      }
+    }
+  ]
+}

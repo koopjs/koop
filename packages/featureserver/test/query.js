@@ -11,6 +11,7 @@ const statsDateNoMeta = require('./fixtures/stats-date-no-metadata.json')
 const statsDateInMetaValue = require('./fixtures/stats-date-with-metadata-value.json')
 const oneOfEach = require('./fixtures/one-of-each.json')
 const fullySpecified = require('./fixtures/fully-specified-metadata.json')
+const offsetApplied = require('./fixtures/offset-applied.json')
 
 // const moment = require('moment')
 
@@ -386,6 +387,13 @@ describe('Query operatons', () => {
       const json = FeatureServer.query(dateNoMeta, {})
       json.features[0].attributes.dateField.should.equal(1497578316179)
       json.fields[0].type.should.equal('esriFieldTypeDate')
+    })
+  })
+
+  describe('when an offset has already been applied', () => {
+    it('should remove the result offset', () => {
+      const json = FeatureServer.query(offsetApplied, {resultOffset: 50, resultRecordCount: 1})
+      json.features.length.should.be.greaterThan(0)
     })
   })
 })

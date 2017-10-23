@@ -75,8 +75,9 @@ e.g.
     ]
   },
   filtersApplied: {
-    geometry: Boolean, // true if a geometric filter has already been applied to the data'
-    where: Boolean // true if a sql-like where filter has already been applied to the data
+    geometry: Boolean, // true if a geometric filter has already been applied to the data
+    where: Boolean, // true if a sql-like where filter has already been applied to the data
+    offset: Boolean // true if the result offset has already been applied to the data
   }
   count: Number // pass count if the number of features in a query has been pre-calculated
 }
