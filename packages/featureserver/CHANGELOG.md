@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* `filtersApplied.offset` in metadata
+
 ## [2.4.6] 10-05-2017
 ### Fixed
 * Server info works when metadata.name is undefined
