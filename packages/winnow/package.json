@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/koopjs/winnow#readme",
   "dependencies": {
-    "@turf/bbox-polygon": "^4.1.0",
+    "@turf/bbox-polygon": "^5.0.0",
     "@turf/centroid": "^4.1.0",
     "alasql": "^0.4.0",
     "classybrew": "0.0.3",
