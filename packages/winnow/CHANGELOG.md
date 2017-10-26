@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Converting polygons from geojson to esri json
+
 ## [1.12.4] - 10-5-2017
 ### Changed
 * Add metadata.limitExceeded true/false on limit queries to denote whether the limit restricted the number of features returned
