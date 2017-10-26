@@ -99,6 +99,29 @@ function arraysIntersectArrays (a, b) {
   return false
 }
 
+// ported from terraformer-arcgis-parser.js https://github.com/Esri/Terraformer/blob/master/terraformer.js#L502-L512
+function coordinatesContainPoint (coordinates, point) {
+  var contains = false;
+  for (var i = -1, l = coordinates.length, j = l - 1; ++i < l; j = i) {
+    if (((coordinates[i][1] <= point[1] && point[1] < coordinates[j][1]) ||
+         (coordinates[j][1] <= point[1] && point[1] < coordinates[i][1])) &&
+        (point[0] < (((coordinates[j][0] - coordinates[i][0]) * (point[1] - coordinates[i][1])) / (coordinates[j][1] - coordinates[i][1])) + coordinates[i][0])) {
+      contains = !contains;
+    }
+  }
+  return contains;
+}
+
+// ported from ported from terraformer-arcgis-parser.js https://github.com/Esri/terraformer-arcgis-parser/blob/master/terraformer-arcgis-parser.js#L159-L166
+function coordinatesContainCoordinates (outer, inner) {
+  var intersects = arraysIntersectArrays(outer, inner);
+  var contains = coordinatesContainPoint(outer, inner[0]);
+  if (!intersects && contains) {
+    return true;
+  }
+  return false;
+}
+
 function edgeIntersectsEdge (a1, a2, b1, b2) {
   const uaT = (b2[0] - b1[0]) * (a1[1] - b1[1]) - (b2[1] - b1[1]) * (a1[0] - b1[0])
   const ubT = (a2[0] - a1[0]) * (a1[1] - b1[1]) - (a2[1] - a1[1]) * (a1[0] - b1[0])
@@ -126,5 +149,7 @@ module.exports = {
   flattenMultiPolygonRings,
   closeRing,
   orientRings,
-  arraysIntersectArrays
+  arraysIntersectArrays,
+  coordinatesContainPoint,
+  coordinatesContainCoordinates
 }
