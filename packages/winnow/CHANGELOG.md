@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.12.5] - 10-27-2017
 ### Fixed
 * Converting polygons from geojson to esri json
 
@@ -217,6 +217,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[1.12.5]: https://github.com/featureserver/winnow/compare/v1.12.4...v1.12.5
 [1.12.4]: https://github.com/featureserver/winnow/compare/v1.12.3...v1.12.4
 [1.12.3]: https://github.com/featureserver/winnow/compare/v1.12.2...v1.12.3
 [1.12.2]: https://github.com/featureserver/winnow/compare/v1.12.1...v1.12.2
