@@ -42,6 +42,7 @@
   "ownershipBasedAccessControlForFeatures": {
     "allowOthersToQuery": true
   },
+  "supportsCoordinatesQuantization": false,
   "useStandardizedQueries": true,
   "advancedQueryCapabilities": {
     "useStandardizedQueries": true,

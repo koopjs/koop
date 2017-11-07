@@ -1,6 +1,7 @@
 const Winnow = require('winnow')
 const { renderFeatures, renderStatistics, renderStats } = require('./templates')
 const Utils = require('./utils')
+const _ = require('lodash')
 
 module.exports = query
 
@@ -14,15 +15,16 @@ module.exports = query
 function query (data, params = {}) {
   // TODO clean up this series of if statements
   const filtersApplied = data.filtersApplied || {}
-  if (filtersApplied.projection) delete params.outSR
-  if (filtersApplied.geometry) delete params.geometry
-  if (filtersApplied.where || params.where === '1=1') delete params.where
-  if (filtersApplied.offset) delete params.resultOffset
+  const options = _.cloneDeep(params)
+  if (filtersApplied.projection) delete options.outSR
+  if (filtersApplied.geometry) delete options.geometry
+  if (filtersApplied.where || options.where === '1=1') delete options.where
+  if (filtersApplied.offset) delete options.resultOffset
   if (data.statistics) return renderStats(data)
-  if (params.returnCountOnly && data.count) return { count: data.count }
+  if (options.returnCountOnly && data.count) return { count: data.count }
 
-  if (params.f !== 'geojson') params.toEsri = true
-  const queriedData = Winnow.query(data, params)
+  if (options.f !== 'geojson') options.toEsri = true
+  const queriedData = Winnow.query(data, options)
 
   if (params.f === 'geojson') return { type: 'FeatureCollection', features: queriedData.features }
   else return geoservicesPostQuery(data, queriedData, params)

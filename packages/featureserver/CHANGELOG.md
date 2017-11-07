@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Set spatial reference correctly even when projection is already applied
+
 ## [2.6.0] - 11-07-2017
 ### Added
 * `filtersApplied.projection` in metadata

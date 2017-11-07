@@ -1,6 +1,7 @@
 /* global describe, it */
 const FeatureServer = require('../src')
 const data = require('./fixtures/snow.json')
+const projectionApplied = require('./fixtures/projection-applied.json')
 const should = require('should') // eslint-disable-line
 const polyData = require('./fixtures/polygon.json')
 const budgetTable = require('./fixtures/budget-table.json')
@@ -116,6 +117,17 @@ describe('Query operatons', () => {
         geometry: { xmin: -110, ymin: 30, xmax: -106, ymax: 50, spatialReference: { wkid: 4326 } },
         geometryType: 'esriGeometryEnvelope'
       })
+      response.should.be.an.instanceOf(Object)
+      response.features.length.should.equal(100)
+    })
+
+    it('should still have the correct outSR even when projection is already applied', () => {
+      const response = FeatureServer.query(projectionApplied, {
+        outSR: 102100,
+        geometry: { xmin: -110, ymin: 30, xmax: -106, ymax: 50, spatialReference: { wkid: 4326 } },
+        geometryType: 'esriGeometryEnvelope'
+      })
+      response.spatialReference.wkid.should.equal(102100)
       response.should.be.an.instanceOf(Object)
       response.features.length.should.equal(100)
     })
