@@ -13,9 +13,11 @@ module.exports = query
  */
 function query (data, params = {}) {
   // TODO clean up this series of if statements
-  if (data.filtersApplied && data.filtersApplied.geometry) delete params.geometry
-  if ((data.filtersApplied && data.filtersApplied.where) || params.where === '1=1') delete params.where
-  if (data.filtersApplied && data.filtersApplied.offset) delete params.resultOffset
+  const filtersApplied = data.filtersApplied || {}
+  if (filtersApplied.projection) delete params.outSR
+  if (filtersApplied.geometry) delete params.geometry
+  if (filtersApplied.where || params.where === '1=1') delete params.where
+  if (filtersApplied.offset) delete params.resultOffset
   if (data.statistics) return renderStats(data)
   if (params.returnCountOnly && data.count) return { count: data.count }
 

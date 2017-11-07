@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* `filtersApplied.projection` in metadata
+
 ## [2.5.0] 10-23-2017
 ### Added
 * `filtersApplied.offset` in metadata
