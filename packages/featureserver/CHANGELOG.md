@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.6.1] - 11-07-2017
 ### Fixed
 * Set spatial reference correctly even when projection is already applied
 
@@ -217,6 +217,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.6.1]: https://github.com/koopjs/featureserver/compare/v2.6.0...v2.6.1
 [2.6.0]: https://github.com/koopjs/featureserver/compare/v2.5.0...v2.6.0
 [2.5.0]: https://github.com/koopjs/featureserver/compare/v2.4.6...v2.5.0
 [2.4.6]: https://github.com/koopjs/featureserver/compare/v2.4.5...v2.4.6
