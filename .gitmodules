@@ -134,3 +134,6 @@
 [submodule "providers/composite"]
 	path = providers/composite
 	url = https://github.com/koopjs/koop-provider-composite.git
+[submodule "providers/marklogic"]
+	path = providers/marklogic
+	url = git://github.com/koopjs/koop-provider-marklogic.git
