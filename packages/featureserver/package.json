@@ -1,6 +1,6 @@
 {
   "name": "featureserver",
-  "version": "2.6.1",
+  "version": "2.7.0",
   "description": "*An open source implementation of the GeoServices specification*",
   "main": "dist/index.js",
   "directories": {
@@ -33,25 +33,13 @@
     "supertest": "^3.0.0"
   },
   "standard": {
-    "globals": [
-      "describe",
-      "it",
-      "before",
-      "after",
-      "beforeEach",
-      "afterEach"
-    ]
+    "globals": ["describe", "it", "before", "after", "beforeEach", "afterEach"]
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/koopjs/FeatureServer.git"
   },
-  "keywords": [
-    "featureserver",
-    "geoservices",
-    "geojson",
-    "sql"
-  ],
+  "keywords": ["featureserver", "geoservices", "geojson", "sql"],
   "bugs": {
     "url": "https://github.com/koopjs/FeatureServer/issues"
   },
