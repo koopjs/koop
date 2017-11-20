@@ -24,7 +24,7 @@ function query (data, params = {}) {
   if (options.returnCountOnly && data.count) return { count: data.count }
 
   if (options.f !== 'geojson') options.toEsri = true
-  const queriedData = Winnow.query(data, options)
+  const queriedData = filtersApplied.all ? data : Winnow.query(data, options)
 
   if (params.f === 'geojson') return { type: 'FeatureCollection', features: queriedData.features }
   else return geoservicesPostQuery(data, queriedData, params)
