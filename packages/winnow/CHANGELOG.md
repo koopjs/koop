@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Exception when feature is null
+
 ## [1.12.5] - 10-27-2017
 ### Fixed
 * Converting polygons from geojson to esri json

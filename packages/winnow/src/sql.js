@@ -10,21 +10,21 @@ const reducePrecision = require('./geometry/reduce-precision')
 
 sql.MAXSQLCACHESIZE = 0
 
-sql.fn.ST_Within = function (feature, filterGeom) {
+sql.fn.ST_Within = function (feature = {}, filterGeom = {}) {
   if (!(feature && feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
   const filter = new Terraformer.Primitive(filterGeom)
   const TfFeature = new Terraformer.Primitive(feature)
   return filter.within(TfFeature)
 }
 
-sql.fn.ST_Contains = function (feature, filterGeom) {
+sql.fn.ST_Contains = function (feature = {}, filterGeom = {}) {
   if (!(feature && feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
   const filter = new Terraformer.Primitive(filterGeom)
   const TfFeature = new Terraformer.Primitive(feature)
   return filter.contains(TfFeature)
 }
 
-sql.fn.ST_Intersects = function (feature, filterGeom) {
+sql.fn.ST_Intersects = function (feature = {}, filterGeom = {}) {
   if (!(feature.type || feature.coordinates)) feature = convertFromEsri(feature) // TODO: remove ? temporary esri geometry conversion
   if (!(feature && feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
   if (feature.type === 'Point') return sql.fn.ST_Contains(feature, filterGeom)
@@ -33,7 +33,7 @@ sql.fn.ST_Intersects = function (feature, filterGeom) {
   return filter.intersects(TfFeature)
 }
 
-sql.fn.geohash = function (geometry, precision) {
+sql.fn.geohash = function (geometry = {}, precision) {
   if (!geometry || !geometry.type || !geometry.coordinates) return
   precision = precision || 8
   if (geometry.type !== 'Point') geometry = centroid(geometry).geometry
