@@ -1,165 +1,149 @@
-const OPERATORS = ['>', '<', '=', '>=', '<=', 'like', 'ilike', 'in', 'is']
+const _ = require('lodash');
+const Parser = require('flora-sql-parser').Parser;
+const parser = new Parser();
+
+/**
+ * Convert an expression node to its string representation.
+ * @param  {object} node    AST expression node
+ * @param  {object} options winnow options
+ * @return {string}         expression string
+ */
+function handleExpr(node, options) {
+  let expr;
+
+  if (node.type === 'unary_expr') {
+    expr = `${node.operator} ${traverse(node.expr, options)}`
+  } else if (node.operator === '=' && node.left.value === 1 && node.right.value === 1) {
+    // a special case related to arcgis server
+    return '1=1'
+  } else {
+    // store the column node for value decoding
+
+    if (node.left.type === 'column_ref') {
+      node.right.columnNode = node.left
+    }
+
+    if (node.right.type === 'column_ref') {
+      node.left.columnNode = node.right
+    }
+
+    expr = `${traverse(node.left, options)} ${node.operator} ${traverse(node.right, options)}`
+  }
+
+  if (node.parentheses) {
+    expr = `(${expr})`
+  }
+
+  return expr
+}
+
+/**
+ * Convert an expression list node to its string representation.
+ * @param  {object} node    AST expression list node
+ * @param  {object} options winnow options
+ * @return {string}         expression list string
+ */
+function handleExprList(node, options) {
+  const values = node.value.map((valueNode) => traverse(valueNode, options)).join(',')
+  return `(${values})`
+}
+
+/**
+ * Convert a function node to its string representation.
+ * @param  {object} node    AST function node
+ * @param  {object} options winnow options
+ * @return {string}         function string
+ */
+function handleFunction(node, options) {
+  const args = handleExprList(node.args, options)
+  return `${node.name}${args}`
+}
+
+/**
+ * Convert a column node to its string representation.
+ * @param  {object} node    AST column node
+ * @param  {object} options winnow options
+ * @return {string}         column string
+ */
+function handleColumn(node, options) {
+  return options.esri ? `attributes->\`${node.column}\`` : `properties->\`${node.column}\``
+}
+
+/**
+ * Convert a value node to its string representation.
+ *
+ * If the value node has a reference to its column and this column is an encoded
+ * field, this function will try to decode the value.
+ *
+ * @param  {object} node    AST value node
+ * @param  {object} options winnow options
+ * @return {string}         value string
+ */
+function handleValue(node, options) {
+  let value = node.value;
+
+  if (node.columnNode) {
+    const field = _.find(options.esriFields, { name: node.columnNode.column })
+
+    if (_.has(field, 'domain.codedValues')) {
+      const actual = _.find(field.domain.codedValues, { code: value })
+
+      if (actual) {
+        value = actual.name
+      }
+    }
+  }
+
+  if (typeof value === 'string') {
+    value = `'${value}'`
+  }
+
+  return value
+}
+
+/**
+ * Traverse a SQL AST and return its string representation
+ * @param  {object} node    AST node
+ * @param  {object} options winnow options
+ * @return {string}         AST string
+ */
+function traverse(node, options) {
+  if (!node) {
+    return ''
+  }
+
+  switch(node.type) {
+    case 'unary_expr':
+    case 'binary_expr':
+      return handleExpr(node, options)
+    case 'function':
+      return handleFunction(node, options)
+    case 'expr_list':
+      return handleExprList(node, options)
+    case 'column_ref':
+      return handleColumn(node, options)
+    case 'string':
+    case 'number':
+    case 'null':
+    case 'bool':
+      return handleValue(node, options)
+    default:
+      throw new Error('Unrecognized AST node: \n' + JSON.stringify(node, null, 2))
+   }
+}
 
 /**
  * Creates a viable SQL where clause from a passed in SQL (from a url "where" param)
- *
- * @param {string} where - a sql where clause
- * @param {Array} fields - a list of fields in to support coded value domains
- * @return {string} sql
+ * @param  {string} options winnow options
+ * @return {string}         SQL where clause
  */
-function createClause (options) {
+function createClause(options) {
   options = options || {}
   if (!options.where) return ''
-  let tokens = tokenize(options.where)
-  if (options.esriFields) {
-    tokens = decodeDomains(tokens, options.esriFields)
-  }
-  return translate(tokens, options)
-}
 
-/**
- * Take arbitrary sql and turns it into a consistent set of tokens
- */
-function tokenize (sql) {
-  // normalize all the binary expressions
-  sql = pad(sql)
-  let temp
-  // find any multi-word tokens and replace the spaces with a special character
-  // note: only 1 or 2 word tokens are accepted. Anything larger does not work
-  const regex = /['"]\S+\s\S+['"]/g
-  while ((temp = regex.exec(sql)) !== null) {
-    const field = temp[0].replace(/\s/, '|@')
-    sql = sql.replace(temp[0], field)
-  }
-  return sql.split(' ')
-}
-
-/**
- * Normalize binary operations to consistent spacing
- */
-function pad (sql) {
-  const operators = [
-    {regex: />=/g, string: '>='},
-    {regex: /<=/g, string: '<='},
-    {regex: /=/g, string: '='},
-    {regex: />(?!=)/g, string: '>'},
-    {regex: /<(?!=)/g, string: '<'}
-  ]
-  const padded = operators.reduce(function (statement, op) {
-    const pad = statement.replace(op.regex, ` ${op.string} `)
-    // ugly hack because javascripts haz no lookbehind
-    return pad.replace(/> =/, '>=').replace(/< =/, '<=').replace(/i like/, 'ilike')
-  }, sql)
-  return padded.replace(/\s\s/g, ' ')
-}
-
-/**
- * Iterate through all tokens and replace values that belong to a coded domain
- * @param {array} tokens - a set of tokens for a sql where clause
- * @param {array} fields - the set of fields from a geoservices compatible service
- * @return {array} a set of tokens where any coded values have been decoded
- */
-function decodeDomains (tokens, fields) {
-  return tokens.map(function (token, i) {
-    if (i < 2) return token
-    const left = tokens[i - 2]
-    const middle = tokens[i - 1]
-    const right = token
-    // if this set of 3 tokens makes a binary operation then check if we need to apply a domain
-    if (isBinaryOp(left, middle, right)) return applyDomain(left, right, fields)
-    else return token
-  })
-}
-
-/**
- * Check whether 3 tokens make up a binary operation
- */
-function isBinaryOp (left, middle, right) {
-  if (!left || !middle || !right) return false
-  return OPERATORS.indexOf(middle) > -1
-}
-
-/**
- * Check for any coded values in the fields
- * if we find a match, replace value with the coded val
- *
- * @param {string} fieldName - the name of field to look for
- * @param {number} value - the coded value
- * @param {Array} fields - a list of fields to use for coded value replacements
- */
-function applyDomain (fieldName, value, fields) {
-  const field = fields.filter(f => { return f.name === fieldName })[0]
-  if (!field) return value
-  const domain = field.domain
-  if (domain && domain.codedValues) {
-    const decoded = domain.codedValues.filter(cv => { return value.match(cv.code) })[0].name
-    return typeof decoded === 'string' ? `'${decoded}'` : decoded
-  } else {
-    return value
-  }
-}
-
-/**
- * Translate tokens to be compatible with postgres json
- */
-function translate (tokens, options) {
-  const parts = tokens.map(function (token, i) {
-    const middle = tokens[i + 1]
-    if (!middle) return token
-    // if this is a field name wrap it in postgres json
-    const left = jsonify(token, middle, options)
-    const right = removeTrailingParen(tokens[i + 2])
-    // if this is a numeric operation cast to float
-    return cast(left, middle, right)
-  })
-  return parts.join(' ').replace(/\|@/g, ' ')
-}
-
-/**
- * Cast a JSON selector to float if this is a numeric operation
- */
-function cast (left, middle, right) {
-  const numericOp = ['>', '<', '=', '>=', '<='].indexOf(middle) > -1 && isNumeric(right)
-  if (numericOp) return left
-  else return left
-}
-
-/**
- * Removes the trailing parameter from a sql token
- */
-function removeTrailingParen (token) {
-  if (!token) return undefined
-  const paren = token.indexOf(')') > -1
-  if (paren) return token.slice(0, paren)
-  else return token
-}
-
-/**
- * Apply JSON selectors where appropriate
- */
-function jsonify (token, next, options) {
-  options = options || {}
-  let leading = ''
-  const lastPar = token.lastIndexOf('(')
-  if (lastPar > -1) {
-    leading = token.slice(0, lastPar + 1)
-    token = token.slice(lastPar + 1, token.length)
-  }
-  const trailingParens = token.match(/\)+\s*$/)
-  let trailing = ''
-  if (trailingParens) {
-    trailing = trailingParens[0]
-    token = token.slice(0, trailingParens.index)
-  }
-  const selector = options.esri ? 'attributes' : 'properties'
-  if (next) next = next.toLowerCase()
-  const field = token.replace(/'|"/g, '')
-  if (OPERATORS.indexOf(next) > -1 && field !== '1') return `${leading}${selector}->\`${field}\`${trailing}`
-  else return leading + token + trailing
-}
-
-function isNumeric (num) {
-  return (num >= 0 || num < 0)
+  // AST parsing requires a complete SQL.
+  const whereTree = parser.parse('SELECT * WHERE ' + options.where).where
+  return traverse(whereTree, options)
 }
 
 module.exports = { createClause }
