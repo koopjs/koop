@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Fixed
 * Exception when feature is null
+* Parsing of complex where clauses
 
 ## [1.12.5] - 10-27-2017
 ### Fixed
