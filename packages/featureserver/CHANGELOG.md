@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.8.0] - 12-06-2017
 ### Added
 * Support translate and transform quantization metadata
 
@@ -225,6 +225,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.8.0]: https://github.com/koopjs/featureserver/compare/v2.7.0...v2.8.0
 [2.7.0]: https://github.com/koopjs/featureserver/compare/v2.6.1...v2.7.0
 [2.6.1]: https://github.com/koopjs/featureserver/compare/v2.6.0...v2.6.1
 [2.6.0]: https://github.com/koopjs/featureserver/compare/v2.5.0...v2.6.0
