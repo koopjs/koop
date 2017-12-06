@@ -185,7 +185,7 @@ describe('Query operatons', () => {
     it('should return well formed features', () => {
       const options = {
         f: 'json',
-        where: `Full/Part = 'P'`,
+        where: `"Full/Part" = 'P'`,
         returnGeometry: false,
         resultOffset: 0,
         resultRecordCount: 10,
@@ -201,7 +201,7 @@ describe('Query operatons', () => {
     it('should return correct out fields', () => {
       const options = {
         f: 'json',
-        where: `Full/Part = 'P'`,
+        where: `"Full/Part" = 'P'`,
         returnGeometry: false,
         resultOffset: 0,
         resultRecordCount: 10,

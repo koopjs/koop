@@ -66,6 +66,8 @@ e.g.
     maxRecordCount: Number, // the maximum number of features a provider can return at once
     limitExceeded: Boolean, // whether or not the server has limited the features returned
     timeInfo: Object // describes the time extent and capabilities of the layer,
+    transform: Object // describes a quantization transformation
+    translate Object // describes a quantization translation
     fields: [
      { // Subkeys are optional
        name: String,

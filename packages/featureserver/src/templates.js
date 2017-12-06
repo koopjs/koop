@@ -69,6 +69,8 @@ function renderFeatures (featureCollection = {}, options = {}) {
   if (json.fields) json.fields = computeFieldObject(data, 'layer', options)
   if (json.features) json.features = data.features
   if (metadata.limitExceeded && (options.limit >= maxRecordCount)) json.exceededTransferLimit = true
+  if (metadata.transform) json.transform = metadata.transform
+  if (metadata.translate) json.translate = metadata.translate
 
   return json
 }
