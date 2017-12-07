@@ -35,6 +35,7 @@ function renderLayer (featureCollection = {}, options = {}) {
   const json = _.cloneDeep(templates.layer)
   const data = featureCollection
   const metadata = data.metadata || {}
+  const capabilities = metadata.capabilities || {}
   if (!json) throw new Error('Unsupported operation')
 
   // These two rely on geojson, while everything else relies on the source data
@@ -54,6 +55,7 @@ function renderLayer (featureCollection = {}, options = {}) {
   if (json.maxRecordCount) json.maxRecordCount = metadata.maxRecordCount || 2000
   if (json.displayField) json.displayField = metadata.displayField || json.fields[0].name
   if (json.objectIdField) json.objectIdField = metadata.idField || 'OBJECTID'
+  if (capabilities.quantization) json.supportsCoordinatesQuantization = true
   return json
 }
 
@@ -70,7 +72,6 @@ function renderFeatures (featureCollection = {}, options = {}) {
   if (json.features) json.features = data.features
   if (metadata.limitExceeded && (options.limit >= maxRecordCount)) json.exceededTransferLimit = true
   if (metadata.transform) json.transform = metadata.transform
-  if (metadata.translate) json.translate = metadata.translate
 
   return json
 }

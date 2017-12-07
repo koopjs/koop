@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Support for passing through quantization capability
+
 ## [2.8.0] - 12-06-2017
 ### Added
 * Support translate and transform quantization metadata

@@ -67,7 +67,6 @@ e.g.
     limitExceeded: Boolean, // whether or not the server has limited the features returned
     timeInfo: Object // describes the time extent and capabilities of the layer,
     transform: Object // describes a quantization transformation
-    translate Object // describes a quantization translation
     fields: [
      { // Subkeys are optional
        name: String,
@@ -75,6 +74,9 @@ e.g.
        alias: String, // how should clients display this field name,
      }
     ]
+  },
+  capabilities: {
+    quantization: Boolean // True if the provider supports quantization
   },
   filtersApplied: {
     all: Boolean // true if all post processing should be skipped
