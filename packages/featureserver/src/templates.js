@@ -35,7 +35,7 @@ function renderLayer (featureCollection = {}, options = {}) {
   const json = _.cloneDeep(templates.layer)
   const data = featureCollection
   const metadata = data.metadata || {}
-  const capabilities = metadata.capabilities || {}
+  const capabilities = data.capabilities || {}
   if (!json) throw new Error('Unsupported operation')
 
   // These two rely on geojson, while everything else relies on the source data

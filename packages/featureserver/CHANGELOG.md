@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Position of capabilities
+* version to support quantization
+
 ## [2.9.0] - 12-07-2017
 ### Added
 * Support for passing through quantization capability
