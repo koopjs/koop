@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.9.1] - 12-07-2017
 ### Fixed
 * Position of capabilities
 * version to support quantization
@@ -234,6 +234,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.9.1]: https://github.com/koopjs/featureserver/compare/v2.9.0...v2.9.1
 [2.9.0]: https://github.com/koopjs/featureserver/compare/v2.8.0...v2.9.0
 [2.8.0]: https://github.com/koopjs/featureserver/compare/v2.7.0...v2.8.0
 [2.7.0]: https://github.com/koopjs/featureserver/compare/v2.6.1...v2.7.0
