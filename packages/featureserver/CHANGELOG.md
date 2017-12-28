@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Fixed
 * logic for setting layer type to table
+* exception when count is 0 and no features are provided
 
 ## [2.9.1] - 12-07-2017
 ### Fixed

@@ -21,7 +21,7 @@ function query (data, params = {}) {
   if (filtersApplied.where || options.where === '1=1') delete options.where
   if (filtersApplied.offset) delete options.resultOffset
   if (data.statistics) return renderStats(data)
-  if (options.returnCountOnly && data.count) return { count: data.count }
+  if (options.returnCountOnly && data.count !== undefined) return { count: data.count }
 
   if (options.f !== 'geojson') options.toEsri = true
   const queriedData = filtersApplied.all ? data : Winnow.query(data, options)

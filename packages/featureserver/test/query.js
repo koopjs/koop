@@ -408,4 +408,16 @@ describe('Query operatons', () => {
       json.features.length.should.be.greaterThan(0)
     })
   })
+
+  describe('passing in a count', () => {
+    it('should pass through a count of 0', () => {
+      const json = FeatureServer.query({count: 0}, {returnCountOnly: true})
+      json.count.should.equal(0)
+    })
+
+    it('should pass through a count of 1', () => {
+      const json = FeatureServer.query({count: 1, features: [{}]}, {returnCountOnly: true})
+      json.count.should.equal(1)
+    })
+  })
 })
