@@ -5,6 +5,7 @@ const express = require('express')
 const should = require('should')
 const _ = require('lodash')
 const snow = require('./fixtures/snow.json')
+const noGeom = require('./fixtures/no-geometry.json')
 const ProviderStatsClassBreaks = require('./fixtures/generateRenderer/provider-statistics-with-classBreaks.json')
 const app = express()
 
@@ -122,6 +123,28 @@ describe('Routing feature server requests', () => {
         })
         .expect('Content-Type', /json/)
         .expect(200, done)
+    })
+
+    describe('no geometry', () => {
+      beforeEach(() => {
+        data = _.cloneDeep(noGeom)
+      })
+      it('should properly route and handle the layer with no geometry', done => {
+        request(app)
+          .get('/FeatureServer/3?f=json')
+          .expect(res => {
+            res.body.type.should.equal('Table')
+            res.body.id.should.equal(3)
+            res.body.fields
+              .filter(f => {
+                return f.name === 'OBJECTID'
+              })
+              .length.should.equal(1)
+            should.exist(res.body.extent)
+          })
+          .expect('Content-Type', /json/)
+          .expect(200, done)
+      })
     })
   })
 

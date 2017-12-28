@@ -14,7 +14,7 @@ function isTable (json, data) {
   if (json.geometryType || (json.metadata && json.metadata.geometryType)) return false
   var noExtent = !json.fullExtent || !json.fullExtent.xmin || !json.fullExtent.ymin || json.fullExtent.xmin === Infinity
   var hasFeatures = data.features || data[0].features
-  if (noExtent && !hasFeatures) return true
+  if (noExtent && hasFeatures) return true
   else return false
 }
 
