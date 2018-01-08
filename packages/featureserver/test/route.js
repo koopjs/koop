@@ -44,6 +44,18 @@ describe('Routing feature server requests', () => {
     })
   })
 
+  describe('Method not supported', () => {
+    it('should return an informative error', done => {
+      request(app)
+        .get('/FeatureServer/0/foobarbaz')
+        .expect(res => {
+          res.body.error.should.equal('Method not supported')
+        })
+        .expect('Content-Type', /json/)
+        .expect(400, done)
+    })
+  })
+
   describe('Query', () => {
     it('should properly route and handle a query', done => {
       request(app)

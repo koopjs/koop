@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Send 400 on unhandled request method
+
 ## [2.9.2] - 12-28-2017
 ### Fixed
 * logic for setting layer type to table

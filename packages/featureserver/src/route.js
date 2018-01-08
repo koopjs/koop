@@ -43,7 +43,7 @@ function execQuery (req, res, geojson, options) {
     response = FsQuery(geojson, req.query || {})
   } catch (e) {
     if (process.env.NODE_ENV === 'test') console.trace(e)
-    return res.status(500).json({ error: e.message })
+    return res.status(e.code || 500).json({ error: e.message })
   }
   if (req.query.callback) res.send(`${req.query.callback}(${JSON.stringify(response)})`)
   else res.status(200).json(response)
@@ -55,7 +55,7 @@ function execGenerateRenderer (req, res, geojson, options) {
     response = FsGenerateRenderer(geojson, req.query || {})
   } catch (e) {
     if (process.env.NODE_ENV === 'test') console.trace(e)
-    return res.status(500).json({ error: e.message })
+    return res.status(e.code || 500).json({ error: e.message })
   }
   if (req.query.callback) res.send(`${req.query.callback}(${JSON.stringify(response)})`)
   else res.status(200).json(response)
@@ -67,16 +67,18 @@ function execInfo (req, res, method, geojson) {
   try {
     if (/\/FeatureServer$/i.test(url)) {
       info = FsInfo.serverInfo(geojson, req.params)
-    } else if (/\/FeatureServer\/\d+/i.test(url)) {
+    } else if (/\/FeatureServer\/\d+$/i.test(url)) {
       info = FsInfo.layerInfo(geojson, req.params)
-    } else if (/\/FeatureServer\/layers/i.test(url)) {
+    } else if (/\/FeatureServer\/layers$/i.test(url)) {
       info = FsInfo.layersInfo(geojson, req.query)
     } else {
-      throw new Error('Method not supported')
+      const error = new Error('Method not supported')
+      error.code = 400
+      throw error
     }
   } catch (e) {
     if (process.env.NODE_ENV === 'test') console.trace(e)
-    return res.status(500).json({ error: e.message })
+    return res.status(e.code || 500).json({ error: e.message })
   }
   if (req.query.callback) res.send(`${req.query.callback}(${JSON.stringify(info)})`)
   else res.status(200).json(info)
