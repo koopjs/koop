@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Use error.code if available
+
 ## [1.1.1] - 2017-03-03
 ### Fixed
 * Plugin name is logged correctly at Koop startup

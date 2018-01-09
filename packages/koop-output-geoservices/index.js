@@ -5,7 +5,7 @@ function Geoservices () {}
 Geoservices.prototype.featureServer = function (req, res) {
   // model will be available when this is instantiated with the Koop controller
   this.model.pull(req, function (err, data) {
-    if (err) res.status(500).json({error: err.message})
+    if (err) res.status(err.code || 500).json({error: err.message})
     else FeatureServer.route(req, res, data)
   })
 }
