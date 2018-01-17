@@ -24,7 +24,8 @@ function createLogger (config) {
     const debugConsole = new winston.transports.Console({
       colorize: process.env.NODE_ENV === 'production',
       level,
-      json: process.env.NODE_ENV === 'production'
+      stringify: true,
+      json: true
     })
     return new winston.Logger({ transports: [debugConsole] })
   }
