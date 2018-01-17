@@ -1,10 +1,9 @@
 {
-  "name": "koop-logger",
-  "version": "1.2.0",
+  "name": "@koopjs/logger",
+  "version": "2.0.0",
   "description": "A shared logger for Koop",
   "main": "index.js",
   "scripts": {
-    "compile": "buble -i src -o dist",
     "test": "standard src"
   },
   "repository": {
@@ -21,7 +20,6 @@
     "winston": "^2.3.1"
   },
   "devDependencies": {
-    "buble": "^0.18.0",
     "standard": "^10.0.3"
   }
 }

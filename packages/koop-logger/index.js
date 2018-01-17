@@ -10,11 +10,20 @@ const path = require('path')
  */
 function createLogger (config) {
   config = config || {}
+  let level
+  if (process.env.KOOP_LOG_LEVEL) {
+    level = process.env.KOOP_LOG_LEVEL
+  } else if (process.env.NODE_ENV === 'production') {
+    level = 'info'
+  } else {
+    level = 'debug'
+  }
+
   if (!config.logfile) {
-    // no logfile defined, log to console only
+    // no logfile defined, log to STDOUT an STDERR
     const debugConsole = new winston.transports.Console({
       colorize: true,
-      level: 'debug'
+      level
     })
     return new winston.Logger({ transports: [debugConsole] })
   }
@@ -27,7 +36,7 @@ function createLogger (config) {
     dirname: logpath,
     colorize: true,
     json: false,
-    level: 'debug',
+    level,
     formatter: formatter
   })
   const logError = new winston.transports.File({
@@ -43,7 +52,7 @@ function createLogger (config) {
   // always log errors
   const transports = [logError]
   // only log everthing if debug mode is on
-  if (process.env['LOG_LEVEL'] && process.env['LOG_LEVEL'] === 'debug') {
+  if (process.env['LOG_LEVEL'] === 'debug') {
     transports.push(logAll)
   }
 
