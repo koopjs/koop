@@ -22,9 +22,9 @@ function createLogger (config) {
   if (!config.logfile) {
     // no logfile defined, log to STDOUT an STDERRv
     const debugConsole = new winston.transports.Console({
-      colorize: !!process.env.NODE_ENV,
+      colorize: process.env.NODE_ENV === 'production',
       level,
-      json: !!process.env.NODE_ENV
+      json: process.env.NODE_ENV === 'production'
     })
     return new winston.Logger({ transports: [debugConsole] })
   }
