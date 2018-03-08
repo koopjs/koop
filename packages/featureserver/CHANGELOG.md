@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* filtersApplied.limit for already applied limits
+
 ## [2.9.3] - 01-08-2018
 ### Fixed
 * Send 400 on unhandled request method

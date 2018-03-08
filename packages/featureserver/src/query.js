@@ -20,6 +20,10 @@ function query (data, params = {}) {
   if (filtersApplied.geometry) delete options.geometry
   if (filtersApplied.where || options.where === '1=1') delete options.where
   if (filtersApplied.offset) delete options.resultOffset
+  if (filtersApplied.limit) {
+    delete options.resultRecordCount
+    delete options.limit
+  }
   if (data.statistics) return renderStats(data)
   if (options.returnCountOnly && data.count !== undefined) return { count: data.count }
 
