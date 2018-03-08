@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.10.0] - 03-08-2018
 ### Added
 * filtersApplied.limit for already applied limits
 
@@ -247,6 +247,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.10.0]: https://github.com/koopjs/featureserver/compare/v2.9.3...v2.10.0
 [2.9.3]: https://github.com/koopjs/featureserver/compare/v2.9.2...v2.9.3
 [2.9.2]: https://github.com/koopjs/featureserver/compare/v2.9.1...v2.9.2
 [2.9.1]: https://github.com/koopjs/featureserver/compare/v2.9.0...v2.9.1
