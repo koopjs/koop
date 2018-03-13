@@ -30,7 +30,7 @@
     "mocha": "^4.0.0",
     "should": "^13.0.0",
     "sinon": "^4.0.0",
-    "standard": "^9.0.1",
+    "standard": "^11.0.0",
     "supertest": "^3.0.0"
   },
   "homepage": "https://github.com/koopjs/koop",
