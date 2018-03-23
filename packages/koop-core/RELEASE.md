@@ -41,6 +41,7 @@
 
 - Create a release on github using [`gh-release`](https://github.com/ngoldman/gh-release)
 - Verify that everything looks okay (you can undo a release on github, but not on npm)
+- Run `npm run compile`
 - Run `npm publish`
 
 ## GOTO 1
