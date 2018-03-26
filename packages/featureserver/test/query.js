@@ -195,9 +195,6 @@ describe('Query operatons', () => {
       const response = FeatureServer.query(budgetTable, options)
       response.fields.length.should.equal(9)
       response.features.length.should.equal(10)
-      response.features.forEach(function testForGeometry (feature) { 
-        feature.hasOwnProperty('geometry').should.equal(false) 
-      })
       Object.keys(response.features[0].attributes).length.should.equal(9)
     })
 
