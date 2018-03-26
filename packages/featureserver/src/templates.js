@@ -66,6 +66,10 @@ function renderFeatures (featureCollection = {}, options = {}) {
   const metadata = data.metadata || {}
   const maxRecordCount = metadata.maxRecordCount || 2000
 
+  if (options.returnGeometry === false) {
+    featureCollection.features.forEach(function removeGeometry (feature) { return delete feature.geometry })
+  }
+
   if (json.geometryType) json.geometryType = options.geometryType
   if (json.spatialReference) json.spatialReference = computeSpatialReference(options.spatialReference)
   if (json.fields) json.fields = computeFieldObject(data, 'layer', options)
