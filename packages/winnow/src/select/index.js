@@ -4,10 +4,14 @@ const createFieldsClause = require('./fields').createClause
 
 function createClause (options) {
   if (options.aggregates) return aggregates(options.aggregates, options.groupBy, options.esri)
-  const geometryClause = createGeometryClause(options)
-  const fieldsClause = createFieldsClause(options)
 
-  return `SELECT ${fieldsClause}, ${geometryClause} FROM ?`
+  var fieldsClause = createFieldsClause(options)
+
+  if (options.returnGeometry === false) {
+    return (`SELECT ${fieldsClause} FROM ?`)
+  }
+
+  return (`SELECT ${fieldsClause}, ${createGeometryClause(options)} FROM ?`)
 }
 
 module.exports = { createClause }
