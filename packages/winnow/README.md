@@ -270,7 +270,7 @@ Find a bug or want to request a new feature? Please let us know by submitting an
 
 # Contributing
 
-Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/Esri/contributing).
+Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/Esri/contributing) and the [RELEASE.md](RELEASE.md) for a description of our release process.
 
 # License
 

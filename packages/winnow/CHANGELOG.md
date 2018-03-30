@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* RELEASE.md and linked to it from README.md
+
 ## [1.12.6] - 12-05-2017
 ### Fixed
 * Exception when feature is null
