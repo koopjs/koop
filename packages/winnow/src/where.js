@@ -16,6 +16,8 @@ function handleExpr(node, options) {
   } else if (node.operator === '=' && node.left.value === 1 && node.right.value === 1) {
     // a special case related to arcgis server
     return '1=1'
+  } else if (node.operator === 'BETWEEN') {
+    expr = traverse(node.left, options) + " " + (node.operator) + " " + (traverse(node.right.value[0], options)) + "AND" + (traverse(node.right.value[1], options))
   } else {
     // store the column node for value decoding
 
@@ -101,6 +103,18 @@ function handleValue(node, options) {
   return value
 }
 
+
+/**
+ * Convert a timestamp node to its iso8601 string representation.
+ *
+ * @param  {object} node    AST value node
+ * @param  {object} options winnow options
+ * @return {string}         value string
+ */
+function handleTimestampValue(node, options) {
+  return `'${new Date(node.value).toISOString()}'`
+}
+
 /**
  * Traverse a SQL AST and return its string representation
  * @param  {object} node    AST node
@@ -127,6 +141,8 @@ function traverse(node, options) {
     case 'null':
     case 'bool':
       return handleValue(node, options)
+    case 'timestamp':
+      return handleTimestampValue(node, options)
     default:
       throw new Error('Unrecognized AST node: \n' + JSON.stringify(node, null, 2))
    }

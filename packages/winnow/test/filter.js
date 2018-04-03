@@ -526,6 +526,20 @@ test('with an esri-style date query', t => {
   run('permits', options, 211, t)
 })
 
+test('with a timestamp query', t => {
+  const options = {
+    where: "ISSUE_DATE >= timestamp '2017-01-05'"
+  }
+  run('permits', options, 211, t)
+})
+
+test('with a between query', t => {
+  const options = {
+    where: "ISSUE_DATE between timestamp '2017-01-05T00:00:00.000Z' AND timestamp '2017-04-08T23:59:59.000Z'"
+  }
+  run('permits', options, 211, t)
+})
+
 function run (data, options, expected, t) {
   t.plan(1)
   const features = require(`./fixtures/${data}.json`).features
