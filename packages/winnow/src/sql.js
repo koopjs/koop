@@ -25,8 +25,9 @@ sql.fn.ST_Contains = function (feature = {}, filterGeom = {}) {
 }
 
 sql.fn.ST_Intersects = function (feature = {}, filterGeom = {}) {
+  if (!feature) return false
   if (!(feature.type || feature.coordinates)) feature = convertFromEsri(feature) // TODO: remove ? temporary esri geometry conversion
-  if (!(feature && feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
+  if (!(feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
   if (feature.type === 'Point') return sql.fn.ST_Contains(feature, filterGeom)
   const filter = new Terraformer.Primitive(filterGeom)
   const TfFeature = new Terraformer.Primitive(feature)
