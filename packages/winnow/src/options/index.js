@@ -30,7 +30,7 @@ function prepare (options, features) {
     projection: normalizeProjection(options),
     classification: normalizeClassification(options)
   })
-  prepared.dateFields = normalizeDateFields(prepared.collection)
+  prepared.dateFields = normalizeDateFields(prepared.collection, prepared.fields)
   if (prepared.where === '1=1') delete prepared.where
   return prepared
 }

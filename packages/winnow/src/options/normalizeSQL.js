@@ -12,10 +12,16 @@ function normalizeDate (where) {
   return where
 }
 
+/**
+ * Transform the input of requested response fields
+ * @param {Object} options - object that may contain 'fields' or 'outFields' property
+ */
 function normalizeFields (options) {
   const fields = options.fields || options.outFields
   if (fields === '*') return undefined
-  return typeof fields === 'string' ? [fields] : fields
+  if (typeof fields === 'string' || fields instanceof String) return fields.split(',')
+  if (fields instanceof Array) return fields
+  return undefined
 }
 
 function normalizeOrder (options) {
