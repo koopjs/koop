@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* replace truthy operator
+
 ## [3.5.4] - 2018-03-23
 ### Fixed
 * missed `npm build` step
