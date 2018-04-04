@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.13.0] - 04-04-2018
+### Added
+* Add support for date comparisons in WHERE filter with timestamp Syntax and BETWEEN operator
+
+### Fixed
+* Exclusion of date fields from response when not requested with `outFields` option
+* Attempted property access of null feature in `ST_Intersects` function
+
 ## [1.12.7] - 04-03-2018 
 ### Fixed
 * Ensure geometry is omitted from query results when option `returnGeometry: false`
@@ -229,7 +237,8 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
-[1.12.6]: https://github.com/featureserver/winnow/compare/v1.12.6...v1.12.7
+[1.13.0]: https://github.com/featureserver/winnow/compare/v1.12.7...v1.13.0
+[1.12.7]: https://github.com/featureserver/winnow/compare/v1.12.6...v1.12.7
 [1.12.6]: https://github.com/featureserver/winnow/compare/v1.12.5...v1.12.6
 [1.12.5]: https://github.com/featureserver/winnow/compare/v1.12.4...v1.12.5
 [1.12.4]: https://github.com/featureserver/winnow/compare/v1.12.3...v1.12.4
