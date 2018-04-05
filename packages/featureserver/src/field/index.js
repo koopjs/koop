@@ -37,13 +37,20 @@ function computeFieldObject (data, template, options = {}) {
       oid = true
     }
     const template = _.cloneDeep(templates.field)
+    type = type || fieldMap[field.type.toLowerCase()] || field.type
     return Object.assign({}, template, {
       name: field.name,
-      type: type || fieldMap[field.type.toLowerCase()] || field.type,
-      alias: field.alias || field.name
+      type,
+      alias: field.alias || field.name,
+      // Add length property for strings and dates
+      length: (type === 'esriFieldTypeString') ? 128 : (type === 'esriFieldTypeDate') ? 36 : undefined
     })
   })
   if (!oid) fields.push(templates.objectIDField)
+
+  // Ensure the OBJECTID field is first in the array
+  fields.unshift(fields.splice(fields.findIndex(field => field.name === 'OBJECTID'), 1)[0])
+
   return fields
 }
 
@@ -61,18 +68,38 @@ const DATE_FORMATS = [moment.ISO_8601]
 function computeFieldsFromProperties (props, template, options = {}) {
   const fields = Object.keys(props).map((key, i) => {
     const type = fieldType(props[key])
-    const field = { name: key, type: type, alias: key }
+    const field = {
+      name: key,
+      type,
+      alias: key,
+      defaultValue: null,
+      domain: null,
+      editable: false,
+      nullable: false,
+      sqlType: 'sqlTypeOther'
+    }
 
-    if (type === 'esriFieldTypeString') field.length = 128
-    else if (type === 'esriFieldTypeDate') field.length = 36
+    // Add length field to strings and dates
+    field.length = (type === 'esriFieldTypeString') ? 128 : (type === 'esriFieldTypeDate') ? 36 : undefined
+
     return field
   })
+
+  // Add OBJECTID field if not yet there
   if (template === 'layer' && Object.keys(props).indexOf('OBJECTID') < 0) {
     fields.push({
       name: 'OBJECTID',
       type: 'esriFieldTypeOID',
-      alias: 'OBJECTID'
+      alias: 'OBJECTID',
+      defaultValue: null,
+      domain: null,
+      editable: false,
+      nullable: false,
+      sqlType: 'sqlTypeOther'
     })
+
+    // Ensure OBJECTID is first in the array
+    fields.unshift(fields.splice(fields.findIndex(field => field.name === 'OBJECTID'), 1)[0])
   }
 
   return { oidField: 'OBJECTID', fields }

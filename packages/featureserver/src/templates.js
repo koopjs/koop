@@ -89,7 +89,7 @@ function renderStatistics (featureCollection = {}, options = {}) {
 function renderServer (server, { layers, tables }) {
   const json = _.cloneDeep(templates.server)
   json.fullExtent = json.initialExtent = computeExtent(server.extent || json.fullExtent)
-  json.serviceDescription = server.description
+  json.serviceDescription = server.description || ''
   json.layers = layers
   json.tables = tables
   json.maxRecordCount = server.maxRecordCount || (layers[0] && layers[0].metadata && layers[0].metadata.maxRecordCount) || 2000

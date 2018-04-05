@@ -2,8 +2,7 @@
   "name": "<fieldName1>",
   "type": "<fieldType1>",
   "alias": "<fieldAlias1>",
-  "length": null,
-  "editable": false,
-  "nullable": true,
-  "domain": null
+  "sqlType" : "sqlTypeOther", 
+  "domain" : null, 
+  "defaultValue" : null
 }

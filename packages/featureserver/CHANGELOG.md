@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* on layer info responses, ensure `fields` array objects have properties `name`, `type`, `alias`, `defaultValue: null`, `domain: null`, `editable: false`, `nullable: false` and `sqlType: "sqlTypeOther"`  
+* on layer info responses, ensure that all `fields` array objects of type `String` and `Date` have a `length` property with values `128` and `36` respectfully
+* on layer info responses, ensure that the first element of `fields` array in the response is the object with `name: 'OBJECTID'`
+* on query responses, ensure that all `fields` array objects have properties `name`, `type`, `alias`, `defaultValue: null`, `domain: null`,  and `sqlType: "sqlTypeOther"`
+* on query responses, ensure that the first element of `fields` array in the response is the object with `name: 'OBJECTID'`
+
 ## [2.10.0] - 03-08-2018
 ### Added
 * filtersApplied.limit for already applied limits

@@ -1,4 +1,5 @@
 /* global describe, it */
+const Joi = require('joi')
 const FeatureServer = require('../src')
 const data = require('./fixtures/snow.json')
 const projectionApplied = require('./fixtures/projection-applied.json')
@@ -16,14 +17,64 @@ const offsetApplied = require('./fixtures/offset-applied.json')
 
 // const moment = require('moment')
 
-describe('Query operatons', () => {
+describe('Query operations', () => {
+  it('should return the expected response schema for an optionless query', () => {
+    const response = FeatureServer.query(data, {})
+
+    const schema = Joi.object().keys({
+      'objectIdFieldName': Joi.string().valid('OBJECTID'),
+      'globalIdFieldName': Joi.string().allow(''),
+      'hasZ': Joi.boolean().valid(false),
+      'hasM': Joi.boolean().valid(false),
+      'geometryType': Joi.string().valid('esriGeometryPoint', 'esriGeometryLine', 'esriGeometryPolygon'),
+      'spatialReference': Joi.object().keys({
+        'wkid': Joi.number().integer().min(0)
+      }),
+      'fields': Joi.array().min(1).items(Joi.object().keys({
+        'name': Joi.string().when('type', {is: 'esriFieldTypeOID', then: Joi.valid('OBJECTID'), otherwise: Joi.string()}),
+        'type': Joi.string().allow('esriFieldTypeOID', 'esriFieldTypeInteger', 'esriFieldTypeDouble', 'esriFieldTypeString', 'esriFieldTypeDate'),
+        'alias': Joi.string().when('type', {is: 'esriFieldTypeOID', then: Joi.valid('OBJECTID'), otherwise: Joi.string()}),
+        'length': Joi.optional().when('type', {
+          is: Joi.string().allow('esriFieldTypeString', 'esriFieldTypeDate'),
+          then: Joi.number().integer().min(0)
+        }),
+        'defaultValue': Joi.any().valid(null),
+        'domain': Joi.any().valid(null),
+        'sqlType': Joi.string().valid('sqlTypeOther', 'sqlTypeDouble')
+      })),
+      'features': Joi.array().items(Joi.object().keys({
+        'attributes': Joi.object().keys({
+          'OBJECTID': Joi.number().integer()
+        }).unknown(),
+        'geometry': Joi.object().keys()
+      })),
+      'exceededTransferLimit': Joi.boolean()
+    })
+    Joi.validate(response, schema, {presence: 'required'}).should.have.property('error', null)
+  })
+
+  it('should return only requested "outFields" set in options', () => {
+    const response = FeatureServer.query(data, {outFields: 'OBJECTID'})
+
+    response.fields.should.have.length(1)
+    response.fields[0].should.have.property('name', 'OBJECTID')
+    Object.keys(response.features[0].attributes).should.have.length(1)
+    response.features[0].attributes.should.have.property('OBJECTID')
+    response.features[0].attributes.OBJECTID.should.be.type('number')
+  })
+
+  it('should not return geometry data when "returnGeometry" is false', () => {
+    const response = FeatureServer.query(data, {returnGeometry: false})
+    response.features[0].hasOwnProperty('geometry').should.equal(false)
+  })
+
   it('should serialize all the types correctly', () => {
     const response = FeatureServer.query(oneOfEach, {})
-    response.fields[0].type.should.equal('esriFieldTypeDouble')
-    response.fields[1].type.should.equal('esriFieldTypeInteger')
-    response.fields[2].type.should.equal('esriFieldTypeString')
-    response.fields[3].type.should.equal('esriFieldTypeDate')
-    response.fields[4].type.should.equal('esriFieldTypeOID')
+    response.fields[0].type.should.equal('esriFieldTypeOID')
+    response.fields[1].type.should.equal('esriFieldTypeDouble')
+    response.fields[2].type.should.equal('esriFieldTypeInteger')
+    response.fields[3].type.should.equal('esriFieldTypeString')
+    response.fields[4].type.should.equal('esriFieldTypeDate')
   })
 
   describe('when getting featureserver features from geojson', function () {
@@ -210,11 +261,12 @@ describe('Query operatons', () => {
 
       const response = FeatureServer.query(budgetTable, options)
       response.fields.length.should.equal(3)
-      response.fields[0].name.should.equal('Name')
-      response.fields[1].name.should.equal('Dept')
-      response.fields[2].name.should.equal('OBJECTID')
+      response.fields[0].name.should.equal('OBJECTID')
+      response.fields[1].name.should.equal('Name')
+      response.fields[2].name.should.equal('Dept')
       response.features.length.should.equal(10)
       Object.keys(response.features[0].attributes).length.should.equal(3)
+      response.features[0].hasOwnProperty('geometry').should.equal(false)
     })
   })
 
@@ -241,7 +293,7 @@ describe('Query operatons', () => {
       it('should respect metadata when converting a date string type to a date type', () => {
         const response = FeatureServer.query(statsDateInMeta)
         response.features[0].attributes.dateField.should.equal(1497578316179)
-        response.fields[0].type.should.equal('esriFieldTypeDate')
+        response.fields[1].type.should.equal('esriFieldTypeDate')
       })
 
       it('should convert a date string type to a date type', () => {
@@ -253,7 +305,7 @@ describe('Query operatons', () => {
       it('should respect metadata when date field is passed in', () => {
         const response = FeatureServer.query(statsDateInMetaValue)
         response.features[0].attributes.dateField.should.equal(1497578316179)
-        response.fields[0].type.should.equal('esriFieldTypeDate')
+        response.fields[1].type.should.equal('esriFieldTypeDate')
       })
     })
 
@@ -392,13 +444,13 @@ describe('Query operatons', () => {
     it('should respect a date field in the metadata', () => {
       const json = FeatureServer.query(dateInMeta, {})
       json.features[0].attributes.dateField.should.equal(1497578316179)
-      json.fields[0].type.should.equal('esriFieldTypeDate')
+      json.fields[1].type.should.equal('esriFieldTypeDate')
     })
 
     it('should detect a date field', () => {
       const json = FeatureServer.query(dateNoMeta, {})
       json.features[0].attributes.dateField.should.equal(1497578316179)
-      json.fields[0].type.should.equal('esriFieldTypeDate')
+      json.fields[1].type.should.equal('esriFieldTypeDate')
     })
   })
 
