@@ -10,6 +10,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * on query responses, ensure that all `fields` array objects have properties `name`, `type`, `alias`, `defaultValue: null`, `domain: null`,  and `sqlType: "sqlTypeOther"`
 * on query responses, ensure that the first element of `fields` array in the response is the object with `name: 'OBJECTID'`
 
+### Added
+* winnow version bump to 1.13.0
+
 ## [2.10.0] - 03-08-2018
 ### Added
 * filtersApplied.limit for already applied limits
