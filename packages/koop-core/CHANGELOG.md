@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Fixed
+* bump version of koop-logger dependency to 2.0.2
+
+## Unreleased
+### Fixed
 * replace truthy operator
 
 ## [3.5.4] - 2018-03-23
