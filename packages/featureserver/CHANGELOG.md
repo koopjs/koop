@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.10.2] - 04-10-2018
+### Fixed 
+* set Content-Type: application/javascript when response is wrapped in callback (JSONP)
+
 ## [2.10.1] - 04-06-2018
 ### Fixed
 * on layer info responses, ensure `fields` array objects have properties `name`, `type`, `alias`, `defaultValue: null`, `domain: null`, `editable: false`, `nullable: false` and `sqlType: "sqlTypeOther"`  
@@ -258,6 +262,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.10.1]: https://github.com/koopjs/featureserver/compare/v2.10.1...v2.10.2
 [2.10.1]: https://github.com/koopjs/featureserver/compare/v2.10.0...v2.10.1
 [2.10.0]: https://github.com/koopjs/featureserver/compare/v2.9.3...v2.10.0
 [2.9.3]: https://github.com/koopjs/featureserver/compare/v2.9.2...v2.9.3
