@@ -22,7 +22,11 @@ function route (req, res, geojson, options) {
     req.query[key] = tryParse(req.query[key])
   })
 
-  if (req.query.callback) req.query.callback = sanitizeCallback(req.query.callback)
+  if (req.query.callback) {
+    req.query.callback = sanitizeCallback(req.query.callback)
+    res.set('Content-Type', 'application/javascript')
+  }
+
   if (isNaN(req.query.limit)) req.query.limit = metadata.maxRecordCount || 2000
 
   // if this is for a method we can handle like query
