@@ -21,7 +21,7 @@
     "koop-cache-memory": "^1.0.2",
     "koop-output-geoservices": "^1.0.0",
     "koop-localfs": "^1.1.1",
-    "koop-logger": "^2.0.2",
+    "koop-logger": "^1.2.0",
     "lodash": "^4.17.4"
   },
   "devDependencies": {
