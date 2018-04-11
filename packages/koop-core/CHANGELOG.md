@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Fixed
 * replace truthy operator
+* migrate logger to @koopjs/logger v2.0.2
 
 ## [3.5.4] - 2018-03-23
 ### Fixed

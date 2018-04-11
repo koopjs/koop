@@ -13,15 +13,15 @@
     "Nate Goldman <nate@ngoldman.me>"
   ],
   "dependencies": {
+    "@koopjs/logger": "^2.0.2",
     "body-parser": "^1.16.0",
     "config": "^1.24.0",
     "cors": "^2.8.1",
     "ejs": "^2.3.3",
     "express": "^4.14.1",
     "koop-cache-memory": "^1.0.2",
-    "koop-output-geoservices": "^1.0.0",
     "koop-localfs": "^1.1.1",
-    "koop-logger": "^1.2.0",
+    "koop-output-geoservices": "^1.0.0",
     "lodash": "^4.17.4"
   },
   "devDependencies": {
