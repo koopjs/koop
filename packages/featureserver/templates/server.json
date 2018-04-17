@@ -5,7 +5,7 @@
 	"supportsDisconnectedEditing": false,
 	"supportedQueryFormats": "JSON",
 	"maxRecordCount": 2000,
-	"hasStaticData": true,
+	"hasStaticData": false,
 	"capabilities": "Query",
 	"description": "This is a feature service exposed with Koop, an open source project that turns APIs into features. Service Description information may not be available for all services. For more information, check out https://github.com/koopjs/koop",
 	"copyrightText": "Copyright information varies from provider to provider, for more information please contact the source of this data",

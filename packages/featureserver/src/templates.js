@@ -56,6 +56,8 @@ function renderLayer (featureCollection = {}, options = {}) {
   if (json.displayField) json.displayField = metadata.displayField || json.fields[0].name
   if (json.objectIdField) json.objectIdField = 'OBJECTID'
   if (capabilities.quantization) json.supportsCoordinatesQuantization = true
+  // Override the template value for hasStatic data if model metadata has this value set
+  if (typeof metadata.hasStaticData === 'boolean') json.hasStaticData = metadata.hasStaticData
   return json
 }
 
@@ -93,7 +95,8 @@ function renderServer (server, { layers, tables }) {
   json.layers = layers
   json.tables = tables
   json.maxRecordCount = server.maxRecordCount || (layers[0] && layers[0].metadata && layers[0].metadata.maxRecordCount) || 2000
-  json.hasStaticData = !!server.hasStaticData
+  // Override the template value for hasStatic data if model metadata has this value set
+  if (typeof server.hasStaticData === 'boolean') json.hasStaticData = server.hasStaticData
   return json
 }
 

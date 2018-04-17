@@ -18,7 +18,7 @@ describe('Info operations', () => {
         'supportsDisconnectedEditing': Joi.boolean().valid(false),
         'supportedQueryFormats': Joi.string().valid('JSON'),
         'maxRecordCount': Joi.number().integer().min(1),
-        'hasStaticData': Joi.boolean().valid(false),
+        'hasStaticData': Joi.boolean(),
         'capabilities': Joi.string().valid('Query'),
         'serviceDescription': Joi.string().allow(''),
         'description': Joi.string(),
@@ -291,6 +291,19 @@ describe('Info operations', () => {
       }
       const layer = FeatureServer.layerInfo(input, {})
       layer.fields[0].type.should.equal('esriFieldTypeOID')
+    })
+
+    it('should override the default true value of "hasStaticData" when set in metadata', () => {
+      const input = {
+        metadata: {
+          hasStaticData: true,
+          geometryType: 'Polygon',
+          extent: [[11, 12], [13, 14]],
+          fields: [{ name: 'test', type: 'integer' }]
+        }
+      }
+      const layer = FeatureServer.layerInfo(input, {})
+      layer.hasStaticData.should.equal(true)
     })
   })
 
