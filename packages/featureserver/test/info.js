@@ -239,7 +239,7 @@ describe('Info operations', () => {
         'globalIdField': Joi.string().allow(''),
         'types': Joi.array(),
         'templates': Joi.array(),
-        'hasStaticData': Joi.boolean().valid(true),
+        'hasStaticData': Joi.boolean().valid(false),
         'timeInfo': Joi.object().optional()
       })
       Joi.validate(layers.layers[0], schema, {presence: 'required'}).should.have.property('error', null)
@@ -270,7 +270,7 @@ describe('Info operations', () => {
       layer.extent.ymax.should.equal(14)
       layer.geometryType.should.equal('esriGeometryPolygon')
       layer.maxRecordCount.should.equal(100)
-      layer.objectIdField.should.equal('test')
+      layer.objectIdField.should.equal('OBJECTID')
       layer.displayField.should.equal('test')
       layer.timeInfo.test.should.equal('test')
     })

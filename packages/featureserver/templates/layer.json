@@ -64,6 +64,6 @@
   "globalIdField": "",
   "types": [],
   "templates": [],
-  "hasStaticData": true,
+  "hasStaticData": false,
   "timeInfo": {}
 }

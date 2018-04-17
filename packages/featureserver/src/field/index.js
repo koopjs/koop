@@ -17,28 +17,38 @@ const templates = {
 
 // TODO this should be the only exported function
 function computeFieldObject (data, template, options = {}) {
-  let oid = false
   const metadata = data.metadata || {}
-  let metadataFields = metadata.fields
+  let responseFields = metadata.fields
 
-  if (!metadataFields && data.statistics) return computeFieldsFromProperties(data.statistics[0], template, options).fields
-  else if (!metadataFields) return computeAggFieldObject(data, template, options)
+  if (!metadata.fields && data.statistics) return computeFieldsFromProperties(data.statistics[0], template, options).fields
+  else if (!metadata.fields) return computeAggFieldObject(data, template, options)
 
+  // Add OBJECTID if it isn't already a metadata field
+  if (!_.find(responseFields, {'name': 'OBJECTID'})) responseFields.push({name: 'OBJECTID'})
+
+  // If outFields were specified and not wildcarded, create a subset of fields from metadata fields based on outFields param
   if (options.outFields && options.outFields !== '*') {
+    // Split comma-delimited outFields
     const outFields = options.outFields.split(/\s*,\s*/)
-    metadataFields = metadata.fields.filter(field => {
-      if (outFields.indexOf(field.name) > -1) return field
+
+    // Filter out fields that weren't included in the outFields param
+    responseFields = responseFields.filter(field => {
+      return outFields.includes(field.name)
     })
   }
-  const fields = metadataFields.map(field => {
-    let type
-    if (field.name === metadata.idField || field.name.toLowerCase() === 'objectid') {
-      type = 'esriFieldTypeOID'
-      oid = true
+
+  // Loop through the requested response fields and create a field object for each
+  const fields = responseFields.map(field => {
+    // Fields named OBJECTID get special definition with specific JSON template
+    if (field.name === 'OBJECTID') {
+      return templates.objectIDField
     }
-    const template = _.cloneDeep(templates.field)
-    type = type || fieldMap[field.type.toLowerCase()] || field.type
-    return Object.assign({}, template, {
+
+    // Determine the ESRI field type
+    const type = fieldMap[field.type.toLowerCase()] || field.type
+
+    // Create the field object by overriding a template with field specific property values
+    return Object.assign({}, templates.field, {
       name: field.name,
       type,
       alias: field.alias || field.name,
@@ -46,7 +56,6 @@ function computeFieldObject (data, template, options = {}) {
       length: (type === 'esriFieldTypeString') ? 128 : (type === 'esriFieldTypeDate') ? 36 : undefined
     })
   })
-  if (!oid) fields.push(templates.objectIDField)
 
   // Ensure the OBJECTID field is first in the array
   fields.unshift(fields.splice(fields.findIndex(field => field.name === 'OBJECTID'), 1)[0])
@@ -58,7 +67,7 @@ function computeFieldObject (data, template, options = {}) {
 const DATE_FORMATS = [moment.ISO_8601]
 
 /**
- * builds esri json fields object from geojson properties
+ * builds esri json fields object from geojson properties.  Populates the `fields` array for layer info service
  *
  * @param  {object} props
  * @param  {string} template
@@ -66,41 +75,31 @@ const DATE_FORMATS = [moment.ISO_8601]
  * @return {object} fields
  */
 function computeFieldsFromProperties (props, template, options = {}) {
+  // Loop through the properties and construct an array of field objects
   const fields = Object.keys(props).map((key, i) => {
     const type = fieldType(props[key])
-    const field = {
+
+    // Use field template and override. Add properties needed specifically for layer service
+    return Object.assign({}, templates.field, {
       name: key,
-      type,
+      type: fieldType(props[key]),
       alias: key,
-      defaultValue: null,
-      domain: null,
       editable: false,
       nullable: false,
-      sqlType: 'sqlTypeOther'
-    }
-
-    // Add length field to strings and dates
-    field.length = (type === 'esriFieldTypeString') ? 128 : (type === 'esriFieldTypeDate') ? 36 : undefined
-
-    return field
+      length: (type === 'esriFieldTypeString') ? 128 : (type === 'esriFieldTypeDate') ? 36 : undefined
+    })
   })
 
-  // Add OBJECTID field if not yet there
-  if (template === 'layer' && Object.keys(props).indexOf('OBJECTID') < 0) {
-    fields.push({
-      name: 'OBJECTID',
-      type: 'esriFieldTypeOID',
-      alias: 'OBJECTID',
-      defaultValue: null,
-      domain: null,
+  // If this is part of a layer service, add OBJECTID field if its not already a model field. Decorate the with additional properties needed for layer service
+  if (template === 'layer' && !_.find(fields, { name: 'OBJECTID' })) {
+    fields.push(Object.assign({}, templates.objectIDField, {
       editable: false,
-      nullable: false,
-      sqlType: 'sqlTypeOther'
-    })
-
-    // Ensure OBJECTID is first in the array
-    fields.unshift(fields.splice(fields.findIndex(field => field.name === 'OBJECTID'), 1)[0])
+      nullable: false
+    }))
   }
+
+  // Ensure the OBJECTID field is first in the array
+  fields.unshift(fields.splice(fields.findIndex(field => field.name === 'OBJECTID'), 1)[0])
 
   return { oidField: 'OBJECTID', fields }
 }

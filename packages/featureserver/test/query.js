@@ -55,7 +55,6 @@ describe('Query operations', () => {
 
   it('should return only requested "outFields" set in options', () => {
     const response = FeatureServer.query(data, {outFields: 'OBJECTID'})
-
     response.fields.should.have.length(1)
     response.fields[0].should.have.property('name', 'OBJECTID')
     Object.keys(response.features[0].attributes).should.have.length(1)
@@ -403,8 +402,8 @@ describe('Query operations', () => {
 
         const response = FeatureServer.query(budgetTable, options)
         response.features[0]['attributes']['Full/Part_COUNT'].should.equal(6644)
-        response.fields[0].name.should.equal('Full/Part_COUNT')
-        response.fields[1].name.should.equal('Full/Part')
+        response.fields.findIndex(f => { return f.name === 'Full/Part_COUNT' }).should.not.equal(-1)
+        response.fields.findIndex(f => { return f.name === 'Full/Part' }).should.not.equal(-1)
       })
     })
   })
