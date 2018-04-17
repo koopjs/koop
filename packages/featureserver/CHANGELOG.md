@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * provider attributes referenced by metadata `idField` are maintained as separate field in addition to OBJECTID when creating ESRI json
 * warnings when a provider's `idField` is not set or references non- or out-of-range integer values
 * warning when a provider's `idField` is a mixed-case version of 'OBJECTID'
+* Bump to winnow 1.14.0
 
 ### Fixed
 * changed default value of `hasStaticData` to `false`

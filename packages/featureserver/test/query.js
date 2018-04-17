@@ -95,7 +95,7 @@ describe('Query operations', () => {
       const response = FeatureServer.query(data, { outSR: { latestWkid: 3857 }, limit: 1, returnGeometry: true })
       response.geometryType.should.equal('esriGeometryPoint')
       response.features.length.should.equal(1)
-      response.features[0].attributes.OBJECTID.should.equal(0)
+      response.features[0].attributes.OBJECTID.should.equal(2012050174)
       response.features[0].geometry.x.should.equal(-11682713.391976157)
       response.features[0].geometry.y.should.equal(4857924.005275469)
       response.spatialReference.latestWkid.should.equal(3857)
@@ -113,21 +113,21 @@ describe('Query operations', () => {
 
   describe('when getting featureserver features by id queries', function () {
     it('should return a proper features', () => {
-      const response = FeatureServer.query(data, { objectIds: '1,2,3' })
+      const response = FeatureServer.query(data, { objectIds: '1562568434,2012050174,478725765' })
       response.should.be.an.instanceOf(Object)
       response.fields.should.be.an.instanceOf(Array)
       response.features.should.have.length(3)
     })
 
     it('should work with single id', () => {
-      const response = FeatureServer.query(data, { objectIds: 1 })
+      const response = FeatureServer.query(data, { objectIds: 1562568434 })
       response.should.be.an.instanceOf(Object)
       response.fields.should.be.an.instanceOf(Array)
       response.features.should.have.length(1)
     })
 
     it('should return only count of features', () => {
-      const response = FeatureServer.query(data, { returnCountOnly: true, objectIds: '1,2,3' })
+      const response = FeatureServer.query(data, { returnCountOnly: true, objectIds: '1562568434,2012050174,478725765' })
       response.should.be.an.instanceOf(Object)
       response.should.have.property('count')
       response.count.should.equal(3)
@@ -143,7 +143,7 @@ describe('Query operations', () => {
 
   describe('when getting features with returnIdsOnly', function () {
     it('should return only ids of features', () => {
-      const response = FeatureServer.query(data, { returnIdsOnly: true, objectIds: '1,2,3' })
+      const response = FeatureServer.query(data, { returnIdsOnly: true, objectIds: '1562568434,2012050174,478725765' })
       response.should.be.an.instanceOf(Object)
       response.should.have.property('objectIds')
       response.objectIds.length.should.equal(3)

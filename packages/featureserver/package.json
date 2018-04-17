@@ -21,7 +21,7 @@
     "lodash": "^4.12.0",
     "moment": "^2.13.0",
     "terraformer-arcgis-parser": "^1.0.4",
-    "winnow": "^1.13.0"
+    "winnow": "^1.14.0"
   },
   "devDependencies": {
     "async": "^2.5.0",
