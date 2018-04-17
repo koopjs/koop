@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* OBJECTID collisions when a provider's `idField` is unspecified.  Now creating a numeric hash for each raw feature
+
 ## [1.13.0] - 04-04-2018
 ### Added
 * Add support for date comparisons in WHERE filter with timestamp Syntax and BETWEEN operator

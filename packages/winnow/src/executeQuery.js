@@ -1,4 +1,5 @@
 'use strict'
+const farmhash = require('farmhash')
 const sql = require('./sql')
 const Query = require('./query')
 const { calculateClassBreaks, calculateUniqueValueBreaks } = require('./generateBreaks/index')
@@ -32,8 +33,8 @@ function limitQuery (features, query, options) {
     if (options.offset >= features.length) throw new Error('OFFSET >= features length: ' + options)
     options.limit += options.offset
   }
-  features.some((feature, i) => {
-    const result = processQuery(feature, query, options, i)
+  features.some((feature) => {
+    const result = processQuery(feature, query, options)
     if (result) filtered.push(result)
     if (filtered.length === (options.limit + 1)) {
       limitExceeded = true
@@ -51,23 +52,23 @@ function limitQuery (features, query, options) {
 }
 
 function standardQuery (features, query, options) {
-  const filtered = features.reduce((filteredFeatures, feature, i) => {
-    const result = processQuery(feature, query, options, i)
+  const filtered = features.reduce((filteredFeatures, feature) => {
+    const result = processQuery(feature, query, options)
     if (result) filteredFeatures.push(result)
     return filteredFeatures
   }, [])
   return finishQuery(filtered, options)
 }
 
-function processQuery (feature, query, options, i) {
+function processQuery (feature, query, options) {
   const params = Query.params([feature], options)
   const result = sql(query, params)[0]
 
-  if (result && options.toEsri) return esriFy(result, options, i)
+  if (result && options.toEsri) return esriFy(result, feature, options)
   else return result
 }
 
-function esriFy (result, options, i) {
+function esriFy (result, feature, options) {
   if (options.dateFields.length) {
     // mutating dates has down stream consequences if the data is reused
     result.attributes = _.cloneDeep(result.attributes)
@@ -76,9 +77,14 @@ function esriFy (result, options, i) {
     })
   }
 
-  const metadata = (options.collection && options.collection.metadata) || {}
-  if (!metadata.idField) {
-    result.attributes.OBJECTID = i
+  const idField = _.get(options, 'collection.metadata.idField')
+
+  // If the idField for the model set and is not already called OBJECTID, use its value as OBJECTID
+  if (idField) result.attributes.OBJECTID = result.attributes[idField]
+  else {
+    // Create an OBJECTID by creating a numeric hash from the stringified feature
+    // Note possibility of OBJECTID collisions with this method still exists, but should be small
+    result.attributes.OBJECTID = createIntHash(JSON.stringify(feature))
   }
   return result
 }
@@ -99,6 +105,17 @@ function finishQuery (features, options) {
   } else {
     return features
   }
+}
+
+/**
+ * Create integer hash in range of 0 - 2147483647 from string 
+ * @param {*} inputStr - any string 
+ */
+function createIntHash (inputStr) {
+  // Hash to 32 bit unsigned integer
+  const hash = farmhash.hash32(inputStr)
+  // Normalize to range of postive values of signed integer
+  return Math.round((hash / 4294967295) * (2147483647))
 }
 
 module.exports = { breaksQuery, aggregateQuery, limitQuery, standardQuery, finishQuery }

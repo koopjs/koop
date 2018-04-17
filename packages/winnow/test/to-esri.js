@@ -80,7 +80,7 @@ test('adding an object id', t => {
   }
   const fixture = _.cloneDeep(geojson)
   const result = Winnow.query(fixture, options)
-  t.equal(result.features[0].attributes.OBJECTID, 0)
+  t.equal(result.features[0].attributes.OBJECTID, 2081706708)
   t.end()
 })
 
