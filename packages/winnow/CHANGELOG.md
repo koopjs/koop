@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.14.0] - 04-17-2018
 ### Fixed
 * OBJECTID collisions when a provider's `idField` is unspecified.  Now creating a numeric hash for each raw feature
 
@@ -241,6 +241,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[1.14.0]: https://github.com/featureserver/winnow/compare/v1.13.0...v1.14.0
 [1.13.0]: https://github.com/featureserver/winnow/compare/v1.12.7...v1.13.0
 [1.12.7]: https://github.com/featureserver/winnow/compare/v1.12.6...v1.12.7
 [1.12.6]: https://github.com/featureserver/winnow/compare/v1.12.5...v1.12.6
