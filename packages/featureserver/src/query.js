@@ -18,7 +18,7 @@ function query (data, params = {}) {
   const options = _.cloneDeep(params)
   const hasIdField = _.has(data, 'metadata.idField')
 
-  if (filtersApplied.projection) delete options.outSR
+  if (filtersApplied.projection || options.returnGeometry === false) delete options.outSR
   if (filtersApplied.geometry) delete options.geometry
   if (filtersApplied.where || options.where === '1=1') delete options.where
   if (filtersApplied.offset) delete options.resultOffset
