@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Fixed
+* default to templated value of display field if not provided in metadata and an `empty` fields array
+
 ### Added
 * if request includes `returnGeometry=false` and `outSR=<EPSG>`, delete the `outSR` param since no geometry will be present to reproject
 

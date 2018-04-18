@@ -305,6 +305,30 @@ describe('Info operations', () => {
       const layer = FeatureServer.layerInfo(input, {})
       layer.hasStaticData.should.equal(true)
     })
+
+    it('should default to templated value of "displayField" when not set in metadata or "fields" is null', () => {
+      const input = {
+        metadata: {
+          geometryType: 'Polygon',
+          extent: [[11, 12], [13, 14]],
+          fields: null
+        }
+      }
+      const layer = FeatureServer.layerInfo(input, {})
+      layer.displayField.should.equal('OBJECTID')
+    })
+
+    it('should default to templated value of "displayField" when not set in metadata or "fields" is empty array', () => {
+      const input = {
+        metadata: {
+          geometryType: 'Polygon',
+          extent: [[11, 12], [13, 14]],
+          fields: []
+        }
+      }
+      const layer = FeatureServer.layerInfo(input, {})
+      layer.displayField.should.equal('OBJECTID')
+    })
   })
 
   describe('when getting featureserver info from geojson', () => {

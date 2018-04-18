@@ -53,7 +53,7 @@ function renderLayer (featureCollection = {}, options = {}) {
   if (json.drawingInfo) json.drawingInfo.renderer = renderers[json.geometryType]
   if (json.timeInfo) json.timeInfo = metadata.timeInfo
   if (json.maxRecordCount) json.maxRecordCount = metadata.maxRecordCount || 2000
-  if (json.displayField) json.displayField = metadata.displayField || json.fields[0].name
+  if (json.displayField) json.displayField = metadata.displayField || _.get(json, 'fields[0].name') || json.displayField
   if (json.objectIdField) json.objectIdField = 'OBJECTID'
   if (capabilities.quantization) json.supportsCoordinatesQuantization = true
   // Override the template value for hasStatic data if model metadata has this value set
