@@ -285,6 +285,19 @@ test('With a ST_Within geometry predicate', t => {
   run('states', options, 1, t)
 })
 
+test('With a ST_EnvelopeIntersects geometry predicate', t => {
+  const options = {
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [[-128, 29], [-108, 29], [-108, 50], [-128, 50], [-128, 29]]
+      ]
+    },
+    spatialPredicate: 'ST_EnvelopeIntersects'
+  }
+  run('states', options, 11, t)
+})
+
 test('With a ST_Intersects geometry predicate', t => {
   const options = {
     geometry: {

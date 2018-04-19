@@ -7,7 +7,8 @@ const detectFieldsType = require('../detect-fields-type')
 const esriPredicates = {
   esriSpatialRelContains: 'ST_Contains',
   esriSpatialRelWithin: 'ST_Within',
-  esriSpatialRelIntersects: 'ST_Intersects'
+  esriSpatialRelIntersects: 'ST_Intersects',
+  esriSpatialRelEnvelopeIntersects: 'ST_EnvelopeIntersects'
 }
 
 function normalizeCollection (options, features = []) {

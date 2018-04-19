@@ -1,4 +1,5 @@
 const Terraformer = require('terraformer')
+const transformArray = require('./geometry/transform-array')
 const convertToEsri = require('./geometry/convert-to-esri')
 const convertFromEsri = require('./geometry/convert-from-esri')
 const sql = require('alasql')
@@ -31,6 +32,17 @@ sql.fn.ST_Intersects = function (feature = {}, filterGeom = {}) {
   if (feature.type === 'Point') return sql.fn.ST_Contains(feature, filterGeom)
   const filter = new Terraformer.Primitive(filterGeom)
   const TfFeature = new Terraformer.Primitive(feature)
+  return filter.intersects(TfFeature)
+}
+
+sql.fn.ST_EnvelopeIntersects = function (feature = {}, filterGeom = {}) {
+  if (!feature) return false
+  if (!(feature.type || feature.coordinates)) feature = convertFromEsri(feature) // TODO: remove ? temporary esri geometry conversion
+  if (!(feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
+  if (feature.type === 'Point') return sql.fn.ST_Contains(feature, filterGeom)
+  const filter = new Terraformer.Primitive(filterGeom)
+  const envelope = transformArray(new Terraformer.Primitive(feature).bbox())
+  const TfFeature = new Terraformer.Polygon(envelope)
   return filter.intersects(TfFeature)
 }
 

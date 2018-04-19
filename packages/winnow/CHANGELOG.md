@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* support for `esriSpatialRelEnvelopeIntersects`
+
 ## [1.14.0] - 04-17-2018
 ### Fixed
 * OBJECTID collisions when a provider's `idField` is unspecified.  Now creating a numeric hash for each raw feature
