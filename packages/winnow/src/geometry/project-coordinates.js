@@ -1,4 +1,5 @@
 const proj4 = require('proj4')
+const _ = require('lodash')
 const transformCoordinates = require('./transform-coordinates')
 
 module.exports = function projectCoordinates (coordinates, options = {}) {
@@ -7,7 +8,7 @@ module.exports = function projectCoordinates (coordinates, options = {}) {
   if (inSR === outSR) return coordinates
 
   return transformCoordinates(coordinates, { inSR, outSR }, (coordinates, options) => {
-    if (coordinates[0]) {
+    if (_.isNumber(coordinates[0]) && _.isNumber(coordinates[1])) {
       return proj4(options.inSR, options.outSR, coordinates)
     } else {
       return coordinates

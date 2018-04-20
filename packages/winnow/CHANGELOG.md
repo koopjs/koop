@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 * support for `esriSpatialRelEnvelopeIntersects`
 
+### Fixed
+* coordinates not projected when latitude or longitude is 0
+
 ## [1.14.0] - 04-17-2018
 ### Fixed
 * OBJECTID collisions when a provider's `idField` is unspecified.  Now creating a numeric hash for each raw feature
