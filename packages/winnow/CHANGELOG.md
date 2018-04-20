@@ -248,7 +248,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
-[1.14.1]: https://github.com/featureserver/winnow/compare/v1.14.0...v1.15.0
+[1.15.0]: https://github.com/featureserver/winnow/compare/v1.14.0...v1.15.0
 [1.14.0]: https://github.com/featureserver/winnow/compare/v1.13.0...v1.14.0
 [1.13.0]: https://github.com/featureserver/winnow/compare/v1.12.7...v1.13.0
 [1.12.7]: https://github.com/featureserver/winnow/compare/v1.12.6...v1.12.7
