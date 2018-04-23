@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* support the `/rest/info` route
+
 ## [2.11.1] - 04-18-2018
 ### Fixed
 * default to templated value of display field if not provided in metadata and an `empty` fields array

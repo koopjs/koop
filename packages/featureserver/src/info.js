@@ -1,8 +1,12 @@
 const Utils = require('./utils.js')
-const { renderLayer, renderServer } = require('./templates')
+const { renderRestInfo, renderLayer, renderServer } = require('./templates')
 const { geometryMap } = require('./geometry')
 
-module.exports = { serverInfo, layerInfo, layersInfo }
+module.exports = { restInfo, serverInfo, layerInfo, layersInfo }
+
+function restInfo () {
+  return renderRestInfo()
+}
 
 function serverInfo (server, params = {}) {
   let layers

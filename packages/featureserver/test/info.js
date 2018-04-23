@@ -7,6 +7,12 @@ const _ = require('lodash')
 const Joi = require('joi')
 
 describe('Info operations', () => {
+  describe('rest info', () => {
+    it('should conform to the prescribed schema', () => {
+      const restInfo = FeatureServer.restInfo(data)
+      restInfo.should.have.property('currentVersion', 10.51)
+    })
+  })
   describe('server info', () => {
     it('should conform to the prescribed schema', () => {
       const server = FeatureServer.serverInfo(data)

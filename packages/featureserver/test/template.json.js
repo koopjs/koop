@@ -4,6 +4,7 @@ const fieldJson = require('../templates/field.json')
 const layerJson = require('../templates/layer.json')
 const oidFieldJson = require('../templates/oid-field.json')
 const serverJson = require('../templates/server.json')
+const restInfoJson = require('../templates/rest-info.json')
 
 describe('Template content', () => {
   describe('features.json', () => {
@@ -129,6 +130,12 @@ describe('Template content', () => {
         'defaultValue': Joi.valid(null)
       })
       Joi.validate(oidFieldJson, schema, {presence: 'required'}).should.have.property('error', null)
+    })
+  })
+
+  describe('rest-info.json', () => {
+    it('should conform to the prescribed schema', () => {
+      restInfoJson.should.have.property('currentVersion', 10.51)
     })
   })
 

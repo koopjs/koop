@@ -16,6 +16,7 @@ function route (req, res, geojson, options) {
   req.query = req.query || {}
   req.query = coerceQuery(req.query)
   req.params = req.params || {}
+  geojson = geojson || {}
   const metadata = geojson.metadata || {}
 
   Object.keys(req.query).forEach(key => {
@@ -69,7 +70,9 @@ function execInfo (req, res, method, geojson) {
   let info
   const url = (req.url || req.originalUrl).split('?')[0]
   try {
-    if (/\/FeatureServer$/i.test(url)) {
+    if (/\/rest\/info$/i.test(url)) {
+      info = FsInfo.restInfo()
+    } else if (/\/FeatureServer$/i.test(url)) {
       info = FsInfo.serverInfo(geojson, req.params)
     } else if (/\/FeatureServer\/\d+$/i.test(url)) {
       info = FsInfo.layerInfo(geojson, req.params)
