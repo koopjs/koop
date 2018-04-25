@@ -12,6 +12,7 @@ const Controller = require('./controllers')
 const Model = require('./models')
 const DatasetController = require('./controllers/dataset')
 const Dataset = require('./models/dataset')
+const helpers = require('./helpers')
 const middleware = require('./middleware')
 const Events = require('events')
 const Util = require('util')
@@ -185,14 +186,7 @@ function bindPluginOverrides (provider, controller, server, pluginRoutes) {
   const name = provider.namespace || provider.plugin_name || provider.name
   const namespace = name.replace(/\s/g, '').toLowerCase()
   pluginRoutes.forEach(route => {
-    let fullRoute
-    if (provider.hosts) {
-      fullRoute = path.posix.join('/', namespace, ':host', ':id', route.path)
-    } else if (provider.disableIdParam) {
-      fullRoute = path.posix.join('/', namespace, route.path)
-    } else {
-      fullRoute = path.posix.join('/', namespace, ':id', route.path)
-    }
+    let fullRoute = helpers.composeRouteString(route.path, namespace, {hosts: provider.hosts, disableIdParam: provider.disableIdParam, absolutePath: route.absolutePath})
     route.methods.forEach(method => {
       try {
         console.log(`provider=${provider.name} fullRoute:${fullRoute}`)
