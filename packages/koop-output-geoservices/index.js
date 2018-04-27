@@ -14,6 +14,16 @@ Geoservices.prototype.featureServerRestInfo = function (req, res) {
   FeatureServer.route(req, res)
 }
 
+/**
+ * Collection of route objects that define geoservices
+ * 
+ * These routes are bound to the Koop API for each provider. Note that FeatureServer, 
+ * FeatureServer/layers, FeatureServer/:layer, and FeatureServer/:layer/:method are found 
+ * in the collection with and without the "$namespace/rest/services/$providerParams" prefix.
+ * These prefixed routes have been added due to some clients requiring the "rest/services" 
+ * URL fragment in geoservices routes. The $namespace and $providerParams are placeholders 
+ * that koop-core replaces with provider specific settings.  
+ */
 Geoservices.routes = [
   {
     path: '$namespace/rest/info',
