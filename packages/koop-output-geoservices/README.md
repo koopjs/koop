@@ -45,7 +45,7 @@ koop.server.listen(80)
     handler: 'featureServer'
   },
   {
-    path: '$namespace$rest/services/$providerParams/FeatureServer',
+    path: '$namespace/$rest/services/$providerParams/FeatureServer',
     methods: ['get', 'post'],
     handler: 'featureServer'
   },
