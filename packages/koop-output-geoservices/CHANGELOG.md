@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Duplicate FeatureServer routes with `rest/services` included between $namespace and $providerParams placeholders. Placeholder get replaced by provider-specific data registration when paired with koop-core ^3.6.0
+* New route `$namespace/rest/info`, for provider-specific information server info
+
 ## [1.1.2] - 2018-01-09
 ### Changed
 * Use error.code if available

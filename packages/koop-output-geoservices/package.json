@@ -24,12 +24,12 @@
   },
   "homepage": "https://github.com/koopjs/koop-output-geoservices#readme",
   "devDependencies": {
-    "standard": "^10.0.0"
+    "standard": "^11.0.1"
   },
   "dependencies": {
     "featureserver": "*"
   },
   "peerDependencies": {
-   "koop": "^3.4.0"
+    "koop": "^3.6.0"
   }
 }

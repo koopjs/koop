@@ -25,6 +25,31 @@ koop.server.listen(80)
 ```js
 [
   {
+    path: '$namespace/rest/info',
+    methods: ['get', 'post'],
+    handler: 'featureServerRestInfo'
+  },
+  {
+    path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/:method',
+    methods: ['get', 'post'],
+    handler: 'featureServer'
+  },
+  {
+    path: '$namespace/rest/services/$providerParams/FeatureServer/layers',
+    methods: ['get', 'post'],
+    handler: 'featureServer'
+  },
+  {
+    path: '$namespace/rest/services/$providerParams/FeatureServer/:layer',
+    methods: ['get', 'post'],
+    handler: 'featureServer'
+  },
+  {
+    path: '$namespace$rest/services/$providerParams/FeatureServer',
+    methods: ['get', 'post'],
+    handler: 'featureServer'
+  },
+  {
     path: 'FeatureServer/:layer/:method',
     methods: ['get', 'post'],
     handler: 'featureServer'
