@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.15.1] - 05-02-2018
 ### Fixed
 * assignment of OBJECTID had used the `idField` of a query result rather that the raw feature; thus, assignment could not occur unless the `idField` was returned by the SELECT. Alter to use raw feature's `idField`
 
@@ -252,6 +252,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[1.15.1]: https://github.com/featureserver/winnow/compare/v1.15.0...v1.15.1
 [1.15.0]: https://github.com/featureserver/winnow/compare/v1.14.0...v1.15.0
 [1.14.0]: https://github.com/featureserver/winnow/compare/v1.13.0...v1.14.0
 [1.13.0]: https://github.com/featureserver/winnow/compare/v1.12.7...v1.13.0
