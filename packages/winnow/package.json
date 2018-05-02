@@ -41,7 +41,7 @@
     "moment": "^2.18.1",
     "ngeohash": "^0.6.0",
     "proj4": "^2.3.17",
-    "simple-statistics": "^5.1.0",
+    "simple-statistics": "^6.0.0",
     "terraformer": "^1.0.7"
   },
   "devDependencies": {
