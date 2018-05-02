@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* assignment of OBJECTID had used the `idField` of a query result rather that the raw feature; thus, assignment could not occur unless the `idField` was returned by the SELECT. Alter to use raw feature's `idField`
+
 ## [1.15.0] - 04-20-2018
 ### Added
 * support for `esriSpatialRelEnvelopeIntersects`

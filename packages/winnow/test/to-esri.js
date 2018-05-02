@@ -1,5 +1,6 @@
 const test = require('tape')
 const trees = require('./fixtures/trees.json')
+const treesFeatureId = require('./fixtures/trees_subset_feature_id')
 const geojson = require('./fixtures/to-esri-fixture.json')
 const oidFeature = require('./fixtures/oid-feature.json')
 const emptyCollection = require('./fixtures/emptyCollection.json')
@@ -69,8 +70,23 @@ test('checking if an object id exists', t => {
   }
   const fixture = _.cloneDeep(oidFeature)
   const result = Winnow.query(fixture, options)
-  t.equal(result.features[0].attributes.objectid, 1)
+  t.equal(result.features[0].attributes.OBJECTID, 1)
   t.equal(result.metadata.idField, 'objectid')
+  t.end()
+})
+
+test('use idField not name OBJECTID', t => {
+  const options = {
+    toEsri: true,
+    fields: 'OBJECTID'
+  }
+  const fixture = _.cloneDeep(treesFeatureId)
+  fixture.metadata = {
+    idField: 'featureId'
+  }
+  const result = Winnow.query(fixture, options)
+  t.equal(result.features[0].attributes.hasOwnProperty('OBJECTID'), true)
+  t.equal(result.metadata.idField, 'featureId')
   t.end()
 })
 

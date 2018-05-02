@@ -79,8 +79,8 @@ function esriFy (result, feature, options) {
 
   const idField = _.get(options, 'collection.metadata.idField')
 
-  // If the idField for the model set and is not already called OBJECTID, use its value as OBJECTID
-  if (idField) result.attributes.OBJECTID = result.attributes[idField]
+  // If the idField for the model set use its value as OBJECTID
+  if (idField) result.attributes.OBJECTID = feature.properties[idField]
   else {
     // Create an OBJECTID by creating a numeric hash from the stringified feature
     // Note possibility of OBJECTID collisions with this method still exists, but should be small
