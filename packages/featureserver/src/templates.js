@@ -13,7 +13,6 @@ const templates = {
   statistics: require('../templates/statistics.json'),
   restInfo: Object.assign(require('../templates/rest-info.json'), require('../templates/version.json')),
   server: Object.assign(require('../templates/server.json'), require('../templates/version.json')),
-  field: require('../templates/field.json'),
   objectIDField: require('../templates/oid-field.json')
 }
 
@@ -71,7 +70,7 @@ function renderFeatures (featureCollection = {}, options = {}) {
 
   if (json.geometryType) json.geometryType = options.geometryType
   if (json.spatialReference) json.spatialReference = computeSpatialReference(options.spatialReference)
-  if (json.fields) json.fields = computeFieldObject(data, 'layer', options)
+  if (json.fields) json.fields = computeFieldObject(data, 'query', options)
   if (json.features) json.features = data.features
   if (metadata.limitExceeded && (options.limit >= maxRecordCount)) json.exceededTransferLimit = true
   if (metadata.transform) json.transform = metadata.transform

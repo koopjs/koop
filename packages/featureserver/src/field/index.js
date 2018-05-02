@@ -1,10 +1,10 @@
 const _ = require('lodash')
-const moment = require('moment')
-const fieldMap = require('./field-map')
 const createFieldAliases = require('./aliases')
 const createStatFields = require('./statFields')
+const { detectType, esriTypeMap } = require('../utils')
 
-module.exports = { computeFieldsFromProperties, computeFieldObject, createStatFields, createFieldAliases }
+// computeFieldCollection exported as computeFieldObject to maintain backward compatability. TODO: change on next major revision
+module.exports = { computeFieldsFromProperties, computeFieldObject: computeFieldsCollection, createStatFields, createFieldAliases }
 
 const templates = {
   server: require('../../templates/server.json'),
@@ -16,82 +16,94 @@ const templates = {
 }
 
 // TODO this should be the only exported function
-function computeFieldObject (data, template, options = {}) {
+/**
+ * generate a collection of esri field objects based on metadata or from inspection of a sample feature
+ * @param {object} data
+ * @param {string} requestContext
+ * @param {object} options
+ * @return {[object]}
+ */
+function computeFieldsCollection (data, requestContext, options = {}) {
   const metadata = data.metadata || {}
-  let responseFields = metadata.fields
+  const feature = data.features && data.features[0]
+  const properties = feature ? feature.properties || feature.attributes : options.attributeSample
+  let requestedFields
 
-  if (!metadata.fields && data.statistics) return computeFieldsFromProperties(data.statistics[0], template, options).fields
-  else if (!metadata.fields) return computeAggFieldObject(data, template, options)
+  // If no metadata fields defined, compute fields from data properties
+  if (!metadata.fields && data.statistics) return computeFieldsFromProperties(data.statistics[0], requestContext, options).fields
+  else if (!metadata.fields) return computeFieldsFromProperties(properties, requestContext, options).fields
 
-  // Add OBJECTID if it isn't already a metadata field
-  if (!_.find(responseFields, {'name': 'OBJECTID'})) responseFields.push({name: 'OBJECTID'})
-
-  // If outFields were specified and not wildcarded, create a subset of fields from metadata fields based on outFields param
-  if (options.outFields && options.outFields !== '*') {
-    // Split comma-delimited outFields
-    const outFields = options.outFields.split(/\s*,\s*/)
-
-    // Filter out fields that weren't included in the outFields param
-    responseFields = responseFields.filter(field => {
-      return outFields.includes(field.name)
-    })
-  }
+  // Use metadata fields and request parameters to construct an array of requested fields
+  requestedFields = computeFieldsFromMetadata(metadata.fields, options.outFields)
 
   // Loop through the requested response fields and create a field object for each
-  const fields = responseFields.map(field => {
-    // Fields named OBJECTID get special definition with specific JSON template
-    if (field.name === 'OBJECTID') {
-      return templates.objectIDField
-    }
-
-    // Determine the ESRI field type
-    const type = fieldMap[field.type.toLowerCase()] || field.type
-
-    // Create the field object by overriding a template with field specific property values
-    return Object.assign({}, templates.field, {
-      name: field.name,
-      type,
-      alias: field.alias || field.name,
-      // Add length property for strings and dates
-      length: (type === 'esriFieldTypeString') ? 128 : (type === 'esriFieldTypeDate') ? 36 : undefined
-    })
+  const responsefields = requestedFields.map(field => {
+    return computeFieldObject(field.name, field.alias, field.type, field.length, requestContext)
   })
 
   // Ensure the OBJECTID field is first in the array
-  fields.unshift(fields.splice(fields.findIndex(field => field.name === 'OBJECTID'), 1)[0])
+  responsefields.unshift(responsefields.splice(responsefields.findIndex(field => field.name === 'OBJECTID'), 1)[0])
 
-  return fields
+  return responsefields
 }
 
-/** @type {Array} accepted date formats used by moment.js */
-const DATE_FORMATS = [moment.ISO_8601]
+/**
+ * generate an esri field object
+ * @param {string} name
+ * @param {string} alias
+ * @param {string} type
+ * @param {integer} length
+ * @param {string} context
+ * @return {object}
+ */
+function computeFieldObject (name, alias, type, length, context) {
+  let outputField
+
+  if (name === 'OBJECTID') {
+    // Fields named OBJECTID get special definition with specific JSON template
+    outputField = Object.assign({}, templates.objectIDField)
+  } else {
+    // Determine the ESRI field type
+    const esriType = esriTypeMap(type.toLowerCase())
+
+    outputField = Object.assign({}, templates.field, {
+      name,
+      type: esriType,
+      alias: alias || name
+    })
+
+    // Use field length if defined, else defaults for String and Date types
+    outputField.length = length || ((type === 'String') ? 128 : (type === 'Date') ? 36 : undefined)
+  }
+
+  // Layer service field objects have addition 'editable' and 'nullable' properties
+  if (context === 'layer') {
+    Object.assign(outputField, { editable: false, nullable: false })
+  }
+
+  // Create the field object by overriding a template with field specific property values
+  return outputField
+}
 
 /**
- * builds esri json fields object from geojson properties.  Populates the `fields` array for layer info service
+ * builds esri json fields collection from geojson properties
  *
  * @param  {object} props
- * @param  {string} template
+ * @param  {string} requestContext
  * @param  {object} options
  * @return {object} fields
  */
-function computeFieldsFromProperties (props, template, options = {}) {
-  // Loop through the properties and construct an array of field objects
-  const fields = Object.keys(props).map((key, i) => {
-    const type = fieldType(props[key])
+function computeFieldsFromProperties (properties, requestContext, options = {}) {
+  // If no properties, return an empty array
+  if (!properties) return []
 
-    // Use field template and override. Add properties needed specifically for layer service
-    return Object.assign({}, templates.field, {
-      name: key,
-      type: fieldType(props[key]),
-      alias: key,
-      editable: false,
-      nullable: false,
-      length: (type === 'esriFieldTypeString') ? 128 : (type === 'esriFieldTypeDate') ? 36 : undefined
-    })
+  // Loop through the properties and construct an array of field objects
+  const fields = Object.keys(properties).map((key) => {
+    return computeFieldObject(key, key, detectType(properties[key]), undefined, requestContext)
   })
 
-  // If this is part of a layer service, add OBJECTID field if its not already a model field. Decorate the with additional properties needed for layer service
-  if (template === 'layer' && !_.find(fields, { name: 'OBJECTID' })) {
+  // If this a layer service request, add OBJECTID field if its not already a field. Decorate the with additional properties needed for layer service
+  if (requestContext === 'layer' && !_.find(fields, { name: 'OBJECTID' })) {
     fields.push(Object.assign({}, templates.objectIDField, {
       editable: false,
       nullable: false
@@ -105,36 +117,27 @@ function computeFieldsFromProperties (props, template, options = {}) {
 }
 
 /**
- * returns esri field type based on type of value passed
- *
- * @param {*} value - object to evaluate
- * @return {string} esri field type
+ * builds esri json fields collection from metadata
+ * @param {[Object]} metadataFields collection of fields defined in metadata
+ * @param {string} outFieldsParam request parameter that specifies which fields to reutrn in response
+ * @return {[Object]} collection of esri json fields
  */
-function fieldType (value) {
-  var type = typeof value
+function computeFieldsFromMetadata (metadataFields, outFieldsParam) {
+  // Clone metadata to prevent mutation
+  let responseFields = _.clone(metadataFields)
 
-  if (type === 'number') {
-    return isInt(value) ? 'esriFieldTypeInteger' : 'esriFieldTypeDouble'
-  } else if (typeof value === 'string' && moment(value, DATE_FORMATS, true).isValid()) {
-    return 'esriFieldTypeDate'
-  } else {
-    return 'esriFieldTypeString'
+  // Add OBJECTID if it isn't already a metadata field
+  if (!_.find(metadataFields, {'name': 'OBJECTID'})) responseFields.push({name: 'OBJECTID'})
+
+  // If outFields were specified and not wildcarded, create a subset of fields from metadata fields based on outFields param
+  if (outFieldsParam && outFieldsParam !== '*') {
+    // Split comma-delimited outFields
+    const outFields = outFieldsParam.split(/\s*,\s*/)
+
+    // Filter out fields that weren't included in the outFields param
+    responseFields = responseFields.filter(field => {
+      return outFields.includes(field.name)
+    })
   }
-}
-
-/**
- * is the value an integer?
- *
- * @param  {Number} value
- * @return {Boolean} is it an integer
- */
-function isInt (value) {
-  return Math.round(value) === value
-}
-
-function computeAggFieldObject (data, template, options = {}) {
-  const feature = data.features && data.features[0]
-  const properties = feature ? feature.properties || feature.attributes : options.attributeSample
-  if (properties) return computeFieldsFromProperties(properties, template, options).fields
-  else return []
+  return responseFields
 }

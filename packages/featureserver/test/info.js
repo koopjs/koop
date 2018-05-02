@@ -335,6 +335,25 @@ describe('Info operations', () => {
       const layer = FeatureServer.layerInfo(input, {})
       layer.displayField.should.equal('OBJECTID')
     })
+
+    it('should assign field length from metadata', () => {
+      const input = {
+        metadata: {
+          idField: 'test',
+          geometryType: 'Polygon',
+          extent: [[11, 12], [13, 14]],
+          fields: [
+            {
+              name: 'test',
+              type: 'String',
+              length: 1000
+            }
+          ]
+        }
+      }
+      const layer = FeatureServer.layerInfo(input, {})
+      layer.fields.find(f => { return f.name === 'test' }).length.should.equal(1000)
+    })
   })
 
   describe('when getting featureserver info from geojson', () => {
