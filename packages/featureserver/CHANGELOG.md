@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.12.0] - 05-03-2018
 ### Added
 * support the `/rest/info` route
 * warnings when `fields` set in provider's metadata don't match name/type of fields found in feature properties
@@ -286,6 +286,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.12.0]: https://github.com/koopjs/featureserver/compare/v2.11.1...v2.12.0
 [2.11.1]: https://github.com/koopjs/featureserver/compare/v2.11.0...v2.11.1
 [2.11.0]: https://github.com/koopjs/featureserver/compare/v2.10.2...v2.11.0
 [2.10.2]: https://github.com/koopjs/featureserver/compare/v2.10.1...v2.10.2
