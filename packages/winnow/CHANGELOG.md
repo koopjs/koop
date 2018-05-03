@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.15.2] - 05-03-2018
 ### Added
 * Warning when `idField` used for OBJECTID assignement is not an integer or is out-of-range.
 
