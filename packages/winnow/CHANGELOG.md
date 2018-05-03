@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Warning when `idField` used for OBJECTID assignement is not an integer or is out-of-range.
+
 ## [1.15.1] - 05-02-2018
 ### Fixed
 * assignment of OBJECTID had used the `idField` of a query result rather that the raw feature; thus, assignment could not occur unless the `idField` was returned by the SELECT. Alter to use raw feature's `idField`

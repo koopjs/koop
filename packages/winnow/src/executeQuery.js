@@ -80,7 +80,12 @@ function esriFy (result, feature, options) {
   const idField = _.get(options, 'collection.metadata.idField')
 
   // If the idField for the model set use its value as OBJECTID
-  if (idField) result.attributes.OBJECTID = feature.properties[idField]
+  if (idField) {
+    if (!Number.isInteger(feature.properties[idField]) || feature.properties[idField] > 2147483647 ) {
+      console.warn(`WARNING: OBJECTIDs created from provider's "idField" are not integers from 0 to 2147483647`)
+    }
+    result.attributes.OBJECTID = feature.properties[idField]
+  }
   else {
     // Create an OBJECTID by creating a numeric hash from the stringified feature
     // Note possibility of OBJECTID collisions with this method still exists, but should be small
