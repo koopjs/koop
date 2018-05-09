@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.6.1] - 2018-05-09
 ### Fixed
 * Routes with a $namespace placeholder require a $providerParams placeholder to also receive the `:host/:id` URL fragment.
 
@@ -775,6 +775,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[3.6.1]: https://github.com/koopjs/koop-core/compare/v3.6.0...v3.6.1
 [3.6.0]: https://github.com/koopjs/koop-core/compare/v3.5.5...v3.6.0
 [3.5.5]: https://github.com/koopjs/koop-core/compare/v3.5.4...v3.5.5
 [3.5.4]: https://github.com/koopjs/koop-core/compare/v3.5.3...v3.5.4
