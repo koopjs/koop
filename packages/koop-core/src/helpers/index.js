@@ -24,7 +24,7 @@ function composeRouteString(routePath, namespace, opts) {
   if (routePath.includes(namespacePlaceholder) && routePath.includes(paramsPlaceholder)) {
     return path.posix.join('/', routePath.replace(namespacePlaceholder, namespace).replace(paramsPlaceholder, paramFragment))
   } else if (routePath.includes(namespacePlaceholder)) {
-    return path.posix.join('/', routePath.replace(namespacePlaceholder, path.posix.join(namespace, paramFragment)))
+    return path.posix.join('/', routePath.replace(namespacePlaceholder, namespace))
   } else if (routePath.includes(paramsPlaceholder)) {
     return path.posix.join('/', namespace, routePath.replace(paramsPlaceholder, paramFragment))
   } else {

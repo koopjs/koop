@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Routes with a $namespace placeholder require a $providerParams placeholder to also receive the `:host/:id` URL fragment.
+
 ## [3.6.0] - 2018-04-25
 ### Added
 * helper module and function to create route paths with decoration based on passed options

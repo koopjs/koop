@@ -33,7 +33,7 @@ describe('Tests for helper functions', function () {
 
     it('create route with templated $namespace$ substring', function () {
       let fullRoute = helpers.composeRouteString('$namespace/rest/services/FeatureServer/:layer/:method','test')
-      fullRoute.should.equal('/test/:id/rest/services/FeatureServer/:layer/:method')
+      fullRoute.should.equal('/test/rest/services/FeatureServer/:layer/:method')
     })
 
     it('create route with templated $namespace$ substring', function () {
