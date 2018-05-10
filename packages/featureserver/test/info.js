@@ -9,8 +9,17 @@ const Joi = require('joi')
 describe('Info operations', () => {
   describe('rest info', () => {
     it('should conform to the prescribed schema', () => {
-      const restInfo = FeatureServer.restInfo(data)
+      let supplementalRestInfo = {
+        'authInfo': {
+          'isTokenBasedSecurity': true,
+          'tokenServicesUrl': 'http://localhost/provider/generateToken'
+        }
+      }
+      const restInfo = FeatureServer.restInfo(supplementalRestInfo)
       restInfo.should.have.property('currentVersion', 10.51)
+      restInfo.should.have.property('authInfo')
+      restInfo.authInfo.should.have.property('isTokenBasedSecurity', true)
+      restInfo.authInfo.should.have.property('tokenServicesUrl').be.type('string')
     })
   })
   describe('server info', () => {

@@ -71,7 +71,7 @@ function execInfo (req, res, method, geojson) {
   const url = (req.url || req.originalUrl).split('?')[0]
   try {
     if (/\/rest\/info$/i.test(url)) {
-      info = FsInfo.restInfo()
+      info = FsInfo.restInfo(geojson)
     } else if (/\/FeatureServer$/i.test(url)) {
       info = FsInfo.serverInfo(geojson, req.params)
     } else if (/\/FeatureServer\/\d+$/i.test(url)) {

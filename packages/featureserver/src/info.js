@@ -4,8 +4,13 @@ const { geometryMap } = require('./geometry')
 
 module.exports = { restInfo, serverInfo, layerInfo, layersInfo }
 
-function restInfo () {
-  return renderRestInfo()
+/**
+ * Pass on request for rest/info to rendering function
+ * @param {object} dataSourceRestInfo rest-info object that will supplement/override templated rest/info response
+ * return JSON response
+ */
+function restInfo (dataSourceRestInfo) {
+  return renderRestInfo(dataSourceRestInfo)
 }
 
 function serverInfo (server, params = {}) {

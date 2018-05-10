@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Add parameter to the `rest/info` handlers and use the argument to supplement/override of the templated JSON response
+
 ## [2.12.1] - 05-03-2018
 ### Fixed
 * Bump version, 2.12.0 was npm published without a compile
