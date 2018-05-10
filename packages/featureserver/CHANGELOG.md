@@ -2,9 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.13.0] - 05-10-2018
 ### Added
-* Add parameter to the `rest/info` handlers and use the argument to supplement/override of the templated JSON response
+* Add parameter to the `rest/info` handler and use the argument to supplement/override of the templated JSON response
 
 ## [2.12.1] - 05-03-2018
 ### Fixed
@@ -294,6 +294,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.13.0]: https://github.com/koopjs/featureserver/compare/v2.12.1...v2.13.0
 [2.12.1]: https://github.com/koopjs/featureserver/compare/v2.12.0...v2.12.1
 [2.12.0]: https://github.com/koopjs/featureserver/compare/v2.11.1...v2.12.0
 [2.11.1]: https://github.com/koopjs/featureserver/compare/v2.11.0...v2.11.1
