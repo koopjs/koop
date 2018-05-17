@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.3.0] - 2018-05-17
-###Added
+### Added
 * Call model function `authenticationSpecification` (if exists) in the `rest/info` handler and pass data to FeatureServer
 * Add route `rest/generateToken` and pass on to associated handler which in turn calls model's `authenticate` function
 
