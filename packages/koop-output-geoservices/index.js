@@ -10,25 +10,53 @@ Geoservices.prototype.featureServer = function (req, res) {
   })
 }
 
+/**
+ * Handler for the $namepace/rest/info route. Inspects model for authentation info and passes any on to the
+ * FeatureServer handler
+ * @param {*} req
+ * @param {*} res
+ */
 Geoservices.prototype.featureServerRestInfo = function (req, res) {
-  FeatureServer.route(req, res)
+  let authInfo = {}
+  // Inspect model for an "authenticationSpecification" function; if undefined create a dummy function that returns an empty object
+  let getAuthSpec = this.model.authenticationSpecification || function () { return {} }
+  let authSpec = getAuthSpec()
+  if (authSpec.secured) {
+    authInfo.isTokenBasedSecurity = true
+    authInfo.tokenServicesUrl = `${req.protocol}://${req.headers.host}/${authSpec.provider}/rest/generateToken`
+  }
+  FeatureServer.route(req, res, { authInfo })
+}
+
+/**
+ * Handler for $namespace/authenticate route. Passes request and response object to the model's "authenticate" function
+ * @param {*} req
+ * @param {*} res
+ */
+Geoservices.prototype.generateToken = function (req, res) {
+  this.model.authenticate(req, res)
 }
 
 /**
  * Collection of route objects that define geoservices
- * 
- * These routes are bound to the Koop API for each provider. Note that FeatureServer, 
- * FeatureServer/layers, FeatureServer/:layer, and FeatureServer/:layer/:method are found 
+ *
+ * These routes are bound to the Koop API for each provider. Note that FeatureServer,
+ * FeatureServer/layers, FeatureServer/:layer, and FeatureServer/:layer/:method are found
  * in the collection with and without the "$namespace/rest/services/$providerParams" prefix.
- * These prefixed routes have been added due to some clients requiring the "rest/services" 
- * URL fragment in geoservices routes. The $namespace and $providerParams are placeholders 
- * that koop-core replaces with provider specific settings.  
+ * These prefixed routes have been added due to some clients requiring the "rest/services"
+ * URL fragment in geoservices routes. The $namespace and $providerParams are placeholders
+ * that koop-core replaces with provider-specific settings.
  */
 Geoservices.routes = [
   {
     path: '$namespace/rest/info',
     methods: ['get', 'post'],
     handler: 'featureServerRestInfo'
+  },
+  {
+    path: '$namespace/rest/generateToken',
+    methods: ['get', 'post'],
+    handler: 'generateToken'
   },
   {
     path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/:method',

@@ -30,6 +30,6 @@
     "featureserver": "^2.13.0"
   },
   "peerDependencies": {
-    "koop": "^3.6.0"
+    "koop": "^3.6.1"
   }
 }

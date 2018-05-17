@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+###Added
+* Call model function `authenticationSpecification` (if exists) in the `rest/info` handler and pass data to FeatureServer
+
+### Fixed
+* Route intended to be `$namespace/rest/info` was being generated as `$namespace/:host/:id/rest/info`.  Added additional parameters to route object (`hosts` and `disableIdParams`) that allow koop-core to override provider settings to prevent unwanted parameter addition.
+
 ## [1.2.0] - 2018-04-27
 ### Added
 * Duplicate FeatureServer routes with `rest/services` included between $namespace and $providerParams placeholders. Placeholder get replaced by provider-specific data registration when paired with koop-core ^3.6.0
