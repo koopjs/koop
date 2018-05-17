@@ -2,12 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.3.0] - 2018-05-17
 ###Added
 * Call model function `authenticationSpecification` (if exists) in the `rest/info` handler and pass data to FeatureServer
+* Add route `rest/generateToken` and pass on to associated handler which in turn calls model's `authenticate` function
 
 ### Fixed
-* Route intended to be `$namespace/rest/info` was being generated as `$namespace/:host/:id/rest/info`.  Added additional parameters to route object (`hosts` and `disableIdParams`) that allow koop-core to override provider settings to prevent unwanted parameter addition.
+* Bumped koop-core peer dependency to 3.6.1
+* Bumped featureserver dependency to 2.13.0
 
 ## [1.2.0] - 2018-04-27
 ### Added
@@ -32,6 +34,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[1.3.0]: https://github.com/koopjs/koop-featureserver-plugin/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/koopjs/koop-featureserver-plugin/compare/v1.1.2...v1.2.0
 [1.1.2]: https://github.com/koopjs/koop-featureserver-plugin/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/koopjs/koop-featureserver-plugin/compare/v1.1.0...v1.1.1
