@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.14.1] - 05-22-2018
+### Fixed
+* Version bump due to NPM's inability to resolve last publish
+
 ## [2.14.0] - 05-22-2018
 ### Added
 * Add response handlers for authentication success and authentication/authorization errors
@@ -298,6 +302,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.14.1]: https://github.com/koopjs/featureserver/compare/v2.14.0...v2.14.1
 [2.14.0]: https://github.com/koopjs/featureserver/compare/v2.13.0...v2.14.0
 [2.13.0]: https://github.com/koopjs/featureserver/compare/v2.12.1...v2.13.0
 [2.12.1]: https://github.com/koopjs/featureserver/compare/v2.12.0...v2.12.1
