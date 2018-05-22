@@ -2,29 +2,46 @@ var FeatureServer = require('featureserver')
 
 function Geoservices () {}
 
-Geoservices.prototype.featureServer = async function (req, res) {
-  // Is model configured for token-authorization?
-  if (typeof this.model.authorize === 'function') {
-    try {
-      // Does request have a valid authorization token?
-      await this.model.authorize(req.query.token)
-    } catch (err) {
-      // Respond with an authorization error
-      return FeatureServer.error.authorization(res)
-    }
-  }
-  // model will be available when this is instantiated with the Koop controller
-  this.model.pull(req, function (err, data) {
+/**
+ * Helper for pulling data and routing to FeatureServer
+ * @param {object} model provider's model
+ * @param {object} req request object
+ * @param {object} res response object
+ */
+function pullDataAndRoute (model, req, res) {
+  model.pull(req, function (err, data) {
     if (err) res.status(err.code || 500).json({error: err.message})
     else FeatureServer.route(req, res, data)
   })
 }
 
 /**
+ * Handler for service, layer, and query routes
+ * @param {object} req request object
+ * @param {object} res response object
+ */
+Geoservices.prototype.featureServer = function (req, res) {
+  // Is model configured for token-authorization?
+  if (typeof this.model.authorize === 'function') {
+    this.model.authorize(req.query.token)
+      .then(valid => {
+        // model will be available when this is instantiated with the Koop controller
+        pullDataAndRoute(this.model, req, res)
+      })
+      .catch(err => {
+        if (err.code === 401) FeatureServer.error.authorization(res)
+        else res.status(err.code || 500).json({error: err.message})
+      })
+  } else {
+    pullDataAndRoute(this.model, req, res)
+  }
+}
+
+/**
  * Handler for the $namepace/rest/info route. Inspects model for authentation info and passes any on to the
  * FeatureServer handler
- * @param {*} req
- * @param {*} res
+ * @param {object} req request object
+ * @param {object} res response object
  */
 Geoservices.prototype.featureServerRestInfo = function (req, res) {
   let authInfo = {}
@@ -40,21 +57,21 @@ Geoservices.prototype.featureServerRestInfo = function (req, res) {
 
 /**
  * Handler for $namespace/authenticate route. Passes request and response object to the model's "authenticate" function
- * @param {*} req
- * @param {*} res
+ * @param {object} req request object
+ * @param {object} res response object
  */
-Geoservices.prototype.generateToken = async function (req, res) {
+Geoservices.prototype.generateToken = function (req, res) {
   // Is model configured for authentication?
   if (typeof this.model.authenticate === 'function') {
-    try {
-      // Does request successfully authenticate?
-      let tokenJson = await this.model.authenticate(req.query.username, req.query.password)
-      // Pass on to FeatureServer for request response formatting
-      FeatureServer.authenticate(res, tokenJson)
-    } catch (err) {
-      // Respond with an authentication error
-      return FeatureServer.error.authentication(res)
-    }
+    this.model.authenticate(req.query.username, req.query.password)
+      .then(tokenJson => {
+        FeatureServer.authenticate(res, tokenJson)
+      })
+      .catch(err => {
+        res.status(err.code || 500).json({error: err.message})
+      })
+  } else {
+    res.status(500).json({error: `"authenticate" not implemented for this provider`})
   }
 }
 
