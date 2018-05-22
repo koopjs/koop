@@ -343,6 +343,55 @@ Output:
    ...
   ]
 ```
+### FeatureServer.authenticate
+Pass in an outgoing response object and an authentication success object and this function will route and return a formatted authentication success response.
+
+    FeatureServer.authenticate(res, auth, ssl = false)
+
+* `auth` is the result of a successful authentication attempt that returns a token and expiration time
+* `ssl` is a boolean flag indicating if token should always be passed back via HTTPS. Defaults to `false`
+
+e.g.,
+    
+    const auth = {
+      "token":"elS39KU4bMmZQgMXDuswgA14vavIp4mfpiqcWSr0qM6q4dFguTnnHddWqbpK5Mc3HsCN8XghlwawUUYApOOcxKNyg_9WqTofChJXxxD058_rL1HZkM5PDhUOh9YYQn1K",
+      "expires":1524508236322
+    }
+
+    FeatureServer.authenticate(res, auth)
+
+    {
+      "token":"elS39KU4bMmZQgMXDuswgA14vavIp4mfpiqcWSr0qM6q4dFguTnnHddWqbpK5Mc3HsCN8XghlwawUUYApOOcxKNyg_9WqTofChJXxxD058_rL1HZkM5PDhUOh9YYQn1K",
+      "expires":1524508236322,
+      ssl: false
+    }
+
+### FeatureServer.error.authorize
+Pass in an outgoing response object and this function will route and return a formattted authorization error.
+
+    FeatureServer.error.authorize(res)
+
+    {
+      "error": {
+        "code": 499,
+        "message": "Token Required",
+        "details": []
+      }
+    }
+
+### FeatureServer.error.authenticate
+Pass in an outgoing response object and this function will route and return a formatted authentication error.
+
+    FeatureServer.error.authenticate(res)
+    
+    {
+      "error": {
+        "code": 400,
+        "message": "Unable to generate token.",
+        "details": ["Invalid username or password."]
+      }
+    }
+
 
 [npm-image]: https://img.shields.io/npm/v/featureserver.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/featureserver

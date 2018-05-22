@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Add response handlers for authentication success and authentication/authorization errors
+
 ## [2.13.0] - 05-10-2018
 ### Added
 * Add parameter to the `rest/info` handler and use the argument to supplement/override of the templated JSON response
