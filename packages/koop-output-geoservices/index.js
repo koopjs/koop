@@ -2,7 +2,17 @@ var FeatureServer = require('featureserver')
 
 function Geoservices () {}
 
-Geoservices.prototype.featureServer = function (req, res) {
+Geoservices.prototype.featureServer = async function (req, res) {
+  // Is model configured for token-authorization?
+  if (typeof this.model.authorize === 'function') {
+    try {
+      // Does request have a valid authorization token?
+      await this.model.authorize(req.query.token)
+    } catch (err) {
+      // Respond with an authorization error
+      return FeatureServer.error.authorization(res)
+    }
+  }
   // model will be available when this is instantiated with the Koop controller
   this.model.pull(req, function (err, data) {
     if (err) res.status(err.code || 500).json({error: err.message})
@@ -33,8 +43,19 @@ Geoservices.prototype.featureServerRestInfo = function (req, res) {
  * @param {*} req
  * @param {*} res
  */
-Geoservices.prototype.generateToken = function (req, res) {
-  this.model.authenticate(req, res)
+Geoservices.prototype.generateToken = async function (req, res) {
+  // Is model configured for authentication?
+  if (typeof this.model.authenticate === 'function') {
+    try {
+      // Does request successfully authenticate?
+      let tokenJson = await this.model.authenticate(req.query.username, req.query.password)
+      // Pass on to FeatureServer for request response formatting
+      FeatureServer.authenticate(res, tokenJson)
+    } catch (err) {
+      // Respond with an authentication error
+      return FeatureServer.error.authentication(res)
+    }
+  }
 }
 
 /**

@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added 
+* handling of authorization and authentication errors
+
+### Fixed
+* Bump FeatureServer version to 2.14.1 in order to support added authentication handling
+
 ## [1.3.0] - 2018-05-17
 ### Added
 * Call model function `authenticationSpecification` (if exists) in the `rest/info` handler and pass data to FeatureServer
