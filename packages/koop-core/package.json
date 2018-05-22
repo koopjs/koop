@@ -21,7 +21,7 @@
     "express": "^4.14.1",
     "koop-cache-memory": "^1.0.2",
     "koop-localfs": "^1.1.1",
-    "koop-output-geoservices": "^1.2.0",
+    "koop-output-geoservices": "^1.4.0",
     "lodash": "^4.17.10"
   },
   "devDependencies": {

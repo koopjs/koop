@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+## Added
+* Added registration of authentication plugin type
+
 ## [3.6.1] - 2018-05-09
 ### Fixed
 * Routes with a $namespace placeholder require a $providerParams placeholder to also receive the `:host/:id` URL fragment.

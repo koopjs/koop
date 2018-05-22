@@ -97,10 +97,20 @@ Koop.prototype.register = function (plugin) {
       return this._registerFilesystem(plugin)
     case 'output':
       return this._registerOutput(plugin)
+    case 'auth':
+      return this._registerAuth(plugin)
     default:
       this.log.warn('Unrecognized plugin type: "' + plugin.type + '". Defaulting to provider.')
       return this._registerProvider(plugin)
   }
+}
+
+/**
+ * Store an Authentication plugin on the koop instance for use during provider registration. 
+ * @param {object} auth 
+ */
+Koop.prototype._registerAuth = function(auth) {
+  this._auth_module = auth
 }
 
 /**
@@ -110,8 +120,15 @@ Koop.prototype.register = function (plugin) {
  * @param {object} provider - the provider to be registered
  */
 Koop.prototype._registerProvider = function (provider) {
-  // Need a new copy of Model otherwise providers will step on each other
+  
+  // If an authentication module has been registered, apply it to the provider's Model
+  if(this._auth_module) {
+    provider.Model.prototype.authenticationSpecification = this._auth_module.getAuthenticationSpecification(provider.name)
+    provider.Model.prototype.authenticate = this._auth_module.authenticate
+    provider.Model.prototype.authorize = this._auth_module.authorize
+  }
 
+  // Need a new copy of Model otherwise providers will step on each other
   const model = this._initProviderModel(provider)
   // controller is optional
   let controller
