@@ -68,7 +68,8 @@ Geoservices.prototype.generateToken = function (req, res) {
         FeatureServer.authenticate(res, tokenJson)
       })
       .catch(err => {
-        res.status(err.code || 500).json({error: err.message})
+        if (err.code === 401) FeatureServer.error.authentication(res)
+        else res.status(err.code || 500).json({error: err.message})
       })
   } else {
     res.status(500).json({error: `"authenticate" not implemented for this provider`})

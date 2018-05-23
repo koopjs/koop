@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* missed FeatureServer handling of authentication error
+
 ## [1.4.1] - 2018-05-22
 ### Fixed
 * convert `async/await` to promises 
