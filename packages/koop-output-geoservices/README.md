@@ -30,6 +30,11 @@ koop.server.listen(80)
     handler: 'featureServerRestInfo'
   },
   {
+    path: '$namespace/rest/generateToken',
+    methods: ['get', 'post'],
+    handler: 'generateToken'
+  },
+  {
     path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/:method',
     methods: ['get', 'post'],
     handler: 'featureServer'
