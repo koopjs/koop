@@ -1,6 +1,7 @@
 const FsInfo = require('./info.js')
 const FsQuery = require('./query.js')
 const FsGenerateRenderer = require('./generateRenderer')
+const helpers = require('./helpers')
 
 module.exports = route
 
@@ -23,11 +24,6 @@ function route (req, res, geojson, options) {
     req.query[key] = tryParse(req.query[key])
   })
 
-  if (req.query.callback) {
-    req.query.callback = sanitizeCallback(req.query.callback)
-    res.set('Content-Type', 'application/javascript')
-  }
-
   if (isNaN(req.query.limit)) req.query.limit = metadata.maxRecordCount || 2000
 
   // if this is for a method we can handle like query
@@ -48,10 +44,9 @@ function execQuery (req, res, geojson, options) {
     response = FsQuery(geojson, req.query || {})
   } catch (e) {
     if (process.env.NODE_ENV === 'test') console.trace(e)
-    return res.status(e.code || 500).json({ error: e.message })
+    return helpers.responseHandler(req, res, (e.code || 500), { error: e.message })
   }
-  if (req.query.callback) res.send(`${req.query.callback}(${JSON.stringify(response)})`)
-  else res.status(200).json(response)
+  helpers.responseHandler(req, res, 200, response)
 }
 
 function execGenerateRenderer (req, res, geojson, options) {
@@ -60,10 +55,9 @@ function execGenerateRenderer (req, res, geojson, options) {
     response = FsGenerateRenderer(geojson, req.query || {})
   } catch (e) {
     if (process.env.NODE_ENV === 'test') console.trace(e)
-    return res.status(e.code || 500).json({ error: e.message })
+    return helpers.responseHandler(req, res, (e.code || 500), { error: e.message })
   }
-  if (req.query.callback) res.send(`${req.query.callback}(${JSON.stringify(response)})`)
-  else res.status(200).json(response)
+  helpers.responseHandler(req, res, 200, response)
 }
 
 function execInfo (req, res, method, geojson) {
@@ -78,21 +72,20 @@ function execInfo (req, res, method, geojson) {
       info = FsInfo.layerInfo(geojson, req.params)
     } else if (/\/FeatureServer\/layers$/i.test(url)) {
       info = FsInfo.layersInfo(geojson, req.query)
-    } else {
+    } else if (/\/FeatureServer/i.test(url)) {
       const error = new Error('Method not supported')
       error.code = 400
+      throw error
+    } else {
+      const error = new Error('Not Found')
+      error.code = 404
       throw error
     }
   } catch (e) {
     if (process.env.NODE_ENV === 'test') console.trace(e)
-    return res.status(e.code || 500).json({ error: e.message })
+    return helpers.responseHandler(req, res, (e.code || 500), { error: e.message })
   }
-  if (req.query.callback) res.send(`${req.query.callback}(${JSON.stringify(info)})`)
-  else res.status(200).json(info)
-}
-
-function sanitizeCallback (callback) {
-  return callback.replace(/[^\w\d\.\(\)\[\]]/g, '') // eslint-disable-line
+  helpers.responseHandler(req, res, 200, info)
 }
 
 function tryParse (json) {

@@ -28,7 +28,8 @@ describe('Info operations', () => {
 
       // Test response body schema
       const schema = Joi.object().keys({
-        'currentVersion': Joi.number(),
+        'currentVersion': Joi.number().valid(10.51),
+        'fullVersion': Joi.string().valid('10.5.1'),
         'hasVersionedData': Joi.boolean().valid(false),
         'supportsDisconnectedEditing': Joi.boolean().valid(false),
         'supportedQueryFormats': Joi.string().valid('JSON'),
@@ -177,6 +178,7 @@ describe('Info operations', () => {
 
       const schema = Joi.object().keys({
         'currentVersion': Joi.number().valid(10.51),
+        'fullVersion': Joi.string().valid('10.5.1'),
         'id': Joi.number().integer().min(0),
         'name': Joi.string(),
         'type': Joi.string().valid('Feature Layer'),

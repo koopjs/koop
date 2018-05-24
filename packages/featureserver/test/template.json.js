@@ -47,6 +47,7 @@ describe('Template content', () => {
       // Use Joi to build expected schema and test against JSON.
       const schema = Joi.object().keys({
         'currentVersion': Joi.number().valid(10.51),
+        'fullVersion': Joi.string().valid('10.5.1'),
         'id': Joi.number().integer().valid(0),
         'name': Joi.string().allow(''),
         'type': Joi.string().allow('Feature Layer'),
@@ -144,6 +145,7 @@ describe('Template content', () => {
       // Use Joi to build expected schema and test against JSON.
       const schema = Joi.object().keys({
         'currentVersion': Joi.number().valid(10.51),
+        'fullVersion': Joi.string().valid('10.5.1'),
         'serviceDescription': Joi.string().allow(''),
         'hasVersionedData': Joi.boolean().valid(false),
         'supportsDisconnectedEditing': Joi.boolean().valid(false),
