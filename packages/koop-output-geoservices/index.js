@@ -1,5 +1,7 @@
 var FeatureServer = require('featureserver')
 
+console.log('WARNING: "/MapServer" routes will be registered, but only for specialized 404 handling in FeatureServer.')
+
 function Geoservices () {}
 
 /**
@@ -29,7 +31,7 @@ Geoservices.prototype.featureServer = function (req, res) {
         pullDataAndRoute(this.model, req, res)
       })
       .catch(err => {
-        if (err.code === 401) FeatureServer.error.authorization(res)
+        if (err.code === 401) FeatureServer.error.authorization(req, res)
         else res.status(err.code || 500).json({error: err.message})
       })
   } else {
@@ -50,7 +52,7 @@ Geoservices.prototype.featureServerRestInfo = function (req, res) {
   let authSpec = getAuthSpec()
   if (authSpec.secured) {
     authInfo.isTokenBasedSecurity = true
-    authInfo.tokenServicesUrl = `${req.protocol}://${req.headers.host}/${authSpec.provider}/rest/generateToken`
+    authInfo.tokenServicesUrl = `${req.protocol}://${req.headers.host}/${authSpec.provider}/tokens/`
   }
   FeatureServer.route(req, res, { authInfo })
 }
@@ -68,7 +70,7 @@ Geoservices.prototype.generateToken = function (req, res) {
         FeatureServer.authenticate(res, tokenJson)
       })
       .catch(err => {
-        if (err.code === 401) FeatureServer.error.authentication(res)
+        if (err.code === 401) FeatureServer.error.authentication(req, res)
         else res.status(err.code || 500).json({error: err.message})
       })
   } else {
@@ -93,7 +95,12 @@ Geoservices.routes = [
     handler: 'featureServerRestInfo'
   },
   {
-    path: '$namespace/rest/generateToken',
+    path: '$namespace/tokens/:method',
+    methods: ['get', 'post'],
+    handler: 'generateToken'
+  },
+  {
+    path: '$namespace/tokens/',
     methods: ['get', 'post'],
     handler: 'generateToken'
   },
@@ -134,6 +141,26 @@ Geoservices.routes = [
   },
   {
     path: 'FeatureServer',
+    methods: ['get', 'post'],
+    handler: 'featureServer'
+  },
+  {
+    path: '$namespace/rest/services/$providerParams/FeatureServer*',
+    methods: ['get', 'post'],
+    handler: 'featureServer'
+  },
+  {
+    path: 'FeatureServer*',
+    methods: ['get', 'post'],
+    handler: 'featureServer'
+  },
+  {
+    path: '$namespace/rest/services/$providerParams/MapServer*',
+    methods: ['get', 'post'],
+    handler: 'featureServer'
+  },
+  {
+    path: 'MapServer*',
     methods: ['get', 'post'],
     handler: 'featureServer'
   }

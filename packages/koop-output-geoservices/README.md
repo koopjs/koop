@@ -23,14 +23,19 @@ koop.server.listen(80)
 ## Routes
 
 ```js
-[
+Geoservices.routes = [
   {
     path: '$namespace/rest/info',
     methods: ['get', 'post'],
     handler: 'featureServerRestInfo'
   },
   {
-    path: '$namespace/rest/generateToken',
+    path: '$namespace/tokens/:method',
+    methods: ['get', 'post'],
+    handler: 'generateToken'
+  },
+  {
+    path: '$namespace/tokens/',
     methods: ['get', 'post'],
     handler: 'generateToken'
   },
@@ -50,7 +55,7 @@ koop.server.listen(80)
     handler: 'featureServer'
   },
   {
-    path: '$namespace/$rest/services/$providerParams/FeatureServer',
+    path: '$namespace/rest/services/$providerParams/FeatureServer',
     methods: ['get', 'post'],
     handler: 'featureServer'
   },
@@ -71,6 +76,26 @@ koop.server.listen(80)
   },
   {
     path: 'FeatureServer',
+    methods: ['get', 'post'],
+    handler: 'featureServer'
+  },
+  {
+    path: '$namespace/rest/services/$providerParams/FeatureServer*',
+    methods: ['get', 'post'],
+    handler: 'featureServer'
+  },
+  {
+    path: 'FeatureServer*',
+    methods: ['get', 'post'],
+    handler: 'featureServer'
+  },
+  {
+    path: '$namespace/rest/services/$providerParams/MapServer*',
+    methods: ['get', 'post'],
+    handler: 'featureServer'
+  },
+  {
+    path: 'MapServer*',
     methods: ['get', 'post'],
     handler: 'featureServer'
   }
