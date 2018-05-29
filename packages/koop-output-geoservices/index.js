@@ -52,7 +52,9 @@ Geoservices.prototype.featureServerRestInfo = function (req, res) {
   let authSpec = getAuthSpec()
   if (authSpec.secured) {
     authInfo.isTokenBasedSecurity = true
-    authInfo.tokenServicesUrl = `${req.protocol}://${req.headers.host}/${authSpec.provider}/tokens/`
+    // Use https by default, unless KOOP_AUTH_HTTP or authSpec.useHttp are defined and set to true
+    let protocol = (authSpec.useHttp === true || process.env.KOOP_AUTH_HTTP === 'true') ? 'http' : 'https'
+    authInfo.tokenServicesUrl = `${protocol}://${req.headers.host}${req.baseUrl}/${authSpec.provider}/tokens/`
   }
   FeatureServer.route(req, res, { authInfo })
 }
