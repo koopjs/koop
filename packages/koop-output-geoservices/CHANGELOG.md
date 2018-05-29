@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.5.0] - 2018-05-29
 ### Added
 * Use `https` as the default protocol when constructing the `tokenServicesUrl` in the `featureServerRestInfo` handler. Default is overridden when an `useHttp` property is defined on the result of `authenticationSpecification()` or when an environment variable `KOOP_AUTH_HTTP=true`
 * Added base-url fragment to `tokenServicesUrl`
@@ -54,6 +54,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[1.5.0]: https://github.com/koopjs/koop-featureserver-plugin/compare/v1.4.2...v1.5.0
 [1.4.2]: https://github.com/koopjs/koop-featureserver-plugin/compare/v1.4.1...v1.4.2
 [1.4.1]: https://github.com/koopjs/koop-featureserver-plugin/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/koopjs/koop-featureserver-plugin/compare/v1.3.0...v1.4.0
