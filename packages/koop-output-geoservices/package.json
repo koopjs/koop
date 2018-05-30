@@ -27,7 +27,7 @@
     "standard": "^11.0.1"
   },
   "dependencies": {
-    "featureserver": "^2.14.1"
+    "featureserver": "^2.15.0"
   },
   "peerDependencies": {
     "koop": "^3.6.1"
