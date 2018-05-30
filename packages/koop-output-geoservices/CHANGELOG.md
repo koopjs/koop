@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Bumped FeatureServer version to 2.15.0
+
 ## [1.5.0] - 2018-05-29
 ### Added
 * Use `https` as the default protocol when constructing the `tokenServicesUrl` in the `featureServerRestInfo` handler. Default is overridden when an `useHttp` property is defined on the result of `authenticationSpecification()` or when an environment variable `KOOP_AUTH_HTTP=true`
