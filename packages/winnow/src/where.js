@@ -1,6 +1,6 @@
-const _ = require('lodash');
-const Parser = require('flora-sql-parser').Parser;
-const parser = new Parser();
+const _ = require('lodash')
+const Parser = require('flora-sql-parser').Parser
+const parser = new Parser()
 
 /**
  * Convert an expression node to its string representation.
@@ -8,8 +8,8 @@ const parser = new Parser();
  * @param  {object} options winnow options
  * @return {string}         expression string
  */
-function handleExpr(node, options) {
-  let expr;
+function handleExpr (node, options) {
+  let expr
 
   if (node.type === 'unary_expr') {
     expr = `${node.operator} ${traverse(node.expr, options)}`
@@ -17,7 +17,7 @@ function handleExpr(node, options) {
     // a special case related to arcgis server
     return '1=1'
   } else if (node.operator === 'BETWEEN') {
-    expr = traverse(node.left, options) + " " + (node.operator) + " " + (traverse(node.right.value[0], options)) + "AND" + (traverse(node.right.value[1], options))
+    expr = traverse(node.left, options) + ' ' + (node.operator) + ' ' + (traverse(node.right.value[0], options)) + 'AND' + (traverse(node.right.value[1], options))
   } else {
     // store the column node for value decoding
 
@@ -45,7 +45,7 @@ function handleExpr(node, options) {
  * @param  {object} options winnow options
  * @return {string}         expression list string
  */
-function handleExprList(node, options) {
+function handleExprList (node, options) {
   const values = node.value.map((valueNode) => traverse(valueNode, options)).join(',')
   return `(${values})`
 }
@@ -56,7 +56,7 @@ function handleExprList(node, options) {
  * @param  {object} options winnow options
  * @return {string}         function string
  */
-function handleFunction(node, options) {
+function handleFunction (node, options) {
   const args = handleExprList(node.args, options)
   return `${node.name}${args}`
 }
@@ -67,7 +67,7 @@ function handleFunction(node, options) {
  * @param  {object} options winnow options
  * @return {string}         column string
  */
-function handleColumn(node, options) {
+function handleColumn (node, options) {
   return options.esri ? `attributes->\`${node.column}\`` : `properties->\`${node.column}\``
 }
 
@@ -81,8 +81,8 @@ function handleColumn(node, options) {
  * @param  {object} options winnow options
  * @return {string}         value string
  */
-function handleValue(node, options) {
-  let value = node.value;
+function handleValue (node, options) {
+  let value = node.value
 
   if (node.columnNode) {
     const field = _.find(options.esriFields, { name: node.columnNode.column })
@@ -103,7 +103,6 @@ function handleValue(node, options) {
   return value
 }
 
-
 /**
  * Convert a timestamp node to its iso8601 string representation.
  *
@@ -111,7 +110,7 @@ function handleValue(node, options) {
  * @param  {object} options winnow options
  * @return {string}         value string
  */
-function handleTimestampValue(node, options) {
+function handleTimestampValue (node, options) {
   return `'${new Date(node.value).toISOString()}'`
 }
 
@@ -121,12 +120,12 @@ function handleTimestampValue(node, options) {
  * @param  {object} options winnow options
  * @return {string}         AST string
  */
-function traverse(node, options) {
+function traverse (node, options) {
   if (!node) {
     return ''
   }
 
-  switch(node.type) {
+  switch (node.type) {
     case 'unary_expr':
     case 'binary_expr':
       return handleExpr(node, options)
@@ -145,7 +144,7 @@ function traverse(node, options) {
       return handleTimestampValue(node, options)
     default:
       throw new Error('Unrecognized AST node: \n' + JSON.stringify(node, null, 2))
-   }
+  }
 }
 
 /**
@@ -153,7 +152,7 @@ function traverse(node, options) {
  * @param  {string} options winnow options
  * @return {string}         SQL where clause
  */
-function createClause(options) {
+function createClause (options) {
   options = options || {}
   if (!options.where) return ''
 

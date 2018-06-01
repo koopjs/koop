@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "standard src && tape test/*.js | tap-spec",
+    "test": "standard && tape test/*.js | tap-spec",
     "clean": "rm -rf dist",
     "compile": "buble -i src -o dist"
   },
