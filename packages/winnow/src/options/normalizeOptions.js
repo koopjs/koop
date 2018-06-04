@@ -1,4 +1,5 @@
 const _ = require('lodash')
+const projCodes = require('@esri/proj-codes')
 const convertFromEsri = require('../geometry/convert-from-esri')
 const transformArray = require('../geometry/transform-array')
 const transformEnvelope = require('../geometry/transform-envelope')
@@ -73,21 +74,37 @@ function normalizeGeometry (options) {
   return geometry
 }
 
+/**
+ * Normalize the input spatial reference. Look on options.geometry object first.  If spatial reference not present, look in options.inSR
+ * @param {object} options options object that may or may not have "geometry" and "inSR" properties
+ * @returns {string} formatted string, "EPSG:<wkid>"
+ */
 function normalizeInSR (options) {
-  let SR
-  if (options.inSR) SR = options.inSR
-  else if (options.geometry.spatialReference) {
+  let spatialReference
+  // Look for in geometry option's spatial reference
+  if (_.has(options, 'geometry.spatialReference')) {
     if (/WGS_1984_Web_Mercator_Auxiliary_Sphere/.test(options.geometry.spatialReference.wkt)) {
-      SR = 3857
-    } else {
-      SR = options.geometry.spatialReference.latestWkid || options.geometry.spatialReference.wkid
-    }
+      spatialReference = 3857
+    } else spatialReference = options.geometry.spatialReference.latestWkid || options.geometry.spatialReference.wkid
+    // Validate spatial refernce
+  } else if (options) {
+    // test for EPSG string format
+    if (/EPSG:/.test(options.inSR)) spatialReference = options.inSR.match(/EPSG:(.*)/)[1]
+    // inSR may be an object with wkid or latestWkid properties
+    else if (_.isPlainObject(options.inSR)) spatialReference = options.inSR.latestWkid || options.inSR.wkid
+    else spatialReference = options.inSR
   }
 
-  if (/EPSG:/.test(SR)) return SR
-  else if (SR === 102100) return `EPSG:3857`
-  else if (SR) return `EPSG:${SR}`
-  else return 'EPSG:4326'
+  // Undefined spatial reference defaults to 4326
+  if (!spatialReference) return 'EPSG:4326'
+  // Special handling for 102100
+  if (spatialReference === 102100) return 'EPSG:3857'
+  // Validate any other submitted spatial reference.
+  if (projCodes.lookup(spatialReference)) return `EPSG:${spatialReference}`
+  else {
+    console.warn(`WARNING: input spatialReference "${spatialReference}" is invalid. Defaulting to 4326.`)
+    return 'EPSG:4326'
+  }
 }
 
 function normalizeLimit (options) {
@@ -122,5 +139,6 @@ module.exports = {
   normalizeLimit,
   normalizeGeometry,
   normalizeOffset,
-  normalizeProjection
+  normalizeProjection,
+  normalizeInSR
 }

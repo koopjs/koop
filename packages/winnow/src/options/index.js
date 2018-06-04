@@ -12,13 +12,16 @@ const {
   normalizeLimit,
   normalizeGeometry,
   normalizeOffset,
-  normalizeProjection } = require('./normalizeOptions')
+  normalizeProjection,
+  normalizeInSR
+} = require('./normalizeOptions')
 const { normalizeClassification } = require('./normalizeClassification')
 
 function prepare (options, features) {
   const prepared = _.merge({}, options, {
     collection: normalizeCollection(options, features),
     where: normalizeWhere(options),
+    inSR: normalizeInSR(options),
     geometry: normalizeGeometry(options),
     spatialPredicate: normalizeSpatialPredicate(options),
     fields: normalizeFields(options),
