@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.15.3] - 06-04-2018
 ### Fixed
 * Handle `inSR` options that arrive as objects
 
@@ -260,6 +260,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[1.15.3]: https://github.com/featureserver/winnow/compare/v1.15.2...v1.15.3
 [1.15.2]: https://github.com/featureserver/winnow/compare/v1.15.1...v1.15.2
 [1.15.1]: https://github.com/featureserver/winnow/compare/v1.15.0...v1.15.1
 [1.15.0]: https://github.com/featureserver/winnow/compare/v1.14.0...v1.15.0
