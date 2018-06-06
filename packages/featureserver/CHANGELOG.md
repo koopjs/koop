@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+## Added
+* Add warnings for invalid GeoJSON when `NODE_ENV !== 'production'`
+
 ## [2.15.0] -05-30-2018
 ### Fixed
 * Authentication and authorization error messages now properly handled if request has `callback` query parameter
