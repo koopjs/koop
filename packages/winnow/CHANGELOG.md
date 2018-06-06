@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Added additional polygon projection tests
+
 ## [1.15.3] - 06-04-2018
 ### Fixed
 * Handle `inSR` options that arrive as objects

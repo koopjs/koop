@@ -1,5 +1,6 @@
 'use strict'
 const test = require('tape')
+const _ = require('lodash')
 const winnow = require('../src')
 const features = require('./fixtures/snow.json').features
 const polygonFeatures = require('./fixtures/polygon.json').features
@@ -153,10 +154,62 @@ test('Do not project NaN coordinate values', t => {
   const options = {
     projection: 3857
   }
-  let modifiedFeatures = features
+  let modifiedFeatures = _.cloneDeep(features)
   modifiedFeatures[0].geometry.coordinates[0] = null
   modifiedFeatures[0].geometry.coordinates[1] = null
-  const results = winnow.query(features, options)
+  const results = winnow.query(modifiedFeatures, options)
   t.equal(results.length, 417)
   t.deepEqual(results[0].geometry.coordinates, [null, null])
+})
+
+test('Project to NAD83 4269 an esri style outSR', t => {
+  t.plan(1)
+  const options = {
+    outSR: { latestWkid: 4269 },
+    limit: 1
+  }
+  const results = winnow.query(features, options)
+  t.deepEqual(results[0].geometry.coordinates, [-104.9476, 39.9448])
+})
+
+test('Project a polygon to NAD83 using 4269', t => {
+  t.plan(2)
+  const options = {
+    projection: 4269,
+    limit: 1
+  }
+  const results = winnow.query(polygonFeatures, options)
+
+  t.equal(results.length, 1)
+  t.deepEqual(results[0].geometry.coordinates, [
+    [
+      [ -119.00390625, 50.28933925329178 ],
+      [ -116.19140625, 29.38217507514529 ],
+      [ -91.7578125, 32.84267363195431 ],
+      [ -82.79296874999999, 39.639537564366684 ],
+      [ -102.48046875, 53.014783245859206 ],
+      [ -119.00390625, 50.28933925329178 ]
+    ]
+  ])
+})
+
+test('Project a polygon to NAD83 using 4269 and translating to esri', t => {
+  t.plan(2)
+  const options = {
+    projection: 4269,
+    limit: 1,
+    toEsri: true
+  }
+  const results = winnow.query(polygonFeatures, options)
+  t.equal(results.length, 1)
+  t.deepEqual(results[0].geometry.rings, [
+    [
+      [ -119.00390625, 50.28933925329178 ],
+      [ -102.48046875, 53.014783245859206 ],
+      [ -82.79296874999999, 39.639537564366684 ],
+      [ -91.7578125, 32.84267363195431 ],
+      [ -116.19140625, 29.38217507514529 ],
+      [ -119.00390625, 50.28933925329178 ]
+    ]
+  ])
 })
