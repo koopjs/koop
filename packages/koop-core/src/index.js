@@ -123,7 +123,7 @@ Koop.prototype._registerProvider = function (provider) {
   
   // If an authentication module has been registered, apply it to the provider's Model
   if(this._auth_module) {
-    provider.Model.prototype.authenticationSpecification = this._auth_module.getAuthenticationSpecification(provider.name)
+    provider.Model.prototype.authenticationSpecification = Object.assign({}, this._auth_module.authenticationSpecification(provider.name), {provider: provider.name})
     provider.Model.prototype.authenticate = this._auth_module.authenticate
     provider.Model.prototype.authorize = this._auth_module.authorize
   }

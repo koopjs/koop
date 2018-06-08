@@ -2,7 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Auth plugin registration now adds `authenticationSpecification` to Model prototype
+
 ## [3.7.1] - 2018-06-01
+### Fixed
 * Explicitly bump koop-output-geoservices to 1.5.1
 
 ## [3.7.0] - 2018-05-22
