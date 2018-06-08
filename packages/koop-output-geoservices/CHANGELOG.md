@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Simplify acquisition of authentication specification from Model.
+
 ## [1.5.1] - 2018-05-30
 ### Fixed
 * Bumped FeatureServer version to 2.15.0

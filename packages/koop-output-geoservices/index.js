@@ -47,10 +47,8 @@ Geoservices.prototype.featureServer = function (req, res) {
  */
 Geoservices.prototype.featureServerRestInfo = function (req, res) {
   let authInfo = {}
-  // Inspect model for an "authenticationSpecification" function; if undefined create a dummy function that returns an empty object
-  let getAuthSpec = this.model.authenticationSpecification || function () { return {} }
-  let authSpec = getAuthSpec()
-  if (authSpec.secured) {
+  let authSpec = this.model.authenticationSpecification
+  if (authSpec) {
     authInfo.isTokenBasedSecurity = true
     // Use https by default, unless KOOP_AUTH_HTTP or authSpec.useHttp are defined and set to true
     let protocol = (authSpec.useHttp === true || process.env.KOOP_AUTH_HTTP === 'true') ? 'http' : 'https'
