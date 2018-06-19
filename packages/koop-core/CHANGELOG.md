@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.8.0] - 2018-06-19
+### Added
+* Parse query params that arrive as JSON strings
+* Coerce query params that arrive as boolean strings
+
 ## [3.7.3] - 2018-06-08
 ### Fixed
 * Explicit bump of koop-output-geoservices version
@@ -791,6 +796,8 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+
+[3.8.0]: https://github.com/koopjs/koop-core/compare/v3.7.3...v3.8.0
 [3.7.3]: https://github.com/koopjs/koop-core/compare/v3.7.2...v3.7.3
 [3.7.2]: https://github.com/koopjs/koop-core/compare/v3.7.1...v3.7.2
 [3.7.1]: https://github.com/koopjs/koop-core/compare/v3.7.0...v3.7.1
