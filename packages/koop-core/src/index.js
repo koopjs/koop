@@ -78,6 +78,8 @@ function initServer () {
     next()
   }) 
   .use(middleware.paramTrim)
+  .use(middleware.paramParse)
+  .use(middleware.paramCoerce)
   // for demos and preview maps in providers
   .set('view engine', 'ejs')
   .use(express.static(path.join(__dirname, '/public')))
