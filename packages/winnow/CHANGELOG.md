@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
+* Add normalization of a `option.sourceSR`; this option identifies the CRS of the source data and defaults to 'EPSG:4326'; 
+* If `option.sourceSR` is defined and geometry filter is defined, the geometry filter is reprojected to the CRS of the source
+* Use srs npm to validate WKT CRS
 * Added additional polygon projection tests
 
 ## [1.15.3] - 06-04-2018

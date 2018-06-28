@@ -43,6 +43,7 @@
     "ngeohash": "^0.6.0",
     "proj4": "^2.3.17",
     "simple-statistics": "^6.0.0",
+    "srs": "^1.2.0",
     "terraformer": "^1.0.7"
   },
   "devDependencies": {

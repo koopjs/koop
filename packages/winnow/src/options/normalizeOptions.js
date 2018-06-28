@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const projCodes = require('@esri/proj-codes')
+const srs = require('srs')
 const convertFromEsri = require('../geometry/convert-from-esri')
 const transformArray = require('../geometry/transform-array')
 const transformEnvelope = require('../geometry/transform-envelope')
@@ -69,41 +69,75 @@ function normalizeGeometry (options) {
   } else if (geometry.x || geometry.rings || geometry.paths || geometry.points) {
     geometry = convertFromEsri(geometry)
   }
-  const inSR = bboxCRS || normalizeInSR(options)
-  if (inSR) geometry.coordinates = projectCoordinates(geometry.coordinates, { inSR, outSR: 'EPSG:4326' })
+  const inSR = normalizeInSR(options)
+  const geometryFilterSR = bboxCRS || inSR
+  const sourceSR = normalizeSourceSR(options.sourceSR)
+  if (inSR) geometry.coordinates = projectCoordinates(geometry.coordinates, { fromSR: geometryFilterSR, toSR: sourceSR })
   return geometry
 }
 
 /**
- * Normalize the input spatial reference. Look on options.geometry object first.  If spatial reference not present, look in options.inSR
+ * Normalize the input spatial reference for a geometry filter. Look on options.geometry object first.
+ * If spatial reference not present, look in options.inSR.  Defaults to EPSG:4326
  * @param {object} options options object that may or may not have "geometry" and "inSR" properties
- * @returns {string} formatted string, "EPSG:<wkid>"
+ * @returns {string} EPSG:<wkid> or srs WKT; defaults to EPSG:4326
  */
 function normalizeInSR (options) {
+  // Look for geometry option's spatial reference
   let spatialReference
-  // Look for in geometry option's spatial reference
-  if (_.has(options, 'geometry.spatialReference')) {
-    if (/WGS_1984_Web_Mercator_Auxiliary_Sphere/.test(options.geometry.spatialReference.wkt)) {
-      spatialReference = 3857
-    } else spatialReference = options.geometry.spatialReference.latestWkid || options.geometry.spatialReference.wkid
-    // Validate spatial refernce
-  } else if (options) {
-    // test for EPSG string format
-    if (/EPSG:/.test(options.inSR)) spatialReference = options.inSR.match(/EPSG:(.*)/)[1]
-    // inSR may be an object with wkid or latestWkid properties
-    else if (_.isPlainObject(options.inSR)) spatialReference = options.inSR.latestWkid || options.inSR.wkid
-    else spatialReference = options.inSR
-  }
+  if (_.has(options, 'geometry.spatialReference')) spatialReference = normalizeSR(options.geometry.spatialReference)
+  else spatialReference = normalizeSR(options.inSR)
 
-  // Undefined spatial reference defaults to 4326
-  if (!spatialReference) return 'EPSG:4326'
-  // Special handling for 102100
-  if (spatialReference === 102100) return 'EPSG:3857'
-  // Validate any other submitted spatial reference.
-  if (projCodes.lookup(spatialReference)) return `EPSG:${spatialReference}`
-  else {
-    console.warn(`WARNING: input spatialReference "${spatialReference}" is invalid. Defaulting to 4326.`)
-    return 'EPSG:4326'
+  if (spatialReference) return ((spatialReference.wkid) ? `EPSG:${spatialReference.wkid}` : spatialReference.wkt)
+  return `EPSG:4326`
+}
+
+/**
+ * Normalize source data spatial reference; defaults to EPSG:4326
+ * @param {*} input
+ * @returns {string} EPSG:<wkid> or srs WKT; defaults to EPSG:4326
+ */
+function normalizeSourceSR (input) {
+  let spatialReference = normalizeSR(input)
+  if (spatialReference) return ((spatialReference.wkid) ? `EPSG:${spatialReference.wkid}` : spatialReference.wkt)
+  return `EPSG:4326`
+}
+
+/**
+ * Normalize a spatial reference object.  Use wkids for spatial references know too proj4, otherwise include the wkt (if available)
+ * @param {*} input
+ * @returns {object} normalized spatial reference object with wkid or wkt (or undefined)
+ */
+function normalizeSR (input) {
+  // The following WKIDs are known to proj4
+  const knownWkids = [4326, 4269, 3857, 3785, 900913, 102113]
+  let inputWkid
+
+  // Search input for a wkid
+  if (Number.isInteger(input) || Number.isInteger(Number(input))) inputWkid = Number(input)
+  else if (/EPSG:/.test(input)) inputWkid = Number(input.match(/EPSG:(.*)/)[1])
+  else if (input && (input.latestWkid || input.wkid)) inputWkid = input.latestWkid || input.wkid
+
+  // When required input is undefined, return undefined
+  if (!input || (_.isObject(input) && !inputWkid && !input.wkt)) return
+
+  // 102100 is the old code for 3857 but not recognized for proj4
+  if (inputWkid === 102100) inputWkid = 3857
+
+  // If the input wkid is one of the set known to proj4, return it in an object
+  if (knownWkids.includes(inputWkid)) return { wkid: inputWkid }
+
+  // Input may be or include a WKT spatial reference
+  const wkt = input.wkt || input
+  try {
+    let parsedSRS = srs.parse(wkt)
+    if (!parsedSRS.valid) throw new Error('Invalid WKT')
+    if (knownWkids.includes(parsedSRS.srid)) return { wkid: parsedSRS.srid }
+    return { wkt }
+  } catch (err) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`WARNING: A spatial reference unknown to proj4 was passed without a valid WKT definition`)
+    }
   }
 }
 
@@ -140,5 +174,7 @@ module.exports = {
   normalizeGeometry,
   normalizeOffset,
   normalizeProjection,
-  normalizeInSR
+  normalizeSR,
+  normalizeInSR,
+  normalizeSourceSR
 }

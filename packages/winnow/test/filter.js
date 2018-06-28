@@ -231,6 +231,36 @@ test('With an esri style envelope with xmin = 0, ans esri features', t => {
   run('startups', options, 2, t)
 })
 
+test('With an esri style envelope in EPSG:102645 defined by wkt', t => {
+  const options = {
+    geometry: {
+      xmin: 6514066.3001615712419152,
+      ymin: 1887820.5006760144606233,
+      xmax: 6514127.4193187793716788,
+      ymax: 1887997.4401315276045352,
+      spatialReference: {
+        wkt: `PROJCS["NAD_1983_StatePlane_California_V_FIPS_0405_Feet",
+        GEOGCS["GCS_North_American_1983",
+            DATUM["North_American_Datum_1983",
+                SPHEROID["GRS_1980",6378137,298.257222101]],
+            PRIMEM["Greenwich",0],
+            UNIT["Degree",0.017453292519943295]],
+        PROJECTION["Lambert_Conformal_Conic_2SP"],
+        PARAMETER["False_Easting",6561666.666666666],
+        PARAMETER["False_Northing",1640416.666666667],
+        PARAMETER["Central_Meridian",-118],
+        PARAMETER["Standard_Parallel_1",34.03333333333333],
+        PARAMETER["Standard_Parallel_2",35.46666666666667],
+        PARAMETER["Latitude_Of_Origin",33.5],
+        UNIT["Foot_US",0.30480060960121924],
+        AUTHORITY["EPSG","102645"]]`
+      }
+    },
+    esri: true
+  }
+  run('trees', options, 4, t)
+})
+
 test('With a an Esri-style Polygon', t => {
   const options = {
     geometry: {

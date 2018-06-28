@@ -3,13 +3,13 @@ const _ = require('lodash')
 const transformCoordinates = require('./transform-coordinates')
 
 module.exports = function projectCoordinates (coordinates, options = {}) {
-  const inSR = options.inSR || 'EPSG:4326'
-  const outSR = options.outSR || 'EPSG:3857'
-  if (inSR === outSR) return coordinates
+  const fromSR = options.fromSR || 'EPSG:4326'
+  const toSR = options.toSR || 'EPSG:3857'
+  if (fromSR === toSR) return coordinates
 
-  return transformCoordinates(coordinates, { inSR, outSR }, (coordinates, options) => {
+  return transformCoordinates(coordinates, { fromSR, toSR }, (coordinates, options) => {
     if (_.isNumber(coordinates[0]) && _.isNumber(coordinates[1])) {
-      return proj4(options.inSR, options.outSR, coordinates)
+      return proj4(options.fromSR, options.toSR, coordinates)
     } else {
       return coordinates
     }
