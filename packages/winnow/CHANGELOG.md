@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.16.1] - 07-05-2018
 ### Fixed
 * Ensure OBJECTID is omitted from query results when options specifically exclude it (e.g., `returnIdsOnly=true`)
 * Moved `esriFy` function to SQL, which now allows ORDER BY, LIMIT, OFFSET to also be applied via SQL.
@@ -272,6 +272,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[1.16.1]: https://github.com/featureserver/winnow/compare/v1.16.0...v1.16.1
 [1.16.0]: https://github.com/featureserver/winnow/compare/v1.15.3...v1.16.0
 [1.15.3]: https://github.com/featureserver/winnow/compare/v1.15.2...v1.15.3
 [1.15.2]: https://github.com/featureserver/winnow/compare/v1.15.1...v1.15.2
