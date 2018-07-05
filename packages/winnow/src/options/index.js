@@ -13,6 +13,7 @@ const {
   normalizeGeometry,
   normalizeOffset,
   normalizeProjection
+
 } = require('./normalizeOptions')
 const { normalizeClassification } = require('./normalizeClassification')
 
@@ -27,12 +28,14 @@ function prepare (options, features) {
     aggregates: normalizeAggregates(options),
     groupBy: normalizeGroupBy(options),
     limit: normalizeLimit(options),
-    offset: normalizeOffset(options),
     projection: normalizeProjection(options),
     classification: normalizeClassification(options)
   })
+  prepared.offset = normalizeOffset(options)
   prepared.dateFields = normalizeDateFields(prepared.collection, prepared.fields)
+  prepared.idField = _.get(prepared.collection, 'metadata.idField') || null
   if (prepared.where === '1=1') delete prepared.where
+
   return prepared
 }
 

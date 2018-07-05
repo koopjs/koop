@@ -3,7 +3,7 @@ const sql = require('./sql')
 const Query = require('./query')
 const Params = require('./params')
 const Options = require('./options')
-const { breaksQuery, aggregateQuery, limitQuery, standardQuery, finishQuery } = require('./executeQuery')
+const { breaksQuery, aggregateQuery, standardQuery, finishQuery } = require('./executeQuery')
 const _ = require('lodash')
 const Winnow = {}
 
@@ -24,7 +24,6 @@ Winnow.query = function (input, options = {}) {
 
   if (options.classification) return breaksQuery(features, query, options)
   if (options.aggregates) return aggregateQuery(features, query, options)
-  else if (options.limit) return limitQuery(features, query, options)
   else return standardQuery(features, query, options)
 }
 

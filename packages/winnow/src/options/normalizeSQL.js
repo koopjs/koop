@@ -19,6 +19,7 @@ function normalizeDate (where) {
 function normalizeFields (options) {
   const fields = options.fields || options.outFields
   if (fields === '*') return undefined
+  if (options.returnIdsOnly === true) return ['OBJECTID']
   if (typeof fields === 'string' || fields instanceof String) return fields.split(',')
   if (fields instanceof Array) return fields
   return undefined

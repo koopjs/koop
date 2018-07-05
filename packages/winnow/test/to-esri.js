@@ -86,6 +86,7 @@ test('use idField not name OBJECTID', t => {
   }
   const result = Winnow.query(fixture, options)
   t.equal(result.features[0].attributes.hasOwnProperty('OBJECTID'), true)
+  t.equal(result.features[0].attributes.OBJECTID, 11303)
   t.equal(result.metadata.idField, 'featureId')
   t.end()
 })
@@ -96,7 +97,7 @@ test('adding an object id', t => {
   }
   const fixture = _.cloneDeep(geojson)
   const result = Winnow.query(fixture, options)
-  t.equal(result.features[0].attributes.OBJECTID, 2081706708)
+  t.equal(result.features[0].attributes.OBJECTID, 239375164)
   t.end()
 })
 
@@ -143,7 +144,7 @@ test('converting date with passed in fields metadata', t => {
   const options = {
     toEsri: true
   }
-  const fixture = Object.assign({}, geojson, {
+  const fixture = Object.assign({}, _.cloneDeep(geojson), {
     metdata: {
       fields: [
         {
@@ -168,5 +169,30 @@ test('converting date with passed in fields metadata', t => {
   const result = Winnow.query(fixture, options)
   t.equal(result.features[0].attributes.date, 1331769600000)
   t.equal(Object.keys(result.metadata.fields).length, 4)
+  t.end()
+})
+
+test('exclude objectid addition when not part of outfields', t => {
+  const options = {
+    toEsri: true,
+    outFields: ['string']
+  }
+  const fixture = _.cloneDeep(geojson)
+  const result = Winnow.query(fixture, options)
+  t.equal(Object.keys(result.features[0].attributes).length, 1)
+  t.equal(result.features[0].attributes.hasOwnProperty('string'), true)
+  t.end()
+})
+
+test('do not exclude objectid when returnIdsOnly = true', t => {
+  const options = {
+    toEsri: true,
+    outFields: ['string'],
+    returnIdsOnly: true
+  }
+  const fixture = _.cloneDeep(geojson)
+  const result = Winnow.query(fixture, options)
+  t.equal(Object.keys(result.features[0].attributes).length, 1)
+  t.equal(result.features[0].attributes.hasOwnProperty('OBJECTID'), true)
   t.end()
 })

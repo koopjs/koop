@@ -1,4 +1,5 @@
 'use strict'
+const _ = require('lodash')
 const test = require('tape')
 const winnow = require('../src')
 
@@ -350,67 +351,6 @@ test('With a where and a geometry option', t => {
   run('trees', options, 2315, t)
 })
 
-test('With a limit option', t => {
-  t.plan(3)
-  const data = 'trees'
-  const options = {
-    limit: 10
-  }
-  const features = require(`./fixtures/${data}.json`).features
-  const filtered = winnow.query(features, options)
-  t.equal(filtered.length, 10)
-  t.equal(filtered[0].properties.Common_Name, 'SOUTHERN MAGNOLIA')
-  t.equal(filtered[9].properties.Common_Name, 'WINDMILL PALM')
-})
-
-test('With an offset option', t => {
-  t.plan(3)
-  const data = 'trees'
-  const options = {
-    offset: 10
-  }
-  const features = require(`./fixtures/${data}.json`).features
-  const filtered = winnow.query(features, options)
-  t.equal(filtered.length, 71122)
-  t.equal(filtered[0].properties.Common_Name, 'SOUTHERN MAGNOLIA')
-  t.equal(filtered[9].properties.Common_Name, 'JACARANDA')
-})
-
-test('With a limit and an offset option', t => {
-  t.plan(3)
-  const data = 'trees'
-  const options = {
-    limit: 10,
-    offset: 11
-  }
-  const features = require(`./fixtures/${data}.json`).features
-  const filtered = winnow.query(features, options)
-  t.equal(filtered.length, 10)
-  t.equal(filtered[0].properties.Common_Name, 'JACARANDA')
-  t.equal(filtered[9].properties.Common_Name, 'LIVE OAK')
-})
-
-test('With an offset larger than returned features', t => {
-  t.plan(1)
-  const data = 'trees'
-  const options = {
-    offset: 100000
-  }
-  const features = require(`./fixtures/${data}.json`).features
-  t.throws(function () { winnow.query(features, options) })
-})
-
-test('With a limit and an offset larger than returned features', t => {
-  t.plan(1)
-  const data = 'trees'
-  const options = {
-    limit: 10,
-    offset: 100000
-  }
-  const features = require(`./fixtures/${data}.json`).features
-  t.throws(function () { winnow.query(features, options) })
-})
-
 test('With a where, geometry, limit and offset option', t => {
   t.plan(5)
   const data = 'trees'
@@ -585,7 +525,8 @@ test('with a between query', t => {
 
 function run (data, options, expected, t) {
   t.plan(1)
-  const features = require(`./fixtures/${data}.json`).features
+  const fixtures = _.cloneDeep(require(`./fixtures/${data}.json`))
+  const features = fixtures.features
   const filtered = winnow.query(features, options)
   t.equal(filtered.length, expected)
 }

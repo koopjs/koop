@@ -15,7 +15,7 @@ function create (options) {
   if (options.geometry && where) query += ` AND ${geomFilter}`
   if (options.order || options.orderByFields) query += order
   if (options.limit) query += ` LIMIT ${options.limit}`
-  // if (options.offset) query += ` OFFSET ${options.offset}` // handled in executeQuery.js
+  if (options.offset) query += ` OFFSET ${options.offset}` // handled in executeQuery.js
   return query
 }
 
