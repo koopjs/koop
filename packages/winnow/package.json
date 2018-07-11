@@ -35,7 +35,6 @@
     "@turf/centroid": "^6.0.0",
     "alasql": "^0.4.0",
     "classybrew": "0.0.3",
-    "farmhash": "^2.0.5",
     "flora-sql-parser": "^0.7.5",
     "highland": "^3.0.0-beta.3",
     "lodash": "^4.17.4",
@@ -44,6 +43,7 @@
     "proj4": "^2.3.17",
     "simple-statistics": "^6.0.0",
     "srs": "^1.2.0",
+    "string-hash": "^1.1.3",
     "terraformer": "^1.0.7"
   },
   "devDependencies": {
@@ -52,5 +52,8 @@
     "standard": "^11.0.0",
     "tap-spec": "^5.0.0",
     "tape": "^4.6.3"
+  },
+  "optionalDependencies": {
+    "farmhash": "^2.1.0"
   }
 }

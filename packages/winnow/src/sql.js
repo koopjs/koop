@@ -1,5 +1,4 @@
 const Terraformer = require('terraformer')
-const farmhash = require('farmhash')
 const transformArray = require('./geometry/transform-array')
 const convertToEsri = require('./geometry/convert-to-esri')
 const convertFromEsri = require('./geometry/convert-from-esri')
@@ -9,6 +8,14 @@ const centroid = require('@turf/centroid')
 const _ = require('lodash')
 const projectCoordinates = require('./geometry/project-coordinates')
 const reducePrecision = require('./geometry/reduce-precision')
+
+// Try to require farmhash, as it is an optional depenecy we can fall back to JavaScript only hashing library
+let hashFunction
+try {
+  hashFunction = require('farmhash').hash32
+} catch (e) {
+  hashFunction = require('string-hash')
+}
 
 sql.MAXSQLCACHESIZE = 0
 
@@ -151,7 +158,7 @@ function esriFy (properties, geometry, dateFields, requiresObjectId, idField) {
  */
 function createIntHash (inputStr) {
   // Hash to 32 bit unsigned integer
-  const hash = farmhash.hash32(inputStr)
+  const hash = hashFunction(inputStr)
   // Normalize to range of postive values of signed integer
   return Math.round((hash / 4294967295) * (2147483647))
 }

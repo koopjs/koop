@@ -97,7 +97,19 @@ test('adding an object id', t => {
   }
   const fixture = _.cloneDeep(geojson)
   const result = Winnow.query(fixture, options)
-  t.equal(result.features[0].attributes.OBJECTID, 239375164)
+
+  // A different hash can be returned depending on the library used
+  let hash
+  try {
+    // If requiring farmhash is successful we use that hash
+    require('farmhash')
+    hash = 239375164
+  } catch (e) {
+    // Else use the string-hash number
+    hash = 1729830217
+  }
+
+  t.equal(result.features[0].attributes.OBJECTID, hash)
   t.end()
 })
 
