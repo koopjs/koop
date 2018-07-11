@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Make farmhash an optional dependency due to its need for compilation, which some environments may not support
+
 ## [1.16.1] - 07-05-2018
 ### Fixed
 * Ensure OBJECTID is omitted from query results when options specifically exclude it (e.g., `returnIdsOnly=true`)
