@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.9.0] - 2018-07-20
 ### Added
 * Prefentially use a `createKey` function found on the Model's prototype
 
@@ -805,6 +805,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - to use Koop you must use it as middleware in an app that boots up an http server
 
 
+[3.9.0]: https://github.com/koopjs/koop-core/compare/v3.8.0...v3.9.0
 [3.8.0]: https://github.com/koopjs/koop-core/compare/v3.7.3...v3.8.0
 [3.7.3]: https://github.com/koopjs/koop-core/compare/v3.7.2...v3.7.3
 [3.7.2]: https://github.com/koopjs/koop-core/compare/v3.7.1...v3.7.2
