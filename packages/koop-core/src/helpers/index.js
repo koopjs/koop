@@ -6,15 +6,14 @@ const path = require('path')
  * @param {string} namespace - namespace for the route
  * @param {object} options - options object with decoration flags
  */
-function composeRouteString(routePath, namespace, opts) {
+function composeRouteString (routePath, namespace, opts) {
   let options = opts || {}
-  let modifiedPath
   let paramFragment = ''
   const paramsPlaceholder = '$providerParams'
   const namespacePlaceholder = '$namespace'
 
   // No compostion needed if flagged as an absolute route
-  if(options.absolutePath) return path.posix.join('/', routePath)
+  if (options.absolutePath) return path.posix.join('/', routePath)
 
   // Build parameterized route fragment based on provider options
   if (options.hosts) paramFragment = path.posix.join(':host', ':id')

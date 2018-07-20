@@ -1,6 +1,5 @@
 
 function fakeAuth () {
-
   return {
     type: 'auth',
     getAuthenticationSpecification: function () {
@@ -10,6 +9,5 @@ function fakeAuth () {
     authorize: function () {}
   }
 }
-
 
 module.exports = fakeAuth

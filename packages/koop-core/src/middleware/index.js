@@ -4,11 +4,11 @@
  * @param {object} res response object
  * @param {function} next fire next middleware function
  */
-function paramTrim(req, res, next) {
-  Object.keys(req.query).map(param=>{
-    req.query[param] = (typeof req.query[param] === 'string' || req.query[param] instanceof String) 
-        ? req.query[param].trim() : req.query[param]
-    })
+function paramTrim (req, res, next) {
+  Object.keys(req.query).map(param => {
+    req.query[param] = (typeof req.query[param] === 'string' || req.query[param] instanceof String)
+      ? req.query[param].trim() : req.query[param]
+  })
   next()
 }
 
@@ -18,10 +18,10 @@ function paramTrim(req, res, next) {
  * @param {object} res response object
  * @param {function} next fire next middleware function
  */
-function paramParse(req, res, next) {
-  Object.keys(req.query).map(param=>{
+function paramParse (req, res, next) {
+  Object.keys(req.query).map(param => {
     req.query[param] = tryParse(req.query[param])
-    })
+  })
   next()
 }
 

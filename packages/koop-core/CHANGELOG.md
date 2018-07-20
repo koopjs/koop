@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+## Fixed
+* Apply standard.js to source and test files
+* Make style adjustments to pass standard.js
+
 ## [3.8.0] - 2018-06-19
 ### Added
 * Parse query params that arrive as JSON strings

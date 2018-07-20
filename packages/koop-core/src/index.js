@@ -53,10 +53,10 @@ function Koop (config) {
   }
 
   this.server
-  .on('mount', () => {
-    this.log.info(`Koop ${this.version} mounted at ${this.server.mountpath}`)
-  })
-  .get('/status', (req, res) => res.json(this.status))
+    .on('mount', () => {
+      this.log.info(`Koop ${this.version} mounted at ${this.server.mountpath}`)
+    })
+    .get('/status', (req, res) => res.json(this.status))
 }
 
 Util.inherits(Koop, Events)
@@ -67,23 +67,23 @@ Util.inherits(Koop, Events)
 function initServer () {
   return express()
   // parse application/json
-  .use(bodyParser.json({limit: '10000kb'}))
+    .use(bodyParser.json({limit: '10000kb'}))
   // parse application/x-www-form-urlencoded
-  .use(bodyParser.urlencoded({ extended: false }))
-  .disable('x-powered-by')
+    .use(bodyParser.urlencoded({ extended: false }))
+    .disable('x-powered-by')
   // TODO this should just live inside featureserver
-  .use((req, res, next) => {
+    .use((req, res, next) => {
     // request parameters can come from query url or POST body
-    req.query = _.extend(req.query || {}, req.body || {})
-    next()
-  }) 
-  .use(middleware.paramTrim)
-  .use(middleware.paramParse)
-  .use(middleware.paramCoerce)
+      req.query = _.extend(req.query || {}, req.body || {})
+      next()
+    })
+    .use(middleware.paramTrim)
+    .use(middleware.paramParse)
+    .use(middleware.paramCoerce)
   // for demos and preview maps in providers
-  .set('view engine', 'ejs')
-  .use(express.static(path.join(__dirname, '/public')))
-  .use(cors())
+    .set('view engine', 'ejs')
+    .use(express.static(path.join(__dirname, '/public')))
+    .use(cors())
 }
 
 Koop.prototype.register = function (plugin) {
@@ -108,10 +108,10 @@ Koop.prototype.register = function (plugin) {
 }
 
 /**
- * Store an Authentication plugin on the koop instance for use during provider registration. 
- * @param {object} auth 
+ * Store an Authentication plugin on the koop instance for use during provider registration.
+ * @param {object} auth
  */
-Koop.prototype._registerAuth = function(auth) {
+Koop.prototype._registerAuth = function (auth) {
   this._auth_module = auth
 }
 
@@ -122,9 +122,8 @@ Koop.prototype._registerAuth = function(auth) {
  * @param {object} provider - the provider to be registered
  */
 Koop.prototype._registerProvider = function (provider) {
-  
   // If an authentication module has been registered, apply it to the provider's Model
-  if(this._auth_module) {
+  if (this._auth_module) {
     provider.Model.prototype.authenticationSpecification = Object.assign({}, this._auth_module.authenticationSpecification(provider.name), {provider: provider.name})
     provider.Model.prototype.authenticate = this._auth_module.authenticate
     provider.Model.prototype.authorize = this._auth_module.authorize
@@ -206,8 +205,8 @@ function bindPluginOverrides (provider, controller, server, pluginRoutes) {
   const namespace = name.replace(/\s/g, '').toLowerCase()
   pluginRoutes.forEach(route => {
     let fullRoute = helpers.composeRouteString(route.path, namespace, {
-      hosts: provider.hosts, 
-      disableIdParam: provider.disableIdParam, 
+      hosts: provider.hosts,
+      disableIdParam: provider.disableIdParam,
       absolutePath: route.absolutePath
     })
     route.methods.forEach(method => {

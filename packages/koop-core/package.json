@@ -54,7 +54,7 @@
     "release": "gh-release",
     "clean": "rm -rf dist",
     "compile": "buble -i src -o dist",
-    "test": "NODE_ENV=test standard src && mocha test/*.js -t 5000"
+    "test": "NODE_ENV=test standard && mocha test/*.js -t 5000"
   },
   "standard": {
     "globals": [
