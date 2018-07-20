@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Added
+* Prefentially use a `createKey` function found on the Model's prototype
+
 ## Fixed
 * Apply standard.js to source and test files
 * Make style adjustments to pass standard.js

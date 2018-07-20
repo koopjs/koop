@@ -3,7 +3,7 @@ function Model (options) {
 }
 
 Model.prototype.pull = function (req, callback) {
-  const key = createKey(req)
+  const key = (this.createKey) ? this.createKey(req) : createKey(req)
   this.cache.retrieve(key, req.query, (err, cached) => {
     if (!err && isFresh(cached)) {
       callback(null, cached)
