@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.0.4] - 2018-07-26
 ### Fixed
 * Add .git and yarn.lock to .npmignore
 
@@ -46,6 +46,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 Extracted Koop-Logger from Koop/lib
 
+[2.0.4]: https://www.github.com/koopjs/koop-logger/compare/v2.0.3..v2.0.4
 [2.0.3]: https://www.github.com/koopjs/koop-logger/compare/v2.0.2..v2.0.3
 [2.0.2]: https://www.github.com/koopjs/koop-logger/compare/v2.0.1..v2.0.2
 [2.0.1]: https://www.github.com/koopjs/koop-logger/compare/v2.0.0..v2.0.1
