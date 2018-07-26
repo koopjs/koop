@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Add .git and yarn.lock to .npmignore
+
 ## [2.0.3] - 2018-07-26
 ### Fixed
 * Bumping version for npm publish aimed at removing .git from package

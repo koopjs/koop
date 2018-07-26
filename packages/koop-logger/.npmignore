@@ -1,3 +1,5 @@
+.git
+yarn.lock
 test
 .babelrc
 .gitignore
