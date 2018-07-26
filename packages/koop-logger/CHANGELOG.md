@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.3] - 2018-07-26
+### Fixed
+* Bumping version for npm publish aimed at removing .git from package
+
 ## [2.0.2] - 2018-01-17
 ### Fixed
 * Log on one line only
@@ -38,6 +42,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 Extracted Koop-Logger from Koop/lib
 
+[2.0.3]: https://www.github.com/koopjs/koop-logger/compare/v2.0.2..v2.0.3
 [2.0.2]: https://www.github.com/koopjs/koop-logger/compare/v2.0.1..v2.0.2
 [2.0.1]: https://www.github.com/koopjs/koop-logger/compare/v2.0.0..v2.0.1
 [2.0.0]: https://www.github.com/koopjs/koop-logger/compare/v1.2.0..v2.0.0
