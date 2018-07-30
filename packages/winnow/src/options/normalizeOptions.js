@@ -1,5 +1,7 @@
 const _ = require('lodash')
-const srs = require('srs')
+const wktParser = require('wkt-parser')
+const esriProjCodes = require('@esri/proj-codes')
+const esriOldProjCodes = require('esri-proj-codes')
 const convertFromEsri = require('../geometry/convert-from-esri')
 const transformArray = require('../geometry/transform-array')
 const transformEnvelope = require('../geometry/transform-envelope')
@@ -11,6 +13,7 @@ const esriPredicates = {
   esriSpatialRelIntersects: 'ST_Intersects',
   esriSpatialRelEnvelopeIntersects: 'ST_EnvelopeIntersects'
 }
+const wkidLookup = {}
 
 function normalizeCollection (options, features = []) {
   if (!options.collection) return undefined
@@ -100,6 +103,9 @@ function normalizeInSR (options) {
 function normalizeSourceSR (input) {
   let spatialReference = normalizeSR(input)
   if (spatialReference) return ((spatialReference.wkid) ? `EPSG:${spatialReference.wkid}` : spatialReference.wkt)
+  if (input && !spatialReference && process.env.NODE_ENV !== 'production') {
+    console.log(`WARNING: spatial reference "${input}" could not be normalized. Defaulting to EPSG:4326.`)
+  }
   return `EPSG:4326`
 }
 
@@ -127,16 +133,35 @@ function normalizeSR (input) {
   // If the input wkid is one of the set known to proj4, return it in an object
   if (knownWkids.includes(inputWkid)) return { wkid: inputWkid }
 
-  // Input may be or include a WKT spatial reference
-  const wkt = input.wkt || input
+  // If here, WKID is not known to proj4, so we need its WKT spatial reference in order to do downstream reprojections.  First check in local lookup
+  let wkt = wkidLookup[inputWkid]
+  if (wkt) return { wkt }
+
+  // If the wkid was not found in the local lookup, check the Esri lookups
+  const esriResult = esriProjCodes.lookup(inputWkid) || esriOldProjCodes.lookup(inputWkid)
+  if (esriResult) {
+    // Add the WKT to the local lookup so we don't need to scan the Esri lookups next time (we have a local lookup, because it will contain a smaller set of wkids than the Esri lookups)
+    wkidLookup[inputWkid] = esriResult.wkt
+    return { wkt: esriResult.wkt }
+  }
+
+  // If here and the inputWkid is defined without a wkt, the input was an unknown wkid without a wkt
+  if (inputWkid && !input.wkt && process.env.NODE_ENV !== 'production') {
+    console.log(`WARNING: An unknown spatial reference was detected: ${input}`)
+  }
+
+  // Input may already be or include a WKT spatial reference
+  wkt = input.wkt || input
+
+  // If wkt includes 'WGS_1984_Web_Mercator_Auxiliary_Sphere' return wkid 3857
+  if (/WGS_1984_Web_Mercator_Auxiliary_Sphere/.test(wkt)) return { wkid: 3857 }
+
   try {
-    let parsedSRS = srs.parse(wkt)
-    if (!parsedSRS.valid) throw new Error('Invalid WKT')
-    if (knownWkids.includes(parsedSRS.srid)) return { wkid: parsedSRS.srid }
+    wktParser(wkt)
     return { wkt }
   } catch (err) {
     if (process.env.NODE_ENV !== 'production') {
-      console.log(`WARNING: A spatial reference unknown to proj4 was passed without a valid WKT definition`)
+      console.log(`WARNING: An un-parseable WKT spatial reference was detected: ${wkt}`)
     }
   }
 }
