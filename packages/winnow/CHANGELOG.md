@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Remove dependency on node-srs
+* In `normalizeSR`, add WKT lookups for uncommon WKIDs so that valid WKIDs are not considered unknown and redefined
+* In `normalizeSR`, add check for WGS_1984_Web_Mercator_Auxiliary_Sphere and return 3857 when found
+
 ## [1.16.2] - 07-11-2018
 ### Fixed
 * Make farmhash an optional dependency due to its need for compilation, which some environments may not support
