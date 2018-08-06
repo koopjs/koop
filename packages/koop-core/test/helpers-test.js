@@ -7,10 +7,11 @@ describe('Tests for helper functions', function () {
       let fullRoute = helpers.composeRouteString('FeatureServer/:layer/:method', 'test', {hosts: true})
       fullRoute.should.equal('/test/:host/:id/FeatureServer/:layer/:method')
     })
-    it('create route with :host parameter', function () {
-      let fullRoute = helpers.composeRouteString('FeatureServer/:layer/:method', 'test', {hosts: true})
-      fullRoute.should.equal('/test/:host/:id/FeatureServer/:layer/:method')
+    it('create route with :host parameter and without :id parameter', function () {
+      let fullRoute = helpers.composeRouteString('FeatureServer/:layer/:method', 'test', {hosts: true, disableIdParam: true})
+      fullRoute.should.equal('/test/:host/FeatureServer/:layer/:method')
     })
+
     it('create route without :host parameter', function () {
       let fullRoute = helpers.composeRouteString('FeatureServer/:layer/:method', 'test')
       fullRoute.should.equal('/test/:id/FeatureServer/:layer/:method')

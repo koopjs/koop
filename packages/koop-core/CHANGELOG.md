@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+# Unreleased
+### Fixed
+* Routes where `hosts: true` and `disableIdParam: true` now being constructed correctly as `/:host/FeatureServer/:layer/:method`
+
 ## [3.9.0] - 2018-07-20
 ### Added
 * Prefentially use a `createKey` function found on the Model's prototype

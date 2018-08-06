@@ -16,7 +16,8 @@ function composeRouteString (routePath, namespace, opts) {
   if (options.absolutePath) return path.posix.join('/', routePath)
 
   // Build parameterized route fragment based on provider options
-  if (options.hosts) paramFragment = path.posix.join(':host', ':id')
+  if (options.hosts && !options.disableIdParam) paramFragment = path.posix.join(':host', ':id')
+  else if (options.hosts && options.disableIdParam) paramFragment = path.posix.join(':host')
   else if (!options.disableIdParam) paramFragment = path.posix.join(':id')
 
   // Replace placehold substrings if present, fallback to namespace/:host/:id
