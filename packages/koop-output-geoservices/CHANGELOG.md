@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.0.0] - 2018-09-04
 ### Changed
 * Pass Express request object as argument in calls to `this.model.authorize` and `this.model.authenticate`
 
@@ -66,6 +66,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.0.0]: https://github.com/koopjs/koop-featureserver-plugin/compare/v1.5.2...v2.0.0
 [1.5.2]: https://github.com/koopjs/koop-featureserver-plugin/compare/v1.5.1...v1.5.2
 [1.5.1]: https://github.com/koopjs/koop-featureserver-plugin/compare/v1.5.0...v1.5.1
 [1.5.0]: https://github.com/koopjs/koop-featureserver-plugin/compare/v1.4.2...v1.5.0
