@@ -25,7 +25,7 @@ function pullDataAndRoute (model, req, res) {
 Geoservices.prototype.featureServer = function (req, res) {
   // Is model configured for token-authorization?
   if (typeof this.model.authorize === 'function') {
-    this.model.authorize(req.query.token)
+    this.model.authorize(req)
       .then(valid => {
         // model will be available when this is instantiated with the Koop controller
         pullDataAndRoute(this.model, req, res)
@@ -65,7 +65,7 @@ Geoservices.prototype.featureServerRestInfo = function (req, res) {
 Geoservices.prototype.generateToken = function (req, res) {
   // Is model configured for authentication?
   if (typeof this.model.authenticate === 'function') {
-    this.model.authenticate(req.query.username, req.query.password)
+    this.model.authenticate(req)
       .then(tokenJson => {
         FeatureServer.authenticate(res, tokenJson)
       })

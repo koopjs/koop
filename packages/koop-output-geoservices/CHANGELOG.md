@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Pass Express request object as argument in calls to `this.model.authorize` and `this.model.authenticate`
+
 ## [1.5.2] - 2018-06-08
 ### Fixed
 * Simplify acquisition of authentication specification from Model.
