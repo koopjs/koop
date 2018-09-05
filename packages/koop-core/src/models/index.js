@@ -11,7 +11,7 @@ Model.prototype.pull = function (req, callback) {
       this.getData(req, (err, data) => {
         if (err) return callback(err)
         callback(null, data)
-        if (data.ttl) this.cache.upsert(key, data, {ttl: data.ttl})
+        if (data.ttl) this.cache.upsert(key, data, { ttl: data.ttl })
       })
     }
   })

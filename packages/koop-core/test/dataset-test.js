@@ -52,7 +52,7 @@ describe('Datsets API', function () {
       request(koop.server)
         .put('/datasets/metaKey/metadata')
         .set('Content-Type', 'application/json')
-        .send({name: 'Test'})
+        .send({ name: 'Test' })
         .expect(200)
         .expect('Content-Type', /json/)
         .end((req, res) => {
@@ -63,7 +63,7 @@ describe('Datsets API', function () {
     })
 
     it('should read metadata on GET', done => {
-      koop.cache.catalog.insert('metadataInsert', {name: 'Test'})
+      koop.cache.catalog.insert('metadataInsert', { name: 'Test' })
       request(koop.server)
         .get('/datasets/metadataInsert/metadata')
         .expect(200)
@@ -75,7 +75,7 @@ describe('Datsets API', function () {
     })
 
     it('should delete metadata on DELETE', done => {
-      koop.cache.insert('deleteMetaKey', {foo: 'bar'})
+      koop.cache.insert('deleteMetaKey', { foo: 'bar' })
       request(koop.server)
         .delete('/datasets/deleteMetaKey/metadata')
         .expect(200)
