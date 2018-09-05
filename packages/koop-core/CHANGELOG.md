@@ -2,8 +2,8 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
-## Changed
+## [3.9.3] - 2018-09-05
+### Changed
 ** Bump koop-output-geoservices version to 2.0.0
 ** Bump standard to 12.0.0 and apply style fixes
 
@@ -818,6 +818,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - to use Koop you must use it as middleware in an app that boots up an http server
 
 
+[3.9.3]: https://github.com/koopjs/koop-core/compare/v3.9.2...v3.9.3
 [3.9.2]: https://github.com/koopjs/koop-core/compare/v3.9.1...v3.9.2
 [3.9.1]: https://github.com/koopjs/koop-core/compare/v3.9.0...v3.9.1
 [3.9.0]: https://github.com/koopjs/koop-core/compare/v3.8.0...v3.9.0
