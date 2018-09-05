@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+## Changed
+** Bump koop-output-geoservices version to 2.0.0
+** Bump standard to 12.0.0 and apply style fixes
+
 ## [3.9.2] - 2018-08-06
 ### Fixed
 * Bad npm publish
