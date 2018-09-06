@@ -15,8 +15,6 @@ const oneOfEach = require('./fixtures/one-of-each.json')
 const fullySpecified = require('./fixtures/fully-specified-metadata.json')
 const offsetApplied = require('./fixtures/offset-applied.json')
 
-// const moment = require('moment')
-
 describe('Query operations', () => {
   it('should return the expected response schema for an optionless query', () => {
     const response = FeatureServer.query(data, {})
@@ -31,9 +29,9 @@ describe('Query operations', () => {
         'wkid': Joi.number().integer().min(0)
       }),
       'fields': Joi.array().min(1).items(Joi.object().keys({
-        'name': Joi.string().when('type', {is: 'esriFieldTypeOID', then: Joi.valid('OBJECTID'), otherwise: Joi.string()}),
+        'name': Joi.string().when('type', { is: 'esriFieldTypeOID', then: Joi.valid('OBJECTID'), otherwise: Joi.string() }),
         'type': Joi.string().allow('esriFieldTypeOID', 'esriFieldTypeInteger', 'esriFieldTypeDouble', 'esriFieldTypeString', 'esriFieldTypeDate'),
-        'alias': Joi.string().when('type', {is: 'esriFieldTypeOID', then: Joi.valid('OBJECTID'), otherwise: Joi.string()}),
+        'alias': Joi.string().when('type', { is: 'esriFieldTypeOID', then: Joi.valid('OBJECTID'), otherwise: Joi.string() }),
         'length': Joi.optional().when('type', {
           is: Joi.string().allow('esriFieldTypeString', 'esriFieldTypeDate'),
           then: Joi.number().integer().min(0)
@@ -50,11 +48,11 @@ describe('Query operations', () => {
       })),
       'exceededTransferLimit': Joi.boolean()
     })
-    Joi.validate(response, schema, {presence: 'required'}).should.have.property('error', null)
+    Joi.validate(response, schema, { presence: 'required' }).should.have.property('error', null)
   })
 
   it('should return only requested "outFields" set in options', () => {
-    const response = FeatureServer.query(data, {outFields: 'OBJECTID'})
+    const response = FeatureServer.query(data, { outFields: 'OBJECTID' })
     response.fields.should.have.length(1)
     response.fields[0].should.have.property('name', 'OBJECTID')
     Object.keys(response.features[0].attributes).should.have.length(1)
@@ -63,7 +61,7 @@ describe('Query operations', () => {
   })
 
   it('should not return geometry data when "returnGeometry" is false', () => {
-    const response = FeatureServer.query(data, {returnGeometry: false})
+    const response = FeatureServer.query(data, { returnGeometry: false })
     response.features[0].hasOwnProperty('geometry').should.equal(false)
   })
 
@@ -95,7 +93,7 @@ describe('Query operations', () => {
       const response = FeatureServer.query(data, { outSR: { latestWkid: 3857 }, limit: 1, returnGeometry: true })
       response.geometryType.should.equal('esriGeometryPoint')
       response.features.length.should.equal(1)
-      response.features[0].attributes.OBJECTID.should.equal(2012050174)
+      response.features[0].attributes.OBJECTID.should.equal(1138516379)
       response.features[0].geometry.x.should.equal(-11682713.391976157)
       response.features[0].geometry.y.should.equal(4857924.005275469)
       response.spatialReference.latestWkid.should.equal(3857)
@@ -113,21 +111,21 @@ describe('Query operations', () => {
 
   describe('when getting featureserver features by id queries', function () {
     it('should return a proper features', () => {
-      const response = FeatureServer.query(data, { objectIds: '1562568434,2012050174,478725765' })
+      const response = FeatureServer.query(data, { objectIds: '1138516379,1954528849,578128056' })
       response.should.be.an.instanceOf(Object)
       response.fields.should.be.an.instanceOf(Array)
       response.features.should.have.length(3)
     })
 
     it('should work with single id', () => {
-      const response = FeatureServer.query(data, { objectIds: 1562568434 })
+      const response = FeatureServer.query(data, { objectIds: 1138516379 })
       response.should.be.an.instanceOf(Object)
       response.fields.should.be.an.instanceOf(Array)
       response.features.should.have.length(1)
     })
 
     it('should return only count of features', () => {
-      const response = FeatureServer.query(data, { returnCountOnly: true, objectIds: '1562568434,2012050174,478725765' })
+      const response = FeatureServer.query(data, { returnCountOnly: true, objectIds: '1138516379,1954528849,578128056' })
       response.should.be.an.instanceOf(Object)
       response.should.have.property('count')
       response.count.should.equal(3)
@@ -143,7 +141,7 @@ describe('Query operations', () => {
 
   describe('when getting features with returnIdsOnly', function () {
     it('should return only ids of features', () => {
-      const response = FeatureServer.query(data, { returnIdsOnly: true, objectIds: '1562568434,2012050174,478725765' })
+      const response = FeatureServer.query(data, { returnIdsOnly: true, objectIds: '1138516379,1954528849,578128056' })
       response.should.be.an.instanceOf(Object)
       response.should.have.property('objectIds')
       response.objectIds.length.should.equal(3)
@@ -248,7 +246,7 @@ describe('Query operations', () => {
       Object.keys(response.features[0].attributes).length.should.equal(9)
     })
 
-    it('should return correct out fields', () => {
+    it('should return correct out fields, including OBJECTID', () => {
       const options = {
         f: 'json',
         where: `"Full/Part" = 'P'`,
@@ -266,6 +264,22 @@ describe('Query operations', () => {
       response.features.length.should.equal(10)
       Object.keys(response.features[0].attributes).length.should.equal(3)
       response.features[0].hasOwnProperty('geometry').should.equal(false)
+    })
+
+    it('should return correct out fields, excluding OBJECTID', () => {
+      const options = {
+        f: 'json',
+        returnGeometry: false,
+        resultRecordCount: 1,
+        outFields: 'Name,Dept'
+      }
+
+      const response = FeatureServer.query(budgetTable, options)
+      response.fields.length.should.equal(2)
+      response.fields.find(field => field.name === 'Name').name.should.equal('Name')
+      response.fields.find(field => field.name === 'Dept').name.should.equal('Dept')
+      Object.keys(response.features[0].attributes).length.should.equal(2)
+      response.features[0].attributes.hasOwnProperty('OBJECTID').should.equal(false)
     })
   })
 
@@ -455,19 +469,19 @@ describe('Query operations', () => {
 
   describe('when an offset has already been applied', () => {
     it('should remove the result offset', () => {
-      const json = FeatureServer.query(offsetApplied, {resultOffset: 50, resultRecordCount: 1})
+      const json = FeatureServer.query(offsetApplied, { resultOffset: 50, resultRecordCount: 1 })
       json.features.length.should.be.greaterThan(0)
     })
   })
 
   describe('passing in a count', () => {
     it('should pass through a count of 0', () => {
-      const json = FeatureServer.query({count: 0}, {returnCountOnly: true})
+      const json = FeatureServer.query({ count: 0 }, { returnCountOnly: true })
       json.count.should.equal(0)
     })
 
     it('should pass through a count of 1', () => {
-      const json = FeatureServer.query({count: 1, features: [{}]}, {returnCountOnly: true})
+      const json = FeatureServer.query({ count: 1, features: [{}] }, { returnCountOnly: true })
       json.count.should.equal(1)
     })
   })

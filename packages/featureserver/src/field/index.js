@@ -127,7 +127,7 @@ function computeFieldsFromMetadata (metadataFields, outFieldsParam) {
   let responseFields = _.clone(metadataFields)
 
   // Add OBJECTID if it isn't already a metadata field
-  if (!_.find(metadataFields, {'name': 'OBJECTID'})) responseFields.push({name: 'OBJECTID'})
+  if (!_.find(metadataFields, { 'name': 'OBJECTID' })) responseFields.push({ name: 'OBJECTID' })
 
   // If outFields were specified and not wildcarded, create a subset of fields from metadata fields based on outFields param
   if (outFieldsParam && outFieldsParam !== '*') {

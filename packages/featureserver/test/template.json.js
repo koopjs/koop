@@ -23,7 +23,7 @@ describe('Template content', () => {
         'features': Joi.array().max(0),
         'exceededTransferLimit': Joi.boolean().valid(false)
       })
-      Joi.validate(featuresJson, schema, {presence: 'required'}).should.have.property('error', null)
+      Joi.validate(featuresJson, schema, { presence: 'required' }).should.have.property('error', null)
     })
   })
 
@@ -38,7 +38,7 @@ describe('Template content', () => {
         'domain': Joi.valid(null),
         'defaultValue': Joi.valid(null)
       })
-      Joi.validate(fieldJson, schema, {presence: 'required'}).should.have.property('error', null)
+      Joi.validate(fieldJson, schema, { presence: 'required' }).should.have.property('error', null)
     })
   })
 
@@ -115,7 +115,7 @@ describe('Template content', () => {
         'hasStaticData': Joi.boolean().valid(false),
         'timeInfo': Joi.object().keys({})
       })
-      Joi.validate(layerJson, schema, {presence: 'required'}).should.have.property('error', null)
+      Joi.validate(layerJson, schema, { presence: 'required' }).should.have.property('error', null)
     })
   })
 
@@ -130,7 +130,7 @@ describe('Template content', () => {
         'domain': Joi.valid(null),
         'defaultValue': Joi.valid(null)
       })
-      Joi.validate(oidFieldJson, schema, {presence: 'required'}).should.have.property('error', null)
+      Joi.validate(oidFieldJson, schema, { presence: 'required' }).should.have.property('error', null)
     })
   })
 
@@ -185,7 +185,7 @@ describe('Template content', () => {
         'layers': Joi.array().min(0),
         'tables': Joi.array().min(0)
       })
-      Joi.validate(serverJson, schema, {presence: 'required'}).should.have.property('error', null)
+      Joi.validate(serverJson, schema, { presence: 'required' }).should.have.property('error', null)
     })
   })
 })

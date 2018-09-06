@@ -78,7 +78,7 @@ describe('Info operations', () => {
         })),
         'tables': Joi.array()
       })
-      Joi.validate(server, schema, {presence: 'required'}).should.have.property('error', null)
+      Joi.validate(server, schema, { presence: 'required' }).should.have.property('error', null)
     })
 
     it('should work with geojson passed in', () => {
@@ -209,9 +209,9 @@ describe('Info operations', () => {
         'displayField': Joi.string(),
         'typeIdField': Joi.string().allow(null),
         'fields': Joi.array().items(Joi.object().keys({
-          'name': Joi.string().when('type', {is: 'esriFieldTypeOID', then: Joi.valid('OBJECTID'), otherwise: Joi.string()}),
+          'name': Joi.string().when('type', { is: 'esriFieldTypeOID', then: Joi.valid('OBJECTID'), otherwise: Joi.string() }),
           'type': Joi.string().allow('esriFieldTypeOID', 'esriFieldTypeInteger', 'esriFieldTypeDouble', 'esriFieldTypeString', 'esriFieldTypeDate'),
-          'alias': Joi.string().when('type', {is: 'esriFieldTypeOID', then: Joi.valid('OBJECTID'), otherwise: Joi.string()}),
+          'alias': Joi.string().when('type', { is: 'esriFieldTypeOID', then: Joi.valid('OBJECTID'), otherwise: Joi.string() }),
           'length': Joi.optional().when('type', {
             is: Joi.string().allow('esriFieldTypeString', 'esriFieldTypeDate'),
             then: Joi.number().integer().min(0)
@@ -259,7 +259,7 @@ describe('Info operations', () => {
         'hasStaticData': Joi.boolean().valid(false),
         'timeInfo': Joi.object().optional()
       })
-      Joi.validate(layers.layers[0], schema, {presence: 'required'}).should.have.property('error', null)
+      Joi.validate(layers.layers[0], schema, { presence: 'required' }).should.have.property('error', null)
       layers.layers.length.should.equal(1)
     })
   })

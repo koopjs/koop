@@ -61,7 +61,7 @@ describe('Routing feature server requests', () => {
       request(app)
         .get('/FeatureServer/0/query?f=json&where=1%3D1')
         .expect(res => {
-          res.body.features[1].attributes.OBJECTID.should.equal(1562568434)
+          res.body.features[1].attributes.OBJECTID.should.equal(1954528849)
           res.body.features.length.should.equal(417)
           res.body.exceededTransferLimit.should.equal(false)
         })
@@ -74,7 +74,7 @@ describe('Routing feature server requests', () => {
       request(app)
         .get('/FeatureServer/0/query?f=json&where=1%3D1')
         .expect(res => {
-          res.body.features[1].attributes.OBJECTID.should.equal(1562568434)
+          res.body.features[1].attributes.OBJECTID.should.equal(1954528849)
           res.body.features.length.should.equal(2)
           res.body.exceededTransferLimit.should.equal(true)
         })
@@ -86,7 +86,7 @@ describe('Routing feature server requests', () => {
       request(app)
         .get('/FeatureServer/0/query?f=json&orderByFields=')
         .expect(res => {
-          res.body.features[1].attributes.OBJECTID.should.equal(1562568434)
+          res.body.features[1].attributes.OBJECTID.should.equal(1138516379)
           res.body.features.length.should.equal(417)
         })
         .expect('Content-Type', /json/)
