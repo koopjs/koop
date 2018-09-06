@@ -13,6 +13,7 @@ function create (options) {
   if (options.where) query += where
   if (options.geometry && !where) query += geomFilter
   if (options.geometry && where) query += ` AND ${geomFilter}`
+  // if (options.aggregates) return query
   if (options.order || options.orderByFields) query += order
   if (options.limit) query += ` LIMIT ${options.limit}`
   if (options.offset) query += ` OFFSET ${options.offset}` // handled in executeQuery.js

@@ -31,7 +31,7 @@ test('Project coordinates correctly', t => {
 
 test('Do not project coordinates if target and source spatial reference are the same', t => {
   t.plan(2)
-  const transformed = projectCoordinates([0, 63], {fromSR: `EPSG:4326`, toSR: `EPSG:4326`})
+  const transformed = projectCoordinates([0, 63], { fromSR: `EPSG:4326`, toSR: `EPSG:4326` })
   t.equal(transformed[0], 0, 'projected correctly')
   t.equal(transformed[1], 63, 'projected correctly')
 })

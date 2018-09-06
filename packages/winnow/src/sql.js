@@ -147,7 +147,7 @@ function esriFy (properties, geometry, dateFields, requiresObjectId, idField) {
   } else {
     // Create an OBJECTID by creating a numeric hash from the stringified feature
     // Note possibility of OBJECTID collisions with this method still exists, but should be small
-    properties.OBJECTID = createIntHash(JSON.stringify({properties, geometry}))
+    properties.OBJECTID = createIntHash(JSON.stringify({ properties, geometry }))
   }
   return properties
 }
