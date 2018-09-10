@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.15.2] - 09-10-2018
+### Changed
+* Supress various warnings when `NODE_ENV !== 'production'` or `KOOP_WARNINGS !== 'suppress'`
+
 ## [2.15.1] - 06-06-2018
 ### Added
 * Add warnings for invalid GeoJSON when `NODE_ENV !== 'production'`
@@ -315,6 +319,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.15.2]: https://github.com/koopjs/featureserver/compare/v2.15.1...v2.15.2
 [2.15.1]: https://github.com/koopjs/featureserver/compare/v2.15.0...v2.15.1
 [2.15.0]: https://github.com/koopjs/featureserver/compare/v2.14.1...v2.15.0
 [2.14.1]: https://github.com/koopjs/featureserver/compare/v2.14.0...v2.14.1
