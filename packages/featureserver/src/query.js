@@ -32,18 +32,20 @@ function query (data, params = {}) {
   if (options.f !== 'geojson') options.toEsri = true
   const queriedData = filtersApplied.all ? data : Winnow.query(data, options)
 
-  // ArcGIS client warnings
-  if (options.toEsri && !hasIdField) {
-    console.warn(`WARNING: requested provider has no "idField" assignment. This can cause errors in ArcGIS clients`)
-  } else if (options.toEsri && data.metadata.idField.toLowerCase() === 'objectid' && data.metadata.idField !== 'OBJECTID') {
-    console.warn(`WARNING: requested provider's "idField" is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients`)
-  }
+  // Warnings
+  if (process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress') {
+    // ArcGIS client warnings
+    if (options.toEsri && !hasIdField) {
+      console.warn(`WARNING: requested provider has no "idField" assignment. This can cause errors in ArcGIS clients`)
+    } else if (options.toEsri && data.metadata.idField.toLowerCase() === 'objectid' && data.metadata.idField !== 'OBJECTID') {
+      console.warn(`WARNING: requested provider's "idField" is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients`)
+    }
 
-  // Compare provider metadata fields to feature properties
-  if (_.has(data, 'metadata.fields') && _.has(data, 'features[0].properties')) {
-    warnOnMetadataFieldDiscrepencies(data.metadata.fields, data.features[0].properties)
+    // Compare provider metadata fields to feature properties
+    if (_.has(data, 'metadata.fields') && _.has(data, 'features[0].properties')) {
+      warnOnMetadataFieldDiscrepencies(data.metadata.fields, data.features[0].properties)
+    }
   }
-
   if (params.f === 'geojson') return { type: 'FeatureCollection', features: queriedData.features }
   else return geoservicesPostQuery(data, queriedData, params)
 }
