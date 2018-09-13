@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.9.4] - 2018-09-13
 ### Fixed
 * Throw error on plugin name undefined, not defined
 
@@ -822,6 +822,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - to use Koop you must use it as middleware in an app that boots up an http server
 
 
+[3.9.4]: https://github.com/koopjs/koop-core/compare/v3.9.3...v3.9.4
 [3.9.3]: https://github.com/koopjs/koop-core/compare/v3.9.2...v3.9.3
 [3.9.2]: https://github.com/koopjs/koop-core/compare/v3.9.1...v3.9.2
 [3.9.1]: https://github.com/koopjs/koop-core/compare/v3.9.0...v3.9.1
