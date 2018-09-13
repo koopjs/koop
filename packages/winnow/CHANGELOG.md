@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.16.4] - 09-13-2018
 ### Fixed
 * Parse comma delimited `orderByFields` parameter and trim any white space.
 
@@ -289,6 +289,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[1.16.4]: https://github.com/featureserver/winnow/compare/v1.16.3...v1.16.4
 [1.16.3]: https://github.com/featureserver/winnow/compare/v1.16.2...v1.16.3
 [1.16.2]: https://github.com/featureserver/winnow/compare/v1.16.1...v1.16.2
 [1.16.1]: https://github.com/featureserver/winnow/compare/v1.16.0...v1.16.1
