@@ -103,7 +103,7 @@ function normalizeInSR (options) {
 function normalizeSourceSR (input) {
   let spatialReference = normalizeSR(input)
   if (spatialReference) return ((spatialReference.wkid) ? `EPSG:${spatialReference.wkid}` : spatialReference.wkt)
-  if (input && !spatialReference && process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress' && input && !spatialReference) {
     console.log(`WARNING: spatial reference "${input}" could not be normalized. Defaulting to EPSG:4326.`)
   }
   return `EPSG:4326`

@@ -140,7 +140,7 @@ function esriFy (properties, geometry, dateFields, requiresObjectId, idField) {
 
   // If the idField for the model set use its value as OBJECTID
   if (idField) {
-    if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test' && (!Number.isInteger(properties[idField]) || properties[idField] > 2147483647)) {
+    if (process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress' && (!Number.isInteger(properties[idField]) || properties[idField] > 2147483647)) {
       console.warn(`WARNING: OBJECTIDs created from provider's "idField" are not integers from 0 to 2147483647`)
     }
     properties.OBJECTID = properties[idField]

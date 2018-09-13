@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Parse comma delimited `orderByFields` parameter and trim any white space.
+
+### Changed
+* Show warnings when `NODE_ENV !== 'production'` AND `KOOP_WARNINGS !== 'suppress'`
+
 ## [1.16.3] - 07-30-2018
 ### Fixed
 * Remove dependency on node-srs
