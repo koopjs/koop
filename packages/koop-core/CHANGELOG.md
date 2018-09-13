@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Throw error on plugin name undefined, not defined
+
 ## [3.9.3] - 2018-09-05
 ### Changed
 ** Bump koop-output-geoservices version to 2.0.0

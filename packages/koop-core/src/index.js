@@ -265,7 +265,7 @@ Koop.prototype._registerFilesystem = function (Filesystem) {
  */
 Koop.prototype._registerPlugin = function (Plugin) {
   const name = Plugin.name || Plugin.plugin_name
-  if (name) throw new Error('Plugin is missing name')
+  if (!name) throw new Error('Plugin is missing name')
   let dependencies
   if (typeof Plugin.dependencies && Plugin.dependencies.length) {
     dependencies = Plugin.dependencies.reduce((deps, dep) => {
