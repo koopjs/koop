@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Support addition of "Extract" to layer info capabilities if provider's geojson includes `{ capabilities: { extract: true } }`
+
 ## [2.15.2] - 09-10-2018
 ### Changed
 * Supress various warnings when `NODE_ENV !== 'production'` or `KOOP_WARNINGS !== 'suppress'`

@@ -368,8 +368,9 @@ describe('Info operations', () => {
   })
 
   describe('when getting featureserver info from geojson', () => {
+    const data = _.cloneDeep(polyData)
     it('should return a feature service with the proper geom type', () => {
-      const service = FeatureServer.layerInfo(polyData, {})
+      const service = FeatureServer.layerInfo(data, {})
       service.name.should.equal('map')
       service.displayField.should.equal('OBJECTID')
       service.drawingInfo.renderer.should.equal(require('../templates/renderers/symbology/polygon.json'))
@@ -378,9 +379,16 @@ describe('Info operations', () => {
     })
 
     it('should use the passed in extent if present', () => {
-      polyData.metadata.extent = [1, 2, 3, 4]
-      const service = FeatureServer.layerInfo(polyData, {})
+      data.metadata.extent = [1, 2, 3, 4]
+      const service = FeatureServer.layerInfo(data, {})
       service.extent.xmin.should.equal(1)
+    })
+
+    it('should use capabilities found in GeoJSON', () => {
+      data.capabilities = { extract: true, quantization: true }
+      const service = FeatureServer.layerInfo(data, {})
+      service.supportsCoordinatesQuantization.should.equal(true)
+      service.capabilities.should.equal('Query,Extract')
     })
   })
 

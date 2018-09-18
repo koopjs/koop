@@ -36,6 +36,15 @@ routes.forEach(route => {
 ```
 
 ## API
+* [FeatureServer.route](#FeatureServer.route)
+* [FeatureServer.query](#FeatureServer.query)
+* [FeatureServer.serverInfo](#FeatureServer.serverInfo)
+* [FeatureServer.layerInfo](#FeatureServer.layerInfo)
+* [FeatureServer.layers](#FeatureServer.layers)
+* [FeatureServer.generateRenderer](#FeatureServer.generateRenderer)
+* [FeatureServer.authenticate](#FeatureServer.authenticate)
+* [FeatureServer.error.authorize](#FeatureServer.error.authorize)
+* [FeatureServer.authenticate](#FeatureServer.error.authenticate)
 
 ### FeatureServer.route
 Pass in an `incoming request object`, an `outgoing response object`, a `geojson` object, and `options` and this function will route and return a geoservices compliant response
@@ -144,7 +153,7 @@ FeatureServer.query(geojson, options)
 ```
 
 ### FeatureServer.serverInfo
-Generate version `10.21` Geoservices server info
+Generate version `10.51` Geoservices server info
 
 ```js
 const server = {
@@ -183,13 +192,29 @@ FeatureServer.serverInfo(server)
 ```
 
 ### FeatureServer.layerInfo
-Generate version `10.21` Geoservices information about a single layer
+Generate version `10.51` Geoservices information about a single layer
 ```js
 FeatureServer.layerInfo(geojson, options)
 ```
 
+Note that the layer info is modified with properties `metadata` and `capabilites` found at the top-level of the GeoJSON object.
+
+|GeoJSON property| Layer info result|
+|---|---|
+|`metadata.name`| overrides default|
+|`metadata.description`| overrides default |
+|`metadata.geometryType`| overrides value determined from data |
+|`metadata.extent`| overrides value determined from data |
+|`metadata.timeInfo`| overrides default |
+|`metadata.maxRecordCount`| overrides default (2000) |
+|`metadata.displayField`| overrides default (`OBJECTID`) |
+|`metadata.objectIdField`| overrides default  (`OBJECTID`) |
+|`metadata.hasStaticData`| overrides default (`false`) |
+|`capabilities.extract`|  when set to `true`, `Extract` added to `capabilites` (e.g., `capabilities: "Query,Extract"`) |
+|`capabilities.quantization`| when set to `true`, `supportsCoordinatesQuantization: true`|
+
 ### FeatureServer.layers
-Generate version `10.21` Geoservices information about one or many layers
+Generate version `10.51` Geoservices information about one or many layers
 
 Can pass a single geojson object or an array of geojson objects
 ```js
@@ -343,6 +368,7 @@ Output:
    ...
   ]
 ```
+
 ### FeatureServer.authenticate
 Pass in an outgoing response object and an authentication success object and this function will route and return a formatted authentication success response.
 

@@ -56,6 +56,7 @@ function renderLayer (featureCollection = {}, options = {}) {
   if (json.displayField) json.displayField = metadata.displayField || _.get(json, 'fields[0].name') || json.displayField
   if (json.objectIdField) json.objectIdField = 'OBJECTID'
   if (capabilities.quantization) json.supportsCoordinatesQuantization = true
+  if (capabilities.extract) json.capabilities = `${json.capabilities},Extract`
   // Override the template value for hasStatic data if model metadata has this value set
   if (typeof metadata.hasStaticData === 'boolean') json.hasStaticData = metadata.hasStaticData
   return json
