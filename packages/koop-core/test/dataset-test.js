@@ -75,7 +75,7 @@ describe('Datsets API', function () {
     })
 
     it('should delete metadata on DELETE', done => {
-      koop.cache.insert('deleteMetaKey', { foo: 'bar' })
+      koop.cache.catalog.insert('deleteMetaKey', { foo: 'bar' })
       request(koop.server)
         .delete('/datasets/deleteMetaKey/metadata')
         .expect(200)

@@ -2,7 +2,7 @@
 function fakeAuth () {
   return {
     type: 'auth',
-    getAuthenticationSpecification: function () {
+    authenticationSpecification: function () {
       return function () { }
     },
     authenticate: function () {},
