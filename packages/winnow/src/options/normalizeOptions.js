@@ -1,7 +1,6 @@
 const _ = require('lodash')
 const wktParser = require('wkt-parser')
 const esriProjCodes = require('@esri/proj-codes')
-const esriOldProjCodes = require('esri-proj-codes')
 const convertFromEsri = require('../geometry/convert-from-esri')
 const transformArray = require('../geometry/transform-array')
 const transformEnvelope = require('../geometry/transform-envelope')
@@ -138,7 +137,7 @@ function normalizeSR (input) {
   if (wkt) return { wkt }
 
   // If the wkid was not found in the local lookup, check the Esri lookups
-  const esriResult = esriProjCodes.lookup(inputWkid) || esriOldProjCodes.lookup(inputWkid)
+  const esriResult = esriProjCodes.lookup(inputWkid)
   if (esriResult) {
     // Add the WKT to the local lookup so we don't need to scan the Esri lookups next time (we have a local lookup, because it will contain a smaller set of wkids than the Esri lookups)
     wkidLookup[inputWkid] = esriResult.wkt

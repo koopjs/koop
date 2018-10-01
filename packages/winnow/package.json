@@ -30,12 +30,11 @@
   },
   "homepage": "https://github.com/koopjs/winnow#readme",
   "dependencies": {
-    "@esri/proj-codes": "^1.0.4",
+    "@esri/proj-codes": "^2.2.0",
     "@turf/bbox-polygon": "^6.0.1",
     "@turf/centroid": "^6.0.0",
     "alasql": "^0.4.0",
     "classybrew": "0.0.3",
-    "esri-proj-codes": "^1.0.3",
     "flora-sql-parser": "^0.7.5",
     "highland": "^3.0.0-beta.3",
     "lodash": "^4.17.4",
