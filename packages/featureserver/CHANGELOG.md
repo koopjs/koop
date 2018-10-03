@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* package not pointed to `dist/index.js`
+
 ## [2.16.0] - 09-17-2018
 ### Added
 * Support addition of "Extract" to layer info capabilities if provider's geojson includes `{ capabilities: { extract: true } }`
