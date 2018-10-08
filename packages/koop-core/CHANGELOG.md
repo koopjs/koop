@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+## Added
+* Option to add route prefix per provider
+
 ## [3.9.4] - 2018-09-13
 ### Fixed
 * Throw error on plugin name undefined, not defined

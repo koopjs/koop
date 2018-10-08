@@ -2,6 +2,7 @@
 const provider = require('./fixtures/fake-provider')
 const auth = require('./fixtures/fake-auth')()
 const Koop = require('../src/')
+const request = require('supertest')
 const should = require('should') // eslint-disable-line
 
 describe('Index tests for registering providers', function () {
@@ -12,6 +13,36 @@ describe('Index tests for registering providers', function () {
       const routeCount = (koop.server._router.stack.length)
       // TODO make this test less brittle
       routeCount.should.equal(84)
+    })
+  })
+
+  describe('can register a provider and apply a route prefix to all routes', function () {
+    it('should not return 404 for prefixed custom route', function (done) {
+      const koop = new Koop()
+      koop.register(provider, { routePrefix: '/api/test' })
+      request(koop.server)
+        .get('/api/test/fake/1234')
+        .then((res) => {
+          res.should.have.property('error', false)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+        .then(done)
+    })
+
+    it('should not return 404 for prefixed plugin route', function (done) {
+      const koop = new Koop()
+      koop.register(provider, { routePrefix: '/api/test' })
+      request(koop.server)
+        .get('/api/test/test-provider/foo/FeatureServer')
+        .then((res) => {
+          res.should.have.property('error', false)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+        .then(done)
     })
   })
 })

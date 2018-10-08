@@ -46,5 +46,20 @@ describe('Tests for helper functions', function () {
       let fullRoute = helpers.composeRouteString('rest/info', 'test', { absolutePath: true })
       fullRoute.should.equal('/rest/info')
     })
+
+    it('create route without prefix and :host parameter', function () {
+      let fullRoute = helpers.composeRouteString('FeatureServer/:layer/:method', 'test', { routePrefix: '/api/test' })
+      fullRoute.should.equal('/api/test/test/:id/FeatureServer/:layer/:method')
+    })
+
+    it('create route with prefix and without decoration', function () {
+      let fullRoute = helpers.composeRouteString('rest/info', 'test', { absolutePath: true, routePrefix: '/api/test' })
+      fullRoute.should.equal('/api/test/rest/info')
+    })
+
+    it('create route with prefix and templated $namespace$ and $providerParams$ substrings', function () {
+      let fullRoute = helpers.composeRouteString('$namespace/rest/services/$providerParams/FeatureServer/:layer/:method', 'test', { hosts: true })
+      fullRoute.should.equal('/test/rest/services/:host/:id/FeatureServer/:layer/:method')
+    })
   })
 })

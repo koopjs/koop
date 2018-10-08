@@ -86,11 +86,11 @@ function initServer () {
     .use(cors())
 }
 
-Koop.prototype.register = function (plugin) {
+Koop.prototype.register = function (plugin, options) {
   if (typeof plugin === 'undefined') throw new Error('Plugin undefined.')
   switch (plugin.type) {
     case 'provider':
-      return this._registerProvider(plugin)
+      return this._registerProvider(plugin, options)
     case 'cache':
       return this._registerCache(plugin)
     case 'plugin':
@@ -121,7 +121,7 @@ Koop.prototype._registerAuth = function (auth) {
  *
  * @param {object} provider - the provider to be registered
  */
-Koop.prototype._registerProvider = function (provider) {
+Koop.prototype._registerProvider = function (provider, options = {}) {
   // If an authentication module has been registered, apply it to the provider's Model
   if (this._auth_module) {
     provider.Model.prototype.authenticationSpecification = Object.assign({}, this._auth_module.authenticationSpecification(provider.name), { provider: provider.name })
@@ -151,7 +151,7 @@ Koop.prototype._registerProvider = function (provider) {
   }
 
   // add each route, the routes let us override defaults etc.
-  bindRoutes(provider, controller, this.server, this.pluginRoutes)
+  bindRoutes(provider, controller, this.server, this.pluginRoutes, options)
 
   this.log.info('registered provider:', name, provider.version)
 }
@@ -195,19 +195,20 @@ function extend (klass, extender) {
  * @param {object} controller - the initiated provider's controller
  * @param {object} server - the koop express server
  */
-function bindRoutes (provider, controller, server, pluginRoutes) {
-  bindPluginOverrides(provider, controller, server, pluginRoutes)
-  bindRouteSet(provider.routes, controller, server)
+function bindRoutes (provider, controller, server, pluginRoutes, options) {
+  bindPluginOverrides(provider, controller, server, pluginRoutes, options)
+  bindRouteSet(provider.routes, controller, server, options)
 }
 
-function bindPluginOverrides (provider, controller, server, pluginRoutes) {
+function bindPluginOverrides (provider, controller, server, pluginRoutes, options = {}) {
   const name = provider.namespace || provider.plugin_name || provider.name
   const namespace = name.replace(/\s/g, '').toLowerCase()
   pluginRoutes.forEach(route => {
     let fullRoute = helpers.composeRouteString(route.path, namespace, {
       hosts: provider.hosts,
       disableIdParam: provider.disableIdParam,
-      absolutePath: route.absolutePath
+      absolutePath: route.absolutePath,
+      routePrefix: options.routePrefix
     })
     route.methods.forEach(method => {
       try {
@@ -221,11 +222,13 @@ function bindPluginOverrides (provider, controller, server, pluginRoutes) {
   })
 }
 
-function bindRouteSet (routes = [], controller, server) {
+function bindRouteSet (routes = [], controller, server, options = {}) {
+  const { routePrefix = '' } = options
   routes.forEach(route => {
+    const routePath = path.join(routePrefix, route.path)
     route.methods.forEach(method => {
       try {
-        server[method](route.path, controller[route.handler].bind(controller))
+        server[method](routePath, controller[route.handler].bind(controller))
       } catch (e) {
         console.error(`error=controller does not contain specified method method=${method} path=${route.path} handler=${route.handler}`)
         process.exit(1)
