@@ -22,16 +22,20 @@ function route (req, res, geojson, options) {
   }
 
   req.query = req.query || {}
-  req.query = coerceQuery(req.query)
   req.params = req.params || {}
   geojson = geojson || {}
   const metadata = geojson.metadata || {}
 
+  // Query parsing and coersion are now found in Koop;  TODO: Is it still needed here?
+  req.query = coerceQuery(req.query)
   Object.keys(req.query).forEach(key => {
     req.query[key] = tryParse(req.query[key])
   })
 
-  if (isNaN(req.query.limit)) req.query.limit = metadata.maxRecordCount || 2000
+  // Validate and check limit
+  if (req.query.limit && isNaN(req.query.limit)) return helpers.responseHandler(req, res, 400, { error: `Invalid "limit" parameter` })
+  else if (req.query.resultRecordCount && isNaN(req.query.resultRecordCount)) return helpers.responseHandler(req, res, 400, { error: `Invalid "resultRecordCount" parameter` })
+  if (!req.query.limit) req.query.limit = req.query.resultRecordCount || metadata.maxRecordCount || 2000
 
   // if this is for a method we can handle like query
   const method = req.params && req.params.method

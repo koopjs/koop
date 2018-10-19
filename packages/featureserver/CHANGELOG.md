@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Bump Winnow to 1.16.4
+
+### Fixed
+* Add `resultRecordCount` to the `limit` setting hierarchy
+
 ## [2.16.1] - 10-03-2018
 ### Fixed
 * package not pointed to `dist/index.js`
