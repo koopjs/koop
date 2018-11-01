@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.10.1] - 2018-11-01
 ### Fixed
 * Use path.posix.join instead of path.join
 
@@ -830,6 +830,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - to use Koop you must use it as middleware in an app that boots up an http server
 
 
+[3.10.1]: https://github.com/koopjs/koop-core/compare/v3.10.0...v3.10.1
 [3.10.0]: https://github.com/koopjs/koop-core/compare/v3.9.4...v3.10.0
 [3.9.4]: https://github.com/koopjs/koop-core/compare/v3.9.3...v3.9.4
 [3.9.3]: https://github.com/koopjs/koop-core/compare/v3.9.2...v3.9.3
