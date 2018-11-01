@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Use path.posix.join instead of path.join
+
 ## [3.10.0] - 2018-10-08
 ### Added
 * Option to add route prefix per provider
