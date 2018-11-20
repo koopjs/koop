@@ -16,7 +16,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@mapbox/geojsonhint": "^2.1.0",
-    "chroma-js": "^1.3.4",
+    "chroma-js": "^1.4.0",
     "classybrew": "0.0.3",
     "esri-extent": "^1.1.1",
     "lodash": "^4.12.0",
