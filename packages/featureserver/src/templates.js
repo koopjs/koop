@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const moment = require('moment')
-const { isTable } = require('./utils')
+const { getExtent, getGeomType, isTable } = require('./utils')
 const { computeFieldObject, createFieldAliases, createStatFields } = require('./field')
 const { computeSpatialReference, computeExtent } = require('./geometry')
 const { createClassBreakInfos, createUniqueValueInfos } = require('./generateRenderer/createClassificationInfos')
@@ -12,8 +12,7 @@ const templates = {
   features: require('../templates/features.json'),
   statistics: require('../templates/statistics.json'),
   restInfo: Object.assign(require('../templates/rest-info.json'), require('../templates/version.json')),
-  server: Object.assign(require('../templates/server.json'), require('../templates/version.json')),
-  objectIDField: require('../templates/oid-field.json')
+  server: Object.assign(require('../templates/server.json'), require('../templates/version.json'))
 }
 
 const renderers = {
@@ -31,30 +30,25 @@ const renderers = {
  * @param {object} options
  * @return {object} template
  */
-function renderLayer (featureCollection = {}, options = {}) {
+function renderLayer (data = {}, options = {}) {
   const json = _.cloneDeep(templates.layer)
-  const data = featureCollection
   const metadata = data.metadata || {}
   const capabilities = data.capabilities || {}
-  if (!json) throw new Error('Unsupported operation')
 
-  // These two rely on geojson, while everything else relies on the source data
-  if (json.fullExtent) json.fullExtent = json.initialExtent = json.extent = metadata.extent || options.extent
-  else if (json.extent) json.extent = metadata.extent || options.extent
-
+  // Use options, metadata, and or feature data to override template values
   json.id = parseInt(options.layer) || 0
-  if (json.geometryType) json.geometryType = options.geometryType
-  if (json.spatialReference) json.spatialReference = computeSpatialReference(options.spatialReference)
-  if (json.name && metadata.name) json.name = metadata.name
-  if (json.description && metadata.description) json.description = metadata.description
-  if (json.extent && metadata.extent) json.extent = computeExtent(metadata.extent)
-  if (json.fields) json.fields = computeFieldObject(data, 'layer', options)
-  if (json.type) json.type = isTable(json, data) ? 'Table' : 'Feature Layer'
-  if (json.drawingInfo) json.drawingInfo.renderer = renderers[json.geometryType]
-  if (json.timeInfo) json.timeInfo = metadata.timeInfo
-  if (json.maxRecordCount) json.maxRecordCount = metadata.maxRecordCount || 2000
-  if (json.displayField) json.displayField = metadata.displayField || _.get(json, 'fields[0].name') || json.displayField
-  if (json.objectIdField) json.objectIdField = 'OBJECTID'
+  json.spatialReference = computeSpatialReference(options.spatialReference)
+  json.fields = computeFieldObject(data, 'layer', options)
+  json.type = isTable(data) ? 'Table' : 'Feature Layer'
+  json.geometryType = getGeomType(data)
+  json.drawingInfo.renderer = renderers[json.geometryType]
+  json.extent = metadata.extent ? computeExtent(metadata.extent) : computeExtent(getExtent(data))
+
+  if (metadata.name) json.name = metadata.name
+  if (metadata.description) json.description = metadata.description
+  if (metadata.timeInfo) json.timeInfo = metadata.timeInfo
+  if (metadata.maxRecordCount) json.maxRecordCount = metadata.maxRecordCount || 2000
+  if (metadata.displayField) json.displayField = metadata.displayField
   if (capabilities.quantization) json.supportsCoordinatesQuantization = true
   if (capabilities.extract) json.capabilities = `${json.capabilities},Extract`
   // Override the template value for hasStatic data if model metadata has this value set

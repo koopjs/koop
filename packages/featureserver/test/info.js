@@ -257,7 +257,10 @@ describe('Info operations', () => {
         'types': Joi.array(),
         'templates': Joi.array(),
         'hasStaticData': Joi.boolean().valid(false),
-        'timeInfo': Joi.object().optional()
+        'timeInfo': Joi.object().optional(),
+        'spatialReference': Joi.object().keys({
+          'wkid': Joi.number().valid(4326)
+        })
       })
       Joi.validate(layers.layers[0], schema, { presence: 'required' }).should.have.property('error', null)
       layers.layers.length.should.equal(1)

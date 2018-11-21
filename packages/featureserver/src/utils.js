@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const esriExtent = require('esri-extent')
 const { geometryMap } = require('./geometry')
 const moment = require('moment')
@@ -6,18 +7,22 @@ const DATE_FORMATS = [moment.ISO_8601]
 module.exports = { isTable, getExtent, getGeomType, detectType, esriTypeMap }
 
 /**
- * if we have no extent, but we do have features, then it should be Table
+ * Determine if the layer is a Table
  *
- * @param {object} json
  * @param {object} data
  * @return {boolean}
  */
-function isTable (json, data) {
-  if (json.geometryType || (json.metadata && json.metadata.geometryType)) return false
-  var noExtent = !json.fullExtent || !json.fullExtent.xmin || !json.fullExtent.ymin || json.fullExtent.xmin === Infinity
-  var hasFeatures = data.features || data[0].features
-  if (noExtent && hasFeatures) return true
-  else return false
+function isTable (data) {
+  // geometry indicates this in not a table
+  const geometryType = (data.metadata && data.metadata.geometryType) || getGeomType(data)
+  if (geometryType) return false
+
+  // Check for a valid fullExtent. If unset, assume this is a Table
+  const fullExtent = data.fullExtent || (data.metadata && data.metadata.fullExtent)
+  if (_.isUndefined(fullExtent) || _.isUndefined(fullExtent.xmin) || _.isUndefined(fullExtent.ymin) || fullExtent.xmin === Infinity) return true
+
+  // Otherwise assume a feature layer
+  return false
 }
 
 function getExtent (geojson) {

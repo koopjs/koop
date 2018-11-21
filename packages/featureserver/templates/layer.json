@@ -3,7 +3,6 @@
   "name": "Not Set",
   "type": "Feature Layer",
   "description": "This is a feature service powered by https://github.com/featureserver/featureserver",
-  "geometryType": "esriGeometryPoint",
   "copyrightText": " ",
   "parentLayer": null,
   "subLayers": null,

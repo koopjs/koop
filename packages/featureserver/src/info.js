@@ -36,8 +36,6 @@ function serverInfo (server, params = {}) {
 }
 
 function layerInfo (geojson, params) {
-  params.extent = Utils.getExtent(geojson)
-  params.geometryType = Utils.getGeomType(geojson)
   return renderLayer(geojson, params)
 }
 
@@ -57,37 +55,25 @@ function serverLayerInfo (geojson = {}, id) {
 }
 
 /**
- * deals with `/layers` method call
+ * Generate layer info JSON for `/layers` method call
  *
- * @param {object} data
+ * @param {object} server
  * @param {object} params
  */
 function layersInfo (server, params = {}) {
-  let layerJson
-  let data
+  const json = { layers: [], tables: [] }
+  let layers
+
   if (server.type === 'FeatureCollection') {
-    data = [server]
-  } else {
-    data = server.layers
-  }
-  let json
-  if (!data.length) {
-    params.extent = Utils.getExtent(data)
-    const metadata = data.metadata || {}
-    params.geometryType = metadata.geometryType || Utils.getGeomType(data)
-    layerJson = renderLayer(data, params)
-    json = { layers: [layerJson], tables: [] }
-  } else {
-    json = { layers: [], tables: [] }
-    data.forEach(function (layer, i) {
-      params.extent = Utils.getExtent(layer)
-      const metadata = layer.metadata || {}
-      params.geometryType = metadata.geometryType || Utils.getGeomType(layer)
-      layerJson = renderLayer(layer, params)
-      // TODO move this to a rendered template
-      layerJson.id = i
-      json.layers.push(layerJson)
-    })
-  }
+    layers = [server]
+  } else if (Array.isArray(server.layers)) {
+    layers = server.layers
+  } else return json
+
+  json.layers = layers.map((layer, i) => {
+    params.layer = i
+    return renderLayer(layer, params)
+  })
+
   return json
 }

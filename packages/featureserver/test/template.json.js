@@ -52,7 +52,6 @@ describe('Template content', () => {
         'name': Joi.string().allow(''),
         'type': Joi.string().allow('Feature Layer'),
         'description': Joi.string().allow(''),
-        'geometryType': Joi.string().valid('esriGeometryPoint', 'esriGeometryPoint', 'esriGeometryPoint'),
         'copyrightText': Joi.string().allow(''),
         'parentLayer': Joi.valid(null),
         'subLayers': Joi.valid(null),
