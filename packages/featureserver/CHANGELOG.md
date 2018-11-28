@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.16.3] - 11-28-2018
 ### Changed
 * Removed workaround for adding and `OBJECTID` field even when metadata `idField` is set
 
@@ -338,6 +338,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.16.3]: https://github.com/koopjs/featureserver/compare/v2.16.2...v2.16.3
 [2.16.2]: https://github.com/koopjs/featureserver/compare/v2.16.1...v2.16.2
 [2.16.1]: https://github.com/koopjs/featureserver/compare/v2.16.0...v2.16.1
 [2.16.0]: https://github.com/koopjs/featureserver/compare/v2.15.2...v2.16.0
