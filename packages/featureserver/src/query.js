@@ -10,7 +10,6 @@ module.exports = query
  *
  * @param {object} data
  * @param {object} params
- * @param {function} callback
  */
 function query (data, params = {}) {
   // TODO clean up this series of if statements
@@ -50,24 +49,40 @@ function query (data, params = {}) {
   else return geoservicesPostQuery(data, queriedData, params)
 }
 
+/**
+ * Format the queried data according to request parameters
+ * @param {object} data - full dataset
+ * @param {object} queriedData - subset of data with query applied
+ * @param {object} params
+ */
 function geoservicesPostQuery (data, queriedData, params) {
-  // options.objectIds works alongside returnCountOnly but not statistics
-  const oidField = 'OBJECTID'
+  const oidField = _.get(data, 'metadata.idField') || 'OBJECTID'
+
+  // Specific set of objectIds were requested (options.objectIds works alongside returnCountOnly
+  // but not out-statistics); filter accordingly
   if (params.objectIds && !params.outStatistics) {
     let oids
 
-    if (typeof params.objectIds === 'string') oids = params.objectIds.split(',')
+    // Normalize the objectIds param as an array of integers
+    if (Array.isArray(params.objectIds)) oids = params.objectIds
+    else if (typeof params.objectIds === 'string') oids = params.objectIds.split(',')
     else if (typeof params.objectIds === 'number') oids = [params.objectIds]
-    else oids = params.objectIds
-
+    else {
+      const error = new Error(`Invalid "objectIds" parameter.`)
+      error.code = 400
+      throw error
+    }
     oids = oids.map(i => {
       return parseInt(i)
     })
+
+    // Filter features to those with matching ids
     queriedData.features = queriedData.features.filter(f => {
-      return oids.indexOf(f.attributes[oidField]) > -1
+      return oids.includes(f.attributes[oidField])
     })
   }
 
+  // Format the response according to the request parameters
   if (params.returnCountOnly) {
     return { count: queriedData.features.length }
   } else if (params.returnIdsOnly) {
@@ -75,24 +90,22 @@ function geoservicesPostQuery (data, queriedData, params) {
   } else if (params.outStatistics) {
     return queryStatistics(queriedData, params)
   } else {
-    params.extent = Utils.getExtent(queriedData)
-    params.geometryType = Utils.getGeomType(data)
-    // TODO should these be calculated using the whole dataset?
     params.spatialReference = params.outSR
     params.attributeSample = data.features[0] && data.features[0].properties
+    params.geometryType = Utils.getGeomType(data)
     return renderFeatures(queriedData, params)
   }
 }
 
-function idsOnly (data, options = {}) {
-  const oidField = 'OBJECTID'
-  return data.features.reduce(
-    (resp, f) => {
-      resp.objectIds.push(f.attributes[oidField])
-      return resp
-    },
-    { objectIdField: oidField, objectIds: [] }
-  )
+/**
+ * Format a response for an ids-only request
+ * @param {object} data
+ */
+function idsOnly (data) {
+  const oidField = _.get(data, 'metadata.idField') || 'OBJECTID'
+  const response = { objectIdField: oidField, objectIds: [] }
+  response.objectIds = data.features.map(f => { return f.attributes[oidField] })
+  return response
 }
 
 function queryStatistics (data, params) {

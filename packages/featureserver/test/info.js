@@ -2,9 +2,11 @@
 const FeatureServer = require('../src')
 const polyData = require('./fixtures/polygon.json')
 const data = require('./fixtures/snow.json')
+const dataWithComplexMetadata = require('./fixtures/data-with-complex-metadata.json')
 const should = require('should')
 const _ = require('lodash')
 const Joi = require('joi')
+const { layersTemplateSchema, serverTemplateSchema } = require('./schemas')
 
 describe('Info operations', () => {
   describe('rest info', () => {
@@ -22,63 +24,35 @@ describe('Info operations', () => {
       restInfo.authInfo.should.have.property('tokenServicesUrl').be.type('string')
     })
   })
+
   describe('server info', () => {
     it('should conform to the prescribed schema', () => {
       const server = FeatureServer.serverInfo(data)
-
-      // Test response body schema
-      const schema = Joi.object().keys({
-        'currentVersion': Joi.number().valid(10.51),
-        'fullVersion': Joi.string().valid('10.5.1'),
-        'hasVersionedData': Joi.boolean().valid(false),
-        'supportsDisconnectedEditing': Joi.boolean().valid(false),
-        'supportedQueryFormats': Joi.string().valid('JSON'),
-        'maxRecordCount': Joi.number().integer().min(1),
-        'hasStaticData': Joi.boolean(),
-        'capabilities': Joi.string().valid('Query'),
-        'serviceDescription': Joi.string().allow(''),
-        'description': Joi.string(),
-        'copyrightText': Joi.string(),
-        'spatialReference': Joi.object().keys({
-          'wkid': Joi.number().integer(),
-          'latestWkid': Joi.number().integer()
-        }),
+      const serverSchemaOverride = serverTemplateSchema.append({
         'initialExtent': Joi.object().keys({
-          'xmin': Joi.number(),
-          'ymin': Joi.number(),
-          'xmax': Joi.number(),
-          'ymax': Joi.number(),
+          'xmin': Joi.number().valid(-108.9395),
+          'ymin': Joi.number().valid(37.084968),
+          'xmax': Joi.number().valid(-102),
+          'ymax': Joi.number().valid(40.8877),
           'spatialReference': Joi.object().keys({
-            'wkid': Joi.number().integer(),
-            'latestWkid': Joi.number().integer()
+            'wkid': Joi.number().valid(4326),
+            'latestWkid': Joi.number().valid(4326)
           })
         }),
         'fullExtent': Joi.object().keys({
-          'xmin': Joi.number(),
-          'ymin': Joi.number(),
-          'xmax': Joi.number(),
-          'ymax': Joi.number(),
+          'xmin': Joi.number().valid(-108.9395),
+          'ymin': Joi.number().valid(37.084968),
+          'xmax': Joi.number().valid(-102),
+          'ymax': Joi.number().valid(40.8877),
           'spatialReference': Joi.object().keys({
-            'wkid': Joi.number().integer(),
-            'latestWkid': Joi.number().integer()
+            'wkid': Joi.number().valid(4326),
+            'latestWkid': Joi.number().valid(4326)
           })
-        }),
-        'allowGeometryUpdates': Joi.boolean().valid(false),
-        'units': Joi.string(),
-        'syncEnabled': Joi.boolean().valid(false),
-        'layers': Joi.array().items(Joi.object().keys({
-          'id': Joi.number().integer(),
-          'name': Joi.string(),
-          'parentLayerId': Joi.number().integer().min(-1).allow(null),
-          'defaultVisibility': Joi.boolean(),
-          'subLayerIds': Joi.array().valid(null).items(Joi.number().integer()),
-          'minScale': Joi.number().integer().min(0),
-          'maxScale': Joi.number().integer().min(0),
-          'geometryType': Joi.string()
-        })),
-        'tables': Joi.array()
+        })
       })
-      Joi.validate(server, schema, { presence: 'required' }).should.have.property('error', null)
+
+      // Test response body schema
+      Joi.validate(server, serverSchemaOverride, { presence: 'required' }).should.have.property('error', null)
     })
 
     it('should work with geojson passed in', () => {
@@ -173,96 +147,87 @@ describe('Info operations', () => {
   })
 
   describe('layers info', () => {
-    it('should work with simple geojson passed in', () => {
+    it('should work with simple geojson passed in (only name and description metadata)', () => {
       const layers = FeatureServer.layersInfo(data)
 
-      const schema = Joi.object().keys({
-        'currentVersion': Joi.number().valid(10.51),
-        'fullVersion': Joi.string().valid('10.5.1'),
-        'id': Joi.number().integer().min(0),
-        'name': Joi.string(),
-        'type': Joi.string().valid('Feature Layer'),
-        'description': Joi.string(),
-        'geometryType': Joi.string(),
-        'copyrightText': Joi.string(),
-        'parentLayer': Joi.number().integer().min(-1).allow(null),
-        'subLayers': Joi.array().allow(null).items(Joi.number().integer()),
-        'minScale': Joi.number().integer().min(0),
-        'maxScale': Joi.number().integer().min(0),
-        'drawingInfo': Joi.object().keys({
-          'renderer': Joi.object(),
-          'labelingInfo': Joi.object().allow(null)
-        }),
-        'defaultVisibility': Joi.boolean(),
+      const layersSchemaOverride = layersTemplateSchema.append({
         'extent': Joi.object().keys({
-          'xmin': Joi.number(),
-          'ymin': Joi.number(),
-          'xmax': Joi.number(),
-          'ymax': Joi.number(),
+          'xmin': Joi.number().valid(-108.9395),
+          'ymin': Joi.number().valid(37.084968),
+          'xmax': Joi.number().valid(-102),
+          'ymax': Joi.number().valid(40.8877),
           'spatialReference': Joi.object().keys({
-            'wkid': Joi.number().integer(),
-            'latestWkid': Joi.number().integer()
+            'wkid': Joi.number().valid(4326),
+            'latestWkid': Joi.number().valid(4326)
           })
         }),
-        'hasAttachments': Joi.boolean().valid(false),
-        'htmlPopupType': Joi.string().valid('esriServerHTMLPopupTypeNone'),
-        'displayField': Joi.string(),
-        'typeIdField': Joi.string().allow(null),
-        'fields': Joi.array().items(Joi.object().keys({
-          'name': Joi.string().when('type', { is: 'esriFieldTypeOID', then: Joi.valid('OBJECTID'), otherwise: Joi.string() }),
-          'type': Joi.string().allow('esriFieldTypeOID', 'esriFieldTypeInteger', 'esriFieldTypeDouble', 'esriFieldTypeString', 'esriFieldTypeDate'),
-          'alias': Joi.string().when('type', { is: 'esriFieldTypeOID', then: Joi.valid('OBJECTID'), otherwise: Joi.string() }),
-          'length': Joi.optional().when('type', {
-            is: Joi.string().allow('esriFieldTypeString', 'esriFieldTypeDate'),
-            then: Joi.number().integer().min(0)
+        'geometryType': 'esriGeometryPoint',
+        'drawingInfo': Joi.object().keys({
+          'renderer': Joi.object().keys({
+            'type': 'simple',
+            'symbol': Joi.object().keys({
+              'color': Joi.array().items(Joi.number().integer()).length(4),
+              'outline': Joi.object().keys({
+                'color': Joi.array().items(Joi.number().integer()).length(4),
+                'width': Joi.number().min(0),
+                'type': Joi.string().valid('esriSLS'),
+                'style': Joi.string().valid('esriSLSSolid')
+              }),
+              'size': Joi.number().min(0),
+              'type': Joi.string().valid('esriSMS'),
+              'style': Joi.string().valid('esriSMSCircle')
+            })
           }),
-          'defaultValue': Joi.any().valid(null),
-          'domain': Joi.any().valid(null),
-          'editable': Joi.boolean().valid(false),
-          'nullable': Joi.boolean().valid(false),
-          'sqlType': Joi.string().valid('sqlTypeOther', 'sqlTypeDouble')
-        })),
-        'relationships': Joi.array(),
-        'canModifyLayer': Joi.boolean().valid(false),
-        'canScaleSymbols': Joi.boolean().valid(false),
-        'hasLabels': Joi.boolean().valid(false),
-        'capabilities': Joi.string().valid('Query'),
-        'maxRecordCount': Joi.number().integer().min(0),
-        'supportsStatistics': Joi.boolean().valid(true),
-        'supportsAdvancedQueries': Joi.boolean().valid(true),
-        'supportedQueryFormats': Joi.string().valid('JSON'),
-        'ownershipBasedAccessControlForFeatures': {
-          'allowOthersToQuery': true
-        },
-        'supportsCoordinatesQuantization': Joi.boolean().valid(false),
-        'useStandardizedQueries': Joi.boolean().valid(true),
-        'advancedQueryCapabilities': Joi.object().keys({
-          'useStandardizedQueries': Joi.boolean().valid(true),
-          'supportsStatistics': Joi.boolean().valid(true),
-          'supportsOrderBy': Joi.boolean().valid(true),
-          'supportsDistinct': Joi.boolean().valid(true),
-          'supportsPagination': Joi.boolean().valid(true),
-          'supportsTrueCurve': Joi.boolean().valid(false),
-          'supportsReturningQueryExtent': Joi.boolean().valid(true),
-          'supportsQueryWithDistance': Joi.boolean().valid(true)
-        }),
-        'dateFieldsTimeReference': Joi.object().valid(null),
-        'isDataVersioned': Joi.boolean().valid(false),
-        'supportsRollbackOnFailureParameter': Joi.boolean().valid(true),
-        'hasM': Joi.boolean().valid(false),
-        'hasZ': Joi.boolean().valid(false),
-        'allowGeometryUpdates': Joi.boolean().valid(true),
-        'objectIdField': Joi.string().valid('OBJECTID'),
-        'globalIdField': Joi.string().allow(''),
-        'types': Joi.array(),
-        'templates': Joi.array(),
-        'hasStaticData': Joi.boolean().valid(false),
-        'timeInfo': Joi.object().optional(),
-        'spatialReference': Joi.object().keys({
-          'wkid': Joi.number().valid(4326)
+          'labelingInfo': Joi.valid(null)
         })
       })
-      Joi.validate(layers.layers[0], schema, { presence: 'required' }).should.have.property('error', null)
+      Joi.validate(layers.layers[0], layersSchemaOverride, { presence: 'required' }).should.have.property('error', null)
+      layers.layers.length.should.equal(1)
+    })
+
+    it('should work with geojson with complex metadata', () => {
+      const layers = FeatureServer.layersInfo(dataWithComplexMetadata)
+      const layersSchemaOverride = layersTemplateSchema.append({
+        'extent': Joi.object().keys({
+          'xmin': -125,
+          'ymin': 20,
+          'xmax': -70,
+          'ymax': 49,
+          'spatialReference': Joi.object().keys({
+            'wkid': 4326,
+            'latestWkid': 4326
+          })
+        }),
+        'maxRecordCount': 1,
+        'capabilities': 'Query,Extract',
+        'supportsCoordinatesQuantization': true,
+        'objectIdField': 'interval',
+        'displayField': 'label',
+        'geometryType': 'esriGeometryPolygon',
+        'uniqueIdField': Joi.object().keys({
+          'name': 'interval',
+          'isSystemMaintained': true
+        }),
+        'drawingInfo': Joi.object().keys({
+          'renderer': Joi.object().keys({
+            'type': 'simple',
+            'symbol': Joi.object().keys({
+              'color': Joi.array().items(Joi.number().integer()).length(4),
+              'outline': Joi.object().keys({
+                'color': Joi.array().items(Joi.number().integer()).length(4),
+                'width': Joi.number().min(0),
+                'type': 'esriSLS',
+                'style': 'esriSLSSolid'
+              }),
+              'type': 'esriSFS',
+              'style': 'esriSFSSolid'
+            })
+          }),
+          'labelingInfo': Joi.valid(null)
+        })
+      })
+
+      Joi.validate(layers.layers[0], layersSchemaOverride, { presence: 'required' }).should.have.property('error', null)
       layers.layers.length.should.equal(1)
     })
   })
@@ -290,7 +255,7 @@ describe('Info operations', () => {
       layer.extent.ymax.should.equal(14)
       layer.geometryType.should.equal('esriGeometryPolygon')
       layer.maxRecordCount.should.equal(100)
-      layer.objectIdField.should.equal('OBJECTID')
+      layer.objectIdField.should.equal('test')
       layer.displayField.should.equal('test')
       layer.timeInfo.test.should.equal('test')
     })
@@ -353,7 +318,6 @@ describe('Info operations', () => {
     it('should assign field length from metadata', () => {
       const input = {
         metadata: {
-          idField: 'test',
           geometryType: 'Polygon',
           extent: [[11, 12], [13, 14]],
           fields: [

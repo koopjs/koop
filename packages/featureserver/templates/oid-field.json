@@ -2,7 +2,7 @@
   "name": "OBJECTID",
   "type": "esriFieldTypeOID",
   "alias": "OBJECTID",
-  "sqlType": "sqlTypeOther",
+  "sqlType": "sqlTypeInteger",
   "domain": null,
   "defaultValue": null
 }

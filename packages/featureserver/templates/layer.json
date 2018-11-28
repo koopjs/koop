@@ -63,5 +63,10 @@
   "types": [],
   "templates": [],
   "hasStaticData": false,
-  "timeInfo": {}
+  "timeInfo": {},
+  "uniqueIdField" : 
+  {
+    "name" : "OBJECTID", 
+    "isSystemMaintained" : true
+  }
 }

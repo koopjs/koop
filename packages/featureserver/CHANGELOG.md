@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Removed workaround for adding and `OBJECTID` field even when metadata `idField` is set
+
 ## [2.16.2] - 10-19-2018
 ### Changed
 * Bump Winnow to 1.16.4

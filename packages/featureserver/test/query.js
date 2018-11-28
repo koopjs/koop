@@ -4,6 +4,7 @@ const FeatureServer = require('../src')
 const data = require('./fixtures/snow.json')
 const projectionApplied = require('./fixtures/projection-applied.json')
 const should = require('should') // eslint-disable-line
+const { featuresTemplateSchema } = require('./schemas')
 const polyData = require('./fixtures/polygon.json')
 const budgetTable = require('./fixtures/budget-table.json')
 const dateInMeta = require('./fixtures/date-with-metadata.json')
@@ -18,37 +19,10 @@ const offsetApplied = require('./fixtures/offset-applied.json')
 describe('Query operations', () => {
   it('should return the expected response schema for an optionless query', () => {
     const response = FeatureServer.query(data, {})
-
-    const schema = Joi.object().keys({
-      'objectIdFieldName': Joi.string().valid('OBJECTID'),
-      'globalIdFieldName': Joi.string().allow(''),
-      'hasZ': Joi.boolean().valid(false),
-      'hasM': Joi.boolean().valid(false),
-      'geometryType': Joi.string().valid('esriGeometryPoint', 'esriGeometryLine', 'esriGeometryPolygon'),
-      'spatialReference': Joi.object().keys({
-        'wkid': Joi.number().integer().min(0)
-      }),
-      'fields': Joi.array().min(1).items(Joi.object().keys({
-        'name': Joi.string().when('type', { is: 'esriFieldTypeOID', then: Joi.valid('OBJECTID'), otherwise: Joi.string() }),
-        'type': Joi.string().allow('esriFieldTypeOID', 'esriFieldTypeInteger', 'esriFieldTypeDouble', 'esriFieldTypeString', 'esriFieldTypeDate'),
-        'alias': Joi.string().when('type', { is: 'esriFieldTypeOID', then: Joi.valid('OBJECTID'), otherwise: Joi.string() }),
-        'length': Joi.optional().when('type', {
-          is: Joi.string().allow('esriFieldTypeString', 'esriFieldTypeDate'),
-          then: Joi.number().integer().min(0)
-        }),
-        'defaultValue': Joi.any().valid(null),
-        'domain': Joi.any().valid(null),
-        'sqlType': Joi.string().valid('sqlTypeOther', 'sqlTypeDouble')
-      })),
-      'features': Joi.array().items(Joi.object().keys({
-        'attributes': Joi.object().keys({
-          'OBJECTID': Joi.number().integer()
-        }).unknown(),
-        'geometry': Joi.object().keys()
-      })),
-      'exceededTransferLimit': Joi.boolean()
+    const featuresSchemaOverride = featuresTemplateSchema.append({
+      'geometryType': 'esriGeometryPoint'
     })
-    Joi.validate(response, schema, { presence: 'required' }).should.have.property('error', null)
+    Joi.validate(response, featuresSchemaOverride, { presence: 'required' }).should.have.property('error', null)
   })
 
   it('should return only requested "outFields" set in options', () => {

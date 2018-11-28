@@ -24,11 +24,10 @@ const renderers = {
 }
 
 /**
- * loads a template layer json file and attaches fields
- *
- * @param {object} featureCollection
+ * Modifies a template layer json file with metadata, capabilities, and data from the model
+ * @param {object} data - data from provider model
  * @param {object} options
- * @return {object} template
+ * @return {object} layer info
  */
 function renderLayer (data = {}, options = {}) {
   const json = _.cloneDeep(templates.layer)
@@ -37,7 +36,6 @@ function renderLayer (data = {}, options = {}) {
 
   // Use options, metadata, and or feature data to override template values
   json.id = parseInt(options.layer) || 0
-  json.spatialReference = computeSpatialReference(options.spatialReference)
   json.fields = computeFieldObject(data, 'layer', options)
   json.type = isTable(data) ? 'Table' : 'Feature Layer'
   json.geometryType = getGeomType(data)
@@ -46,9 +44,14 @@ function renderLayer (data = {}, options = {}) {
 
   if (metadata.name) json.name = metadata.name
   if (metadata.description) json.description = metadata.description
+  if (metadata.idField) {
+    json.objectIdField = metadata.idField
+    json.displayField = metadata.idField
+    json.uniqueIdField.name = metadata.idField
+  }
+  if (metadata.displayField) json.displayField = metadata.displayField
   if (metadata.timeInfo) json.timeInfo = metadata.timeInfo
   if (metadata.maxRecordCount) json.maxRecordCount = metadata.maxRecordCount || 2000
-  if (metadata.displayField) json.displayField = metadata.displayField
   if (capabilities.quantization) json.supportsCoordinatesQuantization = true
   if (capabilities.extract) json.capabilities = `${json.capabilities},Extract`
   // Override the template value for hasStatic data if model metadata has this value set
@@ -56,20 +59,28 @@ function renderLayer (data = {}, options = {}) {
   return json
 }
 
-function renderFeatures (featureCollection = {}, options = {}) {
+/**
+ * Modifies a template features json file with metadata, capabilities, and data from the model
+ * @param {object} data - data from provider model
+ * @param {object} options
+ * @return {object} formatted features data
+ */
+function renderFeatures (data = {}, options = {}) {
   const json = _.cloneDeep(templates.features)
-  if (!json) throw new Error('Unsupported operation')
-  const data = featureCollection
   const metadata = data.metadata || {}
-  const maxRecordCount = metadata.maxRecordCount || 2000
 
-  if (json.geometryType) json.geometryType = options.geometryType
-  if (json.spatialReference) json.spatialReference = computeSpatialReference(options.spatialReference)
-  if (json.fields) json.fields = computeFieldObject(data, 'query', options)
-  if (json.features) json.features = data.features
+  json.geometryType = options.geometryType
+  json.spatialReference = computeSpatialReference(options.spatialReference)
+  json.fields = computeFieldObject(data, 'query', options)
+  json.features = data.features || []
+
+  const maxRecordCount = metadata.maxRecordCount || 2000
   if (metadata.limitExceeded && (options.limit >= maxRecordCount)) json.exceededTransferLimit = true
   if (metadata.transform) json.transform = metadata.transform
-
+  if (metadata.idField) {
+    json.objectIdFieldName = metadata.idField
+    json.uniqueIdField.name = metadata.idField
+  }
   return json
 }
 
