@@ -1,5 +1,40 @@
 const test = require('tape')
-const { normalizeSR, normalizeInSR, normalizeSourceSR } = require('../src/options/normalizeOptions')
+const _ = require('lodash')
+
+const {
+  normalizeCollection,
+  // TODO: Put these under test
+  // normalizeDateFields,
+  // normalizeSpatialPredicate,
+  // normalizeLimit,
+  // normalizeGeometry,
+  // normalizeOffset,
+  // normalizeProjection,
+  normalizeSR,
+  normalizeInSR,
+  normalizeSourceSR,
+  normalizeIdField
+} = require('../src/options/normalizeOptions')
+
+test('normalize collection without metadata', t => {
+  t.plan(1)
+  const collection = normalizeCollection({ collection: {} })
+  t.equals(_.isObject(collection.metadata), true, 'collection has a metadata object')
+})
+
+test('normalize collection with metadata when features are supplied', t => {
+  t.plan(1)
+  const options = { collection: {} }
+  const features = [
+    {
+      properties: {
+        feature_id: 1
+      }
+    }
+  ]
+  const collection = normalizeCollection(options, features)
+  t.equals(Array.isArray(collection.metadata.fields), true, 'collection has a metadata fields array')
+})
 
 test('normalize SR with a wkid in the known list', t => {
   t.plan(1)
@@ -179,4 +214,86 @@ test('normalize source data SR with unknown wkid, default to 4326', t => {
   const options = { inSR: { wkid: 9999 } }
   const sourceSR = normalizeInSR(options)
   t.equal(sourceSR, `EPSG:4326`)
+})
+
+test('normalize idField when set with metadata', t => {
+  t.plan(1)
+  const options = { collection: { metadata: { idField: 'feature_id' } } }
+  const idField = normalizeIdField(options)
+  t.equals(idField, 'feature_id', 'idField set properly with metadata')
+})
+
+test('normalize idField with OBJECTID from feature properties', t => {
+  t.plan(1)
+  const options = {}
+  const features = [
+    {
+      properties: {
+        OBJECTID: 1
+      }
+    }
+  ]
+  const idField = normalizeIdField(options, features)
+  t.equals(idField, 'OBJECTID', 'idField defaulted to OBJECTID when found as feature property')
+})
+
+test('normalize idField with metadata.fields', t => {
+  t.plan(1)
+  const options = {
+    collection: {
+      metadata: {
+        fields: [
+          {
+            name: 'OBJECTID'
+          }
+        ]
+      }
+    }
+  }
+  const features = [
+    {
+      properties: {
+        OBJECTID: 1
+      }
+    }
+  ]
+  const idField = normalizeIdField(options, features)
+  t.equals(idField, 'OBJECTID', 'idField defaulted to OBJECTID when found in metadata.fields')
+})
+
+test('normalize idField with metadata.fields', t => {
+  t.plan(1)
+  const options = {
+    collection: {
+      metadata: {
+        fields: [
+          {
+            name: 'OBJECTID'
+          }
+        ]
+      }
+    }
+  }
+  const features = [
+    {
+      properties: {
+        OBJECTID: 1
+      }
+    }
+  ]
+  const idField = normalizeIdField(options, features)
+  t.equals(idField, 'OBJECTID', 'idField defaulted to OBJECTID when found in metadata.fields')
+})
+
+test('normalize idField with metadata.idField = null', t => {
+  t.plan(1)
+  const options = {
+    collection: {
+      metadata: {
+        idField: null
+      }
+    }
+  }
+  const idField = normalizeIdField(options)
+  t.equals(idField, null, 'idField return as null')
 })

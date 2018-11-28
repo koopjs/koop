@@ -143,7 +143,6 @@ function esriFy (properties, geometry, dateFields, requiresObjectId, idField) {
     if (process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress' && (!Number.isInteger(properties[idField]) || properties[idField] > 2147483647)) {
       console.warn(`WARNING: OBJECTIDs created from provider's "idField" are not integers from 0 to 2147483647`)
     }
-    properties.OBJECTID = properties[idField]
   } else {
     // Create an OBJECTID by creating a numeric hash from the stringified feature
     // Note possibility of OBJECTID collisions with this method still exists, but should be small

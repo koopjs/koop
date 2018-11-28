@@ -12,7 +12,8 @@ const {
   normalizeLimit,
   normalizeGeometry,
   normalizeOffset,
-  normalizeProjection
+  normalizeProjection,
+  normalizeIdField
 
 } = require('./normalizeOptions')
 const { normalizeClassification } = require('./normalizeClassification')
@@ -20,6 +21,7 @@ const { normalizeClassification } = require('./normalizeClassification')
 function prepare (options, features) {
   const prepared = _.merge({}, options, {
     collection: normalizeCollection(options, features),
+    idField: normalizeIdField(options, features),
     where: normalizeWhere(options),
     geometry: normalizeGeometry(options),
     spatialPredicate: normalizeSpatialPredicate(options),
@@ -33,7 +35,6 @@ function prepare (options, features) {
   })
   prepared.offset = normalizeOffset(options)
   prepared.dateFields = normalizeDateFields(prepared.collection, prepared.fields)
-  prepared.idField = _.get(prepared.collection, 'metadata.idField') || null
   if (prepared.where === '1=1') delete prepared.where
 
   return prepared

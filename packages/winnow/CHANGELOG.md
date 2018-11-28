@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Removed workaround for adding and `OBJECTID` field even when metadata `idField` is set
+
 ## [1.16.4] - 09-13-2018
 ### Fixed
 * Parse comma delimited `orderByFields` parameter and trim any white space.

@@ -33,3 +33,14 @@ test('handle a query with no returned features', t => {
   const prepared = prepare(options, features)
   t.equal(prepared.collection.metadata.idField, undefined)
 })
+
+test('handle a query with no features but options returnIdsOnly andidField set in metadata', t => {
+  t.plan(3)
+  const options = { toEsri: true, returnIdsOnly: true, collection: { metadata: { idField: 'feature_id' }, type: 'FeatureCollection' } }
+  const features = []
+
+  const prepared = prepare(options, features)
+  t.equal(prepared.collection.metadata.idField, 'feature_id')
+  t.equal(prepared.idField, 'feature_id')
+  t.equal(prepared.fields[0], 'feature_id')
+})

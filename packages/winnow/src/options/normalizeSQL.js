@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 function normalizeWhere (options) {
   if (/1\s*=\s*1/.test(options.where)) return undefined
   else if (/(?!date )('?\d\d\d\d-\d\d-\d\d'?)/.test(options.where)) return normalizeDate(options.where)
@@ -18,8 +20,10 @@ function normalizeDate (where) {
  */
 function normalizeFields (options) {
   const fields = options.fields || options.outFields
+  const idField = _.get(options, 'collection.metadata.idField')
+  if (options.returnIdsOnly === true && idField) return [idField]
+  else if (options.returnIdsOnly === true) return ['OBJECTID']
   if (fields === '*') return undefined
-  if (options.returnIdsOnly === true) return ['OBJECTID']
   if (typeof fields === 'string' || fields instanceof String) return fields.split(',')
   if (fields instanceof Array) return fields
   return undefined

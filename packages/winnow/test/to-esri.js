@@ -70,23 +70,23 @@ test('checking if an object id exists', t => {
   }
   const fixture = _.cloneDeep(oidFeature)
   const result = Winnow.query(fixture, options)
-  t.equal(result.features[0].attributes.OBJECTID, 1)
-  t.equal(result.metadata.idField, 'objectid')
+  t.equal(result.features[0].attributes.OBJECTID, 1430702552)
+  t.equal(result.metadata.idField, undefined)
   t.end()
 })
 
 test('use idField not name OBJECTID', t => {
   const options = {
     toEsri: true,
-    fields: 'OBJECTID'
+    fields: 'featureId'
   }
   const fixture = _.cloneDeep(treesFeatureId)
   fixture.metadata = {
     idField: 'featureId'
   }
   const result = Winnow.query(fixture, options)
-  t.equal(result.features[0].attributes.hasOwnProperty('OBJECTID'), true)
-  t.equal(result.features[0].attributes.OBJECTID, 11303)
+  t.equal(result.features[0].attributes.hasOwnProperty('featureId'), true)
+  t.equal(result.features[0].attributes.featureId, 11303)
   t.equal(result.metadata.idField, 'featureId')
   t.end()
 })

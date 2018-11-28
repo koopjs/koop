@@ -14,19 +14,17 @@ const esriPredicates = {
 }
 const wkidLookup = {}
 
-function normalizeCollection (options, features = []) {
+function normalizeCollection (options = {}, features = []) {
   if (!options.collection) return undefined
+
+  // Make a new copy of the collection so we don't modify the original
   const collection = _.cloneDeep(options.collection)
-  const metadata = collection.metadata || {}
-  if (!metadata.fields && features[0]) metadata.fields = detectFieldsType(features[0].properties)
-  let oidField
-  if (features[0]) {
-    oidField = Object.keys(features[0].properties).filter(key => {
-      return /objectid/i.test(key)
-    })[0]
-  }
-  if (oidField && !metadata.idField) metadata.idField = oidField
-  collection.metadata = metadata
+  collection.metadata = collection.metadata || {}
+
+  // If fields haven't been set in metadata and there is at least one feature, determine
+  // field set from a feature properties
+  if (!collection.metadata.fields && features[0]) collection.metadata.fields = detectFieldsType(features[0].properties)
+
   return collection
 }
 
@@ -203,6 +201,33 @@ function normalizeProjection (options) {
   else return `EPSG:${projection}`
 }
 
+/**
+ * Ensure idField is set if metadata doesn't have a value but a field named OBJECTID is present
+ * @param {object} metadata
+ */
+function normalizeIdField (options, features = []) {
+  const collection = options.collection || {}
+  const metadata = collection.metadata || {}
+  const feature = features[0] || {}
+  const featureProperties = feature.properties || feature.attributes || {}
+  let idField = null
+
+  // First, check metadata for idField
+  if (metadata.idField) idField = metadata.idField
+
+  // Check metadata.fields for and OBJECTID property
+  else if (_.find(metadata.fields, { name: 'OBJECTID' })) idField = 'OBJECTID'
+  // Check features for an OBJECTID property that is not null
+  else if (features.length > 0 && !_.isUndefined(featureProperties.OBJECTID) && !_.isNull(featureProperties.OBJECTID)) idField = 'OBJECTID'
+
+  // If there are features, check that the idField is one of the properties
+  if (process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress' && idField && features.length > 0 && !featureProperties[idField]) {
+    console.warn(`WARNING: requested provider has "idField" assignment, but this property is not found in properties of all features.`)
+  }
+
+  return idField
+}
+
 module.exports = {
   normalizeCollection,
   normalizeDateFields,
@@ -213,5 +238,6 @@ module.exports = {
   normalizeProjection,
   normalizeSR,
   normalizeInSR,
-  normalizeSourceSR
+  normalizeSourceSR,
+  normalizeIdField
 }
