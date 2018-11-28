@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.16.5] - 11-28-2018
 ### Changed
 * Removed workaround for adding and `OBJECTID` field even when metadata `idField` is set
 
@@ -293,6 +293,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[1.16.5]: https://github.com/featureserver/winnow/compare/v1.16.4...v1.16.5
 [1.16.4]: https://github.com/featureserver/winnow/compare/v1.16.3...v1.16.4
 [1.16.3]: https://github.com/featureserver/winnow/compare/v1.16.2...v1.16.3
 [1.16.2]: https://github.com/featureserver/winnow/compare/v1.16.1...v1.16.2
