@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Before warning of discrepancies between metadata `fields` array and feature properties, compare name and alias to feature property keys.
+
 ## [2.16.3] - 11-28-2018
 ### Changed
 * Removed workaround for adding and `OBJECTID` field even when metadata `idField` is set

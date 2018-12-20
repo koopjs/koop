@@ -136,9 +136,10 @@ function warnOnMetadataFieldDiscrepencies (metadataFields, featureProperties) {
   })
 
   // compare metadata to feature properties; identifies fields defined in metadata that are not found in feature properties
-  // that have a metadata type definition inconsistent with feature property's value
+  // or that have a metadata type definition inconsistent with feature property's value
   metadataFields.filter(field => {
-    let featureField = _.find(featureFields, ['name', field.name])
+    // look for a defined field in the features properties
+    let featureField = _.find(featureFields, ['name', field.name]) || _.find(featureFields, ['name', field.alias])
     if (!featureField || (field.type !== featureField.type && !(field.type === 'Date' && featureField.type === 'Integer') && !(field.type === 'Double' && featureField.type === 'Integer'))) {
       console.warn(`WARNING: requested provider's metadata field "${field.name} (${field.type})" not found in feature properties)`)
     }
@@ -146,7 +147,11 @@ function warnOnMetadataFieldDiscrepencies (metadataFields, featureProperties) {
 
   // compare feature properties to metadata fields; identifies fields found on feature that are not defined in metadata field array
   featureFields.filter(field => {
-    if (!_.find(metadataFields, ['name', field.name])) {
+    const noNameMatch = _.find(metadataFields, ['name', field.name])
+    const noAliasMatch = _.find(metadataFields, ['alias', field.name])
+
+    // Exclude warnings on feature fields named OBJECTID because OBJECTID may have been added by winnow in which case it should not be in the metadata fields array
+    if (!(noNameMatch || noAliasMatch) && field.name !== 'OBJECTID') {
       console.warn(`WARNING: requested provider's features have property "${field.name} (${field.type})" that was not defined in metadata fields array)`)
     }
   })
