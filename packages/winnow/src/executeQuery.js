@@ -28,11 +28,14 @@ function standardQuery (features, query, options) {
   const params = Query.params(features, options)
   let filtered = sql(query, params)
 
-  // Handling for limit queries
+  // Handling for limit queries; limit arrives as options "limit", "resultRecordCount", "count" or "maxFeatures
   if (options.limit) {
     let limitExceeded = false
+    // options.limit is incremented by one in normalizeOptions.js; so if filtered.length === options.limit, we know
+    // the original limit option has been exceeded
     if (filtered.length === options.limit) {
       limitExceeded = true
+      // Now slice off the last feature, so that our feature array length is consistent with origin option
       filtered = filtered.slice(0, -1)
     }
     if (options.collection) options.collection.metadata = Object.assign({}, options.collection.metadata, { limitExceeded })
