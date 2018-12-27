@@ -2,11 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.16.4] - 12-27-2018
 ### Fixed
 * Before warning of discrepancies between metadata `fields` array and feature properties, compare name and alias to feature property keys.
 * Remove `exceededTransferLimit` check specific to `maxRecordCount` which can break paging functionality of clients
-
 
 ## [2.16.3] - 11-28-2018
 ### Changed
@@ -344,6 +343,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.16.4]: https://github.com/koopjs/featureserver/compare/v2.16.3...v2.16.4
 [2.16.3]: https://github.com/koopjs/featureserver/compare/v2.16.2...v2.16.3
 [2.16.2]: https://github.com/koopjs/featureserver/compare/v2.16.1...v2.16.2
 [2.16.1]: https://github.com/koopjs/featureserver/compare/v2.16.0...v2.16.1
