@@ -87,7 +87,7 @@ describe('Routing feature server requests', () => {
         .get('/FeatureServer/0/query?f=json&where=1%3D1&resultRecordCount=10')
         .expect(res => {
           res.body.features.length.should.equal(10)
-          res.body.exceededTransferLimit.should.equal(false)
+          res.body.exceededTransferLimit.should.equal(true)
         })
         .expect('Content-Type', /json/)
         .expect(200, done)
@@ -98,7 +98,7 @@ describe('Routing feature server requests', () => {
         .get('/FeatureServer/0/query?f=json&where=1%3D1&limit=10')
         .expect(res => {
           res.body.features.length.should.equal(10)
-          res.body.exceededTransferLimit.should.equal(false)
+          res.body.exceededTransferLimit.should.equal(true)
         })
         .expect('Content-Type', /json/)
         .expect(200, done)

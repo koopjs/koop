@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Fixed
 * Before warning of discrepancies between metadata `fields` array and feature properties, compare name and alias to feature property keys.
+* Remove `exceededTransferLimit` check specific to `maxRecordCount` which can break paging functionality of clients
+
 
 ## [2.16.3] - 11-28-2018
 ### Changed
