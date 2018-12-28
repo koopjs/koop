@@ -15,7 +15,7 @@
   "dependencies": {
     "@koopjs/logger": "^2.0.2",
     "body-parser": "^1.16.0",
-    "config": "^2.0.1",
+    "config": "^3.0.0",
     "cors": "^2.8.1",
     "ejs": "^2.3.3",
     "express": "^4.14.1",
