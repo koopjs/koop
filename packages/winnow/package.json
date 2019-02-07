@@ -41,7 +41,7 @@
     "moment": "^2.18.1",
     "ngeohash": "^0.6.3",
     "proj4": "^2.3.17",
-    "simple-statistics": "^6.0.0",
+    "simple-statistics": "^7.0.0",
     "string-hash": "^1.1.3",
     "terraformer": "^1.0.7",
     "wkt-parser": "^1.2.2"
