@@ -30,7 +30,7 @@ Visit the demo at [http://koop.dc.esri.com](http://koop.dc.esri.com).
 
 - **Providers**: adapt any third party API our data source to Koop
   - Example: [Koop-Provider-Yelp](https://github.com/koopjs/koop-provider-yelp)
-  - Docs: https://koopjs.github.io/docs/specs/provider.html
+  - Docs: https://koopjs.github.io/docs/usage/provider
 - **Outputs**: server data from Koop using any API format like Geoservices, SODA, or WFS
   - Example: [Koop-Output-Geoservices](https://github.com/koopjs/koop-output-geoservices)
 - **Caches**: store, process and query GeoJSON
