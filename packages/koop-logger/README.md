@@ -8,7 +8,7 @@
 ## Usage
 `npm install @koopjs/logger`
 ```javascript
-const Logger = require('koop-logger')
+const Logger = require('@koopjs/logger')
 const config = require('config')
 const log = new Logger(config)
 
