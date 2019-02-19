@@ -6,7 +6,7 @@
 [![Build Status](https://travis-ci.org/koopjs/koop-logger.svg?branch=master)](https://travis-ci.org/koopjs/koop-logger)
 
 ## Usage
-`npm install koop-logger`
+`npm install @koopjs/logger`
 ```javascript
 const Logger = require('koop-logger')
 const config = require('config')
