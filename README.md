@@ -42,7 +42,7 @@ Visit the demo at [http://koop.dc.esri.com](http://koop.dc.esri.com).
 
 ## Resources
 
-* [Koop Documentation](https://koopjs.github.io/docs)
+* [Koop Documentation](https://koopjs.github.io/docs/basics)
 * [ArcGIS REST API Documentation](http://resources.arcgis.com/en/help/arcgis-rest-api/)
 * [ArcGIS for Developers](http://developers.arcgis.com)
 * [@esri](http://twitter.com/esri)
