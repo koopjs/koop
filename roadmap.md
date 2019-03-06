@@ -8,6 +8,10 @@
   * quantization (see ArcGIS RestAPI [`quantizationParameters`](https://developers.arcgis.com/rest/services-reference/query-map-service-layer-.html))
   * `pbf` output (see [here](https://github.com/mapbox/pbf))
 
+4. Providers:
+  * Athena
+  * S3 Select
+
 5. New output services: 
   * WMS (continue)
   * WFS (continue)
