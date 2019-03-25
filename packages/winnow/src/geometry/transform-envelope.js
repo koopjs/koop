@@ -3,9 +3,9 @@ module.exports = function (geom) {
     type: 'Polygon',
     coordinates: [[
       [geom.xmin, geom.ymin],
-      [geom.xmin, geom.ymax],
-      [geom.xmax, geom.ymax],
       [geom.xmax, geom.ymin],
+      [geom.xmax, geom.ymax],
+      [geom.xmin, geom.ymax],
       [geom.xmin, geom.ymin]
     ]]
   }
