@@ -92,18 +92,18 @@ Koop.prototype.register = function (plugin, options) {
     case 'provider':
       return this._registerProvider(plugin, options)
     case 'cache':
-      return this._registerCache(plugin)
+      return this._registerCache(plugin, options)
     case 'plugin':
-      return this._registerPlugin(plugin)
+      return this._registerPlugin(plugin, options)
     case 'filesystem':
-      return this._registerFilesystem(plugin)
+      return this._registerFilesystem(plugin, options)
     case 'output':
-      return this._registerOutput(plugin)
+      return this._registerOutput(plugin, options)
     case 'auth':
-      return this._registerAuth(plugin)
+      return this._registerAuth(plugin, options)
     default:
       this.log.warn('Unrecognized plugin type: "' + plugin.type + '". Defaulting to provider.')
-      return this._registerProvider(plugin)
+      return this._registerProvider(plugin, options)
   }
 }
 
@@ -243,8 +243,8 @@ function bindRouteSet (routes = [], controller, server, options = {}) {
  *
  * @param {object} cache - a koop database adapter
  */
-Koop.prototype._registerCache = function (Cache) {
-  this.cache = new Cache()
+Koop.prototype._registerCache = function (Cache, options) {
+  this.cache = new Cache(options)
   this.log.info('registered cache:', Cache.name, Cache.version)
 }
 

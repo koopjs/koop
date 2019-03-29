@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* pass in options object when registering a cache provider
+
 ## [3.10.1] - 2018-11-01
 ### Fixed
 * Use path.posix.join instead of path.join
