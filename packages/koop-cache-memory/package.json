@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/koopjs/koop-cache-memory#readme",
   "devDependencies": {
-    "buble": "^0.16.0",
+    "buble": "^0.19.4",
     "standard": "^12.0.0",
     "tap-spec": "^5.0.0",
     "tape": "^4.6.3"
