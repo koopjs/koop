@@ -44,6 +44,80 @@ describe('Routing feature server requests', () => {
     })
   })
 
+  describe('Layers', () => {
+    it('should properly route and handle a layers request`', done => {
+      request(app)
+        .get('/FeatureServer/layers?f=json')
+        .expect(res => {
+          res.body.layers.length.should.equal(1)
+          res.body.tables.length.should.equal(0)
+          res.body.layers[0].name.should.equal('Snow')
+        })
+        .expect('Content-Type', /json/)
+        .expect(200, done)
+    })
+  })
+
+  describe('Layer Info', () => {
+    it('should properly route and handle a layer info request of form /FeatureServer/:layerId`', done => {
+      request(app)
+        .get('/FeatureServer/3?f=json')
+        .expect(res => {
+          res.body.type.should.equal('Feature Layer')
+          res.body.name.should.equal('Snow')
+          res.body.id.should.equal(3)
+          res.body.fields
+            .filter(f => {
+              return f.name === 'OBJECTID'
+            })
+            .length.should.equal(1)
+          should.exist(res.body.extent)
+        })
+        .expect('Content-Type', /json/)
+        .expect(200, done)
+    })
+
+    it('should properly route and handle a layer info request of form /FeatureServer/:layerId/info`', done => {
+      request(app)
+        .get('/FeatureServer/3/info?f=json')
+        .expect(res => {
+          res.body.type.should.equal('Feature Layer')
+          res.body.name.should.equal('Snow')
+          res.body.id.should.equal(3)
+          res.body.fields
+            .filter(f => {
+              return f.name === 'OBJECTID'
+            })
+            .length.should.equal(1)
+          should.exist(res.body.extent)
+        })
+        .expect('Content-Type', /json/)
+        .expect(200, done)
+    })
+
+    describe('no geometry', () => {
+      beforeEach(() => {
+        data = _.cloneDeep(noGeom)
+      })
+      it('should properly route and handle the layer with no geometry', done => {
+        request(app)
+          .get('/FeatureServer/3?f=json')
+          .expect(res => {
+            res.body.type.should.equal('Table')
+            res.body.id.should.equal(3)
+            res.body.fields
+              .filter(f => {
+                return f.name === 'OBJECTID'
+              })
+              .length.should.equal(1)
+            should.exist(res.body.extent)
+          })
+          .expect('Content-Type', /json/)
+          .expect(200, done)
+      })
+    })
+  })
+
   describe('Method not supported', () => {
     it('should return an informative error', done => {
       request(app)
@@ -136,62 +210,6 @@ describe('Routing feature server requests', () => {
           res.body.fields[1].type.should.equal('esriFieldTypeInteger')
           res.body.fields[2].type.should.equal('esriFieldTypeInteger')
         })
-        .expect(200, done)
-    })
-  })
-
-  describe('Layer Info', () => {
-    it('should properly route and handle a layer info request`', done => {
-      request(app)
-        .get('/FeatureServer/3?f=json')
-        .expect(res => {
-          res.body.type.should.equal('Feature Layer')
-          res.body.name.should.equal('Snow')
-          res.body.id.should.equal(3)
-          res.body.fields
-            .filter(f => {
-              return f.name === 'OBJECTID'
-            })
-            .length.should.equal(1)
-          should.exist(res.body.extent)
-        })
-        .expect('Content-Type', /json/)
-        .expect(200, done)
-    })
-
-    describe('no geometry', () => {
-      beforeEach(() => {
-        data = _.cloneDeep(noGeom)
-      })
-      it('should properly route and handle the layer with no geometry', done => {
-        request(app)
-          .get('/FeatureServer/3?f=json')
-          .expect(res => {
-            res.body.type.should.equal('Table')
-            res.body.id.should.equal(3)
-            res.body.fields
-              .filter(f => {
-                return f.name === 'OBJECTID'
-              })
-              .length.should.equal(1)
-            should.exist(res.body.extent)
-          })
-          .expect('Content-Type', /json/)
-          .expect(200, done)
-      })
-    })
-  })
-
-  describe('Layers', () => {
-    it('should properly route and handle a layers request`', done => {
-      request(app)
-        .get('/FeatureServer/layers?f=json')
-        .expect(res => {
-          res.body.layers.length.should.equal(1)
-          res.body.tables.length.should.equal(0)
-          res.body.layers[0].name.should.equal('Snow')
-        })
-        .expect('Content-Type', /json/)
         .expect(200, done)
     })
   })

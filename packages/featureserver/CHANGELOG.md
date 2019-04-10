@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Additional layer-info route handling for `FeatureServer/:layerId/info`
+
 ## [2.16.4] - 12-27-2018
 ### Fixed
 * Before warning of discrepancies between metadata `fields` array and feature properties, compare name and alias to feature property keys.
