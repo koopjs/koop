@@ -2,6 +2,7 @@ const Winnow = require('winnow')
 const { renderFeatures, renderStatistics, renderStats } = require('./templates')
 const Utils = require('./utils')
 const _ = require('lodash')
+const chalk = require('chalk')
 
 module.exports = query
 
@@ -35,9 +36,9 @@ function query (data, params = {}) {
   if (process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress') {
     // ArcGIS client warnings
     if (options.toEsri && !hasIdField) {
-      console.warn(`WARNING: requested provider has no "idField" assignment. This can cause errors in ArcGIS clients`)
+      console.warn(chalk.yellow(`WARNING: requested provider has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an unchanging 32-bit integer. Koop will create an OBJECTID field in the absence of an "idField" assignment.`))
     } else if (options.toEsri && data.metadata.idField.toLowerCase() === 'objectid' && data.metadata.idField !== 'OBJECTID') {
-      console.warn(`WARNING: requested provider's "idField" is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients`)
+      console.warn(chalk.yellow(`WARNING: requested provider's "idField" is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients.`))
     }
 
     // Compare provider metadata fields to feature properties
@@ -141,7 +142,7 @@ function warnOnMetadataFieldDiscrepencies (metadataFields, featureProperties) {
     // look for a defined field in the features properties
     let featureField = _.find(featureFields, ['name', field.name]) || _.find(featureFields, ['name', field.alias])
     if (!featureField || (field.type !== featureField.type && !(field.type === 'Date' && featureField.type === 'Integer') && !(field.type === 'Double' && featureField.type === 'Integer'))) {
-      console.warn(`WARNING: requested provider's metadata field "${field.name} (${field.type})" not found in feature properties)`)
+      console.warn(chalk.yellow(`WARNING: requested provider's metadata field "${field.name} (${field.type})" not found in feature properties)`))
     }
   })
 
@@ -152,7 +153,7 @@ function warnOnMetadataFieldDiscrepencies (metadataFields, featureProperties) {
 
     // Exclude warnings on feature fields named OBJECTID because OBJECTID may have been added by winnow in which case it should not be in the metadata fields array
     if (!(noNameMatch || noAliasMatch) && field.name !== 'OBJECTID') {
-      console.warn(`WARNING: requested provider's features have property "${field.name} (${field.type})" that was not defined in metadata fields array)`)
+      console.warn(chalk.yellow(`WARNING: requested provider's features have property "${field.name} (${field.type})" that was not defined in metadata fields array)`))
     }
   })
 }

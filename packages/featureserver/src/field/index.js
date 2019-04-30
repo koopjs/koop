@@ -1,4 +1,5 @@
 const _ = require('lodash')
+const chalk = require('chalk')
 const createFieldAliases = require('./aliases')
 const createStatFields = require('./statFields')
 const { detectType, esriTypeMap } = require('../utils')
@@ -124,7 +125,7 @@ function computeFieldsFromProperties (properties, requestContext, options = {}) 
   if (options.idField) {
     hasIdField = _.find(fields, { name: options.idField })
     if (hasIdField) oidField = options.idField
-    else console.warn(`WARNING: provider's "idField" is set to ${options.idField}, but this key is not found in the GeoJSON properties`)
+    else console.warn(chalk.yellow(`WARNING: provider's "idField" is set to ${options.idField}, but this key is not found in the GeoJSON properties`))
   }
 
   // If this a layer service request and there is no set idField, add OBJECTID field if its not already a field. Decorate the with additional properties needed for layer service
@@ -153,7 +154,7 @@ function computeFieldsFromMetadata (metadataFields, options = {}) {
   let hasIdField
   if (options.idField) {
     hasIdField = _.find(metadataFields, { name: options.idField })
-    if (!hasIdField) console.warn(`WARNING: provider's "idField" is set to ${options.idField}, but this field is not defined in metadata.fields`)
+    if (!hasIdField) console.warn(chalk.yellow(`WARNING: provider's "idField" is set to ${options.idField}, but this field is not defined in metadata.fields`))
   }
 
   // If no idField and OBJECTID if it isn't already a metadata field, add it
