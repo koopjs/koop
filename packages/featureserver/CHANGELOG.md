@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.17.1] - 04-30-2019
+### Added
+* Colorized warnings
+
+### Changed
+* Condensed GeoJSON warnings
+* Provide a more descriptive unassigned `idField` warning
+
 ## [2.17.0] - 04-10-2019
 ### Added
 * Additional layer-info route handling for `FeatureServer/:layerId/info`
@@ -347,6 +355,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.17.1]: https://github.com/koopjs/featureserver/compare/v2.17.0...v2.17.1
 [2.17.0]: https://github.com/koopjs/featureserver/compare/v2.16.4...v2.17.0
 [2.16.4]: https://github.com/koopjs/featureserver/compare/v2.16.3...v2.16.4
 [2.16.3]: https://github.com/koopjs/featureserver/compare/v2.16.2...v2.16.3
