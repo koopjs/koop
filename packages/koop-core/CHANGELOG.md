@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* console logging of provider/output routes
+
 ## [3.11.0] - 2019-03-29
 ### Added
 * pass in options object when registering a cache provider

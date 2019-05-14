@@ -15,8 +15,10 @@
   "dependencies": {
     "@koopjs/logger": "^2.0.2",
     "body-parser": "^1.16.0",
+    "chalk": "^2.4.2",
     "config": "^3.0.0",
     "cors": "^2.8.1",
+    "easy-table": "^1.1.1",
     "ejs": "^2.3.3",
     "express": "^4.14.1",
     "koop-cache-memory": "^1.0.2",
