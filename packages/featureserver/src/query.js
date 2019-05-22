@@ -104,7 +104,7 @@ function geoservicesPostQuery (data, queriedData, params) {
  */
 function idsOnly (data) {
   const oidField = _.get(data, 'metadata.idField') || 'OBJECTID'
-  const response = { objectIdField: oidField, objectIds: [] }
+  const response = { objectIdFieldName: oidField, objectIds: [] }
   response.objectIds = data.features.map(f => { return f.attributes[oidField] })
   return response
 }
