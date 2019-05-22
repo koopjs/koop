@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* `returnIdsOnly=true` query requests has `objectIdFieldName` property rather than `objectIdField`
+
 ## [2.17.1] - 04-30-2019
 ### Added
 * Colorized warnings

@@ -117,6 +117,7 @@ describe('Query operations', () => {
     it('should return only ids of features', () => {
       const response = FeatureServer.query(data, { returnIdsOnly: true, objectIds: '1138516379,1954528849,578128056' })
       response.should.be.an.instanceOf(Object)
+      response.should.have.property('objectIdFieldName', 'OBJECTID')
       response.should.have.property('objectIds')
       response.objectIds.length.should.equal(3)
     })
