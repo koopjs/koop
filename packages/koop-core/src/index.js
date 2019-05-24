@@ -3,6 +3,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const compression = require('compression')
 const pkg = require('../package.json')
 const _ = require('lodash')
 const Cache = require('koop-cache-memory')
@@ -24,8 +25,9 @@ const Table = require('easy-table')
 
 function Koop (config) {
   this.version = pkg.version
-  this.server = initServer()
   this.config = require('config')
+  this.server = initServer(this.config)
+
   // default to LocalDB cache
   // cache registration overrides this
   this.cache = new Cache()
@@ -56,14 +58,14 @@ Util.inherits(Koop, Events)
 /**
  * express middleware setup
  */
-function initServer () {
-  return express()
+function initServer (config) {
+  const app = express()
   // parse application/json
     .use(bodyParser.json({ limit: '10000kb' }))
-  // parse application/x-www-form-urlencoded
+    // parse application/x-www-form-urlencoded
     .use(bodyParser.urlencoded({ extended: false }))
     .disable('x-powered-by')
-  // TODO this should just live inside featureserver
+    // TODO this should just live inside featureserver
     .use((req, res, next) => {
     // request parameters can come from query url or POST body
       req.query = _.extend(req.query || {}, req.body || {})
@@ -72,10 +74,14 @@ function initServer () {
     .use(middleware.paramTrim)
     .use(middleware.paramParse)
     .use(middleware.paramCoerce)
-  // for demos and preview maps in providers
+    // for demos and preview maps in providers
     .set('view engine', 'ejs')
     .use(express.static(path.join(__dirname, '/public')))
     .use(cors())
+
+  // Use compression unless explicitly disable in the config
+  if (!config.disableCompression) app.use(compression())
+  return app
 }
 
 Koop.prototype.register = function (plugin, options) {

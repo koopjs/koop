@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* response compression unless explicitly disabled with config's `disableCompression` property
+
 ## [3.11.1] - 2019-05-22
 ### Changed
 * console logging of provider/output routes
