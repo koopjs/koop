@@ -20,6 +20,7 @@ const serverHander = (req, res) => {
 const handler = (req, res) => FeatureServer.route(req, res, data)
 
 app.get('/FeatureServer', serverHander)
+app.get('/FeatureServer/info', serverHander)
 app.get('/FeatureServer/layers', handler)
 app.get('/FeatureServer/:layer', handler)
 app.get('/FeatureServer/:layer/:method', handler)
@@ -31,9 +32,21 @@ describe('Routing feature server requests', () => {
   })
 
   describe('Server Info', () => {
-    it('should properly route and handle a server info request`', done => {
+    it('should properly route and handle a server info request to /FeatureServer`', done => {
       request(app)
         .get('/FeatureServer?f=json')
+        .expect(res => {
+          res.body.serviceDescription.should.equal('test')
+          res.body.layers.length.should.equal(2)
+          Array.isArray(res.body.tables).should.equal(true)
+        })
+        .expect('Content-Type', /json/)
+        .expect(200, done)
+    })
+
+    it('should properly route and handle a server info request to /FeatureServer/info`', done => {
+      request(app)
+        .get('/FeatureServer/info?f=json')
         .expect(res => {
           res.body.serviceDescription.should.equal('test')
           res.body.layers.length.should.equal(2)
