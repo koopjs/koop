@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.18.0] - 05-29-2019
+### Added
+* Support for `/FeatureServer/info` requests
+
 ## [2.17.2] - 05-22-2019
 ### Fixed
 * `returnIdsOnly=true` query requests has `objectIdFieldName` property rather than `objectIdField`
@@ -359,6 +363,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.18.0]: https://github.com/koopjs/featureserver/compare/v2.17.2...v2.18.0
 [2.17.2]: https://github.com/koopjs/featureserver/compare/v2.17.1...v2.17.2
 [2.17.1]: https://github.com/koopjs/featureserver/compare/v2.17.0...v2.17.1
 [2.17.0]: https://github.com/koopjs/featureserver/compare/v2.16.4...v2.17.0
