@@ -25,13 +25,13 @@ const Table = require('easy-table')
 
 function Koop (config) {
   this.version = pkg.version
-  this.config = require('config')
+  this.config = config || require('config')
   this.server = initServer(this.config)
 
   // default to LocalDB cache
   // cache registration overrides this
   this.cache = new Cache()
-  this.log = new Logger(config)
+  this.log = new Logger(this.config)
   this.pluginRoutes = []
   this.register(geoservices)
   this.register(LocalFS)

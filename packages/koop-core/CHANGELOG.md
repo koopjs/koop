@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* preferentially use the `config` argument for `this.config` during instantiation
+
 ## [3.12.0] - 2019-05-24
 ### Added
 * response compression unless explicitly disabled with config's `disableCompression` property

@@ -6,6 +6,13 @@ const request = require('supertest')
 const should = require('should') // eslint-disable-line
 
 describe('Index tests for registering providers', function () {
+  describe('use config argument', function () {
+    it('should register successfully', function () {
+      const koop = new Koop({ foo: 'bar' })
+      koop.config.should.have.property('foo', 'bar')
+    })
+  })
+
   describe('can register a provider', function () {
     it('should register successfully', function () {
       const koop = new Koop()
