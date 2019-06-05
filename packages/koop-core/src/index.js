@@ -197,8 +197,9 @@ function extend (klass, extender) {
  * @param {object} server - the koop express server
  */
 function bindRoutes (provider, controller, server, pluginRoutes, options) {
-  bindRouteSet(provider, controller, server, options)
+  // Since plugin-routes are bound first, any routing conflicts will result in requests routed to plugin
   bindPluginOverrides(provider, controller, server, pluginRoutes, options)
+  bindRouteSet(provider, controller, server, options)
 }
 
 /**
@@ -210,7 +211,7 @@ function printProviderRoutes (providerName, providerRoutes) {
   // Print provider routes
   const table = new Table()
   Object.keys(providerRoutes).forEach((key) => {
-    table.cell(chalk.cyan(`Custom Routes for Provider: ${chalk.white(providerName)}`), chalk.yellow(key))
+    table.cell(chalk.cyan(`"${providerName}" provider routes`), chalk.yellow(key))
     table.cell(chalk.cyan(`Methods`), chalk.green(providerRoutes[key].join(', ').toUpperCase()))
     table.newRow()
   })
@@ -227,7 +228,7 @@ function printPluginRoutes (providerName, pluginRouteMap) {
   Object.keys(pluginRouteMap).forEach(key => {
     const table = new Table()
     Object.keys(pluginRouteMap[key]).forEach(routeKey => {
-      table.cell(chalk.cyan(`Routes for Provider: ${chalk.white(providerName)}, Output: ${chalk.white(key)}`), chalk.yellow(routeKey))
+      table.cell(chalk.cyan(`"${key}" output routes for the "${providerName}" provider`), chalk.yellow(routeKey))
       table.cell(chalk.cyan(`Methods`), chalk.green(pluginRouteMap[key][routeKey].join(', ').toUpperCase()))
       table.newRow()
     })

@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* output-plugins routes must be bound *before* provider routes
+
 ## [3.12.1] - 2019-06-04
 ### Changed
 * preferentially use the `config` argument for `this.config` during instantiation
