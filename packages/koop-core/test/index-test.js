@@ -1,4 +1,5 @@
 /* global describe, it */
+const _ = require('lodash')
 const provider = require('./fixtures/fake-provider')
 const auth = require('./fixtures/fake-auth')()
 const Koop = require('../src/')
@@ -17,8 +18,24 @@ describe('Index tests for registering providers', function () {
     it('should register successfully', function () {
       const koop = new Koop()
       koop.register(provider)
-      const routeCount = (koop.server._router.stack.length)
-      routeCount.should.equal(79)
+      // Check that the stack includes routes with the provider name in the path
+      const providerPath = koop.server._router.stack
+        .filter((layer) => { return _.has(layer, 'route.path') })
+        .map(layer => { return _.get(layer, 'route.path') })
+        .find(path => path.includes(provider.name))
+      providerPath.should.not.equal(undefined)
+    })
+
+    it('should register plugin-routes before provider-routes', function () {
+      const koop = new Koop()
+      koop.register(provider)
+      // Check that the stack index of the plugin routes are prior to index of provider routes
+      const routePaths = koop.server._router.stack
+        .filter((layer) => { return _.has(layer, 'route.path') })
+        .map(layer => { return _.get(layer, 'route.path') })
+      const pluginRouteIndex = routePaths.findIndex(path => path.includes('/test-provider/:id/FeatureServer'))
+      const providerRouteIndex = routePaths.findIndex(path => path.includes('/fake/:id'))
+      providerRouteIndex.should.be.above(pluginRouteIndex)
     })
   })
 
