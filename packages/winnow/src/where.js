@@ -1,6 +1,13 @@
 const _ = require('lodash')
 const Parser = require('flora-sql-parser').Parser
 const parser = new Parser()
+const operatorInversions = {
+  '=': '=',
+  '>=': '<',
+  '>': '<=',
+  '<=': '>',
+  '<': '>='
+}
 
 /**
  * Convert an expression node to its string representation.
@@ -158,7 +165,51 @@ function createClause (options) {
 
   // AST parsing requires a complete SQL.
   const whereTree = parser.parse('SELECT * WHERE ' + options.where).where
-  return traverse(whereTree, options)
+  let whereTransform = traverse(whereTree, options)
+  return translateObjectIdFragments(whereTransform, options)
+}
+
+/**
+ * If the WHERE contains fragments with OBJECTID, but the data doesn't contain an OBJECTID field,
+ * and no substitution is made with the "idField" property, we must replace these WHERE fragments
+ * with use a user-defined function that will calculate the OBJECTID on the fly, do the appropriate
+ * comparison, and return the resulting boolean value
+ * @param {string} input
+ * @param {object} options
+ */
+function translateObjectIdFragments (input, options = {}) {
+  let where = input
+  const { idField } = options
+
+  // Check if OBJECTID is one of the GeoJSON properties
+  const metadataObjectIdField = _.get(options, 'collection.metadata.fields', []).find(field => { return field.name === 'OBJECTID' })
+
+  // If the WHERE includes predicates with OBJECTID, but no OBJECTID is defined on the data,
+  // and no `idField` has been assigned, we have to use a user-defined function to generate
+  // an on-the-fly OBJECTID for comparison to the request's value
+  if (where.includes('OBJECTID') && !metadataObjectIdField && !idField) {
+    // RegExp for name-first predicate, e.g "properties->`OBJECTID` = 1234"
+    const regexOid1st = /(properties|attributes)->`OBJECTID` (=|<|>|<=|>=) ([0-9]+)/g
+
+    // RegExp for value-first predicate, e.g "1234 = properties->`OBJECTID`""
+    const regexOid2nd = /([0-9]+) (=|<|>|<=|>=) (properties|attributes)->`OBJECTID`/g
+
+    where = where.replace(regexOid1st, `hashedObjectIdComparator($1, geometry, $3, '$2')=true`).replace(regexOid2nd, replacer)
+  }
+  return where
+}
+
+/**
+ * String replace function receiving regex parameters
+ * @param {string} match
+ * @param {string} value - first matched group
+ * @param {string} operator - second matched group
+ * @param {string} parentProperty - third matched group
+ * @param {*} offset
+ * @param {string} string
+ */
+function replacer (match, value, operator, parentProperty, offset, string) {
+  return `hashedObjectIdComparator(${parentProperty}, geometry, ${value}, '${operatorInversions[operator]}')=true`
 }
 
 module.exports = { createClause }

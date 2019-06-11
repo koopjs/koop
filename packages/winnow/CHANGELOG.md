@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+## Fixed
+* Support for using OBJECTID in `where` even when OBJECTIDs are generated on-the-fly in Winnow
+
 ## [1.16.6] - 03-25-2019
 ### Changed
 * Geometry envelopes are constructed in counter-clockwise ring

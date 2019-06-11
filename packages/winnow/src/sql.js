@@ -152,6 +152,19 @@ function esriFy (properties, geometry, dateFields, requiresObjectId, idField) {
 }
 
 /**
+ *
+ */
+sql.fn.hashedObjectIdComparator = function (properties, geometry, objectId, operator) {
+  const hash = createIntHash(JSON.stringify({ properties, geometry }))
+  if (operator === '=' && hash === objectId) return true
+  else if (operator === '>' && hash > objectId) return true
+  else if (operator === '<' && hash < objectId) return true
+  else if (operator === '>=' && hash >= objectId) return true
+  else if (operator === '<=' && hash <= objectId) return true
+  return false
+}
+
+/**
  * Create integer hash in range of 0 - 2147483647 from string
  * @param {*} inputStr - any string
  */
