@@ -2,8 +2,8 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
-## Fixed
+## [1.16.7] - 06-11-2019
+### Fixed
 * Support for using OBJECTID in `where` even when OBJECTIDs are generated on-the-fly in Winnow
 
 ## [1.16.6] - 03-25-2019
@@ -301,6 +301,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[1.16.7]: https://github.com/featureserver/winnow/compare/v1.16.6...v1.16.7
 [1.16.6]: https://github.com/featureserver/winnow/compare/v1.16.5...v1.16.6
 [1.16.5]: https://github.com/featureserver/winnow/compare/v1.16.4...v1.16.5
 [1.16.4]: https://github.com/featureserver/winnow/compare/v1.16.3...v1.16.4
