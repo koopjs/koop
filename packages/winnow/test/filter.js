@@ -523,6 +523,14 @@ test('with a between query', t => {
   run('permits', options, 211, t)
 })
 
+test('with a OBJECTID query on data that requires dynamic OBJECTID generation', t => {
+  const options = {
+    where: 'OBJECTID=1138516379',
+    toEsri: true
+  }
+  run('snow', options, 1, t)
+})
+
 function run (data, options, expected, t) {
   t.plan(1)
   const fixtures = _.cloneDeep(require(`./fixtures/${data}.json`))
