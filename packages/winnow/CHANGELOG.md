@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.16.8] - 06-21-2019
 ### Fixed
 * turf.js centroid function assignment
 
@@ -308,6 +308,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[1.16.8]: https://github.com/featureserver/winnow/compare/v1.16.7...v1.16.8
 [1.16.7]: https://github.com/featureserver/winnow/compare/v1.16.6...v1.16.7
 [1.16.6]: https://github.com/featureserver/winnow/compare/v1.16.5...v1.16.6
 [1.16.5]: https://github.com/featureserver/winnow/compare/v1.16.4...v1.16.5
