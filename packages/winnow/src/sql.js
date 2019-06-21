@@ -4,7 +4,7 @@ const convertToEsri = require('./geometry/convert-to-esri')
 const convertFromEsri = require('./geometry/convert-from-esri')
 const sql = require('alasql')
 const geohash = require('ngeohash')
-const centroid = require('@turf/centroid')
+const centroid = require('@turf/centroid').default
 const _ = require('lodash')
 const projectCoordinates = require('./geometry/project-coordinates')
 const reducePrecision = require('./geometry/reduce-precision')
@@ -141,7 +141,7 @@ function esriFy (properties, geometry, dateFields, requiresObjectId, idField) {
   // If the idField for the model set use its value as OBJECTID
   if (idField) {
     if (process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress' && (!Number.isInteger(properties[idField]) || properties[idField] > 2147483647)) {
-      console.warn(`WARNING: OBJECTIDs created from provider's "idField" are not integers from 0 to 2147483647`)
+      console.warn(`WARNING: OBJECTIDs created from provider's "idField" (${idField}: ${properties[idField]}) are not integers from 0 to 2147483647`)
     }
   } else {
     // Create an OBJECTID by creating a numeric hash from the stringified feature

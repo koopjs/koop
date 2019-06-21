@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* turf.js centroid function assignment
+
+### Changed
+* more descriptive message about `idField` value not conforming
+
 ## [1.16.7] - 06-11-2019
 ### Fixed
 * Support for using OBJECTID in `where` even when OBJECTIDs are generated on-the-fly in Winnow
