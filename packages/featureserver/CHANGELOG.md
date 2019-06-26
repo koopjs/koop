@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Support for info routes with trailing slashes
+
 ## [2.18.0] - 05-29-2019
 ### Added
 * Support for `/FeatureServer/info` requests

@@ -78,9 +78,9 @@ function execInfo (req, res, method, geojson) {
   try {
     if (/\/rest\/info$/i.test(url)) {
       info = FsInfo.restInfo(geojson)
-    } else if (/\/FeatureServer$/i.test(url) || /\/FeatureServer\/info$/i.test(url)) {
+    } else if (/\/FeatureServer$/i.test(url) || /\/FeatureServer\/info$/i.test(url) || /\/FeatureServer\/($|\?)/.test(url)) {
       info = FsInfo.serverInfo(geojson, req.params)
-    } else if (/\/FeatureServer\/\d+$/i.test(url) || /\/FeatureServer\/\d+\/info$/i.test(url)) {
+    } else if (/\/FeatureServer\/\d+$/i.test(url) || /\/FeatureServer\/\d+\/info$/i.test(url) || /\/FeatureServer\/\d+\/($|\?)/.test(url)) {
       info = FsInfo.layerInfo(geojson, req.params)
     } else if (/\/FeatureServer\/layers$/i.test(url)) {
       info = FsInfo.layersInfo(geojson, req.query)

@@ -44,6 +44,18 @@ describe('Routing feature server requests', () => {
         .expect(200, done)
     })
 
+    it('should properly route and handle a server info request to /FeatureServer/`', done => {
+      request(app)
+        .get('/FeatureServer/?f=json')
+        .expect(res => {
+          res.body.serviceDescription.should.equal('test')
+          res.body.layers.length.should.equal(2)
+          Array.isArray(res.body.tables).should.equal(true)
+        })
+        .expect('Content-Type', /json/)
+        .expect(200, done)
+    })
+
     it('should properly route and handle a server info request to /FeatureServer/info`', done => {
       request(app)
         .get('/FeatureServer/info?f=json')
@@ -75,6 +87,24 @@ describe('Routing feature server requests', () => {
     it('should properly route and handle a layer info request of form /FeatureServer/:layerId`', done => {
       request(app)
         .get('/FeatureServer/3?f=json')
+        .expect(res => {
+          res.body.type.should.equal('Feature Layer')
+          res.body.name.should.equal('Snow')
+          res.body.id.should.equal(3)
+          res.body.fields
+            .filter(f => {
+              return f.name === 'OBJECTID'
+            })
+            .length.should.equal(1)
+          should.exist(res.body.extent)
+        })
+        .expect('Content-Type', /json/)
+        .expect(200, done)
+    })
+
+    it('should properly route and handle a layer info request of form /FeatureServer/:layerId/`', done => {
+      request(app)
+        .get('/FeatureServer/3/?f=json')
         .expect(res => {
           res.body.type.should.equal('Feature Layer')
           res.body.name.should.equal('Snow')
