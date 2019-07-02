@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Support for `returnExtentOnly`
+
 ## [2.19.0] - 06-27-2019
 ### Added
 * Support for info routes with trailing slashes
