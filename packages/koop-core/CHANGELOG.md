@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* appending layer id to cache key provides unique keys for each layer in a provider
+
 ## [3.12.2] - 2019-06-05
 ### Fixed
 * output-plugins routes must be bound *before* provider routes

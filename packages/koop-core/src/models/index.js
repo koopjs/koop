@@ -21,6 +21,7 @@ function createKey (req) {
   let key = req.url.split('/')[1]
   if (req.params.host) key = [key, req.params.host].join('::')
   if (req.params.id) key = [key, req.params.id].join('::')
+  if (req.params.layer) key = [key, req.params.layer].join('::')
   return key
 }
 
