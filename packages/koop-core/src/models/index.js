@@ -1,4 +1,4 @@
-function Model (options) {
+function Model (options = {}) {
   this.cache = options.cache
 }
 
