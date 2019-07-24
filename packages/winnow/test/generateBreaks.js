@@ -203,20 +203,20 @@ test('add unique values', t => {
   const options = _.cloneDeep(uniqueValue)
   const ammendedtrees = _.cloneDeep(treesSubset)
   ammendedtrees.features.push({
-    'type': 'Feature',
-    'properties': {
-      'OBJECTID': 99998,
-      'Common_Name': 'SOUTHERN MAGNOLIA',
-      'Genus': 'MAGNOLIA',
-      'Trunk_Diameter': 10
+    type: 'Feature',
+    properties: {
+      OBJECTID: 99998,
+      Common_Name: 'SOUTHERN MAGNOLIA',
+      Genus: 'MAGNOLIA',
+      Trunk_Diameter: 10
     }
   }, {
-    'type': 'Feature',
-    'properties': {
-      'OBJECTID': 99999,
-      'Common_Name': 'SOUTHERN NEW_GENUS',
-      'Genus': 'NEW_GENUS',
-      'Trunk_Diameter': 11
+    type: 'Feature',
+    properties: {
+      OBJECTID: 99999,
+      Common_Name: 'SOUTHERN NEW_GENUS',
+      Genus: 'NEW_GENUS',
+      Trunk_Diameter: 11
     }
   })
   const results = winnow.query(ammendedtrees, options)
@@ -245,13 +245,13 @@ test('change unique value field', t => {
 test('create unique values with multiple unique fields', t => {
   t.plan(6)
   const options = {
-    'classification': {
-      'type': 'unique',
-      'fields': ['EmployeeID', 'ShipperID'],
-      'fieldDelimiter': ', '
+    classification: {
+      type: 'unique',
+      fields: ['EmployeeID', 'ShipperID'],
+      fieldDelimiter: ', '
     },
-    'where': 'OBJECTID<11310',
-    'f': 'pjson'
+    where: 'OBJECTID<11310',
+    f: 'pjson'
   }
   const results = winnow.query(multipleUnique, options)
   t.equal(Array.isArray(results), true)
@@ -266,13 +266,13 @@ test('create unique values with multiple unique fields', t => {
 test('cannot create unique values with more than three fields', t => {
   t.plan(1)
   const options = {
-    'classification': {
-      'type': 'unique',
-      'fields': ['EmployeeID', 'ShipperID', 'Department', 'Date'],
-      'fieldDelimiter': ', '
+    classification: {
+      type: 'unique',
+      fields: ['EmployeeID', 'ShipperID', 'Department', 'Date'],
+      fieldDelimiter: ', '
     },
-    'where': 'OBJECTID<11310',
-    'f': 'pjson'
+    where: 'OBJECTID<11310',
+    f: 'pjson'
   }
   t.throws(function () { winnow.query(treesSubset, options) })
 })

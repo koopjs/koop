@@ -252,7 +252,7 @@ test('ignore projection when getting an aggregate specified in the esri way', t 
       {
         statisticType: 'count',
         onStatisticField: 'Trunk_Diameter',
-        'outStatisticFieldName': 'count_trunk_Diameter'
+        outStatisticFieldName: 'count_trunk_Diameter'
       }
     ],
     groupByFieldsForStatistics: ['Trunk_Diameter'],

@@ -165,7 +165,7 @@ function createClause (options) {
 
   // AST parsing requires a complete SQL.
   const whereTree = parser.parse('SELECT * WHERE ' + options.where).where
-  let whereTransform = traverse(whereTree, options)
+  const whereTransform = traverse(whereTree, options)
   return translateObjectIdFragments(whereTransform, options)
 }
 

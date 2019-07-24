@@ -47,7 +47,7 @@ function calculateStdDevIntervals (values, classification) {
   const mean = ss.mean(values)
   const stddev = ss.standardDeviation(values)
   const breakCount = classification.breakCount
-  let intervals = []
+  const intervals = []
 
   // create interval around mean
   const minMeanInt = Number((mean - (0.5 * stddev)).toFixed(6))

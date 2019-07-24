@@ -36,7 +36,7 @@ function normalizeCollection (options = {}, features = []) {
  * @param String[] preparedFields - single element string array of delimited field names from "outFields" query param
  */
 function normalizeDateFields (collection, preparedFields) {
-  let dateFields = []
+  const dateFields = []
   if (collection && collection.metadata && collection.metadata.fields) {
     collection.metadata.fields.forEach((field, i) => {
       // If field is a Date and was included in requested fields (or requested fields are wildcard) add to array
@@ -98,7 +98,7 @@ function normalizeInSR (options) {
  * @returns {string} EPSG:<wkid> or srs WKT; defaults to EPSG:4326
  */
 function normalizeSourceSR (input) {
-  let spatialReference = normalizeSR(input)
+  const spatialReference = normalizeSR(input)
   if (spatialReference) return ((spatialReference.wkid) ? `EPSG:${spatialReference.wkid}` : spatialReference.wkt)
   if (process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress' && input && !spatialReference) {
     console.log(`WARNING: spatial reference "${input}" could not be normalized. Defaulting to EPSG:4326.`)

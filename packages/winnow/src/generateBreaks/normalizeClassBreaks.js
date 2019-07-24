@@ -47,7 +47,7 @@ function normalizeByLog (values) {
 }
 
 function normalizeByPercent (values) {
-  let valueTotal = values.reduce((sum, value) => { return sum + value }, 0)
+  const valueTotal = values.reduce((sum, value) => { return sum + value }, 0)
   if (valueTotal <= 0) throw new Error('Value total is not positive: ' + valueTotal)
   return values.map(value => { return (value / valueTotal) * 100 })
 }

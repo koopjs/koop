@@ -49,7 +49,7 @@ function convertRingsToGeoJSON (rings) {
     }
     // is this ring an outer ring? is it clockwise?
     if (utils.ringIsClockwise(ring)) {
-      var polygon = [ ring ]
+      var polygon = [ring]
       outerRings.push(polygon) // push to outer rings
     } else {
       holes.push(ring) // counterclockwise push to holes

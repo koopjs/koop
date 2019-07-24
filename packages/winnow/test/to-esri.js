@@ -85,7 +85,7 @@ test('use idField not name OBJECTID', t => {
     idField: 'featureId'
   }
   const result = Winnow.query(fixture, options)
-  t.equal(result.features[0].attributes.hasOwnProperty('featureId'), true)
+  t.ok(_.has(result, 'features[0].attributes.featureId'))
   t.equal(result.features[0].attributes.featureId, 11303)
   t.equal(result.metadata.idField, 'featureId')
   t.end()
@@ -192,7 +192,7 @@ test('exclude objectid addition when not part of outfields', t => {
   const fixture = _.cloneDeep(geojson)
   const result = Winnow.query(fixture, options)
   t.equal(Object.keys(result.features[0].attributes).length, 1)
-  t.equal(result.features[0].attributes.hasOwnProperty('string'), true)
+  t.ok(_.has(result, 'features[0].attributes.string'))
   t.end()
 })
 
@@ -205,6 +205,6 @@ test('do not exclude objectid when returnIdsOnly = true', t => {
   const fixture = _.cloneDeep(geojson)
   const result = Winnow.query(fixture, options)
   t.equal(Object.keys(result.features[0].attributes).length, 1)
-  t.equal(result.features[0].attributes.hasOwnProperty('OBJECTID'), true)
+  t.ok(_.has(result, 'features[0].attributes.OBJECTID'))
   t.end()
 })
