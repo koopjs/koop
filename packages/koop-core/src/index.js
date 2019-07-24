@@ -243,7 +243,7 @@ function bindPluginOverrides (provider, controller, server, pluginRoutes, option
 
   pluginRoutes.forEach(route => {
     // Compose the full route string from its components
-    let fullRoute = helpers.composeRouteString(route.path, namespace, {
+    const fullRoute = helpers.composeRouteString(route.path, namespace, {
       hosts: provider.hosts,
       disableIdParam: provider.disableIdParam,
       absolutePath: route.absolutePath,

@@ -35,7 +35,7 @@ function koopMap (dom) {
     layerFS.metadata(function (err, data) {
       if (err) return console.log(err)
       var extent = data.extent
-      map.fitBounds([ [extent.ymin, extent.xmin], [extent.ymax, extent.xmax] ])
+      map.fitBounds([[extent.ymin, extent.xmin], [extent.ymax, extent.xmax]])
     })
   }
 

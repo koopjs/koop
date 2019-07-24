@@ -20,14 +20,12 @@ describe('Middleware tests', function () {
     it('should convert a JSON (escaped) string parameter to a JSON object', function () {
       const req = { query: { param1: '{\"jsonstr\":\"foobar\"}' } } // eslint-disable-line
       middleware.paramParse(req, {}, function () {})
-      req.query.param1.hasOwnProperty('jsonstr').should.equal(true)
       req.query.param1.jsonstr.should.equal('foobar')
     })
 
     it('should convert a JSON string parameter to a JSON object', function () {
       const req = { query: { param1: '{"jsonstr":"foobar"}' } }
       middleware.paramParse(req, {}, function () {})
-      req.query.param1.hasOwnProperty('jsonstr').should.equal(true)
       req.query.param1.jsonstr.should.equal('foobar')
     })
   })
