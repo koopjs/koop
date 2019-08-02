@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.16.9] - 08-02-2019
+### Fixed
+* ST_Within had geometry targets reversed. Now tests that feature is within filter.
+
 ## [1.16.8] - 06-21-2019
 ### Fixed
 * turf.js centroid function assignment
@@ -151,10 +155,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 Deep clone for dates since mutating dates has down stream consequences if reused
 * correct typo: winnow.sql => winnow.querySql
-
-## Unreleased
-### Fixed
-* ST_Within had geometry targets reversed. Now tests that feature is within filter.
 
 ## [1.10.2] - 06-20-2017
 ### Fixed
@@ -312,6 +312,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[1.16.9]: https://github.com/featureserver/winnow/compare/v1.16.8...v1.16.9
 [1.16.8]: https://github.com/featureserver/winnow/compare/v1.16.7...v1.16.8
 [1.16.7]: https://github.com/featureserver/winnow/compare/v1.16.6...v1.16.7
 [1.16.6]: https://github.com/featureserver/winnow/compare/v1.16.5...v1.16.6
