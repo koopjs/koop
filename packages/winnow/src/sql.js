@@ -23,7 +23,7 @@ sql.fn.ST_Within = function (feature = {}, filterGeom = {}) {
   if (!(feature && feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
   const filter = new Terraformer.Primitive(filterGeom)
   const TfFeature = new Terraformer.Primitive(feature)
-  return filter.within(TfFeature)
+  return TfFeature.within(filter)
 }
 
 sql.fn.ST_Contains = function (feature = {}, filterGeom = {}) {

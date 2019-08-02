@@ -152,6 +152,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 Deep clone for dates since mutating dates has down stream consequences if reused
 * correct typo: winnow.sql => winnow.querySql
 
+## Unreleased
+### Fixed
+* ST_Within had geometry targets reversed. Now tests that feature is within filter.
+
 ## [1.10.2] - 06-20-2017
 ### Fixed
 * Do not overwrite existing OID
