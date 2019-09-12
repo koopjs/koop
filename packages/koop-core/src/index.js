@@ -212,7 +212,7 @@ function printProviderRoutes (providerName, providerRoutes) {
   const table = new Table()
   Object.keys(providerRoutes).forEach((key) => {
     table.cell(chalk.cyan(`"${providerName}" provider routes`), chalk.yellow(key))
-    table.cell(chalk.cyan(`Methods`), chalk.green(providerRoutes[key].join(', ').toUpperCase()))
+    table.cell(chalk.cyan('Methods'), chalk.green(providerRoutes[key].join(', ').toUpperCase()))
     table.newRow()
   })
   console.log(`\n${table.toString()}`)
@@ -229,7 +229,7 @@ function printPluginRoutes (providerName, pluginRouteMap) {
     const table = new Table()
     Object.keys(pluginRouteMap[key]).forEach(routeKey => {
       table.cell(chalk.cyan(`"${key}" output routes for the "${providerName}" provider`), chalk.yellow(routeKey))
-      table.cell(chalk.cyan(`Methods`), chalk.green(pluginRouteMap[key][routeKey].join(', ').toUpperCase()))
+      table.cell(chalk.cyan('Methods'), chalk.green(pluginRouteMap[key][routeKey].join(', ').toUpperCase()))
       table.newRow()
     })
     console.log(`\n${table.toString()}`)
