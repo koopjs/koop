@@ -12,7 +12,7 @@ function Geoservices () {}
  */
 function pullDataAndRoute (model, req, res) {
   model.pull(req, function (err, data) {
-    if (err) res.status(err.code || 500).json({error: err.message})
+    if (err) res.status(err.code || 500).json({ error: err.message })
     else FeatureServer.route(req, res, data)
   })
 }
@@ -32,7 +32,7 @@ Geoservices.prototype.featureServer = function (req, res) {
       })
       .catch(err => {
         if (err.code === 401) FeatureServer.error.authorization(req, res)
-        else res.status(err.code || 500).json({error: err.message})
+        else res.status(err.code || 500).json({ error: err.message })
       })
   } else {
     pullDataAndRoute(this.model, req, res)
@@ -46,12 +46,12 @@ Geoservices.prototype.featureServer = function (req, res) {
  * @param {object} res response object
  */
 Geoservices.prototype.featureServerRestInfo = function (req, res) {
-  let authInfo = {}
-  let authSpec = this.model.authenticationSpecification
+  const authInfo = {}
+  const authSpec = this.model.authenticationSpecification
   if (authSpec) {
     authInfo.isTokenBasedSecurity = true
     // Use https by default, unless KOOP_AUTH_HTTP or authSpec.useHttp are defined and set to true
-    let protocol = (authSpec.useHttp === true || process.env.KOOP_AUTH_HTTP === 'true') ? 'http' : 'https'
+    const protocol = (authSpec.useHttp === true || process.env.KOOP_AUTH_HTTP === 'true') ? 'http' : 'https'
     authInfo.tokenServicesUrl = `${protocol}://${req.headers.host}${req.baseUrl}/${authSpec.provider}/tokens/`
   }
   FeatureServer.route(req, res, { authInfo })
@@ -71,10 +71,10 @@ Geoservices.prototype.generateToken = function (req, res) {
       })
       .catch(err => {
         if (err.code === 401) FeatureServer.error.authentication(req, res)
-        else res.status(err.code || 500).json({error: err.message})
+        else res.status(err.code || 500).json({ error: err.message })
       })
   } else {
-    res.status(500).json({error: `"authenticate" not implemented for this provider`})
+    res.status(500).json({ error: '"authenticate" not implemented for this provider' })
   }
 }
 
