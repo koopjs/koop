@@ -89,7 +89,7 @@ function normalizeInSR (options) {
   else spatialReference = normalizeSR(options.inSR)
 
   if (spatialReference) return ((spatialReference.wkid) ? `EPSG:${spatialReference.wkid}` : spatialReference.wkt)
-  return `EPSG:4326`
+  return 'EPSG:4326'
 }
 
 /**
@@ -103,7 +103,7 @@ function normalizeSourceSR (input) {
   if (process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress' && input && !spatialReference) {
     console.log(`WARNING: spatial reference "${input}" could not be normalized. Defaulting to EPSG:4326.`)
   }
-  return `EPSG:4326`
+  return 'EPSG:4326'
 }
 
 /**
@@ -222,7 +222,7 @@ function normalizeIdField (options, features = []) {
 
   // If there are features, check that the idField is one of the properties
   if (process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress' && idField && features.length > 0 && !featureProperties[idField]) {
-    console.warn(`WARNING: requested provider has "idField" assignment, but this property is not found in properties of all features.`)
+    console.warn('WARNING: requested provider has "idField" assignment, but this property is not found in properties of all features.')
   }
 
   return idField

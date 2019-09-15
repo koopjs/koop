@@ -9,7 +9,8 @@
   "scripts": {
     "test": "standard && tape test/*.js | tap-spec",
     "clean": "rm -rf dist",
-    "compile": "buble -i src -o dist"
+    "compile": "buble -i src -o dist",
+    "fix": "standard --fix"
   },
   "repository": {
     "type": "git",
@@ -49,7 +50,7 @@
   "devDependencies": {
     "buble": "^0.19.0",
     "feature-parser": "^1.0.1",
-    "standard": "^13.1.0",
+    "standard": "^14.3.0",
     "tap-spec": "^5.0.0",
     "tape": "^4.6.3"
   },

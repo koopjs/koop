@@ -5,7 +5,7 @@
  */
 function createClause (options = {}, idField = null) {
   // Default clause
-  let clause = `type, properties as properties`
+  let clause = 'type, properties as properties'
 
   // Comma-delimited list of date-fields is needed for formatting ESRI specific output
   const dateFields = options.dateFields.join(',')

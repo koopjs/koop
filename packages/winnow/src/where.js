@@ -194,7 +194,7 @@ function translateObjectIdFragments (input, options = {}) {
     // RegExp for value-first predicate, e.g "1234 = properties->`OBJECTID`""
     const regexOid2nd = /([0-9]+) (=|<|>|<=|>=) (properties|attributes)->`OBJECTID`/g
 
-    where = where.replace(regexOid1st, `hashedObjectIdComparator($1, geometry, $3, '$2')=true`).replace(regexOid2nd, replacer)
+    where = where.replace(regexOid1st, 'hashedObjectIdComparator($1, geometry, $3, \'$2\')=true').replace(regexOid2nd, replacer)
   }
   return where
 }

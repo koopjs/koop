@@ -22,7 +22,7 @@ test('normalize fields when value is "test,field,names"', t => {
   t.deepEquals(fields, ['test', 'field', 'names'], 'has expected contents')
 })
 
-test(`normalize fields when value is "['test', 'field', 'names']"`, t => {
+test('normalize fields when value is "[\'test\', \'field\', \'names\']"', t => {
   t.plan(2)
   const options = {
     fields: ['test', 'field', 'names']

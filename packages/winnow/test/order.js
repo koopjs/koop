@@ -2,7 +2,7 @@
 const test = require('tape')
 const _ = require('lodash')
 const winnow = require('../src')
-const fixture = require(`./fixtures/trees.json`)
+const fixture = require('./fixtures/trees.json')
 
 test('With a limit of 10, order by OBJECTID ASC', t => {
   t.plan(2)
@@ -62,7 +62,7 @@ test('With a limit of 10 and toEsri and no idField specified, order by Species D
     order: 'Species DESC',
     toEsri: true
   }
-  const features = require(`./fixtures/trees.json`).features
+  const features = require('./fixtures/trees.json').features
   const filtered = winnow.query(features, options)
   t.equal(filtered[0].attributes.Species, 'ugandense')
   t.equal(filtered[1].attributes.Species, 'sinensis')

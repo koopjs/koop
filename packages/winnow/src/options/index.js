@@ -4,7 +4,8 @@ const {
   normalizeFields,
   normalizeOrder,
   normalizeAggregates,
-  normalizeGroupBy } = require('./normalizeSQL')
+  normalizeGroupBy
+} = require('./normalizeSQL')
 const {
   normalizeCollection,
   normalizeDateFields,
