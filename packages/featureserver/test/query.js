@@ -1,5 +1,6 @@
 /* global describe, it */
 const Joi = require('joi')
+const _ = require('lodash')
 const FeatureServer = require('../src')
 const data = require('./fixtures/snow.json')
 const projectionApplied = require('./fixtures/projection-applied.json')
@@ -20,7 +21,7 @@ describe('Query operations', () => {
   it('should return the expected response schema for an optionless query', () => {
     const response = FeatureServer.query(data, {})
     const featuresSchemaOverride = featuresTemplateSchema.append({
-      'geometryType': 'esriGeometryPoint'
+      geometryType: 'esriGeometryPoint'
     })
     Joi.validate(response, featuresSchemaOverride, { presence: 'required' }).should.have.property('error', null)
   })
@@ -36,7 +37,7 @@ describe('Query operations', () => {
 
   it('should not return geometry data when "returnGeometry" is false', () => {
     const response = FeatureServer.query(data, { returnGeometry: false })
-    response.features[0].hasOwnProperty('geometry').should.equal(false)
+    _.has(response, 'features[0].geometry').should.equal(false)
   })
 
   it('should serialize all the types correctly', () => {
@@ -208,7 +209,7 @@ describe('Query operations', () => {
     it('should return well formed features', () => {
       const options = {
         f: 'json',
-        where: `"Full/Part" = 'P'`,
+        where: '"Full/Part" = \'P\'',
         returnGeometry: false,
         resultOffset: 0,
         resultRecordCount: 10,
@@ -224,7 +225,7 @@ describe('Query operations', () => {
     it('should return correct out fields, including OBJECTID', () => {
       const options = {
         f: 'json',
-        where: `"Full/Part" = 'P'`,
+        where: '"Full/Part" = \'P\'',
         returnGeometry: false,
         resultOffset: 0,
         resultRecordCount: 10,
@@ -238,7 +239,7 @@ describe('Query operations', () => {
       response.fields[2].name.should.equal('Dept')
       response.features.length.should.equal(10)
       Object.keys(response.features[0].attributes).length.should.equal(3)
-      response.features[0].hasOwnProperty('geometry').should.equal(false)
+      _.has(response, 'features[0].geometry').should.equal(false)
     })
 
     it('should return correct out fields, excluding OBJECTID', () => {
@@ -254,7 +255,7 @@ describe('Query operations', () => {
       response.fields.find(field => field.name === 'Name').name.should.equal('Name')
       response.fields.find(field => field.name === 'Dept').name.should.equal('Dept')
       Object.keys(response.features[0].attributes).length.should.equal(2)
-      response.features[0].attributes.hasOwnProperty('OBJECTID').should.equal(false)
+      _.has(response, 'features[0].attributes.OBJECTID').should.equal(false)
     })
   })
 
@@ -305,7 +306,7 @@ describe('Query operations', () => {
         response.should.be.an.instanceOf(Object)
         response.fields.length.should.equal(1)
         response.features.length.should.equal(1)
-        response.features[0]['attributes']['min_precip'].should.equal(0)
+        response.features[0].attributes.min_precip.should.equal(0)
       })
 
       it('should return correct number of fields and features for 2 stats', () => {
@@ -326,8 +327,8 @@ describe('Query operations', () => {
         response.should.be.an.instanceOf(Object)
         response.fields.length.should.equal(2)
         response.features.length.should.equal(1)
-        response.features[0]['attributes']['min_precip'].should.equal(0)
-        response.features[0]['attributes']['max_precip'].should.equal(1.5)
+        response.features[0].attributes.min_precip.should.equal(0)
+        response.features[0].attributes.max_precip.should.equal(1.5)
       })
 
       it('should return correct statistics for a count operation', () => {
@@ -343,7 +344,7 @@ describe('Query operations', () => {
         response.should.be.an.instanceOf(Object)
         response.fields.length.should.equal(1)
         response.features.length.should.equal(1)
-        response.features[0]['attributes']['count_precip'].should.not.equal(0)
+        response.features[0].attributes.count_precip.should.not.equal(0)
       })
 
       it('should return correct number of fields and features for sum stats', () => {
@@ -353,14 +354,14 @@ describe('Query operations', () => {
         response.should.be.an.instanceOf(Object)
         response.fields.length.should.equal(1)
         response.features.length.should.equal(1)
-        response.features[0]['attributes']['sum_precip'].should.equal(135.69000000000003)
+        response.features[0].attributes.sum_precip.should.equal(135.69000000000003)
       })
 
       it('should return correct number of fields and features for avg stats', () => {
         const response = FeatureServer.query(data, {
           outStatistics: [{ statisticType: 'avg', onStatisticField: 'total precip', outStatisticFieldName: 'avg_precip' }]
         })
-        response.features[0]['attributes']['avg_precip'].should.equal(0.3253956834532375)
+        response.features[0].attributes.avg_precip.should.equal(0.3253956834532375)
       })
 
       it('should return correct number of fields and features for var/stddev stats', () => {
@@ -370,8 +371,8 @@ describe('Query operations', () => {
             { statisticType: 'stddev', onStatisticField: 'total precip', outStatisticFieldName: 'stddev_precip' }
           ]
         })
-        response.features[0]['attributes']['var_precip'].should.equal(0.07661480700055341)
-        response.features[0]['attributes']['stddev_precip'].should.equal(0.27646171244241985)
+        response.features[0].attributes.var_precip.should.equal(0.07661480700055341)
+        response.features[0].attributes.stddev_precip.should.equal(0.27646171244241985)
       })
 
       it('should return a correct response when there are multiple stats returned', () => {
@@ -390,7 +391,7 @@ describe('Query operations', () => {
         }
 
         const response = FeatureServer.query(budgetTable, options)
-        response.features[0]['attributes']['Full/Part_COUNT'].should.equal(6644)
+        response.features[0].attributes['Full/Part_COUNT'].should.equal(6644)
         response.fields.findIndex(f => { return f.name === 'Full/Part_COUNT' }).should.not.equal(-1)
         response.fields.findIndex(f => { return f.name === 'Full/Part' }).should.not.equal(-1)
       })

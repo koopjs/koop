@@ -29,7 +29,6 @@ function computeFieldsCollection (data, requestContext, options = {}) {
   const feature = data.features && data.features[0]
   // Fields are being calculated from a single feature; TODO: should these be calculated using the whole dataset?
   const properties = feature ? feature.properties || feature.attributes : options.attributeSample
-  let requestedFields
 
   // If no metadata fields defined, compute fields from data properties
   const fieldsOptions = Object.assign({}, options, { idField: metadata.idField })
@@ -37,7 +36,7 @@ function computeFieldsCollection (data, requestContext, options = {}) {
   else if (!metadata.fields) return computeFieldsFromProperties(properties, requestContext, fieldsOptions).fields
 
   // Use metadata fields and request parameters to construct an array of requested fields
-  requestedFields = computeFieldsFromMetadata(metadata.fields, { outFields: options.outFields, idField: metadata.idField })
+  const requestedFields = computeFieldsFromMetadata(metadata.fields, { outFields: options.outFields, idField: metadata.idField })
 
   // Loop through the requested response fields and create a field object for each
   const responsefields = requestedFields.map(field => {
@@ -158,7 +157,7 @@ function computeFieldsFromMetadata (metadataFields, options = {}) {
   }
 
   // If no idField and OBJECTID if it isn't already a metadata field, add it
-  if (!hasIdField && !_.find(metadataFields, { 'name': 'OBJECTID' })) responseFields.push({ name: 'OBJECTID', type: 'integer' })
+  if (!hasIdField && !_.find(metadataFields, { name: 'OBJECTID' })) responseFields.push({ name: 'OBJECTID', type: 'integer' })
 
   // If outFields were specified and not wildcarded, create a subset of fields from metadata fields based on outFields param
   if (options.outFields && options.outFields !== '*') {

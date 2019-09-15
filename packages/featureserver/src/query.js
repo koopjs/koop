@@ -37,9 +37,9 @@ function query (data, params = {}) {
   if (process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress') {
     // ArcGIS client warnings
     if (options.toEsri && !hasIdField) {
-      console.warn(chalk.yellow(`WARNING: requested provider has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an unchanging 32-bit integer. Koop will create an OBJECTID field in the absence of an "idField" assignment.`))
+      console.warn(chalk.yellow('WARNING: requested provider has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an unchanging 32-bit integer. Koop will create an OBJECTID field in the absence of an "idField" assignment.'))
     } else if (options.toEsri && data.metadata.idField.toLowerCase() === 'objectid' && data.metadata.idField !== 'OBJECTID') {
-      console.warn(chalk.yellow(`WARNING: requested provider's "idField" is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients.`))
+      console.warn(chalk.yellow('WARNING: requested provider\'s "idField" is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients.'))
     }
 
     // Compare provider metadata fields to feature properties
@@ -70,7 +70,7 @@ function geoservicesPostQuery (data, queriedData, params) {
     else if (typeof params.objectIds === 'string') oids = params.objectIds.split(',')
     else if (typeof params.objectIds === 'number') oids = [params.objectIds]
     else {
-      const error = new Error(`Invalid "objectIds" parameter.`)
+      const error = new Error('Invalid "objectIds" parameter.')
       error.code = 400
       throw error
     }
@@ -145,7 +145,7 @@ function warnOnMetadataFieldDiscrepencies (metadataFields, featureProperties) {
   // or that have a metadata type definition inconsistent with feature property's value
   metadataFields.filter(field => {
     // look for a defined field in the features properties
-    let featureField = _.find(featureFields, ['name', field.name]) || _.find(featureFields, ['name', field.alias])
+    const featureField = _.find(featureFields, ['name', field.name]) || _.find(featureFields, ['name', field.alias])
     if (!featureField || (field.type !== featureField.type && !(field.type === 'Date' && featureField.type === 'Integer') && !(field.type === 'Double' && featureField.type === 'Integer'))) {
       console.warn(chalk.yellow(`WARNING: requested provider's metadata field "${field.name} (${field.type})" not found in feature properties)`))
     }

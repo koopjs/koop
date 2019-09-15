@@ -18,7 +18,7 @@ module.exports = route
 function route (req, res, geojson, options) {
   // Check for valid GeoJSON and warn if not found (non-production environments)
   if (process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress') {
-    let geojsonErrors = geojsonhint.hint(geojson)
+    const geojsonErrors = geojsonhint.hint(geojson)
     if (geojsonErrors.length > 0) console.log(chalk.yellow(`WARNING: source data for ${req.path} contains invalid GeoJSON.`))
   }
 
@@ -34,8 +34,8 @@ function route (req, res, geojson, options) {
   })
 
   // Validate and check limit
-  if (req.query.limit && isNaN(req.query.limit)) return helpers.responseHandler(req, res, 400, { error: `Invalid "limit" parameter` })
-  else if (req.query.resultRecordCount && isNaN(req.query.resultRecordCount)) return helpers.responseHandler(req, res, 400, { error: `Invalid "resultRecordCount" parameter` })
+  if (req.query.limit && isNaN(req.query.limit)) return helpers.responseHandler(req, res, 400, { error: 'Invalid "limit" parameter' })
+  else if (req.query.resultRecordCount && isNaN(req.query.resultRecordCount)) return helpers.responseHandler(req, res, 400, { error: 'Invalid "resultRecordCount" parameter' })
   if (!req.query.limit) req.query.limit = req.query.resultRecordCount || metadata.maxRecordCount || 2000
 
   // if this is for a method we can handle like query

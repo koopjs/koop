@@ -10,7 +10,8 @@
     "clean": "rm -rf dist",
     "compile": "buble -i src -o dist",
     "package": "npm run clean && npm run compile",
-    "test": "standard && mocha test"
+    "test": "standard && mocha test",
+    "fix": "standard --fix"
   },
   "author": "Daniel Fenton <dfenton@esri.com>",
   "license": "Apache-2.0",
@@ -32,7 +33,7 @@
     "joi": "^14.3.0",
     "mocha": "^6.0.0",
     "should": "^13.0.0",
-    "standard": "^12.0.0",
+    "standard": "^14.3.0",
     "supertest": "^4.0.0"
   },
   "standard": {

@@ -29,13 +29,13 @@ describe('when a class breaks classification passed in', () => {
     })
     describe('do not exist', () => {
       it('should throw an error', () => {
-        let options = {}
+        const options = {}
         data.statistics = []
         generateRenderer.bind(this, data, options).should.throw()
       })
     })
     it('should properly return a renderer', () => {
-      let options = {}
+      const options = {}
       const response = generateRenderer(data, options)
       response.minValue.should.equal(80)
       response.classBreakInfos.length.should.equal(9)
@@ -73,7 +73,7 @@ describe('when a class breaks classification passed in', () => {
     })
     describe('that is invalid', () => {
       it('should throw an error', () => {
-        let modifiedData = _.cloneDeep(data)
+        const modifiedData = _.cloneDeep(data)
         modifiedData.features = modifiedData.features.map((feature) => {
           feature.geometry.type = 'Invalid Type'
           return feature
@@ -165,7 +165,7 @@ describe('when a unique value classification passed in', () => {
     })
     describe('that is invalid', () => {
       it('should throw an error', () => {
-        let modifiedData = _.cloneDeep(data)
+        const modifiedData = _.cloneDeep(data)
         modifiedData.features = modifiedData.features.map((feature) => {
           feature.geometry.type = 'Invalid Type'
           return feature
@@ -235,7 +235,7 @@ describe('when creating class break infos', () => {
     response[0].classMinValue.should.equal(0)
     response[0].label.should.equal('0-0.1241412550728627')
     response[0].symbol.color.should.deepEqual([115, 76, 0])
-    response[4].symbol.color.should.deepEqual([ 198, 39, 0 ])
+    response[4].symbol.color.should.deepEqual([198, 39, 0])
     response[8].symbol.color.should.deepEqual([255, 25, 86])
   })
 })
@@ -247,7 +247,7 @@ describe('when creating unique value infos', () => {
     const response = createUniqueValueInfos(uniqueBreaks, classification)
     response.length.should.equal(5)
     response[0].symbol.color.should.deepEqual([115, 76, 0])
-    response[2].symbol.color.should.deepEqual([ 198, 39, 0 ])
+    response[2].symbol.color.should.deepEqual([198, 39, 0])
     response[4].symbol.color.should.deepEqual([255, 25, 86])
   })
 })
@@ -271,7 +271,7 @@ describe('when creating a color ramp that', () => {
         response.length.should.equal(9)
         response[3].should.be.an.instanceOf(Array)
         response[3].length.should.equal(3)
-        response[3].should.deepEqual([ 0, 255, 191 ])
+        response[3].should.deepEqual([0, 255, 191])
       })
       it('should return correct number of breaks', () => {
         breaks.push([2001, 3000])
@@ -297,7 +297,7 @@ describe('when creating a color ramp that', () => {
         response.length.should.equal(9)
         response[3].should.be.an.instanceOf(Array)
         response[3].length.should.equal(3)
-        response[3].should.deepEqual([ 123, 174, 141 ])
+        response[3].should.deepEqual([123, 174, 141])
       })
       it('should return correct number of breaks', () => {
         breaks.push([2001, 3000])
@@ -307,7 +307,7 @@ describe('when creating a color ramp that', () => {
       it('should change ramp colors when toColor is changed', () => {
         inputRamp.toColor = [50, 173, 23]
         const response = createColorRamp(breaks, inputRamp)
-        response[3].should.deepEqual([ 35, 224, 14 ])
+        response[3].should.deepEqual([35, 224, 14])
       })
     })
     describe('using the LCH algorithm', () => {
@@ -320,7 +320,7 @@ describe('when creating a color ramp that', () => {
         response.length.should.equal(9)
         response[3].should.be.an.instanceOf(Array)
         response[3].length.should.equal(3)
-        response[3].should.deepEqual([ 0, 206, 237 ])
+        response[3].should.deepEqual([0, 206, 237])
       })
       it('should return correct number of breaks', () => {
         breaks.push([2001, 3000])
@@ -330,7 +330,7 @@ describe('when creating a color ramp that', () => {
       it('should change ramp colors when toColor is changed', () => {
         inputRamp.toColor = [50, 173, 23]
         const response = createColorRamp(breaks, inputRamp)
-        response[3].should.deepEqual([ 37, 224, 13 ])
+        response[3].should.deepEqual([37, 224, 13])
       })
     })
   })
@@ -350,8 +350,8 @@ describe('when creating a color ramp that', () => {
       const response = createColorRamp(breaks, inputRamp)
       response[2].should.be.an.instanceOf(Array)
       response[2].length.should.equal(9)
-      response[0][7].should.deepEqual([ 0, 64, 255 ])
-      response[1][7].should.deepEqual([ 83, 58, 233 ])
+      response[0][7].should.deepEqual([0, 64, 255])
+      response[1][7].should.deepEqual([83, 58, 233])
       response[0].length.should.equal(response[1].length)
       response[1].length.should.equal(response[2].length) // TODO: ? allow different breakCounts for each ramp
     })

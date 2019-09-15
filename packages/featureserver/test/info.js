@@ -11,10 +11,10 @@ const { layersTemplateSchema, serverTemplateSchema } = require('./schemas')
 describe('Info operations', () => {
   describe('rest info', () => {
     it('should conform to the prescribed schema', () => {
-      let supplementalRestInfo = {
-        'authInfo': {
-          'isTokenBasedSecurity': true,
-          'tokenServicesUrl': 'http://localhost/provider/generateToken'
+      const supplementalRestInfo = {
+        authInfo: {
+          isTokenBasedSecurity: true,
+          tokenServicesUrl: 'http://localhost/provider/generateToken'
         }
       }
       const restInfo = FeatureServer.restInfo(supplementalRestInfo)
@@ -29,24 +29,24 @@ describe('Info operations', () => {
     it('should conform to the prescribed schema', () => {
       const server = FeatureServer.serverInfo(data)
       const serverSchemaOverride = serverTemplateSchema.append({
-        'initialExtent': Joi.object().keys({
-          'xmin': Joi.number().valid(-108.9395),
-          'ymin': Joi.number().valid(37.084968),
-          'xmax': Joi.number().valid(-102),
-          'ymax': Joi.number().valid(40.8877),
-          'spatialReference': Joi.object().keys({
-            'wkid': Joi.number().valid(4326),
-            'latestWkid': Joi.number().valid(4326)
+        initialExtent: Joi.object().keys({
+          xmin: Joi.number().valid(-108.9395),
+          ymin: Joi.number().valid(37.084968),
+          xmax: Joi.number().valid(-102),
+          ymax: Joi.number().valid(40.8877),
+          spatialReference: Joi.object().keys({
+            wkid: Joi.number().valid(4326),
+            latestWkid: Joi.number().valid(4326)
           })
         }),
-        'fullExtent': Joi.object().keys({
-          'xmin': Joi.number().valid(-108.9395),
-          'ymin': Joi.number().valid(37.084968),
-          'xmax': Joi.number().valid(-102),
-          'ymax': Joi.number().valid(40.8877),
-          'spatialReference': Joi.object().keys({
-            'wkid': Joi.number().valid(4326),
-            'latestWkid': Joi.number().valid(4326)
+        fullExtent: Joi.object().keys({
+          xmin: Joi.number().valid(-108.9395),
+          ymin: Joi.number().valid(37.084968),
+          xmax: Joi.number().valid(-102),
+          ymax: Joi.number().valid(40.8877),
+          spatialReference: Joi.object().keys({
+            wkid: Joi.number().valid(4326),
+            latestWkid: Joi.number().valid(4326)
           })
         })
       })
@@ -151,34 +151,34 @@ describe('Info operations', () => {
       const layers = FeatureServer.layersInfo(data)
 
       const layersSchemaOverride = layersTemplateSchema.append({
-        'extent': Joi.object().keys({
-          'xmin': Joi.number().valid(-108.9395),
-          'ymin': Joi.number().valid(37.084968),
-          'xmax': Joi.number().valid(-102),
-          'ymax': Joi.number().valid(40.8877),
-          'spatialReference': Joi.object().keys({
-            'wkid': Joi.number().valid(4326),
-            'latestWkid': Joi.number().valid(4326)
+        extent: Joi.object().keys({
+          xmin: Joi.number().valid(-108.9395),
+          ymin: Joi.number().valid(37.084968),
+          xmax: Joi.number().valid(-102),
+          ymax: Joi.number().valid(40.8877),
+          spatialReference: Joi.object().keys({
+            wkid: Joi.number().valid(4326),
+            latestWkid: Joi.number().valid(4326)
           })
         }),
-        'geometryType': 'esriGeometryPoint',
-        'drawingInfo': Joi.object().keys({
-          'renderer': Joi.object().keys({
-            'type': 'simple',
-            'symbol': Joi.object().keys({
-              'color': Joi.array().items(Joi.number().integer()).length(4),
-              'outline': Joi.object().keys({
-                'color': Joi.array().items(Joi.number().integer()).length(4),
-                'width': Joi.number().min(0),
-                'type': Joi.string().valid('esriSLS'),
-                'style': Joi.string().valid('esriSLSSolid')
+        geometryType: 'esriGeometryPoint',
+        drawingInfo: Joi.object().keys({
+          renderer: Joi.object().keys({
+            type: 'simple',
+            symbol: Joi.object().keys({
+              color: Joi.array().items(Joi.number().integer()).length(4),
+              outline: Joi.object().keys({
+                color: Joi.array().items(Joi.number().integer()).length(4),
+                width: Joi.number().min(0),
+                type: Joi.string().valid('esriSLS'),
+                style: Joi.string().valid('esriSLSSolid')
               }),
-              'size': Joi.number().min(0),
-              'type': Joi.string().valid('esriSMS'),
-              'style': Joi.string().valid('esriSMSCircle')
+              size: Joi.number().min(0),
+              type: Joi.string().valid('esriSMS'),
+              style: Joi.string().valid('esriSMSCircle')
             })
           }),
-          'labelingInfo': Joi.valid(null)
+          labelingInfo: Joi.valid(null)
         })
       })
       Joi.validate(layers.layers[0], layersSchemaOverride, { presence: 'required' }).should.have.property('error', null)
@@ -188,42 +188,42 @@ describe('Info operations', () => {
     it('should work with geojson with complex metadata', () => {
       const layers = FeatureServer.layersInfo(dataWithComplexMetadata)
       const layersSchemaOverride = layersTemplateSchema.append({
-        'extent': Joi.object().keys({
-          'xmin': -125,
-          'ymin': 20,
-          'xmax': -70,
-          'ymax': 49,
-          'spatialReference': Joi.object().keys({
-            'wkid': 4326,
-            'latestWkid': 4326
+        extent: Joi.object().keys({
+          xmin: -125,
+          ymin: 20,
+          xmax: -70,
+          ymax: 49,
+          spatialReference: Joi.object().keys({
+            wkid: 4326,
+            latestWkid: 4326
           })
         }),
-        'maxRecordCount': 1,
-        'capabilities': 'Query,Extract',
-        'supportsCoordinatesQuantization': true,
-        'objectIdField': 'interval',
-        'displayField': 'label',
-        'geometryType': 'esriGeometryPolygon',
-        'uniqueIdField': Joi.object().keys({
-          'name': 'interval',
-          'isSystemMaintained': true
+        maxRecordCount: 1,
+        capabilities: 'Query,Extract',
+        supportsCoordinatesQuantization: true,
+        objectIdField: 'interval',
+        displayField: 'label',
+        geometryType: 'esriGeometryPolygon',
+        uniqueIdField: Joi.object().keys({
+          name: 'interval',
+          isSystemMaintained: true
         }),
-        'drawingInfo': Joi.object().keys({
-          'renderer': Joi.object().keys({
-            'type': 'simple',
-            'symbol': Joi.object().keys({
-              'color': Joi.array().items(Joi.number().integer()).length(4),
-              'outline': Joi.object().keys({
-                'color': Joi.array().items(Joi.number().integer()).length(4),
-                'width': Joi.number().min(0),
-                'type': 'esriSLS',
-                'style': 'esriSLSSolid'
+        drawingInfo: Joi.object().keys({
+          renderer: Joi.object().keys({
+            type: 'simple',
+            symbol: Joi.object().keys({
+              color: Joi.array().items(Joi.number().integer()).length(4),
+              outline: Joi.object().keys({
+                color: Joi.array().items(Joi.number().integer()).length(4),
+                width: Joi.number().min(0),
+                type: 'esriSLS',
+                style: 'esriSLSSolid'
               }),
-              'type': 'esriSFS',
-              'style': 'esriSFSSolid'
+              type: 'esriSFS',
+              style: 'esriSFSSolid'
             })
           }),
-          'labelingInfo': Joi.valid(null)
+          labelingInfo: Joi.valid(null)
         })
       })
 

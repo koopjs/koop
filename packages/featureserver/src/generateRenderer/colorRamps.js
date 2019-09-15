@@ -52,7 +52,7 @@ function createMultipartRamp (options) {
 function createAlgorithmicRamp (options) {
   const { rampDetails, breakCount } = options
   if (rampDetails.type !== 'algorithmic') return
-  let colorRamp = chroma.scale([rampDetails.fromColor.slice(0, 3), rampDetails.toColor.slice(0, 3)])
+  const colorRamp = chroma.scale([rampDetails.fromColor.slice(0, 3), rampDetails.toColor.slice(0, 3)])
   switch (rampDetails.algorithm) {
     case 'esriHSVAlgorithm': // using HSV & hsl interchangeably
       return colorRamp.mode('hsl').colors(breakCount, 'rgb')
