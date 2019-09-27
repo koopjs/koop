@@ -39,7 +39,7 @@ function renderLayer (data = {}, options = {}) {
   json.fields = computeFieldObject(data, 'layer', options)
   json.type = isTable(data) ? 'Table' : 'Feature Layer'
   json.geometryType = getGeomType(data)
-  json.drawingInfo.renderer = renderers[json.geometryType]
+  json.drawingInfo.renderer = metadata.renderer || renderers[json.geometryType]
   json.extent = metadata.extent ? computeExtent(metadata.extent) : computeExtent(getExtent(data))
 
   if (metadata.name) json.name = metadata.name

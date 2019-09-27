@@ -76,6 +76,7 @@ e.g.
     limitExceeded: Boolean, // whether or not the server has limited the features returned
     timeInfo: Object // describes the time extent and capabilities of the layer,
     transform: Object // describes a quantization transformation
+    renderer: Object // provider can over-ride default symbology of FeatureServer output with a renderer object. See https://developers.arcgis.com/web-map-specification/objects/simpleRenderer, for object specification.
     fields: [
      { // Subkeys are optional
        name: String,
@@ -172,6 +173,7 @@ const server = {
       maxRecordCount: Number // the maximum number of features a provider can return at once
       limitExceeded: Boolean, // whether or not the server has limited the features returned
       timeInfo: Object // describes the time extent and capabilities of the layer
+      renderer: Object // provider can over-ride default symbology of FeatureServer output with a renderer object. See https://developers.arcgis.com/web-map-specification/objects/simpleRenderer, for object specification.
     }
     features: [// If all the metadata provided above is provided features are optional.
       {
@@ -212,7 +214,7 @@ Note that the layer info is modified with properties `metadata` and `capabilites
 |`metadata.hasStaticData`| overrides default (`false`) |
 |`capabilities.extract`|  when set to `true`, `Extract` added to `capabilites` (e.g., `capabilities: "Query,Extract"`) |
 |`capabilities.quantization`| when set to `true`, `supportsCoordinatesQuantization: true`|
-
+|`metadata.renderer`| overrides default |
 ### FeatureServer.layers
 Generate version `10.51` Geoservices information about one or many layers
 

@@ -17,7 +17,31 @@
     "idField": "interval",
     "displayField": "label",
     "maxRecordCount": 1,
-    "hasStaticData": false
+    "hasStaticData": false,
+    "renderer": {
+      "type": "simple",
+      "symbol": {
+        "type": "esriSFS",
+        "style": "esriSFSSolid",
+        "color": [
+          115,
+          76,
+          0,
+          255
+        ],
+        "outline": {
+          "type": "esriSLS",
+          "style": "esriSLSSolid",
+          "color": [
+            110,
+            110,
+            110,
+            255
+          ],
+          "width": 1
+        }
+      }
+    }
   },
   "capabilities": {
     "quantization": true,
