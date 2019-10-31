@@ -45,10 +45,11 @@ function computeFieldsCollection (data, requestContext, options = {}) {
       type: field.type,
       length: field.length,
       context: requestContext,
-      idField: metadata.idField
+      idField: metadata.idField,
+      domain: field.domain,
+      nullable: field.nullable
     })
   })
-
   // Ensure the OBJECTID field is first in the array
   responsefields.unshift(responsefields.splice(responsefields.findIndex(field => field.name === 'OBJECTID'), 1)[0])
 
@@ -63,7 +64,7 @@ function computeFieldsCollection (data, requestContext, options = {}) {
  */
 function computeFieldObject (name, options = {}) {
   let outputField
-  const { alias = name, type = 'string', length, context, idField } = options
+  const { alias = name, type = 'string', length, context, idField, domain, nullable } = options
 
   // Identify objectIdField with the name that matches the metadata idField or the default name "OBJECTID"
   if (name === idField || name === 'OBJECTID') {
@@ -88,7 +89,11 @@ function computeFieldObject (name, options = {}) {
 
   // Layer service field objects have addition 'editable' and 'nullable' properties
   if (context === 'layer') {
-    Object.assign(outputField, { editable: false, nullable: false })
+    Object.assign(outputField, {
+      editable: false,
+      domain: domain || null,
+      nullable: typeof nullable !== 'undefined' ? nullable : false
+    })
   }
 
   // Create the field object by overriding a template with field specific property values
