@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.21.2] - 10-31-2019
+### Fixed
+* Ensure ObjectID field is moved to being of response fields array
+* Pass domain and nullable properties into response if provided
+
 ## [2.21.1] - 10-04-2019
 ### Fixed
 * Correct packaging
@@ -379,6 +384,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.21.2]: https://github.com/koopjs/featureserver/compare/v2.21.1...v2.21.2
 [2.21.1]: https://github.com/koopjs/featureserver/compare/v2.21.0...v2.21.1
 [2.21.0]: https://github.com/koopjs/featureserver/compare/v2.20.0...v2.21.0
 [2.20.0]: https://github.com/koopjs/featureserver/compare/v2.19.0...v2.20.0
