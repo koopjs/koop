@@ -88,6 +88,24 @@ test('Use multiple group bys', t => {
   t.ok(results[0].avg_Trunk_Diameter)
 })
 
+test('Use a group by with a where clause', t => {
+  t.plan(3)
+  const options = {
+    aggregates: [
+      {
+        type: 'avg',
+        field: 'Trunk_Diameter'
+      }
+    ],
+    where: 'Trunk_Diameter > 10',
+    groupBy: 'Genus'
+  }
+  const results = winnow.query(features, options)
+  t.equal(results.length, 127)
+  t.ok(results[0].Genus)
+  t.ok(results[0].avg_Trunk_Diameter)
+})
+
 test('Get a named aggregate', t => {
   t.plan(1)
   const options = {

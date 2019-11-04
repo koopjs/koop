@@ -14,13 +14,9 @@ module.exports = function (aggregates, groupBy, esri) {
 }
 
 function addGroupBy (select, groupBy, selector) {
-  const groups = groupBy.reduce((fragment, group) => {
-    return `${fragment} ${selector}->\`${group}\`,`
-  }, '').slice(0, -1)
-
   const fields = groupBy.reduce((fragment, group) => {
     return `${fragment} ${selector}->\`${group}\` as \`${group}\`,`
   }, '').slice(0, -1)
 
-  return `${select.slice(0, -1)}, ${fields} FROM ? GROUP BY ${groups}`
+  return `${select.slice(0, -1)}, ${fields} FROM ? `
 }
