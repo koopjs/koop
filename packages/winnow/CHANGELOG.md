@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Fixed
 * Fix SQL generated when using group by with where clause.
+* Split comma delimited group by fields
 
 ## [1.16.9] - 08-02-2019
 ### Fixed

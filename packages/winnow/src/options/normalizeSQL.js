@@ -59,7 +59,7 @@ function normalizeAggregates (options) {
 
 function normalizeGroupBy (options) {
   const groupBy = options.groupBy || options.groupByFieldsForStatistics
-  return typeof groupBy === 'string' ? [groupBy] : groupBy
+  return typeof groupBy === 'string' ? groupBy.split(',') : groupBy
 }
 
 module.exports = { normalizeWhere, normalizeFields, normalizeOrder, normalizeAggregates, normalizeGroupBy }
