@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.16.11] - 11-05-2019
+### Changed
+* Version bump
+
 ## [1.16.10] - 11-05-2019
 ### Fixed
 * Fix SQL generated when using group by with where clause.
@@ -317,6 +321,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[1.16.11]: https://github.com/featureserver/winnow/compare/v1.16.10...v1.16.11
 [1.16.10]: https://github.com/featureserver/winnow/compare/v1.16.9...v1.16.10
 [1.16.9]: https://github.com/featureserver/winnow/compare/v1.16.8...v1.16.9
 [1.16.8]: https://github.com/featureserver/winnow/compare/v1.16.7...v1.16.8
