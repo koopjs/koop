@@ -197,9 +197,9 @@ function extend (klass, extender) {
  * @param {object} server - the koop express server
  */
 function bindRoutes (provider, controller, server, pluginRoutes, options) {
-  // Since plugin-routes are bound first, any routing conflicts will result in requests routed to plugin
-  bindPluginOverrides(provider, controller, server, pluginRoutes, options)
-  bindRouteSet(provider, controller, server, options)
+  // Provider-routes are bound first; any routing conflicts will result in requests routed to provider
+  bindProviderRoutes(provider, controller, server, options)
+  bindPluginRoutes(provider, controller, server, pluginRoutes, options)
 }
 
 /**
@@ -236,7 +236,7 @@ function printPluginRoutes (providerName, pluginRouteMap) {
   })
 }
 
-function bindPluginOverrides (provider, controller, server, pluginRoutes, options = {}) {
+function bindPluginRoutes (provider, controller, server, pluginRoutes, options = {}) {
   const name = provider.namespace || provider.plugin_name || provider.name
   const namespace = name.replace(/\s/g, '').toLowerCase()
   const pluginRouteMap = {}
@@ -270,7 +270,7 @@ function bindPluginOverrides (provider, controller, server, pluginRoutes, option
   if (process.env.NODE_ENV !== 'test') printPluginRoutes(name, pluginRouteMap)
 }
 
-function bindRouteSet (provider, controller, server, options = {}) {
+function bindProviderRoutes (provider, controller, server, options = {}) {
   const { routePrefix = '' } = options
   const { routes = [] } = provider
   const providerRoutes = {}

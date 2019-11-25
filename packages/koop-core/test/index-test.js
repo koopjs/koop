@@ -35,7 +35,7 @@ describe('Index tests for registering providers', function () {
         .map(layer => { return _.get(layer, 'route.path') })
       const pluginRouteIndex = routePaths.findIndex(path => path.includes('/test-provider/:id/FeatureServer'))
       const providerRouteIndex = routePaths.findIndex(path => path.includes('/fake/:id'))
-      providerRouteIndex.should.be.above(pluginRouteIndex)
+      providerRouteIndex.should.be.below(pluginRouteIndex)
     })
   })
 

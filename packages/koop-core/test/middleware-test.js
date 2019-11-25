@@ -1,5 +1,6 @@
-const middleware = require('../src/middleware')
+const _ = require('lodash')
 const should = require('should') // eslint-disable-line
+const middleware = require('../src/middleware')
 
 describe('Middleware tests', function () {
   describe('paramTrim function', function () {
@@ -20,13 +21,13 @@ describe('Middleware tests', function () {
     it('should convert a JSON (escaped) string parameter to a JSON object', function () {
       const req = { query: { param1: '{\"jsonstr\":\"foobar\"}' } } // eslint-disable-line
       middleware.paramParse(req, {}, function () {})
-      req.query.param1.jsonstr.should.equal('foobar')
+      _.get(req, 'query.param1.jsonstr').should.equal('foobar')
     })
 
     it('should convert a JSON string parameter to a JSON object', function () {
       const req = { query: { param1: '{"jsonstr":"foobar"}' } }
       middleware.paramParse(req, {}, function () {})
-      req.query.param1.jsonstr.should.equal('foobar')
+      _.get(req, 'query.param1.jsonstr').should.equal('foobar')
     })
   })
 
