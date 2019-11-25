@@ -20,7 +20,7 @@
     "config": "^3.0.0",
     "cors": "^2.8.1",
     "easy-table": "^1.1.1",
-    "ejs": "^2.3.3",
+    "ejs": "^3.0.1",
     "express": "^4.14.1",
     "koop-cache-memory": "^1.0.2",
     "koop-localfs": "^1.1.1",
