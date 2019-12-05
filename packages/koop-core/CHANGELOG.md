@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.15.0] - 2019-12-05
 ### Added
 * added `pluginName` property to plugin registration object, which takes precedence over `plugin_name`.
 
@@ -864,6 +864,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[3.15.0]: https://github.com/koopjs/koop-core/compare/v3.14.0...v3.15.0
 [3.14.0]: https://github.com/koopjs/koop-core/compare/v3.13.0...v3.14.0
 [3.13.0]: https://github.com/koopjs/koop-core/compare/v3.12.2...v3.13.0
 [3.12.2]: https://github.com/koopjs/koop-core/compare/v3.12.1...v3.12.2
