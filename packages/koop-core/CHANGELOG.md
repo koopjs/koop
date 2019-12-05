@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* added `pluginName` property to plugin registration object, which takes precedence over `plugin_name`.
+
+### Fixed
+* when determining the plugin name, `plugin_name` takes precedence over `Plugin.name`.
+
 ## [3.14.0] - 2019-11-25
 ### Fixed
 * provider routes bound *before* other plugin routes

@@ -5,6 +5,7 @@ const auth = require('./fixtures/fake-auth')()
 const Koop = require('../src/')
 const request = require('supertest')
 const should = require('should') // eslint-disable-line
+const plugins = require('./fixtures/fake-plugin')
 
 describe('Index tests for registering providers', function () {
   describe('use config argument', function () {
@@ -108,6 +109,46 @@ describe('Tests for registering auth plugin', function () {
       providerWithAuth.Model.prototype.should.have.property('authenticationSpecification')
       providerWithAuth.Model.prototype.should.have.property('authenticate')
       providerWithAuth.Model.prototype.should.have.property('authorize')
+    })
+  })
+})
+
+describe('Tests for registering plugins', function () {
+  const koop = new Koop()
+  describe('can register a plugin', function () {
+    it('should register successfully', function () {
+      koop.register(plugins.fakePlugin)
+      koop.fakePlugin.should.be.instanceOf(Object)
+      koop.fakePlugin.testFunc.should.be.instanceOf(Function)
+      koop.fakePlugin.testFunc().should.equal(true)
+    })
+
+    it('should override the plugin name', function () {
+      koop.register(plugins.renamedPlugin)
+      koop['test-plugin'].should.be.instanceOf(Object)
+      koop['test-plugin'].testFunc.should.be.instanceOf(Function)
+      koop['test-plugin'].testFunc().should.equal(true)
+    })
+
+    it('should honor the legacy plugin_name property', function () {
+      koop.register(plugins.legacyPlugin)
+      koop.legacyPluginName.should.be.instanceOf(Object)
+      koop.legacyPluginName.testFunc.should.be.instanceOf(Function)
+      koop.legacyPluginName.testFunc().should.equal(true)
+    })
+
+    it('should use the pluginName property rather than the legacy plugin_name property', function () {
+      koop.register(plugins.namePrecedencePlugin)
+      koop.correctPluginName.should.be.instanceOf(Object)
+    })
+
+    it('should include plugin dependencies', function () {
+      koop.register(plugins.dependencyPlugin)
+      koop.dependencyPlugin.should.be.instanceOf(Object)
+      koop.dependencyPlugin.deps.should.be.instanceOf(Object)
+      koop.dependencyPlugin.deps.fakePlugin.should.be.instanceOf(Object)
+      koop.dependencyPlugin.deps.legacyPluginName.should.be.instanceOf(Object)
+      koop.dependencyPlugin.deps['test-plugin'].should.be.instanceOf(Object)
     })
   })
 })

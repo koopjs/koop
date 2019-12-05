@@ -137,7 +137,7 @@ Koop.prototype._registerProvider = function (provider, options = {}) {
   } else {
     controller = new Controller(model)
   }
-  const name = provider.name || provider.plugin_name
+  const name = provider.pluginName || provider.plugin_name || provider.name
   this.controllers[name] = controller
   provider.version = provider.version || '(version missing)'
 
@@ -237,7 +237,7 @@ function printPluginRoutes (providerName, pluginRouteMap) {
 }
 
 function bindPluginRoutes (provider, controller, server, pluginRoutes, options = {}) {
-  const name = provider.namespace || provider.plugin_name || provider.name
+  const name = provider.namespace || provider.pluginName || provider.plugin_name || provider.name
   const namespace = name.replace(/\s/g, '').toLowerCase()
   const pluginRouteMap = {}
 
@@ -296,7 +296,7 @@ function bindProviderRoutes (provider, controller, server, options = {}) {
 
   // Print provider routes to terminal
   if (process.env.NODE_ENV !== 'test') {
-    const name = provider.namespace || provider.plugin_name || provider.name
+    const name = provider.namespace || provider.pluginName || provider.plugin_name || provider.name
     printProviderRoutes(name, providerRoutes)
   }
 }
@@ -320,7 +320,7 @@ Koop.prototype._registerCache = function (Cache, options) {
  */
 Koop.prototype._registerFilesystem = function (Filesystem) {
   this.fs = new Filesystem()
-  this.log.info('registered filesystem:', Filesystem.plugin_name, Filesystem.version)
+  this.log.info('registered filesystem:', Filesystem.pluginName || Filesystem.plugin_name || Filesystem.name, Filesystem.version)
 }
 
 /**
@@ -331,10 +331,10 @@ Koop.prototype._registerFilesystem = function (Filesystem) {
  * @param {object} any koop plugin
  */
 Koop.prototype._registerPlugin = function (Plugin) {
-  const name = Plugin.name || Plugin.plugin_name
+  const name = Plugin.pluginName || Plugin.plugin_name || Plugin.name
   if (!name) throw new Error('Plugin is missing name')
   let dependencies
-  if (typeof Plugin.dependencies && Plugin.dependencies.length) {
+  if (Array.isArray(Plugin.dependencies) && Plugin.dependencies.length) {
     dependencies = Plugin.dependencies.reduce((deps, dep) => {
       deps[dep] = this[dep]
       return deps
