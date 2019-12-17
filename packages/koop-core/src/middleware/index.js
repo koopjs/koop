@@ -32,10 +32,17 @@ function paramParse (req, res, next) {
  * @param {function} next fire next middleware function
  */
 function paramCoerce (req, res, next) {
+  const falsyStrings = ['false', 'False']
+  const truthyStrings = ['true', 'True']
+
   Object.keys(req.query).forEach(param => {
-    if (req.query[param] === 'false') req.query[param] = false
-    else if (req.query[param] === 'true') req.query[param] = true
+    if (falsyStrings.includes(req.query[param])) {
+      req.query[param] = false
+    } else if (truthyStrings.includes(req.query[param])) {
+      req.query[param] = true
+    }
   })
+
   next()
 }
 

@@ -48,11 +48,9 @@ describe('Index tests for registering providers', function () {
         .get('/api/test/fake/1234')
         .then((res) => {
           res.should.have.property('error', false)
+          done()
         })
-        .catch(err => {
-          console.log(err)
-        })
-        .then(done)
+        .catch(done)
     })
 
     it('should not return 404 for prefixed plugin route', function (done) {
@@ -62,11 +60,9 @@ describe('Index tests for registering providers', function () {
         .get('/api/test/test-provider/foo/FeatureServer')
         .then((res) => {
           res.should.have.property('error', false)
+          done()
         })
-        .catch(err => {
-          console.log(err)
-        })
-        .then(done)
+        .catch(done)
     })
   })
 })

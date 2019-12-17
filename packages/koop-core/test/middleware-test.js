@@ -32,11 +32,20 @@ describe('Middleware tests', function () {
   })
 
   describe('paramCoerce function', function () {
-    it('should convert strings "true" or "false" to booleans', function () {
-      const req = { query: { param1: 'true', param2: 'false' } }
+    it('should convert boolean strings to booleans', function () {
+      const req = {
+        query: {
+          param1: 'true',
+          param2: 'false',
+          param3: 'True',
+          param4: 'False'
+        }
+      }
       middleware.paramCoerce(req, {}, function () {})
       req.query.param1.should.equal(true)
       req.query.param2.should.equal(false)
+      req.query.param3.should.equal(true)
+      req.query.param4.should.equal(false)
     })
   })
 })

@@ -1,13 +1,11 @@
 # Koop
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/koopjs/koop-core.svg)](https://greenkeeper.io/)
-
 > Transform, query, & download geospatial data on the web.
 
 [![npm version][npm-img]][npm-url]
 [![build status][travis-img]][travis-url]
 [![js-standard-style][standard-img]][standard-url]
-
+[![Greenkeeper badge](https://badges.greenkeeper.io/koopjs/koop-core.svg)](https://greenkeeper.io/)
 
 **Note: Koop 3.0 was just released and these docs are going to get an overhaul. For now please see [this deck](https://goo.gl/ERLzM1) **
 
