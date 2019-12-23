@@ -128,7 +128,7 @@ Koop.prototype._registerProvider = function (provider, options = {}) {
   }
 
   // Need a new copy of Model otherwise providers will step on each other
-  const model = this._initProviderModel(provider)
+  const model = this._initProviderModel(provider, options)
   // controller is optional
   let controller
   if (provider.Controller) {
@@ -154,16 +154,18 @@ Koop.prototype._registerProvider = function (provider, options = {}) {
   this.log.info('registered provider:', name, provider.version)
 }
 
-Koop.prototype._initProviderModel = function (provider) {
-  function ThisModel (options) {
-    this.cache = options.cache
-    ThisModel.super_.call(this, options)
+Koop.prototype._initProviderModel = function (provider, options) {
+  function ThisModel (koop) {
+    this.cache = koop.cache
+    ThisModel.super_.call(this, koop)
   }
 
   extend(ThisModel, Model)
   Util.inherits(ThisModel, provider.Model)
 
-  return new ThisModel(this)
+  const model = new ThisModel(this)
+  model.options = options
+  return model
 }
 
 /**
