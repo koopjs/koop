@@ -154,18 +154,19 @@ Koop.prototype._registerProvider = function (provider, options = {}) {
   this.log.info('registered provider:', name, provider.version)
 }
 
-Koop.prototype._initProviderModel = function (provider, options) {
+Koop.prototype._initProviderModel = function (provider, options = {}) {
   function ThisModel (koop) {
-    this.cache = koop.cache
-    ThisModel.super_.call(this, koop)
+    this.cache = options.cache || koop.cache
+
+    // Merging the koop object into options to preserve backward compatibility; consider removing in Koop 4.x
+    this.options = _.chain(options).omit(options, 'cache').assign(koop).value()
+    ThisModel.super_.call(this, options)
   }
 
   extend(ThisModel, Model)
   Util.inherits(ThisModel, provider.Model)
 
-  const model = new ThisModel(this)
-  model.options = options
-  return model
+  return new ThisModel(this)
 }
 
 /**

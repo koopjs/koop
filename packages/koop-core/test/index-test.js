@@ -27,10 +27,12 @@ describe('Index tests for registering providers', function () {
       providerPath.should.not.equal(undefined)
     })
 
-    it('should register successfully and attach options object to Model instance', function () {
+    it('should register successfully and attach cache and options object to Model instance', function () {
       const koop = new Koop()
       koop.register(provider, { name: 'value' })
-      koop.controllers['test-provider'].model.should.have.property('options', { name: 'value' })
+      koop.controllers['test-provider'].model.should.have.property('cache')
+      koop.controllers['test-provider'].model.should.have.property('options')
+      koop.controllers['test-provider'].model.options.should.have.property('name', 'value')
     })
 
     it('should register plugin-routes before provider-routes', function () {
