@@ -43,13 +43,13 @@ function serverLayerInfo (geojson = {}, id) {
   const metadata = geojson.metadata || {}
   const geometryType = metadata.geometryType || Utils.getGeomType(geojson)
   return {
-    id,
+    id: metadata.id !== undefined ? metadata.id : id,
     name: metadata.name || `Layer_${id}`,
     parentLayerId: -1,
-    defaultVisibility: true,
+    defaultVisibility: metadata.defaultVisibility !== false,
     subLayerIds: null,
-    minScale: 0,
-    maxScale: 0,
+    minScale: metadata.minScale !== undefined ? metadata.minScale : 0,
+    maxScale: metadata.maxScale !== undefined ? metadata.maxScale : 0,
     geometryType: geometryMap[geometryType] || geometryType
   }
 }

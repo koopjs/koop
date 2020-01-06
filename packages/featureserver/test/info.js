@@ -144,6 +144,42 @@ describe('Info operations', () => {
       server.layers[0].name.should.equal('test')
       server.layers[0].geometryType.should.equal('esriGeometryPoint')
     })
+
+    it('should support a metadata with layer id, defaultVisibility, minScale, and maxScale values', () => {
+      const layer0 = _.cloneDeep(data)
+      const layer1 = _.cloneDeep(data)
+      layer0.metadata = {
+        ...layer0.metadata,
+        id: 1,
+        defaultVisibility: false,
+        minScale: 100,
+        maxScale: 30000
+      }
+      layer1.metadata = {
+        ...layer1.metadata,
+        id: 3,
+        defaultVisibility: true,
+        minScale: 200,
+        maxScale: 20000
+      }
+      const input = {
+        hasStaticData: true,
+        maxRecordCount: 100,
+        description: 'test',
+        extent: [[11, 12], [13, 14]],
+        layers: [layer0, layer1]
+      }
+      const server = FeatureServer.serverInfo(input)
+      server.layers.length.should.equal(2)
+      server.layers[0].id.should.equal(1)
+      server.layers[0].defaultVisibility.should.equal(false)
+      server.layers[0].minScale.should.equal(100)
+      server.layers[0].maxScale.should.equal(30000)
+      server.layers[1].id.should.equal(3)
+      server.layers[1].defaultVisibility.should.equal(true)
+      server.layers[1].minScale.should.equal(200)
+      server.layers[1].maxScale.should.equal(20000)
+    })
   })
 
   describe('layers info', () => {
@@ -340,6 +376,22 @@ describe('Info operations', () => {
       }
       const layer = FeatureServer.layerInfo(input, {})
       layer.fields.find(f => { return f.name === 'test' }).length.should.equal(1000)
+    })
+
+    it('should support a metadata with layer id, defaultVisibility, minScale, and maxScale values', () => {
+      const input = _.cloneDeep(data)
+      input.metadata = {
+        ...input.metadata,
+        id: 3,
+        defaultVisibility: true,
+        minScale: 100,
+        maxScale: 30000
+      }
+      const layer = FeatureServer.layerInfo(input, {})
+      layer.id.should.equal(3)
+      layer.defaultVisibility.should.equal(true)
+      layer.minScale.should.equal(100)
+      layer.maxScale.should.equal(30000)
     })
   })
 

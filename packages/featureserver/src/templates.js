@@ -52,6 +52,10 @@ function renderLayer (data = {}, options = {}) {
   if (metadata.displayField) json.displayField = metadata.displayField
   if (metadata.timeInfo) json.timeInfo = metadata.timeInfo
   if (metadata.maxRecordCount) json.maxRecordCount = metadata.maxRecordCount || 2000
+  if (metadata.id !== undefined) json.id = metadata.id
+  if (metadata.defaultVisibility !== undefined) json.defaultVisibility = metadata.defaultVisibility
+  if (metadata.minScale !== undefined) json.minScale = metadata.minScale
+  if (metadata.maxScale !== undefined) json.maxScale = metadata.maxScale
   if (capabilities.quantization) json.supportsCoordinatesQuantization = true
   if (capabilities.extract) json.capabilities = `${json.capabilities},Extract`
   // Override the template value for hasStatic data if model metadata has this value set

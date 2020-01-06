@@ -66,6 +66,7 @@ e.g.
   features: Array, // GeoJSON features
   statistics: Object, // pass statistics to an outStatistics request to or else they will be calculated from geojson features passed in
   metadata: {
+    id: number, // The unique layer id.  If supplied for one layer, you should supply for all layers to avoid multiple layers having the same id.
     name: String, // The name of the layer
     description: String, // The description of the layer
     extent: Array, // valid extent array e.g. [[180,90],[-180,-90]]
@@ -74,9 +75,12 @@ e.g.
     idField: String, // unique identifier field,
     maxRecordCount: Number, // the maximum number of features a provider can return at once
     limitExceeded: Boolean, // whether or not the server has limited the features returned
-    timeInfo: Object // describes the time extent and capabilities of the layer,
-    transform: Object // describes a quantization transformation
-    renderer: Object // provider can over-ride default symbology of FeatureServer output with a renderer object. See https://developers.arcgis.com/web-map-specification/objects/simpleRenderer, for object specification.
+    timeInfo: Object, // describes the time extent and capabilities of the layer,
+    transform: Object, // describes a quantization transformation
+    renderer: Object, // provider can over-ride default symbology of FeatureServer output with a renderer object. See https://developers.arcgis.com/web-map-specification/objects/simpleRenderer, for object specification.
+    defaultVisibility: boolean, // The default visibility of this layer
+    minScale: number, // The minScale value for this layer
+    maxScale: number, // The maxScale value for this layer
     fields: [
      { // Subkeys are optional
        name: String,
@@ -164,16 +168,20 @@ const server = {
   layers: [{ // A collection of all the layers managed by the server
     type: 'FeatureCollection',
     metadata: {
+      id: number, // The unique layer id.  If supplied for one layer, you should supply for all layers to avoid multiple layers having the same id.
       name: String, // The name of the layer
-      description: String // The description of the layer
-      extent: Array // valid extent array e.g. [[180,90],[-180,-90]]
-      displayField: String // The display field to be used by a client
-      idField: String // unique identifier field,
-      geometryType: String // REQUIRED if no features are returned with this object Point || MultiPoint || LineString || MultiLineString || Polygon || MultiPolygon
-      maxRecordCount: Number // the maximum number of features a provider can return at once
+      description: String, // The description of the layer
+      extent: Array, // valid extent array e.g. [[180,90],[-180,-90]]
+      displayField: String, // The display field to be used by a client
+      idField: String, // unique identifier field,
+      geometryType: String, // REQUIRED if no features are returned with this object Point || MultiPoint || LineString || MultiLineString || Polygon || MultiPolygon
+      maxRecordCount: Number, // the maximum number of features a provider can return at once
       limitExceeded: Boolean, // whether or not the server has limited the features returned
-      timeInfo: Object // describes the time extent and capabilities of the layer
-      renderer: Object // provider can over-ride default symbology of FeatureServer output with a renderer object. See https://developers.arcgis.com/web-map-specification/objects/simpleRenderer, for object specification.
+      timeInfo: Object, // describes the time extent and capabilities of the layer
+      renderer: Object, // provider can over-ride default symbology of FeatureServer output with a renderer object. See https://developers.arcgis.com/web-map-specification/objects/simpleRenderer, for object specification.
+      defaultVisibility: boolean, // The default visibility of this layer
+      minScale: number, // The minScale value for this layer
+      maxScale: number // The maxScale value for this layer
     }
     features: [// If all the metadata provided above is provided features are optional.
       {
@@ -203,6 +211,7 @@ Note that the layer info is modified with properties `metadata` and `capabilites
 
 |GeoJSON property| Layer info result|
 |---|---|
+|`metadata.id`| overrides default|
 |`metadata.name`| overrides default|
 |`metadata.description`| overrides default |
 |`metadata.geometryType`| overrides value determined from data |
@@ -212,9 +221,12 @@ Note that the layer info is modified with properties `metadata` and `capabilites
 |`metadata.displayField`| overrides default (`OBJECTID`) |
 |`metadata.objectIdField`| overrides default  (`OBJECTID`) |
 |`metadata.hasStaticData`| overrides default (`false`) |
+|`metadata.renderer`| overrides default |
+|`metadata.defaultVisibility`| overrides default|
+|`metadata.minScale`| overrides default|
+|`metadta.maxScale`| overrides default|
 |`capabilities.extract`|  when set to `true`, `Extract` added to `capabilites` (e.g., `capabilities: "Query,Extract"`) |
 |`capabilities.quantization`| when set to `true`, `supportsCoordinatesQuantization: true`|
-|`metadata.renderer`| overrides default |
 ### FeatureServer.layers
 Generate version `10.51` Geoservices information about one or many layers
 
