@@ -15,7 +15,7 @@ describe('Index tests for registering providers', function () {
     })
   })
 
-  describe('can register a provider', function () {
+  describe('provider registration', function () {
     it('should register successfully', function () {
       const koop = new Koop()
       koop.register(provider)
@@ -27,15 +27,7 @@ describe('Index tests for registering providers', function () {
       providerPath.should.not.equal(undefined)
     })
 
-    it('should register successfully and attach cache and options object to Model instance', function () {
-      const koop = new Koop()
-      koop.register(provider, { name: 'value' })
-      koop.controllers['test-provider'].model.should.have.property('cache')
-      koop.controllers['test-provider'].model.should.have.property('options')
-      koop.controllers['test-provider'].model.options.should.have.property('name', 'value')
-    })
-
-    it('should register plugin-routes before provider-routes', function () {
+    it('should register provider-routes before plugin-routes', function () {
       const koop = new Koop()
       koop.register(provider)
       // Check that the stack index of the plugin routes are prior to index of provider routes
@@ -45,6 +37,66 @@ describe('Index tests for registering providers', function () {
       const pluginRouteIndex = routePaths.findIndex(path => path.includes('/test-provider/:id/FeatureServer'))
       const providerRouteIndex = routePaths.findIndex(path => path.includes('/fake/:id'))
       providerRouteIndex.should.be.below(pluginRouteIndex)
+    })
+
+    it('should register successfully and attach cache and options object to model', function () {
+      const koop = new Koop()
+      koop.register(provider, { name: 'value', routePrefix: 'path-to-route' })
+      koop.controllers['test-provider'].model.should.have.property('cache')
+      koop.controllers['test-provider'].model.should.have.property('options')
+      koop.controllers['test-provider'].model.options.should.have.property('routePrefix', 'path-to-route')
+      koop.controllers['test-provider'].model.options.should.have.property('name', 'value')
+    })
+
+    it('should register successfully and attach optional cache to model', function () {
+      const koop = new Koop()
+      koop.register(provider, {
+        cache: {
+          retrieve: (key, query, callback) => {},
+          upsert: (key, data, options) => {},
+          customFunction: () => {}
+        }
+      })
+      koop.controllers['test-provider'].model.should.have.property('cache')
+      koop.controllers['test-provider'].model.cache.should.have.property('customFunction').and.be.a.Function()
+    })
+
+    it('should reject cache option missing an upsert method', function () {
+      const koop = new Koop()
+      try {
+        koop.register(provider, {
+          cache: {
+            retrieve: (key, query, callback) => {}
+          }
+        })
+      } catch (err) {
+        err.should.have.property('message', 'provider options ValidationError: "cache.upsert" is required')
+      }
+    })
+
+    it('should reject cache option missing a retrieve method', function () {
+      const koop = new Koop()
+      try {
+        koop.register(provider, {
+          cache: {
+            upsert: (key, data, options) => {}
+          }
+        })
+      } catch (err) {
+        err.should.have.property('message', 'provider options ValidationError: "cache.retrieve" is required')
+      }
+    })
+
+    it('should reject routePrefix option that is not a string', function () {
+      const koop = new Koop()
+      try {
+        koop.register(provider, {
+          routePrefix: {}
+        })
+        should.fail('should have thrown error')
+      } catch (err) {
+        err.should.have.property('message', 'provider options ValidationError: "routePrefix" must be a string')
+      }
     })
   })
 

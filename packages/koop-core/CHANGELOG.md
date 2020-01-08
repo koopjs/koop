@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Added
 * Add options object to instantiated model
+* Add cache option validiation
 
 ## [3.16.0] - 2019-12-17
 ### Added

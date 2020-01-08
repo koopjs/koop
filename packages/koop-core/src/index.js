@@ -6,6 +6,7 @@ const cors = require('cors')
 const compression = require('compression')
 const pkg = require('../package.json')
 const _ = require('lodash')
+const Joi = require('@hapi/joi')
 const Cache = require('koop-cache-memory')
 const Logger = require('@koopjs/logger')
 const routes = require('./routes')
@@ -22,6 +23,14 @@ const geoservices = require('koop-output-geoservices')
 const LocalFS = require('koop-localfs')
 const chalk = require('chalk')
 const Table = require('easy-table')
+
+const providerOptionsSchema = Joi.object({
+  cache: Joi.object().keys({
+    retrieve: Joi.function().arity(3).required(),
+    upsert: Joi.function().arity(3).required()
+  }).unknown(true).optional(),
+  routePrefix: Joi.string().optional()
+}).unknown(true)
 
 function Koop (config) {
   this.version = pkg.version
@@ -120,6 +129,8 @@ Koop.prototype._registerAuth = function (auth) {
  * @param {object} provider - the provider to be registered
  */
 Koop.prototype._registerProvider = function (provider, options = {}) {
+  validateAgainstSchema(options, providerOptionsSchema, 'provider options')
+
   // If an authentication module has been registered, apply it to the provider's Model
   if (this._auth_module) {
     provider.Model.prototype.authenticationSpecification = Object.assign({}, this._auth_module.authenticationSpecification(provider.name), { provider: provider.name })
@@ -345,6 +356,11 @@ Koop.prototype._registerPlugin = function (Plugin) {
   }
   this[name] = new Plugin(dependencies)
   this.log.info('registered plugin:', name, Plugin.version)
+}
+
+function validateAgainstSchema (params, schema, prefix) {
+  const result = schema.validate(params)
+  if (result.error) throw new Error(`${prefix} ${result.error}`)
 }
 
 module.exports = Koop

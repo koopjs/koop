@@ -13,6 +13,7 @@
     "Nate Goldman <nate@ngoldman.me>"
   ],
   "dependencies": {
+    "@hapi/joi": "^16.1.8",
     "@koopjs/logger": "^2.0.2",
     "body-parser": "^1.16.0",
     "chalk": "^3.0.0",
@@ -32,6 +33,7 @@
     "gh-release": "^3.5.0",
     "mocha": "^6.0.0",
     "should": "^13.0.0",
+    "should-sinon": "0.0.6",
     "sinon": "^7.2.3",
     "standard": "^14.2.0",
     "supertest": "^4.0.0"
