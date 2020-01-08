@@ -17,7 +17,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@mapbox/geojsonhint": "^3.0.0",
-    "chalk": "^2.4.2",
+    "chalk": "^3.0.0",
     "chroma-js": "^2.0.0",
     "classybrew": "0.0.3",
     "esri-extent": "^1.1.1",
