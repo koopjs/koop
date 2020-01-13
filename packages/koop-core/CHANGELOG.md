@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 * Add options object to instantiated model
 * Add cache option validiation
+* Add `before` and `after` transformation functions to provider registration options
+* Add `name` to provider registration options and preferentially use as provider name in routes
 
 ## [3.16.0] - 2019-12-17
 ### Added

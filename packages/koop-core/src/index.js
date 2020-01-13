@@ -29,7 +29,10 @@ const providerOptionsSchema = Joi.object({
     retrieve: Joi.function().arity(3).required(),
     upsert: Joi.function().arity(3).required()
   }).unknown(true).optional(),
-  routePrefix: Joi.string().optional()
+  routePrefix: Joi.string().optional(),
+  before: Joi.function().arity(2).optional(),
+  after: Joi.function().arity(3).optional(),
+  name: Joi.string().optional()
 }).unknown(true)
 
 function Koop (config) {
@@ -148,7 +151,7 @@ Koop.prototype._registerProvider = function (provider, options = {}) {
   } else {
     controller = new Controller(model)
   }
-  const name = provider.pluginName || provider.plugin_name || provider.name
+  const name = options.name || provider.pluginName || provider.plugin_name || provider.name
   this.controllers[name] = controller
   provider.version = provider.version || '(version missing)'
 
@@ -168,9 +171,11 @@ Koop.prototype._registerProvider = function (provider, options = {}) {
 Koop.prototype._initProviderModel = function (provider, options = {}) {
   function ThisModel (koop) {
     this.cache = options.cache || koop.cache
+    this.before = options.before
+    this.after = options.after
 
     // Merging the koop object into options to preserve backward compatibility; consider removing in Koop 4.x
-    this.options = _.chain(options).omit(options, 'cache').assign(koop).value()
+    this.options = _.chain(options).omit(options, 'cache', 'before', 'after').assign(koop).value()
     ThisModel.super_.call(this, options)
   }
 

@@ -1,17 +1,28 @@
+const before = (req, next) => { next() }
+const after = (req, data, callback) => { callback(null, data) }
+
 function Model (options = {}) {
   this.cache = options.cache
 }
 
 Model.prototype.pull = function (req, callback) {
   const key = (this.createKey) ? this.createKey(req) : createKey(req)
+  this.before = this.before || before.bind(this)
+  this.after = this.after || after.bind(this)
   this.cache.retrieve(key, req.query, (err, cached) => {
     if (!err && isFresh(cached)) {
       callback(null, cached)
     } else {
-      this.getData(req, (err, data) => {
+      this.before(req, (err) => {
         if (err) return callback(err)
-        callback(null, data)
-        if (data.ttl) this.cache.upsert(key, data, { ttl: data.ttl })
+        this.getData(req, (err, data) => {
+          if (err) return callback(err)
+          this.after(req, data, (err, data) => {
+            if (err) return callback(err)
+            callback(null, data)
+            if (data.ttl) this.cache.upsert(key, data, { ttl: data.ttl })
+          })
+        })
       })
     }
   })

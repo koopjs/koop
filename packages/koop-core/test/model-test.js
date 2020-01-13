@@ -2,6 +2,8 @@
 const should = require('should') // eslint-disable-line
 const sinon = require('sinon')
 require('should-sinon')
+const _ = require('lodash')
+
 const Model = require('../src/models')
 
 // Mock getData function
@@ -85,6 +87,80 @@ describe('Tests for models/index', function () {
       pullSpy.firstCall.args.length.should.equal(2)
       should.not.exist(pullSpy.firstCall.args[0])
       pullSpy.firstCall.args[1].should.be.an.Object().and.be.empty()
+    })
+  })
+
+  describe('transformation functions', function () {
+    it('before function should modify request object', () => {
+      let beforeReq
+      const beforeSpy = sinon.spy(function (req, next) {
+        // capture args because the req gets mutated
+        beforeReq = _.cloneDeep(req)
+        req.query.hello = 'world'
+        next()
+      })
+      const getDataSpy = sinon.spy(function (req, callback) {
+        callback(null, { metadata: {} })
+      })
+
+      const model = new Model({
+        cache: { retrieve: (key, query, callback) => { callback(new Error('no cache')) } }
+      })
+      model.before = beforeSpy
+      model.getData = getDataSpy
+      model.pull({ url: 'domain/test-provider', params: {}, query: {} }, function (err, data) {})
+      beforeSpy.should.be.calledOnce()
+      beforeSpy.firstCall.args.length.should.equal(2)
+      beforeSpy.firstCall.args[0].should.be.an.Object()
+      beforeReq.should.deepEqual({ url: 'domain/test-provider', params: {}, query: {} })
+      beforeSpy.firstCall.args[1].should.be.a.Function()
+
+      getDataSpy.should.be.calledOnce()
+      getDataSpy.firstCall.args.length.should.equal(2)
+      getDataSpy.firstCall.args[0].should.be.an.Object().and.deepEqual({ url: 'domain/test-provider', params: {}, query: { hello: 'world' } })
+      getDataSpy.firstCall.args[1].should.be.a.Function()
+    })
+
+    it('after function should modify request and data object', () => {
+      let getDataArgs
+      let afterSpyArgs
+      const getDataSpy = sinon.spy(function (req, callback) {
+        // capture args because the req gets mutated
+        getDataArgs = _.cloneDeep(arguments)
+        callback(null, { metadata: {} })
+      })
+      const afterSpy = sinon.spy(function (req, data, callback) {
+        // capture args because the req and data get mutated
+        afterSpyArgs = _.cloneDeep(arguments)
+        req.query.hello = 'world'
+        data.metadata.food = 'bar'
+        callback(null, data)
+      })
+      const pullCallbackSpy = sinon.spy(function (err, data) {})
+      const model = new Model({
+        cache: { retrieve: (key, query, callback) => { callback(new Error('no cache')) } }
+      })
+      model.getData = getDataSpy
+      model.after = afterSpy
+      model.pull({ url: 'domain/test-provider', params: {}, query: {} }, pullCallbackSpy)
+
+      getDataSpy.should.be.calledOnce()
+      getDataSpy.firstCall.args.length.should.equal(2)
+      getDataArgs[0].should.deepEqual({ url: 'domain/test-provider', params: {}, query: {} })
+      getDataSpy.firstCall.args[1].should.be.an.Function()
+
+      afterSpy.should.be.calledOnce()
+      afterSpy.firstCall.args.length.should.equal(3)
+      afterSpy.firstCall.args[0].should.be.an.Object()
+      afterSpyArgs[0].should.deepEqual({ url: 'domain/test-provider', params: {}, query: { } })
+      afterSpy.firstCall.args[0].should.deepEqual({ url: 'domain/test-provider', params: {}, query: { hello: 'world' } }) // captures the expected change to the req argument in the after function
+      afterSpyArgs[1].should.deepEqual({ metadata: {} })
+      afterSpy.firstCall.args[2].should.be.an.Function()
+
+      pullCallbackSpy.should.be.calledOnce()
+      pullCallbackSpy.firstCall.args.length.should.equal(2)
+      should.not.exist(pullCallbackSpy.firstCall.args[0])
+      pullCallbackSpy.firstCall.args[1].should.be.an.Object().and.deepEqual({ metadata: { food: 'bar' } })
     })
   })
 })

@@ -3,6 +3,7 @@ const _ = require('lodash')
 const provider = require('./fixtures/fake-provider')
 const auth = require('./fixtures/fake-auth')()
 const Koop = require('../src/')
+const Controller = require('../src/controllers')
 const request = require('supertest')
 const should = require('should') // eslint-disable-line
 const plugins = require('./fixtures/fake-plugin')
@@ -19,6 +20,7 @@ describe('Index tests for registering providers', function () {
     it('should register successfully', function () {
       const koop = new Koop()
       koop.register(provider)
+      koop.controllers.should.have.property('test-provider').and.be.a.instanceOf(Controller)
       // Check that the stack includes routes with the provider name in the path
       const providerPath = koop.server._router.stack
         .filter((layer) => { return _.has(layer, 'route.path') })
@@ -41,11 +43,10 @@ describe('Index tests for registering providers', function () {
 
     it('should register successfully and attach cache and options object to model', function () {
       const koop = new Koop()
-      koop.register(provider, { name: 'value', routePrefix: 'path-to-route' })
+      koop.register(provider, { routePrefix: 'path-to-route' })
       koop.controllers['test-provider'].model.should.have.property('cache')
       koop.controllers['test-provider'].model.should.have.property('options')
       koop.controllers['test-provider'].model.options.should.have.property('routePrefix', 'path-to-route')
-      koop.controllers['test-provider'].model.options.should.have.property('name', 'value')
     })
 
     it('should register successfully and attach optional cache to model', function () {
@@ -97,6 +98,46 @@ describe('Index tests for registering providers', function () {
       } catch (err) {
         err.should.have.property('message', 'provider options ValidationError: "routePrefix" must be a string')
       }
+    })
+
+    it('should register successfully and attach optional "before" and "after" function to model', function () {
+      const koop = new Koop()
+      koop.register(provider, {
+        before: (req, next) => {},
+        after: (req, data, callback) => {}
+      })
+      koop.controllers['test-provider'].model.should.have.property('before').and.be.a.Function()
+      koop.controllers['test-provider'].model.should.have.property('after').and.be.a.Function()
+    })
+
+    it('should reject optional "before" function that does not have correct arity', function () {
+      const koop = new Koop()
+      try {
+        koop.register(provider, {
+          before: () => {}
+        })
+      } catch (err) {
+        err.should.have.property('message', 'provider options ValidationError: "before" must have an arity of 2')
+      }
+    })
+
+    it('should reject optional "after" function that does not have correct arity', function () {
+      const koop = new Koop()
+      try {
+        koop.register(provider, {
+          after: () => {}
+        })
+      } catch (err) {
+        err.should.have.property('message', 'provider options ValidationError: "after" must have an arity of 3')
+      }
+    })
+
+    it('should successfully use options "name" in route', function () {
+      const koop = new Koop()
+      koop.register(provider, {
+        name: 'options-name'
+      })
+      koop.controllers.should.have.property('options-name').and.be.a.instanceOf(Controller)
     })
   })
 
