@@ -1,7 +1,7 @@
 {
   "name": "koop",
   "description": "Transform, query, & download geospatial data on the web",
-  "version": "3.16.0",
+  "version": "3.17.0",
   "author": {
     "name": "Chris Helm"
   },
@@ -9,8 +9,8 @@
     "url": "https://github.com/koopjs/koop/issues"
   },
   "contributors": [
-    "Daniel Fenton <dfenton@esri.com>",
-    "Nate Goldman <nate@ngoldman.me>"
+    "Rich Gwozdz <rgwozdz@esri.com>",
+    "Haoliang Yu <hyu@esri.com>"
   ],
   "dependencies": {
     "@hapi/joi": "^16.1.8",
