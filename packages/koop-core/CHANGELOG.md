@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Provider name option gets used for plugin routes
+
 ## [3.17.0] - 2020-01-14
 ### Added
 * Add options object to instantiated model

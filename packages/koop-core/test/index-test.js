@@ -138,6 +138,13 @@ describe('Index tests for registering providers', function () {
         name: 'options-name'
       })
       koop.controllers.should.have.property('options-name').and.be.a.instanceOf(Controller)
+      koop.controllers.should.have.property('options-name').and.be.a.instanceOf(Controller)
+      // Check that the stack includes routes with the provider name in the path
+      const providerPath = koop.server._router.stack
+        .filter((layer) => { return _.has(layer, 'route.path') })
+        .map(layer => { return _.get(layer, 'route.path') })
+        .find(path => path.includes('options-name'))
+      providerPath.should.not.equal(undefined)
     })
   })
 

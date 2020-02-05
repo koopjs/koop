@@ -151,7 +151,7 @@ Koop.prototype._registerProvider = function (provider, options = {}) {
   } else {
     controller = new Controller(model)
   }
-  const name = options.name || provider.pluginName || provider.plugin_name || provider.name
+  const name = getProviderName(provider, options)
   this.controllers[name] = controller
   provider.version = provider.version || '(version missing)'
 
@@ -256,7 +256,7 @@ function printPluginRoutes (providerName, pluginRouteMap) {
 }
 
 function bindPluginRoutes (provider, controller, server, pluginRoutes, options = {}) {
-  const name = provider.namespace || provider.pluginName || provider.plugin_name || provider.name
+  const name = getProviderName(provider, options)
   const namespace = name.replace(/\s/g, '').toLowerCase()
   const pluginRouteMap = {}
 
@@ -366,6 +366,10 @@ Koop.prototype._registerPlugin = function (Plugin) {
 function validateAgainstSchema (params, schema, prefix) {
   const result = schema.validate(params)
   if (result.error) throw new Error(`${prefix} ${result.error}`)
+}
+
+function getProviderName (provider, options) {
+  return options.name || provider.namespace || provider.pluginName || provider.plugin_name || provider.name
 }
 
 module.exports = Koop
