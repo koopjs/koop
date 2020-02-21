@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Update dependencies
+* Update Travis CI config
+* Enhance development experience by using pre-commit linting
+
 ## [3.17.1] - 2020-02-05
 ### Fixed
 * Provider name option gets used for plugin routes
@@ -128,7 +134,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * missed `npm build` step
 
 ## [3.5.3] - 2018-03-23
-### Added 
+### Added
 * Trim leading/trailing whitespace on request's query params if of type string
 
 ### Fixed

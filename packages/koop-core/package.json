@@ -13,30 +13,32 @@
     "Haoliang Yu <hyu@esri.com>"
   ],
   "dependencies": {
-    "@hapi/joi": "^16.1.8",
-    "@koopjs/logger": "^2.0.2",
-    "body-parser": "^1.16.0",
+    "@hapi/joi": "^17.1.0",
+    "@koopjs/logger": "^2.0.4",
+    "body-parser": "^1.19.0",
     "chalk": "^3.0.0",
     "compression": "^1.7.4",
-    "config": "^3.0.0",
-    "cors": "^2.8.1",
+    "config": "^3.2.6",
+    "cors": "^2.8.5",
     "easy-table": "^1.1.1",
     "ejs": "^3.0.1",
-    "express": "^4.14.1",
-    "koop-cache-memory": "^1.0.2",
-    "koop-localfs": "^1.1.1",
+    "express": "^4.17.1",
+    "koop-cache-memory": "^1.1.0",
+    "koop-localfs": "^1.1.2",
     "koop-output-geoservices": "^2.0.0",
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "buble": "^0.19.0",
+    "buble": "^0.19.8",
     "gh-release": "^3.5.0",
-    "mocha": "^6.0.0",
-    "should": "^13.0.0",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.7",
+    "mocha": "^7.0.1",
+    "should": "^13.2.3",
     "should-sinon": "0.0.6",
-    "sinon": "^7.2.3",
-    "standard": "^14.2.0",
-    "supertest": "^4.0.0"
+    "sinon": "^9.0.0",
+    "standard": "^14.3.1",
+    "supertest": "^4.0.2"
   },
   "homepage": "https://github.com/koopjs/koop",
   "keywords": [
@@ -70,5 +72,13 @@
       "beforeEach",
       "afterEach"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "standard --fix"
   }
 }
