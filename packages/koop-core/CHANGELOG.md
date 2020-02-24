@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Update dependencies
 * Update Travis CI config
 * Enhance development experience by using pre-commit linting
+* Make route method definitions case insensitive, i.e., `get`, `GET` or `Get` all ok
 
 ## [3.17.1] - 2020-02-05
 ### Fixed

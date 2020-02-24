@@ -14,15 +14,13 @@ const Controller = require('./controllers')
 const Model = require('./models')
 const DatasetController = require('./controllers/dataset')
 const Dataset = require('./models/dataset')
-const helpers = require('./helpers')
+const { registerProviderRoutes, registerPluginRoutes, consolePrinting } = require('./helpers')
 const middleware = require('./middleware')
 const Events = require('events')
 const Util = require('util')
 const path = require('path')
 const geoservices = require('koop-output-geoservices')
 const LocalFS = require('koop-localfs')
-const chalk = require('chalk')
-const Table = require('easy-table')
 
 const providerOptionsSchema = Joi.object({
   cache: Joi.object().keys({
@@ -51,7 +49,14 @@ function Koop (config) {
 
   const dataset = new Dataset(this)
   const datasetController = new DatasetController(dataset)
-  bindRoutes({ name: 'datasets', routes }, datasetController, this.server, this.pluginRoutes)
+  const datasetProvider = { namespace: 'datasets', routes }
+  const datasetRoutes = registerRoutes({
+    provider: datasetProvider,
+    controller: datasetController,
+    server: this.server,
+    pluginRoutes: this.pluginRoutes
+  })
+  consolePrinting('datasets', datasetRoutes)
 
   this.status = {
     version: this.version,
@@ -151,21 +156,26 @@ Koop.prototype._registerProvider = function (provider, options = {}) {
   } else {
     controller = new Controller(model)
   }
-  const name = getProviderName(provider, options)
-  this.controllers[name] = controller
+  provider.namespace = getProviderName(provider, options)
+  this.controllers[provider.namespace] = controller
   provider.version = provider.version || '(version missing)'
 
   // if a provider has a status object store it
   // TODO: deprecate & serve more meaningful status reports dynamically.
   if (provider.status) {
-    this.status.providers[name] = provider.status
+    this.status.providers[provider.namespace] = provider.status
     provider.version = provider.status.version
   }
 
-  // add each route, the routes let us override defaults etc.
-  bindRoutes(provider, controller, this.server, this.pluginRoutes, options)
+  const registeredRoutes = registerRoutes({
+    provider,
+    controller,
+    server: this.server,
+    pluginRoutes: this.pluginRoutes
+  }, options)
+  consolePrinting(provider.namespace, registeredRoutes)
 
-  this.log.info('registered provider:', name, provider.version)
+  this.log.info('registered provider:', provider.namespace, provider.version)
 }
 
 Koop.prototype._initProviderModel = function (provider, options = {}) {
@@ -215,109 +225,12 @@ function extend (klass, extender) {
  * @param {object} controller - the initiated provider's controller
  * @param {object} server - the koop express server
  */
-function bindRoutes (provider, controller, server, pluginRoutes, options) {
+function registerRoutes ({ provider, controller, server, pluginRoutes }, options) {
   // Provider-routes are bound first; any routing conflicts will result in requests routed to provider
-  bindProviderRoutes(provider, controller, server, options)
-  bindPluginRoutes(provider, controller, server, pluginRoutes, options)
-}
+  const providerRouteMap = registerProviderRoutes({ provider, controller, server }, options)
+  const pluginRouteMap = registerPluginRoutes({ provider, controller, server, pluginRoutes }, options)
 
-/**
- * Print provider routes to terminal
- * @param {string} providerName
- * @param {object[]} providerRoutes
- */
-function printProviderRoutes (providerName, providerRoutes) {
-  // Print provider routes
-  const table = new Table()
-  Object.keys(providerRoutes).forEach((key) => {
-    table.cell(chalk.cyan(`"${providerName}" provider routes`), chalk.yellow(key))
-    table.cell(chalk.cyan('Methods'), chalk.green(providerRoutes[key].join(', ').toUpperCase()))
-    table.newRow()
-  })
-  console.log(`\n${table.toString()}`)
-}
-
-/**
- * Print provider plugin routes to terminal
- * @param {string} providerName
- * @param {object} pluginRouteMap
- */
-function printPluginRoutes (providerName, pluginRouteMap) {
-  // Print output plugin routes
-  Object.keys(pluginRouteMap).forEach(key => {
-    const table = new Table()
-    Object.keys(pluginRouteMap[key]).forEach(routeKey => {
-      table.cell(chalk.cyan(`"${key}" output routes for the "${providerName}" provider`), chalk.yellow(routeKey))
-      table.cell(chalk.cyan('Methods'), chalk.green(pluginRouteMap[key][routeKey].join(', ').toUpperCase()))
-      table.newRow()
-    })
-    console.log(`\n${table.toString()}`)
-  })
-}
-
-function bindPluginRoutes (provider, controller, server, pluginRoutes, options = {}) {
-  const name = getProviderName(provider, options)
-  const namespace = name.replace(/\s/g, '').toLowerCase()
-  const pluginRouteMap = {}
-
-  pluginRoutes.forEach(route => {
-    // Compose the full route string from its components
-    const fullRoute = helpers.composeRouteString(route.path, namespace, {
-      hosts: provider.hosts,
-      disableIdParam: provider.disableIdParam,
-      absolutePath: route.absolutePath,
-      routePrefix: options.routePrefix
-    })
-
-    // For each output plugin, keep track of routes, methods
-    pluginRouteMap[route.output] = pluginRouteMap[route.output] || {}
-    pluginRouteMap[route.output][fullRoute] = pluginRouteMap[route.output][fullRoute] || []
-
-    // Bind the controller to each route
-    route.methods.forEach(method => {
-      try {
-        server[method](fullRoute, controller[route.handler].bind(controller))
-        // Add method to this route's method array
-        pluginRouteMap[route.output][fullRoute].push(method)
-      } catch (e) {
-        console.error(`error=controller does not contain specified method method=${method.toUpperCase()} path=${fullRoute} handler=${route.handler}`)
-        process.exit(1)
-      }
-    })
-  })
-  // Print plugin routes to console
-  if (process.env.NODE_ENV !== 'test') printPluginRoutes(name, pluginRouteMap)
-}
-
-function bindProviderRoutes (provider, controller, server, options = {}) {
-  const { routePrefix = '' } = options
-  const { routes = [] } = provider
-  const providerRoutes = {}
-
-  routes.forEach(route => {
-    const routePath = path.posix.join(routePrefix, route.path)
-
-    // Keep track of routes, methods
-    providerRoutes[routePath] = providerRoutes[routePath] || []
-
-    route.methods.forEach(method => {
-      try {
-        server[method](routePath, controller[route.handler].bind(controller))
-        // Add method to this route's method array
-        providerRoutes[routePath].push(method)
-      } catch (e) {
-        console.log(e)
-        console.error(`error=controller does not contain specified method method=${method.toUpperCase()} path=${routePath} handler=${route.handler}`)
-        process.exit(1)
-      }
-    })
-  })
-
-  // Print provider routes to terminal
-  if (process.env.NODE_ENV !== 'test') {
-    const name = provider.namespace || provider.pluginName || provider.plugin_name || provider.name
-    printProviderRoutes(name, providerRoutes)
-  }
+  return { providerRouteMap, pluginRouteMap }
 }
 
 /**

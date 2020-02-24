@@ -19,7 +19,7 @@ describe('Index tests for registering providers', function () {
   describe('provider registration', function () {
     it('should register successfully', function () {
       const koop = new Koop()
-      koop.register(provider)
+      koop.register(_.cloneDeep(provider))
       koop.controllers.should.have.property('test-provider').and.be.a.instanceOf(Controller)
       // Check that the stack includes routes with the provider name in the path
       const providerPath = koop.server._router.stack
@@ -31,7 +31,7 @@ describe('Index tests for registering providers', function () {
 
     it('should register provider-routes before plugin-routes', function () {
       const koop = new Koop()
-      koop.register(provider)
+      koop.register(_.cloneDeep(provider))
       // Check that the stack index of the plugin routes are prior to index of provider routes
       const routePaths = koop.server._router.stack
         .filter((layer) => { return _.has(layer, 'route.path') })
@@ -43,7 +43,7 @@ describe('Index tests for registering providers', function () {
 
     it('should register successfully and attach cache and options object to model', function () {
       const koop = new Koop()
-      koop.register(provider, { routePrefix: 'path-to-route' })
+      koop.register(_.cloneDeep(provider), { routePrefix: 'path-to-route' })
       koop.controllers['test-provider'].model.should.have.property('cache')
       koop.controllers['test-provider'].model.should.have.property('options')
       koop.controllers['test-provider'].model.options.should.have.property('routePrefix', 'path-to-route')
@@ -51,7 +51,7 @@ describe('Index tests for registering providers', function () {
 
     it('should register successfully and attach optional cache to model', function () {
       const koop = new Koop()
-      koop.register(provider, {
+      koop.register(_.cloneDeep(provider), {
         cache: {
           retrieve: (key, query, callback) => {},
           upsert: (key, data, options) => {},
@@ -65,7 +65,7 @@ describe('Index tests for registering providers', function () {
     it('should reject cache option missing an upsert method', function () {
       const koop = new Koop()
       try {
-        koop.register(provider, {
+        koop.register(_.cloneDeep(provider), {
           cache: {
             retrieve: (key, query, callback) => {}
           }
@@ -78,7 +78,7 @@ describe('Index tests for registering providers', function () {
     it('should reject cache option missing a retrieve method', function () {
       const koop = new Koop()
       try {
-        koop.register(provider, {
+        koop.register(_.cloneDeep(provider), {
           cache: {
             upsert: (key, data, options) => {}
           }
@@ -91,7 +91,7 @@ describe('Index tests for registering providers', function () {
     it('should reject routePrefix option that is not a string', function () {
       const koop = new Koop()
       try {
-        koop.register(provider, {
+        koop.register(_.cloneDeep(provider), {
           routePrefix: {}
         })
         should.fail('should have thrown error')
@@ -102,7 +102,7 @@ describe('Index tests for registering providers', function () {
 
     it('should register successfully and attach optional "before" and "after" function to model', function () {
       const koop = new Koop()
-      koop.register(provider, {
+      koop.register(_.cloneDeep(provider), {
         before: (req, next) => {},
         after: (req, data, callback) => {}
       })
@@ -113,7 +113,7 @@ describe('Index tests for registering providers', function () {
     it('should reject optional "before" function that does not have correct arity', function () {
       const koop = new Koop()
       try {
-        koop.register(provider, {
+        koop.register(_.cloneDeep(provider), {
           before: () => {}
         })
       } catch (err) {
@@ -124,7 +124,7 @@ describe('Index tests for registering providers', function () {
     it('should reject optional "after" function that does not have correct arity', function () {
       const koop = new Koop()
       try {
-        koop.register(provider, {
+        koop.register(_.cloneDeep(provider), {
           after: () => {}
         })
       } catch (err) {
@@ -134,7 +134,7 @@ describe('Index tests for registering providers', function () {
 
     it('should successfully use options "name" in route', function () {
       const koop = new Koop()
-      koop.register(provider, {
+      koop.register(_.cloneDeep(provider), {
         name: 'options-name'
       })
       koop.controllers.should.have.property('options-name').and.be.a.instanceOf(Controller)
@@ -151,26 +151,30 @@ describe('Index tests for registering providers', function () {
   describe('can register a provider and apply a route prefix to all routes', function () {
     it('should not return 404 for prefixed custom route', function (done) {
       const koop = new Koop()
-      koop.register(provider, { routePrefix: '/api/test' })
+      koop.register(_.cloneDeep(provider), { routePrefix: '/api/test' })
       request(koop.server)
         .get('/api/test/fake/1234')
         .then((res) => {
           res.should.have.property('error', false)
           done()
         })
-        .catch(done)
+        .catch(err => {
+          (err === undefined).should.equal(true)
+        })
     })
 
     it('should not return 404 for prefixed plugin route', function (done) {
       const koop = new Koop()
-      koop.register(provider, { routePrefix: '/api/test' })
+      koop.register(_.cloneDeep(provider), { routePrefix: '/api/test' })
       request(koop.server)
         .get('/api/test/test-provider/foo/FeatureServer')
         .then((res) => {
           res.should.have.property('error', false)
           done()
         })
-        .catch(done)
+        .catch(err => {
+          (err === undefined).should.equal(true)
+        })
     })
   })
 })
@@ -191,7 +195,7 @@ describe('Tests for registering auth plugin', function () {
     it('should register successfully', function () {
       const koop = new Koop()
       koop.register(auth)
-      koop.register(provider)
+      koop.register(_.cloneDeep(provider))
       provider.Model.prototype.should.have.property('authenticationSpecification')
       provider.Model.prototype.should.have.property('authenticate')
       provider.Model.prototype.should.have.property('authorize')
