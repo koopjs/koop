@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Added
+* New functions to support fetching metadata for data catalog and layer
 ### Changed
 * Update dependencies
 * Update Travis CI config
