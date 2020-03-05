@@ -9,12 +9,17 @@ const _ = require('lodash')
 const Joi = require('@hapi/joi')
 const Cache = require('koop-cache-memory')
 const Logger = require('@koopjs/logger')
-const routes = require('./routes')
+const datasetRoutes = require('./routes-datasets')
 const Controller = require('./controllers')
 const Model = require('./models')
 const DatasetController = require('./controllers/dataset')
-const Dataset = require('./models/dataset')
-const { registerProviderRoutes, registerPluginRoutes, consolePrinting } = require('./helpers')
+const {
+  registerDatasetProvider,
+  registerProviderRoutes,
+  registerPluginRoutes,
+  consolePrinting,
+  bindAuthMethods
+} = require('./helpers')
 const middleware = require('./middleware')
 const Events = require('events')
 const Util = require('util')
@@ -46,18 +51,6 @@ function Koop (config) {
   this.register(geoservices)
   this.register(LocalFS)
   this.controllers = {}
-
-  const dataset = new Dataset(this)
-  const datasetController = new DatasetController(dataset)
-  const datasetProvider = { namespace: 'datasets', routes }
-  const datasetRoutes = registerRoutes({
-    provider: datasetProvider,
-    controller: datasetController,
-    server: this.server,
-    pluginRoutes: this.pluginRoutes
-  })
-  consolePrinting('datasets', datasetRoutes)
-
   this.status = {
     version: this.version,
     providers: {}
@@ -68,6 +61,8 @@ function Koop (config) {
       this.log.info(`Koop ${this.version} mounted at ${this.server.mountpath}`)
     })
     .get('/status', (req, res) => res.json(this.status))
+
+  registerDatasetProvider({ koop: this, routes: datasetRoutes })
 }
 
 Util.inherits(Koop, Events)
@@ -140,11 +135,7 @@ Koop.prototype._registerProvider = function (provider, options = {}) {
   validateAgainstSchema(options, providerOptionsSchema, 'provider options')
 
   // If an authentication module has been registered, apply it to the provider's Model
-  if (this._auth_module) {
-    provider.Model.prototype.authenticationSpecification = Object.assign({}, this._auth_module.authenticationSpecification(provider.name), { provider: provider.name })
-    provider.Model.prototype.authenticate = this._auth_module.authenticate
-    provider.Model.prototype.authorize = this._auth_module.authorize
-  }
+  if (this._auth_module) bindAuthMethods({ provider, auth: this._auth_module })
 
   // Need a new copy of Model otherwise providers will step on each other
   const model = this._initProviderModel(provider, options)
