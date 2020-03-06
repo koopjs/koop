@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.16.12] - 03-06-2020
 ### Fixed
 * Fix returning null dates instead of 0.
 
@@ -325,6 +325,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[1.16.12]: https://github.com/featureserver/winnow/compare/v1.16.11...v1.16.12
 [1.16.11]: https://github.com/featureserver/winnow/compare/v1.16.10...v1.16.11
 [1.16.10]: https://github.com/featureserver/winnow/compare/v1.16.9...v1.16.10
 [1.16.9]: https://github.com/featureserver/winnow/compare/v1.16.8...v1.16.9
