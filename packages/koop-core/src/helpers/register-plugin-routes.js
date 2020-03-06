@@ -6,7 +6,7 @@ function registerProviderRoutes ({ provider, controller, server, pluginRoutes },
   const namespace = provider.namespace.replace(/\s/g, '').toLowerCase()
   const { hosts, disableIdParam } = provider
   const { routePrefix } = options
-  const pluginRouteMap = {}
+  const routeMap = {}
 
   pluginRoutes.forEach(route => {
     const { path, methods, absolutePath, output } = route
@@ -27,10 +27,10 @@ function registerProviderRoutes ({ provider, controller, server, pluginRoutes },
     })
 
     // For each output plugin, keep track of routes, methods
-    _.set(pluginRouteMap, `${output}.${routeString}`, methods)
+    addMethodsToRouteMap(routeMap, `${output}.${routeString}`, methods)
   })
 
-  return pluginRouteMap
+  return routeMap
 }
 
 function bindController (params) {
@@ -51,6 +51,11 @@ function registerRoutes (params) {
   methods.forEach(method => {
     server[method.toLowerCase()](routeString, controller)
   })
+}
+
+function addMethodsToRouteMap (map, path, methods) {
+  const existingMethods = _.get(map, path, [])
+  _.set(map, path, _.concat(existingMethods, methods))
 }
 
 module.exports = registerProviderRoutes

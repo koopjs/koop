@@ -4,13 +4,15 @@ require('should-sinon')
 const registerProviderRoutes = require('../../src/helpers/register-provider-routes')
 
 const mockController = {
-  testHandler: () => {}
+  testHandler: () => {},
+  testHandler2: () => {}
 }
 
 describe('Tests for register-provider-routes, lowercased', function () {
   it('should register a provider route', () => {
     const mockServer = sinon.spy({
-      get: () => {}
+      get: () => {},
+      post: () => {}
     })
 
     const mockProvider = {
@@ -21,6 +23,11 @@ describe('Tests for register-provider-routes, lowercased', function () {
         path: '/test/route',
         methods: ['get'],
         handler: 'testHandler'
+      },
+      {
+        path: '/test/route',
+        methods: ['post'],
+        handler: 'testHandler2'
       }]
     }
     const providerRouteMap = registerProviderRoutes({
@@ -30,7 +37,7 @@ describe('Tests for register-provider-routes, lowercased', function () {
     })
 
     mockServer.get.should.be.calledOnce()
-    providerRouteMap.should.deepEqual({ '/test/route': ['get'] })
+    providerRouteMap.should.deepEqual({ '/test/route': ['get', 'post'] })
   })
 
   it('should register a provider route, uppercased', () => {

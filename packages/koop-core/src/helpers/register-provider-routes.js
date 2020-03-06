@@ -1,28 +1,30 @@
 const path = require('path')
+const _ = require('lodash')
 const validateHttpMethods = require('./validate-http-methods')
 
 const composePath = (routePrefix, routeString) => path.posix.join(routePrefix, routeString)
+
 function registerProviderRoutes ({ provider, controller, server }, options = {}) {
   const { routePrefix = '' } = options
   const { routes = [], namespace } = provider
-  const providerRoutes = {}
+  const routeMap = {}
 
   routes.forEach(route => {
     const { path, methods } = route
     validateHttpMethods(methods)
 
-    const composedPath = composePath(routePrefix, path)
+    const routePath = composePath(routePrefix, path)
 
     registerRoutes({
       server,
-      path: composedPath,
+      path: routePath,
       methods,
       controller: bindController({ controller, route, namespace })
     })
-    providerRoutes[composedPath] = methods
+    addMethodsToRouteMap(routeMap, routePath, methods)
   })
 
-  return providerRoutes
+  return routeMap
 }
 
 function bindController (params) {
@@ -43,6 +45,11 @@ function registerRoutes (params) {
   methods.forEach(method => {
     server[method.toLowerCase()](path, controller)
   })
+}
+
+function addMethodsToRouteMap (map, path, methods) {
+  const existingMethods = _.get(map, path, [])
+  _.set(map, path, _.concat(existingMethods, methods))
 }
 
 module.exports = registerProviderRoutes
