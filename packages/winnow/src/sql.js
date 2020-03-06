@@ -128,7 +128,8 @@ function esriFy (properties, geometry, dateFields, requiresObjectId, idField) {
   const parsedDateFields = (dateFields.length === 0) ? [] : dateFields.split(',')
   if (parsedDateFields.length) {
     parsedDateFields.forEach(field => {
-      properties[field] = new Date(properties[field]).getTime()
+      const value = properties[field]
+      properties[field] = value === null ? null : new Date(value).getTime()
     })
   }
 

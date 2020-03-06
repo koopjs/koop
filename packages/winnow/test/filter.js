@@ -531,6 +531,26 @@ test('with a OBJECTID query on data that requires dynamic OBJECTID generation', 
   run('snow', options, 1, t)
 })
 
+test('with null dates in data source', t => {
+  // Ensure null dates are returned as null, not as 0
+  // Bug only occurs when:
+  // * 'toEsri' option enabled
+  // * the geojson is passed to winnow.query with the metadata.fields populated
+  const options = {
+    where: "Date1 >= '2020-01-05 00:00:00' AND Date1 <= '2020-02-08 23:59:59'",
+    toEsri: true
+  }
+  t.plan(4)
+  const fixtures = _.cloneDeep(require('./fixtures/dates.json'))
+  const filtered = winnow.query(fixtures, options)
+
+  t.equal(filtered.features.length, 1)
+  const feature = filtered.features[0]
+  t.equal(feature.attributes.Date4, null)
+  t.equal(feature.attributes.Date5, null)
+  t.equal(feature.attributes.Date6, null)
+})
+
 function run (data, options, expected, t) {
   t.plan(1)
   const fixtures = _.cloneDeep(require(`./fixtures/${data}.json`))

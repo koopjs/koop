@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Fix returning null dates instead of 0.
+
 ## [1.16.11] - 11-05-2019
 ### Changed
 * Version bump
