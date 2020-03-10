@@ -1,13 +1,5 @@
-const Util = require('util')
-const Model = require('./')
-
-function Dataset (options) {
-  Dataset.super_.call(this, options)
+function Dataset () {
 }
-
-Util.inherits(Dataset, Model)
-
-// Data Operations
 
 Dataset.prototype.getFromCache = function (key, options, callback) {
   this.cache.retrieve(key, options, callback)

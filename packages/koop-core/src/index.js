@@ -11,7 +11,7 @@ const Cache = require('koop-cache-memory')
 const Logger = require('@koopjs/logger')
 const datasetRoutes = require('./routes-datasets')
 const Controller = require('./controllers')
-const Model = require('./models')
+const ExtendedModel = require('./models/extended-model')
 const DatasetController = require('./controllers/dataset')
 const {
   registerDatasetProvider,
@@ -134,11 +134,15 @@ Koop.prototype._registerAuth = function (auth) {
 Koop.prototype._registerProvider = function (provider, options = {}) {
   validateAgainstSchema(options, providerOptionsSchema, 'provider options')
 
+  provider.namespace = getProviderName(provider, options)
+  provider.version = provider.version || '(version missing)'
+
   // If an authentication module has been registered, apply it to the provider's Model
   if (this._auth_module) bindAuthMethods({ provider, auth: this._auth_module })
 
   // Need a new copy of Model otherwise providers will step on each other
-  const model = this._initProviderModel(provider, options)
+  const model = new ExtendedModel({ ProviderModel: provider.Model, koop: this }, options)
+
   // controller is optional
   let controller
   if (provider.Controller) {
@@ -147,9 +151,8 @@ Koop.prototype._registerProvider = function (provider, options = {}) {
   } else {
     controller = new Controller(model)
   }
-  provider.namespace = getProviderName(provider, options)
+
   this.controllers[provider.namespace] = controller
-  provider.version = provider.version || '(version missing)'
 
   // if a provider has a status object store it
   // TODO: deprecate & serve more meaningful status reports dynamically.
@@ -167,23 +170,6 @@ Koop.prototype._registerProvider = function (provider, options = {}) {
   consolePrinting(provider.namespace, registeredRoutes)
 
   this.log.info('registered provider:', provider.namespace, provider.version)
-}
-
-Koop.prototype._initProviderModel = function (provider, options = {}) {
-  function ThisModel (koop) {
-    this.cache = options.cache || koop.cache
-    this.before = options.before
-    this.after = options.after
-
-    // Merging the koop object into options to preserve backward compatibility; consider removing in Koop 4.x
-    this.options = _.chain(options).omit(options, 'cache', 'before', 'after').assign(koop).value()
-    ThisModel.super_.call(this, options)
-  }
-
-  extend(ThisModel, Model)
-  Util.inherits(ThisModel, provider.Model)
-
-  return new ThisModel(this)
 }
 
 /**

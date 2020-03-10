@@ -3,13 +3,9 @@ const should = require('should') // eslint-disable-line
 const sinon = require('sinon')
 require('should-sinon')
 const _ = require('lodash')
-
-const Model = require('../src/models')
-
-// Mock getData function
-Model.prototype.getData = function (req, callback) {
-  callback(null, { hello: 'world' })
-}
+const providerMock = require('./fixtures/fake-provider')
+const ExtendedModel = require('../src/models/extended-model')
+const koopMock = { test: 'value' }
 
 describe('Tests for models/index', function () {
   describe('createKey', function () {
@@ -20,7 +16,7 @@ describe('Tests for models/index', function () {
       const pullSpy = sinon.spy()
 
       // create a model with mocked cache "retrieve" function
-      const model = new Model({
+      const model = new ExtendedModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy
         }
@@ -46,7 +42,7 @@ describe('Tests for models/index', function () {
       const pullSpy = sinon.spy()
 
       // create a model with mocked cache "retrieve" function
-      const model = new Model({
+      const model = new ExtendedModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy
         }
@@ -71,7 +67,7 @@ describe('Tests for models/index', function () {
       const pullSpy = sinon.spy()
 
       // create a model with mocked cache "retrieve" function
-      const model = new Model({
+      const model = new ExtendedModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy
         }
@@ -103,7 +99,7 @@ describe('Tests for models/index', function () {
         callback(null, { metadata: {} })
       })
 
-      const model = new Model({
+      const model = new ExtendedModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: { retrieve: (key, query, callback) => { callback(new Error('no cache')) } }
       })
       model.before = beforeSpy
@@ -137,7 +133,7 @@ describe('Tests for models/index', function () {
         callback(null, data)
       })
       const pullCallbackSpy = sinon.spy(function (err, data) {})
-      const model = new Model({
+      const model = new ExtendedModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: { retrieve: (key, query, callback) => { callback(new Error('no cache')) } }
       })
       model.getData = getDataSpy
@@ -167,7 +163,7 @@ describe('Tests for models/index', function () {
   describe('fetch layer metadata', function () {
     afterEach(function () {
       // reset the getLayer() function to default
-      Model.prototype.getLayer = undefined
+      ExtendedModel.prototype.getLayer = undefined
     })
 
     it('should throw an error if the getLayer() function is not implemented', function () {
@@ -177,7 +173,7 @@ describe('Tests for models/index', function () {
       const callbackSpy = sinon.spy()
 
       // create a model with mocked cache "retrieve" function
-      const model = new Model({
+      const model = new ExtendedModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy
         }
@@ -200,10 +196,10 @@ describe('Tests for models/index', function () {
       })
       const callbackSpy = sinon.spy()
 
-      Model.prototype.getLayer = getLayerSpy
+      ExtendedModel.prototype.getLayer = getLayerSpy
 
       // create a model with mocked cache "retrieve" function
-      const model = new Model({
+      const model = new ExtendedModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy
         }
@@ -223,7 +219,7 @@ describe('Tests for models/index', function () {
       callbackSpy.firstCall.args[1].should.be.an.Object()
     })
 
-    it('should call the getLayer() function is cache misses', function () {
+    it('should call the getLayer() function if cache misses', function () {
       const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
         callback(new Error('not found'))
       })
@@ -232,14 +228,14 @@ describe('Tests for models/index', function () {
       })
       const callbackSpy = sinon.spy()
 
-      Model.prototype.getLayer = getLayerSpy
-
       // create a model with mocked cache "retrieve" function
-      const model = new Model({
+      const model = new ExtendedModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy
         }
       })
+
+      model.getLayer = getLayerSpy
 
       model.pullLayer({ url: 'domain/test-provider', params: {}, query: {} }, callbackSpy)
 
@@ -255,7 +251,7 @@ describe('Tests for models/index', function () {
   describe('fetch catalog metadata', function () {
     afterEach(function () {
       // reset the getCatalog() function to default
-      Model.prototype.getCatalog = undefined
+      ExtendedModel.prototype.getCatalog = undefined
     })
 
     it('should throw an error if the getCatalog() function is not implemented', function () {
@@ -265,7 +261,7 @@ describe('Tests for models/index', function () {
       const callbackSpy = sinon.spy()
 
       // create a model with mocked cache "retrieve" function
-      const model = new Model({
+      const model = new ExtendedModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy
         }
@@ -288,14 +284,14 @@ describe('Tests for models/index', function () {
       })
       const callbackSpy = sinon.spy()
 
-      Model.prototype.getCatalog = getCatalogSpy
-
       // create a model with mocked cache "retrieve" function
-      const model = new Model({
+      const model = new ExtendedModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy
         }
       })
+
+      model.getCatalog = getCatalogSpy
 
       model.pullCatalog({ url: 'domain/test-provider', params: {}, query: {} }, callbackSpy)
 
@@ -320,14 +316,14 @@ describe('Tests for models/index', function () {
       })
       const callbackSpy = sinon.spy()
 
-      Model.prototype.getCatalog = getCatalogSpy
-
       // create a model with mocked cache "retrieve" function
-      const model = new Model({
+      const model = new ExtendedModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy
         }
       })
+
+      model.getCatalog = getCatalogSpy
 
       model.pullCatalog({ url: 'domain/test-provider', params: {}, query: {} }, callbackSpy)
 
