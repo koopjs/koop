@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.17.2] - 2020-03-26
 ### Added
 * New functions to support fetching metadata for data catalog and layer
 ### Changed
@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Update Travis CI config
 * Enhance development experience by using pre-commit linting
 * Make route method definitions case insensitive, i.e., `get`, `GET` or `Get` all ok
+* Refactored model extension
 
 ## [3.17.1] - 2020-02-05
 ### Fixed
@@ -890,7 +891,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop is now a module, installable via `npm install`
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
-
+[3.17.2]: https://github.com/koopjs/koop-core/compare/v3.17.1...v3.17.2
 [3.17.1]: https://github.com/koopjs/koop-core/compare/v3.17.0...v3.17.1
 [3.17.0]: https://github.com/koopjs/koop-core/compare/v3.16.0...v3.17.0
 [3.16.0]: https://github.com/koopjs/koop-core/compare/v3.15.0...v3.16.0
