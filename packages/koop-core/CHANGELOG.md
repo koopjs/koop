@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Prevent overwriting cache and option assignments that occur in provider model constructors
+
 ## [3.17.2] - 2020-03-26
 ### Added
 * New functions to support fetching metadata for data catalog and layer
