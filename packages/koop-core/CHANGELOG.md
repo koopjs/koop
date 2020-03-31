@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added option to allow output routes to be registered before provider routes; if true any conflicts will default to output routes
+
 ## [3.17.3] - 2020-03-26
 ### Fixed
 * Prevent overwriting cache and option assignments that occur in provider model constructors

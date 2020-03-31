@@ -2,7 +2,7 @@ const _ = require('lodash')
 const validateHttpMethods = require('./validate-http-methods')
 const composeRouteString = require('./compose-route-string')
 
-function registerProviderRoutes ({ provider, controller, server, pluginRoutes }, options = {}) {
+function registerPluginRoutes ({ provider, controller, server, pluginRoutes }, options = {}) {
   const namespace = provider.namespace.replace(/\s/g, '').toLowerCase()
   const { hosts, disableIdParam } = provider
   const { routePrefix } = options
@@ -58,4 +58,4 @@ function addMethodsToRouteMap (map, path, methods) {
   _.set(map, path, _.concat(existingMethods, methods))
 }
 
-module.exports = registerProviderRoutes
+module.exports = registerPluginRoutes

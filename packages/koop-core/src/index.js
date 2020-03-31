@@ -35,7 +35,8 @@ const providerOptionsSchema = Joi.object({
   routePrefix: Joi.string().optional(),
   before: Joi.function().arity(2).optional(),
   after: Joi.function().arity(3).optional(),
-  name: Joi.string().optional()
+  name: Joi.string().optional(),
+  defaultToOutputRoutes: Joi.boolean().optional()
 }).unknown(true)
 
 function Koop (config) {
@@ -202,11 +203,21 @@ function extend (klass, extender) {
  * @param {object} controller - the initiated provider's controller
  * @param {object} server - the koop express server
  */
-function registerRoutes ({ provider, controller, server, pluginRoutes }, options) {
-  // Provider-routes are bound first; any routing conflicts will result in requests routed to provider
+function registerRoutes ({ provider, controller, server, pluginRoutes }, options = {}) {
+  // Plugin and provider-routes may conflict; which ever is registered first gets precendence; default is provider route precedence
+  if (options.defaultToOutputRoutes) return registerPluginRoutesFirst({ provider, controller, server, pluginRoutes }, options)
+  return registerProviderRoutesFirst({ provider, controller, server, pluginRoutes }, options)
+}
+
+function registerPluginRoutesFirst ({ provider, controller, server, pluginRoutes }, options = {}) {
+  const pluginRouteMap = registerPluginRoutes({ provider, controller, server, pluginRoutes }, options)
+  const providerRouteMap = registerProviderRoutes({ provider, controller, server }, options)
+  return { providerRouteMap, pluginRouteMap }
+}
+
+function registerProviderRoutesFirst ({ provider, controller, server, pluginRoutes }, options = {}) {
   const providerRouteMap = registerProviderRoutes({ provider, controller, server }, options)
   const pluginRouteMap = registerPluginRoutes({ provider, controller, server, pluginRoutes }, options)
-
   return { providerRouteMap, pluginRouteMap }
 }
 

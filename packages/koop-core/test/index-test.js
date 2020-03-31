@@ -41,6 +41,18 @@ describe('Index tests for registering providers', function () {
       providerRouteIndex.should.be.below(pluginRouteIndex)
     })
 
+    it('should register plugin-routes before provider-routes', function () {
+      const koop = new Koop()
+      koop.register(_.cloneDeep(provider), { defaultToOutputRoutes: true })
+      // Check that the stack index of the plugin routes are prior to index of provider routes
+      const routePaths = koop.server._router.stack
+        .filter((layer) => { return _.has(layer, 'route.path') })
+        .map(layer => { return _.get(layer, 'route.path') })
+      const pluginRouteIndex = routePaths.findIndex(path => path.includes('/test-provider/:id/FeatureServer'))
+      const providerRouteIndex = routePaths.findIndex(path => path.includes('/fake/:id'))
+      pluginRouteIndex.should.be.below(providerRouteIndex)
+    })
+
     it('should register successfully and attach cache and options object to model', function () {
       const koop = new Koop()
       koop.register(_.cloneDeep(provider), { routePrefix: 'path-to-route' })
