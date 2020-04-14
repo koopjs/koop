@@ -48,7 +48,7 @@
     "wkt-parser": "^1.2.2"
   },
   "devDependencies": {
-    "buble": "^0.19.0",
+    "buble": "^0.20.0",
     "feature-parser": "^1.0.1",
     "standard": "^14.3.0",
     "tap-spec": "^5.0.0",
