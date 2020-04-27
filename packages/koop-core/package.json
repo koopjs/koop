@@ -29,7 +29,7 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "buble": "^0.19.8",
+    "buble": "^0.20.0",
     "gh-release": "^3.5.0",
     "husky": "^4.2.3",
     "lint-staged": "^10.0.7",
