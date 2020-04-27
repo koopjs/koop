@@ -32,7 +32,7 @@
     "buble": "^0.20.0",
     "gh-release": "^3.5.0",
     "husky": "^4.2.3",
-    "lint-staged": "^10.0.7",
+    "lint-staged": "^10.1.7",
     "mocha": "^7.1.2",
     "should": "^13.2.3",
     "should-sinon": "0.0.6",
