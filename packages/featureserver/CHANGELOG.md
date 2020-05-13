@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [UNRELEASED] - 05-13-2020
+### Fixed
+* Added Multi versions of all geojson shapes so they will be recognized and translated to esri geometries
+
 ## [2.22.1] - 04-14-2020
 ### Changed
 * Bumped Winnow version

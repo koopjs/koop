@@ -33,7 +33,10 @@ function getExtent (geojson) {
 const esriGeomTypes = {
   polygon: 'esriGeometryPolygon',
   linestring: 'esriGeometryPolyline',
-  point: 'esriGeometryPoint'
+  point: 'esriGeometryPoint',
+  multipolygon: 'esriGeometryPolygon',
+  multilinestring: 'esriGeometryPolyline',
+  multipoint: 'esriGeometryPoint'
 }
 
 function getGeomType (geojson = {}) {
