@@ -52,7 +52,7 @@
     "feature-parser": "^1.0.1",
     "standard": "^14.3.0",
     "tap-spec": "^5.0.0",
-    "tape": "^4.6.3"
+    "tape": "^5.0.0"
   },
   "optionalDependencies": {
     "farmhash": "^3.0.0"
