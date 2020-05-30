@@ -14,7 +14,7 @@
   ],
   "dependencies": {
     "@hapi/joi": "^17.1.0",
-    "@koopjs/logger": "^2.0.4",
+    "@koopjs/logger": "^2.0.6",
     "body-parser": "^1.19.0",
     "chalk": "^4.0.0",
     "compression": "^1.7.4",
