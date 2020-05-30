@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.6] - 2020-05-30
+### Fixed
+* Update winston syntax
+
 ## [2.0.5] - 2020-05-30
 ### Changed
 * Update dependencies
@@ -50,6 +54,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 Extracted Koop-Logger from Koop/lib
 
+[2.0.6]: https://www.github.com/koopjs/koop-logger/compare/v2.0.5..v2.0.6
 [2.0.5]: https://www.github.com/koopjs/koop-logger/compare/v2.0.4..v2.0.5
 [2.0.4]: https://www.github.com/koopjs/koop-logger/compare/v2.0.3..v2.0.4
 [2.0.3]: https://www.github.com/koopjs/koop-logger/compare/v2.0.2..v2.0.3
