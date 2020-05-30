@@ -20,6 +20,8 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
-    "standard": "^14.3.4"
+    "standard": "^14.3.4",
+    "tap-spec": "^5.0.0",
+    "tape": "^5.0.1"
   }
 }

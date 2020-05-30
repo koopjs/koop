@@ -27,7 +27,7 @@ function createLogger (config) {
       stringify: true,
       json: true
     })
-    return new winston.Logger({ transports: [debugConsole] })
+    return winston.createLogger({ transports: [debugConsole] })
   }
 
   // we need a dir to do log rotation so we get the dir from the file
@@ -58,7 +58,7 @@ function createLogger (config) {
     transports.push(logAll)
   }
 
-  return new winston.Logger({ transports })
+  return winston.createLogger({ transports })
 }
 
 /**
