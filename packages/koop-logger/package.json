@@ -20,6 +20,6 @@
     "winston": "^3.0.0"
   },
   "devDependencies": {
-    "standard": "^12.0.0"
+    "standard": "^13.0.1"
   }
 }
