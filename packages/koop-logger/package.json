@@ -17,9 +17,9 @@
   "author": "Daniel Fenton <dfenton@esri.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "winston": "^3.0.0"
+    "winston": "^3.2.1"
   },
   "devDependencies": {
-    "standard": "^13.0.1"
+    "standard": "^14.3.4"
   }
 }
