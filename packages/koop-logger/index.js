@@ -54,7 +54,7 @@ function createLogger (config) {
   // always log errors
   const transports = [logError]
   // only log everthing if debug mode is on
-  if (process.env['LOG_LEVEL'] === 'debug') {
+  if (process.env.LOG_LEVEL === 'debug') {
     transports.push(logAll)
   }
 
