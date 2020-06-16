@@ -1,7 +1,12 @@
-const Terraformer = require('terraformer')
-const transformArray = require('./geometry/transform-array')
+const {
+  within,
+  contains,
+  intersects,
+  calculateBounds
+} = require('@terraformer/spatial')
 const convertToEsri = require('./geometry/convert-to-esri')
 const convertFromEsri = require('./geometry/convert-from-esri')
+const transformArray = require('./geometry/transform-array')
 const sql = require('alasql')
 const geohash = require('ngeohash')
 const centroid = require('@turf/centroid').default
@@ -21,16 +26,12 @@ sql.MAXSQLCACHESIZE = 0
 
 sql.fn.ST_Within = function (feature = {}, filterGeom = {}) {
   if (!(feature && feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
-  const filter = new Terraformer.Primitive(filterGeom)
-  const TfFeature = new Terraformer.Primitive(feature)
-  return TfFeature.within(filter)
+  return within(feature, filterGeom)
 }
 
 sql.fn.ST_Contains = function (feature = {}, filterGeom = {}) {
   if (!(feature && feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
-  const filter = new Terraformer.Primitive(filterGeom)
-  const TfFeature = new Terraformer.Primitive(feature)
-  return filter.contains(TfFeature)
+  return contains(filterGeom, feature)
 }
 
 sql.fn.ST_Intersects = function (feature = {}, filterGeom = {}) {
@@ -38,9 +39,7 @@ sql.fn.ST_Intersects = function (feature = {}, filterGeom = {}) {
   if (!(feature.type || feature.coordinates)) feature = convertFromEsri(feature) // TODO: remove ? temporary esri geometry conversion
   if (!(feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
   if (feature.type === 'Point') return sql.fn.ST_Contains(feature, filterGeom)
-  const filter = new Terraformer.Primitive(filterGeom)
-  const TfFeature = new Terraformer.Primitive(feature)
-  return filter.intersects(TfFeature)
+  return intersects(filterGeom, feature)
 }
 
 sql.fn.ST_EnvelopeIntersects = function (feature = {}, filterGeom = {}) {
@@ -48,10 +47,8 @@ sql.fn.ST_EnvelopeIntersects = function (feature = {}, filterGeom = {}) {
   if (!(feature.type || feature.coordinates)) feature = convertFromEsri(feature) // TODO: remove ? temporary esri geometry conversion
   if (!(feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
   if (feature.type === 'Point') return sql.fn.ST_Contains(feature, filterGeom)
-  const filter = new Terraformer.Primitive(filterGeom)
-  const envelope = transformArray(new Terraformer.Primitive(feature).bbox())
-  const TfFeature = new Terraformer.Polygon(envelope)
-  return filter.intersects(TfFeature)
+  const envelope = transformArray(calculateBounds(feature))
+  return intersects(filterGeom, envelope)
 }
 
 sql.fn.geohash = function (geometry = {}, precision) {
@@ -68,7 +65,7 @@ sql.fn.pick = function (properties, fields) {
 }
 
 /**
- * Select a subset of properties and modify propterties to fit ESRI specs
+ * Select a subset of properties and modify properties to fit ESRI specs
  * @param {object} properties GeoJSON properties
  * @param {object} geometry GeoJSON geometry
  * @param {string} dateFields comma-delimited list of date fields

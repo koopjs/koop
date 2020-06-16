@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Changed
+* update from `terraformer` to `@terraformer/spatial`
+
 ## [1.16.12] - 03-06-2020
 ### Fixed
 * Fix returning null dates instead of 0.
@@ -62,7 +67,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.16.0] - 06-29-2018
 ### Added
-* Add normalization of a `option.sourceSR`; this option identifies the CRS of the source data and defaults to 'EPSG:4326'; 
+* Add normalization of a `option.sourceSR`; this option identifies the CRS of the source data and defaults to 'EPSG:4326';
 * If `option.sourceSR` is defined and geometry filter is defined, the geometry filter is reprojected to the CRS of the source
 * Use srs npm to validate WKT CRS
 * Added additional polygon projection tests
@@ -98,7 +103,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Exclusion of date fields from response when not requested with `outFields` option
 * Attempted property access of null feature in `ST_Intersects` function
 
-## [1.12.7] - 04-03-2018 
+## [1.12.7] - 04-03-2018
 ### Fixed
 * Ensure geometry is omitted from query results when option `returnGeometry: false`
 
@@ -325,6 +330,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[Unreleased]: https://github.com/featureserver/winnow/compare/v1.16.12...HEAD
 [1.16.12]: https://github.com/featureserver/winnow/compare/v1.16.11...v1.16.12
 [1.16.11]: https://github.com/featureserver/winnow/compare/v1.16.10...v1.16.11
 [1.16.10]: https://github.com/featureserver/winnow/compare/v1.16.9...v1.16.10
