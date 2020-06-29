@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.19.1] - 2020-06-29
+### Fixed
+* Dist directory build
+
 ## [3.19.0] - 2020-06-29
 ### Added
 * Option to disable console logging of routes; use environment variable `KOOP_DISABLE_CONSOLE_ROUTES=true`
@@ -904,6 +908,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[3.19.1]: https://github.com/koopjs/koop-core/compare/v3.19.0...v3.19.1
 [3.19.0]: https://github.com/koopjs/koop-core/compare/v3.18.0...v3.19.0
 [3.18.0]: https://github.com/koopjs/koop-core/compare/v3.17.3...v3.18.0
 [3.17.3]: https://github.com/koopjs/koop-core/compare/v3.17.2...v3.17.3
