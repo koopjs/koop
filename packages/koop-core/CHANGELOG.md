@@ -2,20 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [4.0.0] - 2020-06-30
 ### Changed
 * End support for Node < 6; remove Babel compilation to `/dist` directory and point package.json directly to non-compiled source files
 * Moved datasets provider to its own directory and leverage the registration function
 * Moved provider options validation to ProviderRegistration
 * Refactored provider _status_ info
+* Refactored provider registration, output registration, and controller treatment.
 
 ### Fixed
 * path construction when no host or id parameter
-
-## [3.19.0-alpha.0] - 2020-06-08
-### Changed
-* Refactored provider registration, output registration, and controller treatment.
-* Removed `dist`
 
 ## [3.19.1] - 2020-06-29
 ### Fixed
@@ -923,6 +919,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[4.0.0]: https://github.com/koopjs/koop-core/compare/v3.19.1...v4.0.0
 [3.19.1]: https://github.com/koopjs/koop-core/compare/v3.19.0...v3.19.1
 [3.19.0]: https://github.com/koopjs/koop-core/compare/v3.18.0...v3.19.0
 [3.18.0]: https://github.com/koopjs/koop-core/compare/v3.17.3...v3.18.0
