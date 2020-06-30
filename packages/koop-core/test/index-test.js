@@ -2,36 +2,43 @@
 const _ = require('lodash')
 const provider = require('./fixtures/fake-provider')
 const auth = require('./fixtures/fake-auth')()
-const Koop = require('../src/')
-const Controller = require('../src/controllers')
+const Koop = require('../')
+const Geoservices = require('koop-output-geoservices')
 const request = require('supertest')
 const should = require('should') // eslint-disable-line
 const plugins = require('./fixtures/fake-plugin')
+const geoservicesFixtureRoutes = Geoservices.routes.reduce((acc, route) => {
+  return acc + route.methods.length
+}, 0)
+const providerFixtureRoutes = provider.routes.reduce((acc, route) => {
+  return acc + route.methods.length
+}, 0)
 
-describe('Index tests for registering providers', function () {
-  describe('use config argument', function () {
-    it('should register successfully', function () {
+describe('Index tests', function () {
+  describe('Koop instantiation', function () {
+    it('should instantiate Koop with config', function () {
       const koop = new Koop({ foo: 'bar' })
       koop.config.should.have.property('foo', 'bar')
     })
   })
 
-  describe('provider registration', function () {
-    it('should register successfully', function () {
+  describe('Provider registration', function () {
+    it('should register provider and add output and provider routes to router stack', function () {
       const koop = new Koop()
-      koop.register(_.cloneDeep(provider))
-      koop.controllers.should.have.property('test-provider').and.be.a.instanceOf(Controller)
+      koop.register(provider)
+      const registeredProvider = koop.providers.find(provider => { return provider.namespace === 'test-provider' })
+      registeredProvider.should.have.property('namespace', 'test-provider')
       // Check that the stack includes routes with the provider name in the path
-      const providerPath = koop.server._router.stack
+      const providerRoutes = koop.server._router.stack
         .filter((layer) => { return _.has(layer, 'route.path') })
         .map(layer => { return _.get(layer, 'route.path') })
-        .find(path => path.includes(provider.name))
-      providerPath.should.not.equal(undefined)
+        .filter(path => path.includes(provider.name) || path.includes('/fake/:id'))
+      providerRoutes.length.should.equal(geoservicesFixtureRoutes + providerFixtureRoutes)
     })
 
     it('should register provider-routes before plugin-routes', function () {
       const koop = new Koop()
-      koop.register(_.cloneDeep(provider))
+      koop.register(provider)
       // Check that the stack index of the plugin routes are prior to index of provider routes
       const routePaths = koop.server._router.stack
         .filter((layer) => { return _.has(layer, 'route.path') })
@@ -43,7 +50,7 @@ describe('Index tests for registering providers', function () {
 
     it('should register plugin-routes before provider-routes', function () {
       const koop = new Koop()
-      koop.register(_.cloneDeep(provider), { defaultToOutputRoutes: true })
+      koop.register(provider, { defaultToOutputRoutes: true })
       // Check that the stack index of the plugin routes are prior to index of provider routes
       const routePaths = koop.server._router.stack
         .filter((layer) => { return _.has(layer, 'route.path') })
@@ -53,117 +60,127 @@ describe('Index tests for registering providers', function () {
       pluginRouteIndex.should.be.below(providerRouteIndex)
     })
 
-    it('should register successfully and attach cache and options object to model', function () {
+    it('should register successfully a provider with a routePrefix', function () {
       const koop = new Koop()
-      koop.register(_.cloneDeep(provider), { routePrefix: 'path-to-route' })
-      koop.controllers['test-provider'].model.should.have.property('cache')
-      koop.controllers['test-provider'].model.should.have.property('options')
-      koop.controllers['test-provider'].model.options.should.have.property('routePrefix', 'path-to-route')
+      koop.register(provider, { routePrefix: 'path-to-route' })
+      const registeredProvider = koop.providers.find(provider => { return provider.namespace === 'test-provider' })
+      registeredProvider.options.should.have.property('routePrefix', 'path-to-route')
     })
 
-    it('should register successfully and attach optional cache to model', function () {
+    it('should register successfully and attach cache and options object to model', function () {
       const koop = new Koop()
-      koop.register(_.cloneDeep(provider), {
+      koop.register(provider, { foo: 'bar' })
+      const registeredProvider = koop.providers.find(provider => { return provider.namespace === 'test-provider' })
+      registeredProvider.model.should.have.property('cache')
+      registeredProvider.model.should.have.property('options')
+      registeredProvider.model.options.should.have.property('foo', 'bar')
+    })
+
+    it('should register successfully and attach optional custom cache to model', function () {
+      const koop = new Koop()
+      koop.register(provider, {
         cache: {
           retrieve: (key, query, callback) => {},
           upsert: (key, data, options) => {},
           customFunction: () => {}
         }
       })
-      koop.controllers['test-provider'].model.should.have.property('cache')
-      koop.controllers['test-provider'].model.cache.should.have.property('customFunction').and.be.a.Function()
+      const registeredProvider = koop.providers.find(provider => { return provider.namespace === 'test-provider' })
+      registeredProvider.model.should.have.property('cache')
+      registeredProvider.model.cache.should.have.property('customFunction').and.be.a.Function()
     })
 
     it('should reject cache option missing an upsert method', function () {
       const koop = new Koop()
       try {
-        koop.register(_.cloneDeep(provider), {
+        koop.register(provider, {
           cache: {
             retrieve: (key, query, callback) => {}
           }
         })
       } catch (err) {
-        err.should.have.property('message', 'provider options ValidationError: "cache.upsert" is required')
+        err.should.have.property('message', 'Provider options ValidationError: "cache.upsert" is required')
       }
     })
 
     it('should reject cache option missing a retrieve method', function () {
       const koop = new Koop()
       try {
-        koop.register(_.cloneDeep(provider), {
+        koop.register(provider, {
           cache: {
             upsert: (key, data, options) => {}
           }
         })
       } catch (err) {
-        err.should.have.property('message', 'provider options ValidationError: "cache.retrieve" is required')
+        err.should.have.property('message', 'Provider options ValidationError: "cache.retrieve" is required')
       }
     })
 
     it('should reject routePrefix option that is not a string', function () {
       const koop = new Koop()
       try {
-        koop.register(_.cloneDeep(provider), {
+        koop.register(provider, {
           routePrefix: {}
         })
         should.fail('should have thrown error')
       } catch (err) {
-        err.should.have.property('message', 'provider options ValidationError: "routePrefix" must be a string')
+        err.should.have.property('message', 'Provider options ValidationError: "routePrefix" must be a string')
       }
     })
 
     it('should register successfully and attach optional "before" and "after" function to model', function () {
       const koop = new Koop()
-      koop.register(_.cloneDeep(provider), {
+      koop.register(provider, {
         before: (req, next) => {},
         after: (req, data, callback) => {}
       })
-      koop.controllers['test-provider'].model.should.have.property('before').and.be.a.Function()
-      koop.controllers['test-provider'].model.should.have.property('after').and.be.a.Function()
+      const registeredProvider = koop.providers.find(provider => { return provider.namespace === 'test-provider' })
+      registeredProvider.model.should.have.property('before').and.be.a.Function()
+      registeredProvider.model.should.have.property('after').and.be.a.Function()
     })
 
     it('should reject optional "before" function that does not have correct arity', function () {
       const koop = new Koop()
       try {
-        koop.register(_.cloneDeep(provider), {
+        koop.register(provider, {
           before: () => {}
         })
       } catch (err) {
-        err.should.have.property('message', 'provider options ValidationError: "before" must have an arity of 2')
+        err.should.have.property('message', 'Provider options ValidationError: "before" must have an arity of 2')
       }
     })
 
     it('should reject optional "after" function that does not have correct arity', function () {
       const koop = new Koop()
       try {
-        koop.register(_.cloneDeep(provider), {
+        koop.register(provider, {
           after: () => {}
         })
       } catch (err) {
-        err.should.have.property('message', 'provider options ValidationError: "after" must have an arity of 3')
+        err.should.have.property('message', 'Provider options ValidationError: "after" must have an arity of 3')
       }
     })
 
     it('should successfully use options "name" in route', function () {
       const koop = new Koop()
-      koop.register(_.cloneDeep(provider), {
+      koop.register(provider, {
         name: 'options-name'
       })
-      koop.controllers.should.have.property('options-name').and.be.a.instanceOf(Controller)
-      koop.controllers.should.have.property('options-name').and.be.a.instanceOf(Controller)
+      const registeredProvider = koop.providers.find(provider => { return provider.namespace === 'options-name' })
+      registeredProvider.should.have.property('namespace', 'options-name')
       // Check that the stack includes routes with the provider name in the path
-      const providerPath = koop.server._router.stack
+      const providerRoutes = koop.server._router.stack
         .filter((layer) => { return _.has(layer, 'route.path') })
         .map(layer => { return _.get(layer, 'route.path') })
-        .find(path => path.includes('options-name'))
-      providerPath.should.not.equal(undefined)
+        .filter(path => path.includes('options-name'))
+      providerRoutes.length.should.equal(geoservicesFixtureRoutes)
     })
   })
 
   describe('can register a provider and apply a route prefix to all routes', function () {
     it('should not return 404 for prefixed custom route', function (done) {
       const koop = new Koop()
-      koop.register(_.cloneDeep(provider), { routePrefix: '/api/test' })
+      koop.register(provider, { routePrefix: '/api/test' })
       request(koop.server)
         .get('/api/test/fake/1234')
         .then((res) => {
@@ -177,7 +194,7 @@ describe('Index tests for registering providers', function () {
 
     it('should not return 404 for prefixed plugin route', function (done) {
       const koop = new Koop()
-      koop.register(_.cloneDeep(provider), { routePrefix: '/api/test' })
+      koop.register(provider, { routePrefix: '/api/test' })
       request(koop.server)
         .get('/api/test/test-provider/foo/FeatureServer')
         .then((res) => {
@@ -196,10 +213,10 @@ describe('Tests for registering auth plugin', function () {
     it('should register successfully', function () {
       const koop = new Koop()
       koop.register(auth)
-      koop._auth_module.should.be.instanceOf(Object)
-      koop._auth_module.authenticate.should.be.instanceOf(Function)
-      koop._auth_module.authorize.should.be.instanceOf(Function)
-      koop._auth_module.authenticationSpecification.should.be.instanceOf(Function)
+      koop._authModule.should.be.instanceOf(Object)
+      koop._authModule.authenticate.should.be.instanceOf(Function)
+      koop._authModule.authorize.should.be.instanceOf(Function)
+      koop._authModule.authenticationSpecification.should.be.instanceOf(Function)
     })
   })
 
@@ -207,28 +224,30 @@ describe('Tests for registering auth plugin', function () {
     it('should register successfully', function () {
       const koop = new Koop()
       koop.register(auth)
-      koop.register(_.cloneDeep(provider))
-      provider.Model.prototype.should.have.property('authenticationSpecification')
-      provider.Model.prototype.should.have.property('authenticate')
-      provider.Model.prototype.should.have.property('authorize')
+      koop.register(provider)
+      koop.providers[1].model.should.have.property('authenticationSpecification').and.deepEqual({ provider: 'test-provider' })
+      koop.providers[1].model.should.have.property('authenticate').and.be.a.Function()
+      koop.providers[1].model.should.have.property('authorize').and.be.a.Function()
     })
   })
 
   describe('can register an auth plugin and selectively apply methods to a provider', function () {
     it('should register successfully', function () {
-      const providerWithAuth = require('./fixtures/fake-provider')
       const providerWithoutAuth = require('./fixtures/fake-provider-ii')
+      const providerWithAuth = require('./fixtures/fake-provider')
       const auth = require('./fixtures/fake-auth')()
       const koop = new Koop()
       koop.register(providerWithoutAuth)
       koop.register(auth)
       koop.register(providerWithAuth)
-      providerWithoutAuth.Model.prototype.should.not.have.property('authenticationSpecification')
-      providerWithoutAuth.Model.prototype.should.not.have.property('authenticate')
-      providerWithoutAuth.Model.prototype.should.not.have.property('authorize')
-      providerWithAuth.Model.prototype.should.have.property('authenticationSpecification')
-      providerWithAuth.Model.prototype.should.have.property('authenticate')
-      providerWithAuth.Model.prototype.should.have.property('authorize')
+      const registraionWithoutAuth = koop.providers.find(provider => { return provider.namespace === 'test-provider-ii' })
+      const registraionWithAuth = koop.providers.find(provider => { return provider.namespace === 'test-provider' })
+      registraionWithoutAuth.model.should.not.have.property('authenticationSpecification')
+      registraionWithoutAuth.model.should.not.have.property('authenticate')
+      registraionWithoutAuth.model.should.not.have.property('authorize')
+      registraionWithAuth.model.should.have.property('authenticationSpecification')
+      registraionWithAuth.model.should.have.property('authenticate')
+      registraionWithAuth.model.should.have.property('authorize')
     })
   })
 })

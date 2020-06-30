@@ -2,6 +2,21 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* End support for Node < 6; remove Babel compilation to `/dist` directory and point package.json directly to non-compiled source files
+* Moved datasets provider to its own directory and leverage the registration function
+* Moved provider options validation to ProviderRegistration
+* Refactored provider _status_ info
+
+### Fixed
+* path construction when no host or id parameter
+
+## [3.19.0-alpha.0] - 2020-06-08
+### Changed
+* Refactored provider registration, output registration, and controller treatment.
+* Removed `dist`
+
 ## [3.19.1] - 2020-06-29
 ### Fixed
 * Dist directory build

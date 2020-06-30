@@ -29,7 +29,6 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "buble": "^0.20.0",
     "gh-release": "^3.5.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.1.7",
@@ -52,16 +51,14 @@
     "spatial"
   ],
   "license": "Apache-2.0",
-  "main": "dist/index.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/koopjs/koop-core.git"
   },
   "scripts": {
     "release": "gh-release",
-    "clean": "rm -rf dist",
-    "compile": "buble -i src -o dist",
-    "test": "standard && mocha test -t 5000"
+    "test": "standard && mocha test --recursive -t 5000"
   },
   "standard": {
     "globals": [

@@ -1,15 +1,15 @@
 # Koop
 
-> Transform, query, & download geospatial data on the web.
+> Transform, query, & download geospatial data on the web.  See [koopjs.github.io](https://koopjs.github.io) for details.
 
 [![npm version][npm-img]][npm-url]
 [![build status][travis-img]][travis-url]
 [![js-standard-style][standard-img]][standard-url]
 [![Greenkeeper badge](https://badges.greenkeeper.io/koopjs/koop-core.svg)](https://greenkeeper.io/)
 
-**Note: Koop 3.0 was just released and these docs are going to get an overhaul. For now please see [this deck](https://goo.gl/ERLzM1) **
+**Note: Koop 4.0 was just released and it no longer supports versions of Node.js older than 6.4. All plugins written for 3.x should work with Koop 4.x.**
 
-This is the core code for Koop. Docs to be updated.
+This is the core code for Koop.
 
 ## Issues
 

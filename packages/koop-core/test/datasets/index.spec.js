@@ -1,7 +1,7 @@
-const Koop = require('../src')
+const Koop = require('../../')
 const koop = new Koop()
 const request = require('supertest')
-const geojson = require('./fixtures/snow.json')
+const geojson = require('../fixtures/snow.json')
 const should = require('should') // eslint-disable-line
 
 describe('Datsets API', function () {

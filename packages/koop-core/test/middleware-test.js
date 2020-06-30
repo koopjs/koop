@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const should = require('should') // eslint-disable-line
-const middleware = require('../src/middleware')
+const middleware = require('../lib/middleware')
 
 describe('Middleware tests', function () {
   describe('paramTrim function', function () {
