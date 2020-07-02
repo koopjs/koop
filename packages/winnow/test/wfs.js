@@ -1,6 +1,6 @@
 const test = require('tape')
 const run = require('./helper').run
-const winnow = require('../src')
+const winnow = require('../')
 
 test('WFS with a bbox in Web Mercator with geojson output', t => {
   const options = {

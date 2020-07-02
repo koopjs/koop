@@ -1,5 +1,5 @@
 const test = require('tape')
-const projectCoordinates = require('../src/geometry/project-coordinates')
+const projectCoordinates = require('../lib/geometry/project-coordinates')
 
 test('Do not project coordinates if one is null', t => {
   t.plan(2)

@@ -1,7 +1,7 @@
 'use strict'
 const Classifier = require('classybrew')
 const Options = require('../options')
-const Query = require('../query')
+const Query = require('../sql-query')
 const { getFieldValues, normalizeClassBreaks } = require('./normalizeClassBreaks')
 const { adjustIntervalValue, calculateStdDevIntervals } = require('./utils')
 

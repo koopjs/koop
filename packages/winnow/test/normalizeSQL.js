@@ -1,5 +1,5 @@
 const test = require('tape')
-const { normalizeFields } = require('../src/options/normalizeSQL')
+const { normalizeFields } = require('../lib/options/normalizeSQL')
 
 // TODO: put other functions from normalize fields under test
 

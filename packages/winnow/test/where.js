@@ -1,6 +1,6 @@
 'use strict'
 const test = require('tape')
-const where = require('../src/where')
+const where = require('../lib/where')
 
 test('Transform a simple equality predicate', t => {
   t.plan(1)

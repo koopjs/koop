@@ -4,7 +4,7 @@ const treesFeatureId = require('./fixtures/trees_subset_feature_id')
 const geojson = require('./fixtures/to-esri-fixture.json')
 const oidFeature = require('./fixtures/oid-feature.json')
 const emptyCollection = require('./fixtures/emptyCollection.json')
-const Winnow = require('../src')
+const Winnow = require('../')
 const _ = require('lodash')
 
 test('detecting fields', t => {

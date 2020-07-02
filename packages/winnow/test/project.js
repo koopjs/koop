@@ -1,7 +1,7 @@
 'use strict'
 const test = require('tape')
 const _ = require('lodash')
-const winnow = require('../src')
+const winnow = require('../')
 const features = require('./fixtures/snow.json').features
 const polygonFeatures = require('./fixtures/polygon.json').features
 const multiPolyFeatures = require('./fixtures/multipolygon.json').features

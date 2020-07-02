@@ -1,7 +1,7 @@
 'use strict'
 const _ = require('lodash')
 const test = require('tape')
-const winnow = require('../src')
+const winnow = require('../')
 
 test('With a where option', t => {
   const options = {

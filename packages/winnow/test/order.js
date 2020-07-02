@@ -1,7 +1,7 @@
 'use strict'
 const test = require('tape')
 const _ = require('lodash')
-const winnow = require('../src')
+const winnow = require('../')
 const fixture = require('./fixtures/trees.json')
 
 test('With a limit of 10, order by OBJECTID ASC', t => {

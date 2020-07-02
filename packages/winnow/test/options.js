@@ -1,5 +1,5 @@
 const test = require('tape')
-const prepare = require('../src/options').prepare
+const prepare = require('../lib/options').prepare
 
 test('normalize a where query with an esri-style date', t => {
   t.plan(1)

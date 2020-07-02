@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Drop support for older Node by remove Babel compile.
+* Remove `src` directory and replace with `lib`.
+* Move methods from `index.js` to their own files.
+* Rename a few files for clarity and to prevent collisions caused by moving methods out of `index.js`.
+
 ## [1.16.13] - 06-16-2020
 ### Changed
 * update from `terraformer` to `@terraformer/spatial`

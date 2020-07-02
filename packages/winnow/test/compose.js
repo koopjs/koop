@@ -1,5 +1,5 @@
 const test = require('tape')
-const compose = require('../src/select/compose')
+const compose = require('../lib/select/compose')
 
 test('With a single string function', t => {
   const composed = compose(['round'], 'geometry')

@@ -1,6 +1,6 @@
 'use strict'
-const sql = require('./sql')
-const Query = require('./query')
+const sql = require('./alasql')
+const Query = require('./sql-query')
 const { calculateClassBreaks, calculateUniqueValueBreaks } = require('./generateBreaks/index')
 
 function breaksQuery (features, query, options) {

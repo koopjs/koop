@@ -1,5 +1,5 @@
 const test = require('tape')
-const Winnow = require('../src')
+const Winnow = require('../')
 const trees = require('./fixtures/street-trees-102645.json')
 const caStatePlaneWKT = `PROJCS["NAD_1983_StatePlane_California_V_FIPS_0405_Feet",
 GEOGCS["GCS_North_American_1983",

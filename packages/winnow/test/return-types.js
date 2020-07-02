@@ -1,6 +1,6 @@
 'use strict'
 const test = require('tape')
-const winnow = require('../src')
+const winnow = require('../')
 const trees = require('./fixtures/trees.json')
 test('Return a feature collection when a collection is passed in', (t) => {
   t.plan(1)

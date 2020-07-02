@@ -1,4 +1,4 @@
-const winnow = require('../src')
+const winnow = require('../')
 
 module.exports = {
   run (data, options, expected, t) {

@@ -1,6 +1,6 @@
 'use strict'
 const test = require('tape')
-const winnow = require('../src')
+const winnow = require('../')
 const fixture = require('./fixtures/trees.json')
 
 test('With a limit option', t => {

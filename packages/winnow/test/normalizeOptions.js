@@ -14,7 +14,7 @@ const {
   normalizeInSR,
   normalizeSourceSR,
   normalizeIdField
-} = require('../src/options/normalizeOptions')
+} = require('../lib/options/normalizeOptions')
 
 test('normalize collection without metadata', t => {
   t.plan(1)

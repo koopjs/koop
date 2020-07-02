@@ -1,6 +1,6 @@
 'use strict'
 const test = require('tape')
-const winnow = require('../src')
+const winnow = require('../')
 const features = require('./fixtures/trees.json').features
 
 test('Select a single field', t => {

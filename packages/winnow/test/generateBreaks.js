@@ -1,7 +1,7 @@
 'use strict'
 const _ = require('lodash')
 const test = require('tape')
-const winnow = require('../src')
+const winnow = require('../')
 const treesSubset = require('./fixtures/trees_subset.json')
 const classBreaks = require('./fixtures/generateBreaks/classBreaks.json')
 const uniqueValue = require('./fixtures/generateBreaks/uniqueValue.json')

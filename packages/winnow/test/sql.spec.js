@@ -1,5 +1,5 @@
 const test = require('tape')
-const sql = require('../src/sql')
+const sql = require('../lib/alasql')
 const polygonFilter = {
   type: 'Polygon',
   coordinates: [
