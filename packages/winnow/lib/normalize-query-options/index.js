@@ -1,11 +1,10 @@
 const _ = require('lodash')
-const {
-  normalizeWhere,
-  normalizeFields,
-  normalizeOrder,
-  normalizeAggregates,
-  normalizeGroupBy
-} = require('./normalizeSQL')
+const normalizeWhere = require('./where')
+const normalizeFields = require('./fields')
+const normalizeOrder = require('./order')
+const normalizeAggregates = require('./aggregates')
+const normalizeGroupBy = require('./group-by')
+
 const {
   normalizeCollection,
   normalizeDateFields,
@@ -19,11 +18,14 @@ const {
 } = require('./normalizeOptions')
 const { normalizeClassification } = require('./normalizeClassification')
 
-function prepare (options, features) {
+function normalizeQueryOptions (options, features) {
+  const {
+    where
+  } = options
   const prepared = _.merge({}, options, {
     collection: normalizeCollection(options, features),
     idField: normalizeIdField(options, features),
-    where: normalizeWhere(options),
+    where: normalizeWhere(where),
     geometry: normalizeGeometry(options),
     spatialPredicate: normalizeSpatialPredicate(options),
     fields: normalizeFields(options),
@@ -36,9 +38,8 @@ function prepare (options, features) {
   })
   prepared.offset = normalizeOffset(options)
   prepared.dateFields = normalizeDateFields(prepared.collection, prepared.fields)
-  if (prepared.where === '1=1') delete prepared.where
 
   return prepared
 }
 
-module.exports = { prepare }
+module.exports = normalizeQueryOptions

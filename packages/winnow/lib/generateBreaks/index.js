@@ -1,6 +1,6 @@
 'use strict'
 const Classifier = require('classybrew')
-const Options = require('../options')
+const normalizeQueryOptions = require('../normalize-query-options')
 const Query = require('../sql-query')
 const { getFieldValues, normalizeClassBreaks } = require('./normalizeClassBreaks')
 const { adjustIntervalValue, calculateStdDevIntervals } = require('./utils')
@@ -56,7 +56,7 @@ function calculateUniqueValueBreaks (features, classification) {
     ],
     groupBy: classification.fields
   }
-  options = Options.prepare(options, features)
+  options = normalizeQueryOptions(options, features)
   const query = Query.create(options)
   return { options, query }
 }

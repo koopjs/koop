@@ -1,11 +1,11 @@
 const _ = require('lodash')
 const sql = require('./alasql')
 const Query = require('./sql-query')
-const Options = require('./options')
+const normalizeQueryOptions = require('./normalize-query-options')
 const { finishQuery } = require('./executeQuery')
 
 module.exports = function (options) {
-  options = Options.prepare(options)
+  options = normalizeQueryOptions(options)
   const statement = Query.create(options)
   const query = sql.compile(statement)
   const params = [null]

@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const Query = require('./sql-query')
-const Options = require('./options')
+const normalizeQueryOptions = require('./normalize-query-options')
 const { breaksQuery, aggregateQuery, standardQuery } = require('./executeQuery')
 
 module.exports = function (input, options = {}) {
@@ -13,7 +13,7 @@ module.exports = function (input, options = {}) {
     options.collection = _.omit(input, 'features')
     features = input.features
   }
-  options = Options.prepare(options, features)
+  options = normalizeQueryOptions(options, features)
 
   const query = Query.create(options)
   if (process.env.NODE_ENV === 'test') console.log(query, options)
