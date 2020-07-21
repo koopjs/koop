@@ -16,7 +16,7 @@ const {
   normalizeIdField
 
 } = require('./normalizeOptions')
-const { normalizeClassification } = require('./normalizeClassification')
+const normalizeClassification = require('./classification')
 
 function normalizeQueryOptions (options, features) {
   const {
