@@ -6,16 +6,15 @@ const normalizeAggregates = require('./aggregates')
 const normalizeGroupBy = require('./group-by')
 const normalizeClassification = require('./classification')
 const normalizeCollection = require('./collection')
+const deriveDateFields = require('./date-fields')
 
 const {
-  normalizeDateFields,
   normalizeSpatialPredicate,
   normalizeLimit,
   normalizeGeometry,
   normalizeOffset,
   normalizeProjection,
   normalizeIdField
-
 } = require('./normalizeOptions')
 
 function normalizeQueryOptions (options, features) {
@@ -38,7 +37,7 @@ function normalizeQueryOptions (options, features) {
     classification: normalizeClassification(options)
   })
   prepared.offset = normalizeOffset(options)
-  prepared.dateFields = normalizeDateFields(prepared.collection, prepared.fields)
+  prepared.dateFields = deriveDateFields(prepared.collection, prepared.fields)
 
   return prepared
 }

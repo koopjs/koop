@@ -13,26 +13,6 @@ const esriPredicates = {
 }
 const wkidLookup = {}
 
-/**
- * Identify Date-type fields and explicitly add to dateFields array if outFields query param contains
- * the date field name or if outFields is a wildcard (when outFields=*, preparedFields === undefined)
- *
- * @param {Object} collection metadata about the data source
- * @param String[] preparedFields - single element string array of delimited field names from "outFields" query param
- */
-function normalizeDateFields (collection, preparedFields) {
-  const dateFields = []
-  if (collection && collection.metadata && collection.metadata.fields) {
-    collection.metadata.fields.forEach((field, i) => {
-      // If field is a Date and was included in requested fields (or requested fields are wildcard) add to array
-      if (field.type === 'Date' && (preparedFields === undefined || preparedFields.indexOf(field.name) > -1)) {
-        dateFields.push(field.name)
-      }
-    })
-  }
-  return dateFields
-}
-
 function normalizeSpatialPredicate (options) {
   const predicate = options.spatialPredicate || options.spatialRel
   return esriPredicates[predicate] || predicate
@@ -214,7 +194,6 @@ function normalizeIdField (options, features = []) {
 }
 
 module.exports = {
-  normalizeDateFields,
   normalizeSpatialPredicate,
   normalizeLimit,
   normalizeGeometry,

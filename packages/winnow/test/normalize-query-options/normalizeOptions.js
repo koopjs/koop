@@ -2,7 +2,6 @@ const test = require('tape')
 
 const {
   // TODO: Put these under test
-  // normalizeDateFields,
   // normalizeSpatialPredicate,
   // normalizeLimit,
   // normalizeGeometry,
