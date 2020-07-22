@@ -55,6 +55,6 @@
     "tape": "^5.0.0"
   },
   "optionalDependencies": {
-    "farmhash": "^3.0.0"
+    "farmhash": "^3.1.0"
   }
 }
