@@ -4,9 +4,10 @@ const normalizeFields = require('./fields')
 const normalizeOrder = require('./order')
 const normalizeAggregates = require('./aggregates')
 const normalizeGroupBy = require('./group-by')
+const normalizeClassification = require('./classification')
+const normalizeCollection = require('./collection')
 
 const {
-  normalizeCollection,
   normalizeDateFields,
   normalizeSpatialPredicate,
   normalizeLimit,
@@ -16,14 +17,14 @@ const {
   normalizeIdField
 
 } = require('./normalizeOptions')
-const normalizeClassification = require('./classification')
 
 function normalizeQueryOptions (options, features) {
   const {
-    where
+    where,
+    collection
   } = options
   const prepared = _.merge({}, options, {
-    collection: normalizeCollection(options, features),
+    collection: normalizeCollection(collection, features),
     idField: normalizeIdField(options, features),
     where: normalizeWhere(where),
     geometry: normalizeGeometry(options),

@@ -1,8 +1,6 @@
 const test = require('tape')
-const _ = require('lodash')
 
 const {
-  normalizeCollection,
   // TODO: Put these under test
   // normalizeDateFields,
   // normalizeSpatialPredicate,
@@ -15,26 +13,6 @@ const {
   normalizeSourceSR,
   normalizeIdField
 } = require('../../lib/normalize-query-options/normalizeOptions')
-
-test('normalize collection without metadata', t => {
-  t.plan(1)
-  const collection = normalizeCollection({ collection: {} })
-  t.equals(_.isObject(collection.metadata), true, 'collection has a metadata object')
-})
-
-test('normalize collection with metadata when features are supplied', t => {
-  t.plan(1)
-  const options = { collection: {} }
-  const features = [
-    {
-      properties: {
-        feature_id: 1
-      }
-    }
-  ]
-  const collection = normalizeCollection(options, features)
-  t.equals(Array.isArray(collection.metadata.fields), true, 'collection has a metadata fields array')
-})
 
 test('normalize SR with a wkid in the known list', t => {
   t.plan(1)

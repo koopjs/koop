@@ -5,7 +5,6 @@ const convertFromEsri = require('../geometry/convert-from-esri')
 const transformArray = require('../geometry/transform-array')
 const transformEnvelope = require('../geometry/transform-envelope')
 const projectCoordinates = require('../geometry/project-coordinates')
-const detectFieldsType = require('../detect-fields-type')
 const esriPredicates = {
   esriSpatialRelContains: 'ST_Contains',
   esriSpatialRelWithin: 'ST_Within',
@@ -13,20 +12,6 @@ const esriPredicates = {
   esriSpatialRelEnvelopeIntersects: 'ST_EnvelopeIntersects'
 }
 const wkidLookup = {}
-
-function normalizeCollection (options = {}, features = []) {
-  if (!options.collection) return undefined
-
-  // Make a new copy of the collection so we don't modify the original
-  const collection = _.cloneDeep(options.collection)
-  collection.metadata = collection.metadata || {}
-
-  // If fields haven't been set in metadata and there is at least one feature, determine
-  // field set from a feature properties
-  if (!collection.metadata.fields && features[0]) collection.metadata.fields = detectFieldsType(features[0].properties)
-
-  return collection
-}
 
 /**
  * Identify Date-type fields and explicitly add to dateFields array if outFields query param contains
@@ -229,7 +214,6 @@ function normalizeIdField (options, features = []) {
 }
 
 module.exports = {
-  normalizeCollection,
   normalizeDateFields,
   normalizeSpatialPredicate,
   normalizeLimit,
