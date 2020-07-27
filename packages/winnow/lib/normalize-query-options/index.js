@@ -7,9 +7,8 @@ const normalizeGroupBy = require('./group-by')
 const normalizeClassification = require('./classification')
 const normalizeCollection = require('./collection')
 const deriveDateFields = require('./date-fields')
-
+const normalizeSpatialPredicate = require('./spatial-predicate')
 const {
-  normalizeSpatialPredicate,
   normalizeLimit,
   normalizeGeometry,
   normalizeOffset,
