@@ -8,11 +8,12 @@ const normalizeClassification = require('./classification')
 const normalizeCollection = require('./collection')
 const deriveDateFields = require('./date-fields')
 const normalizeSpatialPredicate = require('./spatial-predicate')
+const normalizeOutputDataSpatialReference = require('./output-data-spatial-reference')
+
 const {
   normalizeLimit,
   normalizeGeometry,
   normalizeOffset,
-  normalizeProjection,
   normalizeIdField
 } = require('./normalizeOptions')
 
@@ -32,7 +33,7 @@ function normalizeQueryOptions (options, features) {
     aggregates: normalizeAggregates(options),
     groupBy: normalizeGroupBy(options),
     limit: normalizeLimit(options),
-    projection: normalizeProjection(options),
+    projection: normalizeOutputDataSpatialReference(options),
     classification: normalizeClassification(options)
   })
   prepared.offset = normalizeOffset(options)
