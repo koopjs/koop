@@ -6,54 +6,26 @@
 [![build status][travis-img]][travis-url]
 [![js-standard-style][standard-img]][standard-url]
 
-Koop is a highly-extensible Javascript toolkit for connecting incompatible spatial APIs. Out of the box it exposes a Node.js server that can translate [GeoJSON](http://geojson.org/) into the [Geoservices specification](https://geoservices.github.io) supported by the [ArcGIS](http://www.esri.com/arcgis/about-arcgis) family of products. Koop can be extended to translate data from any source to any API specification. Don't let API incompatiblity get in your way, start using one of Koop's data providers or [write your own](https://koopjs.github.io/docs/development/provider.html).
+Koop is a JavaScript toolkit for connecting incompatible spatial APIs. It exposes a Node.js web server that faciliates on-the-fly transformations of geospatial data from one format to another and delivers it to clients by HTTP.  Koop allows you to keep your data in its native format, while making it accessible in any format required.  Out-of-the-box, Koop can translates your data into the GeoServices specification supported by ArcGIS products. It's plugin architecture supports output in other formats including vector-tile, WMS, and plain old GeoJSON. Learn more at [https://koopjs.github.io](https://koopjs.github.io).
 
-See the docs at [https://koopjs.github.io](https://koopjs.github.io).
+Koop has a plugin-architecture to facilate custom deployments specific to your needs. "Provider" plugins to connect to novel data formats and translate to a common format (GeoJSON), while "output" plugins then transform that GeoJSON to other specifications. See a list of plugins already authored and maintained [here](https://koopjs.github.io/docs/available-plugins). If you have a novel datasource or require an as-yet unsupported output format, new plugins can be easily developed and integrated. See the [development section of the Koop docs](https://koopjs.github.io/docs/development).
 
 ![lots of geojson into feature services](https://user-images.githubusercontent.com/7832202/28444721-43eb6ea6-6d8d-11e7-8d56-3af46fd5bf88.png)
 
-## New @ Version 3.0
+## Repositories and versioning
+Due to its plugin architecture, Koop is a collection of modules stored in their own repositories. The core code-base, which all plugins connect to, is [koop-core](https://github.com/koopjs/koop-core). References to the "Koop version" refer to the version of this module. All plugins have their own version numbers.
 
-- Simplified Provider
-  - Route and Controller are Optional
-- FeatureServer Routes and Handler built in
-- Simplified Cache API
-  - e.g. [Koop-Cache-Memory](https://github.com/koopjs/koop-cache-memory)
-- New Plugin Type: Outputs
-  - e.g. [Koop-Output-Geoservices](https://github.com/koopjs/koop-output-geoservices)
-  - Handle a set of routes automatically
-  - Can call functions on Koop and Provider model
-- Simplified Server Configuration
-  - Koop now exposes its own Express server at `koop.server`
-
-## Extend Koop
-
-- **Providers**: adapt any third party API our data source to Koop
-  - Example: [Koop-Provider-Yelp](https://github.com/koopjs/koop-provider-yelp)
-  - Docs: https://koopjs.github.io/docs/usage/provider
-- **Outputs**: server data from Koop using any API format like Geoservices, SODA, or WFS
-  - Example: [Koop-Output-Geoservices](https://github.com/koopjs/koop-output-geoservices)
-- **Caches**: store, process and query GeoJSON
-  - Example: [Koop-Cache-Memory](https://github.com/koopjs/koop-cache-memory)
-- **Filesytems**: write exported data, tiles and more to disk or to cloud storage like AWS S3
-  - Example: [Koop-FileSystem-S3](https://github.com/koopjs/koop-filesystem-s3)
-- **Plugins**: extend the Koop API in any way
-  - Example [Koop-Queue](https://github.com/koopjs/koop-queue)
+## Issues
+Find a bug or want to request a new feature? If you are new to Koop and have an issue but are not sure which repository it should be attached to, feel free to post it [here](https://github.com/koopjs/koop/issues)..  Otherwise, post the issue to its originating repository.
 
 ## Resources
 
-* [Koop Documentation](https://koopjs.github.io/docs/basics)
+* [Koop Documentation](https://koopjs.github.io/)
 * [ArcGIS REST API Documentation](http://resources.arcgis.com/en/help/arcgis-rest-api/)
 * [ArcGIS for Developers](http://developers.arcgis.com)
 * [@esri](http://twitter.com/esri)
 
-## Issues
-
-Find a bug or want to request a new feature? Please let us know by submitting an [issue](https://github.com/koopjs/koop/issues).
-
 ## Contributing
-
-This repository is a collection of all the official Koop projects. All of the real coding will happen in the linked submodules, so there's no real need to clone or fork *this* repo. If you want to add a new data source to Koop, create a provider. If you want to add features to Koop itself check out [Koop-Core](https://github.com/koopjs/koop-core). Otherwise, check out the different plugin types.
 
 Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/Esri/contributing).
 
