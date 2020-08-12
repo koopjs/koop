@@ -1,4 +1,0 @@
-#!/bin/bash
-REPO="$1"
-NAME="$2"
-hub submodule add "$REPO" "providers/$NAME"
