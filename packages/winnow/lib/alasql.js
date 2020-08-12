@@ -5,8 +5,8 @@ const {
   calculateBounds
 } = require('@terraformer/spatial')
 const convertToEsri = require('./geometry/convert-to-esri')
-const convertFromEsri = require('./geometry/convert-from-esri')
-const transformArray = require('./geometry/transform-array')
+const convertFromEsri = require('./geometry/transfrom-esri-geometry-to-geojson-geometry')
+const transformArray = require('./geometry/transform-coordinate-array-to-polygon')
 const sql = require('alasql')
 const geohash = require('ngeohash')
 const centroid = require('@turf/centroid').default

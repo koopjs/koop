@@ -4,6 +4,8 @@ const transformCoordinates = require('./transform-coordinates')
 
 module.exports = function projectCoordinates (coordinates, options = {}) {
   const fromSR = options.fromSR || 'EPSG:4326'
+
+  // TODO: why is the default target spatial reference 3857?
   const toSR = options.toSR || 'EPSG:3857'
   if (fromSR === toSR) return coordinates
 

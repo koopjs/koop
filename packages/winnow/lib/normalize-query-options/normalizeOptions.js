@@ -1,33 +1,4 @@
 const _ = require('lodash')
-const convertFromEsri = require('../geometry/convert-from-esri')
-const transformArray = require('../geometry/transform-array')
-const transformEnvelope = require('../geometry/transform-envelope')
-const projectCoordinates = require('../geometry/project-coordinates')
-const normalizeGeometrySpatialReference = require('./geometry-filter-spatial-reference')
-const normalizeSourceSR = require('./source-data-spatial-reference')
-
-function normalizeGeometry (options) {
-  let geometry = options.geometry || options.bbox
-  if (!geometry) return // ABORT
-  let bboxCRS
-  if (typeof geometry === 'string') {
-    const split = geometry.split(',')
-    geometry = split.slice(0, 4).map(parseFloat)
-    bboxCRS = split[4]
-  }
-  if (Array.isArray(geometry)) {
-    geometry = transformArray(geometry)
-  } else if (geometry.xmin || geometry.xmin === 0) {
-    geometry = transformEnvelope(geometry)
-  } else if (geometry.x || geometry.rings || geometry.paths || geometry.points) {
-    geometry = convertFromEsri(geometry)
-  }
-  const inSR = normalizeGeometrySpatialReference(options)
-  const geometryFilterSR = bboxCRS || inSR
-  const sourceSR = normalizeSourceSR(options.sourceSR)
-  if (inSR) geometry.coordinates = projectCoordinates(geometry.coordinates, { fromSR: geometryFilterSR, toSR: sourceSR })
-  return geometry
-}
 
 /**
  * Normalize the limit option; defaults to undefined
@@ -79,7 +50,6 @@ function normalizeIdField (options, features = []) {
 
 module.exports = {
   normalizeLimit,
-  normalizeGeometry,
   normalizeOffset,
   normalizeIdField
 }

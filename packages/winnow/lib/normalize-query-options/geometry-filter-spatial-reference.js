@@ -7,10 +7,11 @@ const normalizeSpatialReference = require('./spatial-reference')
  * @param {object} options options object that may or may not have "geometry" and "inSR" properties
  * @returns {string} EPSG:<wkid> or srs WKT; defaults to EPSG:4326
  */
-function normalizeGeometryFilterSpatialReference ({ geometry, inSR } = {}) {
+function normalizeGeometryFilterSpatialReference (options = {}) {
+  const geometry = options.geometry || options.bbox
   const geometryEnvelopeSpatialReference = extractGeometryFilterSpatialReference(geometry)
 
-  const spatialReference = normalizeSpatialReference(geometryEnvelopeSpatialReference || inSR)
+  const spatialReference = normalizeSpatialReference(geometryEnvelopeSpatialReference || options.inSR)
 
   if (!spatialReference) return 'EPSG:4326'
   const { wkid, wkt } = spatialReference
