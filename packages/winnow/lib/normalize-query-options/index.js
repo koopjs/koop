@@ -10,10 +10,10 @@ const deriveDateFields = require('./date-fields')
 const normalizeSpatialPredicate = require('./spatial-predicate')
 const normalizeOutputDataSpatialReference = require('./output-data-spatial-reference')
 const normalizeGeometryFilter = require('./geometry-filter')
+const normalizeIdField = require('./id-field')
 const {
   normalizeLimit,
-  normalizeOffset,
-  normalizeIdField
+  normalizeOffset
 } = require('./normalizeOptions')
 
 function normalizeQueryOptions (options, features) {
