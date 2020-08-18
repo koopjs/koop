@@ -16,4 +16,9 @@ describe('Tests for routeJoiner', function () {
     const fullRoute = routeJoiner('hello/world/', '', undefined, null)
     fullRoute.should.equal('/hello/world')
   })
+
+  it('create route with fragments that are "/" ', function () {
+    const fullRoute = routeJoiner('hello/world/', '/', 'foo')
+    fullRoute.should.equal('/hello/world/foo')
+  })
 })

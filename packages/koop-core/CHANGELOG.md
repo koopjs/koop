@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Typo in route joiner logic
+
 ## [4.0.0] - 2020-06-30
 ### Changed
 * End support for Node < 6; remove Babel compilation to `/dist` directory and point package.json directly to non-compiled source files
