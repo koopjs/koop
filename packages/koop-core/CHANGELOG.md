@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [4.0.1] - 2020-08-18
 ### Fixed
 * Typo in route joiner logic
 
@@ -923,6 +923,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[4.0.1]: https://github.com/koopjs/koop-core/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/koopjs/koop-core/compare/v3.19.1...v4.0.0
 [3.19.1]: https://github.com/koopjs/koop-core/compare/v3.19.0...v3.19.1
 [3.19.0]: https://github.com/koopjs/koop-core/compare/v3.18.0...v3.19.0
