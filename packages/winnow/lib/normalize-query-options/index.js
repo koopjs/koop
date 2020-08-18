@@ -11,17 +11,16 @@ const normalizeSpatialPredicate = require('./spatial-predicate')
 const normalizeOutputDataSpatialReference = require('./output-data-spatial-reference')
 const normalizeGeometryFilter = require('./geometry-filter')
 const normalizeIdField = require('./id-field')
-const {
-  normalizeLimit,
-  normalizeOffset
-} = require('./normalizeOptions')
+const normalizeLimit = require('./limit')
+const normalizeOffset = require('./offset')
 
 function normalizeQueryOptions (options, features) {
   const {
     where,
     collection
   } = options
-  const prepared = _.merge({}, options, {
+
+  const normalizedOptions = _.merge({}, options, {
     collection: normalizeCollection(collection, features),
     idField: normalizeIdField(options, features),
     where: normalizeWhere(where),
@@ -35,10 +34,10 @@ function normalizeQueryOptions (options, features) {
     projection: normalizeOutputDataSpatialReference(options),
     classification: normalizeClassification(options)
   })
-  prepared.offset = normalizeOffset(options)
-  prepared.dateFields = deriveDateFields(prepared.collection, prepared.fields)
+  normalizedOptions.offset = normalizeOffset(normalizedOptions)
+  normalizedOptions.dateFields = deriveDateFields(normalizedOptions.collection, normalizedOptions.fields)
 
-  return prepared
+  return normalizedOptions
 }
 
 module.exports = normalizeQueryOptions
