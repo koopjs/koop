@@ -1,6 +1,7 @@
 const test = require('tape')
 const Winnow = require('../..')
-const trees = require('./fixtures/street-trees-102645.json')
+const trees = require('./fixtures/trees.json')
+const trees102645 = require('./fixtures/street-trees-102645.json')
 const caStatePlaneWKT = `PROJCS["NAD_1983_StatePlane_California_V_FIPS_0405_Feet",
 GEOGCS["GCS_North_American_1983",
     DATUM["North_American_Datum_1983",
@@ -47,7 +48,56 @@ test('compiling with several and statements', t => {
   }
 })
 
-test('prepare query with projection, sourceProjection, and geometry, then execute filter on non-4326 source data', (t) => {
+test('prepare query with where, then execute filter', (t) => {
+  t.plan(1)
+  const options = {
+    where: 'Common_Name=\'SOUTHERN MAGNOLIA\''
+  }
+  const query = Winnow.prepareQuery(options)
+  const filtered = query(trees)
+  t.equal(filtered.features.length, 5846)
+})
+
+test('prepare query with geometry filter, then execute filter', (t) => {
+  t.plan(1)
+  const options = {
+    geometry: {
+      xmin: -118.15738230943678,
+      ymin: 34.179713563470166,
+      xmax: -118.15718114376067,
+      ymax: 34.18019950919287,
+      spatialReference: {
+        wkid: 4326
+      }
+    }
+  }
+  const query = Winnow.prepareQuery(options)
+  const filtered = query(trees)
+  t.equal(filtered.features.length, 4)
+})
+
+test('prepare query with geometry filter and projection, then execute filter', (t) => {
+  t.plan(3)
+  const options = {
+    geometry: {
+      xmin: -118.15738230943678,
+      ymin: 34.179713563470166,
+      xmax: -118.15718114376067,
+      ymax: 34.18019950919287,
+      spatialReference: {
+        wkid: 4326
+      }
+    },
+    projection: 3857
+  }
+  const query = Winnow.prepareQuery(options)
+  const filtered = query(trees)
+  t.equal(filtered.features.length, 4)
+  t.equal(filtered.features[0].geometry.coordinates[0], -13153212.867809525)
+  t.equal(filtered.features[0].geometry.coordinates[1], 4052968.7363319118)
+})
+
+test('prepare query with geometry filter and sourceSR, then execute filter on non-4326 source data', (t) => {
   t.plan(3)
   const options = {
     geometry: {
@@ -62,49 +112,7 @@ test('prepare query with projection, sourceProjection, and geometry, then execut
     sourceSR: caStatePlaneWKT
   }
   const query = Winnow.prepareQuery(options)
-  const filtered = query(trees)
-  t.equal(filtered.features.length, 3)
-  t.equal(filtered.features[0].geometry.coordinates[0], 6514083.848741564)
-  t.equal(filtered.features[0].geometry.coordinates[1], 1887939.4934484742)
-})
-
-test('prepare query with projection, sourceProjection, and geometry, then execute non-4326 filter on non-4326 source data', (t) => {
-  t.plan(3)
-  const options = {
-    geometry: {
-      xmin: 6514066.3001615712419152,
-      ymin: 1887820.5006760144606233,
-      xmax: 6514127.4193187793716788,
-      ymax: 1887997.4401315276045352,
-      spatialReference: {
-        wkt: caStatePlaneWKT
-      }
-    },
-    sourceSR: caStatePlaneWKT
-  }
-  const query = Winnow.prepareQuery(options)
-  const filtered = query(trees)
-  t.equal(filtered.features.length, 3)
-  t.equal(filtered.features[0].geometry.coordinates[0], 6514083.848741564)
-  t.equal(filtered.features[0].geometry.coordinates[1], 1887939.4934484742)
-})
-
-test('query with projection, sourceProjection, and geometry, then execute filter on non-4326 source data', (t) => {
-  t.plan(3)
-  const options = {
-    geometry: {
-      xmin: -118.15738230943678,
-      ymin: 34.179713563470166,
-      xmax: -118.15718114376067,
-      ymax: 34.18019950919287,
-      spatialReference: {
-        wkid: 4326
-      }
-    },
-    sourceSR: caStatePlaneWKT
-  }
-
-  const filtered = Winnow.query(trees, options)
+  const filtered = query(trees102645)
   t.equal(filtered.features.length, 3)
   t.equal(filtered.features[0].geometry.coordinates[0], 6514083.848741564)
   t.equal(filtered.features[0].geometry.coordinates[1], 1887939.4934484742)

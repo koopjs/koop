@@ -1,34 +1,37 @@
 const _ = require('lodash')
 const sql = require('./alasql')
-const Query = require('./sql-query')
+const {
+  create: createSqlStatement,
+  params: createSqlParams
+} = require('./sql-query')
 const normalizeQueryOptions = require('./normalize-query-options')
+const normalizeQueryInput = require('./normalize-query-input')
 const { finishQuery } = require('./executeQuery')
 
 module.exports = function (options) {
-  options = normalizeQueryOptions(options)
-  const statement = Query.create(options)
-  const query = sql.compile(statement)
-  const params = [null]
-  if (options.projection) params.push(options.projection)
-  if (options.geometryPrecision) params.push(options.geometryPrecision)
-  if (options.geometry) params.push(options.geometry)
+  const normalizedOptions = normalizeQueryOptions(options)
+  const paramsSplicer = prepareParamsSplicer(normalizedOptions)
+  const sqlStatement = createSqlStatement(normalizedOptions)
+  const query = sql.compile(sqlStatement)
 
   return function (input) {
-    /* Prepared queries can take either a collection object,
-     a feature array, or a single feature.
-     So detection is a little more complex */
-    let features
     if (input.features) {
-      options.collection = _.omit(input, 'features')
-      features = input.features
-    } else if (input.length) {
-      features = input
-    } else {
-      // coerce to an array if this is a single feature
-      features = [input]
+      normalizedOptions.collection = _.omit(input, 'features')
     }
-    params[0] = features
+    const features = normalizeQueryInput(input)
+    const params = paramsSplicer(features)
     const filtered = query(params)
-    return finishQuery(filtered, options)
+    return finishQuery(filtered, normalizedOptions)
+  }
+}
+
+function prepareParamsSplicer (options) {
+  const params = createSqlParams('$features$', options)
+  const featuresIndex = params.findIndex(param => {
+    return Array.isArray(param) && param[0] === '$features$'
+  })
+  return function setFeatures (features) {
+    params[featuresIndex] = features
+    return params
   }
 }
