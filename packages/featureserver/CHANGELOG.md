@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.24.0] - 09-08-2020
+### Changed
+* Bumped Winnow version
+
 ## [2.23.0] - 05-13-2020
 ### Added
 * Added Multi versions of all geojson shapes so they will be recognized and translated to esri geometries
@@ -396,6 +400,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.24.0]: https://github.com/koopjs/featureserver/compare/v2.23.0...v2.24.0
 [2.23.0]: https://github.com/koopjs/featureserver/compare/v2.22.1...v2.23.0
 [2.22.1]: https://github.com/koopjs/featureserver/compare/v2.22.0...v2.22.1
 [2.22.0]: https://github.com/koopjs/featureserver/compare/v2.21.2...v2.22.0
