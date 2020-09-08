@@ -23,8 +23,8 @@ test('Should return prepared query', t => {
   const query = proxyquire(modulePath, {
     './normalize-query-input': normalizeQueryInput,
     './normalize-query-options': normalizeQueryOptions,
-    './sql-query': sqlQueryHelpers,
-    './executeQuery': executeQuery,
+    './sql-query-builder': sqlQueryHelpers,
+    './execute-query': executeQuery,
     './alasql': alaSql
   })
 

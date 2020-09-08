@@ -1,5 +1,5 @@
 'use strict'
-const Geometry = require('./geometry')
+const Geometry = require('../geometry')
 const Where = require('./where')
 const Select = require('./select')
 const Order = require('./order')
@@ -19,7 +19,7 @@ function create (options) {
   if (options.groupBy && groupBy) query += groupBy
   if (options.order || options.orderByFields) query += order
   if (options.limit) query += ` LIMIT ${options.limit}`
-  if (options.offset) query += ` OFFSET ${options.offset}` // handled in executeQuery.js
+  if (options.offset) query += ` OFFSET ${options.offset}` // handled in execute-query.js
   return query
 }
 

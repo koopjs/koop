@@ -1,5 +1,5 @@
 const test = require('tape')
-const compose = require('../../lib/select/compose')
+const compose = require('../../../../lib/sql-query-builder/select/inline-functions-fragment')
 
 test('With a single string function', t => {
   const composed = compose(['round'], 'geometry')

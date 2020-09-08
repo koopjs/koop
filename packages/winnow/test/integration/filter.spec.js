@@ -150,7 +150,11 @@ test('With an esri style envelope', t => {
       }
     }
   }
-  run('trees', options, 29744, t)
+  const fixtures = _.cloneDeep(require('./fixtures/trees.json'))
+  const features = fixtures.features
+  const filtered = winnow.query(features, options)
+  t.equal(filtered.length, 29744)
+  t.end()
 })
 
 test('With an esri style envelope and features with missing geometry', t => {

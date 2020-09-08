@@ -20,8 +20,8 @@ test('Should normalize and execute standard query', t => {
   const query = proxyquire(modulePath, {
     './normalize-query-input': spys.normalizeQueryInput,
     './normalize-query-options': spys.normalizeQueryOptions,
-    './sql-query': spys.sqlQueryHelpers,
-    './executeQuery': spys.executeQuery
+    './sql-query-builder': spys.sqlQueryHelpers,
+    './execute-query': spys.executeQuery
   })
 
   const result = query({ metadata: { foo: 'bar' }, features: ['features'] }, { hello: 'world' })
@@ -53,8 +53,8 @@ test('Should normalize and execute breaks-classification query', t => {
   const query = proxyquire(modulePath, {
     './normalize-query-input': spys.normalizeQueryInput,
     './normalize-query-options': spys.normalizeQueryOptions,
-    './sql-query': spys.sqlQueryHelpers,
-    './executeQuery': spys.executeQuery
+    './sql-query-builder': spys.sqlQueryHelpers,
+    './execute-query': spys.executeQuery
   })
 
   const result = query({ metadata: { foo: 'bar' }, features: ['features'] }, { hello: 'world', classification: {} })
@@ -69,7 +69,7 @@ test('Should normalize and execute breaks-classification query', t => {
   t.end()
 })
 
-test.only('Should normalize and execute aggregation query', t => {
+test('Should normalize and execute aggregation query', t => {
   const spys = sinon.spy({
     normalizeQueryInput: function (input) { return ['features'] },
     normalizeQueryOptions: function (options) { return options },
@@ -86,8 +86,8 @@ test.only('Should normalize and execute aggregation query', t => {
   const query = proxyquire(modulePath, {
     './normalize-query-input': spys.normalizeQueryInput,
     './normalize-query-options': spys.normalizeQueryOptions,
-    './sql-query': spys.sqlQueryHelpers,
-    './executeQuery': spys.executeQuery
+    './sql-query-builder': spys.sqlQueryHelpers,
+    './execute-query': spys.executeQuery
   })
 
   const result = query({ metadata: { foo: 'bar' }, features: ['features'] }, { hello: 'world', aggregates: {} })

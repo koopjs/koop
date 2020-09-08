@@ -3,10 +3,10 @@ const sql = require('./alasql')
 const {
   create: createSqlStatement,
   params: createSqlParams
-} = require('./sql-query')
+} = require('./sql-query-builder')
 const normalizeQueryOptions = require('./normalize-query-options')
 const normalizeQueryInput = require('./normalize-query-input')
-const { finishQuery } = require('./executeQuery')
+const { finishQuery } = require('./execute-query')
 
 module.exports = function (options) {
   const normalizedOptions = normalizeQueryOptions(options)

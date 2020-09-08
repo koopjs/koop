@@ -1,10 +1,10 @@
 const _ = require('lodash')
 const {
   create: createSqlStatement
-} = require('./sql-query')
+} = require('./sql-query-builder')
 const normalizeQueryOptions = require('./normalize-query-options')
 const normalizeQueryInput = require('./normalize-query-input')
-const { breaksQuery, aggregateQuery, standardQuery } = require('./executeQuery')
+const { breaksQuery, aggregateQuery, standardQuery } = require('./execute-query')
 
 module.exports = function (input, options = {}) {
   if (input.features) {

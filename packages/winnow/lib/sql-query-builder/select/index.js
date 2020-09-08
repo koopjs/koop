@@ -1,6 +1,6 @@
-const aggregates = require('./aggregates')
-const createGeometryClause = require('./geometry').createClause
-const createFieldsClause = require('./fields').createClause
+const aggregates = require('./aggregate-select')
+const createGeometryClause = require('./geometry-fragment').createClause
+const createFieldsClause = require('./fields-fragment').createClause
 
 function createClause (options) {
   if (options.aggregates) return aggregates(options.aggregates, options.groupBy, options.esri)

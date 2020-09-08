@@ -1,4 +1,4 @@
-const compose = require('./compose')
+const compose = require('./inline-functions-fragment')
 function createClause (options = {}) {
   const funcs = []
   if (options.projection) funcs.push({ project: true })
