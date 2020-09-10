@@ -1,6 +1,6 @@
 {
   "name": "featureserver",
-  "version": "2.24.0",
+  "version": "2.24.1",
   "description": "*An open source implementation of the GeoServices specification*",
   "main": "dist/index.js",
   "directories": {
@@ -24,7 +24,7 @@
     "lodash": "^4.12.0",
     "moment": "^2.13.0",
     "terraformer-arcgis-parser": "^1.0.4",
-    "winnow": "^2.0.0"
+    "winnow": "^2.0.1"
   },
   "devDependencies": {
     "async": "^3.0.1",
