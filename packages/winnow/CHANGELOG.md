@@ -2,12 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.0.1] - 09-10-2020
+### Fixed
+* Version bump for flopped release and publish
+
+## [2.0.0] - 09-08-2020
 ### Changed
 * Drop support for older Node by remove Babel compile.
 * Remove `src` directory and replace with `lib`.
 * Move methods from `index.js` to their own files.
-* Rename a few files for clarity and to prevent collisions caused by moving methods out of `index.js`.
+* Rename/reorganize files for clarity and to prevent collisions caused by moving methods out of `index.js`.
 
 ## [1.16.13] - 06-16-2020
 ### Changed
@@ -336,6 +340,8 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[2.0.1]: https://github.com/featureserver/winnow/compare/v2.0.0...v2.0.1
+[2.0.0]: https://github.com/featureserver/winnow/compare/v1.16.13...v2.0.0
 [1.16.13]: https://github.com/featureserver/winnow/compare/v1.16.12...v1.16.13
 [1.16.12]: https://github.com/featureserver/winnow/compare/v1.16.11...v1.16.12
 [1.16.11]: https://github.com/featureserver/winnow/compare/v1.16.10...v1.16.11
