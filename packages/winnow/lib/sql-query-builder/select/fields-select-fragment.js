@@ -3,7 +3,7 @@
  * @param {object} options
  * @param {string} idField a string that identifies which property can be used as the OBJECTID
  */
-function createClause (options = {}, idField = null) {
+function createFieldsSelectFragment (options = {}, idField = null) {
   // Default clause
   let clause = 'type, properties as properties'
 
@@ -25,4 +25,4 @@ function createClause (options = {}, idField = null) {
   return clause
 }
 
-module.exports = { createClause }
+module.exports = createFieldsSelectFragment

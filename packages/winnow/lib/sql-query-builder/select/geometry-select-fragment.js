@@ -1,5 +1,5 @@
 const compose = require('./inline-functions-fragment')
-function createClause (options = {}) {
+function createGeometrySelectFragment (options = {}) {
   const funcs = []
   if (options.projection) funcs.push({ project: true })
   if (options.geometryPrecision) funcs.push({ reducePrecision: true })
@@ -8,4 +8,4 @@ function createClause (options = {}) {
   return funcs.length ? compose(funcs, 'geometry') + ' as geometry' : 'geometry'
 }
 
-module.exports = { createClause }
+module.exports = createGeometrySelectFragment

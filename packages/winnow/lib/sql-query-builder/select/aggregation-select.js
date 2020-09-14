@@ -1,4 +1,4 @@
-module.exports = function (aggregates, groupBy, esri) {
+function createAggregationSelect (aggregates, groupBy, esri) {
   const selector = esri ? 'attributes' : 'properties'
   const select = aggregates.reduce((sql, agg) => {
     let func
@@ -20,3 +20,5 @@ function addGroupBy (select, groupBy, selector) {
 
   return `${select.slice(0, -1)}, ${fields} FROM ? `
 }
+
+module.exports = createAggregationSelect

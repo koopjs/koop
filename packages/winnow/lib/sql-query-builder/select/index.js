@@ -1,17 +1,21 @@
-const aggregates = require('./aggregate-select')
-const createGeometryClause = require('./geometry-fragment').createClause
-const createFieldsClause = require('./fields-fragment').createClause
+const createAggregationSelect = require('./aggregation-select')
+const createGeometrySelectFragment = require('./geometry-select-fragment')
+const createFieldsSelectFragment = require('./fields-select-fragment')
 
-function createClause (options) {
-  if (options.aggregates) return aggregates(options.aggregates, options.groupBy, options.esri)
+function createSelectSql (options = {}) {
+  if (options.aggregates) return createAggregationSelect(options.aggregates, options.groupBy, options.esri)
 
-  var fieldsClause = createFieldsClause(options)
-
-  if (options.returnGeometry === false) {
-    return (`SELECT ${fieldsClause} FROM ?`)
-  }
-
-  return (`SELECT ${fieldsClause}, ${createGeometryClause(options)} FROM ?`)
+  return createStandardSelect(options)
 }
 
-module.exports = { createClause }
+function createStandardSelect (options = {}) {
+  const fieldsList = createFieldsSelectFragment(options)
+
+  if (options.returnGeometry === false) {
+    return (`SELECT ${fieldsList} FROM ?`)
+  }
+
+  return (`SELECT ${fieldsList}, ${createGeometrySelectFragment(options)} FROM ?`)
+}
+
+module.exports = createSelectSql
