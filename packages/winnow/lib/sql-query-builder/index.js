@@ -6,21 +6,21 @@ const Order = require('./order')
 const GroupBy = require('./groupBy')
 
 function create (options) {
-  let query = createSelectSql(options)
+  let baseSqlStatement = createSelectSql(options)
   const where = Where.createClause(options)
   const geomFilter = Geometry.createClause(options)
   const order = Order.createClause(options)
   const groupBy = GroupBy.createClause(options)
-  if (options.where || options.geometry) query += ' WHERE '
-  if (options.where) query += where
-  if (options.geometry && !where) query += geomFilter
-  if (options.geometry && where) query += ` AND ${geomFilter}`
+  if (options.where || options.geometry) baseSqlStatement += ' WHERE '
+  if (options.where) baseSqlStatement += where
+  if (options.geometry && !where) baseSqlStatement += geomFilter
+  if (options.geometry && where) baseSqlStatement += ` AND ${geomFilter}`
   // if (options.aggregates) return query
-  if (options.groupBy && groupBy) query += groupBy
-  if (options.order || options.orderByFields) query += order
-  if (options.limit) query += ` LIMIT ${options.limit}`
-  if (options.offset) query += ` OFFSET ${options.offset}` // handled in execute-query.js
-  return query
+  if (options.groupBy && groupBy) baseSqlStatement += groupBy
+  if (options.order || options.orderByFields) baseSqlStatement += order
+  if (options.limit) baseSqlStatement += ` LIMIT ${options.limit}`
+  if (options.offset) baseSqlStatement += ` OFFSET ${options.offset}` // handled in execute-query.js
+  return baseSqlStatement
 }
 
 function params (features, options) {

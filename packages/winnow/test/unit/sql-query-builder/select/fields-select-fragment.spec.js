@@ -2,17 +2,14 @@ const test = require('tape')
 const createFieldsSelectFragment = require('../../../../lib/sql-query-builder/select/fields-select-fragment')
 
 test('createFieldsSelectFragment: no specification', t => {
-  const fieldsFragment = createFieldsSelectFragment({
-    dateFields: []
-  })
+  const fieldsFragment = createFieldsSelectFragment({})
   t.equal(fieldsFragment, 'type, properties as properties')
   t.end()
 })
 
 test('createFieldsSelectFragment: fields option', t => {
   const fieldsFragment = createFieldsSelectFragment({
-    fields: ['foo', 'bar'],
-    dateFields: []
+    fields: ['foo', 'bar']
   })
   t.equal(fieldsFragment, 'pick(properties, "foo,bar") as properties')
   t.end()
@@ -61,9 +58,7 @@ test('createFieldsSelectFragment: fields, dateFields, returnIdsOnly, idField as 
 
 test('createFieldsSelectFragment: toEsri option', t => {
   const fieldsFragment = createFieldsSelectFragment({
-    toEsri: true,
-    dateFields: [],
-    idField: null
+    toEsri: true
   })
   t.equal(fieldsFragment, 'esriFy(properties, geometry, "", "true", "null") as attributes')
   t.end()
@@ -72,8 +67,6 @@ test('createFieldsSelectFragment: toEsri option', t => {
 test('createFieldsSelectFragment: toEsri and fields options', t => {
   const fieldsFragment = createFieldsSelectFragment({
     toEsri: true,
-    dateFields: [],
-    idField: null,
     fields: ['foo', 'bar']
   })
   t.equal(fieldsFragment, 'pickAndEsriFy(properties, geometry, "foo,bar", "", "false", "null") as attributes')
@@ -84,8 +77,7 @@ test('createFieldsSelectFragment: toEsri, fields, dateFields options', t => {
   const fieldsFragment = createFieldsSelectFragment({
     toEsri: true,
     fields: ['foo', 'bar', 'hello', 'world'],
-    dateFields: ['foo', 'hello'],
-    idField: null
+    dateFields: ['foo', 'hello']
   })
   t.equal(fieldsFragment, 'pickAndEsriFy(properties, geometry, "foo,bar,hello,world", "foo,hello", "false", "null") as attributes')
   t.end()
@@ -96,7 +88,6 @@ test('createFieldsSelectFragment: toEsri, fields, dateFields, returnIdsOnly opti
     toEsri: true,
     fields: ['foo', 'bar', 'hello', 'world'],
     dateFields: ['foo', 'hello'],
-    idField: null,
     returnIdsOnly: true
   })
   t.equal(fieldsFragment, 'pickAndEsriFy(properties, geometry, "foo,bar,hello,world", "foo,hello", "true", "null") as attributes')

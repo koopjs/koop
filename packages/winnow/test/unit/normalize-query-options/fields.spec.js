@@ -19,7 +19,7 @@ test('normalize-options, fields: remove Geoservices-style "*" when present', t =
   t.plan(1)
 
   const normalizedFields = normalizeFields({ fields: '*' })
-  t.equal(normalizedFields, undefined)
+  t.deepEquals(normalizedFields, undefined)
 })
 
 test('normalize-options, fields: convert string to array', t => {
