@@ -18,6 +18,8 @@ const reducePrecision = require('./geometry/reduce-precision')
 let hashFunction
 try {
   hashFunction = require('farmhash').hash32
+  // testing the require isnt enough. on heroku the binary for farmhash does not work and queries totally break.
+  hashFunction('test')
 } catch (e) {
   hashFunction = require('string-hash')
 }

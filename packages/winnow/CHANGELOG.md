@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Farmhash was not working on Heroku, now can gracefully fallback on systems without a working Farmhash binary.
+
 ## [2.0.1] - 09-10-2020
 ### Fixed
 * Version bump for flopped release and publish
