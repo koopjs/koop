@@ -1,13 +1,13 @@
 'use strict'
 const Geometry = require('../geometry')
-const Where = require('./where')
+const createWhereClause = require('./where')
 const createSelectSql = require('./select')
 const Order = require('./order')
 const GroupBy = require('./groupBy')
 
 function create (options) {
   let baseSqlStatement = createSelectSql(options)
-  const where = Where.createClause(options)
+  const where = createWhereClause(options)
   const geomFilter = Geometry.createClause(options)
   const order = Order.createClause(options)
   const groupBy = GroupBy.createClause(options)

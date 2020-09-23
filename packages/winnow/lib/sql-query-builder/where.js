@@ -8,6 +8,11 @@ const operatorInversions = {
   '<=': '>',
   '<': '>='
 }
+// RegExp for name-first predicate, e.g "properties->`OBJECTID` = 1234"
+const fieldFirstObjectIdPredicateRegex = /(properties|attributes)->`OBJECTID` (=|<|>|<=|>=) ([0-9]+)/g
+
+// RegExp for value-first predicate, e.g "1234 = properties->`OBJECTID`""
+const valueFirstObjectIdPredicateRegex = /([0-9]+) (=|<|>|<=|>=) (properties|attributes)->`OBJECTID`/g
 
 /**
  * Convert an expression node to its string representation.
@@ -159,57 +164,35 @@ function traverse (node, options) {
  * @param  {string} options winnow options
  * @return {string}         SQL where clause
  */
-function createClause (options) {
-  options = options || {}
-  if (!options.where) return ''
+function createWhereClause (options = {}) {
+  const { where } = options
+  if (!where) return ''
 
   // AST parsing requires a complete SQL.
-  const whereTree = parser.parse('SELECT * WHERE ' + options.where).where
-  const whereTransform = traverse(whereTree, options)
-  return translateObjectIdFragments(whereTransform, options)
-}
+  const { where: whereTree } = parser.parse(`SELECT * WHERE ${where}`)
+  const whereClause = traverse(whereTree, options)
 
-/**
- * If the WHERE contains fragments with OBJECTID, but the data doesn't contain an OBJECTID field,
- * and no substitution is made with the "idField" property, we must replace these WHERE fragments
- * with use a user-defined function that will calculate the OBJECTID on the fly, do the appropriate
- * comparison, and return the resulting boolean value
- * @param {string} input
- * @param {object} options
- */
-function translateObjectIdFragments (input, options = {}) {
-  let where = input
-  const { idField } = options
-
-  // Check if OBJECTID is one of the GeoJSON properties
-  const metadataObjectIdField = _.get(options, 'collection.metadata.fields', []).find(field => { return field.name === 'OBJECTID' })
-
-  // If the WHERE includes predicates with OBJECTID, but no OBJECTID is defined on the data,
-  // and no `idField` has been assigned, we have to use a user-defined function to generate
-  // an on-the-fly OBJECTID for comparison to the request's value
-  if (where.includes('OBJECTID') && !metadataObjectIdField && !idField) {
-    // RegExp for name-first predicate, e.g "properties->`OBJECTID` = 1234"
-    const regexOid1st = /(properties|attributes)->`OBJECTID` (=|<|>|<=|>=) ([0-9]+)/g
-
-    // RegExp for value-first predicate, e.g "1234 = properties->`OBJECTID`""
-    const regexOid2nd = /([0-9]+) (=|<|>|<=|>=) (properties|attributes)->`OBJECTID`/g
-
-    where = where.replace(regexOid1st, 'hashedObjectIdComparator($1, geometry, $3, \'$2\')=true').replace(regexOid2nd, replacer)
+  if (shouldReplaceObjectIdPredicates(options)) {
+    return replaceObjectIdPredicates(whereClause)
   }
-  return where
+  return whereClause
 }
 
 /**
- * String replace function receiving regex parameters
- * @param {string} match
- * @param {string} value - first matched group
- * @param {string} operator - second matched group
- * @param {string} parentProperty - third matched group
- * @param {*} offset
- * @param {string} string
+ * if the where clause includes OBJECTID predicate, but the dataset doesn't include an OBJECTID,
+ * assume it is due to ArcGIS clients querying a Koop dataset that had no idField defined and thus created
+ * and OBJECTID field on the fly from the hashed feature. As a result, the OBJECTID predicate must be
+ * replaced by an inline function that (1) hashes the feature and (2) executes the comparison
  */
-function replacer (match, value, operator, parentProperty, offset, string) {
-  return `hashedObjectIdComparator(${parentProperty}, geometry, ${value}, '${operatorInversions[operator]}')=true`
+function shouldReplaceObjectIdPredicates ({ where, idField }) {
+  return where.includes('OBJECTID') && !idField
 }
 
-module.exports = { createClause }
+function replaceObjectIdPredicates (where) {
+  return where.replace(fieldFirstObjectIdPredicateRegex, 'hashedObjectIdComparator($1, geometry, $3, \'$2\')=true')
+    .replace(valueFirstObjectIdPredicateRegex, (match, value, operator, parentProperty, offset, string) => {
+      return `hashedObjectIdComparator(${parentProperty}, geometry, ${value}, '${operatorInversions[operator]}')=true`
+    })
+}
+
+module.exports = createWhereClause
