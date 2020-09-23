@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.0.2] - 09-23-2020
 ### Fixed
 * Farmhash was not working on Heroku, now can gracefully fallback on systems without a working Farmhash binary.
 
@@ -344,6 +344,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[2.0.2]: https://github.com/featureserver/winnow/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/featureserver/winnow/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/featureserver/winnow/compare/v1.16.13...v2.0.0
 [1.16.13]: https://github.com/featureserver/winnow/compare/v1.16.12...v1.16.13
