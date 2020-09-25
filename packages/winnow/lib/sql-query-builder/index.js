@@ -1,5 +1,3 @@
-'use strict'
-const Geometry = require('../geometry')
 const createWhereClause = require('./where')
 const createSelectSql = require('./select')
 const Order = require('./order')
@@ -7,14 +5,11 @@ const GroupBy = require('./groupBy')
 
 function create (options) {
   let baseSqlStatement = createSelectSql(options)
-  const where = createWhereClause(options)
-  const geomFilter = Geometry.createClause(options)
+  const whereClause = createWhereClause(options)
   const order = Order.createClause(options)
   const groupBy = GroupBy.createClause(options)
-  if (options.where || options.geometry) baseSqlStatement += ' WHERE '
-  if (options.where) baseSqlStatement += where
-  if (options.geometry && !where) baseSqlStatement += geomFilter
-  if (options.geometry && where) baseSqlStatement += ` AND ${geomFilter}`
+  baseSqlStatement = `${baseSqlStatement}${whereClause}`
+
   // if (options.aggregates) return query
   if (options.groupBy && groupBy) baseSqlStatement += groupBy
   if (options.order || options.orderByFields) baseSqlStatement += order

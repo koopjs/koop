@@ -159,16 +159,8 @@ function traverse (node, options) {
   }
 }
 
-/**
- * Creates a viable SQL where clause from a passed in SQL (from a url "where" param)
- * @param  {string} options winnow options
- * @return {string}         SQL where clause
- */
-function createWhereClause (options = {}) {
+function translateSqlWhere (options) {
   const { where } = options
-  if (!where) return ''
-
-  // AST parsing requires a complete SQL.
   const { where: whereTree } = parser.parse(`SELECT * WHERE ${where}`)
   const whereClause = traverse(whereTree, options)
 
@@ -195,4 +187,4 @@ function replaceObjectIdPredicates (where) {
     })
 }
 
-module.exports = createWhereClause
+module.exports = translateSqlWhere

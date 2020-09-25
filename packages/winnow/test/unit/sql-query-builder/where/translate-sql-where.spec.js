@@ -1,103 +1,102 @@
-'use strict'
 const test = require('tape')
-const createWhereClause = require('../../../lib/sql-query-builder/where')
-const normalizeQueryOptions = require('../../../lib/normalize-query-options')
+const translateSqlWhere = require('../../../../lib/sql-query-builder/where/translate-sql-where')
+const normalizeQueryOptions = require('../../../../lib/normalize-query-options')
 
-test('Transform a simple equality predicate', t => {
+test('translateSqlWhere: transform a simple equality predicate', t => {
   t.plan(1)
   const options = {
     where: 'foo=\'bar\''
   }
   const normalizeOpts = normalizeQueryOptions(options)
-  const whereFragment = createWhereClause(normalizeOpts)
+  const whereFragment = translateSqlWhere(normalizeOpts)
   t.equals(whereFragment, 'properties->`foo` = \'bar\'')
 })
 
-test('Transform a simple but inverse predicate', t => {
+test('translateSqlWhere: transform a simple but inverse predicate', t => {
   t.plan(1)
   const options = {
     where: '\'bar\'=foo'
   }
   const normalizeOpts = normalizeQueryOptions(options)
-  const whereFragment = createWhereClause(normalizeOpts)
+  const whereFragment = translateSqlWhere(normalizeOpts)
   t.equals(whereFragment, '\'bar\' = properties->`foo`')
 })
 
-test('Transform a simple predicate', t => {
+test('translateSqlWhere: transform a simple predicate', t => {
   t.plan(1)
   const options = {
     where: '\'bar\'=foo'
   }
   const normalizeOpts = normalizeQueryOptions(options)
-  const whereFragment = createWhereClause(normalizeOpts)
+  const whereFragment = translateSqlWhere(normalizeOpts)
   t.equals(whereFragment, '\'bar\' = properties->`foo`')
 })
 
-test('Transform a simple predicate to a form required for Esri JSON', t => {
+test('translateSqlWhere: transform a simple predicate to a form required for Esri JSON', t => {
   t.plan(1)
   const options = {
     where: 'foo=\'bar\'',
     esri: true
   }
   const normalizeOpts = normalizeQueryOptions(options)
-  const whereFragment = createWhereClause(normalizeOpts)
+  const whereFragment = translateSqlWhere(normalizeOpts)
   t.equals(whereFragment, 'attributes->`foo` = \'bar\'')
 })
 
-test('Transform a simple but inverse predicate to Esri flavor', t => {
+test('translateSqlWhere: transform a simple but inverse predicate to Esri flavor', t => {
   t.plan(1)
   const options = {
     where: '\'bar\'=foo',
     esri: true
   }
   const normalizeOpts = normalizeQueryOptions(options)
-  const whereFragment = createWhereClause(normalizeOpts)
+  const whereFragment = translateSqlWhere(normalizeOpts)
   t.equals(whereFragment, '\'bar\' = attributes->`foo`')
 })
 
-test('Transform a predicate with OBJECTID and no metadata fields to user-defined function', t => {
+test('translateSqlWhere: transform a predicate with OBJECTID and no metadata fields to user-defined function', t => {
   t.plan(1)
   const options = {
     where: 'OBJECTID=1234'
   }
   const normalizeOpts = normalizeQueryOptions(options)
-  const whereFragment = createWhereClause(normalizeOpts)
+  const whereFragment = translateSqlWhere(normalizeOpts)
   t.equals(whereFragment, 'hashedObjectIdComparator(properties, geometry, 1234, \'=\')=true')
 })
 
-test('Transform a predicate with OBJECTID and no metadata fields to Esri flavor with user-defined function', t => {
+test('translateSqlWhere: transform a predicate with OBJECTID and no metadata fields to Esri flavor with user-defined function', t => {
   t.plan(1)
   const options = {
     where: 'OBJECTID=1234',
     esri: true
   }
   const normalizeOpts = normalizeQueryOptions(options)
-  const whereFragment = createWhereClause(normalizeOpts)
+  const whereFragment = translateSqlWhere(normalizeOpts)
   t.equals(whereFragment, 'hashedObjectIdComparator(attributes, geometry, 1234, \'=\')=true')
 })
 
-test('Transform an inverse predicate with OBJECTID and no metadata fields to user-defined function', t => {
+test('translateSqlWhere: transform an inverse predicate with OBJECTID and no metadata fields to user-defined function', t => {
   t.plan(1)
   const options = {
     where: '1234>OBJECTID'
   }
   const normalizeOpts = normalizeQueryOptions(options)
-  const whereFragment = createWhereClause(normalizeOpts)
+  const whereFragment = translateSqlWhere(normalizeOpts)
   t.equals(whereFragment, 'hashedObjectIdComparator(properties, geometry, 1234, \'<=\')=true')
 })
 
-test('Transform an inverse predicate with OBJECTID and no metadata fields to Esri flavor with user-defined function', t => {
+test('translateSqlWhere: transform an inverse predicate with OBJECTID and no metadata fields to Esri flavor with user-defined function', t => {
   t.plan(1)
   const options = {
     where: '1234>OBJECTID',
     esri: true
   }
   const normalizeOpts = normalizeQueryOptions(options)
-  const whereFragment = createWhereClause(normalizeOpts)
+  const whereFragment = translateSqlWhere(normalizeOpts)
   t.equals(whereFragment, 'hashedObjectIdComparator(attributes, geometry, 1234, \'<=\')=true')
 })
 
-test('Transform a predicate with OBJECTID and metadata fields that define the OBJECTID', t => {
+test('translateSqlWhere: transform a predicate with OBJECTID and metadata fields that define the OBJECTID', t => {
   t.plan(1)
   const options = {
     where: 'OBJECTID=1234',
@@ -108,6 +107,6 @@ test('Transform a predicate with OBJECTID and metadata fields that define the OB
     }
   }
   const normalizeOpts = normalizeQueryOptions(options)
-  const whereFragment = createWhereClause(normalizeOpts)
+  const whereFragment = translateSqlWhere(normalizeOpts)
   t.equals(whereFragment, 'properties->`OBJECTID` = 1234')
 })
