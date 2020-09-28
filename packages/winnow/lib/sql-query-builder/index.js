@@ -1,21 +1,16 @@
 const createWhereClause = require('./where')
 const createSelectSql = require('./select')
-const Order = require('./order')
-const GroupBy = require('./groupBy')
+const createOrderByClause = require('./order-by')
+const createGroupByClause = require('./group-by')
 
 function create (options) {
-  let baseSqlStatement = createSelectSql(options)
-  const whereClause = createWhereClause(options)
-  const order = Order.createClause(options)
-  const groupBy = GroupBy.createClause(options)
-  baseSqlStatement = `${baseSqlStatement}${whereClause}`
-
-  // if (options.aggregates) return query
-  if (options.groupBy && groupBy) baseSqlStatement += groupBy
-  if (options.order || options.orderByFields) baseSqlStatement += order
-  if (options.limit) baseSqlStatement += ` LIMIT ${options.limit}`
-  if (options.offset) baseSqlStatement += ` OFFSET ${options.offset}` // handled in execute-query.js
-  return baseSqlStatement
+  const select = createSelectSql(options)
+  const where = createWhereClause(options)
+  const orderBy = createOrderByClause(options)
+  const groupBy = createGroupByClause(options)
+  const limit = options.limit ? ` LIMIT ${options.limit}` : ''
+  const offset = options.offset ? ` OFFSET ${options.offset}` : ''
+  return `${select}${where}${groupBy}${orderBy}${limit}${offset}`
 }
 
 function params (features, options) {
