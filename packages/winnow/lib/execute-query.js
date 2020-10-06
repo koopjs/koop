@@ -1,5 +1,5 @@
 'use strict'
-const sql = require('./alasql')
+const sql = require('./filter-and-transform')
 const Query = require('./sql-query-builder')
 const { calculateClassBreaks, calculateUniqueValueBreaks } = require('./generateBreaks/index')
 

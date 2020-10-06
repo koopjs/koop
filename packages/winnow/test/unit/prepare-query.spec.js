@@ -14,7 +14,7 @@ test('Should return prepared query', t => {
   const executeQuery = sinon.spy({
     finishQuery: function () { return 'return finished query result' }
   })
-  const alaSql = sinon.spy({
+  const filterAndTransform = sinon.spy({
     compile: function () {
       return preparedQuerySpy
     }
@@ -25,7 +25,7 @@ test('Should return prepared query', t => {
     './normalize-query-options': normalizeQueryOptions,
     './sql-query-builder': sqlQueryHelpers,
     './execute-query': executeQuery,
-    './alasql': alaSql
+    './filter-and-transform': filterAndTransform
   })
 
   // Get a prepared query function

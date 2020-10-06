@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Use environment variable to force javascript hashing of feature for OBJECTID. OBJECTID_FEATURE_HASH=javascript
+
 ## [2.0.2] - 09-23-2020
 ### Fixed
 * Farmhash was not working on Heroku, now can gracefully fallback on systems without a working Farmhash binary.

@@ -4,25 +4,16 @@ const {
   intersects,
   calculateBounds
 } = require('@terraformer/spatial')
-const convertToEsri = require('./geometry/convert-to-esri')
-const convertFromEsri = require('./geometry/transfrom-esri-geometry-to-geojson-geometry')
-const transformArray = require('./geometry/transform-coordinate-array-to-polygon')
+const convertToEsri = require('../geometry/convert-to-esri')
+const convertFromEsri = require('../geometry/transfrom-esri-geometry-to-geojson-geometry')
+const transformArray = require('../geometry/transform-coordinate-array-to-polygon')
 const sql = require('alasql')
 const geohash = require('ngeohash')
 const centroid = require('@turf/centroid').default
 const _ = require('lodash')
-const projectCoordinates = require('./geometry/project-coordinates')
-const reducePrecision = require('./geometry/reduce-precision')
-
-// Try to require farmhash, as it is an optional depenecy we can fall back to JavaScript only hashing library
-let hashFunction
-try {
-  hashFunction = require('farmhash').hash32
-  // testing the require isnt enough. on heroku the binary for farmhash does not work and queries totally break.
-  hashFunction('test')
-} catch (e) {
-  hashFunction = require('string-hash')
-}
+const projectCoordinates = require('../geometry/project-coordinates')
+const reducePrecision = require('../geometry/reduce-precision')
+const hashFunction = require('./hash-function')
 
 sql.MAXSQLCACHESIZE = 0
 

@@ -264,6 +264,10 @@ const filter = winnow.prepareSql(statement)
 filter(geojson)
 // returns all the features that match the query
 ```
+
+## OBJECTID generation
+When option `toEsri` is `true`, winnow will check that features have a unique-identifier field. This is field is flagged with the `idField` option.  If not present, winnow will look for a field named `OBJECTID` and use it as the unique-identifier by default.  If no `OBJECTID` is present, winnow creates one by generating a numeric hash of the feature. By default, winnow uses FarmHash for hashing. Some cloud deployments currently have trouble executing Farmhash (Heroku, 2020-09-30), so you can use native Javascript hashing as an alternative. Simply set the environment variable `OBJECTID_FEATURE_HASH=javascript`.
+
 # Issues
 
 Find a bug or want to request a new feature? Please let us know by submitting an [issue](https://github.com/FeatureServer/winnow/issues).

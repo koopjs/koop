@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const sql = require('./alasql')
+const filterAndTransform = require('./filter-and-transform')
 const {
   create: createSqlStatement,
   params: createSqlParams
@@ -12,7 +12,7 @@ module.exports = function (options) {
   const normalizedOptions = normalizeQueryOptions(options)
   const paramsSplicer = prepareParamsSplicer(normalizedOptions)
   const sqlStatement = createSqlStatement(normalizedOptions)
-  const query = sql.compile(sqlStatement)
+  const query = filterAndTransform.compile(sqlStatement)
 
   return function (input) {
     if (input.features) {

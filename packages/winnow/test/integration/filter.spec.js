@@ -528,11 +528,14 @@ test('with a between query', t => {
 })
 
 test('with a OBJECTID query on data that requires dynamic OBJECTID generation', t => {
+  t.plan(1)
   const options = {
     where: 'OBJECTID=1138516379',
     toEsri: true
   }
-  run('snow', options, 1, t)
+  const fixtures = _.cloneDeep(require('./fixtures/snow.json'))
+  const filtered = winnow.query(fixtures, options)
+  t.equal(filtered.features.length, 1)
 })
 
 test('with null dates in data source', t => {

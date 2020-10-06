@@ -1,5 +1,5 @@
-const alasql = require('./alasql')
+const filterAndTransform = require('./filter-and-transform')
 
 module.exports = function (statement, params) {
-  return alasql(statement, params)
+  return filterAndTransform(statement, params)
 }
