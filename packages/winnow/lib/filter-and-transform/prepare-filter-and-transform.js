@@ -1,4 +1,14 @@
-function prepare (inParams) {
+const filterAndTransform = require('./filter-and-transform')
+
+module.exports = function (statement) {
+  const query = filterAndTransform.compile(statement)
+  return function (params) {
+    const normalizedParams = normalizeParams(params)
+    return query(normalizedParams)
+  }
+}
+
+function normalizeParams (inParams) {
   let params
   // If this is just a passed in feature
   if (!inParams.length) params = [[inParams]]
@@ -18,5 +28,3 @@ function isEsriFeatures (candidate) {
   if (feature.attributes || feature.geometry) return true
   else return false
 }
-
-module.exports = { prepare }

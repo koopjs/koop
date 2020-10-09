@@ -1,5 +1,5 @@
 const test = require('tape')
-const filterAndTransform = require('../../../lib/filter-and-transform')
+const { filterAndTransform } = require('../../../lib/filter-and-transform')
 const polygonFilter = {
   type: 'Polygon',
   coordinates: [

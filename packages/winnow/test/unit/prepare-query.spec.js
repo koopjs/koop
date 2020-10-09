@@ -4,7 +4,9 @@ const proxyquire = require('proxyquire')
 const modulePath = '../../lib/prepare-query'
 
 test('Should return prepared query', t => {
-  const preparedQuerySpy = sinon.spy(function (input) { return 'results' })
+  const compiledQuerySpy = sinon.spy((params) => {
+    return 'results'
+  })
   const normalizeQueryInput = sinon.spy(function () { return ['features'] })
   const normalizeQueryOptions = sinon.spy(function (options) { return options })
   const sqlQueryHelpers = sinon.spy({
@@ -16,7 +18,7 @@ test('Should return prepared query', t => {
   })
   const filterAndTransform = sinon.spy({
     compile: function () {
-      return preparedQuerySpy
+      return compiledQuerySpy
     }
   })
 
@@ -25,7 +27,9 @@ test('Should return prepared query', t => {
     './normalize-query-options': normalizeQueryOptions,
     './sql-query-builder': sqlQueryHelpers,
     './execute-query': executeQuery,
-    './filter-and-transform': filterAndTransform
+    './filter-and-transform': {
+      filterAndTransform
+    }
   })
 
   // Get a prepared query function
@@ -45,5 +49,7 @@ test('Should return prepared query', t => {
   t.ok(executeQuery.finishQuery.calledOnce)
   t.deepEquals(executeQuery.finishQuery.firstCall.args, ['results', { hello: 'world', collection: { metadata: { foo: 'bar' } } }])
   t.equals(result, 'return finished query result')
+  t.ok(compiledQuerySpy.calledOnce)
+  t.deepEquals(compiledQuerySpy.firstCall.args[0][0], '$features$')
   t.end()
 })

@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const filterAndTransform = require('./filter-and-transform')
+const { filterAndTransform } = require('./filter-and-transform')
 const {
   create: createSqlStatement,
   params: createSqlParams
