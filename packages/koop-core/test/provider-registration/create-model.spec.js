@@ -1,5 +1,6 @@
+/* eslint-env mocha */
 /* eslint handle-callback-err: "off" */
-const should = require('should') // eslint-disable-line
+const should = require('should')
 const sinon = require('sinon')
 require('should-sinon')
 const _ = require('lodash')
@@ -8,72 +9,118 @@ const createModel = require('../../lib/provider-registration/create-model')
 const koopMock = { test: 'value' }
 
 describe('Tests for create-model', function () {
+  describe('model pull method', () => {
+    it('should work in callback form, all methods called', (done) => {
+      const beforeSpy = sinon.spy((req, beforeCallback) => {
+        beforeCallback()
+      })
+
+      const afterSpy = sinon.spy(function (req, data, callback) {
+        callback(null, data)
+      })
+
+      const cacheRetrieveSpy = sinon.spy((key, query, callback) => {
+        callback(new Error('no cache'))
+      })
+
+      const cacheUpsertSpy = sinon.spy(() => {})
+
+      const getDataSpy = sinon.spy(function (req, callback) {
+        callback(null, { metadata: {} })
+      })
+
+      class Model extends providerMock.Model {}
+      Model.prototype.getData = getDataSpy
+      const model = createModel({ ProviderModel: Model, koop: koopMock }, {
+        cache: {
+          retrieve: cacheRetrieveSpy,
+          upsert: cacheUpsertSpy
+        },
+        before: beforeSpy,
+        after: afterSpy
+      })
+
+      model.pull({ url: 'domain/test-provider', params: {}, query: {} }, function (err, data) {
+        cacheRetrieveSpy.calledOnce.should.equal(true)
+        beforeSpy.calledOnce.should.equal(true)
+        getDataSpy.calledOnce.should.equal(true)
+        afterSpy.calledOnce.should.equal(true)
+        cacheUpsertSpy.calledOnce.should.equal(true)
+        done()
+      })
+    })
+  })
+
   describe('createKey', function () {
-    it('should create cache-key as provider name', () => {
+    it('should create cache-key as provider name', async () => {
       const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
         callback(null, {})
       })
-      const pullSpy = sinon.spy()
+      const pullSpy = sinon.spy(() => {})
 
       // create a model with mocked cache "retrieve" function
       const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
-          retrieve: retrieveSpy
+          retrieve: retrieveSpy,
+          upsert: () => {}
         }
       })
 
-      model.pull({ url: 'domain/test-provider', params: {}, query: {} }, pullSpy)
-
+      await model.pull({ url: 'domain/test-provider', params: {}, query: {} }, pullSpy)
+      pullSpy.should.be.calledOnce()
+      pullSpy.firstCall.args.length.should.equal(2)
+      pullSpy.firstCall.args.should.deepEqual([null, {}])
       retrieveSpy.should.be.calledOnce()
       retrieveSpy.firstCall.args.length.should.equal(3)
       retrieveSpy.firstCall.args[0].should.equal('test-provider::data')
       retrieveSpy.firstCall.args[1].should.be.an.Object().and.be.empty()
       retrieveSpy.firstCall.args[2].should.be.an.Function()
-      pullSpy.should.be.calledOnce()
-      pullSpy.firstCall.args.length.should.equal(2)
-      should.not.exist(pullSpy.firstCall.args[0])
-      pullSpy.firstCall.args[1].should.be.an.Object().and.be.empty()
     })
 
-    it('should create cache-key as provider name and concenated url params', () => {
+    it('should create cache-key as provider name and concenated url params', async () => {
       const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
         callback(null, {})
       })
-      const pullSpy = sinon.spy()
+      const pullSpy = sinon.spy(() => {})
 
       // create a model with mocked cache "retrieve" function
       const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
-          retrieve: retrieveSpy
+          retrieve: retrieveSpy,
+          upsert: () => {}
         }
       })
-      model.pull({ url: 'domain/test-provider', params: { host: 'host-param', id: 'id-param', layer: 'layer-param' }, query: {} }, pullSpy)
 
+      await model.pull({ url: 'domain/test-provider', params: { host: 'host-param', id: 'id-param', layer: 'layer-param' }, query: {} }, pullSpy)
+
+      pullSpy.should.be.calledOnce()
+      pullSpy.firstCall.args.length.should.equal(2)
+      should.not.exist(pullSpy.firstCall.args[0])
+      pullSpy.firstCall.args[1].should.be.an.Object().and.be.empty()
       retrieveSpy.should.be.calledOnce()
       retrieveSpy.firstCall.args.length.should.equal(3)
       retrieveSpy.firstCall.args[0].should.equal('test-provider::host-param::id-param::layer-param::data')
       retrieveSpy.firstCall.args[1].should.be.an.Object().and.be.empty()
       retrieveSpy.firstCall.args[2].should.be.an.Function()
-      pullSpy.should.be.calledOnce()
-      pullSpy.firstCall.args.length.should.equal(2)
-      should.not.exist(pullSpy.firstCall.args[0])
-      pullSpy.firstCall.args[1].should.be.an.Object().and.be.empty()
     })
 
-    it('should create cache-key from Model defined createKey function', () => {
+    it('should create cache-key from Model defined createKey function', async () => {
       const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
         callback(null, {})
       })
       const pullSpy = sinon.spy()
 
+      class Model extends providerMock.Model {
+        createKey () { return 'custom-key' }
+      }
       // create a model with mocked cache "retrieve" function
-      const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
+      const model = createModel({ ProviderModel: Model, koop: koopMock }, {
         cache: {
-          retrieve: retrieveSpy
+          retrieve: retrieveSpy,
+          upsert: () => {}
         }
       })
-      model.createKey = function () { return 'custom-key' }
-      model.pull({ url: 'domain/test-provider', query: {} }, pullSpy)
+      await model.pull({ url: 'domain/test-provider', query: {} }, pullSpy)
       retrieveSpy.should.be.calledOnce()
       retrieveSpy.firstCall.args.length.should.equal(3)
       retrieveSpy.firstCall.args[0].should.equal('custom-key::data')
@@ -97,7 +144,12 @@ describe('Tests for create-model', function () {
     }
 
     it('should attach auth methods when auth plugin is registered with Koop', () => {
-      const model = createModel({ ProviderModel: providerMock.Model, namespace: 'test-provider', koop: koopMock })
+      const model = createModel({ ProviderModel: providerMock.Model, namespace: 'test-provider', koop: koopMock }, {
+        cache: {
+          retrieve: () => {},
+          upsert: () => {}
+        }
+      })
       model.should.have.property('authorize').and.be.a.Function()
       model.should.have.property('authenticate').and.be.a.Function()
       model.should.have.property('authenticationSpecification').and.deepEqual({ provider: 'test-provider' })
@@ -105,24 +157,32 @@ describe('Tests for create-model', function () {
   })
 
   describe('transformation functions', function () {
-    it('before function should modify request object', () => {
+    it('before function should modify request object', async () => {
       let beforeReq
-      const beforeSpy = sinon.spy(function (req, next) {
+      const beforeSpy = sinon.spy((req, beforeCallback) => {
         // capture args because the req gets mutated
         beforeReq = _.cloneDeep(req)
         req.query.hello = 'world'
-        next()
+        beforeCallback()
       })
+
       const getDataSpy = sinon.spy(function (req, callback) {
         callback(null, { metadata: {} })
       })
+      class Model extends providerMock.Model {}
+      Model.prototype.getData = getDataSpy
 
-      const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
-        cache: { retrieve: (key, query, callback) => { callback(new Error('no cache')) } }
+      const model = createModel({ ProviderModel: Model, koop: koopMock }, {
+        cache: {
+          retrieve: (key, query, callback) => {
+            callback(new Error('no cache'))
+          },
+          upsert: () => {}
+        },
+        before: beforeSpy
       })
-      model.before = beforeSpy
-      model.getData = getDataSpy
-      model.pull({ url: 'domain/test-provider', params: {}, query: {} }, function (err, data) {})
+
+      await model.pull({ url: 'domain/test-provider', params: {}, query: {} }, function (err, data) {})
       beforeSpy.should.be.calledOnce()
       beforeSpy.firstCall.args.length.should.equal(2)
       beforeSpy.firstCall.args[0].should.be.an.Object()
@@ -135,7 +195,7 @@ describe('Tests for create-model', function () {
       getDataSpy.firstCall.args[1].should.be.a.Function()
     })
 
-    it('after function should modify request and data object', () => {
+    it('after function should modify request and data object', async () => {
       let getDataArgs
       let afterSpyArgs
       const getDataSpy = sinon.spy(function (req, callback) {
@@ -143,6 +203,10 @@ describe('Tests for create-model', function () {
         getDataArgs = _.cloneDeep(arguments)
         callback(null, { metadata: {} })
       })
+
+      class Model extends providerMock.Model {}
+      Model.prototype.getData = getDataSpy
+
       const afterSpy = sinon.spy(function (req, data, callback) {
         // capture args because the req and data get mutated
         afterSpyArgs = _.cloneDeep(arguments)
@@ -151,13 +215,17 @@ describe('Tests for create-model', function () {
         callback(null, data)
       })
       const pullCallbackSpy = sinon.spy(function (err, data) {})
-      const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
-        cache: { retrieve: (key, query, callback) => { callback(new Error('no cache')) } }
+      const model = createModel({ ProviderModel: Model, koop: koopMock }, {
+        cache: {
+          retrieve: (key, query, callback) => {
+            callback(new Error('no cache'))
+          },
+          upsert: () => {}
+        },
+        after: afterSpy
       })
-      model.getData = getDataSpy
-      model.after = afterSpy
-      model.pull({ url: 'domain/test-provider', params: {}, query: {} }, pullCallbackSpy)
 
+      await model.pull({ url: 'domain/test-provider', params: {}, query: {} }, pullCallbackSpy)
       getDataSpy.should.be.calledOnce()
       getDataSpy.firstCall.args.length.should.equal(2)
       getDataArgs[0].should.deepEqual({ url: 'domain/test-provider', params: {}, query: {} })
@@ -193,7 +261,8 @@ describe('Tests for create-model', function () {
       // create a model with mocked cache "retrieve" function
       const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
-          retrieve: retrieveSpy
+          retrieve: retrieveSpy,
+          upsert: () => {}
         }
       })
 
@@ -219,7 +288,8 @@ describe('Tests for create-model', function () {
       // create a model with mocked cache "retrieve" function
       const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
-          retrieve: retrieveSpy
+          retrieve: retrieveSpy,
+          upsert: () => {}
         }
       })
 
@@ -249,7 +319,8 @@ describe('Tests for create-model', function () {
       // create a model with mocked cache "retrieve" function
       const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
-          retrieve: retrieveSpy
+          retrieve: retrieveSpy,
+          upsert: () => {}
         }
       })
 
@@ -281,7 +352,8 @@ describe('Tests for create-model', function () {
       // create a model with mocked cache "retrieve" function
       const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
-          retrieve: retrieveSpy
+          retrieve: retrieveSpy,
+          upsert: () => {}
         }
       })
 
@@ -305,7 +377,8 @@ describe('Tests for create-model', function () {
       // create a model with mocked cache "retrieve" function
       const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
-          retrieve: retrieveSpy
+          retrieve: retrieveSpy,
+          upsert: () => {}
         }
       })
 
@@ -337,7 +410,8 @@ describe('Tests for create-model', function () {
       // create a model with mocked cache "retrieve" function
       const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
-          retrieve: retrieveSpy
+          retrieve: retrieveSpy,
+          upsert: () => {}
         }
       })
 

@@ -11,7 +11,16 @@ describe('Tests for ProviderOutputRoute', function () {
       get: () => {},
       post: () => {}
     })
-    const provider = new ProviderRegistration({ provider: mockProviderPlugin, koop: { outputs: [mockOutputPlugin] } })
+    const provider = new ProviderRegistration({
+      provider: mockProviderPlugin,
+      koop: {
+        outputs: [mockOutputPlugin],
+        cache: {
+          retrieve: () => {},
+          upsert: () => {}
+        }
+      }
+    })
     const providerOutputRoute = ProviderOutputRoute.create({
       ...provider,
       ...provider.outputs[0].routes[0],

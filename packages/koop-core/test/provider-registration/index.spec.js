@@ -14,7 +14,11 @@ describe('Tests for Provider', function () {
     })
     const koopMock = {
       server: serverSpy,
-      outputs: [mockOutputPlugin]
+      outputs: [mockOutputPlugin],
+      cache: {
+        retrieve: () => {},
+        upsert: () => {}
+      }
     }
     const providerRegistration = ProviderRegistration.create({ koop: koopMock, provider: { ...mockProviderPlugin, hosts: true } })
     providerRegistration.should.be.instanceOf(ProviderRegistration)

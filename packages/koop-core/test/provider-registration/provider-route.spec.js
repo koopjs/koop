@@ -9,7 +9,16 @@ describe('Tests for ProviderRoute', function () {
     const serverSpy = sinon.spy({
       get: () => {}
     })
-    const provider = new Provider({ provider: mockProviderPlugin, koop: { outputs: [] } })
+    const provider = new Provider({
+      provider: mockProviderPlugin,
+      koop: {
+        outputs: [],
+        cache: {
+          retrieve: () => {},
+          upsert: () => {}
+        }
+      }
+    })
     const providerRoute = ProviderRoute.create({
       ...provider,
       ...provider.routes[0],

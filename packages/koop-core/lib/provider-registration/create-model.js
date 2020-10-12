@@ -1,42 +1,46 @@
+const { promisify } = require('util')
 const _ = require('lodash')
-const before = (req, next) => { next() }
+const before = (req, callback) => { callback() }
 const after = (req, data, callback) => { callback(null, data) }
 
 module.exports = function createModel ({ ProviderModel, koop, namespace }, options = {}) {
   class Model extends ProviderModel {
     constructor (koop, options) {
-      // Merging the koop object into options to preserve backward compatibility; consider removing in Koop 4.x
+      // Merging the koop object into options to preserve backward compatibility; consider removing in future major release
       const modelOptions = _.chain(options).omit(options, 'cache', 'before', 'after').assign(koop).value()
       super(modelOptions)
       // Provider constructor's may assign values to this.cache and this.options; so check before assigning defaults
       if (!this.cache) this.cache = options.cache || koop.cache
       if (!this.options) this.options = modelOptions
-      this.before = options.before
-      this.after = options.after
+      this.before = promisify(options.before || before)
+      this.after = promisify(options.after || after)
+      this.cacheRetrieve = promisify(this.cache.retrieve).bind(this.cache)
+      this.cacheUpsert = promisify(this.cache.upsert).bind(this.cache)
+      this.getData = promisify(this.getData).bind(this)
     }
 
-    pull (req, callback) {
+    async pull (req, callback) {
       const key = (this.createKey) ? this.createKey(req) : createKey(req)
       const dataKey = `${key}::data`
-      this.before = this.before || before.bind(this)
-      this.after = this.after || after.bind(this)
-      this.cache.retrieve(dataKey, req.query, (err, cached) => {
-        if (!err && isFresh(cached)) {
-          callback(null, cached)
-        } else {
-          this.before(req, (err) => {
-            if (err) return callback(err)
-            this.getData(req, (err, data) => {
-              if (err) return callback(err)
-              this.after(req, data, (err, data) => {
-                if (err) return callback(err)
-                callback(null, data)
-                if (data.ttl) this.cache.upsert(dataKey, data, { ttl: data.ttl })
-              })
-            })
-          })
+
+      try {
+        const cached = await this.cacheRetrieve(dataKey, req.query)
+        if (isFresh(cached)) return callback(null, cached)
+      } catch (err) {
+        if (process.env.KOOP_LOG_LEVEL === 'debug') {
+          console.log(err)
         }
-      })
+      }
+      try {
+        // TODO: authentication should go here
+        await this.before(req)
+        const providerGeojson = await this.getData(req)
+        const afterFuncGeojson = await this.after(req, providerGeojson)
+        this.cacheUpsert(dataKey, providerGeojson, { ttl: providerGeojson.ttl })
+        callback(null, afterFuncGeojson)
+      } catch (err) {
+        callback(err)
+      }
     }
 
     // TODO: the pullLayer() and the pullCatalog() are very similar to the pull()
