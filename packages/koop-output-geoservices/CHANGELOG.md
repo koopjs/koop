@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.0.2] - 2020-10-15
 ### Fixed
 * Only normalize error if it exists.
 
@@ -74,6 +74,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.0.2]: https://github.com/koopjs/koop-featureserver-plugin/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/koopjs/koop-featureserver-plugin/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/koopjs/koop-featureserver-plugin/compare/v1.5.2...v2.0.0
 [1.5.2]: https://github.com/koopjs/koop-featureserver-plugin/compare/v1.5.1...v1.5.2
