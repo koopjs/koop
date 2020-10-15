@@ -1,5 +1,5 @@
 {
-  "name": "koop-output-geoservices",
+  "name": "@koopjs/output-geoservices",
   "version": "2.0.1",
   "description": "Wraps https://github.com/featureserver/featureserver as a plugin for koop",
   "main": "index.js",
