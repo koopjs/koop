@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Only normalize error if it exists.
+
 ## [2.0.1] - 2020-10-15
 ### Fixed
 * Ensure error codes are numbers before being passed on to handler; string codes result in unhandled errors.

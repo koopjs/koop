@@ -12,8 +12,10 @@ function Geoservices () {}
  */
 function pullDataAndRoute (model, req, res) {
   model.pull(req, function (error, data) {
-    const err = normalizeError(error)
-    if (err) res.status(err.code || 500).json({ error: err.message })
+    if (error) {
+      const err = normalizeError(error)
+      res.status(err.code || 500).json({ error: err.message })
+    }
     else FeatureServer.route(req, res, data)
   })
 }
