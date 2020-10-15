@@ -1,48 +1,24 @@
-const {
-  within,
-  contains,
-  intersects,
-  calculateBounds
-} = require('@terraformer/spatial')
+const { within, contains, intersects, envelopeIntersects, hashedObjectIdComparator } = require('./filters')
+const createIntHash = require('./helpers/create-integer-hash')
 const convertToEsri = require('../geometry/convert-to-esri')
-const convertFromEsri = require('../geometry/transfrom-esri-geometry-to-geojson-geometry')
-const transformArray = require('../geometry/transform-coordinate-array-to-polygon')
 const sql = require('alasql')
 const geohash = require('ngeohash')
 const centroid = require('@turf/centroid').default
 const _ = require('lodash')
 const projectCoordinates = require('../geometry/project-coordinates')
 const reducePrecision = require('../geometry/reduce-precision')
-const hashFunction = require('./hash-function')
 
 sql.MAXSQLCACHESIZE = 0
 
-sql.fn.ST_Within = function (feature = {}, filterGeom = {}) {
-  if (!(feature && feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
-  return within(feature, filterGeom)
-}
+sql.fn.ST_Within = within
 
-sql.fn.ST_Contains = function (feature = {}, filterGeom = {}) {
-  if (!(feature && feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
-  return contains(filterGeom, feature)
-}
+sql.fn.ST_Contains = contains
 
-sql.fn.ST_Intersects = function (feature = {}, filterGeom = {}) {
-  if (!feature) return false
-  if (!(feature.type || feature.coordinates)) feature = convertFromEsri(feature) // TODO: remove ? temporary esri geometry conversion
-  if (!(feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
-  if (feature.type === 'Point') return sql.fn.ST_Contains(feature, filterGeom)
-  return intersects(filterGeom, feature)
-}
+sql.fn.ST_Intersects = intersects
 
-sql.fn.ST_EnvelopeIntersects = function (feature = {}, filterGeom = {}) {
-  if (!feature) return false
-  if (!(feature.type || feature.coordinates)) feature = convertFromEsri(feature) // TODO: remove ? temporary esri geometry conversion
-  if (!(feature.type && feature.coordinates && feature.coordinates.length > 0)) return false
-  if (feature.type === 'Point') return sql.fn.ST_Contains(feature, filterGeom)
-  const envelope = transformArray(calculateBounds(feature))
-  return intersects(filterGeom, envelope)
-}
+sql.fn.ST_EnvelopeIntersects = envelopeIntersects
+
+sql.fn.hashedObjectIdComparator = hashedObjectIdComparator
 
 sql.fn.geohash = function (geometry = {}, precision) {
   if (!geometry || !geometry.type || !geometry.coordinates) return
@@ -142,27 +118,4 @@ function esriFy (properties, geometry, dateFields, requiresObjectId, idField) {
   return properties
 }
 
-/**
- *
- */
-sql.fn.hashedObjectIdComparator = function (properties, geometry, objectId, operator) {
-  const hash = createIntHash(JSON.stringify({ properties, geometry }))
-  if (operator === '=' && hash === objectId) return true
-  else if (operator === '>' && hash > objectId) return true
-  else if (operator === '<' && hash < objectId) return true
-  else if (operator === '>=' && hash >= objectId) return true
-  else if (operator === '<=' && hash <= objectId) return true
-  return false
-}
-
-/**
- * Create integer hash in range of 0 - 2147483647 from string
- * @param {*} inputStr - any string
- */
-function createIntHash (inputStr) {
-  // Hash to 32 bit unsigned integer
-  const hash = hashFunction(inputStr)
-  // Normalize to range of postive values of signed integer
-  return Math.round((hash / 4294967295) * (2147483647))
-}
 module.exports = sql

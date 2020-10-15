@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Fixes a bug in the "envelope-intersects" operation.  Research indicates that the Esri envelope-intersects operation should check that an "Envelope of Query Geometry Intersects Envelope of Target Geometry" (see [here](http://resources.esri.com/help/9.3/ArcGISDesktop/ArcObjects/esriGeoDatabase/esriSpatialRelEnum.htm)).
+
+### Added
+* Adds support for the `!=` operator in the hashed OBJECTID comparison.
+
 ## [2.1.0] - 10-06-2020
 ### Added
 * Use environment variable to force javascript hashing of feature for OBJECTID. OBJECTID_FEATURE_HASH=javascript

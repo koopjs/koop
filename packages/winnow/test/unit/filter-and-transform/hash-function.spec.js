@@ -1,6 +1,6 @@
 const test = require('tape')
 const proxyquire = require('proxyquire')
-const modulePath = '../../../lib/filter-and-transform/hash-function'
+const modulePath = '../../../lib/filter-and-transform/helpers/hash-function'
 const stub = {
   'string-hash': () => { return 'string-hash' },
   'farmhash': { // eslint-disable-line
