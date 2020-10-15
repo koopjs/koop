@@ -14,7 +14,7 @@ const middleware = require('./lib/middleware')
 const Events = require('events')
 const Util = require('util')
 const path = require('path')
-const geoservices = require('koop-output-geoservices')
+const geoservices = require('@koopjs/output-geoservices')
 const LocalFS = require('koop-localfs')
 
 function Koop (config) {
