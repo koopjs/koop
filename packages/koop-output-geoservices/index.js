@@ -11,7 +11,8 @@ function Geoservices () {}
  * @param {object} res response object
  */
 function pullDataAndRoute (model, req, res) {
-  model.pull(req, function (err, data) {
+  model.pull(req, function (error, data) {
+    const err = normalizeError(error)
     if (err) res.status(err.code || 500).json({ error: err.message })
     else FeatureServer.route(req, res, data)
   })
@@ -30,7 +31,8 @@ Geoservices.prototype.featureServer = function (req, res) {
         // model will be available when this is instantiated with the Koop controller
         pullDataAndRoute(this.model, req, res)
       })
-      .catch(err => {
+      .catch(error => {
+        const err = normalizeError(error)
         if (err.code === 401) FeatureServer.error.authorization(req, res)
         else res.status(err.code || 500).json({ error: err.message })
       })
@@ -69,13 +71,25 @@ Geoservices.prototype.generateToken = function (req, res) {
       .then(tokenJson => {
         FeatureServer.authenticate(res, tokenJson)
       })
-      .catch(err => {
+      .catch(error => {
+        const err = normalizeError(error)
         if (err.code === 401) FeatureServer.error.authentication(req, res)
         else res.status(err.code || 500).json({ error: err.message })
       })
   } else {
     res.status(500).json({ error: '"authenticate" not implemented for this provider' })
   }
+}
+
+function normalizeError (error) {
+  const { code } = error
+  let normalizedErrorCode
+  if (code === 'COM_0019') {
+    normalizedErrorCode = 401
+  } else if (typeof code !== 'number') {
+    normalizedErrorCode = 500
+  }
+  return { ...error, code: normalizedErrorCode }
 }
 
 /**
