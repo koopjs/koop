@@ -15,8 +15,7 @@ function pullDataAndRoute (model, req, res) {
     if (error) {
       const err = normalizeError(error)
       res.status(err.code || 500).json({ error: err.message })
-    }
-    else FeatureServer.route(req, res, data)
+    } else FeatureServer.route(req, res, data)
   })
 }
 
@@ -91,7 +90,7 @@ function normalizeError (error) {
   } else if (typeof code !== 'number') {
     normalizedErrorCode = 500
   }
-  return { ...error, code: normalizedErrorCode }
+  return { ...error, code: normalizedErrorCode || code }
 }
 
 /**
