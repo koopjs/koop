@@ -2,10 +2,8 @@ const { within, contains, intersects, envelopeIntersects, hashedObjectIdComparat
 const createIntHash = require('./helpers/create-integer-hash')
 const convertToEsri = require('../geometry/convert-to-esri')
 const sql = require('alasql')
-const geohash = require('ngeohash')
-const centroid = require('@turf/centroid').default
 const _ = require('lodash')
-const projectCoordinates = require('../geometry/project-coordinates')
+const { project, toGeohash } = require('./transforms')
 const reducePrecision = require('../geometry/reduce-precision')
 
 sql.MAXSQLCACHESIZE = 0
@@ -20,13 +18,9 @@ sql.fn.ST_EnvelopeIntersects = envelopeIntersects
 
 sql.fn.hashedObjectIdComparator = hashedObjectIdComparator
 
-sql.fn.geohash = function (geometry = {}, precision) {
-  if (!geometry || !geometry.type || !geometry.coordinates) return
-  precision = precision || 8
-  if (geometry.type !== 'Point') geometry = centroid(geometry).geometry
-  const pnt = geometry.coordinates
-  return geohash.encode(pnt[1], pnt[0], precision)
-}
+sql.fn.project = project
+
+sql.fn.geohash = toGeohash
 
 sql.fn.pick = function (properties, fields) {
   const parsedFields = fields.split(',')
@@ -52,18 +46,6 @@ sql.fn.esriFy = esriFy
 sql.fn.esriGeom = function (geometry) {
   if (geometry && geometry.type) {
     return convertToEsri(geometry)
-  }
-}
-
-sql.fn.project = function (geometry, projection) {
-  if (!(geometry && geometry.coordinates) || !projection) return geometry
-  try {
-    return {
-      type: geometry.type,
-      coordinates: projectCoordinates(geometry.coordinates, { toSR: projection })
-    }
-  } catch (e) {
-    return null
   }
 }
 
