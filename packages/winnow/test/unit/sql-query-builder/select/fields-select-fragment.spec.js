@@ -60,7 +60,7 @@ test('createFieldsSelectFragment: toEsri option', t => {
   const fieldsFragment = createFieldsSelectFragment({
     toEsri: true
   })
-  t.equal(fieldsFragment, 'esriFy(properties, geometry, "", "true", "null") as attributes')
+  t.equal(fieldsFragment, 'toEsriAttributes(properties, geometry, "", "true", "null") as attributes')
   t.end()
 })
 
@@ -69,7 +69,7 @@ test('createFieldsSelectFragment: toEsri and fields options', t => {
     toEsri: true,
     fields: ['foo', 'bar']
   })
-  t.equal(fieldsFragment, 'pickAndEsriFy(properties, geometry, "foo,bar", "", "false", "null") as attributes')
+  t.equal(fieldsFragment, 'pickAndTransformToEsriAttributes(properties, geometry, "foo,bar", "", "false", "null") as attributes')
   t.end()
 })
 
@@ -79,7 +79,7 @@ test('createFieldsSelectFragment: toEsri, fields, dateFields options', t => {
     fields: ['foo', 'bar', 'hello', 'world'],
     dateFields: ['foo', 'hello']
   })
-  t.equal(fieldsFragment, 'pickAndEsriFy(properties, geometry, "foo,bar,hello,world", "foo,hello", "false", "null") as attributes')
+  t.equal(fieldsFragment, 'pickAndTransformToEsriAttributes(properties, geometry, "foo,bar,hello,world", "foo,hello", "false", "null") as attributes')
   t.end()
 })
 
@@ -90,7 +90,7 @@ test('createFieldsSelectFragment: toEsri, fields, dateFields, returnIdsOnly opti
     dateFields: ['foo', 'hello'],
     returnIdsOnly: true
   })
-  t.equal(fieldsFragment, 'pickAndEsriFy(properties, geometry, "foo,bar,hello,world", "foo,hello", "true", "null") as attributes')
+  t.equal(fieldsFragment, 'pickAndTransformToEsriAttributes(properties, geometry, "foo,bar,hello,world", "foo,hello", "true", "null") as attributes')
   t.end()
 })
 
@@ -102,7 +102,7 @@ test('createFieldsSelectFragment: toEsri, fields, dateFields, returnIdsOnly, idF
     returnIdsOnly: true,
     idField: 'bar'
   })
-  t.equal(fieldsFragment, 'pickAndEsriFy(properties, geometry, "foo,bar,hello,world", "foo,hello", "true", "bar") as attributes')
+  t.equal(fieldsFragment, 'pickAndTransformToEsriAttributes(properties, geometry, "foo,bar,hello,world", "foo,hello", "true", "bar") as attributes')
   t.end()
 })
 
@@ -114,6 +114,6 @@ test('createFieldsSelectFragment: toEsri, fields, dateFields, returnIdsOnly, idF
     returnIdsOnly: true,
     idField: 'OBJECTID'
   })
-  t.equal(fieldsFragment, 'pickAndEsriFy(properties, geometry, "foo,OBJECTID,hello,world", "foo,hello", "true", "OBJECTID") as attributes')
+  t.equal(fieldsFragment, 'pickAndTransformToEsriAttributes(properties, geometry, "foo,OBJECTID,hello,world", "foo,hello", "true", "OBJECTID") as attributes')
   t.end()
 })

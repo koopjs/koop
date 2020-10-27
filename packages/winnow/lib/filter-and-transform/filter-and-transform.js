@@ -1,9 +1,8 @@
 const { within, contains, intersects, envelopeIntersects, hashedObjectIdComparator } = require('./filters')
-const createIntHash = require('./helpers/create-integer-hash')
-const convertToEsri = require('../geometry/convert-to-esri')
+const convertToEsriGeometry = require('../geometry/convert-to-esri')
 const sql = require('alasql')
 const _ = require('lodash')
-const { project, toGeohash } = require('./transforms')
+const { project, toGeohash, toEsriAttributes } = require('./transforms')
 const reducePrecision = require('../geometry/reduce-precision')
 
 sql.MAXSQLCACHESIZE = 0
@@ -22,6 +21,8 @@ sql.fn.project = project
 
 sql.fn.geohash = toGeohash
 
+sql.fn.toEsriAttributes = toEsriAttributes
+
 sql.fn.pick = function (properties, fields) {
   const parsedFields = fields.split(',')
   return _.pick(properties, parsedFields)
@@ -35,17 +36,15 @@ sql.fn.pick = function (properties, fields) {
  * @param {string} requiresObjectId boolean-string flagging requirement of OBJECTID as part of properties
  * @param {string} idField name of attribute to be used as OBJECTID
  */
-sql.fn.pickAndEsriFy = function (properties, geometry, fields, dateFields, requiresObjectId, idField) {
+sql.fn.pickAndTransformToEsriAttributes = function (properties, geometry, fields, dateFields, requiresObjectId, idField) {
   const parsedFields = fields.split(',')
-  const esriProperties = esriFy(properties, geometry, dateFields, requiresObjectId, idField)
-  return _.pick(esriProperties, parsedFields)
+  const transformedProperties = toEsriAttributes(properties, geometry, dateFields, requiresObjectId, idField)
+  return _.pick(transformedProperties, parsedFields)
 }
-
-sql.fn.esriFy = esriFy
 
 sql.fn.esriGeom = function (geometry) {
   if (geometry && geometry.type) {
-    return convertToEsri(geometry)
+    return convertToEsriGeometry(geometry)
   }
 }
 
@@ -72,32 +71,4 @@ sql.aggr.hash = function (value, obj, acc) {
  * @param {string} requiresObjectId boolean-string flagging requirement of OBJECTID as part of properties
  * @param {string} idField name of attribute to be used as OBJECTID
  */
-function esriFy (properties, geometry, dateFields, requiresObjectId, idField) {
-  const parsedDateFields = (dateFields.length === 0) ? [] : dateFields.split(',')
-  if (parsedDateFields.length) {
-    parsedDateFields.forEach(field => {
-      const value = properties[field]
-      properties[field] = value === null ? null : new Date(value).getTime()
-    })
-  }
-
-  // If the object ID is not needed, return here
-  if (requiresObjectId === 'false') return properties
-
-  // Coerce idField
-  idField = (idField === 'null') ? null : idField
-
-  // If the idField for the model set use its value as OBJECTID
-  if (idField) {
-    if (process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress' && (!Number.isInteger(properties[idField]) || properties[idField] > 2147483647)) {
-      console.warn(`WARNING: OBJECTIDs created from provider's "idField" (${idField}: ${properties[idField]}) are not integers from 0 to 2147483647`)
-    }
-  } else {
-    // Create an OBJECTID by creating a numeric hash from the stringified feature
-    // Note possibility of OBJECTID collisions with this method still exists, but should be small
-    properties.OBJECTID = createIntHash(JSON.stringify({ properties, geometry }))
-  }
-  return properties
-}
-
 module.exports = sql
