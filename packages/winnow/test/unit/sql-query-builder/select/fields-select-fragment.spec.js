@@ -11,7 +11,7 @@ test('createFieldsSelectFragment: fields option', t => {
   const fieldsFragment = createFieldsSelectFragment({
     fields: ['foo', 'bar']
   })
-  t.equal(fieldsFragment, 'pick(properties, "foo,bar") as properties')
+  t.equal(fieldsFragment, 'selectFields(properties, "foo,bar") as properties')
   t.end()
 })
 
@@ -20,7 +20,7 @@ test('createFieldsSelectFragment: fields and dateFields options', t => {
     fields: ['foo', 'bar', 'hello', 'world'],
     dateFields: ['foo', 'hello']
   })
-  t.equal(fieldsFragment, 'pick(properties, "foo,bar,hello,world") as properties')
+  t.equal(fieldsFragment, 'selectFields(properties, "foo,bar,hello,world") as properties')
   t.end()
 })
 
@@ -30,7 +30,7 @@ test('createFieldsSelectFragment: fields, dateFields, returnIdsOnly options', t 
     dateFields: ['foo', 'hello'],
     returnIdsOnly: true
   })
-  t.equal(fieldsFragment, 'pick(properties, "foo,bar,hello,world") as properties')
+  t.equal(fieldsFragment, 'selectFields(properties, "foo,bar,hello,world") as properties')
   t.end()
 })
 
@@ -41,7 +41,7 @@ test('createFieldsSelectFragment: fields, dateFields, returnIdsOnly, idField opt
     returnIdsOnly: true,
     idField: 'bar'
   })
-  t.equal(fieldsFragment, 'pick(properties, "foo,bar,hello,world") as properties')
+  t.equal(fieldsFragment, 'selectFields(properties, "foo,bar,hello,world") as properties')
   t.end()
 })
 
@@ -52,7 +52,7 @@ test('createFieldsSelectFragment: fields, dateFields, returnIdsOnly, idField as 
     returnIdsOnly: true,
     idField: 'OBJECTID'
   })
-  t.equal(fieldsFragment, 'pick(properties, "foo,OBJECTID,hello,world") as properties')
+  t.equal(fieldsFragment, 'selectFields(properties, "foo,OBJECTID,hello,world") as properties')
   t.end()
 })
 
@@ -69,7 +69,7 @@ test('createFieldsSelectFragment: toEsri and fields options', t => {
     toEsri: true,
     fields: ['foo', 'bar']
   })
-  t.equal(fieldsFragment, 'pickAndTransformToEsriAttributes(properties, geometry, "foo,bar", "", "false", "null") as attributes')
+  t.equal(fieldsFragment, 'selectFieldsToEsriAttributes(properties, geometry, "foo,bar", "", "false", "null") as attributes')
   t.end()
 })
 
@@ -79,7 +79,7 @@ test('createFieldsSelectFragment: toEsri, fields, dateFields options', t => {
     fields: ['foo', 'bar', 'hello', 'world'],
     dateFields: ['foo', 'hello']
   })
-  t.equal(fieldsFragment, 'pickAndTransformToEsriAttributes(properties, geometry, "foo,bar,hello,world", "foo,hello", "false", "null") as attributes')
+  t.equal(fieldsFragment, 'selectFieldsToEsriAttributes(properties, geometry, "foo,bar,hello,world", "foo,hello", "false", "null") as attributes')
   t.end()
 })
 
@@ -90,7 +90,7 @@ test('createFieldsSelectFragment: toEsri, fields, dateFields, returnIdsOnly opti
     dateFields: ['foo', 'hello'],
     returnIdsOnly: true
   })
-  t.equal(fieldsFragment, 'pickAndTransformToEsriAttributes(properties, geometry, "foo,bar,hello,world", "foo,hello", "true", "null") as attributes')
+  t.equal(fieldsFragment, 'selectFieldsToEsriAttributes(properties, geometry, "foo,bar,hello,world", "foo,hello", "true", "null") as attributes')
   t.end()
 })
 
@@ -102,7 +102,7 @@ test('createFieldsSelectFragment: toEsri, fields, dateFields, returnIdsOnly, idF
     returnIdsOnly: true,
     idField: 'bar'
   })
-  t.equal(fieldsFragment, 'pickAndTransformToEsriAttributes(properties, geometry, "foo,bar,hello,world", "foo,hello", "true", "bar") as attributes')
+  t.equal(fieldsFragment, 'selectFieldsToEsriAttributes(properties, geometry, "foo,bar,hello,world", "foo,hello", "true", "bar") as attributes')
   t.end()
 })
 
@@ -114,6 +114,6 @@ test('createFieldsSelectFragment: toEsri, fields, dateFields, returnIdsOnly, idF
     returnIdsOnly: true,
     idField: 'OBJECTID'
   })
-  t.equal(fieldsFragment, 'pickAndTransformToEsriAttributes(properties, geometry, "foo,OBJECTID,hello,world", "foo,hello", "true", "OBJECTID") as attributes')
+  t.equal(fieldsFragment, 'selectFieldsToEsriAttributes(properties, geometry, "foo,OBJECTID,hello,world", "foo,hello", "true", "OBJECTID") as attributes')
   t.end()
 })

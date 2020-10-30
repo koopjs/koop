@@ -1,5 +1,8 @@
 module.exports = {
   project: require('./project'),
+  selectFields: require('./select-fields'),
+  selectFieldsToEsriAttributes: require('./select-fields-to-esri-attributes'),
   toGeohash: require('./to-geohash'),
-  toEsriAttributes: require('./to-esri-attributes')
+  toEsriAttributes: require('./to-esri-attributes'),
+  toHash: require('./to-hash')
 }

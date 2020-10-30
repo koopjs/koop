@@ -13,7 +13,7 @@ function selectFieldsAsEsriJson (options) {
   const delimitedDateFields = dateFields.join(',')
   const includeIdField = shouldIncludeIdField({ returnIdsOnly, fields })
   if (fields) {
-    return `pickAndTransformToEsriAttributes(properties, geometry, "${fields.join(',')}", "${delimitedDateFields}", "${includeIdField}", "${idField}") as attributes`
+    return `selectFieldsToEsriAttributes(properties, geometry, "${fields.join(',')}", "${delimitedDateFields}", "${includeIdField}", "${idField}") as attributes`
   }
   return `toEsriAttributes(properties, geometry, "${delimitedDateFields}", "${includeIdField}", "${idField}") as attributes`
 }
@@ -25,7 +25,7 @@ function shouldIncludeIdField ({ returnIdsOnly, fields }) {
 
 function selectFieldsAsGeoJson (fields) {
   if (fields) {
-    return `pick(properties, "${fields.join(',')}") as properties`
+    return `selectFields(properties, "${fields.join(',')}") as properties`
   }
   return 'type, properties as properties'
 }
