@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [4.0.4] - 2020-11-03
 ### Fixed
 * Only cache if geojson.ttl is set
 
@@ -935,6 +935,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[4.0.4]: https://github.com/koopjs/koop-core/compare/v4.0.3...v4.0.4
 [4.0.3]: https://github.com/koopjs/koop-core/compare/v4.0.2...v4.0.3
 [4.0.2]: https://github.com/koopjs/koop-core/compare/v4.0.1...v4.0.2
 [4.0.1]: https://github.com/koopjs/koop-core/compare/v4.0.0...v4.0.1
