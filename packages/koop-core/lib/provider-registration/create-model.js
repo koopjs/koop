@@ -32,11 +32,11 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
         }
       }
       try {
-        // TODO: authentication should go here
         await this.before(req)
         const providerGeojson = await this.getData(req)
         const afterFuncGeojson = await this.after(req, providerGeojson)
-        this.cacheUpsert(dataKey, providerGeojson, { ttl: providerGeojson.ttl })
+        const { ttl } = afterFuncGeojson
+        if (ttl) this.cacheUpsert(dataKey, afterFuncGeojson, { ttl })
         callback(null, afterFuncGeojson)
       } catch (err) {
         callback(err)

@@ -10,7 +10,7 @@ const koopMock = { test: 'value' }
 
 describe('Tests for create-model', function () {
   describe('model pull method', () => {
-    it('should work in callback form, all methods called', (done) => {
+    it('should work in callback form, no upsert to cache', (done) => {
       const beforeSpy = sinon.spy((req, beforeCallback) => {
         beforeCallback()
       })
@@ -27,6 +27,46 @@ describe('Tests for create-model', function () {
 
       const getDataSpy = sinon.spy(function (req, callback) {
         callback(null, { metadata: {} })
+      })
+
+      class Model extends providerMock.Model {}
+      Model.prototype.getData = getDataSpy
+      const model = createModel({ ProviderModel: Model, koop: koopMock }, {
+        cache: {
+          retrieve: cacheRetrieveSpy,
+          upsert: cacheUpsertSpy
+        },
+        before: beforeSpy,
+        after: afterSpy
+      })
+
+      model.pull({ url: 'domain/test-provider', params: {}, query: {} }, function (err, data) {
+        cacheRetrieveSpy.calledOnce.should.equal(true)
+        beforeSpy.calledOnce.should.equal(true)
+        getDataSpy.calledOnce.should.equal(true)
+        afterSpy.calledOnce.should.equal(true)
+        cacheUpsertSpy.calledOnce.should.equal(false)
+        done()
+      })
+    })
+
+    it('should work in callback form, should upsert to cache', (done) => {
+      const beforeSpy = sinon.spy((req, beforeCallback) => {
+        beforeCallback()
+      })
+
+      const afterSpy = sinon.spy(function (req, data, callback) {
+        callback(null, data)
+      })
+
+      const cacheRetrieveSpy = sinon.spy((key, query, callback) => {
+        callback(new Error('no cache'))
+      })
+
+      const cacheUpsertSpy = sinon.spy(() => {})
+
+      const getDataSpy = sinon.spy(function (req, callback) {
+        callback(null, { ttl: 10, metadata: {} })
       })
 
       class Model extends providerMock.Model {}
