@@ -1,7 +1,7 @@
 const test = require('tape')
 const Winnow = require('../..')
 const trees = require('./fixtures/trees.json')
-const trees102645 = require('./fixtures/street-trees-102645.json')
+const trees102645 = require('./fixtures/trees-sr-102645.json')
 const caStatePlaneWKT = `PROJCS["NAD_1983_StatePlane_California_V_FIPS_0405_Feet",
 GEOGCS["GCS_North_American_1983",
     DATUM["North_American_Datum_1983",
@@ -55,17 +55,17 @@ test('prepare query with where, then execute filter', (t) => {
   }
   const query = Winnow.prepareQuery(options)
   const filtered = query(trees)
-  t.equal(filtered.features.length, 5846)
+  t.equal(filtered.features.length, 6)
 })
 
 test('prepare query with geometry filter, then execute filter', (t) => {
   t.plan(1)
   const options = {
     geometry: {
-      xmin: -118.15738230943678,
-      ymin: 34.179713563470166,
-      xmax: -118.15718114376067,
-      ymax: 34.18019950919287,
+      xmin: -118.1406,
+      ymin: 34.1635,
+      xmax: -118.1348,
+      ymax: 34.1685,
       spatialReference: {
         wkid: 4326
       }
@@ -73,17 +73,17 @@ test('prepare query with geometry filter, then execute filter', (t) => {
   }
   const query = Winnow.prepareQuery(options)
   const filtered = query(trees)
-  t.equal(filtered.features.length, 4)
+  t.equal(filtered.features.length, 6)
 })
 
 test('prepare query with geometry filter and projection, then execute filter', (t) => {
   t.plan(3)
   const options = {
     geometry: {
-      xmin: -118.15738230943678,
-      ymin: 34.179713563470166,
-      xmax: -118.15718114376067,
-      ymax: 34.18019950919287,
+      xmin: -118.1406,
+      ymin: 34.1635,
+      xmax: -118.1348,
+      ymax: 34.1685,
       spatialReference: {
         wkid: 4326
       }
@@ -92,9 +92,9 @@ test('prepare query with geometry filter and projection, then execute filter', (
   }
   const query = Winnow.prepareQuery(options)
   const filtered = query(trees)
-  t.equal(filtered.features.length, 4)
-  t.equal(filtered.features[0].geometry.coordinates[0], -13153212.867809525)
-  t.equal(filtered.features[0].geometry.coordinates[1], 4052968.7363319118)
+  t.equal(filtered.features.length, 6)
+  t.equal(filtered.features[0].geometry.coordinates[0], -13151163.395368768)
+  t.equal(filtered.features[0].geometry.coordinates[1], 4051225.3197446787)
 })
 
 test('prepare query with geometry filter and sourceSR, then execute filter on non-4326 source data', (t) => {

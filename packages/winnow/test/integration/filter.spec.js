@@ -7,14 +7,14 @@ test('With a where option', t => {
   const options = {
     where: "Genus like '%Quercus%'"
   }
-  run('trees', options, 12105, t)
+  run('trees', options, 8, t)
 })
 
 test('With a where options 1=1', t => {
   const options = {
     where: '1=1'
   }
-  run('trees_subset', options, 24, t)
+  run('trees', options, 24, t)
 })
 
 test('With a where option with multiple statements', t => {
@@ -35,7 +35,7 @@ test('With a field that has been uppercased', t => {
   const options = {
     where: "UPPER(Genus) like '%Quercus%'"
   }
-  run('trees', options, 12105, t)
+  run('trees', options, 8, t)
 })
 
 test('With the toEsri option', t => {
@@ -43,21 +43,21 @@ test('With the toEsri option', t => {
     toEsri: true,
     where: "Genus like '%Quercus%'"
   }
-  run('trees', options, 12105, t)
+  run('trees', options, 8, t)
 })
 
 test('With the toEsri option and a null geometry', t => {
   const options = {
     toEsri: true
   }
-  run('nogeom', options, 100, t)
+  run('nogeom', options, 18, t)
 })
 
 test('With a field with a space', t => {
   const options = {
-    where: '"total precip" > 1'
+    where: '"total precip" > 0.5'
   }
-  run('snow', options, 4, t)
+  run('snow', options, 3, t)
 })
 
 test('With esri json', t => {
@@ -65,86 +65,79 @@ test('With esri json', t => {
     where: "Genus like '%Quercus%'",
     esri: true
   }
-  run('esri', options, 267, t)
+  run('esri', options, 8, t)
 })
 
 test('With multiple like clauses', t => {
   const options = {
-    where: "Genus like '%Quercus%' AND Common_Name like '%Live Oak%' AND Street_Type like '%AVE%'"
+    where: "Genus like '%Quercus%' AND Common_Name like '%Live Oak%' AND Street_Type like '%ST%'"
   }
-  run('trees', options, 3330, t)
+  run('trees', options, 5, t)
 })
 
 test('With an in parameter', t => {
   const options = {
     where: "Genus IN ('QUERCUS', 'EUGENIA')"
   }
-  run('trees', options, 13134, t)
+  run('trees', options, 8, t)
 })
 
 test('With an is parameter', t => {
   const options = {
     where: 'Species IS NULL'
   }
-  run('trees', options, 2872, t)
+  run('trees', options, 1, t)
 })
 
 test('With two is and one and parameters', t => {
   const options = {
-    where: 'Genus IS NULL AND Street_Direction IS NOT NULL'
+    where: 'Species IS NULL AND Street_Direction IS NOT NULL'
   }
-  run('trees', options, 22, t)
+  run('trees', options, 1, t)
 })
 
 test('With an > parameter', t => {
   const options = {
     where: 'Trunk_Diameter>10'
   }
-  run('trees', options, 35961, t)
+  run('trees', options, 12, t)
 })
 
 test('With an >= parameter', t => {
   const options = {
     where: 'Trunk_Diameter>=10'
   }
-  run('trees', options, 37777, t)
+  run('trees', options, 12, t)
 })
 
-test('With an in parameter and a numeric test', t => {
+test('With an IN parameter and a numeric test', t => {
   const options = {
-    where: "Genus IN ('QUERCUS', 'EUGENIA') AND Trunk_Diameter=10"
+    where: "Genus IN ('QUERCUS', 'JACARANDA') AND Trunk_Diameter>=13"
   }
-  run('trees', options, 409, t)
+  run('trees', options, 6, t)
 })
 
 test('With an AND and an OR', t => {
   const options = {
     where: "(Genus like '%Quercus%' AND Common_Name like '%Live Oak%') OR Street_Type like '%AVE%'"
   }
-  run('trees', options, 31533, t)
+  run('trees', options, 13, t)
 })
 
 test('With an equality parameter', t => {
   const options = {
     where: "Common_Name = 'LIVE OAK'"
   }
-  run('trees', options, 6498, t)
-})
-
-test('With date inputs', t => {
-  const options = {
-    where: "Date1 >= '2012-03-14T04:00:00.000Z' AND Date1 <= '2012-03-18T03:59:59.000Z'"
-  }
-  run('dates', options, 3, t)
+  run('trees', options, 6, t)
 })
 
 test('With an esri style envelope', t => {
   const options = {
     geometry: {
-      xmin: -13155799.066536672,
-      ymin: 4047806.77771083,
-      xmax: -13143569.142011061,
-      ymax: 4050673.16627152,
+      xmin: -13151597,
+      ymin: 4050894,
+      xmax: -13150342,
+      ymax: 4051582,
       spatialReference: {
         wkid: 102100
       }
@@ -153,7 +146,7 @@ test('With an esri style envelope', t => {
   const fixtures = _.cloneDeep(require('./fixtures/trees.json'))
   const features = fixtures.features
   const filtered = winnow.query(features, options)
-  t.equal(filtered.length, 29744)
+  t.equal(filtered.length, 6)
   t.end()
 })
 
@@ -178,17 +171,17 @@ test('With an esri style envelope and features with missing geometry', t => {
 test('With an esri style envelope and wkt string for web mercator', t => {
   const options = {
     geometry: {
-      xmin: -13155799.066536672,
-      ymin: 4047806.77771083,
-      xmax: -13143569.142011061,
-      ymax: 4050673.16627152,
+      xmin: -13151597,
+      ymin: 4050894,
+      xmax: -13150342,
+      ymax: 4051582,
       spatialReference: {
         wkt:
           'PROJCS["WGS_1984_Web_Mercator_Auxiliary_Sphere",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Mercator_Auxiliary_Sphere"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-97.03124999997486],PARAMETER["Standard_Parallel_1",0.0],PARAMETER["Auxiliary_Sphere_Type",0.0],UNIT["Meter",1.0]]'
       }
     }
   }
-  run('trees', options, 29744, t)
+  run('trees', options, 6, t)
 })
 
 test('With an empty multipolygon', t => {
@@ -209,13 +202,13 @@ test('With an empty multipolygon', t => {
 test('Without a spatialReference property on an Esri-style Envelope', t => {
   const options = {
     geometry: {
-      xmin: -118.18055376275225,
-      ymin: 34.14141744789609,
-      xmax: -118.07069048150241,
-      ymax: 34.162726215637875
+      xmin: -118.1406,
+      ymin: 34.1635,
+      xmax: -118.1348,
+      ymax: 34.1685
     }
   }
-  run('trees', options, 29744, t)
+  run('trees', options, 6, t)
 })
 
 test('With an esri style envelope with xmin = 0, ans esri features', t => {
@@ -239,10 +232,10 @@ test('With an esri style envelope with xmin = 0, ans esri features', t => {
 test('With an esri style envelope in EPSG:102645 defined by wkt', t => {
   const options = {
     geometry: {
-      xmin: 6514066.3001615712419152,
-      ymin: 1887820.5006760144606233,
-      xmax: 6514127.4193187793716788,
-      ymax: 1887997.4401315276045352,
+      xmin: 6518475,
+      ymin: 1881600,
+      xmax: 6521000,
+      ymax: 1883700,
       spatialReference: {
         wkt: `PROJCS["NAD_1983_StatePlane_California_V_FIPS_0405_Feet",
         GEOGCS["GCS_North_American_1983",
@@ -263,7 +256,7 @@ test('With an esri style envelope in EPSG:102645 defined by wkt', t => {
     },
     esri: true
   }
-  run('trees', options, 4, t)
+  run('trees', options, 6, t)
 })
 
 test('With a an Esri-style Polygon', t => {
@@ -271,31 +264,31 @@ test('With a an Esri-style Polygon', t => {
     geometry: {
       rings: [
         [
-          [-12993071.816030473, 3913575.8482084945],
-          [-12836528.782102507, 3913575.8482084945],
-          [-12836528.782102507, 4070118.8821364585],
-          [-12993071.816030473, 4070118.8821364585],
-          [-12993071.816030473, 3913575.8482084945]
+          [-118.163, 34.162],
+          [-118.108, 34.162],
+          [-118.108, 34.173],
+          [-118.163, 34.173],
+          [-118.163, 34.162]
         ]
       ]
     },
-    inSR: 102100
+    inSR: 4326
   }
-  run('restaurants', options, 249, t)
+  run('trees', options, 12, t)
 })
 
 test('With an array-style geometry', t => {
   const options = {
-    geometry: [-118.18055376275225, 34.14141744789609, -118.07069048150241, 34.162726215637875]
+    geometry: [-118.1406, 34.1635, -118.1348, 34.1685]
   }
-  run('trees', options, 29744, t)
+  run('trees', options, 6, t)
 })
 
 test('With a string-style geometry', t => {
   const options = {
-    geometry: '-118.18055376275225, 34.14141744789609, -118.07069048150241, 34.162726215637875'
+    geometry: '-118.1406, 34.1635, -118.1348, 34.1685'
   }
-  run('trees', options, 29744, t)
+  run('trees', options, 6, t)
 })
 
 test('With a ST_Contains geometry predicate', t => {
@@ -306,7 +299,7 @@ test('With a ST_Contains geometry predicate', t => {
     },
     spatialPredicate: 'ST_Contains'
   }
-  run('trees', options, 9878, t)
+  run('trees', options, 12, t)
 })
 
 test('With a ST_Within geometry predicate', t => {
@@ -317,7 +310,7 @@ test('With a ST_Within geometry predicate', t => {
     },
     spatialPredicate: 'ST_Within'
   }
-  run('trees', options, 9878, t)
+  run('trees', options, 12, t)
 })
 
 test('With a ST_EnvelopeIntersects geometry predicate', t => {
@@ -330,7 +323,7 @@ test('With a ST_EnvelopeIntersects geometry predicate', t => {
     },
     spatialPredicate: 'ST_EnvelopeIntersects'
   }
-  run('states', options, 11, t)
+  run('states', options, 2, t)
 })
 
 test('With a ST_Intersects geometry predicate', t => {
@@ -341,7 +334,7 @@ test('With a ST_Intersects geometry predicate', t => {
     },
     spatialPredicate: 'ST_Intersects'
   }
-  run('states', options, 9, t)
+  run('states', options, 1, t)
 })
 
 test('With a where and a geometry option', t => {
@@ -352,7 +345,7 @@ test('With a where and a geometry option', t => {
       coordinates: [[[-118.163, 34.162], [-118.108, 34.162], [-118.108, 34.173], [-118.163, 34.173], [-118.163, 34.162]]]
     }
   }
-  run('trees', options, 2315, t)
+  run('trees', options, 5, t)
 })
 
 test('With a where, geometry, limit and offset option', t => {
@@ -382,10 +375,10 @@ test('With an envelope, an inSR and an outSR', t => {
     returnGeometry: true,
     spatialRel: 'esriSpatialRelIntersects',
     geometry: {
-      xmin: -8570731.10757695,
-      ymin: 4710966.9272944275,
-      xmax: -8565839.137766706,
-      ymax: 4715858.897104671,
+      xmin: -13151597,
+      ymin: 4050894,
+      xmax: -13150342,
+      ymax: 4051582,
       spatialReference: {
         wkid: 102100,
         latestWkid: 3857
@@ -396,7 +389,7 @@ test('With an envelope, an inSR and an outSR', t => {
     outFields: '*',
     outSR: 102100
   }
-  run('apartments', options, 24, t)
+  run('trees', options, 6, t)
 })
 
 test('With a multi-ring geometry and an inSR', t => {
@@ -496,35 +489,35 @@ test('with a coded value domain', t => {
     where: "ZONING_S = 'INST'",
     esriFields: require('./fixtures/esriFields.json')
   }
-  run('cvd2', options, 10, t)
+  run('cvd2', options, 1, t)
 })
 
 test('with a date query', t => {
   const options = {
-    where: 'ISSUE_DATE >= date 2017-01-05'
+    where: 'survey_date >= date 2017-02-05'
   }
-  run('permits', options, 211, t)
+  run('trees', options, 4, t)
 })
 
 test('with an esri-style date query', t => {
   const options = {
-    where: "ISSUE_DATE >= '2017-01-05T00:00:00.000Z' AND ISSUE_DATE <= '2017-04-08T23:59:59.000Z'"
+    where: "survey_date >= '2017-02-05T00:00:00.000Z' AND survey_date <= '2017-03-06T23:59:59.000Z'"
   }
-  run('permits', options, 211, t)
+  run('trees', options, 4, t)
 })
 
 test('with a timestamp query', t => {
   const options = {
-    where: "ISSUE_DATE >= timestamp '2017-01-05'"
+    where: "survey_date >= timestamp '2017-02-05'"
   }
-  run('permits', options, 211, t)
+  run('trees', options, 4, t)
 })
 
 test('with a between query', t => {
   const options = {
-    where: "ISSUE_DATE between timestamp '2017-01-05T00:00:00.000Z' AND timestamp '2017-04-08T23:59:59.000Z'"
+    where: "survey_date between timestamp '2017-01-06T00:00:00.000Z' AND timestamp '2017-02-06T23:59:59.000Z'"
   }
-  run('permits', options, 211, t)
+  run('trees', options, 2, t)
 })
 
 test('with a OBJECTID query on data that requires dynamic OBJECTID generation', t => {

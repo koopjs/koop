@@ -3,7 +3,6 @@ const test = require('tape')
 const winnow = require('../..')
 const features = require('./fixtures/trees.json')
 const snowFeatures = require('./fixtures/snow.json')
-const budgetTable = require('./fixtures/budgetTable.json')
 
 test('Get a sum', t => {
   t.plan(1)
@@ -16,7 +15,7 @@ test('Get a sum', t => {
     ]
   }
   const results = winnow.query(features, options)
-  t.equal(results.sum_Trunk_Diameter, 850305)
+  t.equal(results.sum_Trunk_Diameter, 263)
 })
 
 test('Use a group by', t => {
@@ -31,7 +30,7 @@ test('Use a group by', t => {
     groupBy: 'Genus'
   }
   const results = winnow.query(features, options)
-  t.equal(results.length, 162)
+  t.equal(results.length, 6)
   t.ok(results[0].Genus)
   t.ok(results[0].avg_Trunk_Diameter)
 })
@@ -49,8 +48,8 @@ test('Use an order and a group by', t => {
     order: 'avg_Trunk_Diameter DESC'
   }
   const results = winnow.query(features, options)
-  t.equal(results.length, 162)
-  t.equal(results[0].avg_Trunk_Diameter, 37)
+  t.equal(results.length, 6)
+  t.equal(results[0].avg_Trunk_Diameter, 13.166666666666666)
 })
 
 test('Use a group by esri style', t => {
@@ -65,7 +64,7 @@ test('Use a group by esri style', t => {
     groupByFieldsForStatistics: ['Genus']
   }
   const results = winnow.query(features, options)
-  t.equal(results.length, 162)
+  t.equal(results.length, 6)
   t.ok(results[0].Genus)
   t.ok(results[0].avg_Trunk_Diameter)
 })
@@ -82,7 +81,7 @@ test('Use multiple group bys', t => {
     groupBy: ['Genus', 'Common_Name']
   }
   const results = winnow.query(features, options)
-  t.equal(results.length, 310)
+  t.equal(results.length, 7)
   t.ok(results[0].Genus)
   t.ok(results[0].Common_Name)
   t.ok(results[0].avg_Trunk_Diameter)
@@ -100,7 +99,7 @@ test('Use multiple group bys ESRI style', t => {
     groupByFieldsForStatistics: 'Genus,Common_Name'
   }
   const results = winnow.query(features, options)
-  t.equal(results.length, 310)
+  t.equal(results.length, 7)
   t.ok(results[0].Genus)
   t.ok(results[0].Common_Name)
   t.ok(results[0].avg_Trunk_Diameter)
@@ -119,7 +118,7 @@ test('Use a group by with a where clause', t => {
     groupBy: 'Genus'
   }
   const results = winnow.query(features, options)
-  t.equal(results.length, 127)
+  t.equal(results.length, 3)
   t.ok(results[0].Genus)
   t.ok(results[0].avg_Trunk_Diameter)
 })
@@ -136,7 +135,7 @@ test('Get a named aggregate', t => {
     ]
   }
   const results = winnow.query(features, options)
-  t.equal(results.total_diameter, 850305)
+  t.equal(results.total_diameter, 263)
 })
 
 test('Get an aggregate on a field with a space', t => {
@@ -150,7 +149,7 @@ test('Get an aggregate on a field with a space', t => {
     ]
   }
   const results = winnow.query(snowFeatures, options)
-  t.equal(results.sum_total_precip, 135.69000000000003)
+  t.equal(results.sum_total_precip, 5.300000000000001)
 })
 
 test('Get an aggregate on a field with a /', t => {
@@ -159,13 +158,13 @@ test('Get an aggregate on a field with a /', t => {
     aggregates: [
       {
         type: 'count',
-        field: 'Full/Part',
-        name: 'Full/Part_COUNT'
+        field: 'Test/Field',
+        name: 'Test/Field_COUNT'
       }
     ]
   }
-  const results = winnow.query(budgetTable, options)
-  t.equal(results['Full/Part_COUNT'], 6885)
+  const results = winnow.query(features, options)
+  t.equal(results['Test/Field_COUNT'], 2)
 })
 
 test('Get the variance of a field', t => {
@@ -179,7 +178,7 @@ test('Get the variance of a field', t => {
     ]
   }
   const results = winnow.query(snowFeatures, options)
-  t.equal(results.var_total_precip, 0.07661480700055341)
+  t.equal(results.var_total_precip, 0.02571923076923076)
 })
 
 test('Get an aggregate with a where clause', t => {
@@ -195,7 +194,7 @@ test('Get an aggregate with a where clause', t => {
     where: 'Trunk_Diameter > 10'
   }
   const results = winnow.query(features, options)
-  t.equal(results.total_diameter, 735026)
+  t.equal(results.total_diameter, 207)
 })
 
 test('Get multiple aggregates', t => {
@@ -215,8 +214,8 @@ test('Get multiple aggregates', t => {
     ]
   }
   const results = winnow.query(features, options)
-  t.equal(results.total_diameter, 850305)
-  t.equal(results.max_diameter, 130)
+  t.equal(results.total_diameter, 263)
+  t.equal(results.max_diameter, 27)
 })
 
 test('Get multiple aggregates specified in the esri way', t => {
@@ -236,8 +235,8 @@ test('Get multiple aggregates specified in the esri way', t => {
     ]
   }
   const results = winnow.query(features, options)
-  t.equal(results.total_diameter, 850305)
-  t.equal(results.max_diameter, 130)
+  t.equal(results.total_diameter, 263)
+  t.equal(results.max_diameter, 27)
 })
 
 test('Get multiple aggregates with a where clause', t => {
@@ -258,8 +257,8 @@ test('Get multiple aggregates with a where clause', t => {
     where: 'Trunk_Diameter > 10'
   }
   const results = winnow.query(features, options)
-  t.equal(results.total_diameter, 735026)
-  t.equal(results.max_diameter, 130)
+  t.equal(results.total_diameter, 207)
+  t.equal(results.max_diameter, 27)
 })
 
 test('ignore projection when getting an aggregate', t => {
@@ -276,7 +275,7 @@ test('ignore projection when getting an aggregate', t => {
     outSR: 102100
   }
   const results = winnow.query(features, options)
-  t.equal(results[0].count_trunk_Diameter, 1905)
+  t.equal(results[0].count_trunk_Diameter, 2)
   t.ok(results[0].Trunk_Diameter)
   t.ok(results[0].count_trunk_Diameter)
 })
@@ -295,7 +294,7 @@ test('ignore projection when getting an aggregate specified in the esri way', t 
     outSR: 102100
   }
   const results = winnow.query(features, options)
-  t.equal(results[0].count_trunk_Diameter, 1905)
+  t.equal(results[0].count_trunk_Diameter, 2)
   t.ok(results[0].Trunk_Diameter)
   t.ok(results[0].count_trunk_Diameter)
 })

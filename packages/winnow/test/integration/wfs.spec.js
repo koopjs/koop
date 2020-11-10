@@ -4,11 +4,11 @@ const winnow = require('../..')
 test('WFS with a bbox in Web Mercator with geojson output', t => {
   const options = {
     outputFormat: 'application/json',
-    bbox: '-12993071.816030473,3913575.8482084945,-12836528.782102507,4070118.8821364585,EPSG:3857',
-    srsName: 'EPSG:3857'
+    bbox: '-118.163,34.162,-118.108,34.173,EPSG:4326',
+    srsName: 'EPSG:4326'
   }
   t.plan(1)
-  const features = require('./fixtures/restaurants.json').features
+  const features = require('./fixtures/trees.json').features
   const filtered = winnow.query(features, options)
-  t.equal(filtered.length, 249)
+  t.equal(filtered.length, 12)
 })

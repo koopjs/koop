@@ -158,7 +158,7 @@ test('Do not project NaN coordinate values', t => {
   modifiedFeatures[0].geometry.coordinates[0] = null
   modifiedFeatures[0].geometry.coordinates[1] = null
   const results = winnow.query(modifiedFeatures, options)
-  t.equal(results.length, 417)
+  t.equal(results.length, 13)
   t.deepEqual(results[0].geometry.coordinates, [null, null])
 })
 

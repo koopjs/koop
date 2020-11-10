@@ -23,7 +23,7 @@ test('With a limit and an offset option', t => {
   const filtered = winnow.query(fixture.features, options)
   t.equal(filtered.length, 10)
   t.equal(filtered[0].properties.Common_Name, 'JACARANDA')
-  t.equal(filtered[9].properties.Common_Name, 'LIVE OAK')
+  t.equal(filtered[9].properties.Common_Name, 'HOLLY OAK')
 })
 
 test('With an offset option, but no limit; should return all features', t => {
@@ -32,7 +32,7 @@ test('With an offset option, but no limit; should return all features', t => {
     offset: 10
   }
   const filtered = winnow.query(fixture.features, options)
-  t.equal(filtered.length, 71132)
+  t.equal(filtered.length, 24)
 })
 
 test('With a limit and an offset larger than returned features, should return no features', t => {

@@ -11,8 +11,8 @@ test('With a limit of 10, order by OBJECTID ASC', t => {
     order: 'OBJECTID ASC'
   }
   const filtered = winnow.query(fixture.features, options)
-  t.equals(filtered[0].properties.OBJECTID, 1)
-  t.equals(filtered[1].properties.OBJECTID, 2)
+  t.equals(filtered[0].properties.OBJECTID, 316)
+  t.equals(filtered[1].properties.OBJECTID, 317)
 })
 
 test('With a limit of 10, toEsri, and an idField, order by OBJECTID ASC', t => {
@@ -24,8 +24,8 @@ test('With a limit of 10, toEsri, and an idField, order by OBJECTID ASC', t => {
     collection: { metadata: { idField: 'OBJECTID' } }
   }
   const filtered = winnow.query(fixture.features, options)
-  t.equals(filtered.features[0].attributes.OBJECTID, 1)
-  t.equals(filtered.features[1].attributes.OBJECTID, 2)
+  t.equals(filtered.features[0].attributes.OBJECTID, 316)
+  t.equals(filtered.features[1].attributes.OBJECTID, 317)
 })
 
 test('With a limit of 10, toEsri, and an idField, order by OBJECTID DESC', t => {
@@ -37,8 +37,8 @@ test('With a limit of 10, toEsri, and an idField, order by OBJECTID DESC', t => 
     collection: { metadata: { idField: 'OBJECTID' } }
   }
   const filtered = winnow.query(fixture.features, options)
-  t.equals(filtered.features[0].attributes.OBJECTID, 82335)
-  t.equals(filtered.features[1].attributes.OBJECTID, 82334)
+  t.equals(filtered.features[0].attributes.OBJECTID, 11310)
+  t.equals(filtered.features[1].attributes.OBJECTID, 11309)
 })
 
 test('With a limit of 10, toEsri and no idField specified (winnow generates OBJECTID), order by OBJECTID DESC', t => {
@@ -64,6 +64,6 @@ test('With a limit of 10 and toEsri and no idField specified, order by Species D
   }
   const features = require('./fixtures/trees.json').features
   const filtered = winnow.query(features, options)
-  t.equal(filtered[0].attributes.Species, 'ugandense')
-  t.equal(filtered[1].attributes.Species, 'sinensis')
+  t.equal(filtered[0].attributes.Species, 'MIMOSIFOLIA')
+  t.equal(filtered[8].attributes.Species, 'ILEX')
 })

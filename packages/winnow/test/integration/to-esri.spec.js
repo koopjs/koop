@@ -1,6 +1,6 @@
 const test = require('tape')
 const trees = require('./fixtures/trees.json')
-const treesFeatureId = require('./fixtures/trees_subset_feature_id')
+const treesFeatureId = require('./fixtures/trees-feature-id')
 const geojson = require('./fixtures/to-esri-fixture.json')
 const oidFeature = require('./fixtures/oid-feature.json')
 const emptyCollection = require('./fixtures/emptyCollection.json')
