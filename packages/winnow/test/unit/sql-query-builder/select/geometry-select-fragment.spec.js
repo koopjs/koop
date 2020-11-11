@@ -27,7 +27,7 @@ test('createGeometryFragment: geometryPrecision option', t => {
 
 test('createGeometryFragment: toEsri option', t => {
   const geometryFragment = createGeometrySelectFragment({ toEsri: true })
-  t.equal(geometryFragment, 'esriGeom(geometry) as geometry')
+  t.equal(geometryFragment, 'esriGeometry(geometry) as geometry')
   t.end()
 })
 
@@ -39,12 +39,12 @@ test('createGeometryFragment: projection and geometryPrecision options', t => {
 
 test('createGeometryFragment: projection, geometryPrecision, and toEsri options', t => {
   const geometryFragment = createGeometrySelectFragment({ projection: 3857, geometryPrecision: 1, toEsri: true })
-  t.equal(geometryFragment, 'esriGeom(reducePrecision(project(geometry,?),?)) as geometry')
+  t.equal(geometryFragment, 'esriGeometry(reducePrecision(project(geometry,?),?)) as geometry')
   t.end()
 })
 
 test('createGeometryFragment: projection, and toEsri options', t => {
   const geometryFragment = createGeometrySelectFragment({ projection: 3857, toEsri: true })
-  t.equal(geometryFragment, 'esriGeom(project(geometry,?)) as geometry')
+  t.equal(geometryFragment, 'esriGeometry(project(geometry,?)) as geometry')
   t.end()
 })

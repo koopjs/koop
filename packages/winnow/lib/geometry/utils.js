@@ -1,30 +1,3 @@
-// This function ensures that rings are oriented in the right directions
-// outer rings are clockwise, holes are counterclockwise
-function orientRings (poly) {
-  var output = []
-  var polygon = poly.slice(0)
-  var outerRing = closeRing(polygon.shift().slice(0))
-  if (outerRing.length >= 4) {
-    if (!ringIsClockwise(outerRing)) {
-      outerRing.reverse()
-    }
-
-    output.push(outerRing)
-
-    for (var i = 0; i < polygon.length; i++) {
-      var hole = closeRing(polygon[i].slice(0))
-      if (hole.length >= 4) {
-        if (ringIsClockwise(hole)) {
-          hole.reverse()
-        }
-        output.push(hole)
-      }
-    }
-  }
-
-  return output
-}
-
 // determine if polygon ring coordinates are clockwise. clockwise signifies outer ring, counter-clockwise an inner ring
 // or hole. this logic was found at http://stackoverflow.com/questions/1165647/how-to-determine-if-a-list-of-polygon-
 // points-are-in-clockwise-order
@@ -40,18 +13,6 @@ function ringIsClockwise (ringToTest) {
     pt1 = pt2
   }
   return (total >= 0)
-}
-
-function flattenMultiPolygonRings (rings) {
-  var output = []
-  for (var i = 0; i < rings.length; i++) {
-    var polygon = orientRings(rings[i])
-    for (var x = polygon.length - 1; x >= 0; x--) {
-      var ring = polygon[x].slice(0)
-      output.push(ring)
-    }
-  }
-  return output
 }
 
 // checks if the first and last points of a ring are equal and closes the ring
@@ -146,9 +107,7 @@ function isNumber (n) {
 module.exports = {
   pointsEqual,
   ringIsClockwise,
-  flattenMultiPolygonRings,
   closeRing,
-  orientRings,
   arraysIntersectArrays,
   coordinatesContainPoint,
   coordinatesContainCoordinates

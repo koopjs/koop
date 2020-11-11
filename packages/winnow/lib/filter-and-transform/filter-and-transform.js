@@ -1,5 +1,4 @@
 const { within, contains, intersects, envelopeIntersects, hashedObjectIdComparator } = require('./filters')
-const convertToEsriGeometry = require('../geometry/convert-to-esri')
 const sql = require('alasql')
 const {
   project,
@@ -7,7 +6,8 @@ const {
   selectFieldsToEsriAttributes,
   toGeohash,
   toEsriAttributes,
-  toHash
+  toHash,
+  toEsriGeometry
 } = require('./transforms')
 const reducePrecision = require('../geometry/reduce-precision')
 
@@ -35,11 +35,7 @@ sql.fn.selectFieldsToEsriAttributes = selectFieldsToEsriAttributes
 
 sql.aggr.hash = toHash
 
-sql.fn.esriGeom = function (geometry) {
-  if (geometry && geometry.type) {
-    return convertToEsriGeometry(geometry)
-  }
-}
+sql.fn.esriGeometry = toEsriGeometry
 
 sql.fn.reducePrecision = function (geometry, precision) {
   if (!(geometry && geometry.coordinates)) return geometry

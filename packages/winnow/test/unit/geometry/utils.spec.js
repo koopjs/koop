@@ -2,25 +2,15 @@ const test = require('tape')
 const _ = require('lodash')
 const rewind = require('geojson-rewind')
 const {
-  orientRings,
   ringIsClockwise,
-  flattenMultiPolygonRings,
   arraysIntersectArrays,
   coordinatesContainPoint,
   coordinatesContainCoordinates
 } = require('../../../lib/geometry/utils')
 
 const {
-  polygon,
-  multipolygon,
-  esriPolygon
+  polygon
 } = require('./fixtures')
-
-test('geometry-utils: orientRings', t => {
-  t.plan(1)
-  const transformed = orientRings(polygon.coordinates)
-  t.deepEquals(transformed, esriPolygon.rings)
-})
 
 test('geometry-utils: ringIsClockwise === false', t => {
   t.plan(1)
@@ -33,34 +23,6 @@ test('geometry-utils: ringIsClockwise === true', t => {
   const rewoundPolygon = rewind(_.cloneDeep(polygon), true)
   const result = ringIsClockwise(rewoundPolygon.coordinates[0])
   t.equals(result, true)
-})
-
-test('geometry-utils: flattenMultiPolygonRings', t => {
-  t.plan(1)
-  const result = flattenMultiPolygonRings(multipolygon.coordinates)
-  t.deepEquals(result, [
-    [
-      [102, 2],
-      [102, 3],
-      [103, 3],
-      [103, 2],
-      [102, 2]
-    ],
-    [
-      [100.2, 0.2],
-      [100.8, 0.2],
-      [100.8, 0.8],
-      [100.2, 0.8],
-      [100.2, 0.2]
-    ],
-    [
-      [100, 0],
-      [100, 1],
-      [101, 1],
-      [101, 0],
-      [100, 0]
-    ]
-  ])
 })
 
 test('geometry-utils: arraysIntersectArrays, false', t => {

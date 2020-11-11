@@ -2,7 +2,7 @@ function createGeometrySelectFragment (options = {}) {
   const geometryFunctions = []
   if (options.projection) geometryFunctions.push('project($,?)')
   if (options.geometryPrecision) geometryFunctions.push('reducePrecision($,?)')
-  if (options.toEsri) geometryFunctions.push('esriGeom($)')
+  if (options.toEsri) geometryFunctions.push('esriGeometry($)')
 
   if (geometryFunctions.length === 0) return 'geometry'
 
