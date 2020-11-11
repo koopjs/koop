@@ -1,6 +1,6 @@
 {
   "name": "winnow",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Apply sql-like filters to GeoJSON",
   "main": "index.js",
   "directories": {
@@ -8,8 +8,6 @@
   },
   "scripts": {
     "test": "standard && tape 'test/**/*.js' | tap-spec",
-    "clean": "rm -rf dist",
-    "compile": "buble -i src -o dist",
     "fix": "standard --fix"
   },
   "repository": {

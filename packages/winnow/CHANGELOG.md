@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.1.1] - 11-11-2020
 ### Fixed
 * Fixes a bug in the "envelope-intersects" operation.  Research indicates that the Esri envelope-intersects operation should check that an "Envelope of Query Geometry Intersects Envelope of Target Geometry" (see [here](http://resources.esri.com/help/9.3/ArcGISDesktop/ArcObjects/esriGeoDatabase/esriSpatialRelEnum.htm)).
 * Handle sql-escape single quotes in where parameter, e.g. `where=food=bar''s`
@@ -356,6 +356,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[2.1.1]: https://github.com/featureserver/winnow/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/featureserver/winnow/compare/v2.0.2...v2.1.0
 [2.0.2]: https://github.com/featureserver/winnow/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/featureserver/winnow/compare/v2.0.0...v2.0.1
