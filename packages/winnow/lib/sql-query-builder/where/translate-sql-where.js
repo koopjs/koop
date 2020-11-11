@@ -109,7 +109,8 @@ function handleValue (node, options) {
   }
 
   if (typeof value === 'string') {
-    value = `'${value}'`
+    // single quotes in the value will break alasql queries. They must be escaped with ''.
+    value = `'${value.replace(/'/g, '\'\'')}'`
   }
 
   return value
@@ -161,13 +162,22 @@ function traverse (node, options) {
 
 function translateSqlWhere (options) {
   const { where } = options
-  const { where: whereTree } = parser.parse(`SELECT * WHERE ${where}`)
+  const whereTree = parseWhereToTree(where)
   const whereClause = traverse(whereTree, options)
 
   if (shouldReplaceObjectIdPredicates(options)) {
     return replaceObjectIdPredicates(whereClause)
   }
   return whereClause
+}
+
+function parseWhereToTree (where) {
+  // SQL uses '' for escaping a single quote, but the flora-sql-parser uses \\'.  Replace here.
+  const escapedWhere = where.replace(/''/g, '\\\'')
+
+  const { where: whereTree } = parser.parse(`SELECT * WHERE ${escapedWhere}`)
+
+  return whereTree
 }
 
 /**

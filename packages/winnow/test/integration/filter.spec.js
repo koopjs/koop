@@ -520,6 +520,13 @@ test('with a between query', t => {
   run('trees', options, 2, t)
 })
 
+test('with escaped single quote in query', t => {
+  const options = {
+    where: "Street_Name = 'GRAND''S STREET''S'"
+  }
+  run('trees', options, 1, t)
+})
+
 test('with a OBJECTID query on data that requires dynamic OBJECTID generation', t => {
   t.plan(1)
   const options = {

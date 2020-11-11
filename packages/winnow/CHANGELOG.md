@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Fixed
 * Fixes a bug in the "envelope-intersects" operation.  Research indicates that the Esri envelope-intersects operation should check that an "Envelope of Query Geometry Intersects Envelope of Target Geometry" (see [here](http://resources.esri.com/help/9.3/ArcGISDesktop/ArcObjects/esriGeoDatabase/esriSpatialRelEnum.htm)).
+* Handle sql-escape single quotes in where parameter, e.g. `where=food=bar''s`
 
 ### Added
 * Adds support for the `!=` operator in the hashed OBJECTID comparison.
