@@ -1,12 +1,12 @@
 const _ = require('lodash')
 const { calculateBounds, intersects, contains } = require('@terraformer/spatial')
 const transformArray = require('../../geometry/transform-coordinate-array-to-polygon')
-const convertFromEsri = require('../../geometry/transfrom-esri-geometry-to-geojson-geometry')
+const { arcgisToGeoJSON } = require('@terraformer/arcgis')
 
 module.exports = function (featureGeometry = {}, filterGeometry = {}) {
   if (_.isEmpty(featureGeometry) || _.isEmpty(filterGeometry)) return false
 
-  const normalizedFeatureGeometry = isGeoJsonGeometry(featureGeometry) ? featureGeometry : convertFromEsri(featureGeometry)
+  const normalizedFeatureGeometry = isGeoJsonGeometry(featureGeometry) ? featureGeometry : arcgisToGeoJSON(featureGeometry)
 
   const { type, coordinates = [] } = normalizedFeatureGeometry
 

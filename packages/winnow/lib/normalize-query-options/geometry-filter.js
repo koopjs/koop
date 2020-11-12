@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const { normalizeArray } = require('./helpers')
-const transformEsriGeometry = require('../geometry/transfrom-esri-geometry-to-geojson-geometry')
+const { arcgisToGeoJSON } = require('@terraformer/arcgis')
 const transformCoordinateArrayToPolygon = require('../geometry/transform-coordinate-array-to-polygon')
 const transformEnvelopeToPolygon = require('../geometry/transform-envelope-to-polygon')
 const projectCoordinates = require('../geometry/project-coordinates')
@@ -38,7 +38,7 @@ function transformGeometryToPolygon (geometry) {
   }
 
   if (geometry.x || geometry.rings || geometry.paths || geometry.points) {
-    return transformEsriGeometry(geometry)
+    return arcgisToGeoJSON(geometry)
   }
   return geometry
 }

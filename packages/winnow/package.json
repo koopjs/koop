@@ -50,7 +50,6 @@
   "devDependencies": {
     "buble": "^0.20.0",
     "feature-parser": "^1.0.1",
-    "geojson-rewind": "^0.3.1",
     "husky": "^4.3.0",
     "lint-staged": "^10.4.0",
     "proxyquire": "^2.1.3",
