@@ -1,4 +1,4 @@
-const projectCoordinates = require('../../geometry/project-coordinates')
+const projectCoordinates = require('../../helpers/project-coordinates')
 
 function project (geometry, targetCoordinateSystem) {
   if (!geometry || !targetCoordinateSystem) return geometry

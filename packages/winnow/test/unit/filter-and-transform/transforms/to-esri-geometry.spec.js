@@ -13,7 +13,7 @@ const {
   esriMultiPoint,
   esriMulitLinestring,
   esriMultiPolygon
-} = require('../../geometry/fixtures')
+} = require('../../fixtures')
 
 test('toEsriGeometry: no geometry', t => {
   t.plan(1)

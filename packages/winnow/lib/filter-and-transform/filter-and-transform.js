@@ -7,9 +7,9 @@ const {
   toGeohash,
   toEsriAttributes,
   toHash,
-  toEsriGeometry
+  toEsriGeometry,
+  reducePrecision
 } = require('./transforms')
-const reducePrecision = require('../geometry/reduce-precision')
 
 sql.MAXSQLCACHESIZE = 0
 
@@ -37,12 +37,6 @@ sql.aggr.hash = toHash
 
 sql.fn.esriGeometry = toEsriGeometry
 
-sql.fn.reducePrecision = function (geometry, precision) {
-  if (!(geometry && geometry.coordinates)) return geometry
-  return {
-    type: geometry.type,
-    coordinates: reducePrecision(geometry.coordinates, precision)
-  }
-}
+sql.fn.reducePrecision = reducePrecision
 
 module.exports = sql

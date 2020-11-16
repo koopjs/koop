@@ -38,7 +38,7 @@ test('project, missing input geometry type, return input geometry', t => {
 test('project, valid input, return projection result', t => {
   const projectSpy = sinon.spy(function () { return 'projected-coordinates' })
   const project = proxyquire(modulePath, {
-    '../../geometry/project-coordinates': projectSpy
+    '../../helpers/project-coordinates': projectSpy
   })
   const result = project({ type: 'Point', coordinates: 'source-coordinates' }, 'coordinate-system')
   t.deepEquals(result, { type: 'Point', coordinates: 'projected-coordinates' })
@@ -52,7 +52,7 @@ test('project, error throw in projection, return null', t => {
     throw new Error('project error')
   })
   const project = proxyquire(modulePath, {
-    '../../geometry/project-coordinates': projectSpy
+    '../../helpers/project-coordinates': projectSpy
   })
   const result = project({ type: 'Point', coordinates: [] }, 'coordinate-system')
   t.deepEquals(result, null)

@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const { calculateBounds, intersects, contains } = require('@terraformer/spatial')
-const transformArray = require('../../geometry/transform-coordinate-array-to-polygon')
+const bboxPolygon = require('@turf/bbox-polygon').default
 const { arcgisToGeoJSON } = require('@terraformer/arcgis')
 
 module.exports = function (featureGeometry = {}, filterGeometry = {}) {
@@ -12,17 +12,18 @@ module.exports = function (featureGeometry = {}, filterGeometry = {}) {
 
   if (!type || coordinates.length === 0) return false
 
-  const geometryFilterEnvelope = convertGeometryToEnvelope(filterGeometry)
+  const geometryFilterEnvelope = convertGeometryToEnvelopePolygon(filterGeometry)
 
   if (type === 'Point') return contains(geometryFilterEnvelope, normalizedFeatureGeometry)
 
-  const featureEnvelope = convertGeometryToEnvelope(normalizedFeatureGeometry)
+  const featureEnvelope = convertGeometryToEnvelopePolygon(normalizedFeatureGeometry)
   return intersects(geometryFilterEnvelope, featureEnvelope)
 }
 
-function convertGeometryToEnvelope (geometry) {
+function convertGeometryToEnvelopePolygon (geometry) {
   const bounds = calculateBounds(geometry)
-  return transformArray(bounds)
+  const { geometry: envelopePolygon } = bboxPolygon(bounds)
+  return envelopePolygon
 }
 
 function isGeoJsonGeometry ({ type, coordinates }) {

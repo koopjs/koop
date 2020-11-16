@@ -1,9 +1,8 @@
 const _ = require('lodash')
 const { normalizeArray } = require('./helpers')
 const { arcgisToGeoJSON } = require('@terraformer/arcgis')
-const transformCoordinateArrayToPolygon = require('../geometry/transform-coordinate-array-to-polygon')
-const transformEnvelopeToPolygon = require('../geometry/transform-envelope-to-polygon')
-const projectCoordinates = require('../geometry/project-coordinates')
+const bboxPolygon = require('@turf/bbox-polygon').default
+const projectCoordinates = require('../helpers/project-coordinates')
 const normalizeGeometryFilterSpatialReference = require('./geometry-filter-spatial-reference')
 const normalizeSourceSR = require('./source-data-spatial-reference')
 
@@ -30,17 +29,31 @@ function normalizeGeometryFilter (options = {}) {
 function transformGeometryToPolygon (geometry) {
   if (_.isString(geometry) || Array.isArray(geometry)) {
     const coordinates = normalizeArray(geometry)
-    return transformCoordinateArrayToPolygon(coordinates)
+    const { geometry: polygon } = bboxPolygon(coordinates)
+    return polygon
   }
 
   if (geometry.xmin || geometry.xmin === 0) {
-    return transformEnvelopeToPolygon(geometry)
+    return transformEsriEnvelopeToPolygon(geometry)
   }
 
   if (geometry.x || geometry.rings || geometry.paths || geometry.points) {
     return arcgisToGeoJSON(geometry)
   }
   return geometry
+}
+
+function transformEsriEnvelopeToPolygon ({ xmin, ymin, xmax, ymax }) {
+  return {
+    type: 'Polygon',
+    coordinates: [[
+      [xmin, ymin],
+      [xmax, ymin],
+      [xmax, ymax],
+      [xmin, ymax],
+      [xmin, ymin]
+    ]]
+  }
 }
 
 module.exports = normalizeGeometryFilter
