@@ -27,6 +27,7 @@
     "standard": "^14.2.0"
   },
   "dependencies": {
+    "@koopjs/logger": "^2.0.6",
     "featureserver": "^2.15.0"
   },
   "peerDependencies": {
