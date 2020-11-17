@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.1.0] - 2020-11-17
 ### Added
 * Error logging if code is 500
 * Replace message with Internal Server Error if 500 code
@@ -83,6 +83,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.1.0]: https://github.com/koopjs/koop-featureserver-plugin/compare/v2.0.3...v2.1.0
 [2.0.3]: https://github.com/koopjs/koop-featureserver-plugin/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/koopjs/koop-featureserver-plugin/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/koopjs/koop-featureserver-plugin/compare/v2.0.0...v2.0.1
