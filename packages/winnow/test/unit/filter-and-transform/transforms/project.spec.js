@@ -43,7 +43,10 @@ test('project, valid input, return projection result', t => {
   const result = project({ type: 'Point', coordinates: 'source-coordinates' }, 'coordinate-system')
   t.deepEquals(result, { type: 'Point', coordinates: 'projected-coordinates' })
   t.ok(projectSpy.calledOnce)
-  t.deepEquals(projectSpy.firstCall.args, ['source-coordinates', { toSR: 'coordinate-system' }])
+  t.deepEquals(projectSpy.firstCall.args, [{
+    coordinates: 'source-coordinates',
+    toSR: 'coordinate-system'
+  }])
   t.end()
 })
 

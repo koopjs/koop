@@ -18,7 +18,8 @@ function normalizeGeometryFilter (options = {}) {
   const dataSpatialReference = normalizeSourceSR(options.sourceSR)
 
   if (geometryFilterSpatialReference !== dataSpatialReference) {
-    geometryFilter.coordinates = projectCoordinates(geometryFilter.coordinates, {
+    geometryFilter.coordinates = projectCoordinates({
+      coordinates: geometryFilter.coordinates,
       fromSR: geometryFilterSpatialReference,
       toSR: dataSpatialReference
     })

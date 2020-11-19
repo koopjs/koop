@@ -14,7 +14,10 @@ function tryProjectingGeometry ({ type, sourceCoordinates, targetCoordinateSyste
   try {
     return {
       type,
-      coordinates: projectCoordinates(sourceCoordinates, { toSR: targetCoordinateSystem })
+      coordinates: projectCoordinates({
+        coordinates: sourceCoordinates,
+        toSR: targetCoordinateSystem
+      })
     }
   } catch (error) {
     if (shouldLogProjectError()) console.error(error)
