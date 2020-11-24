@@ -1,7 +1,7 @@
 const test = require('tape')
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
-const modulePath = '../../lib/prepare-query'
+const modulePath = '../../../lib/query/prepare-query'
 
 test('Should return prepared query', t => {
   const compiledQuerySpy = sinon.spy((params) => {
@@ -13,9 +13,8 @@ test('Should return prepared query', t => {
     create: function () { return 'sql statement' },
     params: function (features) { return [features] }
   })
-  const executeQuery = sinon.spy({
-    finishQuery: function () { return 'return finished query result' }
-  })
+  const packageFeatures = sinon.spy(function () { return 'return finished query result' })
+
   const filterAndTransform = sinon.spy({
     compile: function () {
       return compiledQuerySpy
@@ -24,10 +23,10 @@ test('Should return prepared query', t => {
 
   const query = proxyquire(modulePath, {
     './normalize-query-input': normalizeQueryInput,
-    './normalize-query-options': normalizeQueryOptions,
-    './sql-query-builder': sqlQueryHelpers,
-    './execute-query': executeQuery,
-    './filter-and-transform': {
+    '../normalize-query-options': normalizeQueryOptions,
+    '../sql-query-builder': sqlQueryHelpers,
+    './package-features': packageFeatures,
+    '../filter-and-transform': {
       filterAndTransform
     }
   })
@@ -46,8 +45,8 @@ test('Should return prepared query', t => {
   const result = preparedQuery({ metadata: { foo: 'bar' }, features: ['features'] })
   t.ok(normalizeQueryInput.calledOnce)
   t.deepEquals(normalizeQueryInput.firstCall.args, [{ metadata: { foo: 'bar' }, features: ['features'] }])
-  t.ok(executeQuery.finishQuery.calledOnce)
-  t.deepEquals(executeQuery.finishQuery.firstCall.args, ['results', { hello: 'world', collection: { metadata: { foo: 'bar' } } }])
+  t.ok(packageFeatures.calledOnce)
+  t.deepEquals(packageFeatures.firstCall.args, ['results', { hello: 'world', collection: { metadata: { foo: 'bar' } } }])
   t.equals(result, 'return finished query result')
   t.ok(compiledQuerySpy.calledOnce)
   t.deepEquals(compiledQuerySpy.firstCall.args[0][0], '$features$')

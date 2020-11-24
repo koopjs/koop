@@ -1,5 +1,5 @@
 const test = require('tape')
-const normalizeQueryInput = require('../../lib/normalize-query-input')
+const normalizeQueryInput = require('../../../lib/query/normalize-query-input')
 
 test('normalizeQueryInput: invalid input should throw error', t => {
   const invalidInput = [undefined, null, {}, { features: [{}] }, [{}], 'string', 1234, true]
