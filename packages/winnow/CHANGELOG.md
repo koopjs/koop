@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+* Allows for input geospatial data that does not use the WGS84 coordinate system. Input coordinate system can be defined with the `inputCrs` options or defined on the GeoJSON collection via the `crs` path.
+
 ## [2.1.1] - 11-11-2020
 ### Fixed
 * Fixes a bug in the "envelope-intersects" operation.  Research indicates that the Esri envelope-intersects operation should check that an "Envelope of Query Geometry Intersects Envelope of Target Geometry" (see [here](http://resources.esri.com/help/9.3/ArcGISDesktop/ArcObjects/esriGeoDatabase/esriSpatialRelEnum.htm)).

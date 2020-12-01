@@ -3,6 +3,7 @@ const test = require('tape')
 const _ = require('lodash')
 const winnow = require('../..')
 const features = require('./fixtures/snow.json').features
+const geojson102645 = require('./fixtures/trees-sr-102645.json')
 const polygonFeatures = require('./fixtures/polygon.json').features
 const multiPolyFeatures = require('./fixtures/multipolygon.json').features
 
@@ -212,4 +213,119 @@ test('Project a polygon to NAD83 using 4269 and translating to esri', t => {
       [-119.00390625, 50.28933925329178]
     ]
   ])
+})
+
+test('Project data with CRS 102645 to 3857', t => {
+  t.plan(2)
+  const options = {
+    projection: 3857,
+    inputCrs: `PROJCS["NAD_1983_StatePlane_California_V_FIPS_0405_Feet",
+GEOGCS["GCS_North_American_1983",
+    DATUM["North_American_Datum_1983",
+        SPHEROID["GRS_1980",6378137,298.257222101]],
+    PRIMEM["Greenwich",0],
+    UNIT["Degree",0.017453292519943295]],
+PROJECTION["Lambert_Conformal_Conic_2SP"],
+PARAMETER["False_Easting",6561666.666666666],
+PARAMETER["False_Northing",1640416.666666667],
+PARAMETER["Central_Meridian",-118],
+PARAMETER["Standard_Parallel_1",34.03333333333333],
+PARAMETER["Standard_Parallel_2",35.46666666666667],
+PARAMETER["Latitude_Of_Origin",33.5],
+UNIT["Foot_US",0.30480060960121924],
+AUTHORITY["EPSG","102645"]]`,
+    limit: 1
+  }
+  const { crs, features: [feature] } = winnow.query(geojson102645, options)
+  t.deepEqual(feature.geometry, {
+    type: 'Point',
+    coordinates: [
+      -13153229.775672015,
+      4053009.002177773
+    ]
+  })
+  t.deepEquals(crs, { type: 'name', properties: { name: 'urn:ogc:def:crs:EPSG::3857' } })
+})
+
+test('Project data with CRS 102645 to 3857, use geometry filter with WGS84', t => {
+  t.plan(3)
+  const options = {
+    projection: 3857,
+    inputCrs: `PROJCS["NAD_1983_StatePlane_California_V_FIPS_0405_Feet",
+GEOGCS["GCS_North_American_1983",
+    DATUM["North_American_Datum_1983",
+        SPHEROID["GRS_1980",6378137,298.257222101]],
+    PRIMEM["Greenwich",0],
+    UNIT["Degree",0.017453292519943295]],
+PROJECTION["Lambert_Conformal_Conic_2SP"],
+PARAMETER["False_Easting",6561666.666666666],
+PARAMETER["False_Northing",1640416.666666667],
+PARAMETER["Central_Meridian",-118],
+PARAMETER["Standard_Parallel_1",34.03333333333333],
+PARAMETER["Standard_Parallel_2",35.46666666666667],
+PARAMETER["Latitude_Of_Origin",33.5],
+UNIT["Foot_US",0.30480060960121924],
+AUTHORITY["EPSG","102645"]]`,
+    geometry: {
+      xmin: -118.1574890535315,
+      ymin: 34.180075683064324,
+      xmax: -118.15745575823779,
+      ymax: 34.18010065453462,
+      spatialReference: {
+        wkid: 4326
+      }
+    }
+  }
+  const { crs, features } = winnow.query(geojson102645, options)
+  t.equals(features.length, 1)
+  t.deepEqual(features[0].geometry, {
+    type: 'Point',
+    coordinates: [
+      -13153229.775672015,
+      4053009.002177773
+    ]
+  })
+  t.deepEquals(crs, { type: 'name', properties: { name: 'urn:ogc:def:crs:EPSG::3857' } })
+})
+
+test('Project data with CRS 102645 to 3857, use geometry filter with 102645', t => {
+  t.plan(3)
+  const sourceCrs = `PROJCS["NAD_1983_StatePlane_California_V_FIPS_0405_Feet",
+GEOGCS["GCS_North_American_1983",
+    DATUM["North_American_Datum_1983",
+        SPHEROID["GRS_1980",6378137,298.257222101]],
+    PRIMEM["Greenwich",0],
+    UNIT["Degree",0.017453292519943295]],
+PROJECTION["Lambert_Conformal_Conic_2SP"],
+PARAMETER["False_Easting",6561666.666666666],
+PARAMETER["False_Northing",1640416.666666667],
+PARAMETER["Central_Meridian",-118],
+PARAMETER["Standard_Parallel_1",34.03333333333333],
+PARAMETER["Standard_Parallel_2",35.46666666666667],
+PARAMETER["Latitude_Of_Origin",33.5],
+UNIT["Foot_US",0.30480060960121924],
+AUTHORITY["EPSG","102645"]]`
+  const options = {
+    projection: 3857,
+    inputCrs: sourceCrs,
+    geometry: {
+      xmin: 6514034.222058748,
+      ymin: 1887952.412400938,
+      xmax: 6514044.291980494,
+      ymax: 1887961.5157372837,
+      spatialReference: {
+        wkt: sourceCrs
+      }
+    }
+  }
+  const { crs, features } = winnow.query(geojson102645, options)
+  t.equals(features.length, 1)
+  t.deepEqual(features[0].geometry, {
+    type: 'Point',
+    coordinates: [
+      -13153229.775672015,
+      4053009.002177773
+    ]
+  })
+  t.deepEquals(crs, { type: 'name', properties: { name: 'urn:ogc:def:crs:EPSG::3857' } })
 })

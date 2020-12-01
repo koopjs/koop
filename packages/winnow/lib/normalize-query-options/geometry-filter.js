@@ -15,7 +15,7 @@ function normalizeGeometryFilter (options = {}) {
 
   const geometryFilter = transformGeometryToPolygon(geometry)
 
-  const dataSpatialReference = normalizeSourceSR(options.sourceSR)
+  const dataSpatialReference = normalizeSourceSR(options)
 
   if (geometryFilterSpatialReference !== dataSpatialReference) {
     geometryFilter.coordinates = projectCoordinates({

@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const { normalizeArray } = require('./helpers')
-const normalizeSpatialReference = require('./spatial-reference')
+const normalizeSpatialReference = require('../helpers/normalize-spatial-reference')
 /**
  * Normalize the input spatial reference for a geometry filter. Look on options.geometry object first.
  * If spatial reference not present, look in options.inSR.  Defaults to EPSG:4326 (which is known to Proj4)

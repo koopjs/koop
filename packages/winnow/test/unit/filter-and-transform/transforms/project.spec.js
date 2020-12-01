@@ -40,12 +40,13 @@ test('project, valid input, return projection result', t => {
   const project = proxyquire(modulePath, {
     '../../helpers/project-coordinates': projectSpy
   })
-  const result = project({ type: 'Point', coordinates: 'source-coordinates' }, 'coordinate-system')
+  const result = project({ type: 'Point', coordinates: 'source-coordinates' }, 'source-cs', 'target-cs')
   t.deepEquals(result, { type: 'Point', coordinates: 'projected-coordinates' })
   t.ok(projectSpy.calledOnce)
   t.deepEquals(projectSpy.firstCall.args, [{
     coordinates: 'source-coordinates',
-    toSR: 'coordinate-system'
+    fromSR: 'source-cs',
+    toSR: 'target-cs'
   }])
   t.end()
 })
@@ -57,7 +58,7 @@ test('project, error throw in projection, return null', t => {
   const project = proxyquire(modulePath, {
     '../../helpers/project-coordinates': projectSpy
   })
-  const result = project({ type: 'Point', coordinates: [] }, 'coordinate-system')
+  const result = project({ type: 'Point', coordinates: [] }, 'source-cs', 'target-cs')
   t.deepEquals(result, null)
   t.end()
 })

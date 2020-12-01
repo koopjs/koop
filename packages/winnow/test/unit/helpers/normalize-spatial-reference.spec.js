@@ -1,5 +1,5 @@
 const test = require('tape')
-const normalizeSpatialReference = require('../../../lib/normalize-query-options/spatial-reference')
+const normalizeSpatialReference = require('../../../lib/helpers/normalize-spatial-reference')
 
 test('normalize-query-options, spatial-reference: undefined', t => {
   t.plan(1)

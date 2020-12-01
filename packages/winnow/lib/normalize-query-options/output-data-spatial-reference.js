@@ -1,4 +1,4 @@
-const normalizeSpatialReference = require('./spatial-reference')
+const normalizeSpatialReference = require('../helpers/normalize-spatial-reference')
 const logWarning = process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress'
 
 function normalizeOutputDataSpatialReference (options = {}) {

@@ -13,16 +13,16 @@ function create (options) {
   return `${select}${where}${groupBy}${orderBy}${limit}${offset}`
 }
 
-function params (features, options) {
+function params (features, { sourceDataCoordinateSystem, projection, aggregates, geometry, geometryPrecision }) {
   const params = []
   // NOTE: order matters here
-  // Fields stage
-  if (options.projection && !options.aggregates) params.push(options.projection)
-  if (options.geometryPrecision) params.push(options.geometryPrecision)
-  // From stage
+  // select fragment: transform function parameters here
+  if (projection && !aggregates) params.push(sourceDataCoordinateSystem, projection)
+  if (geometryPrecision) params.push(geometryPrecision)
+  // from fragment: features parameter here
   params.push(Array.isArray(features) ? features : [features])
-  // Where stage
-  if (options.geometry) params.push(options.geometry)
+  // where fragment: geometry filter parameter here
+  if (geometry) params.push(geometry)
   return params
 }
 
