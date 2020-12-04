@@ -13,17 +13,29 @@ function create (options) {
   return `${select}${where}${groupBy}${orderBy}${limit}${offset}`
 }
 
-function params (features, { sourceDataCoordinateSystem, projection, aggregates, geometry, geometryPrecision }) {
+function params (features, { inputCrs, outputCrs, aggregates, geometry, geometryPrecision }) {
   const params = []
   // NOTE: order matters here
   // select fragment: transform function parameters here
-  if (projection && !aggregates) params.push(sourceDataCoordinateSystem, projection)
-  if (geometryPrecision) params.push(geometryPrecision)
+  if (!aggregates && outputCrs) {
+    params.push(getCrsString(inputCrs), getCrsString(outputCrs))
+  }
+
+  if (geometryPrecision) {
+    params.push(geometryPrecision)
+  }
+
   // from fragment: features parameter here
   params.push(Array.isArray(features) ? features : [features])
+
   // where fragment: geometry filter parameter here
-  if (geometry) params.push(geometry)
+  if (geometry) {
+    params.push(geometry)
+  }
   return params
 }
 
+function getCrsString ({ wkt, wkid } = {}) {
+  return wkt || `EPSG:${wkid}`
+}
 module.exports = { create, params }

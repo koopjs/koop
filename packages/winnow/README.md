@@ -23,7 +23,7 @@ const options = {
   limit: Number // number of results to return
   offset: Number // number of return features to offset
   order: Array // Set of fields or aggregates by which to order results
-  projection: Number || String // An EPSG code, an OGC WKT or an ESRI WKT used to convert geometry
+  outputCrs: Number || String // An EPSG code, an OGC WKT or an ESRI WKT used to convert geometry
   inputCrs: Number || String // An EPSG code, an OGC WKT or an ESRI WKT defining the coordinate system of the input data. Defaults to 4326 (WGS84)
   toEsri: Boolean // return Esri feature collection
   geometryPrecision: Number // number of digits to appear after decimal point for geometry
@@ -107,11 +107,11 @@ The amount to offset returned features (e.g., `10` will skip the first 10 return
 ### `order`
 An array of fields use to sort the output
 
-### `projection`
-Can be an epsg code, an ogc wkt or an esri wkt. This parameter controls how the geometry will be projected to another coordinate system.
+### `outputCrs` (formerly `projection`)
+Can be an EPSG code, an OGC wkt or an Esri wkt. This parameter controls how the geometry will be projected to another coordinate system.
 
 ### `inputCrs`
-Can be an epsg code, an ogc wkt or an esri wkt. This parameter defines the coordinate system of input data. If the incoming data is a GeoJSON feature collection with a "named" `crs` property defined according to [specification](https://geojson.org/geojson-spec#named-crs), winnow will use it's value if `inputCrs` is undefined. If neither is defined, Winnow assumes the input data has coordinate system WGS84.
+Can be an EPSG code, an OGC wkt or an Esri wkt.. This parameter defines the coordinate system of input data. If the incoming data is a GeoJSON feature collection with a "named" `crs` property defined according to [specification](https://geojson.org/geojson-spec#named-crs), winnow will use it's value if `inputCrs` is undefined. If neither is defined, Winnow assumes the input data has coordinate system WGS84.
 
 ### `toEsri`
 If true, the object returned will be an esri feature collection.

@@ -32,8 +32,8 @@ function normalizeQueryOptions (options, features) {
     aggregates: normalizeAggregates(options),
     groupBy: normalizeGroupBy(options),
     limit: normalizeLimit(options),
-    projection: normalizeOutputDataSpatialReference(options),
-    sourceDataCoordinateSystem: normalizeSourceDataSpatialReference(options),
+    outputCrs: normalizeOutputDataSpatialReference(options),
+    inputCrs: normalizeSourceDataSpatialReference(options),
     classification: normalizeClassification(options)
   })
   normalizedOptions.offset = normalizeOffset(normalizedOptions)

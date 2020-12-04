@@ -12,18 +12,24 @@ function normalizeGeometryFilter (options = {}) {
   if (!geometry) return
 
   const geometryFilterSpatialReference = normalizeGeometryFilterSpatialReference(options)
+  const fromSR = getCrsString(geometryFilterSpatialReference)
 
   const geometryFilter = transformGeometryToPolygon(geometry)
 
-  const dataSpatialReference = normalizeSourceSR(options)
+  const dataCrs = normalizeSourceSR(options)
 
-  if (geometryFilterSpatialReference !== dataSpatialReference) {
-    geometryFilter.coordinates = projectCoordinates({
-      coordinates: geometryFilter.coordinates,
-      fromSR: geometryFilterSpatialReference,
-      toSR: dataSpatialReference
-    })
+  const toSR = getCrsString(dataCrs)
+
+  if (fromSR === toSR) {
+    return geometryFilter
   }
+
+  geometryFilter.coordinates = projectCoordinates({
+    coordinates: geometryFilter.coordinates,
+    fromSR,
+    toSR
+  })
+
   return geometryFilter
 }
 
@@ -55,6 +61,10 @@ function transformEsriEnvelopeToPolygon ({ xmin, ymin, xmax, ymax }) {
       [xmin, ymin]
     ]]
   }
+}
+
+function getCrsString ({ wkt, wkid } = {}) {
+  return wkt || `EPSG:${wkid}`
 }
 
 module.exports = normalizeGeometryFilter

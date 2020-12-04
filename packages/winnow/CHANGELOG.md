@@ -4,7 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Added
-* Allows for input geospatial data that does not use the WGS84 coordinate system. Input coordinate system can be defined with the `inputCrs` options or defined on the GeoJSON collection via the `crs` path.
+* Allow input geospatial data that does not use the WGS84 coordinate system. Input coordinate system can be defined with the `inputCrs` options or defined on the GeoJSON collection via the `crs` path.
+* Add `outputCrs` option as an alias for the `projection` option as it is a better description of the option's value and compliments `inputCrs`.
+* Add WKT lookup for spatial reference ids passed as `inputCrs`, `outputCrs` (formerly `projection`), `inputSR`, or geometry-filter `wkid`/`latestWkid`
 
 ## [2.1.1] - 11-11-2020
 ### Fixed

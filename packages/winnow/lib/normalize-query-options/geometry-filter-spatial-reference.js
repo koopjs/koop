@@ -1,6 +1,8 @@
 const _ = require('lodash')
 const { normalizeArray } = require('./helpers')
-const normalizeSpatialReference = require('../helpers/normalize-spatial-reference')
+const normalizeSpatialReference = require('./spatial-reference')
+const logWarning = process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress'
+
 /**
  * Normalize the input spatial reference for a geometry filter. Look on options.geometry object first.
  * If spatial reference not present, look in options.inSR.  Defaults to EPSG:4326 (which is known to Proj4)
@@ -13,9 +15,9 @@ function normalizeGeometryFilterSpatialReference (options = {}) {
 
   const spatialReference = normalizeSpatialReference(geometryEnvelopeSpatialReference || options.inSR)
 
-  if (!spatialReference) return 'EPSG:4326'
-  const { wkid, wkt } = spatialReference
-  return wkid ? `EPSG:${wkid}` : wkt
+  if (logWarning) console.log('WARNING: geometry filter spatial reference unknown. Defaulting to EPSG:4326.')
+
+  return spatialReference || { wkid: 4326 }
 }
 
 function extractGeometryFilterSpatialReference (geometry) {

@@ -1,6 +1,6 @@
 function createGeometrySelectFragment (options = {}) {
   const geometryFunctions = []
-  if (options.projection) geometryFunctions.push('project($,?,?)')
+  if (options.outputCrs) geometryFunctions.push('project($,?,?)')
   if (options.geometryPrecision) geometryFunctions.push('reducePrecision($,?)')
   if (options.toEsri) geometryFunctions.push('esriGeometry($)')
 

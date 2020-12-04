@@ -3,7 +3,7 @@ const Joi = require('@hapi/joi')
 const wktParser = require('wkt-parser')
 const PROJ4_WKIDS = [4326, 4269, 3857, 3785, 900913, 102113]
 const wktLookup = new Map()
-const spatialReferenceSchema = Joi.alternatives(
+const schema = Joi.alternatives(
   Joi.string(),
   Joi.number().integer(),
   Joi.object({
@@ -13,31 +13,26 @@ const spatialReferenceSchema = Joi.alternatives(
   }).or('wkid', 'latestWkid', 'wkt').required()
 )
 
-/**
- * Normalize a spatial reference object.  Use wkids for spatial references know too proj4, otherwise include the wkt (if available)
- * @param {*} spatialReference
- * @returns {object} normalized spatial reference object with wkid or wkt (or undefined)
- */
-function normalizeSpatialReference (spatialReference) {
-  if (!spatialReference) return
+function normalizeSpatialReference (input) {
+  if (!input) return
 
-  const { error } = spatialReferenceSchema.validate(spatialReference)
+  const { error } = schema.validate(input)
 
   if (error) {
     if (process.env.NODE_ENV !== 'production') {
-      console.log(`WARNING: ${spatialReference} is not a valid spatial reference; defaulting to none`)
+      console.log(`WARNING: ${input} is not a valid spatial reference; defaulting to none`)
     }
     // Todo: throw error
     return
   }
 
-  const { type, value } = parseSpatialReferenceInput(spatialReference)
+  const { type, value } = parseSpatialReferenceInput(input)
 
   if (type === 'wkid') {
-    return convertWkidToNormalizedSpatialReference(value)
+    return convertWkidToSpatialReference(value)
   }
 
-  return normalizeStringToSpatialReference(value)
+  return convertStringToSpatialReference(value)
 }
 
 function parseSpatialReferenceInput (spatialReference) {
@@ -47,21 +42,25 @@ function parseSpatialReferenceInput (spatialReference) {
       type: 'wkid',
       value: Number(spatialReference)
     }
-  } else if (isPrefixedSpatialReferenceId(spatialReference)) {
+  }
+
+  if (isPrefixedSpatialReferenceId(spatialReference)) {
     return {
       type: 'wkid',
       value: extractPrefixedSpatialReferenceId(spatialReference)
     }
-  } else if (spatialReference.wkid || spatialReference.latestWkid) {
+  }
+
+  if (spatialReference.wkid || spatialReference.latestWkid) {
     return {
       type: 'wkid',
       value: spatialReference.wkid || spatialReference.latestWkid
     }
-  } else {
-    return {
-      type: 'wkt',
-      value: spatialReference.wkt || spatialReference
-    }
+  }
+
+  return {
+    type: 'wkt',
+    value: spatialReference.wkt || spatialReference
   }
 }
 
@@ -78,7 +77,7 @@ function extractPrefixedSpatialReferenceId (prefixedId) {
   return Number(spatialRefId)
 }
 
-function convertWkidToNormalizedSpatialReference (wkid) {
+function convertWkidToSpatialReference (wkid) {
   // 102100 is the old Esri code for 3857 but not recognized for proj4
   if (wkid === 102100) return { wkid: 3857 }
 
@@ -103,16 +102,19 @@ function esriWktLookup (wkid) {
   const { wkt } = result
 
   // Add the WKT to the local lookup so we don't need to scan the Esri lookups next time
-  wktLookup.set(wkid, wkt)
-  return { wkt }
+  wktLookup.set(wkid, { wkid, wkt })
+  return { wkid, wkt }
 }
 
-function normalizeStringToSpatialReference (wkt) {
+function convertStringToSpatialReference (wkt) {
   if (/WGS_1984_Web_Mercator_Auxiliary_Sphere/.test(wkt)) return { wkid: 3857 }
 
   try {
-    wktParser(wkt)
-    return { wkt }
+    const wkid = getWktWkid(wkt)
+    return {
+      wkt,
+      wkid: wkid ? Number(wkid) : undefined
+    }
   } catch (err) {
     if (process.env.NODE_ENV !== 'production') {
       console.log(`WARNING: An un-parseable WKT spatial reference was detected: ${wkt}`)
@@ -121,4 +123,10 @@ function normalizeStringToSpatialReference (wkt) {
   }
 }
 
+function getWktWkid (wkt) {
+  const { AUTHORITY: authority } = wktParser(wkt)
+  if (!authority) return
+  const [, wkid] = Object.entries(authority)[0]
+  return wkid
+}
 module.exports = normalizeSpatialReference

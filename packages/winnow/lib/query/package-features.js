@@ -1,7 +1,6 @@
 const _ = require('lodash')
-const normalizeSpatialReference = require('../helpers/normalize-spatial-reference')
 
-function packageFeatures (features = [], { groupBy, aggregates, collection, projection } = {}) {
+function packageFeatures (features = [], { groupBy, aggregates, collection, outputCrs } = {}) {
   if (groupBy || (!aggregates && !collection)) {
     return features
   }
@@ -11,18 +10,17 @@ function packageFeatures (features = [], { groupBy, aggregates, collection, proj
   }
 
   if (collection) {
-    return packageCollection({ features, collection, projection })
+    return packageCollection({ features, collection, outputCrs })
   }
 }
 
-function packageCollection ({ features, collection, projection }) {
+function packageCollection ({ features, collection, outputCrs: { wkid, wkt } = {} }) {
   const outputCollection = _.chain(collection).cloneDeep().set('features', features)
-  if (!projection) {
+  if (!wkid && !wkt) {
     return outputCollection.value()
   }
 
-  const { wkid } = normalizeSpatialReference(projection)
-  const crs = `urn:ogc:def:crs:EPSG::${wkid}`
+  const crs = wkid ? `urn:ogc:def:crs:EPSG::${wkid}` : wkt
   return outputCollection.set('crs.properties.name', crs).value()
 }
 

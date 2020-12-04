@@ -13,8 +13,8 @@ test('createGeometryFragment: empty options', t => {
   t.end()
 })
 
-test('createGeometryFragment: projection option', t => {
-  const geometryFragment = createGeometrySelectFragment({ projection: 3857 })
+test('createGeometryFragment: outputCrs option', t => {
+  const geometryFragment = createGeometrySelectFragment({ outputCrs: { wkid: 3857 } })
   t.equal(geometryFragment, 'project(geometry,?,?) as geometry')
   t.end()
 })
@@ -31,20 +31,20 @@ test('createGeometryFragment: toEsri option', t => {
   t.end()
 })
 
-test('createGeometryFragment: projection and geometryPrecision options', t => {
-  const geometryFragment = createGeometrySelectFragment({ projection: 3857, geometryPrecision: 1 })
+test('createGeometryFragment: outputCrs and geometryPrecision options', t => {
+  const geometryFragment = createGeometrySelectFragment({ outputCrs: { wkid: 3857 }, geometryPrecision: 1 })
   t.equal(geometryFragment, 'reducePrecision(project(geometry,?,?),?) as geometry')
   t.end()
 })
 
-test('createGeometryFragment: projection, geometryPrecision, and toEsri options', t => {
-  const geometryFragment = createGeometrySelectFragment({ projection: 3857, geometryPrecision: 1, toEsri: true })
+test('createGeometryFragment: outputCrs, geometryPrecision, and toEsri options', t => {
+  const geometryFragment = createGeometrySelectFragment({ outputCrs: { wkid: 3857 }, geometryPrecision: 1, toEsri: true })
   t.equal(geometryFragment, 'esriGeometry(reducePrecision(project(geometry,?,?),?)) as geometry')
   t.end()
 })
 
-test('createGeometryFragment: projection, and toEsri options', t => {
-  const geometryFragment = createGeometrySelectFragment({ projection: 3857, toEsri: true })
+test('createGeometryFragment: outputCrs, and toEsri options', t => {
+  const geometryFragment = createGeometrySelectFragment({ outputCrs: { wkid: 3857 }, toEsri: true })
   t.equal(geometryFragment, 'esriGeometry(project(geometry,?,?)) as geometry')
   t.end()
 })
