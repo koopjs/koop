@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.2.0] - 12-09-2020
 ### Added
 * Allow input geospatial data that does not use the WGS84 coordinate system. Input coordinate system can be defined with the `inputCrs` options or defined on the GeoJSON collection via the `crs` path.
 * Add `outputCrs` option as an alias for the `projection` option as it is a better description of the option's value and compliments `inputCrs`.
@@ -362,6 +362,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[2.2.0]: https://github.com/featureserver/winnow/compare/v2.1.1...v2.2.0
 [2.1.1]: https://github.com/featureserver/winnow/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/featureserver/winnow/compare/v2.0.2...v2.1.0
 [2.0.2]: https://github.com/featureserver/winnow/compare/v2.0.1...v2.0.2
