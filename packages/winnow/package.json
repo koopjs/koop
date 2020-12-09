@@ -46,7 +46,6 @@
     "alasql": "^0.6.2",
     "classybrew": "0.0.3",
     "flora-sql-parser": "^0.9.3",
-    "highland": "^3.0.0-beta.3",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "ngeohash": "^0.6.3",
@@ -56,8 +55,6 @@
     "wkt-parser": "^1.2.2"
   },
   "devDependencies": {
-    "buble": "^0.20.0",
-    "feature-parser": "^1.0.1",
     "husky": "^4.3.0",
     "lint-staged": "^10.4.0",
     "proxyquire": "^2.1.3",
