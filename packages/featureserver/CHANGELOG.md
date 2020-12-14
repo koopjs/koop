@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.25.1] - 12-14-2020
+### Changed
+* Bumped Winnow version for patch
+
 ## [2.25.0] - 12-14-2020
 ### Changed
 * Bumped Winnow version - better support for input/output CRSs
@@ -408,6 +412,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.25.1]: https://github.com/koopjs/featureserver/compare/v2.25.0...v2.25.1
 [2.25.0]: https://github.com/koopjs/featureserver/compare/v2.24.1...v2.25.0
 [2.24.1]: https://github.com/koopjs/featureserver/compare/v2.24.0...v2.24.1
 [2.24.0]: https://github.com/koopjs/featureserver/compare/v2.23.0...v2.24.0
