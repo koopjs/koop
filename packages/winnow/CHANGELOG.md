@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+## Fixed
+* Handling of null geometry in the to-Esri geometry transform
+* Fix check for reprojection
+
 ## [2.2.0] - 12-09-2020
 ### Added
 * Allow input geospatial data that does not use the WGS84 coordinate system. Input coordinate system can be defined with the `inputCrs` options or defined on the GeoJSON collection via the `crs` path.

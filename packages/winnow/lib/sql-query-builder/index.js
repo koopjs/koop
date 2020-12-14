@@ -2,6 +2,7 @@ const createWhereClause = require('./where')
 const createSelectSql = require('./select')
 const createOrderByClause = require('./order-by')
 const createGroupByClause = require('./group-by')
+const isDifferentCrs = require('./is-different-crs')
 
 function create (options) {
   const select = createSelectSql(options)
@@ -17,7 +18,7 @@ function params (features, { inputCrs, outputCrs, aggregates, geometry, geometry
   const params = []
   // NOTE: order matters here
   // select fragment: transform function parameters here
-  if (!aggregates && outputCrs) {
+  if (!aggregates && isDifferentCrs(inputCrs, outputCrs)) {
     params.push(getCrsString(inputCrs), getCrsString(outputCrs))
   }
 

@@ -1,8 +1,9 @@
-function createGeometrySelectFragment (options = {}) {
+const isDifferentCrs = require('../is-different-crs')
+function createGeometrySelectFragment ({ inputCrs, outputCrs, geometryPrecision, toEsri } = {}) {
   const geometryFunctions = []
-  if (options.outputCrs) geometryFunctions.push('project($,?,?)')
-  if (options.geometryPrecision) geometryFunctions.push('reducePrecision($,?)')
-  if (options.toEsri) geometryFunctions.push('esriGeometry($)')
+  if (isDifferentCrs(inputCrs, outputCrs)) geometryFunctions.push('project($,?,?)')
+  if (geometryPrecision) geometryFunctions.push('reducePrecision($,?)')
+  if (toEsri) geometryFunctions.push('esriGeometry($)')
 
   if (geometryFunctions.length === 0) return 'geometry'
 

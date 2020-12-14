@@ -21,6 +21,12 @@ test('toEsriGeometry: no geometry', t => {
   t.equals(transformed, null)
 })
 
+test('toEsriGeometry: null geometry', t => {
+  t.plan(1)
+  const transformed = toEsriGeometry(null)
+  t.equals(transformed, null)
+})
+
 test('toEsriGeometry: no geometry type', t => {
   t.plan(1)
   const transformed = toEsriGeometry({})
