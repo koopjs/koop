@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.2.1] - 2020-12-14
+### Changed
+* Bump FeatureServer to 2.25.1
+
 ## [2.2.0] - 2020-12-14
 ### Changed
 * Bump FeatureServer to 2.25.0 - better support for CRSs
@@ -87,6 +91,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[2.2.1]: https://github.com/koopjs/koop-featureserver-plugin/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/koopjs/koop-featureserver-plugin/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/koopjs/koop-featureserver-plugin/compare/v2.0.3...v2.1.0
 [2.0.3]: https://github.com/koopjs/koop-featureserver-plugin/compare/v2.0.2...v2.0.3

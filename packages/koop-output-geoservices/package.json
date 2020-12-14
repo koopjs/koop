@@ -1,6 +1,6 @@
 {
   "name": "@koopjs/output-geoservices",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Wraps https://github.com/featureserver/featureserver as a plugin for koop",
   "main": "index.js",
   "scripts": {
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@koopjs/logger": "^2.0.6",
-    "featureserver": "^2.25.0"
+    "featureserver": "^2.25.1"
   },
   "peerDependencies": {
     "koop": "^3.6.1"
