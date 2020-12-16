@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* When no reprojection, output CRS is assigned same value as input CRS
+
 ## [2.2.1] - 12-14-2020
 ### Fixed
 * Handling of null geometry in the to-Esri geometry transform
