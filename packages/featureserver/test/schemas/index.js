@@ -10,6 +10,7 @@ const featuresTemplateSchema = Joi.object().keys({
   hasZ: Joi.boolean().valid(false),
   hasM: Joi.boolean().valid(false),
   spatialReference: Joi.object().keys({
+    latestWkid: Joi.number().valid(4326),
     wkid: Joi.number().valid(4326)
   }),
   fields: Joi.array(),

@@ -8,7 +8,7 @@
   "globalIdFieldName" : "",
   "hasZ": false,
   "hasM": false,
-  "spatialReference" : {"wkid" : 4326},
+  "spatialReference" : {"wkid" : 4326, "latestWkid" : 4326},
   "fields" : [],
   "features" : [],
   "exceededTransferLimit": false

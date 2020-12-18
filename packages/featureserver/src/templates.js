@@ -2,9 +2,9 @@ const _ = require('lodash')
 const moment = require('moment')
 const { getExtent, getGeomType, isTable } = require('./utils')
 const { computeFieldObject, createFieldAliases, createStatFields } = require('./field')
-const { computeSpatialReference, computeExtent } = require('./geometry')
+const { normalizeSpatialReference, computeExtent } = require('./geometry')
 const { createClassBreakInfos, createUniqueValueInfos } = require('./generateRenderer/createClassificationInfos')
-
+const getCollectionCrs = require('./get-collection-crs')
 module.exports = { renderRestInfo, renderLayer, renderFeatures, renderStatistics, renderServer, renderStats, renderClassBreaks, renderUniqueValue }
 
 const templates = {
@@ -29,18 +29,19 @@ const renderers = {
  * @param {object} options
  * @return {object} layer info
  */
-function renderLayer (data = {}, options = {}) {
+function renderLayer (data = {}, { params = {}, query = {} } = {}) {
   const json = _.cloneDeep(templates.layer)
   const metadata = data.metadata || {}
   const capabilities = data.capabilities || {}
 
   // Use options, metadata, and or feature data to override template values
-  json.id = parseInt(options.layer) || 0
-  json.fields = computeFieldObject(data, 'layer', options)
+  json.id = parseInt(params.layer) || 0
+  json.fields = computeFieldObject(data, 'layer', params)
   json.type = isTable(data) ? 'Table' : 'Feature Layer'
   json.geometryType = getGeomType(data)
   json.drawingInfo.renderer = metadata.renderer || renderers[json.geometryType]
-  json.extent = metadata.extent ? computeExtent(metadata.extent) : computeExtent(getExtent(data))
+  var spatialReference = getServiceSpatialReference(data, query)
+  json.extent = metadata.extent ? computeExtent(metadata.extent, spatialReference) : computeExtent(getExtent(data), spatialReference)
 
   if (metadata.name) json.name = metadata.name
   if (metadata.description) json.description = metadata.description
@@ -74,7 +75,7 @@ function renderFeatures (data = {}, options = {}) {
   const metadata = data.metadata || {}
 
   json.geometryType = options.geometryType
-  json.spatialReference = computeSpatialReference(options.spatialReference)
+  json.spatialReference = getOutputSpatialReference(data, options)
   json.fields = computeFieldObject(data, 'query', options)
   json.features = data.features || []
 
@@ -106,15 +107,16 @@ function renderRestInfo (dataSourceRestInfo = {}) {
   return json
 }
 
-function renderServer (server, { layers, tables }) {
+function renderServer (data, { layers, tables } = {}, { query = {} } = {}) {
   const json = _.cloneDeep(templates.server)
-  json.fullExtent = json.initialExtent = computeExtent(server.extent || json.fullExtent)
-  json.serviceDescription = server.description || ''
+  json.spatialReference = getServiceSpatialReference(data, query)
+  json.fullExtent = json.initialExtent = computeExtent(data.extent || json.fullExtent, json.spatialReference)
+  json.serviceDescription = data.description || ''
   json.layers = layers
   json.tables = tables
-  json.maxRecordCount = server.maxRecordCount || (layers[0] && layers[0].metadata && layers[0].metadata.maxRecordCount) || 2000
+  json.maxRecordCount = data.maxRecordCount || (layers[0] && layers[0].metadata && layers[0].metadata.maxRecordCount) || 2000
   // Override the template value for hasStatic data if model metadata has this value set
-  if (typeof server.hasStaticData === 'boolean') json.hasStaticData = server.hasStaticData
+  if (typeof data.hasStaticData === 'boolean') json.hasStaticData = data.hasStaticData
   return json
 }
 
@@ -162,4 +164,36 @@ function renderUniqueValue (breaks, classificationDef, geomType) {
   json.fieldDelimiter = classificationDef.fieldDelimiter
   json.uniqueValueInfos = createUniqueValueInfos(breaks, classificationDef, geomType)
   return json
+}
+
+function getServiceSpatialReference (collection, {
+  inputCrs,
+  sourceSR
+}) {
+  const spatialReference = inputCrs || sourceSR || getCollectionCrs(collection) || 4326
+
+  const { latestWkid, wkid, wkt } = normalizeSpatialReference(spatialReference)
+
+  if (wkid) {
+    return { wkid, latestWkid }
+  }
+
+  return { wkt }
+}
+
+function getOutputSpatialReference (collection, {
+  outSR,
+  outputCrs,
+  inputCrs,
+  sourceSR
+}) {
+  const spatialReference = outputCrs || outSR || inputCrs || sourceSR || getCollectionCrs(collection) || 4326
+
+  const { wkid, wkt, latestWkid } = normalizeSpatialReference(spatialReference)
+
+  if (wkid) {
+    return { wkid, latestWkid }
+  }
+
+  return { wkt }
 }

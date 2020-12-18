@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Properly set spatial reference values in service, layer, and query info when source data is not WGS84
+
 ## [2.25.1] - 12-14-2020
 ### Changed
 * Bumped Winnow version for patch

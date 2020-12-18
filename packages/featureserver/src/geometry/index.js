@@ -1,5 +1,5 @@
-const computeSpatialReference = require('./spatialReference')
+const normalizeSpatialReference = require('./normalize-spatial-reference')
 const computeExtent = require('./extents')
 const geometryMap = require('./geometry-map')
 
-module.exports = { computeSpatialReference, computeExtent, geometryMap }
+module.exports = { computeExtent, geometryMap, normalizeSpatialReference }

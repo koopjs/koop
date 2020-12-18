@@ -10,27 +10,28 @@
     "clean": "rm -rf dist",
     "compile": "buble -i src -o dist",
     "package": "npm run clean && npm run compile",
-    "test": "standard && mocha test",
+    "test": "standard && mocha test --recursive -t 10000",
     "fix": "standard --fix"
   },
   "author": "Daniel Fenton <dfenton@esri.com>",
   "license": "Apache-2.0",
   "dependencies": {
+    "@esri/proj-codes": "^2.6.0",
     "@mapbox/geojsonhint": "^3.0.0",
     "chalk": "^4.0.0",
     "chroma-js": "^2.0.0",
     "classybrew": "0.0.3",
     "esri-extent": "^1.1.1",
+    "joi": "^14.3.0",
     "lodash": "^4.12.0",
     "moment": "^2.13.0",
     "terraformer-arcgis-parser": "^1.0.4",
-    "winnow": "^2.2.1"
+    "winnow": "^2.2.2"
   },
   "devDependencies": {
     "async": "^3.0.1",
     "buble": "^0.20.0",
     "express": "^4.14.0",
-    "joi": "^14.3.0",
     "mocha": "^7.0.1",
     "should": "^13.0.0",
     "standard": "^14.3.0",

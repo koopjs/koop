@@ -13,14 +13,14 @@ function restInfo (dataSourceRestInfo) {
   return renderRestInfo(dataSourceRestInfo)
 }
 
-function serverInfo (server, params = {}) {
+function serverInfo (geojson, params) {
   let layers
-  if (server.type === 'FeatureCollection') {
-    layers = [server]
+  if (geojson.type === 'FeatureCollection') {
+    layers = [geojson]
   } else {
-    layers = server.layers
+    layers = geojson.layers
   }
-  server.extent = server.extent || Utils.getExtent(layers[0])
+  geojson.extent = geojson.extent || Utils.getExtent(layers[0])
 
   const serverLayers = layers.reduce(
     (collection, layer, i) => {
@@ -32,7 +32,7 @@ function serverInfo (server, params = {}) {
     { layers: [], tables: [] }
   )
 
-  return renderServer(server, serverLayers)
+  return renderServer(geojson, serverLayers, params)
 }
 
 function layerInfo (geojson, params) {
@@ -72,7 +72,7 @@ function layersInfo (server, params = {}) {
 
   json.layers = layers.map((layer, i) => {
     params.layer = i
-    return renderLayer(layer, params)
+    return renderLayer(layer, { params })
   })
 
   return json

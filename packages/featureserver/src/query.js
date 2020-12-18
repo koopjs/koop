@@ -1,5 +1,6 @@
 const Winnow = require('winnow')
 const esriExtent = require('esri-extent')
+const getCollectionCrs = require('./get-collection-crs')
 const { renderFeatures, renderStatistics, renderStats } = require('./templates')
 const Utils = require('./utils')
 const _ = require('lodash')
@@ -29,9 +30,9 @@ function query (data, params = {}) {
   }
   if (data.statistics) return renderStats(data)
   if (options.returnCountOnly && data.count !== undefined) return { count: data.count }
-
   if (options.f !== 'geojson' && !options.returnExtentOnly) options.toEsri = true
-  const queriedData = filtersApplied.all ? data : Winnow.query(data, options)
+
+  const queriedData = filtersApplied.all ? data : Winnow.query(data, { ...options, inputCrs: getInputCrs(data, options) })
 
   // Warnings
   if (process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress') {
@@ -49,6 +50,10 @@ function query (data, params = {}) {
   }
   if (params.f === 'geojson') return { type: 'FeatureCollection', features: queriedData.features }
   else return geoservicesPostQuery(data, queriedData, params)
+}
+
+function getInputCrs (data, { inputCrs, sourceSR }) {
+  return inputCrs || sourceSR || _.get(data, 'metadata.crs') || getCollectionCrs(data) || 4326
 }
 
 /**

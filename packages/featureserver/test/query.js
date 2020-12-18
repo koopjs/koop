@@ -16,6 +16,8 @@ const statsDateInMetaValue = require('./fixtures/stats-date-with-metadata-value.
 const oneOfEach = require('./fixtures/one-of-each.json')
 const fullySpecified = require('./fixtures/fully-specified-metadata.json')
 const offsetApplied = require('./fixtures/offset-applied.json')
+const taggedNonWGS84 = require('./fixtures/trees-crs-102645.json')
+const untaggedNonWGS84 = require('./fixtures/trees-untagged-102645.json')
 
 describe('Query operations', () => {
   before(function () {
@@ -71,9 +73,44 @@ describe('Query operations', () => {
     })
   })
 
+  describe('non-WGS84 input dataset', function () {
+    it('should translate the data properly when geojson.crs is defined', function () {
+      const response = FeatureServer.query(taggedNonWGS84, { limit: 1, returnGeometry: true })
+      response.geometryType.should.equal('esriGeometryPoint')
+      response.features.length.should.equal(1)
+      response.features[0].attributes.OBJECTID.should.equal(31724)
+      response.features[0].geometry.x.should.equal(6514038.953486104)
+      response.features[0].geometry.y.should.equal(1887956.4927625388)
+      response.spatialReference.latestWkid.should.equal(2229)
+      response.spatialReference.wkid.should.equal(102645)
+    })
+
+    it('should translate the data properly req.inputCrs is defined', function () {
+      const data = _.cloneDeep(untaggedNonWGS84)
+      data.metadata = { crs: 102645 }
+      const response = FeatureServer.query(untaggedNonWGS84, { limit: 1, returnGeometry: true })
+      response.features.length.should.equal(1)
+      response.features[0].attributes.OBJECTID.should.equal(31724)
+      response.features[0].geometry.x.should.equal(6514038.953486104)
+      response.features[0].geometry.y.should.equal(1887956.4927625388)
+      response.spatialReference.latestWkid.should.equal(2229)
+      response.spatialReference.wkid.should.equal(102645)
+    })
+
+    it('should translate the data properly req.inputCrs is defined', function () {
+      const response = FeatureServer.query(untaggedNonWGS84, { inputCrs: 102645, limit: 1, returnGeometry: true })
+      response.features.length.should.equal(1)
+      response.features[0].attributes.OBJECTID.should.equal(31724)
+      response.features[0].geometry.x.should.equal(6514038.953486104)
+      response.features[0].geometry.y.should.equal(1887956.4927625388)
+      response.spatialReference.latestWkid.should.equal(2229)
+      response.spatialReference.wkid.should.equal(102645)
+    })
+  })
+
   describe('when using an outSR', function () {
     it('should translate the data properly', function () {
-      const response = FeatureServer.query(data, { outSR: { latestWkid: 3857 }, limit: 1, returnGeometry: true })
+      const response = FeatureServer.query(data, { outSR: { latestWkid: 102100 }, limit: 1, returnGeometry: true })
       response.geometryType.should.equal('esriGeometryPoint')
       response.features.length.should.equal(1)
       response.features[0].attributes.OBJECTID.should.equal(this.objectIds[0])
