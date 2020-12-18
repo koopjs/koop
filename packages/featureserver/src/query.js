@@ -32,7 +32,7 @@ function query (data, params = {}) {
   if (options.returnCountOnly && data.count !== undefined) return { count: data.count }
   if (options.f !== 'geojson' && !options.returnExtentOnly) options.toEsri = true
 
-  const queriedData = filtersApplied.all ? data : Winnow.query(data, { ...options, inputCrs: getInputCrs(data, options) })
+  const queriedData = filtersApplied.all ? data : Winnow.query(data, Object.assign(options, { inputCrs: getInputCrs(data, options) }))
 
   // Warnings
   if (process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress') {

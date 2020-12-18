@@ -2,10 +2,7 @@ module.exports = function (input, spatialReference) {
   let coords
   if (!input) return undefined
   if (!isNaN(input.xmin)) {
-    return {
-      ...input,
-      spatialReference
-    }
+    return Object.assign(input, { spatialReference })
   }
   if (Array.isArray(input)) {
     if (Array.isArray(input[0])) coords = input
