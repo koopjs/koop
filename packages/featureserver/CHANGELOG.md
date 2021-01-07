@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+* End support for Node < 10; remove buble compile step
+
 ## [2.25.2] - 12-18-2020
 ### Fixed
 * Properly set spatial reference values in service, layer, and query info when source data is not WGS84

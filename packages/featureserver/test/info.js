@@ -1,5 +1,5 @@
 /* global describe, it */
-const FeatureServer = require('../src')
+const FeatureServer = require('../')
 const polyData = require('./fixtures/polygon.json')
 const data = require('./fixtures/snow.json')
 const dataWithComplexMetadata = require('./fixtures/data-with-complex-metadata.json')

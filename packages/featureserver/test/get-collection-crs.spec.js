@@ -1,5 +1,5 @@
 const should = require('should') // eslint-disable-line
-const getCollectionCrs = require('../src/get-collection-crs')
+const getCollectionCrs = require('../lib/get-collection-crs')
 
 describe('get-collection-crs', () => {
   it('getCollectionCrs: no collection', () => {

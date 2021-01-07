@@ -1,5 +1,5 @@
 /* global describe, it */
-const field = require('../src/field')
+const field = require('../lib/field')
 
 describe('when building esri fields', function () {
   var input = {

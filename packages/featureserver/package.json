@@ -2,18 +2,18 @@
   "name": "featureserver",
   "version": "2.25.2",
   "description": "*An open source implementation of the GeoServices specification*",
-  "main": "dist/index.js",
+  "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "clean": "rm -rf dist",
-    "compile": "buble -i src -o dist",
-    "package": "npm run clean && npm run compile",
-    "test": "standard && mocha test --recursive -t 10000",
+    "test": "standard && mocha test",
     "fix": "standard --fix"
   },
-  "author": "Daniel Fenton <dfenton@esri.com>",
+  "contributors": [
+    { "name": "Daniel Fenton" },
+    { "name": "Rich Gwozdz", "email": "rgwozdz@esri.com"}
+  ],
   "license": "Apache-2.0",
   "dependencies": {
     "@esri/proj-codes": "^2.6.0",
