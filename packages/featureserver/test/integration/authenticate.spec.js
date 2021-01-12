@@ -1,5 +1,5 @@
 const should = require('should') // eslint-disable-line
-const { authenticate } = require('../')
+const { authenticate } = require('../..')
 
 describe('Authentication handler', () => {
   it('should return a status code 200 and token payload', () => {

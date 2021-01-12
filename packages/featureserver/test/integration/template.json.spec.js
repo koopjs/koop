@@ -1,10 +1,10 @@
 const Joi = require('joi')
-const featuresJson = require('../templates/features.json')
-const fieldJson = require('../templates/field.json')
-const layerJson = require('../templates/layer.json')
-const oidFieldJson = require('../templates/oid-field.json')
-const serverJson = require('../templates/server.json')
-const restInfoJson = require('../templates/rest-info.json')
+const featuresJson = require('../../templates/features.json')
+const fieldJson = require('../../templates/field.json')
+const layerJson = require('../../templates/layer.json')
+const oidFieldJson = require('../../templates/oid-field.json')
+const serverJson = require('../../templates/server.json')
+const restInfoJson = require('../../templates/rest-info.json')
 const { featuresTemplateSchema, fieldsTemplateSchema, layersTemplateSchema, oidTemplateSchema, serverTemplateSchema } = require('./schemas')
 
 describe('Template content', () => {

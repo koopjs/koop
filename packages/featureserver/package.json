@@ -7,12 +7,17 @@
     "test": "test"
   },
   "scripts": {
-    "test": "standard && mocha test",
+    "test": "standard && mocha test/**/*.spec.js --recursive -t 5000",
     "fix": "standard --fix"
   },
   "contributors": [
-    { "name": "Daniel Fenton" },
-    { "name": "Rich Gwozdz", "email": "rgwozdz@esri.com"}
+    {
+      "name": "Daniel Fenton"
+    },
+    {
+      "name": "Rich Gwozdz",
+      "email": "rgwozdz@esri.com"
+    }
   ],
   "license": "Apache-2.0",
   "dependencies": {

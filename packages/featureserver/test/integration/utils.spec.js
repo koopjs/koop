@@ -1,4 +1,4 @@
-const { detectType, esriTypeMap } = require('../lib/utils')
+const { detectType, esriTypeMap } = require('../../lib/utils')
 
 describe('Detect Types', () => {
   describe('detectType', () => {

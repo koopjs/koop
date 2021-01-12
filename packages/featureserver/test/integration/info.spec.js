@@ -1,5 +1,5 @@
 /* global describe, it */
-const FeatureServer = require('../')
+const FeatureServer = require('../..')
 const polyData = require('./fixtures/polygon.json')
 const data = require('./fixtures/snow.json')
 const dataWithComplexMetadata = require('./fixtures/data-with-complex-metadata.json')
@@ -401,7 +401,7 @@ describe('Info operations', () => {
       const service = FeatureServer.layerInfo(data, {})
       service.name.should.equal('map')
       service.displayField.should.equal('OBJECTID')
-      service.drawingInfo.renderer.should.equal(require('../templates/renderers/symbology/polygon.json'))
+      service.drawingInfo.renderer.should.equal(require('../../templates/renderers/symbology/polygon.json'))
       service.geometryType.should.equal('esriGeometryPolygon')
       should.not.exist(service.features)
     })

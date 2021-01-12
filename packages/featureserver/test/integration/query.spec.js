@@ -1,7 +1,7 @@
 /* global describe, it */
 const Joi = require('joi')
 const _ = require('lodash')
-const FeatureServer = require('../')
+const FeatureServer = require('../..')
 const data = require('./fixtures/snow.json')
 const projectionApplied = require('./fixtures/projection-applied.json')
 const should = require('should') // eslint-disable-line
