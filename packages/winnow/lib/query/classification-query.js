@@ -1,5 +1,6 @@
 const standardQuery = require('./standard-query')
-const { calculateClassBreaks, calculateUniqueValueBreaks } = require('../generateBreaks/index')
+const calculateClassBreaks = require('../calculate-class-breaks')
+const uniqueValueQuery = require('./unique-value-query')
 
 function classificationQuery (features, sqlstatement, options) {
   const { features: filtered } = standardQuery(features, sqlstatement, options)
@@ -14,8 +15,7 @@ function classificationQuery (features, sqlstatement, options) {
   }
 
   if (type === 'unique') {
-    const { options, query: sqlBreaksStatement } = calculateUniqueValueBreaks(filtered, classification)
-    return standardQuery(filtered, sqlBreaksStatement, { ...options, skipLimitHandling: true })
+    return uniqueValueQuery(filtered, classification)
   }
 
   throw new Error(`unacceptable classification type: ${type}`)

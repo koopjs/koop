@@ -3,11 +3,11 @@ const _ = require('lodash')
 const test = require('tape')
 const winnow = require('../..')
 const treesSubset = require('./fixtures/trees.json')
-const classBreaks = require('./fixtures/generateBreaks/classBreaks.json')
-const uniqueValue = require('./fixtures/generateBreaks/uniqueValue.json')
-const multipleUnique = require('./fixtures/generateBreaks/multipleUnqiue.json')
-const geoServicesClassBreaks = require('./fixtures/generateBreaks/geoServicesClassBreaks.json')
-const geoServicesUniqueValue = require('./fixtures/generateBreaks/geoServicesUniqueValue.json')
+const classBreaks = require('./fixtures/classification/classBreaks.json')
+const uniqueValue = require('./fixtures/classification/uniqueValue.json')
+const multipleUnique = require('./fixtures/classification/multipleUnqiue.json')
+const geoServicesClassBreaks = require('./fixtures/classification/geoServicesClassBreaks.json')
+const geoServicesUniqueValue = require('./fixtures/classification/geoServicesUniqueValue.json')
 
 /* class breaks */
 test('create class breaks', t => {
@@ -308,7 +308,7 @@ test('modify class breaks using geoservices fixture', t => {
   t.equal(Array.isArray(results[0]), true)
   t.equal(results.length, 9)
   t.deepEqual(results[0], [0.6020599913279624, 0.8450980400142568])
-  t.deepEqual(results[4], [0.954242509439326, 1.1139433523068367])
+  t.deepEqual(results[4], [0.9542425094393249, 1.1139433523068367])
   t.end()
 })
 

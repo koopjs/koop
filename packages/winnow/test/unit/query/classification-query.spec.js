@@ -64,15 +64,13 @@ test('classificationQuery, classes classification type', t => {
     return { features: ['feature1', 'feature2'] }
   })
 
-  const generateBreaksSpy = sinon.spy({
-    calculateClassBreaks: () => {
-      return 'classification results'
-    }
+  const calculateClassBreaksSpy = sinon.spy(function () {
+    return 'classification results'
   })
 
   const classificationQuery = proxyquire(modulePath, {
     './standard-query': standardQuerySpy,
-    '../generateBreaks/index': generateBreaksSpy
+    '../calculate-class-breaks/index': calculateClassBreaksSpy
   })
 
   const result = classificationQuery(['feature1', 'feature2', 'feature3'], 'SQL statement', {
@@ -87,31 +85,26 @@ test('classificationQuery, classes classification type', t => {
     'SQL statement',
     { foo: 'bar', collection: {}, classification: { type: 'classes', breakCount: 1 } }
   ])
-  t.ok(generateBreaksSpy.calculateClassBreaks.calledOnce)
-  t.deepEquals(generateBreaksSpy.calculateClassBreaks.firstCall.args, [
+  t.ok(calculateClassBreaksSpy.calledOnce)
+  t.deepEquals(calculateClassBreaksSpy.firstCall.args, [
     ['feature1', 'feature2'],
     { type: 'classes', breakCount: 1 }
   ])
   t.end()
 })
 
-test('classificationQuery, classes classification type', t => {
+test('classificationQuery, unique classification type', t => {
   const standardQuerySpy = sinon.spy(function () {
-    if (standardQuerySpy.callCount === 1) {
-      return { features: ['feature1', 'feature2'] }
-    }
-    return 'classification query result'
+    return { features: ['feature1', 'feature2'] }
   })
 
-  const generateBreaksSpy = sinon.spy({
-    calculateUniqueValueBreaks: () => {
-      return { options: { aggregates: true, groupBy: true }, query: 'SQL classification statement' }
-    }
+  const uniqueValueQuerySpy = sinon.spy(function () {
+    return 'unique value query result'
   })
 
   const classificationQuery = proxyquire(modulePath, {
     './standard-query': standardQuerySpy,
-    '../generateBreaks/index': generateBreaksSpy
+    './unique-value-query': uniqueValueQuerySpy
   })
 
   const result = classificationQuery(['feature1', 'feature2', 'feature3'], 'SQL filter statement', {
@@ -119,18 +112,14 @@ test('classificationQuery, classes classification type', t => {
     collection: {},
     classification: { type: 'unique' }
   })
-  t.deepEquals(result, 'classification query result')
-  t.ok(standardQuerySpy.calledTwice)
+  t.deepEquals(result, 'unique value query result')
+  t.ok(standardQuerySpy.calledOnce)
   t.deepEquals(standardQuerySpy.firstCall.args, [
     ['feature1', 'feature2', 'feature3'],
     'SQL filter statement',
     { foo: 'bar', collection: {}, classification: { type: 'unique' } }
   ])
-  t.deepEquals(standardQuerySpy.secondCall.args, [
-    ['feature1', 'feature2'],
-    'SQL classification statement',
-    { aggregates: true, groupBy: true, skipLimitHandling: true }
-  ])
-  t.ok(generateBreaksSpy.calculateUniqueValueBreaks.calledOnce)
+  t.ok(uniqueValueQuerySpy.calledOnce)
+  t.deepEquals(uniqueValueQuerySpy.firstCall.args, [['feature1', 'feature2'], { type: 'unique' }])
   t.end()
 })
