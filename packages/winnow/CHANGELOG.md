@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Refactored class break generator
+
 ## [2.2.2] - 12-16-2020
 ### Fixed
 * When no reprojection, output CRS is assigned same value as input CRS

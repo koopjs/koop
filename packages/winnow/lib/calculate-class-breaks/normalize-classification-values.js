@@ -1,4 +1,5 @@
 const _ = require('lodash')
+const filterAndValidateClassificationFeatures = require('./filter-and-validate-classification-features')
 
 function normalizeClassBreaks (features, classification) {
   const { normType: type } = classification
@@ -48,8 +49,12 @@ function normalizeByField (features, { field: classificationField, normField: no
 }
 
 function normalizeByLog (features, { field: classificationField }) {
-  const values = filterAndValidate(features, classificationField).map(value => {
-    return value <= 0 ? 0 : Math.log10(value)
+  const values = filterAndValidateClassificationFeatures(features, classificationField).map(value => {
+    if (value <= 0) {
+      return 0
+    }
+    const logValue = Math.log10(value)
+    return logValue < 0 ? 0 : logValue
   })
 
   if (!values || values.length === 0) {
@@ -58,28 +63,14 @@ function normalizeByLog (features, { field: classificationField }) {
   return values
 }
 
-function filterAndValidate (features, classificationField) {
-  return features.filter(feature => {
-    return !shouldSkipFeature({ feature, classificationField })
-  }).map(feature => {
-    validateClassificationValue(feature, classificationField)
-    return feature.properties[classificationField]
-  })
-}
-
 function normalizeByPercent (features, { field: classificationField }) {
-  const values = filterAndValidate(features, classificationField)
+  const values = filterAndValidateClassificationFeatures(features, classificationField)
 
   const valueTotal = values.reduce((sum, value) => { return sum + value }, 0)
 
   if (valueTotal <= 0) throw new Error(`Cannot normalize by percent because value total is not greater than 0: ${valueTotal}`)
 
   return values.map(value => { return (value / valueTotal) * 100 })
-}
-
-function shouldSkipFeature ({ feature: { properties }, classificationField }) {
-  const value = properties[classificationField]
-  return value === undefined || value === null
 }
 
 function shouldSkipFeatureForFieldNormalization ({ feature: { properties }, classificationField, normalizationField }) {
@@ -100,10 +91,4 @@ function validateNormalizationValues ({ feature: { properties }, classificationF
   }
 }
 
-function validateClassificationValue ({ properties }, classificationField) {
-  const value = properties[classificationField]
-  if (!_.isNumber(value)) {
-    throw new TypeError(`Cannot use non-numeric classificationField, ${classificationField}: "${value}"`)
-  }
-}
 module.exports = normalizeClassBreaks
