@@ -8,7 +8,9 @@
   },
   "scripts": {
     "test": "standard && tape 'test/**/*.js' | tap-spec",
-    "fix": "standard --fix"
+    "fix": "standard --fix",
+    "benchmark": "node benchmark/index.js",
+    "benchmark:ci": "node benchmark/index.js | tee benchmark-result.txt"
   },
   "repository": {
     "type": "git",
@@ -55,6 +57,8 @@
     "wkt-parser": "^1.2.2"
   },
   "devDependencies": {
+    "benchmark": "^2.1.4",
+    "fs-extra": "^9.0.1",
     "husky": "^4.3.0",
     "lint-staged": "^10.4.0",
     "proxyquire": "^2.1.3",
