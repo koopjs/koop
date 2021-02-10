@@ -15,7 +15,7 @@ function normalizeGeometryFilterSpatialReference (options = {}) {
 
   const spatialReference = normalizeSpatialReference(geometryEnvelopeSpatialReference || options.inSR)
 
-  if (logWarning) console.log('WARNING: geometry filter spatial reference unknown. Defaulting to EPSG:4326.')
+  if (!spatialReference && logWarning) console.log('WARNING: geometry filter spatial reference unknown. Defaulting to EPSG:4326.')
 
   return spatialReference || { wkid: 4326 }
 }
