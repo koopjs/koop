@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.2.4] - 02-10-2021
 ### Fixed
 * Warning log for missing geometry filter spatial reference
 
@@ -379,6 +379,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[2.2.4]: https://github.com/featureserver/winnow/compare/v2.2.3...v2.2.4
 [2.2.3]: https://github.com/featureserver/winnow/compare/v2.2.2...v2.2.3
 [2.2.2]: https://github.com/featureserver/winnow/compare/v2.2.1...v2.2.2
 [2.2.1]: https://github.com/featureserver/winnow/compare/v2.2.0...v2.2.1
