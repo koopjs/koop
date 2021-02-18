@@ -2,8 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.0.0] - 02-18-2021
+### Changed
 * End support for Node < 10; remove buble compile step
+
+### Fixed
+* Allow other properties in spatialReference object
 
 ## [2.25.2] - 12-18-2020
 ### Fixed
@@ -419,6 +423,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[3.0.0]: https://github.com/koopjs/featureserver/compare/v2.25.1...v3.0.0
 [2.25.1]: https://github.com/koopjs/featureserver/compare/v2.25.0...v2.25.1
 [2.25.0]: https://github.com/koopjs/featureserver/compare/v2.24.1...v2.25.0
 [2.24.1]: https://github.com/koopjs/featureserver/compare/v2.24.0...v2.24.1
