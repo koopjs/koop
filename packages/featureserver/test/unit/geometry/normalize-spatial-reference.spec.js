@@ -98,4 +98,44 @@ describe('normalize-spatial-reference', function () {
       wkid: 102100
     })
   })
+  it('wkid 102100 extra properties', () => {
+    const spatialRef = normalizeSpatialReference({
+      wkid: 102100,
+      latestWkid: 3857,
+      xyTolerance: 0.001,
+      zTolerance: 0.001,
+      mTolerance: 0.001,
+      falseX: -20037700,
+      falseY: -30241100,
+      xyUnits: 10000,
+      falseZ: -100000,
+      zUnits: 10000,
+      falseM: -100000,
+      mUnits: 10000
+    })
+    spatialRef.should.deepEqual({
+      latestWkid: 3857,
+      wkid: 102100
+    })
+  })
+  it('wkid 7853 extra properties', () => {
+    const spatialRef = normalizeSpatialReference({
+      wkid: 7853,
+      latestWkid: 7853,
+      xyTolerance: 0.001,
+      zTolerance: 0.001,
+      mTolerance: 0.001,
+      falseX: -5120900,
+      falseY: 1900,
+      xyUnits: 10000,
+      falseZ: -100000,
+      zUnits: 10000,
+      falseM: -100000,
+      mUnits: 10000
+    })
+    spatialRef.should.deepEqual({
+      latestWkid: 7853,
+      wkid: 7853
+    })
+  })
 })

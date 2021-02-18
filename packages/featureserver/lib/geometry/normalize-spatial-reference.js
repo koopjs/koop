@@ -9,7 +9,7 @@ const schema = Joi.alternatives(
     wkid: Joi.number().integer().optional(),
     latestWkid: Joi.number().integer().optional(),
     wkt: Joi.string().optional()
-  }).or('wkid', 'latestWkid', 'wkt').required()
+  }).unknown().or('wkid', 'latestWkid', 'wkt').required()
 )
 
 function normalizeSpatialReference (input) {
@@ -19,7 +19,7 @@ function normalizeSpatialReference (input) {
 
   if (error) {
     if (process.env.NODE_ENV !== 'production') {
-      console.log(`WARNING: ${input} is not a valid spatial reference; defaulting to none`)
+      console.log(`WARNING: ${input} is not a valid spatial reference; defaulting to none, error: ${error}`)
     }
     // Todo: throw error
     return { wkid: 4326, latestWkid: 4326 }
