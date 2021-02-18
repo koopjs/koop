@@ -1,7 +1,7 @@
 {
   "name": "koop",
   "description": "Transform, query, & download geospatial data on the web",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "bugs": {
     "url": "https://github.com/koopjs/koop/issues"
   },
@@ -24,7 +24,7 @@
   "dependencies": {
     "@hapi/joi": "^17.1.0",
     "@koopjs/logger": "^2.0.6",
-    "@koopjs/output-geoservices": "^2.2.1",
+    "@koopjs/output-geoservices": "^3.0.0",
     "body-parser": "^1.19.0",
     "chalk": "^4.0.0",
     "compression": "^1.7.4",
