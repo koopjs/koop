@@ -1,4 +1,3 @@
-const Joi = require('joi')
 const featuresJson = require('../../templates/features.json')
 const fieldJson = require('../../templates/field.json')
 const layerJson = require('../../templates/layer.json')
@@ -11,28 +10,28 @@ describe('Template content', () => {
   describe('features.json', () => {
     it('should conform to the prescribed schema', () => {
       // Use Joi to build expected schema and test against JSON.
-      Joi.validate(featuresJson, featuresTemplateSchema, { presence: 'required' }).should.have.property('error', null)
+      featuresTemplateSchema.validate(featuresJson, { presence: 'required' }).should.not.have.property('error')
     })
   })
 
   describe('field.json', () => {
     it('should conform to the prescribed schema', () => {
       // Use Joi to build expected schema and test against JSON.
-      Joi.validate(fieldJson, fieldsTemplateSchema, { presence: 'required' }).should.have.property('error', null)
+      fieldsTemplateSchema.validate(fieldJson, { presence: 'required' }).should.not.have.property('error')
     })
   })
 
   describe('layer.json', () => {
     it('should conform to the prescribed schema', () => {
       // Use Joi to build expected schema and test against JSON.
-      Joi.validate(layerJson, layersTemplateSchema, { presence: 'required' }).should.have.property('error', null)
+      layersTemplateSchema.validate(layerJson, { presence: 'required' }).should.not.have.property('error')
     })
   })
 
   describe('oid-field.json', () => {
     it('should conform to the prescribed schema', () => {
       // Use Joi to build expected schema and test against JSON.
-      Joi.validate(oidFieldJson, oidTemplateSchema, { presence: 'required' }).should.have.property('error', null)
+      oidTemplateSchema.validate(oidFieldJson, { presence: 'required' }).should.not.have.property('error')
     })
   })
 
@@ -46,7 +45,7 @@ describe('Template content', () => {
     it('should conform to the prescribed schema', () => {
       // Use Joi to build expected schema and test against JSON.
 
-      Joi.validate(serverJson, serverTemplateSchema, { presence: 'required' }).should.have.property('error', null)
+      serverTemplateSchema.validate(serverJson, { presence: 'required' }).should.not.have.property('error')
     })
   })
 })

@@ -52,7 +52,7 @@ describe('Info operations', () => {
       })
 
       // Test response body schema
-      Joi.validate(server, serverSchemaOverride, { presence: 'required' }).should.have.property('error', null)
+      serverSchemaOverride.validate(server, { presence: 'required' }).should.not.have.property('error')
     })
 
     it('should work with geojson passed in', () => {
@@ -217,7 +217,7 @@ describe('Info operations', () => {
           labelingInfo: Joi.valid(null)
         })
       })
-      Joi.validate(layers.layers[0], layersSchemaOverride, { presence: 'required' }).should.have.property('error', null)
+      layersSchemaOverride.validate(layers.layers[0], { presence: 'required' }).should.not.have.property('error')
       layers.layers.length.should.equal(1)
     })
 
@@ -263,7 +263,7 @@ describe('Info operations', () => {
         })
       })
 
-      Joi.validate(layers.layers[0], layersSchemaOverride, { presence: 'required' }).should.have.property('error', null)
+      layersSchemaOverride.validate(layers.layers[0], { presence: 'required' }).should.not.have.property('error')
       layers.layers.length.should.equal(1)
       layers.layers[0].drawingInfo.renderer.symbol.color[0].should.equal(115)
       layers.layers[0].drawingInfo.renderer.symbol.color[1].should.equal(76)

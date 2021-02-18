@@ -1,5 +1,4 @@
 /* global describe, it */
-const Joi = require('joi')
 const _ = require('lodash')
 const FeatureServer = require('../..')
 const data = require('./fixtures/snow.json')
@@ -33,7 +32,7 @@ describe('Query operations', () => {
     const featuresSchemaOverride = featuresTemplateSchema.append({
       geometryType: 'esriGeometryPoint'
     })
-    Joi.validate(response, featuresSchemaOverride, { presence: 'required' }).should.have.property('error', null)
+    featuresSchemaOverride.validate(response, { presence: 'required' }).should.not.have.property('error')
   })
 
   it('should return only requested "outFields" set in options', () => {
