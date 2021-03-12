@@ -1,6 +1,6 @@
 const Winnow = require('winnow')
 const esriExtent = require('esri-extent')
-const getCollectionCrs = require('./get-collection-crs')
+const { getCollectionCrs } = require('./helpers')
 const { renderFeatures, renderStatistics, renderStats } = require('./templates')
 const Utils = require('./utils')
 const _ = require('lodash')

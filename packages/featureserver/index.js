@@ -1,14 +1,12 @@
 const {
-  restInfo,
-  serverInfo,
   layerInfo,
   layersInfo
 } = require('./lib/info.js')
 
 module.exports = {
   route: require('./lib/route.js'),
-  restInfo,
-  serverInfo,
+  restInfo: require('./lib/rest-info-route-handler'),
+  serverInfo: require('./lib/rest-info-route-handler'),
   layerInfo,
   layersInfo,
   query: require('./lib/query.js'),

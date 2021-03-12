@@ -4,15 +4,13 @@ const { getExtent, getGeomType, isTable } = require('./utils')
 const { computeFieldObject, createFieldAliases, createStatFields } = require('./field')
 const { normalizeSpatialReference, computeExtent } = require('./geometry')
 const { createClassBreakInfos, createUniqueValueInfos } = require('./generateRenderer/createClassificationInfos')
-const getCollectionCrs = require('./get-collection-crs')
-module.exports = { renderRestInfo, renderLayer, renderFeatures, renderStatistics, renderServer, renderStats, renderClassBreaks, renderUniqueValue }
+const getCollectionCrs = require('./helpers/get-collection-crs')
+module.exports = { renderLayer, renderFeatures, renderStatistics, renderStats, renderClassBreaks, renderUniqueValue }
 
 const templates = {
   layer: Object.assign(require('../templates/layer.json'), require('../templates/version.json')),
   features: require('../templates/features.json'),
-  statistics: require('../templates/statistics.json'),
-  restInfo: Object.assign(require('../templates/rest-info.json'), require('../templates/version.json')),
-  server: Object.assign(require('../templates/server.json'), require('../templates/version.json'))
+  statistics: require('../templates/statistics.json')
 }
 
 const renderers = {
@@ -95,28 +93,6 @@ function renderStatistics (featureCollection = {}, options = {}) {
 
   if (json.fields) json.fields = computeFieldObject(data, 'statistics', options)
   if (json.features) json.features = data.features
-  return json
-}
-
-/**
- * Get the templated rest/info response and supplement/overwrite with any provider-specific metadata
- * @param {object} dataSourceRestInfo
- */
-function renderRestInfo (dataSourceRestInfo = {}) {
-  const json = Object.assign(_.cloneDeep(templates.restInfo), dataSourceRestInfo)
-  return json
-}
-
-function renderServer (data, { layers, tables } = {}, { query = {} } = {}) {
-  const json = _.cloneDeep(templates.server)
-  json.spatialReference = getServiceSpatialReference(data, query)
-  json.fullExtent = json.initialExtent = computeExtent(data.extent || json.fullExtent, json.spatialReference)
-  json.serviceDescription = data.description || ''
-  json.layers = layers
-  json.tables = tables
-  json.maxRecordCount = data.maxRecordCount || (layers[0] && layers[0].metadata && layers[0].metadata.maxRecordCount) || 2000
-  // Override the template value for hasStatic data if model metadata has this value set
-  if (typeof data.hasStaticData === 'boolean') json.hasStaticData = data.hasStaticData
   return json
 }
 

@@ -1,4 +1,4 @@
-const normalizeSpatialReference = require('./normalize-spatial-reference')
+const normalizeSpatialReference = require('../helpers/normalize-spatial-reference')
 const computeExtent = require('./extents')
 const geometryMap = require('./geometry-map')
 

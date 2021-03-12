@@ -3,15 +3,13 @@ const geojsonhint = require('@mapbox/geojsonhint')
 const chalk = require('chalk')
 const {
   layerInfo,
-  restInfo,
-  serverInfo,
   layersInfo
 } = require('./info.js')
 const query = require('./query.js')
 const generateRenderer = require('./generateRenderer')
-const {
-  responseHandler
-} = require('./helpers')
+const restInfo = require('./rest-info-route-handler')
+const serverInfo = require('./server-info-route-handler')
+const responseHandler = require('./response-handler')
 
 const queryParamSchema = joi.object({
   limit: joi.number().optional(),

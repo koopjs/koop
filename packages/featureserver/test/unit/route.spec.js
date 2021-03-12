@@ -17,12 +17,8 @@ describe('Route module unit tests', () => {
       chalk: {
         yellow: chalkSpy
       },
-      './info.js': {
-        restInfo: () => {}
-      },
-      './helpers': {
-        responseHandler: () => {}
-      }
+      './rest-info-route-handler': function () {},
+      './response-handler': function () {}
     })
 
     it('should validate geojson when KOOP_LOG_LEVEL === debug', () => {
@@ -55,12 +51,8 @@ describe('Route module unit tests', () => {
     const responseHandlerSpy = sinon.spy()
 
     const route = proxyquire('../../lib/route', {
-      './info.js': {
-        restInfo: restInfoSpy
-      },
-      './helpers': {
-        responseHandler: responseHandlerSpy
-      }
+      './rest-info-route-handler': restInfoSpy,
+      './response-handler': responseHandlerSpy
     })
 
     it('should validate geojson metadata and find no error', () => {
@@ -85,12 +77,8 @@ describe('Route module unit tests', () => {
     const responseHandlerSpy = sinon.spy()
 
     const route = proxyquire('../../lib/route', {
-      './info.js': {
-        restInfo: restInfoSpy
-      },
-      './helpers': {
-        responseHandler: responseHandlerSpy
-      }
+      './rest-info-route-handler': restInfoSpy,
+      './response-handler': responseHandlerSpy
     })
 
     it('should validate query parameters', () => {
@@ -139,10 +127,8 @@ describe('Route module unit tests', () => {
     const responseHandlerSpy = sinon.spy()
 
     const route = proxyquire('../../lib/route', {
-      './query.js': querySpy,
-      './helpers': {
-        responseHandler: responseHandlerSpy
-      }
+      './query': querySpy,
+      './response-handler': responseHandlerSpy
     })
 
     it('should use query handler and return 200', () => {
@@ -175,10 +161,8 @@ describe('Route module unit tests', () => {
       })
 
       const route = proxyquire('../../lib/route', {
-        './query.js': querySpy,
-        './helpers': {
-          responseHandler: responseHandlerSpy
-        }
+        './query': querySpy,
+        './response-handler': responseHandlerSpy
       })
 
       route({
@@ -205,19 +189,15 @@ describe('Route module unit tests', () => {
   })
 
   describe('/rest/info route', () => {
-    const restInfoSpy = sinon.spy(() => {
+    const restInfoSpy = sinon.spy(function () {
       return { restInfo: true }
     })
 
     const responseHandlerSpy = sinon.spy()
 
     const route = proxyquire('../../lib/route', {
-      './info.js': {
-        restInfo: restInfoSpy
-      },
-      './helpers': {
-        responseHandler: responseHandlerSpy
-      }
+      './rest-info-route-handler': restInfoSpy,
+      './response-handler': responseHandlerSpy
     })
 
     it('should use restInfo handler and return 200', () => {
@@ -244,16 +224,12 @@ describe('Route module unit tests', () => {
     })
 
     it('should use restInfo handler and return 500', () => {
-      const restInfoSpy = sinon.spy(() => {
+      const restInfoSpy = sinon.spy(function () {
         throw new Error('Fool bar')
       })
       const route = proxyquire('../../lib/route', {
-        './info.js': {
-          restInfo: restInfoSpy
-        },
-        './helpers': {
-          responseHandler: responseHandlerSpy
-        }
+        './rest-info-route-handler': restInfoSpy,
+        './response-handler': responseHandlerSpy
       })
 
       route({
@@ -285,19 +261,15 @@ describe('Route module unit tests', () => {
   })
 
   describe('/FeatureServer route', () => {
-    const serverInfoSpy = sinon.spy(() => {
+    const serverInfoSpy = sinon.spy(function () {
       return { serverInfo: true }
     })
 
     const responseHandlerSpy = sinon.spy()
 
     const route = proxyquire('../../lib/route', {
-      './info.js': {
-        serverInfo: serverInfoSpy
-      },
-      './helpers': {
-        responseHandler: responseHandlerSpy
-      }
+      './server-info-route-handler': serverInfoSpy,
+      './response-handler': responseHandlerSpy
     })
 
     it('should use serverInfo handler and return 200', () => {
@@ -328,16 +300,12 @@ describe('Route module unit tests', () => {
     })
 
     it('should use serverInfo handler and return 500', () => {
-      const serverInfoSpy = sinon.spy(() => {
+      const serverInfoSpy = sinon.spy(function () {
         throw new Error('Fool bar')
       })
       const route = proxyquire('../../lib/route', {
-        './info.js': {
-          serverInfo: serverInfoSpy
-        },
-        './helpers': {
-          responseHandler: responseHandlerSpy
-        }
+        './server-info-route-handler': serverInfoSpy,
+        './response-handler': responseHandlerSpy
       })
 
       route({
@@ -380,12 +348,10 @@ describe('Route module unit tests', () => {
     const responseHandlerSpy = sinon.spy()
 
     const route = proxyquire('../../lib/route', {
-      './info.js': {
+      './info': {
         layersInfo: layersInfoSpy
       },
-      './helpers': {
-        responseHandler: responseHandlerSpy
-      }
+      './response-handler': responseHandlerSpy
     })
 
     it('should use layersInfo handler and return 200', () => {
@@ -418,12 +384,10 @@ describe('Route module unit tests', () => {
         throw new Error('Fool bar')
       })
       const route = proxyquire('../../lib/route', {
-        './info.js': {
+        './info': {
           layersInfo: layersInfoSpy
         },
-        './helpers': {
-          responseHandler: responseHandlerSpy
-        }
+        './response-handler': responseHandlerSpy
       })
 
       route({
@@ -464,12 +428,10 @@ describe('Route module unit tests', () => {
     const responseHandlerSpy = sinon.spy()
 
     const route = proxyquire('../../lib/route', {
-      './info.js': {
+      './info': {
         layerInfo: layerInfoSpy
       },
-      './helpers': {
-        responseHandler: responseHandlerSpy
-      }
+      './response-handler': responseHandlerSpy
     })
 
     it('should use layerInfo handler and return 200', () => {
@@ -504,12 +466,10 @@ describe('Route module unit tests', () => {
         throw new Error('Fool bar')
       })
       const route = proxyquire('../../lib/route', {
-        './info.js': {
+        './info': {
           layerInfo: layerInfoSpy
         },
-        './helpers': {
-          responseHandler: responseHandlerSpy
-        }
+        './response-handler': responseHandlerSpy
       })
 
       route({
@@ -548,9 +508,7 @@ describe('Route module unit tests', () => {
     it('should handle unknown route', () => {
       const responseHandlerSpy = sinon.spy()
       const route = proxyquire('../../lib/route', {
-        './helpers': {
-          responseHandler: responseHandlerSpy
-        }
+        './response-handler': responseHandlerSpy
       })
 
       route({

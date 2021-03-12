@@ -1,5 +1,5 @@
 const should = require('should') // eslint-disable-line
-const normalizeSpatialReference = require('../../../lib/geometry/normalize-spatial-reference')
+const { normalizeSpatialReference } = require('../../../lib/helpers')
 
 describe('normalize-spatial-reference', function () {
   it('undefined', () => {
