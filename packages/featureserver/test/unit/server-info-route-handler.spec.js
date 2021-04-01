@@ -51,9 +51,18 @@ describe('server info', () => {
     const getGeometryTypeFromGeojson = sinon.spy()
     const normalizeSpatialReference = sinon.spy()
     const normalizeExtent = sinon.spy()
+    const normalizeInputData = sinon.spy(function (input) {
+      return { tables: [input], layers: [] }
+    })
 
     const serverInfoHandler = proxyquire('../../lib/server-info-route-handler', {
-      './helpers': { getCollectionCrs, getGeometryTypeFromGeojson, normalizeSpatialReference, normalizeExtent },
+      './helpers': {
+        getCollectionCrs,
+        getGeometryTypeFromGeojson,
+        normalizeSpatialReference,
+        normalizeExtent,
+        normalizeInputData
+      },
       './defaults': {
         serverMetadata: {
           foo: 'bar',
@@ -68,12 +77,12 @@ describe('server info', () => {
       }
     })
     const serverInfo = serverInfoHandler(simpleCollectionFixture)
+    normalizeInputData.calledOnce.should.equal(true)
     normalizeSpatialReference.notCalled.should.equal(true)
     normalizeExtent.notCalled.should.equal(true)
     getCollectionCrs.calledOnce.should.equal(true)
     getCollectionCrs.firstCall.args.should.deepEqual([simpleCollectionFixture])
-    getGeometryTypeFromGeojson.calledOnce.should.equal(true)
-    getGeometryTypeFromGeojson.firstCall.args.should.deepEqual([simpleCollectionFixture])
+    getGeometryTypeFromGeojson.calledOnce.should.equal(false)
 
     serverInfo.should.deepEqual({
       foo: 'bar',
@@ -103,9 +112,12 @@ describe('server info', () => {
     const getGeometryTypeFromGeojson = sinon.spy()
     const normalizeSpatialReference = sinon.spy()
     const normalizeExtent = sinon.spy()
+    const normalizeInputData = sinon.spy(function (input) {
+      return { tables: [input], layers: [] }
+    })
 
     const serverInfoHandler = proxyquire('../../lib/server-info-route-handler', {
-      './helpers': { getCollectionCrs, getGeometryTypeFromGeojson, normalizeSpatialReference, normalizeExtent },
+      './helpers': { getCollectionCrs, getGeometryTypeFromGeojson, normalizeSpatialReference, normalizeExtent, normalizeInputData },
       './defaults': {
         serverMetadata: {
           foo: 'bar',
@@ -123,10 +135,7 @@ describe('server info', () => {
     normalizeSpatialReference.notCalled.should.equal(true)
     normalizeExtent.notCalled.should.equal(true)
     getCollectionCrs.calledOnce.should.equal(true)
-    getCollectionCrs.firstCall.args.should.deepEqual([simpleCollectionFixture])
-    getGeometryTypeFromGeojson.calledOnce.should.equal(true)
-    getGeometryTypeFromGeojson.firstCall.args.should.deepEqual([simpleCollectionFixture])
-    getGeometryTypeFromGeojson.firstCall.args.should.deepEqual([simpleCollectionFixture])
+    normalizeInputData.calledOnce.should.equal(true)
 
     serverInfo.should.deepEqual({
       foo: 'bar',
@@ -157,9 +166,11 @@ describe('server info', () => {
     const getGeometryTypeFromGeojson = sinon.spy(function () { return 'esriGeometryPoint' })
     const normalizeSpatialReference = sinon.spy(function () { return { wkid: 4326, latestWkid: 4326 } })
     const normalizeExtent = sinon.spy()
-
+    const normalizeInputData = sinon.spy(function (input) {
+      return { tables: [], layers: [input] }
+    })
     const serverInfoHandler = proxyquire('../../lib/server-info-route-handler', {
-      './helpers': { getCollectionCrs, getGeometryTypeFromGeojson, normalizeSpatialReference, normalizeExtent },
+      './helpers': { getCollectionCrs, getGeometryTypeFromGeojson, normalizeSpatialReference, normalizeExtent, normalizeInputData },
       './defaults': {
         serverMetadata: {
           foo: 'bar',
@@ -176,9 +187,10 @@ describe('server info', () => {
     const serverInfo = serverInfoHandler(simpleCollectionFixture)
 
     normalizeExtent.notCalled.should.equal(true)
+    normalizeInputData.calledOnce.should.equal(true)
     getCollectionCrs.calledOnce.should.equal(true)
     getCollectionCrs.firstCall.args.should.deepEqual([simpleCollectionFixture])
-    getGeometryTypeFromGeojson.calledTwice.should.equal(true)
+    getGeometryTypeFromGeojson.calledOnce.should.equal(true)
     getGeometryTypeFromGeojson.firstCall.args.should.deepEqual([simpleCollectionFixture])
     normalizeSpatialReference.calledOnce.should.equal(true)
     normalizeSpatialReference.firstCall.args.should.deepEqual([4326])
@@ -245,6 +257,9 @@ describe('server info', () => {
         }
       }
     })
+    const normalizeInputData = sinon.spy(function (input) {
+      return { tables: input.tables, layers: input.layers }
+    })
     const layer1 = { type: 'FeatureCollection', crs: { type: 'name', properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' } }, features: [{ type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-100, 40] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-101, 41] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-99, 39] } }] }
     const layer2 = { type: 'FeatureCollection', crs: { type: 'name', properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' } }, features: [{ type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-122, 49] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-121, 20] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-110, 43] } }] }
     const tables = [{ type: 'FeatureCollection', crs: { type: 'name', properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' } }, features: [{ type: 'Feature', properties: {}, geometry: null }, { type: 'Feature', properties: {}, geometry: null }, { type: 'Feature', properties: {}, geometry: null }] }]
@@ -260,7 +275,7 @@ describe('server info', () => {
     }
 
     const serverInfoHandler = proxyquire('../../lib/server-info-route-handler', {
-      './helpers': { getCollectionCrs, getGeometryTypeFromGeojson, normalizeSpatialReference, normalizeExtent },
+      './helpers': { getCollectionCrs, getGeometryTypeFromGeojson, normalizeSpatialReference, normalizeExtent, normalizeInputData },
       './defaults': {
         serverMetadata: {
           foo: 'bar',
@@ -277,10 +292,12 @@ describe('server info', () => {
 
     const serverInfo = serverInfoHandler(input)
 
+    normalizeInputData.calledOnce.should.equal(true)
     getCollectionCrs.calledOnce.should.equal(true)
     getCollectionCrs.firstCall.args.should.deepEqual([input])
-    getGeometryTypeFromGeojson.callCount.should.equal(5)
+    getGeometryTypeFromGeojson.callCount.should.equal(2)
     getGeometryTypeFromGeojson.firstCall.args.should.deepEqual([layer1])
+    getGeometryTypeFromGeojson.secondCall.args.should.deepEqual([layer2])
     normalizeSpatialReference.calledOnce.should.equal(true)
     normalizeSpatialReference.firstCall.args.should.deepEqual([4326])
     normalizeExtent.calledOnce.should.equal(true)
@@ -387,9 +404,12 @@ describe('server info', () => {
         }
       }
     })
+    const normalizeInputData = sinon.spy(function (input) {
+      return { layers: [input], tables: [] }
+    })
 
     const serverInfoHandler = proxyquire('../../lib/server-info-route-handler', {
-      './helpers': { getCollectionCrs, getGeometryTypeFromGeojson, normalizeSpatialReference, normalizeExtent },
+      './helpers': { getCollectionCrs, getGeometryTypeFromGeojson, normalizeSpatialReference, normalizeExtent, normalizeInputData },
       './defaults': {
         serverMetadata: {
           foo: 'bar',
@@ -407,7 +427,7 @@ describe('server info', () => {
 
     getCollectionCrs.calledOnce.should.equal(true)
     getCollectionCrs.firstCall.args.should.deepEqual([simpleCollectionFixture])
-    getGeometryTypeFromGeojson.callCount.should.equal(2)
+    getGeometryTypeFromGeojson.callCount.should.equal(1)
     getGeometryTypeFromGeojson.firstCall.args.should.deepEqual([simpleCollectionFixture])
     normalizeSpatialReference.calledOnce.should.equal(true)
     normalizeSpatialReference.firstCall.args.should.deepEqual([4326])

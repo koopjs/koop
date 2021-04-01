@@ -4,7 +4,8 @@ const {
   getCollectionCrs,
   getGeometryTypeFromGeojson,
   normalizeExtent,
-  normalizeSpatialReference
+  normalizeSpatialReference,
+  normalizeInputData
 } = require('./helpers')
 const { serverMetadata: serverMetadataDefaults } = require('./defaults')
 const debug = process.env.KOOP_LOG_LEVEL === 'debug' || process.env.LOG_LEVEL === 'debug'
@@ -13,7 +14,7 @@ function serverMetadata (json, { query = {} } = {}) {
   const { extent, metadata, ...rest } = json
   const { maxRecordCount, hasStaticData, description } = { ...metadata, ...rest }
   const spatialReference = getSpatialReference(json, query)
-  const { layers, tables } = normalizeInput(json)
+  const { layers, tables } = normalizeInputData(json)
   const fullExtent = getServiceExtent({ extent, metadata, layers, spatialReference })
 
   // TODO reproject default extents when non WGS84 CRS is found or passed
@@ -28,21 +29,6 @@ function serverMetadata (json, { query = {} } = {}) {
     maxRecordCount: maxRecordCount || _.get(layers, '[0].metadata.maxRecordCount'),
     hasStaticData: typeof hasStaticData === 'boolean' ? hasStaticData : false
   }, serverMetadataDefaults)
-}
-
-function normalizeInput (input) {
-  const { type, tables = [], layers = [] } = input
-
-  if (type === 'FeatureCollection') {
-    const geometryType = getGeometryTypeFromGeojson(input)
-    if (geometryType) return { layers: [input], tables }
-    return { tables: [input], layers }
-  }
-
-  // To ensure tables and layers have been properly segregated merge and re-bin
-  const merged = _.concat(layers, tables)
-
-  return categorizeTableAndLayers(merged)
 }
 
 function getServiceExtent ({ extent, metadata = {}, layers, spatialReference = { latestWkid: 4326 } }) {
@@ -83,18 +69,6 @@ function calculateServiceExtentFromLayers (layers, spatialReference) {
       console.log(`Could not calculate extent from data: ${error.message}`)
     }
   }
-}
-
-function categorizeTableAndLayers (input) {
-  return input.reduce((accumulator, dataLayer, i) => {
-    const geometryType = getGeometryTypeFromGeojson(dataLayer)
-    if (geometryType) {
-      accumulator.layers.push(dataLayer)
-    } else {
-      accumulator.tables.push(dataLayer)
-    }
-    return accumulator
-  }, { layers: [], tables: [] })
 }
 
 function layerInfo (json = {}, defaultId) {

@@ -341,16 +341,14 @@ describe('Route module unit tests', () => {
   })
 
   describe('/FeatureServer/layers route', () => {
-    const layersInfoSpy = sinon.spy(() => {
+    const layersInfoSpy = sinon.spy(function () {
       return { layersInfo: true }
     })
 
     const responseHandlerSpy = sinon.spy()
 
     const route = proxyquire('../../lib/route', {
-      './info': {
-        layersInfo: layersInfoSpy
-      },
+      './layers-info-route-handler': layersInfoSpy,
       './response-handler': responseHandlerSpy
     })
 
@@ -380,13 +378,11 @@ describe('Route module unit tests', () => {
     })
 
     it('should use layersInfo handler and return 500', () => {
-      const layersInfoSpy = sinon.spy(() => {
+      const layersInfoSpy = sinon.spy(function () {
         throw new Error('Fool bar')
       })
       const route = proxyquire('../../lib/route', {
-        './info': {
-          layersInfo: layersInfoSpy
-        },
+        './layers-info-route-handler': layersInfoSpy,
         './response-handler': responseHandlerSpy
       })
 
