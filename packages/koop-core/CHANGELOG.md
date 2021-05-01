@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* Inconsistent cache key when a `createKey` function is provided ([#136](https://github.com/koopjs/koop-core/issues/136))
+
 ## [4.1.1] - 2021-02-18
 ### Changed
 * Bump output-geoservices for feature-server fix

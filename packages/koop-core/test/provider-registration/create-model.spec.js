@@ -112,7 +112,7 @@ describe('Tests for create-model', function () {
       pullSpy.firstCall.args.should.deepEqual([null, {}])
       retrieveSpy.should.be.calledOnce()
       retrieveSpy.firstCall.args.length.should.equal(3)
-      retrieveSpy.firstCall.args[0].should.equal('test-provider::data')
+      retrieveSpy.firstCall.args[0].should.equal('test-provider')
       retrieveSpy.firstCall.args[1].should.be.an.Object().and.be.empty()
       retrieveSpy.firstCall.args[2].should.be.an.Function()
     })
@@ -139,7 +139,7 @@ describe('Tests for create-model', function () {
       pullSpy.firstCall.args[1].should.be.an.Object().and.be.empty()
       retrieveSpy.should.be.calledOnce()
       retrieveSpy.firstCall.args.length.should.equal(3)
-      retrieveSpy.firstCall.args[0].should.equal('test-provider::host-param::id-param::layer-param::data')
+      retrieveSpy.firstCall.args[0].should.equal('test-provider::host-param::id-param::layer-param')
       retrieveSpy.firstCall.args[1].should.be.an.Object().and.be.empty()
       retrieveSpy.firstCall.args[2].should.be.an.Function()
     })
@@ -163,7 +163,7 @@ describe('Tests for create-model', function () {
       await model.pull({ url: 'domain/test-provider', query: {} }, pullSpy)
       retrieveSpy.should.be.calledOnce()
       retrieveSpy.firstCall.args.length.should.equal(3)
-      retrieveSpy.firstCall.args[0].should.equal('custom-key::data')
+      retrieveSpy.firstCall.args[0].should.equal('custom-key')
       retrieveSpy.firstCall.args[1].should.be.an.Object().and.be.empty()
       retrieveSpy.firstCall.args[2].should.be.an.Function()
       pullSpy.should.be.calledOnce()
@@ -290,6 +290,7 @@ describe('Tests for create-model', function () {
     afterEach(function () {
       // reset the getLayer() function to default
       createModel.prototype.getLayer = undefined
+      createModel.prototype.createKey = undefined
     })
 
     it('should throw an error if the getLayer() function is not implemented', function () {
@@ -374,6 +375,35 @@ describe('Tests for create-model', function () {
       callbackSpy.firstCall.args.length.should.equal(2)
       should.not.exist(callbackSpy.firstCall.args[0])
       callbackSpy.firstCall.args[1].should.be.an.Object()
+    })
+
+    it('should use the provided createKey function', function () {
+      const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
+        callback(null, {})
+      })
+      const getLayerSpy = sinon.spy(function (req, callback) {
+        callback(null, {})
+      })
+      const callbackSpy = sinon.spy()
+
+      createModel.prototype.getLayer = getLayerSpy
+
+      class Model extends providerMock.Model {
+        createKey () { return 'test-key' }
+      }
+
+      // create a model with mocked cache "retrieve" function
+      const model = createModel({ ProviderModel: Model, koop: koopMock }, {
+        cache: {
+          retrieve: retrieveSpy,
+          upsert: () => { }
+        }
+      })
+
+      model.pullLayer({ url: 'domain/test-provider', params: {}, query: {} }, callbackSpy)
+
+      retrieveSpy.should.be.calledOnce()
+      retrieveSpy.firstCall.args[0].should.equal('test-key')
     })
   })
 
@@ -465,6 +495,35 @@ describe('Tests for create-model', function () {
       callbackSpy.firstCall.args.length.should.equal(2)
       should.not.exist(callbackSpy.firstCall.args[0])
       callbackSpy.firstCall.args[1].should.be.an.Object()
+    })
+
+    it('should use the provided createKey function', function () {
+      const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
+        callback(null, {})
+      })
+      const getLayerSpy = sinon.spy(function (req, callback) {
+        callback(null, {})
+      })
+      const callbackSpy = sinon.spy()
+
+      createModel.prototype.getLayer = getLayerSpy
+
+      class Model extends providerMock.Model {
+        createKey () { return 'test-key' }
+      }
+
+      // create a model with mocked cache "retrieve" function
+      const model = createModel({ ProviderModel: Model, koop: koopMock }, {
+        cache: {
+          retrieve: retrieveSpy,
+          upsert: () => { }
+        }
+      })
+
+      model.pullCatalog({ url: 'domain/test-provider', params: {}, query: {} }, callbackSpy)
+
+      retrieveSpy.should.be.calledOnce()
+      retrieveSpy.firstCall.args[0].should.equal('test-key')
     })
   })
 })

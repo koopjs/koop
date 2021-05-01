@@ -21,10 +21,9 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
 
     async pull (req, callback) {
       const key = (this.createKey) ? this.createKey(req) : createKey(req)
-      const dataKey = `${key}::data`
 
       try {
-        const cached = await this.cacheRetrieve(dataKey, req.query)
+        const cached = await this.cacheRetrieve(key, req.query)
         if (isFresh(cached)) return callback(null, cached)
       } catch (err) {
         if (process.env.KOOP_LOG_LEVEL === 'debug') {
@@ -36,7 +35,7 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
         const providerGeojson = await this.getData(req)
         const afterFuncGeojson = await this.after(req, providerGeojson)
         const { ttl } = afterFuncGeojson
-        if (ttl) this.cacheUpsert(dataKey, afterFuncGeojson, { ttl })
+        if (ttl) this.cacheUpsert(key, afterFuncGeojson, { ttl })
         callback(null, afterFuncGeojson)
       } catch (err) {
         callback(err)
@@ -46,16 +45,15 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
     // TODO: the pullLayer() and the pullCatalog() are very similar to the pull()
     // function. We may consider to merging them in the future.
     pullLayer (req, callback) {
-      const key = (this.createKey) ? this.createKey(req) : createKey(req)
-      const layerKey = `${key}::layer`
-      this.cache.retrieve(layerKey, req.query, (err, cached) => {
+      const key = (this.createKey) ? this.createKey(req) : `${createKey(req)}::layer`
+      this.cache.retrieve(key, req.query, (err, cached) => {
         if (!err && isFresh(cached)) {
           callback(null, cached)
         } else if (this.getLayer) {
           this.getLayer(req, (err, data) => {
             if (err) return callback(err)
             callback(null, data)
-            if (data.ttl) this.cache.upsert(layerKey, data, { ttl: data.ttl })
+            if (data.ttl) this.cache.upsert(key, data, { ttl: data.ttl })
           })
         } else {
           callback(new Error('getLayer() function is not implemented in the provider.'))
@@ -64,16 +62,15 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
     }
 
     pullCatalog (req, callback) {
-      const key = (this.createKey) ? this.createKey(req) : createKey(req)
-      const catalogKey = `${key}::catalog`
-      this.cache.retrieve(catalogKey, req.query, (err, cached) => {
+      const key = (this.createKey) ? this.createKey(req) : `${createKey(req)}::catalog`
+      this.cache.retrieve(key, req.query, (err, cached) => {
         if (!err && isFresh(cached)) {
           callback(null, cached)
         } else if (this.getCatalog) {
           this.getCatalog(req, (err, data) => {
             if (err) return callback(err)
             callback(null, data)
-            if (data.ttl) this.cache.upsert(catalogKey, data, { ttl: data.ttl })
+            if (data.ttl) this.cache.upsert(key, data, { ttl: data.ttl })
           })
         } else {
           callback(new Error('getCatalog() function is not implemented in the provider.'))
