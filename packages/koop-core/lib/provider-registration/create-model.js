@@ -77,6 +77,19 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
         }
       })
     }
+
+    async pullStream (req) {
+      if (this.getStream) {
+        await this.before(req)
+        const providerStream = await this.getStream(req)
+        providerStream.on('end', () => {
+          this.after(req)
+        })
+        return providerStream
+      } else {
+        throw new Error('getStream() function is not implemented in the provider.')
+      }
+    }
   }
 
   // Add auth methods if auth plugin registered with Koop

@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Added
+* Support for NodeJS streams as a data interchange format between provider and output plugins ([#141](https://github.com/koopjs/koop-core/issues/141))
 ### Fixed
 * Inconsistent cache key when a `createKey` function is provided ([#136](https://github.com/koopjs/koop-core/issues/136))
 
