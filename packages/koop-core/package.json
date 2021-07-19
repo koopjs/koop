@@ -1,7 +1,7 @@
 {
   "name": "koop",
   "description": "Transform, query, & download geospatial data on the web",
-  "version": "4.1.1",
+  "version": "4.2.0",
   "bugs": {
     "url": "https://github.com/koopjs/koop/issues"
   },
