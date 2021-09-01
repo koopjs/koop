@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Added ability to specify capabilities the feature service would like to handle
+
 ## [3.0.0] - 02-18-2021
 ### Changed
 * End support for Node < 10; remove buble compile step

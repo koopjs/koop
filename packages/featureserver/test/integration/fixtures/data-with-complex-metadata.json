@@ -15,6 +15,7 @@
       }
     },
     "idField": "interval",
+    "capabilities": "Query,Delete",
     "displayField": "label",
     "maxRecordCount": 1,
     "hasStaticData": false,

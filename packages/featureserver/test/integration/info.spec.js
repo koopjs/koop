@@ -235,7 +235,7 @@ describe('Info operations', () => {
           })
         }),
         maxRecordCount: 1,
-        capabilities: 'Query,Extract',
+        capabilities: 'Query,Delete,Extract',
         supportsCoordinatesQuantization: true,
         objectIdField: 'interval',
         displayField: 'label',
