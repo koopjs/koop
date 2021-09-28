@@ -47,6 +47,7 @@ function computeFieldsCollection (data, requestContext, options = {}) {
       context: requestContext,
       idField: metadata.idField,
       domain: field.domain,
+      editable: field.editable,
       nullable: field.nullable
     })
   })
@@ -67,7 +68,7 @@ function computeFieldsCollection (data, requestContext, options = {}) {
  */
 function computeFieldObject (name, options = {}) {
   let outputField
-  const { alias = name, type = 'string', length, context, idField, domain, nullable } = options
+  const { alias = name, type = 'string', length, context, idField, domain, editable = false, nullable } = options
 
   // Identify objectIdField with the name that matches the metadata idField or the default name "OBJECTID"
   if (name === idField || name === 'OBJECTID') {
@@ -93,7 +94,7 @@ function computeFieldObject (name, options = {}) {
   // Layer service field objects have addition 'editable' and 'nullable' properties
   if (context === 'layer') {
     Object.assign(outputField, {
-      editable: false,
+      editable: editable,
       domain: domain || null,
       nullable: typeof nullable !== 'undefined' ? nullable : false
     })

@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Added ability to specify the editable property for each field via the metadata object
+
 ## [3.0.1] - 09-01-2021
 ### Changed
 * Added ability to specify capabilities the feature service would like to handle

@@ -104,7 +104,7 @@ const layersTemplateSchema = Joi.object().keys({
     }),
     defaultValue: Joi.any().valid(null),
     domain: Joi.any().valid(null),
-    editable: Joi.boolean().valid(false),
+    editable: Joi.boolean().valid(false, true),
     nullable: Joi.boolean().valid(false),
     sqlType: Joi.string().valid('sqlTypeOther', 'sqlTypeDouble', 'sqlTypeInteger')
   })).min(0),

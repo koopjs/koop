@@ -378,6 +378,24 @@ describe('Info operations', () => {
       layer.fields.find(f => { return f.name === 'test' }).length.should.equal(1000)
     })
 
+    it('should assign editable from metadata', () => {
+      const input = {
+        metadata: {
+          geometryType: 'Polygon',
+          extent: [[11, 12], [13, 14]],
+          fields: [
+            {
+              name: 'test',
+              type: 'String',
+              editable: true
+            }
+          ]
+        }
+      }
+      const layer = FeatureServer.layerInfo(input, {})
+      layer.fields.find(f => { return f.name === 'test' }).editable.should.equal(true)
+    })
+
     it('should support a metadata with layer id, defaultVisibility, minScale, and maxScale values', () => {
       const input = _.cloneDeep(data)
       input.metadata = {
