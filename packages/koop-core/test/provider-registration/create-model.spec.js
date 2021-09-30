@@ -567,29 +567,6 @@ describe('Tests for create-model', function () {
       getStreamSpy.should.be.calledOnce()
     })
 
-    it.only('should invoke "after" when stream is finished', async function () {
-      const readable = new Readable({ read () {} })
-      getStreamSpy.resolves(readable)
-
-      const afterSpy = sinon.stub().callsFake((_, _2, cb) => {
-        cb()
-      })
-
-      const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock })
-
-      const stream = await model.pullStream({ some: 'options' })
-
-      afterSpy.should.not.be.called()
-
-      stream.push('foo')
-      stream.push('bar')
-      stream.push(null)
-
-      stream.on('end', () => {
-        afterSpy.should.be.calledOnce()
-      })
-    })
-
     it('should reject if the getStream() function is not implemented', async function () {
       providerMock.Model.prototype.getStream = undefined // no getStream function
 

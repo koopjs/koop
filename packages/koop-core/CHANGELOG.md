@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Fixed
+* improper use of `after` in pullStream
 
 ## [4.2.0] - 2021-06-19
 ### Added
