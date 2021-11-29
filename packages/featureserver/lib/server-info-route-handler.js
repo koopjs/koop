@@ -24,7 +24,9 @@ function serverMetadata (json, { query = {} } = {}) {
     fullExtent,
     initialExtent: fullExtent,
     layers: layers.map(layerInfo),
-    tables: tables.map(tableInfo),
+    tables: tables.map((json, idx) => {
+      return tableInfo(json, layers.length + idx)
+    }),
     serviceDescription: description,
     maxRecordCount: maxRecordCount || _.get(layers, '[0].metadata.maxRecordCount'),
     hasStaticData: typeof hasStaticData === 'boolean' ? hasStaticData : false

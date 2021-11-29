@@ -358,8 +358,8 @@ describe('server info', () => {
         geometryType: 'esriGeometryPoint'
       }],
       tables: [{
-        id: 0,
-        name: 'Table_0',
+        id: 2,
+        name: 'Table_2',
         parentLayerId: -1,
         defaultVisibility: true,
         subLayerIds: null,
