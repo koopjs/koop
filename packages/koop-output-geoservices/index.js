@@ -1,4 +1,5 @@
 const FeatureServer = require('featureserver')
+const koopConfig = require("config");
 const Logger = require('@koopjs/logger')
 const log = new Logger()
 console.log('WARNING: "/MapServer" routes will be registered, but only for specialized 404 handling in FeatureServer.')
@@ -50,7 +51,7 @@ Geoservices.prototype.featureServer = function (req, res) {
  * @param {object} res response object
  */
 Geoservices.prototype.featureServerRestInfo = function (req, res) {
-  const authInfo = {}
+  const authInfo = koopConfig?.authInfo || {};
   const authSpec = this.model.authenticationSpecification
   if (authSpec) {
     authInfo.isTokenBasedSecurity = true
