@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.1.0] - 2021-11-30
+### Added
+* `authInfo` defined by configuration
+
+### Fixed
+* Error handling
+
 ## [3.0.0] - 2020-02-18
 ### Changed
 * Bump FeatureServer to 3.0.0
