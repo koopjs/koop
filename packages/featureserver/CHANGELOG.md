@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.2.0] - 11-30-2021
+### Added
+* Support for multipoint
+
+### Fixed
+* Table ID numbering
+
 ## [3.1.0] - 09-28-2021
 ### Added
 * Ability to specify the editable property for each field via the metadata object
@@ -431,6 +438,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[3.2.0]: https://github.com/koopjs/featureserver/compare/v3.1.0...v3.2.0
 [3.1.0]: https://github.com/koopjs/featureserver/compare/v3.0.1...v3.1.0
 [3.0.1]: https://github.com/koopjs/featureserver/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/koopjs/featureserver/compare/v2.25.1...v3.0.0
