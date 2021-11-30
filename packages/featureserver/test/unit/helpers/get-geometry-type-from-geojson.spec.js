@@ -13,7 +13,7 @@ describe('get-geometry-type-from-geojson', function () {
   })
 
   it('empty object returns undefined', () => {
-    const result = getGeometryTypeFromGeojson('foo')
+    const result = getGeometryTypeFromGeojson({})
     should(result).equal()
   })
 
