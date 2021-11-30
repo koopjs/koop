@@ -5,6 +5,7 @@ const { renderFeatures, renderStatistics, renderStats } = require('./templates')
 const Utils = require('./utils')
 const _ = require('lodash')
 const chalk = require('chalk')
+const getGeometryTypeFromGeojson = require('./helpers/get-geometry-type-from-geojson')
 
 module.exports = query
 
@@ -103,7 +104,7 @@ function geoservicesPostQuery (data, queriedData, params) {
   } else {
     params.spatialReference = params.outSR
     params.attributeSample = data.features[0] && data.features[0].properties
-    params.geometryType = Utils.getGeomType(data)
+    params.geometryType = getGeometryTypeFromGeojson(data)
     return renderFeatures(queriedData, params)
   }
 }
