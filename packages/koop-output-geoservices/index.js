@@ -7,6 +7,28 @@ console.log('WARNING: "/MapServer" routes will be registered, but only for speci
 function Geoservices () {}
 
 /**
+ * Helper for sending error responses 
+ * @param {*} req 
+ * @param {*} res 
+ */
+function sendError(req, res, error) {
+  if (!error.error) {
+    const err = normalizeError(error)
+    if (err.code === 401) FeatureServer.error.authentication(req, res)
+    else res.status(err.code || 500).json({ error: err.message })
+  // if the error is already in the esri REST API format send back with 200 code, e.g.
+  // {
+  //   "error" : {
+  //     "code": 499,
+  //     "message":"Token Required",
+  //     "details":[]
+  //   }
+  // }
+  // This is required for ArcGIS Enterprise apps to handle many errors
+  } else res.status(200).json(error);
+}
+
+/**
  * Helper for pulling data and routing to FeatureServer
  * @param {object} model provider's model
  * @param {object} req request object
@@ -14,10 +36,8 @@ function Geoservices () {}
  */
 function pullDataAndRoute (model, req, res) {
   model.pull(req, function (error, data) {
-    if (error) {
-      const err = normalizeError(error)
-      res.status(err.code || 500).json({ error: err.message })
-    } else FeatureServer.route(req, res, data)
+    if (error) sendError(req, res, error)
+    else FeatureServer.route(req, res, data)
   })
 }
 
