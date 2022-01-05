@@ -32,9 +32,15 @@ describe('Error operations', () => {
         set: function (header, value) {
           header.should.equal('Content-Type')
           value.should.equal('application/javascript')
+          return res
         },
         send: function (response) {
           response.should.equal('test({"error":{"code":400,"message":"Unable to generate token.","details":["Invalid username or password."]}})')
+          return res
+        },
+        status: function (code) {
+          code.should.equal(200)
+          return res
         }
       }
       error.authentication(req, res)
@@ -70,9 +76,15 @@ describe('Error operations', () => {
         set: function (header, value) {
           header.should.equal('Content-Type')
           value.should.equal('application/javascript')
+          return res
         },
         send: function (response) {
           response.should.equal('test({"error":{"code":499,"message":"Token Required","details":[]}})')
+          return res
+        },
+        status: function (code) {
+          code.should.equal(200)
+          return res
         }
       }
       error.authorization(req, res)
