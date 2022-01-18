@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.1.1] - 2022-01-18
+### Changed
+* Peer dependency
+
 ## [3.1.0] - 2021-11-30
 ### Added
 * `authInfo` defined by configuration
@@ -102,6 +106,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[3.1.1]: https://github.com/koopjs/koop-featureserver-plugin/compare/v3.1.0...v3.1.1
+[3.1.0]: https://github.com/koopjs/koop-featureserver-plugin/compare/v3.0.0...v3.1.0
 [3.0.0]: https://github.com/koopjs/koop-featureserver-plugin/compare/v2.2.1...v3.0.0
 [2.2.1]: https://github.com/koopjs/koop-featureserver-plugin/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/koopjs/koop-featureserver-plugin/compare/v2.1.0...v2.2.0
