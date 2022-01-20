@@ -244,4 +244,10 @@ describe('renderLayer', function () {
     const result = renderLayer(layer1)
     should(result).deepEqual(tableWithObjectIdField)
   })
+
+  it('returns edit templates passed through metadata for a layer', () => {
+    const layer1 = { type: 'FeatureCollection', metadata: { templates: [{ name: 'template1', description: 'base template', prototype: {} }] }, crs: { type: 'name', properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' } }, features: [{ type: 'Feature', properties: {}, geometry: null }] }
+    const result = renderLayer(layer1)
+    should(result.templates.length).equal(1)
+  })
 })

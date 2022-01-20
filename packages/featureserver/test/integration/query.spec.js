@@ -17,6 +17,7 @@ const fullySpecified = require('./fixtures/fully-specified-metadata.json')
 const offsetApplied = require('./fixtures/offset-applied.json')
 const taggedNonWGS84 = require('./fixtures/trees-crs-102645.json')
 const untaggedNonWGS84 = require('./fixtures/trees-untagged-102645.json')
+const dataWithTextOID = require('./fixtures/snow-text-objectid.json')
 
 describe('Query operations', () => {
   before(function () {
@@ -25,6 +26,8 @@ describe('Query operations', () => {
     // the tests to fail when run on windows.
     const response = FeatureServer.query(data, { outFields: 'OBJECTID' })
     this.objectIds = response.features.map(feat => feat.attributes.OBJECTID)
+    const textOIDResponse = FeatureServer.query(dataWithTextOID, { outFields: 'OBJECTID' })
+    this.textObjectIds = textOIDResponse.features.map(feat => feat.attributes.OBJECTID)
   })
 
   it('should return the expected response schema for an optionless query', () => {
@@ -143,8 +146,18 @@ describe('Query operations', () => {
       response.features.should.have.length(1)
     })
 
+    it('should work with string id features', function () {
+      const response = FeatureServer.query(dataWithTextOID, { objectIds: this.textObjectIds.slice(0, 2).join(',') })
+      response.should.be.an.instanceOf(Object)
+      response.fields.should.be.an.instanceOf(Array)
+      response.features.should.have.length(2)
+    })
+
     it('should return only count of features', function () {
-      const response = FeatureServer.query(data, { returnCountOnly: true, objectIds: this.objectIds.slice(0, 3).join(',') })
+      const response = FeatureServer.query(data, {
+        returnCountOnly: true,
+        objectIds: this.objectIds.slice(0, 3).join(',')
+      })
       response.should.be.an.instanceOf(Object)
       response.should.have.property('count')
       response.count.should.equal(3)
@@ -160,7 +173,10 @@ describe('Query operations', () => {
 
   describe('when getting features with returnIdsOnly', function () {
     it('should return only ids of features', function () {
-      const response = FeatureServer.query(data, { returnIdsOnly: true, objectIds: this.objectIds.slice(0, 3).join(',') })
+      const response = FeatureServer.query(data, {
+        returnIdsOnly: true,
+        objectIds: this.objectIds.slice(0, 3).join(',')
+      })
       response.should.be.an.instanceOf(Object)
       response.should.have.property('objectIdFieldName', 'OBJECTID')
       response.should.have.property('objectIds')
@@ -345,7 +361,11 @@ describe('Query operations', () => {
     describe('calculating from geojson', function () {
       it('should return correct fields and features for one stat', () => {
         const response = FeatureServer.query(data, {
-          outStatistics: [{ statisticType: 'MIN', onStatisticField: 'total precip', outStatisticFieldName: 'min_precip' }]
+          outStatistics: [{
+            statisticType: 'MIN',
+            onStatisticField: 'total precip',
+            outStatisticFieldName: 'min_precip'
+          }]
         })
         response.should.be.an.instanceOf(Object)
         response.fields.length.should.equal(1)
@@ -393,7 +413,11 @@ describe('Query operations', () => {
 
       it('should return correct number of fields and features for sum stats', () => {
         const response = FeatureServer.query(data, {
-          outStatistics: [{ statisticType: 'sum', onStatisticField: 'total precip', outStatisticFieldName: 'sum_precip' }]
+          outStatistics: [{
+            statisticType: 'sum',
+            onStatisticField: 'total precip',
+            outStatisticFieldName: 'sum_precip'
+          }]
         })
         response.should.be.an.instanceOf(Object)
         response.fields.length.should.equal(1)
@@ -403,7 +427,11 @@ describe('Query operations', () => {
 
       it('should return correct number of fields and features for avg stats', () => {
         const response = FeatureServer.query(data, {
-          outStatistics: [{ statisticType: 'avg', onStatisticField: 'total precip', outStatisticFieldName: 'avg_precip' }]
+          outStatistics: [{
+            statisticType: 'avg',
+            onStatisticField: 'total precip',
+            outStatisticFieldName: 'avg_precip'
+          }]
         })
         response.features[0].attributes.avg_precip.should.equal(0.3253956834532375)
       })
@@ -430,7 +458,11 @@ describe('Query operations', () => {
           sqlFormat: 'standard',
           f: 'json',
           groupByFieldsForStatistics: 'Full/Part',
-          outStatistics: [{ statisticType: 'count', onStatisticField: 'Full/Part', outStatisticFieldName: 'Full/Part_COUNT' }],
+          outStatistics: [{
+            statisticType: 'count',
+            onStatisticField: 'Full/Part',
+            outStatisticFieldName: 'Full/Part_COUNT'
+          }],
           orderByFields: 'Full/Part_COUNT DESC'
         }
 

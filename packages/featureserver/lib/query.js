@@ -71,7 +71,7 @@ function geoservicesPostQuery (data, queriedData, params) {
   if (params.objectIds && !params.outStatistics) {
     let oids
 
-    // Normalize the objectIds param as an array of integers
+    // Normalize the objectIds param as an array
     if (Array.isArray(params.objectIds)) oids = params.objectIds
     else if (typeof params.objectIds === 'string') oids = params.objectIds.split(',')
     else if (typeof params.objectIds === 'number') oids = [params.objectIds]
@@ -81,7 +81,11 @@ function geoservicesPostQuery (data, queriedData, params) {
       throw error
     }
     oids = oids.map(i => {
-      return parseInt(i)
+      if (isNaN(i)) {
+        return i
+      } else {
+        return parseInt(i)
+      }
     })
 
     // Filter features to those with matching ids

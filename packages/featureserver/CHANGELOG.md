@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* templates pulled from metadata for JSAPI 4.x support
+* OBJECTID not forced to Integer if it is a true string (GUID)
+
 ## [3.2.0] - 11-30-2021
 ### Added
 * Support for multipoint

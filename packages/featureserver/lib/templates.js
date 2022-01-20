@@ -56,6 +56,7 @@ function renderLayer (data = {}, { params = {}, query = {} } = {}) {
     json.uniqueIdField.name = metadata.idField
   }
   if (metadata.capabilities) { json.capabilities = metadata.capabilities }
+  if (metadata.templates) { json.templates = metadata.templates }
   if (metadata.displayField) json.displayField = metadata.displayField
   if (metadata.timeInfo) json.timeInfo = metadata.timeInfo
   if (metadata.maxRecordCount) json.maxRecordCount = metadata.maxRecordCount || 2000
