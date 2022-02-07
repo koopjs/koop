@@ -71,7 +71,7 @@ Geoservices.prototype.featureServer = function (req, res) {
  * @param {object} res response object
  */
 Geoservices.prototype.featureServerRestInfo = function (req, res) {
-  const authInfo = koopConfig?.authInfo || {};
+  const authInfo = koopConfig && koopConfig.authInfo || {};
   const authSpec = this.model.authenticationSpecification
   if (authSpec) {
     authInfo.isTokenBasedSecurity = true
