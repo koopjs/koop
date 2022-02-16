@@ -9,7 +9,7 @@ const {
 const { computeFieldObject } = require('./field')
 const { layerMetadata: layerMetadataDefaults, renderers: rendererDefaults } = require('./defaults')
 
-module.exports = function layersMetadata (providerResponse, queryParams = {}) {
+module.exports = function relationshipsMetadata (providerResponse, queryParams = {}) {
   const { layers: layersInput, tables: tablesInput } = normalizeInputData(providerResponse)
 
   const layers = layersInput.map((layer, i) => {

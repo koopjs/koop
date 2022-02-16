@@ -14,7 +14,7 @@ function serverMetadata (json, { query = {} } = {}) {
   const { extent, metadata, ...rest } = json
   const { maxRecordCount, hasStaticData, description } = { ...metadata, ...rest }
   const spatialReference = getSpatialReference(json, query)
-  const { layers, tables } = normalizeInputData(json)
+  const { layers, tables, relationships } = normalizeInputData(json)
   const fullExtent = getServiceExtent({ extent, metadata, layers, spatialReference })
 
   // TODO reproject default extents when non WGS84 CRS is found or passed
@@ -27,6 +27,8 @@ function serverMetadata (json, { query = {} } = {}) {
     tables: tables.map((json, idx) => {
       return tableInfo(json, layers.length + idx)
     }),
+    relationships: relationships.map(relationshipInfo),
+    supportsRelationshipsResource: relationships && relationships.length > 0,
     serviceDescription: description,
     maxRecordCount: maxRecordCount || _.get(layers, '[0].metadata.maxRecordCount'),
     hasStaticData: typeof hasStaticData === 'boolean' ? hasStaticData : false
@@ -102,6 +104,19 @@ function formatInfo (json = {}, defaultId, type) {
     minScale,
     maxScale,
     geometryType: type === 'layer' ? getGeometryTypeFromGeojson(json) : undefined
+  }
+}
+
+function relationshipInfo (json = {}, relationshipIndex) {
+  const {
+    id,
+    name
+  } = json
+
+  const defaultName = `Relationship_${id || relationshipIndex}`
+  return {
+    id: id || relationshipIndex,
+    name: name || defaultName
   }
 }
 

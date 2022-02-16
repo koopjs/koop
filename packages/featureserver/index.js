@@ -10,6 +10,7 @@ module.exports = {
   layerInfo,
   layersInfo,
   query: require('./lib/query.js'),
+  queryRelatedRecords: require('./lib/queryRelatedRecords.js'),
   generateRenderer: require('./lib/generateRenderer'),
   error: require('./lib/error'),
   authenticate: require('./lib/authenticate')

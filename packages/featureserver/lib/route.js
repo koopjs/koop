@@ -5,10 +5,12 @@ const {
   layerInfo
 } = require('./info.js')
 const query = require('./query.js')
+const queryRelatedRecords = require('./queryRelatedRecords.js')
 const generateRenderer = require('./generateRenderer')
 const restInfo = require('./rest-info-route-handler')
 const serverInfo = require('./server-info-route-handler')
 const layersInfo = require('./layers-info-route-handler')
+const relationshipsInfo = require('./relationships-info-route-handler')
 const responseHandler = require('./response-handler')
 
 const queryParamSchema = joi.object({
@@ -52,6 +54,8 @@ module.exports = function route (req, res, geojson = {}, options = {}) {
       result = serverInfo(geojson, req)
     } else if (isLayersMetadataRequest(route)) {
       result = layersInfo(geojson, queryParams)
+    } else if (isRelationshipsMetadataRequest(route)) {
+      result = relationshipsInfo(geojson, queryParams)
     } else if (isLayerMetadataRequest(route)) {
       result = layerInfo(geojson, req)
     } else {
@@ -70,6 +74,8 @@ module.exports = function route (req, res, geojson = {}, options = {}) {
 function handleMethodRequest ({ method, geojson, req }) {
   if (method === 'query') {
     return query(geojson, req.query)
+  } else if (method === 'queryRelatedRecords') {
+    return queryRelatedRecords(geojson, req.query)
   } else if (method === 'generateRenderer') {
     return generateRenderer(geojson, req.query)
   } else if (method === 'info') {
@@ -143,6 +149,10 @@ function isServerMetadataRequest (url) {
 
 function isLayersMetadataRequest (url) {
   return /\/FeatureServer\/layers$/i.test(url)
+}
+
+function isRelationshipsMetadataRequest (url) {
+  return /\/FeatureServer\/relationships$/i.test(url)
 }
 
 function isLayerMetadataRequest (url) {

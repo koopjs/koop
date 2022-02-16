@@ -4,5 +4,7 @@ module.exports = {
   normalizeSpatialReference: require('./normalize-spatial-reference'),
   getCollectionCrs: require('./get-collection-crs'),
   getGeometryTypeFromGeojson: require('./get-geometry-type-from-geojson'),
-  isTable: require('./is-geojson-table')
+  isTable: require('./is-geojson-table'),
+  calculateExtent: require('./calculate-extent'),
+  getSpatialReference: require('./get-spatial-reference')
 }

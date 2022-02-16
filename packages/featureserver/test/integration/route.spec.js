@@ -7,6 +7,7 @@ const _ = require('lodash')
 const snow = require('./fixtures/snow.json')
 const noGeom = require('./fixtures/no-geometry.json')
 const ProviderStatsClassBreaks = require('./fixtures/generateRenderer/provider-statistics-with-classBreaks.json')
+const relatedData = require('./fixtures/relatedData.json')
 const app = express()
 
 let data
@@ -332,6 +333,24 @@ describe('Routing feature server requests', () => {
         })
         .expect('Content-Type', /json/)
         .expect(200, done)
+    })
+  })
+
+  describe('queryRelatedRecords', () => {
+    describe('when objectIds are passed in', () => {
+      beforeEach(() => {
+        data = _.cloneDeep(relatedData)
+      })
+      it('should properly route and handle return related records result', done => {
+        request(app)
+          .get('/FeatureServer/0/queryRelatedRecords?')
+          .expect(res => {
+            res.body.relatedRecordGroups.length.should.equal(1)
+            res.body.relatedRecordGroups[0].relatedRecords.length.should.equal(11)
+          })
+          .expect('Content-Type', /json/)
+          .expect(200, done)
+      })
     })
   })
 })

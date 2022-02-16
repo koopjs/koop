@@ -48,6 +48,7 @@ function renderLayer (data = {}, { params = {}, query = {} } = {}) {
   var spatialReference = getServiceSpatialReference(data, query)
   json.extent = metadata.extent ? computeExtent(metadata.extent, spatialReference) : computeExtent(getExtent(data), spatialReference)
 
+  if (metadata.relationships) json.relationships = metadata.relationships
   if (metadata.name) json.name = metadata.name
   if (metadata.description) json.description = metadata.description
   if (metadata.idField) {

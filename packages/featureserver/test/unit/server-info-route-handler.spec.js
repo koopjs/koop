@@ -29,6 +29,7 @@ describe('server info', () => {
 
     serverInfo.should.deepEqual({
       hasStaticData: false,
+      supportsRelationshipsResource: false,
       foo: 'bar',
       maxRecordCount: 'max-record-count',
       serviceDescription: 'service-description',
@@ -36,7 +37,8 @@ describe('server info', () => {
       initialExtent: 'initial-extent',
       fullExtent: 'full-extent',
       layers: [],
-      tables: []
+      tables: [],
+      relationships: []
     })
 
     getCollectionCrs.notCalled.should.equal(true)
@@ -52,7 +54,7 @@ describe('server info', () => {
     const normalizeSpatialReference = sinon.spy()
     const normalizeExtent = sinon.spy()
     const normalizeInputData = sinon.spy(function (input) {
-      return { tables: [input], layers: [] }
+      return { tables: [input], layers: [], relationships: [] }
     })
 
     const serverInfoHandler = proxyquire('../../lib/server-info-route-handler', {
@@ -72,7 +74,8 @@ describe('server info', () => {
           fullExtent: 'full-extent',
           initialExtent: 'initial-extent',
           layers: [],
-          tables: []
+          tables: [],
+          relationships: []
         }
       }
     })
@@ -87,6 +90,7 @@ describe('server info', () => {
     serverInfo.should.deepEqual({
       foo: 'bar',
       hasStaticData: false,
+      supportsRelationshipsResource: false,
       maxRecordCount: 'max-record-count',
       serviceDescription: 'service-description',
       spatialReference: 'spatial-reference',
@@ -102,7 +106,8 @@ describe('server info', () => {
         minScale: 0,
         maxScale: 0,
         geometryType: undefined
-      }]
+      }],
+      relationships: []
     })
   })
 
@@ -113,7 +118,7 @@ describe('server info', () => {
     const normalizeSpatialReference = sinon.spy()
     const normalizeExtent = sinon.spy()
     const normalizeInputData = sinon.spy(function (input) {
-      return { tables: [input], layers: [] }
+      return { tables: [input], layers: [], relationships: [] }
     })
 
     const serverInfoHandler = proxyquire('../../lib/server-info-route-handler', {
@@ -140,6 +145,7 @@ describe('server info', () => {
     serverInfo.should.deepEqual({
       foo: 'bar',
       hasStaticData: false,
+      supportsRelationshipsResource: false,
       maxRecordCount: 'max-record-count',
       serviceDescription: 'service-description',
       spatialReference: 'spatial-reference',
@@ -155,7 +161,8 @@ describe('server info', () => {
         minScale: 0,
         maxScale: 0,
         geometryType: undefined
-      }]
+      }],
+      relationships: []
     })
   })
 
@@ -167,7 +174,7 @@ describe('server info', () => {
     const normalizeSpatialReference = sinon.spy(function () { return { wkid: 4326, latestWkid: 4326 } })
     const normalizeExtent = sinon.spy()
     const normalizeInputData = sinon.spy(function (input) {
-      return { tables: [], layers: [input] }
+      return { tables: [], layers: [input], relationships: [] }
     })
     const serverInfoHandler = proxyquire('../../lib/server-info-route-handler', {
       './helpers': { getCollectionCrs, getGeometryTypeFromGeojson, normalizeSpatialReference, normalizeExtent, normalizeInputData },
@@ -200,6 +207,7 @@ describe('server info', () => {
       maxRecordCount: 'max-record-count',
       serviceDescription: 'service-description',
       hasStaticData: false,
+      supportsRelationshipsResource: false,
       spatialReference: {
         wkid: 4326,
         latestWkid: 4326
@@ -234,7 +242,8 @@ describe('server info', () => {
         parentLayerId: -1,
         subLayerIds: null
       }],
-      tables: []
+      tables: [],
+      relationships: []
     })
   })
 
@@ -258,7 +267,7 @@ describe('server info', () => {
       }
     })
     const normalizeInputData = sinon.spy(function (input) {
-      return { tables: input.tables, layers: input.layers }
+      return { tables: input.tables, layers: input.layers, relationships: [] }
     })
     const layer1 = { type: 'FeatureCollection', crs: { type: 'name', properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' } }, features: [{ type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-100, 40] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-101, 41] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-99, 39] } }] }
     const layer2 = { type: 'FeatureCollection', crs: { type: 'name', properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' } }, features: [{ type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-122, 49] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-121, 20] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-110, 43] } }] }
@@ -314,6 +323,7 @@ describe('server info', () => {
       maxRecordCount: 5000,
       serviceDescription: 'Defined in metadata',
       hasStaticData: true,
+      supportsRelationshipsResource: false,
       spatialReference: {
         wkid: 4326,
         latestWkid: 4326
@@ -366,7 +376,8 @@ describe('server info', () => {
         minScale: 0,
         maxScale: 0,
         geometryType: undefined
-      }]
+      }],
+      relationships: []
     })
   })
 
@@ -405,7 +416,7 @@ describe('server info', () => {
       }
     })
     const normalizeInputData = sinon.spy(function (input) {
-      return { layers: [input], tables: [] }
+      return { layers: [input], tables: [], relationships: [] }
     })
 
     const serverInfoHandler = proxyquire('../../lib/server-info-route-handler', {
@@ -445,6 +456,7 @@ describe('server info', () => {
       maxRecordCount: 5000,
       serviceDescription: 'Defined in metadata',
       hasStaticData: true,
+      supportsRelationshipsResource: false,
       spatialReference: {
         wkid: 4326,
         latestWkid: 4326
@@ -479,7 +491,147 @@ describe('server info', () => {
         maxScale: 14,
         geometryType: 'esriGeometryPoint'
       }],
-      tables: []
+      tables: [],
+      relationships: []
+    })
+  })
+
+  it('geojson with metadata property including relationships should generate layers, extent, spatialReference and relationships', () => {
+    const getCollectionCrs = sinon.spy(function () { return 4326 })
+    const getGeometryTypeFromGeojson = sinon.spy(function () {
+      if (getGeometryTypeFromGeojson.callCount === 3 || getGeometryTypeFromGeojson.callCount === 6) return
+      return 'esriGeometryPoint'
+    })
+    const normalizeSpatialReference = sinon.spy(function () { return { wkid: 4326, latestWkid: 4326 } })
+    const normalizeExtent = sinon.spy(function () {
+      return {
+        xmin: -180,
+        xmax: 180,
+        ymin: -90,
+        ymax: 90,
+        spatialReference: {
+          wkid: 4326,
+          latestWkid: 4326
+        }
+      }
+    })
+    const normalizeInputData = sinon.spy(function (input) {
+      return { tables: input.tables, layers: input.layers, relationships: input.relationships }
+    })
+    const layer1 = { type: 'FeatureCollection', crs: { type: 'name', properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' } }, features: [{ type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-100, 40] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-101, 41] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-99, 39] } }] }
+    const layer2 = { type: 'FeatureCollection', crs: { type: 'name', properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' } }, features: [{ type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-122, 49] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-121, 20] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-110, 43] } }] }
+    const tables = [{ type: 'FeatureCollection', crs: { type: 'name', properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' } }, features: [{ type: 'Feature', properties: {}, geometry: null }, { type: 'Feature', properties: {}, geometry: null }, { type: 'Feature', properties: {}, geometry: null }] }]
+    const relationships = [{ id: 0, name: 'Relationship_0' }, { id: 1, name: 'Relationship_1' }]
+    const input = {
+      maxRecordCount: 5000,
+      hasStaticData: true,
+      description: 'Defined in metadata',
+      name: 'Foobar',
+      extent: [-180, -90, 180, 90],
+      geometryType: 'set by metadata',
+      layers: [layer1, layer2],
+      tables,
+      relationships
+    }
+
+    const serverInfoHandler = proxyquire('../../lib/server-info-route-handler', {
+      './helpers': { getCollectionCrs, getGeometryTypeFromGeojson, normalizeSpatialReference, normalizeExtent, normalizeInputData },
+      './defaults': {
+        serverMetadata: {
+          foo: 'bar',
+          maxRecordCount: 'max-record-count',
+          serviceDescription: 'service-description',
+          spatialReference: 'spatial-reference',
+          fullExtent: 'full-extent',
+          initialExtent: 'initial-extent',
+          layers: [],
+          tables: []
+        }
+      }
+    })
+    const serverInfo = serverInfoHandler(input)
+
+    getCollectionCrs.calledOnce.should.equal(true)
+    getCollectionCrs.firstCall.args.should.deepEqual([input])
+    getGeometryTypeFromGeojson.callCount.should.equal(2)
+    getGeometryTypeFromGeojson.firstCall.args.should.deepEqual([layer1])
+    normalizeSpatialReference.calledOnce.should.equal(true)
+    normalizeSpatialReference.firstCall.args.should.deepEqual([4326])
+    normalizeExtent.calledOnce.should.equal(true)
+    normalizeExtent.firstCall.args.should.deepEqual([
+      [-180, -90, 180, 90],
+      {
+        wkid: 4326,
+        latestWkid: 4326
+      }
+    ])
+
+    serverInfo.should.deepEqual({
+      foo: 'bar',
+      maxRecordCount: 5000,
+      serviceDescription: 'Defined in metadata',
+      hasStaticData: true,
+      supportsRelationshipsResource: true,
+      spatialReference: {
+        wkid: 4326,
+        latestWkid: 4326
+      },
+      initialExtent: {
+        xmin: -180,
+        xmax: 180,
+        ymin: -90,
+        ymax: 90,
+        spatialReference: {
+          wkid: 4326,
+          latestWkid: 4326
+        }
+      },
+      fullExtent: {
+        xmin: -180,
+        xmax: 180,
+        ymin: -90,
+        ymax: 90,
+        spatialReference: {
+          wkid: 4326,
+          latestWkid: 4326
+        }
+      },
+      layers: [{
+        id: 0,
+        name: 'Layer_0',
+        parentLayerId: -1,
+        defaultVisibility: true,
+        subLayerIds: null,
+        minScale: 0,
+        maxScale: 0,
+        geometryType: 'esriGeometryPoint'
+      }, {
+        id: 1,
+        name: 'Layer_1',
+        parentLayerId: -1,
+        defaultVisibility: true,
+        subLayerIds: null,
+        minScale: 0,
+        maxScale: 0,
+        geometryType: 'esriGeometryPoint'
+      }],
+      tables: [{
+        id: 2,
+        name: 'Table_2',
+        parentLayerId: -1,
+        defaultVisibility: true,
+        subLayerIds: null,
+        minScale: 0,
+        maxScale: 0,
+        geometryType: undefined
+      }],
+      relationships: [{
+        id: 0,
+        name: 'Relationship_0'
+      }, {
+        id: 1,
+        name: 'Relationship_1'
+      }]
     })
   })
 })

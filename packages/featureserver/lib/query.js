@@ -49,6 +49,7 @@ function query (data, params = {}) {
       warnOnMetadataFieldDiscrepencies(data.metadata.fields, data.features[0].properties)
     }
   }
+
   if (params.f === 'geojson') return { type: 'FeatureCollection', features: queriedData.features }
   else return geoservicesPostQuery(data, queriedData, params)
 }
@@ -109,6 +110,7 @@ function geoservicesPostQuery (data, queriedData, params) {
     params.spatialReference = params.outSR
     params.attributeSample = data.features[0] && data.features[0].properties
     params.geometryType = getGeometryTypeFromGeojson(data)
+
     return renderFeatures(queriedData, params)
   }
 }

@@ -45,6 +45,7 @@ routes.forEach(route => {
 * [FeatureServer.authenticate](#FeatureServer.authenticate)
 * [FeatureServer.error.authorize](#FeatureServer.error.authorize)
 * [FeatureServer.authenticate](#FeatureServer.error.authenticate)
+* [FeatureServer.queryRelatedRecords](#FeatureServer.queryRelatedRecords)
 
 ### FeatureServer.route
 Pass in an `incoming request object`, an `outgoing response object`, a `geojson` object, and `options` and this function will route and return a geoservices compliant response
@@ -195,6 +196,16 @@ const server = {
         }
       }]
     }
+  }],
+  tables: [{ // A collection of all the tables managed by the server
+    type: 'FeatureCollection',
+    metadata: {
+      // see layer metadata
+    }
+  }],
+  relationships: [{ // A collection of all relationships manged by the server
+    id: number, // The unique relationship id.
+    name: String, // The name of the relationship
   }]
 }
 
@@ -222,11 +233,34 @@ Note that the layer info is modified with properties `metadata` and `capabilites
 |`metadata.objectIdField`| overrides default  (`OBJECTID`) |
 |`metadata.hasStaticData`| overrides default (`false`) |
 |`metadata.renderer`| overrides default |
-|`metadata.defaultVisibility`| overrides default|
-|`metadata.minScale`| overrides default|
-|`metadta.maxScale`| overrides default|
+|`metadata.defaultVisibility`| overrides default |
+|`metadata.minScale`| overrides default |
+|`metadata.maxScale`| overrides default |
+|`metadata.relationships` | overrides default |
 |`capabilities.extract`|  when set to `true`, `Extract` added to `capabilites` (e.g., `capabilities: "Query,Extract"`) |
-|`capabilities.quantization`| when set to `true`, `supportsCoordinatesQuantization: true`|
+|`capabilities.quantization`| when set to `true`, `supportsCoordinatesQuantization: true` |
+
+##### metadata.relationships
+This defined the server managed relationships for the layer
+
+e.g.
+
+```js
+const metadata = {
+  //...
+  relationships: [{ // A collection of all relationships manged by the server
+    id: number, // The unique relationship id.
+    name: String, // The name of the relationship
+    relatedTableId: number, // Id of the layer/table related records are found
+    cardinality: String, // esriRelCardinalityOneToMany | esriRelCardinalityManyToMany
+    role: String, // esriRelRoleOrigin | esriRelRoleDestination
+    keyField: String, // key field name in the related Table 
+    composite: Boolean // likely to false
+  }]
+  //...
+}
+```
+
 ### FeatureServer.layers
 Generate version `10.51` Geoservices information about one or many layers
 
@@ -439,3 +473,77 @@ Pass in an outgoing response object and this function will route and return a fo
 [travis-url]: https://travis-ci.org/koopjs/FeatureServer
 [greenkeeper-image]: https://badges.greenkeeper.io/koopjs/FeatureServer.svg
 [greenkeeper-url]: https://greenkeeper.io/
+
+## Unreleased
+
+### FeatureServer.queryRelatedRecords
+Pass in `geojson` and `options`, and the function will return a valid queryRelatedRecords object. Required attributes within `options` are `objectIds` and `relationshipId`.
+
+The `geojson` should be in the special FeatureCollection of FeatureCollections format to show the relationship between requested Features within the layer/table and the referenced relatinoship's features.
+e.g. 
+
+```js
+  const geojson = {
+    "type": "FeatureCollection",
+    "features": [ // Array of FeatureCollections by objectId with the related records as features
+      {
+        "type": "FeatureCollection",
+        "properties": {
+          "OBJECTID": 37
+        },
+        "features": [
+          {
+            "type": "Feature",
+            "geometry": {...},
+            "properties": {...}
+          }
+        ]
+      } 
+    ]
+  }
+  
+  const options = {
+    objectIds: "37, 462", // comma separated string of object ids within the layer to get related records 
+    relationshipId: 4, // relationship Id of the server manged relationship of the layer, see FeatureServer.layerInfo
+  }
+
+FeatureServer.queryRelatedRecords(geojson, options)
+```
+
+Output:
+
+```js
+{
+  "geometryType": "esriGeometryPolygon",
+  "spatialReference": {
+    "wkid": 4267
+  },
+  "fields": [
+    {
+      "name": "OBJECTID", 
+      "type": "esriFieldTypeOID", 
+      "alias": "OBJECTID"
+    }, 
+    {
+      "name": "FIELD1", 
+      "type": "esriFieldTypeString", 
+      "alias": "FIELD1", 
+      "length": 25
+    }
+  ],
+  "relatedRecordGroups": [
+    {
+      "objectId": 37,
+      "relatedRecords": [
+        {
+          "attributes": {
+            "OBJECTID": 5540,
+            "FIELD1": "1000147595"
+          },
+          "geometry": {...}
+        }
+      ]
+    }
+  ]
+}
+```

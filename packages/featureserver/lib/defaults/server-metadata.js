@@ -4,6 +4,7 @@ const serviceResponseDefaults = {
   serviceDescription: 'This is a feature service exposed with Koop, an open source project that turns APIs into features. Service Description information may not be available for all services. For more information, check out https://github.com/koopjs/koop.',
   hasVersionedData: false,
   supportsDisconnectedEditing: false,
+  supportsRelationshipsResource: false,
   supportedQueryFormats: 'JSON',
   maxRecordCount: 2000,
   hasStaticData: false,

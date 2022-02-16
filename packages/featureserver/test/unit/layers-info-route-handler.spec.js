@@ -28,9 +28,9 @@ describe('layers info', () => {
 
   it('geojson feature collection with no CRS and no features, should generate tables, mixin defaults', () => {
     const simpleCollectionFixture = { type: 'FeatureCollection', features: [] }
-    const getCollectionCrs = sinon.spy()
+    const calculateExtent = sinon.spy()
     const getGeometryTypeFromGeojson = sinon.spy()
-    const normalizeSpatialReference = sinon.spy()
+    const getSpatialReference = sinon.spy()
     const normalizeExtent = sinon.spy()
     const normalizeInputData = sinon.spy(function (input) {
       return { tables: [input], layers: [] }
@@ -38,9 +38,9 @@ describe('layers info', () => {
 
     const layersInfoHandler = proxyquire('../../lib/layers-info-route-handler', {
       './helpers': {
-        getCollectionCrs,
+        calculateExtent,
         getGeometryTypeFromGeojson,
-        normalizeSpatialReference,
+        getSpatialReference,
         normalizeExtent,
         normalizeInputData
       },
@@ -50,12 +50,12 @@ describe('layers info', () => {
         }
       }
     })
+
     const layersInfo = layersInfoHandler(simpleCollectionFixture)
     normalizeInputData.calledOnce.should.equal(true)
-    normalizeSpatialReference.notCalled.should.equal(true)
+    getSpatialReference.calledOnce.should.equal(true)
     normalizeExtent.notCalled.should.equal(true)
-    getCollectionCrs.calledOnce.should.equal(true)
-    getCollectionCrs.firstCall.args.should.deepEqual([simpleCollectionFixture])
+    calculateExtent.calledOnce.should.equal(true)
     getGeometryTypeFromGeojson.notCalled.should.equal(true)
 
     layersInfo.should.deepEqual({
@@ -90,9 +90,9 @@ describe('layers info', () => {
 
   it('geojson feature collection with no CRS and null geom features, should generate tables, mixin defaults', () => {
     const simpleCollectionFixture = { type: 'FeatureCollection', features: [{ type: 'Feature', properties: {}, geometry: null }, { type: 'Feature', properties: {}, geometry: null }, { type: 'Feature', properties: {}, geometry: null }] }
-    const getCollectionCrs = sinon.spy()
+    const calculateExtent = sinon.spy()
     const getGeometryTypeFromGeojson = sinon.spy()
-    const normalizeSpatialReference = sinon.spy()
+    const getSpatialReference = sinon.spy()
     const normalizeExtent = sinon.spy()
     const normalizeInputData = sinon.spy(function (input) {
       return { tables: [input], layers: [] }
@@ -100,9 +100,9 @@ describe('layers info', () => {
 
     const layersInfoHandler = proxyquire('../../lib/layers-info-route-handler', {
       './helpers': {
-        getCollectionCrs,
+        calculateExtent,
         getGeometryTypeFromGeojson,
-        normalizeSpatialReference,
+        getSpatialReference,
         normalizeExtent,
         normalizeInputData
       },
@@ -114,10 +114,9 @@ describe('layers info', () => {
     })
     const layersInfo = layersInfoHandler(simpleCollectionFixture)
     normalizeInputData.calledOnce.should.equal(true)
-    normalizeSpatialReference.notCalled.should.equal(true)
+    getSpatialReference.calledOnce.should.equal(true)
     normalizeExtent.notCalled.should.equal(true)
-    getCollectionCrs.calledOnce.should.equal(true)
-    getCollectionCrs.firstCall.args.should.deepEqual([simpleCollectionFixture])
+    calculateExtent.calledOnce.should.equal(true)
     getGeometryTypeFromGeojson.notCalled.should.equal(true)
 
     layersInfo.should.deepEqual({
@@ -161,11 +160,11 @@ describe('layers info', () => {
 
   it('simple geojson with CRS should generate layers, mixin defaults', () => {
     const simpleCollectionFixture = { type: 'FeatureCollection', crs: { type: 'name', properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' } }, features: [{ type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-100, 40] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-101, 41] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-99, 39] } }] }
-    const getCollectionCrs = sinon.spy()
+    const calculateExtent = sinon.spy()
     const getGeometryTypeFromGeojson = sinon.spy(function () {
       return 'Point'
     })
-    const normalizeSpatialReference = sinon.spy()
+    const getSpatialReference = sinon.spy()
     const normalizeExtent = sinon.spy()
     const normalizeInputData = sinon.spy(function (input) {
       return { tables: [], layers: [input] }
@@ -173,9 +172,9 @@ describe('layers info', () => {
 
     const layersInfoHandler = proxyquire('../../lib/layers-info-route-handler', {
       './helpers': {
-        getCollectionCrs,
+        calculateExtent,
         getGeometryTypeFromGeojson,
-        normalizeSpatialReference,
+        getSpatialReference,
         normalizeExtent,
         normalizeInputData
       },
@@ -187,10 +186,9 @@ describe('layers info', () => {
     })
     const layersInfo = layersInfoHandler(simpleCollectionFixture)
     normalizeInputData.calledOnce.should.equal(true)
-    normalizeSpatialReference.notCalled.should.equal(true)
-    normalizeExtent.calledOnce.should.equal(true)
-    getCollectionCrs.calledOnce.should.equal(true)
-    getCollectionCrs.firstCall.args.should.deepEqual([simpleCollectionFixture])
+    getSpatialReference.calledOnce.should.equal(true)
+    normalizeExtent.notCalled.should.equal(true)
+    calculateExtent.calledOnce.should.equal(true)
     getGeometryTypeFromGeojson.calledOnce.should.equal(true)
 
     layersInfo.should.deepEqual({
@@ -247,11 +245,11 @@ describe('layers info', () => {
       tables: [table]
     }
 
-    const getCollectionCrs = sinon.spy()
+    const calculateExtent = sinon.spy()
     const getGeometryTypeFromGeojson = sinon.spy(function () {
       return 'Point'
     })
-    const normalizeSpatialReference = sinon.spy()
+    const getSpatialReference = sinon.spy()
     const normalizeExtent = sinon.spy()
     const normalizeInputData = sinon.spy(function ({ layers, tables }) {
       return { tables, layers }
@@ -259,9 +257,9 @@ describe('layers info', () => {
 
     const layersInfoHandler = proxyquire('../../lib/layers-info-route-handler', {
       './helpers': {
-        getCollectionCrs,
+        calculateExtent,
         getGeometryTypeFromGeojson,
-        normalizeSpatialReference,
+        getSpatialReference,
         normalizeExtent,
         normalizeInputData
       },
@@ -271,19 +269,15 @@ describe('layers info', () => {
         }
       }
     })
-
     const layersInfo = layersInfoHandler(input)
 
     normalizeInputData.calledOnce.should.equal(true)
-    getCollectionCrs.callCount.should.equal(3)
-    getCollectionCrs.firstCall.args.should.deepEqual([layer1])
-    getCollectionCrs.secondCall.args.should.deepEqual([layer2])
-    getCollectionCrs.thirdCall.args.should.deepEqual([table])
+    calculateExtent.callCount.should.equal(3)
     getGeometryTypeFromGeojson.callCount.should.equal(2)
     getGeometryTypeFromGeojson.firstCall.args.should.deepEqual([layer1])
     getGeometryTypeFromGeojson.secondCall.args.should.deepEqual([layer2])
-    normalizeSpatialReference.callCount.should.equal(0)
-    normalizeExtent.callCount.should.equal(2)
+    getSpatialReference.callCount.should.equal(3)
+    normalizeExtent.callCount.should.equal(0)
     layersInfo.should.deepEqual({
       layers: [{
         id: 0,
