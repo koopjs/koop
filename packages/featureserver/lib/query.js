@@ -12,133 +12,117 @@ module.exports = query
 /**
  * processes params based on query params
  *
- * @param {object} data
+ * @param {object} json
  * @param {object} params
  */
-function query (data, params = {}) {
-  // TODO clean up this series of if statements
-  const filtersApplied = data.filtersApplied || {}
-  const options = _.cloneDeep(params)
-  const hasIdField = _.has(data, 'metadata.idField')
+function query (json, params = {}) {
+  const {
+    features,
+    statistics,
+    filtersApplied: {
+      all: skipFiltering
+    } = {}
+  } = json
 
-  if (filtersApplied.projection || options.returnGeometry === false) delete options.outSR
-  if (filtersApplied.geometry) delete options.geometry
-  if (filtersApplied.where || options.where === '1=1') delete options.where
-  if (filtersApplied.offset) delete options.resultOffset
-  if (filtersApplied.limit) {
-    delete options.resultRecordCount
-    delete options.limit
+  if (statistics) {
+    return renderStats(json)
   }
-  if (data.statistics) return renderStats(data)
-  if (options.returnCountOnly && data.count !== undefined) return { count: data.count }
-  if (options.f !== 'geojson' && !options.returnExtentOnly) options.toEsri = true
 
-  const queriedData = filtersApplied.all ? data : Winnow.query(data, Object.assign(options, { inputCrs: getInputCrs(data, options) }))
+  const data = skipFiltering || !features ? json : postProcessData(json, params)
 
   // Warnings
-  if (process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress') {
-    // ArcGIS client warnings
-    if (options.toEsri && !hasIdField) {
-      console.warn(chalk.yellow('WARNING: requested provider has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an unchanging 32-bit integer. Koop will create an OBJECTID field in the absence of an "idField" assignment.'))
-    } else if (options.toEsri && data.metadata.idField.toLowerCase() === 'objectid' && data.metadata.idField !== 'OBJECTID') {
-      console.warn(chalk.yellow('WARNING: requested provider\'s "idField" is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients.'))
-    }
+  if (shouldLogWarnings()) {
+    logWarnings(data, modifyParams)
+  }
 
-    // Compare provider metadata fields to feature properties
-    if (_.has(data, 'metadata.fields') && _.has(data, 'features[0].properties')) {
-      warnOnMetadataFieldDiscrepencies(data.metadata.fields, data.features[0].properties)
+  if (params.f === 'geojson') {
+    return {
+      type: 'FeatureCollection',
+      features: data.features
     }
   }
 
-  if (params.f === 'geojson') return { type: 'FeatureCollection', features: queriedData.features }
-  else return geoservicesPostQuery(data, queriedData, params)
+  return renderGeoservicesResponse(data, {
+    ...params,
+    attributeSample: _.get(json, 'features[0].properties'),
+    geometryType: getGeometryTypeFromGeojson(json)
+  })
+}
+
+function postProcessData (inputData, params) {
+  const postProcessingParams = modifyParams(params, inputData)
+  return Winnow.query(inputData, postProcessingParams)
+}
+
+function modifyParams (params, data) {
+  const { f: format, returnExtentOnly, inputCrs, sourceSR } = params
+  const { filtersApplied } = data
+  const modifedParams = filtersApplied ? modifyParamsForProcessingAlreadyApplied(params, filtersApplied) : params
+
+  if (shouldTransformToEsriJson(format, returnExtentOnly)) {
+    modifedParams.toEsri = true
+  }
+
+  modifedParams.inputCrs = getInputCrs(data, { inputCrs, sourceSR })
+
+  return modifedParams
+}
+
+function modifyParamsForProcessingAlreadyApplied (params, alreadyApplied) {
+  const paramsToOmit = _.chain(alreadyApplied).entries()
+    .map(([key, value]) => {
+      if (key === 'projection') {
+        return ['outSR', key]
+      }
+
+      if (key === 'offset') {
+        return ['resultOffset', key]
+      }
+
+      if (key === 'limit') {
+        return ['resultRecordCount', key]
+      }
+
+      return key
+    })
+    .flatten()
+    .value()
+
+  return _.omit(params, paramsToOmit)
+}
+
+function shouldTransformToEsriJson (requestedFormat, returnExtentOnly) {
+  return requestedFormat !== 'geojson' && !returnExtentOnly
 }
 
 function getInputCrs (data, { inputCrs, sourceSR }) {
   return inputCrs || sourceSR || _.get(data, 'metadata.crs') || getCollectionCrs(data) || 4326
 }
 
-/**
- * Format the queried data according to request parameters
- * @param {object} data - full dataset
- * @param {object} queriedData - subset of data with query applied
- * @param {object} params
- */
-function geoservicesPostQuery (data, queriedData, params) {
-  const oidField = _.get(data, 'metadata.idField') || 'OBJECTID'
+function shouldLogWarnings () {
+  return process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress'
+}
 
-  // Specific set of objectIds were requested (options.objectIds works alongside returnCountOnly
-  // but not out-statistics); filter accordingly
-  if (params.objectIds && !params.outStatistics) {
-    let oids
-
-    // Normalize the objectIds param as an array
-    if (Array.isArray(params.objectIds)) oids = params.objectIds
-    else if (typeof params.objectIds === 'string') oids = params.objectIds.split(',')
-    else if (typeof params.objectIds === 'number') oids = [params.objectIds]
-    else {
-      const error = new Error('Invalid "objectIds" parameter.')
-      error.code = 400
-      throw error
-    }
-    oids = oids.map(i => {
-      if (isNaN(i)) {
-        return i
-      } else {
-        return parseInt(i)
-      }
-    })
-
-    // Filter features to those with matching ids
-    queriedData.features = queriedData.features.filter(f => {
-      return oids.includes(f.attributes[oidField])
-    })
+function logWarnings (geojson, { toEsri }) {
+  const { metadata = {}, features } = geojson
+  // ArcGIS client warnings
+  if (toEsri && !metadata.idField) {
+    console.warn(chalk.yellow('WARNING: requested provider has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an unchanging 32-bit integer. Koop will create an OBJECTID field in the absence of an "idField" assignment.'))
   }
 
-  // Format the response according to the request parameters
-  if (params.returnCountOnly && params.returnExtentOnly) {
-    return { count: queriedData.features.length, extent: esriExtent(queriedData) }
-  } else if (params.returnCountOnly) {
-    return { count: queriedData.features.length }
-  } else if (params.returnExtentOnly) {
-    return { extent: getExtent(queriedData, params.outSR) }
-  } else if (params.returnIdsOnly) {
-    return idsOnly(queriedData, data.metadata)
-  } else if (params.outStatistics) {
-    return queryStatistics(queriedData, params)
-  } else {
-    params.spatialReference = params.outSR
-    params.attributeSample = data.features[0] && data.features[0].properties
-    params.geometryType = getGeometryTypeFromGeojson(data)
+  if (toEsri && hasMixedCaseObjectIdKey(metadata.idField)) {
+    console.warn(chalk.yellow('WARNING: requested provider\'s "idField" is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients.'))
+  }
 
-    return renderFeatures(queriedData, params)
+  // Compare provider metadata fields to feature properties
+  // TODO: refactor
+  if (metadata.fields && _.has(features, '[0].properties')) {
+    warnOnMetadataFieldDiscrepencies(geojson.metadata.fields, geojson.features[0].properties)
   }
 }
 
-/**
- * Format a response for an ids-only request
- * @param {object} data
- */
-function idsOnly (data) {
-  const oidField = _.get(data, 'metadata.idField') || 'OBJECTID'
-  const response = { objectIdFieldName: oidField, objectIds: [] }
-  response.objectIds = data.features.map(f => { return f.attributes[oidField] })
-  return response
-}
-
-function queryStatistics (data, params) {
-  // This little dance is in place because the stat response from Winnow is different
-  // TODO make winnow come out as expected
-  // or move this into templates.render
-  const statResponse = {
-    type: 'FeatureCollection',
-    features: []
-  }
-  const features = Array.isArray(data) ? data : [data]
-  statResponse.features = features.map(row => {
-    return { attributes: row }
-  })
-  return renderStatistics(statResponse, params)
+function hasMixedCaseObjectIdKey (idField = '') {
+  return idField.toLowerCase() === 'objectid' && idField !== 'OBJECTID'
 }
 
 /**
@@ -176,13 +160,135 @@ function warnOnMetadataFieldDiscrepencies (metadataFields, featureProperties) {
 }
 
 /**
+ * Format the queried data according to request parameters
+ * @param {object} data - full dataset
+ * @param {object} data - subset of data with query applied
+ * @param {object} params
+ */
+function renderGeoservicesResponse (data, params = {}) {
+  const {
+    objectIds,
+    outStatistics,
+    returnCountOnly,
+    returnExtentOnly,
+    returnIdsOnly,
+    outSR
+  } = params
+
+  if (shouldFilterByObjectIds(objectIds, outStatistics)) {
+    data.features = filterByObjectIds(data, objectIds)
+  }
+
+  if (returnCountOnly && returnExtentOnly) {
+    return {
+      count: getCount(data),
+      extent: getExtent(data)
+    }
+  }
+
+  if (returnCountOnly) {
+    return {
+      count: getCount(data)
+    }
+  }
+
+  if (returnExtentOnly) {
+    return {
+      extent: getExtent(data, outSR)
+    }
+  }
+
+  if (returnIdsOnly) {
+    return renderIdsOnly(data)
+  }
+
+  if (outStatistics) {
+    return queryStatistics(data, params)
+  }
+
+  return renderFeatures(data, params)
+}
+
+function shouldFilterByObjectIds (objectIds, outStatistics) {
+  // request for objectIds ignored if out-statistics option is also requested
+  return objectIds && !outStatistics
+}
+
+function filterByObjectIds (data, objectIds) {
+  const idField = _.get(data, 'metadata.idField') || 'OBJECTID'
+  const requestedObjectIds = normalizeObjectIds(objectIds)
+
+  return data.features.filter(({ attributes }) => {
+    return requestedObjectIds.includes(attributes[idField])
+  })
+}
+
+function normalizeObjectIds (objectIds) {
+  let ids
+  if (Array.isArray(objectIds)) {
+    ids = objectIds
+  } else if (typeof objectIds === 'string') {
+    ids = objectIds.split(',')
+  } else if (typeof objectIds === 'number') {
+    ids = [objectIds]
+  } else {
+    const error = new Error('Invalid "objectIds" parameter.')
+    error.code = 400
+    throw error
+  }
+
+  return ids.map(i => {
+    if (isNaN(i)) {
+      return i
+    }
+
+    return parseInt(i)
+  })
+}
+
+function getCount (data) {
+  return data.count !== undefined ? data.count : _.get(data, 'features.length', 0)
+}
+
+/**
+ * Format a response for an ids-only request
+ * @param {object} data
+ */
+function renderIdsOnly (data) {
+  const oidField = _.get(data, 'metadata.idField') || 'OBJECTID'
+  const response = { objectIdFieldName: oidField, objectIds: [] }
+  response.objectIds = data.features.map(f => { return f.attributes[oidField] })
+  return response
+}
+
+function queryStatistics (data, params) {
+  // This little dance is in place because the stat response from Winnow is different
+  // TODO make winnow come out as expected
+  // or move this into templates.render
+  const statResponse = {
+    type: 'FeatureCollection',
+    features: []
+  }
+  const features = Array.isArray(data) ? data : [data]
+  statResponse.features = features.map(row => {
+    return { attributes: row }
+  })
+  return renderStatistics(statResponse, params)
+}
+
+/**
  * Get an extent object for passed GeoJSON
  * @param {object} geojson
  * @param {*} outSR Esri spatial reference object, or WKID integer
  */
 function getExtent (geojson, outSR) {
-  // Calculate extent from object
+  if (geojson.extent) {
+    return geojson.extent
+  }
+
+  // Calculate extent from features
   const extent = esriExtent(geojson)
+
   if (!outSR) return extent
 
   // Esri extent assumes WGS84, but the data passed in may have been transformed
@@ -204,4 +310,6 @@ function getExtent (geojson, outSR) {
     extent.spatialReference = { wkid }
     return extent
   }
+
+  return extent
 }

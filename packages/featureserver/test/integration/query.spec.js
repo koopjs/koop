@@ -577,5 +577,47 @@ describe('Query operations', () => {
       response.extent.spatialReference.should.have.property('wkid', 3857)
       response.should.not.have.property('count')
     })
+
+    it('should return extent when predefined', () => {
+      const response = FeatureServer.query({
+        extent: {
+          xmin: -108,
+          ymin: 37,
+          xmax: -102,
+          ymax: 40,
+          spatialReference: { wkid: 4326 }
+        }
+      }, { returnExtentOnly: true })
+      response.should.be.an.instanceOf(Object)
+      response.should.have.property('extent')
+      response.extent.should.have.property('xmin', -108)
+      response.extent.should.have.property('ymin', 37)
+      response.extent.should.have.property('xmax', -102)
+      response.extent.should.have.property('ymax', 40.0)
+      response.extent.should.have.property('spatialReference')
+      response.extent.spatialReference.should.have.property('wkid', 4326)
+    })
+
+    it('should return extent and count when both requested and predefined', () => {
+      const response = FeatureServer.query({
+        count: 101,
+        extent: {
+          xmin: -108,
+          ymin: 37,
+          xmax: -102,
+          ymax: 40,
+          spatialReference: { wkid: 4326 }
+        }
+      }, { returnExtentOnly: true, returnCountOnly: true })
+      response.should.be.an.instanceOf(Object)
+      response.should.have.property('count', 101)
+      response.should.have.property('extent')
+      response.extent.should.have.property('xmin', -108)
+      response.extent.should.have.property('ymin', 37)
+      response.extent.should.have.property('xmax', -102)
+      response.extent.should.have.property('ymax', 40.0)
+      response.extent.should.have.property('spatialReference')
+      response.extent.spatialReference.should.have.property('wkid', 4326)
+    })
   })
 })
