@@ -4,7 +4,7 @@ const chalk = require('chalk')
 const {
   layerInfo
 } = require('./info.js')
-const query = require('./query.js')
+const query = require('./query')
 const queryRelatedRecords = require('./queryRelatedRecords.js')
 const generateRenderer = require('./generateRenderer')
 const restInfo = require('./rest-info-route-handler')

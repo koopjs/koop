@@ -1,18 +1,16 @@
 const _ = require('lodash')
-const moment = require('moment')
 const { getExtent } = require('./utils')
 const getGeometryTypeFromGeojson = require('./helpers/get-geometry-type-from-geojson')
 const isTable = require('./helpers/is-geojson-table')
-const { computeFieldObject, createFieldAliases, createStatFields } = require('./field')
+const { computeFieldObject } = require('./field')
 const { normalizeSpatialReference, computeExtent } = require('./geometry')
 const { createClassBreakInfos, createUniqueValueInfos } = require('./generateRenderer/createClassificationInfos')
 const getCollectionCrs = require('./helpers/get-collection-crs')
-module.exports = { renderLayer, renderFeatures, renderStatistics, renderStats, renderClassBreaks, renderUniqueValue }
+module.exports = { renderLayer, renderClassBreaks, renderUniqueValue }
 
 const templates = {
   layer: Object.assign(require('../templates/layer.json'), require('../templates/version.json')),
-  features: require('../templates/features.json'),
-  statistics: require('../templates/statistics.json')
+  features: require('../templates/features.json')
 }
 
 const renderers = {
@@ -72,66 +70,6 @@ function renderLayer (data = {}, { params = {}, query = {} } = {}) {
   return json
 }
 
-/**
- * Modifies a template features json file with metadata, capabilities, and data from the model
- * @param {object} data - data from provider model
- * @param {object} options
- * @return {object} formatted features data
- */
-function renderFeatures (data = {}, options = {}) {
-  const json = _.cloneDeep(templates.features)
-  const metadata = data.metadata || {}
-
-  json.geometryType = options.geometryType
-  json.spatialReference = getOutputSpatialReference(data, options)
-  json.fields = computeFieldObject(data, 'query', options)
-  json.features = data.features || []
-
-  if (metadata.limitExceeded) json.exceededTransferLimit = true
-  if (metadata.transform) json.transform = metadata.transform
-  if (metadata.idField) {
-    json.objectIdFieldName = metadata.idField
-    json.uniqueIdField.name = metadata.idField
-  }
-  return json
-}
-
-function renderStatistics (featureCollection = {}, options = {}) {
-  const json = _.cloneDeep(templates.statistics)
-  const data = featureCollection
-  if (!json) throw new Error('Unsupported operation')
-
-  if (json.fields) json.fields = computeFieldObject(data, 'statistics', options)
-  if (json.features) json.features = data.features
-  return json
-}
-
-function renderStats (data) {
-  let stats = data.statistics
-  if (!Array.isArray(stats)) stats = [stats]
-  const fields = data.metadata ? computeFieldObject(data) : createStatFields(stats)
-  return {
-    displayFieldName: '',
-    fieldAliases: createFieldAliases(stats),
-    fields,
-    features: createStatFeatures(stats)
-  }
-}
-
-function createStatFeatures (stats) {
-  return stats.map(attributes => {
-    const transformed = Object.keys(attributes).reduce((attrs, key) => {
-      if (attributes[key] instanceof Date || moment(attributes[key], [moment.ISO_8601], true).isValid()) {
-        attrs[key] = new Date(attributes[key]).getTime()
-      } else {
-        attrs[key] = attributes[key]
-      }
-      return attrs
-    }, {})
-    return { attributes: transformed }
-  })
-}
-
 function renderClassBreaks (breaks, classificationDef, geomType) {
   if (!Array.isArray(breaks) || !Array.isArray(breaks[0])) throw new Error('Breaks must be an array of break ranges')
   const json = _.cloneDeep(renderers.classBreaks)
@@ -159,23 +97,6 @@ function getServiceSpatialReference (collection, {
   const spatialReference = inputCrs || sourceSR || getCollectionCrs(collection) || 4326
 
   const { latestWkid, wkid, wkt } = normalizeSpatialReference(spatialReference)
-
-  if (wkid) {
-    return { wkid, latestWkid }
-  }
-
-  return { wkt }
-}
-
-function getOutputSpatialReference (collection, {
-  outSR,
-  outputCrs,
-  inputCrs,
-  sourceSR
-}) {
-  const spatialReference = outputCrs || outSR || inputCrs || sourceSR || getCollectionCrs(collection) || 4326
-
-  const { wkid, wkt, latestWkid } = normalizeSpatialReference(spatialReference)
 
   if (wkid) {
     return { wkid, latestWkid }

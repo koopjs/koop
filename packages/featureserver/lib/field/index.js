@@ -1,17 +1,13 @@
 const _ = require('lodash')
 const chalk = require('chalk')
-const createFieldAliases = require('./aliases')
-const createStatFields = require('./statFields')
 const { detectType, esriTypeMap } = require('../utils')
 
 // computeFieldCollection exported as computeFieldObject to maintain backward compatability. TODO: change on next major revision
-module.exports = { computeFieldsFromProperties, computeFieldObject: computeFieldsCollection, createStatFields, createFieldAliases }
+module.exports = { computeFieldsFromProperties, computeFieldObject: computeFieldsCollection }
 
 const templates = {
   server: require('../../templates/server.json'),
   layer: require('../../templates/layer.json'),
-  features: require('../../templates/features.json'),
-  statistics: require('../../templates/statistics.json'),
   field: require('../../templates/field.json'),
   objectIDField: require('../../templates/oid-field.json')
 }
