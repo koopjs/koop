@@ -6,7 +6,7 @@ const {
 module.exports = {
   route: require('./lib/route.js'),
   restInfo: require('./lib/rest-info-route-handler'),
-  serverInfo: require('./lib/rest-info-route-handler'),
+  serverInfo: require('./lib/server-info-route-handler'),
   layerInfo,
   layersInfo,
   query: require('./lib/query'),

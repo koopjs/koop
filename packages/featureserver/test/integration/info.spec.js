@@ -9,7 +9,7 @@ const Joi = require('joi')
 const { layersTemplateSchema, serverTemplateSchema } = require('./schemas')
 
 describe('Info operations', () => {
-  describe.skip('rest info', () => {
+  describe('rest info', () => {
     it('should conform to the prescribed schema', () => {
       const supplementalRestInfo = {
         authInfo: {
@@ -25,7 +25,7 @@ describe('Info operations', () => {
     })
   })
 
-  describe.skip('server info', () => {
+  describe('server info', () => {
     it('should conform to the prescribed schema', () => {
       const server = FeatureServer.serverInfo(data)
       const serverSchemaOverride = serverTemplateSchema.append({
@@ -84,8 +84,8 @@ describe('Info operations', () => {
         layers: [require('./fixtures/polygon-metadata-error.json')]
       }
       const server = FeatureServer.serverInfo(input)
-      server.layers.length.should.equal(0)
-      server.tables.length.should.equal(1)
+      server.layers.length.should.equal(1)
+      server.tables.length.should.equal(0)
     })
 
     it('should support a passed in metadata with no extent', () => {

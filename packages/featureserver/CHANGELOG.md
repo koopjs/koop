@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+- Server info handler was not properly assigned
+
+
 ## [3.3.2] - 03-11-2022
 ### Fixed
 - Ensure `outSR ` is used when `returnExtentOnly=true` and extent not precalculated

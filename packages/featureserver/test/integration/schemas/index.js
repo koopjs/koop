@@ -159,11 +159,13 @@ const serverTemplateSchema = Joi.object().keys({
       latestWkid: Joi.number().valid(4326)
     })
   }),
+  relationships: Joi.array(),
   allowGeometryUpdates: Joi.boolean().valid(false),
   units: 'esriDecimalDegrees',
   syncEnabled: Joi.boolean().valid(false),
   layers: Joi.array().min(0),
-  tables: Joi.array().min(0)
+  tables: Joi.array().min(0),
+  supportsRelationshipsResource: Joi.boolean()
 })
 
 module.exports = { featuresTemplateSchema, fieldsTemplateSchema, layersTemplateSchema, oidTemplateSchema, serverTemplateSchema }

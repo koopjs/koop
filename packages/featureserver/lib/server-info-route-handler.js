@@ -35,7 +35,7 @@ function serverMetadata (json, { query = {} } = {}) {
   }, serverMetadataDefaults)
 }
 
-function getServiceExtent ({ extent, metadata = {}, layers, spatialReference = { latestWkid: 4326 } }) {
+function getServiceExtent ({ extent, metadata = {}, layers, spatialReference = { wkid: 4326, latestWkid: 4326 } }) {
   if (extent || metadata.extent) return normalizeExtent(extent || metadata.extent, spatialReference)
   return calculateServiceExtentFromLayers(layers, spatialReference)
 }
