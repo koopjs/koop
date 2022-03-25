@@ -1,12 +1,11 @@
 const _ = require('lodash')
+const {
+  PointRenderer,
+  LineRenderer,
+  PolygonRenderer
+} = require('../helpers')
 
 module.exports = { createSymbol }
-
-const renderers = {
-  point: require('../../templates/renderers/symbology/point.json'),
-  line: require('../../templates/renderers/symbology/line.json'),
-  polygon: require('../../templates/renderers/symbology/polygon.json')
-}
 
 function createSymbol (baseSymbol, color, geomType) {
   const symbol = _.cloneDeep(baseSymbol) || symbolTemplate(geomType)
@@ -15,10 +14,13 @@ function createSymbol (baseSymbol, color, geomType) {
 }
 
 function symbolTemplate (geomType) {
-  switch (geomType) {
-    case 'Point': return _.cloneDeep(renderers.point.symbol)
-    case 'Line': return _.cloneDeep(renderers.line.symbol)
-    case 'Polygon': return _.cloneDeep(renderers.polygon.symbol)
-    default: return _.cloneDeep(renderers.point.symbol)
+  let renderer = new PointRenderer()
+
+  if (geomType === 'Line') {
+    renderer = new LineRenderer()
+  } else if (geomType === 'Polygon') {
+    renderer = new PolygonRenderer()
   }
+
+  return renderer.symbol
 }

@@ -348,7 +348,7 @@ describe('Route module unit tests', () => {
     const responseHandlerSpy = sinon.spy()
 
     const route = proxyquire('../../lib/route', {
-      './layers-info-route-handler': layersInfoSpy,
+      './layers-metadata': layersInfoSpy,
       './response-handler': responseHandlerSpy
     })
 
@@ -382,7 +382,7 @@ describe('Route module unit tests', () => {
         throw new Error('Fool bar')
       })
       const route = proxyquire('../../lib/route', {
-        './layers-info-route-handler': layersInfoSpy,
+        './layers-metadata': layersInfoSpy,
         './response-handler': responseHandlerSpy
       })
 
@@ -417,16 +417,14 @@ describe('Route module unit tests', () => {
   })
 
   describe('/FeatureServer/0 route', () => {
-    const layerInfoSpy = sinon.spy(() => {
-      return { layerInfo: true }
+    const layerInfoSpy = sinon.spy(function () {
+      return 'layer-metadata'
     })
 
     const responseHandlerSpy = sinon.spy()
 
     const route = proxyquire('../../lib/route', {
-      './info': {
-        layerInfo: layerInfoSpy
-      },
+      './layer-metadata': layerInfoSpy,
       './response-handler': responseHandlerSpy
     })
 
@@ -453,18 +451,16 @@ describe('Route module unit tests', () => {
       },
       {},
       200,
-      { layerInfo: true }
+      'layer-metadata'
       ])
     })
 
     it('should use layerInfo handler and return 500', () => {
-      const layerInfoSpy = sinon.spy(() => {
+      const layerInfoSpy = sinon.spy(function () {
         throw new Error('Fool bar')
       })
       const route = proxyquire('../../lib/route', {
-        './info': {
-          layerInfo: layerInfoSpy
-        },
+        './layer-metadata': layerInfoSpy,
         './response-handler': responseHandlerSpy
       })
 

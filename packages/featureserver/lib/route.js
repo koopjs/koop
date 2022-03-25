@@ -1,15 +1,13 @@
 const joi = require('joi')
 const geojsonhint = require('@mapbox/geojsonhint')
 const chalk = require('chalk')
-const {
-  layerInfo
-} = require('./info.js')
+const layerInfo = require('./layer-metadata')
 const query = require('./query')
 const queryRelatedRecords = require('./queryRelatedRecords.js')
 const generateRenderer = require('./generateRenderer')
 const restInfo = require('./rest-info-route-handler')
 const serverInfo = require('./server-info-route-handler')
-const layersInfo = require('./layers-info-route-handler')
+const layersInfo = require('./layers-metadata')
 const relationshipsInfo = require('./relationships-info-route-handler')
 const responseHandler = require('./response-handler')
 

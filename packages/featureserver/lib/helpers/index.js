@@ -6,5 +6,8 @@ module.exports = {
   getGeometryTypeFromGeojson: require('./get-geometry-type-from-geojson'),
   isTable: require('./is-geojson-table'),
   calculateExtent: require('./calculate-extent'),
-  getSpatialReference: require('./get-spatial-reference')
+  getSpatialReference: require('./get-spatial-reference'),
+  TableLayerMetadata: require('./table-layer-metadata'),
+  FeatureLayerMetadata: require('./feature-layer-metadata'),
+  ...(require('./renderers'))
 }

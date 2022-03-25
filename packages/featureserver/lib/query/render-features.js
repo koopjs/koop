@@ -1,7 +1,9 @@
 const _ = require('lodash')
 const { computeFieldObject } = require('../field')
-const { normalizeSpatialReference } = require('../geometry')
-const { getCollectionCrs } = require('../helpers')
+const {
+  getCollectionCrs,
+  normalizeSpatialReference
+} = require('../helpers')
 const featureResponseTemplate = require('../../templates/features.json')
 
 /**

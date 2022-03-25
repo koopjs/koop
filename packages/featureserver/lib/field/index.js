@@ -21,7 +21,7 @@ const templates = {
  * @return {[object]}
  */
 function computeFieldsCollection (data, requestContext, options = {}) {
-  const metadata = data.metadata || {}
+  const metadata = data.metadata || options
   const feature = data.features && data.features[0]
   // Fields are being calculated from a single feature; TODO: should these be calculated using the whole dataset?
   const properties = feature ? feature.properties || feature.attributes : options.attributeSample

@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const esriExtent = require('esri-extent')
 const moment = require('moment')
 const DATE_FORMATS = [moment.ISO_8601]
@@ -5,8 +6,10 @@ const DATE_FORMATS = [moment.ISO_8601]
 module.exports = { getExtent, detectType, esriTypeMap }
 
 function getExtent (geojson) {
-  if (geojson.metadata && geojson.metadata.extent) return geojson.metadata.extent
-  else return esriExtent(geojson)
+  if (_.has(geojson, 'metadata.extent')) {
+    return geojson.metadata.extent
+  }
+  return esriExtent(geojson)
 }
 
 /**

@@ -154,7 +154,6 @@ describe('Routing feature server requests', () => {
                 return f.name === 'OBJECTID'
               })
               .length.should.equal(1)
-            should.exist(res.body.extent)
           })
           .expect('Content-Type', /json/)
           .expect(200, done)

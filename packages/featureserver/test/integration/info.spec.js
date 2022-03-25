@@ -1,12 +1,11 @@
 /* global describe, it */
 const FeatureServer = require('../..')
-const polyData = require('./fixtures/polygon.json')
 const data = require('./fixtures/snow.json')
-const dataWithComplexMetadata = require('./fixtures/data-with-complex-metadata.json')
 const should = require('should')
+should.config.checkProtoEql = false
 const _ = require('lodash')
 const Joi = require('joi')
-const { layersTemplateSchema, serverTemplateSchema } = require('./schemas')
+const { serverTemplateSchema } = require('./schemas')
 
 describe('Info operations', () => {
   describe('rest info', () => {
@@ -182,129 +181,7 @@ describe('Info operations', () => {
     })
   })
 
-  describe('layers info', () => {
-    it('should work with simple geojson passed in (only name and description metadata)', () => {
-      const layers = FeatureServer.layersInfo(data)
-
-      const layersSchemaOverride = layersTemplateSchema.append({
-        extent: Joi.object().keys({
-          xmin: Joi.number().valid(-108.9395),
-          ymin: Joi.number().valid(37.084968),
-          xmax: Joi.number().valid(-102),
-          ymax: Joi.number().valid(40.8877),
-          spatialReference: Joi.object().keys({
-            wkid: Joi.number().valid(4326),
-            latestWkid: Joi.number().valid(4326)
-          })
-        }),
-        geometryType: 'esriGeometryPoint',
-        drawingInfo: Joi.object().keys({
-          renderer: Joi.object().keys({
-            type: 'simple',
-            symbol: Joi.object().keys({
-              color: Joi.array().items(Joi.number().integer()).length(4),
-              outline: Joi.object().keys({
-                color: Joi.array().items(Joi.number().integer()).length(4),
-                width: Joi.number().min(0),
-                type: Joi.string().valid('esriSLS'),
-                style: Joi.string().valid('esriSLSSolid')
-              }),
-              size: Joi.number().min(0),
-              type: Joi.string().valid('esriSMS'),
-              style: Joi.string().valid('esriSMSCircle')
-            })
-          }),
-          labelingInfo: Joi.valid(null)
-        })
-      })
-      layersSchemaOverride.validate(layers.layers[0], { presence: 'required' }).should.not.have.property('error')
-      layers.layers.length.should.equal(1)
-    })
-
-    it('should work with geojson with complex metadata', () => {
-      const layers = FeatureServer.layersInfo(dataWithComplexMetadata)
-      const layersSchemaOverride = layersTemplateSchema.append({
-        extent: Joi.object().keys({
-          xmin: -125,
-          ymin: 20,
-          xmax: -70,
-          ymax: 49,
-          spatialReference: Joi.object().keys({
-            wkid: 4326,
-            latestWkid: 4326
-          })
-        }),
-        maxRecordCount: 1,
-        capabilities: 'Query,Delete,Extract',
-        supportsCoordinatesQuantization: true,
-        objectIdField: 'interval',
-        displayField: 'label',
-        geometryType: 'esriGeometryPolygon',
-        uniqueIdField: Joi.object().keys({
-          name: 'interval',
-          isSystemMaintained: true
-        }),
-        drawingInfo: Joi.object().keys({
-          renderer: Joi.object().keys({
-            type: 'simple',
-            symbol: Joi.object().keys({
-              color: Joi.array().items(Joi.number().integer()).length(4),
-              outline: Joi.object().keys({
-                color: Joi.array().items(Joi.number().integer()).length(4),
-                width: Joi.number().min(0),
-                type: 'esriSLS',
-                style: 'esriSLSSolid'
-              }),
-              type: 'esriSFS',
-              style: 'esriSFSSolid'
-            })
-          }),
-          labelingInfo: Joi.valid(null)
-        })
-      })
-
-      layersSchemaOverride.validate(layers.layers[0], { presence: 'required' }).should.not.have.property('error')
-      layers.layers.length.should.equal(1)
-      layers.layers[0].drawingInfo.renderer.symbol.color[0].should.equal(115)
-      layers.layers[0].drawingInfo.renderer.symbol.color[1].should.equal(76)
-      layers.layers[0].drawingInfo.renderer.symbol.color[2].should.equal(0)
-      layers.layers[0].drawingInfo.renderer.symbol.color[3].should.equal(255)
-      layers.layers[0].drawingInfo.renderer.symbol.outline.color[0].should.equal(110)
-      layers.layers[0].drawingInfo.renderer.symbol.outline.color[1].should.equal(110)
-      layers.layers[0].drawingInfo.renderer.symbol.outline.color[2].should.equal(110)
-      layers.layers[0].drawingInfo.renderer.symbol.outline.color[3].should.equal(255)
-      layers.layers[0].drawingInfo.renderer.symbol.outline.width.should.equal(1)
-    })
-  })
-
-  describe('getting layer info without features', () => {
-    it('should work with only metadata', () => {
-      const input = {
-        metadata: {
-          name: 'test',
-          description: 'test',
-          extent: [[11, 12], [13, 14]],
-          geometryType: 'Polygon',
-          maxRecordCount: 100,
-          displayField: 'test',
-          idField: 'test',
-          timeInfo: {
-            test: 'test'
-          }
-        }
-      }
-      const layer = FeatureServer.layerInfo(input, {})
-      layer.name.should.equal('test')
-      layer.description.should.equal('test')
-      layer.extent.xmin.should.equal(11)
-      layer.extent.ymax.should.equal(14)
-      layer.geometryType.should.equal('esriGeometryPolygon')
-      layer.maxRecordCount.should.equal(100)
-      layer.objectIdField.should.equal('test')
-      layer.displayField.should.equal('test')
-      layer.timeInfo.test.should.equal('test')
-    })
-
+  describe('field computation', () => {
     it('should assign esriFieldTypeOID to the idField', () => {
       const input = {
         metadata: {
@@ -321,43 +198,6 @@ describe('Info operations', () => {
       }
       const layer = FeatureServer.layerInfo(input, {})
       layer.fields[0].type.should.equal('esriFieldTypeOID')
-    })
-
-    it('should override the default true value of "hasStaticData" when set in metadata', () => {
-      const input = {
-        metadata: {
-          hasStaticData: true,
-          geometryType: 'Polygon',
-          extent: [[11, 12], [13, 14]],
-          fields: [{ name: 'test', type: 'integer' }]
-        }
-      }
-      const layer = FeatureServer.layerInfo(input, {})
-      layer.hasStaticData.should.equal(true)
-    })
-
-    it('should default to templated value of "displayField" when not set in metadata or "fields" is null', () => {
-      const input = {
-        metadata: {
-          geometryType: 'Polygon',
-          extent: [[11, 12], [13, 14]],
-          fields: null
-        }
-      }
-      const layer = FeatureServer.layerInfo(input, {})
-      layer.displayField.should.equal('OBJECTID')
-    })
-
-    it('should default to templated value of "displayField" when not set in metadata or "fields" is empty array', () => {
-      const input = {
-        metadata: {
-          geometryType: 'Polygon',
-          extent: [[11, 12], [13, 14]],
-          fields: []
-        }
-      }
-      const layer = FeatureServer.layerInfo(input, {})
-      layer.displayField.should.equal('OBJECTID')
     })
 
     it('should assign field length from metadata', () => {
@@ -394,47 +234,6 @@ describe('Info operations', () => {
       }
       const layer = FeatureServer.layerInfo(input, {})
       layer.fields.find(f => { return f.name === 'test' }).editable.should.equal(true)
-    })
-
-    it('should support a metadata with layer id, defaultVisibility, minScale, and maxScale values', () => {
-      const input = _.cloneDeep(data)
-      input.metadata = {
-        ...input.metadata,
-        id: 3,
-        defaultVisibility: true,
-        minScale: 100,
-        maxScale: 30000
-      }
-      const layer = FeatureServer.layerInfo(input, {})
-      layer.id.should.equal(3)
-      layer.defaultVisibility.should.equal(true)
-      layer.minScale.should.equal(100)
-      layer.maxScale.should.equal(30000)
-    })
-  })
-
-  describe('when getting featureserver info from geojson', () => {
-    const data = _.cloneDeep(polyData)
-    it('should return a feature service with the proper geom type', () => {
-      const service = FeatureServer.layerInfo(data, {})
-      service.name.should.equal('map')
-      service.displayField.should.equal('OBJECTID')
-      service.drawingInfo.renderer.should.equal(require('../../templates/renderers/symbology/polygon.json'))
-      service.geometryType.should.equal('esriGeometryPolygon')
-      should.not.exist(service.features)
-    })
-
-    it('should use the passed in extent if present', () => {
-      data.metadata.extent = [1, 2, 3, 4]
-      const service = FeatureServer.layerInfo(data, {})
-      service.extent.xmin.should.equal(1)
-    })
-
-    it('should use capabilities found in GeoJSON', () => {
-      data.capabilities = { extract: true, quantization: true }
-      const service = FeatureServer.layerInfo(data, {})
-      service.supportsCoordinatesQuantization.should.equal(true)
-      service.capabilities.should.equal('Query,Extract')
     })
   })
 

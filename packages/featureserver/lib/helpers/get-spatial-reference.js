@@ -4,7 +4,7 @@ const normalizeSpatialReference = require('./normalize-spatial-reference')
 
 function getSpatialReference (geojson, { inputCrs, sourceSR } = {}) {
   if (!inputCrs && !sourceSR && _.isEmpty(geojson)) return
-  const spatialReference = inputCrs || sourceSR || getCollectionCrs(geojson)
+  const spatialReference = inputCrs || sourceSR || getCollectionCrs(geojson) || { wkid: 4326, latestWkid: 4326 }
 
   if (!spatialReference) return
 

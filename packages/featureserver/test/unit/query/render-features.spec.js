@@ -19,9 +19,7 @@ const stub = {
     computeFieldObject: computeFieldObjectSpy
   },
   '../helpers': {
-    getCollectionCrs: getCollectionCrsSpy
-  },
-  '../geometry': {
+    getCollectionCrs: getCollectionCrsSpy,
     normalizeSpatialReference: normalizeSpatialReferenceSpy
   }
 }
@@ -154,9 +152,7 @@ describe('renderFeaturesResponse', () => {
         computeFieldObject: computeFieldObjectSpy
       },
       '../helpers': {
-        getCollectionCrs: getCollectionCrsSpy
-      },
-      '../geometry': {
+        getCollectionCrs: getCollectionCrsSpy,
         normalizeSpatialReference: normalizeSpatialReferenceSpy
       }
     }
@@ -314,7 +310,7 @@ describe('renderFeaturesResponse', () => {
         sourceSR: 9999,
         inputCrs: 8888,
         outSR: 7777,
-        outputCrs: 6666
+        outputCrs: 3857
       })
       result.should.deepEqual({
         objectIdFieldName: 'OBJECTID',
@@ -326,14 +322,16 @@ describe('renderFeaturesResponse', () => {
         globalIdFieldName: '',
         hasZ: false,
         hasM: false,
-        spatialReference: { wkid: 6666 },
+        spatialReference: {
+          wkid: 3857
+        },
         fields: 'fields',
         features: json.features,
         exceededTransferLimit: false
       })
       getCollectionCrsSpy.callCount.should.equal(0)
       normalizeSpatialReferenceSpy.callCount.should.equal(1)
-      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual([6666])
+      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual([3857])
     })
   })
 })
