@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+- Add support for overriding default value for supportsPagination
+
 ## [3.3.4] - 03-25-2022
 ### Changed
 - Refactor design pattern for layer metadata

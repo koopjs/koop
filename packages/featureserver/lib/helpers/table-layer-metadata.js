@@ -106,7 +106,8 @@ class TableLayerMetadata {
       displayField,
       capabilities,
       layerId,
-      hasStaticData
+      hasStaticData,
+      supportsPagination
     } = options
 
     this._setFields(geojson, options)
@@ -120,6 +121,8 @@ class TableLayerMetadata {
     this._setCapabilities(capabilities)
 
     this._setUniqueIdField(idField)
+
+    this._setPagination(supportsPagination)
 
     this._setDirectOverrides(options)
 
@@ -142,8 +145,8 @@ class TableLayerMetadata {
     }
   }
 
-  _setDisplayField (metadataDisplayField, metadataIdField) {
-    const overrideDisplayField = metadataDisplayField || metadataIdField
+  _setDisplayField (displayField, idField) {
+    const overrideDisplayField = displayField || idField
 
     if (overrideDisplayField) {
       this.displayField = overrideDisplayField
@@ -171,9 +174,15 @@ class TableLayerMetadata {
     }
   }
 
-  _setUniqueIdField (metadataIdField) {
-    if (metadataIdField) {
-      this.uniqueIdField.name = metadataIdField
+  _setUniqueIdField (idField) {
+    if (idField) {
+      this.uniqueIdField.name = idField
+    }
+  }
+
+  _setPagination (supportsPagination) {
+    if (typeof supportsPagination === 'boolean') {
+      this.advancedQueryCapabilities.supportsPagination = supportsPagination
     }
   }
 

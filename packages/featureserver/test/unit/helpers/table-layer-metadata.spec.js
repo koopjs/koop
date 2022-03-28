@@ -199,6 +199,41 @@ describe('TableLayerMetadata', () => {
       })
     })
 
+    it('"hasStaticData" option used if a boolean value', () => {
+      const tableLayerMetadata = new TableLayerMetadata()
+      tableLayerMetadata.mixinOverrides({}, { hasStaticData: true })
+
+      tableLayerMetadata.should.deepEqual({
+        ...defaultFixture,
+        fields: ['fields'],
+        hasStaticData: true
+      })
+    })
+
+    it('"supportsPagination" option ignored if not a boolean value', () => {
+      const tableLayerMetadata = new TableLayerMetadata()
+      tableLayerMetadata.mixinOverrides({}, { supportsPagination: 'false' })
+
+      tableLayerMetadata.should.deepEqual({
+        ...defaultFixture,
+        fields: ['fields']
+      })
+    })
+
+    it('"supportsPagination" option used if a boolean value', () => {
+      const tableLayerMetadata = new TableLayerMetadata()
+      tableLayerMetadata.mixinOverrides({}, { supportsPagination: false })
+
+      tableLayerMetadata.should.deepEqual({
+        ...defaultFixture,
+        fields: ['fields'],
+        advancedQueryCapabilities: {
+          ...defaultFixture.advancedQueryCapabilities,
+          supportsPagination: false
+        }
+      })
+    })
+
     it('use supported options for direct overrides', () => {
       const tableLayerMetadata = new TableLayerMetadata()
       tableLayerMetadata.mixinOverrides({}, {
