@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [3.4.0] - 03-28-2022
 ### Added
 - Add support for overriding default value for supportsPagination
 
@@ -471,6 +471,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[3.4.0]: https://github.com/koopjs/featureserver/compare/v3.3.4...v3.4.0
 [3.3.4]: https://github.com/koopjs/featureserver/compare/v3.3.3...v3.3.4
 [3.3.3]: https://github.com/koopjs/featureserver/compare/v3.3.2...v3.3.3
 [3.3.2]: https://github.com/koopjs/featureserver/compare/v3.3.1...v3.3.2
