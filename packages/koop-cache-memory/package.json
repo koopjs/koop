@@ -30,7 +30,6 @@
     "tape": "^4.6.3"
   },
   "dependencies": {
-    "highland": "^3.0.0-beta.2",
     "lodash": "^4.17.4"
   }
 }

@@ -1,7 +1,7 @@
 const Util = require('util')
 const EventEmitter = require('events')
 const _ = require('lodash')
-const h = require('highland')
+const Readable = require('stream').Readable
 
 // Convenience to make callbacks optional in most functions
 function noop () {}
@@ -65,7 +65,8 @@ Cache.prototype.retrieve = function (key, options, callback = noop) {
 }
 
 Cache.prototype.createStream = function (key, options = {}) {
-  return h(this.store.get(key))
+  const features = this.store.get(key)
+  return Readable.from(features)
 }
 
 Cache.prototype.delete = function (key, callback = noop) {

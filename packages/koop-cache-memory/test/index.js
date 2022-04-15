@@ -31,6 +31,15 @@ test('Inserting and retreiving from the cache', t => {
   t.end()
 })
 
+test('Upserting and streaming from the cache', t => {
+  cache.upsert('key', geojson, {ttl: 600})
+  const readstream = cache.createStream('key')
+  readstream.on("data", (chunk) => {
+    t.deepEquals(chunk, geojson.features[0])
+    t.end()
+  })
+})
+
 test('Inserting and retreiving from the cache using upsert when the cache is empty', t => {
   cache.upsert('keyupsert', geojson, {ttl: 600})
   const cached = cache.retrieve('keyupsert')
