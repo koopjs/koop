@@ -2,11 +2,9 @@
   "name": "@koopjs/cache-memory",
   "version": "1.1.1",
   "description": "An in-memory cache for KOop",
-  "main": "dist/index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "standard src && tape test/*.js | tap-spec",
-    "clean": "rm -rf dist",
-    "compile": "buble -i src -o dist"
   },
   "repository": {
     "type": "git",
@@ -24,7 +22,6 @@
   },
   "homepage": "https://github.com/koopjs/koop-cache-memory#readme",
   "devDependencies": {
-    "buble": "^0.19.4",
     "standard": "^14.0.0",
     "tap-spec": "^5.0.0",
     "tape": "^4.6.3"

@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Remove buble build
+
 ## [1.1.1] - 2022-04-15
 ### Changed
 * Replace highland with node stream Readable
