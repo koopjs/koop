@@ -1,6 +1,6 @@
 {
-  "name": "koop-cache-memory",
-  "version": "1.1.0",
+  "name": "@koopjs/cache-memory",
+  "version": "1.1.1",
   "description": "An in-memory cache for KOop",
   "main": "dist/index.js",
   "scripts": {
