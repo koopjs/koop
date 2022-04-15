@@ -11,7 +11,7 @@ This is the default cache for [Koop](https://github.com/koopjs/koop) so you won'
 ```js
 const Koop = require('koop')
 const koop = new Koop()
-const cache = require('koop-cache-memory')
+const cache = require('@koopjs/cache-memory')
 koop.register(cache)
 ```
 
