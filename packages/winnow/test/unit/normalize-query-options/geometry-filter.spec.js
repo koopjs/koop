@@ -141,7 +141,7 @@ test('normalize-query-options, geometry-filter: same data/filter spatial referen
   })
 })
 
-test('normalize-query-options, geometry-filter: geometry as coordinate string', t => {
+test('normalize-query-options, geometry-filter: geometry as coordinate string polygon', t => {
   t.plan(1)
   const geometryFilter = normalizeGeometryFilter({ geometry: '10,15,20,25' })
   t.deepEquals(geometryFilter, {
@@ -158,7 +158,16 @@ test('normalize-query-options, geometry-filter: geometry as coordinate string', 
   })
 })
 
-test('normalize-query-options, geometry-filter: geometry as coordinate array', t => {
+test('normalize-query-options, geometry-filter: geometry as coordinate string point', t => {
+  t.plan(1)
+  const geometryFilter = normalizeGeometryFilter({ geometry: '-10,10' })
+  t.deepEquals(geometryFilter, {
+    type: 'Point',
+    coordinates: [-10, 10]
+  })
+})
+
+test('normalize-query-options, geometry-filter: geometry as coordinate array polygon', t => {
   t.plan(1)
   const geometryFilter = normalizeGeometryFilter({ geometry: [10, 15, 20, 25] })
   t.deepEquals(geometryFilter, {
@@ -172,6 +181,15 @@ test('normalize-query-options, geometry-filter: geometry as coordinate array', t
         [10, 15]
       ]
     ]
+  })
+})
+
+test('normalize-query-options, geometry-filter: geometry as coordinate array point', t => {
+  t.plan(1)
+  const geometryFilter = normalizeGeometryFilter({ geometry: [-10, 10] })
+  t.deepEquals(geometryFilter, {
+    type: 'Point',
+    coordinates: [-10, 10]
   })
 })
 

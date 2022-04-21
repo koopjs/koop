@@ -14,7 +14,7 @@ function normalizeGeometryFilter (options = {}) {
   const geometryFilterSpatialReference = normalizeGeometryFilterSpatialReference(options)
   const fromSR = getCrsString(geometryFilterSpatialReference)
 
-  const geometryFilter = transformGeometryToPolygon(geometry)
+  const geometryFilter = transformGeometryToGeojson(geometry)
 
   const dataCrs = normalizeSourceSR(options)
 
@@ -33,9 +33,17 @@ function normalizeGeometryFilter (options = {}) {
   return geometryFilter
 }
 
-function transformGeometryToPolygon (geometry) {
+function transformGeometryToGeojson (geometry) {
   if (_.isString(geometry) || Array.isArray(geometry)) {
     const coordinates = normalizeArray(geometry)
+
+    if (coordinates.length === 2) {
+      return {
+        type: 'Point',
+        coordinates: coordinates.map(Number)
+      }
+    }
+
     const { geometry: polygon } = bboxPolygon(coordinates)
     return polygon
   }

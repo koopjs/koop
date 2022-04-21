@@ -291,6 +291,13 @@ test('With a string-style geometry', t => {
   run('trees', options, 6, t)
 })
 
+test('With a point geometry filter', t => {
+  const options = {
+    geometry: '-118.16230746759626,34.137113646321595'
+  }
+  run('trees', options, 1, t)
+})
+
 test('With a ST_Contains geometry predicate', t => {
   const options = {
     geometry: {
