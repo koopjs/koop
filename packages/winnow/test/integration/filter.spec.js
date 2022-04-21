@@ -551,7 +551,7 @@ test('with null dates in data source', t => {
   // * 'toEsri' option enabled
   // * the geojson is passed to winnow.query with the metadata.fields populated
   const options = {
-    where: "Date1 >= '2020-01-05 00:00:00' AND Date1 <= '2020-02-08 23:59:59'",
+    where: "Date1 >= timestamp '2020-01-05 00:00:00' AND Date1 <= timestamp '2020-02-08 23:59:59'",
     toEsri: true
   }
   t.plan(4)

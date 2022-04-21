@@ -1,6 +1,13 @@
+/**
+ * This file exposes a function to:
+ * 1. parse the input where clause into an AST
+ * 2. traverse the AST to reconstruct a SQL suitable for winnow's custom alasql
+ * 3. run all post-processing steps
+ * 4. return the new where clause
+ */
+
 const _ = require('lodash')
-const Parser = require('flora-sql-parser').Parser
-const parser = new Parser()
+const { parseFirst, toSql } = require('pgsql-ast-parser')
 const operatorInversions = {
   '=': '=',
   '>=': '<',
@@ -20,28 +27,30 @@ const valueFirstObjectIdPredicateRegex = /([0-9]+) (=|<|>|<=|>=) (properties|att
  * @param  {object} options winnow options
  * @return {string}         expression string
  */
-function handleExpr (node, options) {
+function handleExpression (node, options) {
   let expr
 
-  if (node.type === 'unary_expr') {
-    expr = `${node.operator} ${traverse(node.expr, options)}`
-  } else if (node.operator === '=' && node.left.value === 1 && node.right.value === 1) {
-    // a special case related to arcgis server
+  if (node.op === '=' && node.left.value === 1 && node.right.value === 1) {
+    // a special condition for feature server to return everything
     return '1=1'
-  } else if (node.operator === 'BETWEEN') {
-    expr = traverse(node.left, options) + ' ' + (node.operator) + ' ' + (traverse(node.right.value[0], options)) + 'AND' + (traverse(node.right.value[1], options))
+  } else if (node.op === 'BETWEEN') {
+    expr = traverse(node.value, options) + ' ' + (node.op) + ' ' + (traverse(node.lo, options)) + 'AND' + (traverse(node.hi, options))
+  } else if (node.op === 'IS NULL' || node.op === 'IS NOT NULL') {
+    // a special case of unary expressions that the operator needs to be the right side
+    expr = `${traverse(node.operand, options)} ${node.op}`
+  } else if (node.type === 'unary') {
+    expr = `${node.op} ${traverse(node.operand, options)}`
   } else {
-    // store the column node for value decoding
-
-    if (node.left.type === 'column_ref') {
-      node.right.columnNode = node.left
+    // store the column name for value decoding
+    if (node.left.type === 'ref') {
+      node.right.columnName = node.left.name
     }
 
-    if (node.right.type === 'column_ref') {
-      node.left.columnNode = node.right
+    if (node.right.type === 'ref') {
+      node.left.columnName = node.right.name
     }
 
-    expr = `${traverse(node.left, options)} ${node.operator} ${traverse(node.right, options)}`
+    expr = `${traverse(node.left, options)} ${node.op} ${traverse(node.right, options)}`
   }
 
   if (node.parentheses) {
@@ -57,8 +66,8 @@ function handleExpr (node, options) {
  * @param  {object} options winnow options
  * @return {string}         expression list string
  */
-function handleExprList (node, options) {
-  const values = node.value.map((valueNode) => traverse(valueNode, options)).join(',')
+function handleExpressionList (list, options) {
+  const values = list.map((valueNode) => traverse(valueNode, options)).join(',')
   return `(${values})`
 }
 
@@ -69,18 +78,19 @@ function handleExprList (node, options) {
  * @return {string}         function string
  */
 function handleFunction (node, options) {
-  const args = handleExprList(node.args, options)
-  return `${node.name}${args}`
+  const args = handleExpressionList(node.args, options)
+  return `${node.function.name}${args}`
 }
 
 /**
  * Convert a column node to its string representation.
  * @param  {object} node    AST column node
- * @param  {object} options winnow options
+ * @param  {object} config  traverse config
  * @return {string}         column string
  */
-function handleColumn (node, options) {
-  return options.esri ? `attributes->\`${node.column}\`` : `properties->\`${node.column}\``
+function handleColumn (node, config) {
+  config.updateColumnSet(node.name)
+  return config.esri ? `attributes->\`${node.name}\`` : `properties->\`${node.name}\``
 }
 
 /**
@@ -90,22 +100,14 @@ function handleColumn (node, options) {
  * field, this function will try to decode the value.
  *
  * @param  {object} node    AST value node
- * @param  {object} options winnow options
+ * @param  {object} config  traverse config
  * @return {string}         value string
  */
-function handleValue (node, options) {
+function handleValue (node, config) {
   let value = node.value
 
-  if (node.columnNode) {
-    const field = _.find(options.esriFields, { name: node.columnNode.column })
-
-    if (_.has(field, 'domain.codedValues')) {
-      const actual = _.find(field.domain.codedValues, { code: value })
-
-      if (actual) {
-        value = actual.name
-      }
-    }
+  if (node.columnName in config.codedValueMap) {
+    value = config.codedValueMap[node.columnName][value]
   }
 
   if (typeof value === 'string') {
@@ -116,15 +118,12 @@ function handleValue (node, options) {
   return value
 }
 
-/**
- * Convert a timestamp node to its iso8601 string representation.
- *
- * @param  {object} node    AST value node
- * @param  {object} options winnow options
- * @return {string}         value string
- */
-function handleTimestampValue (node, options) {
-  return `'${new Date(node.value).toISOString()}'`
+function handleCast (node, options) {
+  if (node.to.name === 'timestamp' && node.operand.type === 'string') {
+    return `'${new Date(node.operand.value).toISOString()}'`
+  }
+
+  throw new Error(`Unsupported casting operation: ${toSql.cast(node)}`)
 }
 
 /**
@@ -139,44 +138,66 @@ function traverse (node, options) {
   }
 
   switch (node.type) {
-    case 'unary_expr':
-    case 'binary_expr':
-      return handleExpr(node, options)
-    case 'function':
+    case 'unary':
+    case 'binary':
+    case 'ternary':
+      return handleExpression(node, options)
+    case 'call':
       return handleFunction(node, options)
-    case 'expr_list':
-      return handleExprList(node, options)
-    case 'column_ref':
+    case 'ref':
       return handleColumn(node, options)
+    case 'list':
+      return handleExpressionList(node.expressions, options)
     case 'string':
-    case 'number':
+    case 'integer':
+    case 'numeric':
     case 'null':
-    case 'bool':
+    case 'boolean':
       return handleValue(node, options)
-    case 'timestamp':
-      return handleTimestampValue(node, options)
+    case 'cast':
+      return handleCast(node, options)
     default:
       throw new Error('Unrecognized AST node: \n' + JSON.stringify(node, null, 2))
   }
 }
 
 function translateSqlWhere (options) {
-  const { where } = options
+  const {
+    where,
+    esriFields,
+    // NOTE: options.toEsri and options.esri are different. options.toEsri=true indicates the
+    // winnow output should be converted to esri JSON. options.esri=true indicates the winnow
+    // input is esri JSON (undocumented and needs verification).
+    esri
+  } = options
   const whereTree = parseWhereToTree(where)
-  const whereClause = traverse(whereTree, options)
+
+  // to collect a unique set of columns
+  const columnSet = new Set()
+
+  let whereClause = traverse(whereTree, {
+    esri,
+    esriFields,
+    updateColumnSet: (name) => columnSet.add(name),
+    // some fields may use a value code to replace the actual value in feature server but
+    // winnow processes the actual value, not the code. So coded values in the query need
+    // to be decoded.
+    codedValueMap: getCodedValueMap(options.esriFields)
+  })
+
+  // see the explaination comments for replaceColumnNames()
+  const columnMap = getColumnMap(columnSet, where)
+  whereClause = replaceColumnNames(whereClause, columnMap)
 
   if (shouldReplaceObjectIdPredicates(options)) {
-    return replaceObjectIdPredicates(whereClause)
+    whereClause = replaceObjectIdPredicates(whereClause)
   }
+
   return whereClause
 }
 
 function parseWhereToTree (where) {
-  // SQL uses '' for escaping a single quote, but the flora-sql-parser uses \\'.  Replace here.
-  const escapedWhere = where.replace(/''/g, '\\\'')
-
-  const { where: whereTree } = parser.parse(`SELECT * WHERE ${escapedWhere}`)
-
+  const { where: whereTree } = parseFirst(`SELECT * WHERE ${where}`)
   return whereTree
 }
 
@@ -195,6 +216,59 @@ function replaceObjectIdPredicates (where) {
     .replace(valueFirstObjectIdPredicateRegex, (match, value, operator, parentProperty, offset, string) => {
       return `hashedObjectIdComparator(${parentProperty}, geometry, ${value}, '${operatorInversions[operator]}')=true`
     })
+}
+
+/**
+ * Get a map of coded values for each esri field.
+ * @param {*} esriFields
+ * @returns map
+ */
+function getCodedValueMap (esriFields = []) {
+  const map = {}
+  const collectCodedValues = (map, value) => {
+    map[value.code] = value.name
+    return map
+  }
+
+  esriFields.forEach((field) => {
+    if (_.get(field, 'domain.type') === 'codedValue') {
+      map[field.name.toLowerCase()] = field.domain.codedValues.reduce(collectCodedValues, {})
+    }
+  })
+
+  return map
+}
+
+/**
+ * The following two functions are used because the SQL parser is based on PostgreSQL. By default
+ * column names in PostgreSQL query are case insensitive unless they are double quoted. pgsql-ast-parser
+ * actually automatically lowercase column names if not quoted. But in query for feature server,
+ * column names are case sensitive by default. Therefore, after the input where uery is parsed,
+ * (lowered) column names need to be collected and mapped to its original form (with proper cases).
+ */
+
+function getColumnMap (pgColumns, originalStatement) {
+  const lowered = originalStatement.toLowerCase()
+  const map = {}
+
+  pgColumns.forEach((column) => {
+    const index = lowered.indexOf(column)
+
+    if (index > -1) {
+      map[column] = originalStatement.slice(index, index + column.length)
+    }
+  })
+
+  return map
+}
+
+function replaceColumnNames (statement, columnMap) {
+  Object.entries(columnMap).forEach(([lowered, original]) => {
+    const regex = new RegExp(`\`${lowered}\``, 'g')
+    statement = statement.replace(regex, `\`${original}\``)
+  })
+
+  return statement
 }
 
 module.exports = translateSqlWhere
