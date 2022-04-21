@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 ### Fixed
+* validation for spatial references
 * Error in SQL param construction when returnGeometry=false but input and output CRS differ
 
 ### Added

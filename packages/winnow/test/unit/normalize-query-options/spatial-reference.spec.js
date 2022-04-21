@@ -126,3 +126,22 @@ test('normalize-query-options, spatial-reference: wkid not in Proj4 list', t => 
   t.equal(wkt, inputWkt)
   t.equal(wkid, 2855)
 })
+
+test('normalize-query-options, spatial-reference: object with wkid and other optional properties', t => {
+  t.plan(1)
+  const { wkid } = normalizeSpatialReference({
+    wkid: 102643,
+    latestWkid: 2227,
+    xyTolerance: 0.003280833333333333,
+    zTolerance: 0.001,
+    mTolerance: 0.001,
+    falseX: -115860600,
+    falseY: -93269500,
+    xyUnits: 3048.0060960121928,
+    falseZ: -100000,
+    zUnits: 10000,
+    falseM: -100000,
+    mUnits: 10000
+  })
+  t.equal(wkid, 2227)
+})

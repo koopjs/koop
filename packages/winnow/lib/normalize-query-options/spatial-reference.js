@@ -10,7 +10,8 @@ const schema = Joi.alternatives(
     wkid: Joi.number().integer().optional(),
     latestWkid: Joi.number().integer().optional(),
     wkt: Joi.string().optional()
-  }).or('wkid', 'latestWkid', 'wkt').required()
+  }).or('wkid', 'latestWkid', 'wkt')
+    .unknown()
 )
 
 function normalizeSpatialReference (input) {
@@ -54,7 +55,7 @@ function parseSpatialReferenceInput (spatialReference) {
   if (spatialReference.wkid || spatialReference.latestWkid) {
     return {
       type: 'wkid',
-      value: spatialReference.wkid || spatialReference.latestWkid
+      value: spatialReference.latestWkid || spatialReference.wkid
     }
   }
 
