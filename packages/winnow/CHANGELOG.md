@@ -2,7 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.4.0] - 04-21-2022
+### Changed
+* replace GPL-2.0 dependency flora-sql-parser with pgsql-ast-parser, which uses MIT
+
 ### Fixed
 * validation for spatial references
 * Error in SQL param construction when returnGeometry=false but input and output CRS differ
@@ -396,6 +399,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[2.4.0]: https://github.com/featureserver/winnow/compare/v2.3.0...v2.4.0
 [2.3.0]: https://github.com/featureserver/winnow/compare/v2.2.5...v2.3.0
 [2.2.5]: https://github.com/featureserver/winnow/compare/v2.2.4...v2.2.5
 [2.2.4]: https://github.com/featureserver/winnow/compare/v2.2.3...v2.2.4
