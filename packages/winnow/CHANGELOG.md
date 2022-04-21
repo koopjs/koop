@@ -3,8 +3,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Fixed
+* Error in SQL param construction when returnGeometry=false but input and output CRS differ
+
 ### Added
 * Add support for Point geometry filters
+
 
 ## [2.3.0] - 03-31-2021
 ### Added
