@@ -70,6 +70,7 @@ e.g.
     id: number, // The unique layer id.  If supplied for one layer, you should supply for all layers to avoid multiple layers having the same id.
     name: String, // The name of the layer
     description: String, // The description of the layer
+    copyrightText: String, // The copyright text (layer attribution text)
     extent: Array, // valid extent array e.g. [[180,90],[-180,-90]]
     displayField: String, // The display field to be used by a client
     geometryType: String // REQUIRED if no features are returned with this object Point || MultiPoint || LineString || MultiLineString || Polygon || MultiPolygon
@@ -164,6 +165,7 @@ Generate version `10.51` Geoservices server info
 ```js
 const server = {
   description: String // Describes the collection of layers below,
+  copyrightText: String // Optional copyright text
   maxRecordCount: Number // the maximum number of features a provider can return at once,
   hasStaticData: Boolean // whether or not the server contains any data that is not changing
   layers: [{ // A collection of all the layers managed by the server

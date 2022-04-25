@@ -27,7 +27,7 @@ const fieldsTemplateSchema = Joi.object().keys({
   defaultValue: Joi.valid(null)
 })
 
-const layersTemplateSchema = Joi.object().keys({
+const layerTemplateSchema = Joi.object().keys({
   currentVersion: Joi.number().valid(10.51),
   fullVersion: Joi.string().valid('10.5.1'),
   id: Joi.number().integer().valid(0),
@@ -168,4 +168,4 @@ const serverTemplateSchema = Joi.object().keys({
   supportsRelationshipsResource: Joi.boolean()
 })
 
-module.exports = { featuresTemplateSchema, fieldsTemplateSchema, layersTemplateSchema, oidTemplateSchema, serverTemplateSchema }
+module.exports = { featuresTemplateSchema, fieldsTemplateSchema, layerTemplateSchema, oidTemplateSchema, serverTemplateSchema }

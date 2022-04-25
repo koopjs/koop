@@ -360,6 +360,157 @@ describe('layers metadata', () => {
     })
   })
 
+  it('simple geojson with metadata overrides should generate layers, mixin overrides', () => {
+    const simpleCollectionFixture = { type: 'FeatureCollection', features: [{ type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-100, 40] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-101, 41] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-99, 39] } }] }
+    simpleCollectionFixture.metadata = {
+      foo: 'bar',
+      displayField: 'myField',
+      copyrightText: 'Custom copyright text',
+      capabilities: 'list,of,stuff'
+    }
+    const calculateExtent = sinon.spy()
+    const getGeometryTypeFromGeojson = sinon.spy(function () {
+      return 'Point'
+    })
+    const getSpatialReference = sinon.spy()
+    const normalizeExtent = sinon.spy()
+    const normalizeInputData = sinon.spy(function (input) {
+      return { tables: [], layers: [input] }
+    })
+
+    const layersInfoHandler = proxyquire('../../lib/layers-metadata', {
+      './helpers': {
+        calculateExtent,
+        getGeometryTypeFromGeojson,
+        getSpatialReference,
+        normalizeExtent,
+        normalizeInputData
+      },
+      './defaults': {
+        layerMetadata: {
+          foo: 'bar'
+        }
+      }
+    })
+    const layersInfo = layersInfoHandler(simpleCollectionFixture)
+    normalizeInputData.calledOnce.should.equal(true)
+
+    layersInfo.should.deepEqual({
+      layers: [
+        {
+          id: 0,
+          name: 'Not Set',
+          type: 'Feature Layer',
+          description: 'This is a feature service powered by https://github.com/featureserver/featureserver',
+          copyrightText: 'Custom copyright text',
+          parentLayer: null,
+          subLayers: null,
+          defaultVisibility: true,
+          hasAttachments: false,
+          htmlPopupType: 'esriServerHTMLPopupTypeNone',
+          displayField: 'myField',
+          typeIdField: null,
+          fields: [
+            {
+              name: 'OBJECTID',
+              type: 'esriFieldTypeOID',
+              alias: 'OBJECTID',
+              sqlType: 'sqlTypeInteger',
+              domain: null,
+              defaultValue: null,
+              editable: false,
+              nullable: false
+            }
+          ],
+          relationships: [],
+          capabilities: 'list,of,stuff',
+          maxRecordCount: 2000,
+          supportsStatistics: true,
+          supportsAdvancedQueries: true,
+          supportedQueryFormats: 'JSON',
+          ownershipBasedAccessControlForFeatures: {
+            allowOthersToQuery: true
+          },
+          useStandardizedQueries: true,
+          advancedQueryCapabilities: {
+            useStandardizedQueries: true,
+            supportsStatistics: true,
+            supportsOrderBy: true,
+            supportsDistinct: true,
+            supportsPagination: true,
+            supportsTrueCurve: false,
+            supportsReturningQueryExtent: true,
+            supportsQueryWithDistance: true
+          },
+          canModifyLayer: false,
+          dateFieldsTimeReference: null,
+          isDataVersioned: false,
+          supportsRollbackOnFailureParameter: true,
+          hasM: false,
+          hasZ: false,
+          allowGeometryUpdates: true,
+          objectIdField: 'OBJECTID',
+          globalIdField: '',
+          types: [],
+          templates: [],
+          hasStaticData: false,
+          timeInfo: {},
+          uniqueIdField: {
+            name: 'OBJECTID',
+            isSystemMaintained: true
+          },
+          currentVersion: 10.51,
+          fullVersion: '10.5.1',
+          minScale: 0,
+          maxScale: 0,
+          canScaleSymbols: false,
+          drawingInfo: {
+            renderer: {
+              type: 'simple',
+              symbol: {
+                color: [
+                  45,
+                  172,
+                  128,
+                  161
+                ],
+                outline: {
+                  color: [
+                    190,
+                    190,
+                    190,
+                    105
+                  ],
+                  width: 0.5,
+                  type: 'esriSLS',
+                  style: 'esriSLSSolid'
+                },
+                size: 7.5,
+                type: 'esriSMS',
+                style: 'esriSMSCircle'
+              }
+            },
+            labelingInfo: null
+          },
+          extent: {
+            xmin: -101,
+            xmax: -99,
+            ymin: 39,
+            ymax: 41,
+            spatialReference: {
+              wkid: 4326,
+              latestWkid: 4326
+            }
+          },
+          supportsCoordinatesQuantization: false,
+          hasLabels: false,
+          geometryType: 'esriGeometryPoint'
+        }
+      ],
+      tables: []
+    })
+  })
+
   it('metadata object input should generate layers, extent, spatialReference', () => {
     const layer1 = { type: 'FeatureCollection', crs: { type: 'name', properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' } }, features: [{ type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-100, 40] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-101, 41] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-99, 39] } }] }
     const layer2 = { type: 'FeatureCollection', crs: { type: 'name', properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' } }, features: [{ type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-122, 49] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-121, 20] } }, { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [-110, 43] } }] }

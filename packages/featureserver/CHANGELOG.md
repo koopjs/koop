@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+- Add support for overrided default value for copyrightText
+
 ## [3.4.0] - 03-28-2022
 ### Added
 - Add support for overriding default value for supportsPagination

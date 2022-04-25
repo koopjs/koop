@@ -12,7 +12,7 @@ const debug = process.env.KOOP_LOG_LEVEL === 'debug' || process.env.LOG_LEVEL ==
 
 function serverMetadata (json, { query = {} } = {}) {
   const { extent, metadata, ...rest } = json
-  const { maxRecordCount, hasStaticData, description } = { ...metadata, ...rest }
+  const { maxRecordCount, hasStaticData, description, copyrightText } = { ...metadata, ...rest }
   const spatialReference = getSpatialReference(json, query)
   const { layers, tables, relationships } = normalizeInputData(json)
   const fullExtent = getServiceExtent({ extent, metadata, layers, spatialReference })
@@ -30,6 +30,7 @@ function serverMetadata (json, { query = {} } = {}) {
     relationships: relationships.map(relationshipInfo),
     supportsRelationshipsResource: relationships && relationships.length > 0,
     serviceDescription: description,
+    copyrightText: copyrightText,
     maxRecordCount: maxRecordCount || _.get(layers, '[0].metadata.maxRecordCount'),
     hasStaticData: typeof hasStaticData === 'boolean' ? hasStaticData : false
   }, serverMetadataDefaults)
