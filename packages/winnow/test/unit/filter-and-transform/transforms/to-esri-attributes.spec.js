@@ -38,3 +38,19 @@ test('toEsriAttributes, does not require idField, has dateFields', t => {
   t.deepEquals(result, { hello: 'world', foo: date1.getTime(), bar: date2.getTime() })
   t.end()
 })
+
+test('toEsriAttributes, does not require idField, has nested properties', t => {
+  const result = toEsriAttributes({
+    hello: 'world',
+    nested: {
+      foo: 'bar'
+    }
+  }, {
+    coordinates: [-118, 34]
+  },
+  '',
+  'false',
+  '')
+  t.deepEquals(result, { hello: 'world', nested: '{"foo":"bar"}' })
+  t.end()
+})

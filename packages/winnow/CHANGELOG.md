@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Nested Esri JSON properties should be stringified
+
 ## [2.4.0] - 04-21-2022
 ### Changed
 * replace GPL-2.0 dependency flora-sql-parser with pgsql-ast-parser, which uses MIT
