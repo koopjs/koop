@@ -12,8 +12,10 @@ function getGeom (data, params) {
 
 function getDataGeom (data) {
   const type = data.features[0].geometry.type
-  data.features.map(feature => {
-    if (feature.geometry.type !== type) throw new Error('Geometry types are not consistent')
+  data.features.forEach(feature => {
+    if (feature.geometry.type !== type) {
+      throw new Error('Geometry types are not consistent')
+    }
   })
   if (type !== 'Point' && type !== 'Line' && type !== 'Polygon') {
     throw new Error('Unrecognized geometry type: ' + type)

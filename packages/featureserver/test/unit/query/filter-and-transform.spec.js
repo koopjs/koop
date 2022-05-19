@@ -13,7 +13,7 @@ describe('filterAndTransform', () => {
     const getCollectionCrsSpy = sinon.spy(function () {})
 
     const filterAndTransformSpy = sinon.spy(function () {
-      return 'expected-result'
+      return { features: 'expected-result' }
     })
 
     const stub = {
@@ -33,7 +33,9 @@ describe('filterAndTransform', () => {
     describe('should set toEsri:false and pass to filter/transform', () => {
       it('should set toEsri:false when requested format is geojson', () => {
         const result = filterAndTransform({ features: [{}] }, { f: 'geojson' })
-        result.should.deepEqual('expected-result')
+        result.should.deepEqual({
+          features: 'expected-result'
+        })
         filterAndTransformSpy.callCount.should.equal(1)
         filterAndTransformSpy.firstCall.args.should.deepEqual([
           { features: [{}] },
@@ -46,7 +48,9 @@ describe('filterAndTransform', () => {
           { features: [{}] },
           { returnExtentOnly: true }
         )
-        result.should.deepEqual('expected-result')
+        result.should.deepEqual({
+          features: 'expected-result'
+        })
         filterAndTransformSpy.callCount.should.equal(1)
         filterAndTransformSpy.firstCall.args.should.deepEqual([
           { features: [{}] },
@@ -58,7 +62,9 @@ describe('filterAndTransform', () => {
     describe('should properly set inputCrs and pass to filter/transform', () => {
       it('should get value from default', () => {
         const result = filterAndTransform({ features: [{}] }, {})
-        result.should.deepEqual('expected-result')
+        result.should.deepEqual({
+          features: 'expected-result'
+        })
         filterAndTransformSpy.callCount.should.equal(1)
         filterAndTransformSpy.firstCall.args.should.deepEqual([
           { features: [{}] },
@@ -84,7 +90,9 @@ describe('filterAndTransform', () => {
           stub
         )
         const result = filterAndTransform({ features: [{}] }, {})
-        result.should.deepEqual('expected-result')
+        result.should.deepEqual({
+          features: 'expected-result'
+        })
         filterAndTransformSpy.callCount.should.equal(1)
         filterAndTransformSpy.firstCall.args.should.deepEqual([
           { features: [{}] },
@@ -97,7 +105,9 @@ describe('filterAndTransform', () => {
           { metadata: { crs: 1234 }, features: [{}] },
           {}
         )
-        result.should.deepEqual('expected-result')
+        result.should.deepEqual({
+          features: 'expected-result'
+        })
         filterAndTransformSpy.callCount.should.equal(1)
         filterAndTransformSpy.firstCall.args.should.deepEqual([
           { metadata: { crs: 1234 }, features: [{}] },
@@ -110,7 +120,9 @@ describe('filterAndTransform', () => {
           { metadata: { crs: 1234 }, features: [{}] },
           { sourceSR: 4229 }
         )
-        result.should.deepEqual('expected-result')
+        result.should.deepEqual({
+          features: 'expected-result'
+        })
         filterAndTransformSpy.callCount.should.equal(1)
         filterAndTransformSpy.firstCall.args.should.deepEqual([
           { metadata: { crs: 1234 }, features: [{}] },
@@ -123,7 +135,9 @@ describe('filterAndTransform', () => {
           { metadata: { crs: 1234 }, features: [{}] },
           { sourceSR: 4229, inputCrs: 4673 }
         )
-        result.should.deepEqual('expected-result')
+        result.should.deepEqual({
+          features: 'expected-result'
+        })
         filterAndTransformSpy.callCount.should.equal(1)
         filterAndTransformSpy.firstCall.args.should.deepEqual([
           { metadata: { crs: 1234 }, features: [{}] },
@@ -152,7 +166,9 @@ describe('filterAndTransform', () => {
         limit: 10,
         resultRecordOffset: 20
       })
-      result.should.deepEqual('expected-result')
+      result.should.deepEqual({
+        features: 'expected-result'
+      })
       filterAndTransformSpy.callCount.should.equal(1)
       filterAndTransformSpy.firstCall.args.should.deepEqual([
         json,
@@ -377,6 +393,70 @@ describe('filterAndTransform', () => {
           ]
         },
         { inputCrs: 4326, toEsri: true, objectIds: ['a'] }
+      ])
+    })
+  })
+
+  describe('should filter by objectIds', () => {
+    afterEach(function () {
+      filterAndTransformSpy.resetHistory()
+      getCollectionCrsSpy.resetHistory()
+    })
+    const getCollectionCrsSpy = sinon.spy(function () {})
+
+    const filterAndTransformSpy = sinon.spy(function () {
+      return {
+        min_precip: 10
+      }
+    })
+
+    const stub = {
+      '../helpers': {
+        getCollectionCrs: getCollectionCrsSpy
+      },
+      winnow: {
+        query: filterAndTransformSpy
+      }
+    }
+
+    const { filterAndTransform } = proxyquire(
+      '../../../lib/query/filter-and-transform',
+      stub
+    )
+
+    it('should wrap statistics results and add in metadata', () => {
+      const result = filterAndTransform(
+        {
+          features: [
+            { properties: { precip: 10 } },
+            { properties: { precip: 20 } },
+            { properties: { precip: 30 } }
+          ],
+          metadata: {
+            foo: 'bar'
+          }
+        },
+        { outStatistics: [] }
+      )
+      result.should.deepEqual({
+        statistics: { min_precip: 10 },
+        metadata: {
+          foo: 'bar'
+        }
+      })
+      filterAndTransformSpy.callCount.should.equal(1)
+      filterAndTransformSpy.firstCall.args.should.deepEqual([
+        {
+          features: [
+            { properties: { precip: 10 } },
+            { properties: { precip: 20 } },
+            { properties: { precip: 30 } }
+          ],
+          metadata: {
+            foo: 'bar'
+          }
+        },
+        { inputCrs: 4326, toEsri: true, outStatistics: [] }
       ])
     })
   })

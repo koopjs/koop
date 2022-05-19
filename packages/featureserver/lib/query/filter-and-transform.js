@@ -3,6 +3,7 @@ const { query } = require('winnow')
 const helpers = require('../helpers')
 
 function filterAndTransform (json, requestParams) {
+  const { features, type, ...restJson } = json
   const params = FilterAndTransformParams.create(requestParams)
     .removeParamsAlreadyApplied(json.filtersApplied)
     .addToEsri()
@@ -11,10 +12,16 @@ function filterAndTransform (json, requestParams) {
 
   const result = query(json, params)
 
-  const { objectIds } = params
-  const { outStatistics } = result
+  const { objectIds, outStatistics } = params
 
-  if (!shouldFilterByObjectIds(objectIds, outStatistics)) {
+  if (outStatistics) {
+    return {
+      statistics: result,
+      ...restJson
+    }
+  }
+
+  if (!objectIds) {
     return result
   }
 
@@ -93,11 +100,6 @@ class FilterAndTransformParams {
 
     return this
   }
-}
-
-function shouldFilterByObjectIds (objectIds, outStatistics) {
-  // request for objectIds ignored if out-statistics option is also requested
-  return objectIds && !outStatistics
 }
 
 function filterByObjectIds (data, objectIds) {

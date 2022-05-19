@@ -22,7 +22,7 @@ describe('renderStatisticsResponse', () => {
   })
 
   it('should convert statistics array to Geoservices JSON', () => {
-    const result = renderStatisticsResponse([{ min_precip: 0 }], {
+    const result = renderStatisticsResponse({ statistics: [{ min_precip: 0 }] }, {
       outStatistics: [{
         statisticType: 'MIN',
         onStatisticField: 'total precip',
@@ -57,7 +57,7 @@ describe('renderStatisticsResponse', () => {
   })
 
   it('should convert statistics object to Geoservices JSON', () => {
-    const result = renderStatisticsResponse({ min_precip: 0 }, {
+    const result = renderStatisticsResponse({ statistics: { min_precip: 0 } }, {
       outStatistics: [{
         statisticType: 'MIN',
         onStatisticField: 'total precip',

@@ -1,8 +1,9 @@
 const { computeFieldObject } = require('../field')
 
 function renderStatisticsResponse (input = {}, options = {}) {
-  const statistics = Array.isArray(input) ? input : [input]
-  const features = statistics.map(attributes => {
+  const { statistics } = input
+  const normalizedStatistics = Array.isArray(statistics) ? statistics : [statistics]
+  const features = normalizedStatistics.map(attributes => {
     return { attributes }
   })
 

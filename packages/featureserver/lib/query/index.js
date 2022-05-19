@@ -61,11 +61,16 @@ function shouldRenderPrecalculatedData ({ statistics, count, extent }, { returnC
   return false
 }
 
-function renderPrecalculatedData (data, { returnCountOnly, returnExtentOnly }) {
+function renderPrecalculatedData (data, {
+  returnCountOnly,
+  returnExtentOnly,
+  outStatistics,
+  groupByFieldsForStatistics
+}) {
   const { statistics, count, extent } = data
 
   if (statistics) {
-    return renderPrecalculatedStatisticsResponse(data)
+    return renderPrecalculatedStatisticsResponse(data, { outStatistics, groupByFieldsForStatistics })
   }
 
   const retVal = {}
@@ -87,7 +92,6 @@ function shouldLogWarnings () {
 
 function renderGeoservicesResponse (data, params = {}) {
   const {
-    outStatistics,
     returnCountOnly,
     returnExtentOnly,
     returnIdsOnly,
@@ -106,7 +110,7 @@ function renderGeoservicesResponse (data, params = {}) {
     return renderIdsOnlyResponse(data)
   }
 
-  if (outStatistics) {
+  if (data.statistics) {
     return renderStatisticsResponse(data, params)
   }
 

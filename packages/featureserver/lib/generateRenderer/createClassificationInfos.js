@@ -27,8 +27,8 @@ function createUniqueValueInfos (breaks, classification, geomType) {
   const { colorRamp, baseSymbol } = setSymbology(breaks, classification)
 
   // check that unique value fields are congruous
-  if (!classification.uniqueValueFields.map(field => {
-    Object.keys(breaks[0]).includes(field)
+  if (classification.uniqueValueFields.some(field => {
+    return !Object.keys(breaks[0]).includes(field)
   })) {
     throw new Error(
       'Unique value fields are incongruous: ' +

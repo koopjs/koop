@@ -2,7 +2,12 @@ const should = require('should') // eslint-disable-line
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
 
-const filterAndTransformSpy = sinon.spy(function () {
+const filterAndTransformSpy = sinon.spy(function (data, params) {
+  const { outStatistics } = params
+
+  if (outStatistics) {
+    return { statistics: [{ fooStatistic: 1.234 }] }
+  }
   return { features: ['filtered-feature'] }
 })
 const logWarningsSpy = sinon.spy()
@@ -66,10 +71,13 @@ describe('query', () => {
         metadata: 'metadata'
       }
 
-      const result = queryHandler(json)
+      const result = queryHandler(json, { outStatistics: ['stats'] })
       result.should.equal('precalculated-statistics')
       renderPrecalculatedStatisticsResponseSpy.callCount.should.equal(1)
-      renderPrecalculatedStatisticsResponseSpy.firstCall.args.should.deepEqual([json])
+      renderPrecalculatedStatisticsResponseSpy.firstCall.args.should.deepEqual([json, {
+        outStatistics: ['stats'],
+        groupByFieldsForStatistics: undefined
+      }])
     })
 
     it('should render extent and count', () => {
@@ -556,7 +564,7 @@ describe('query', () => {
     result.should.deepEqual('out-statistics')
     renderStatisticsResponseSpy.callCount.should.equal(1)
     renderStatisticsResponseSpy.firstCall.args.should.deepEqual([{
-      features: ['filtered-feature']
+      statistics: [{ fooStatistic: 1.234 }]
     }, {
       ...params,
       geometryType: 'geometry-type',

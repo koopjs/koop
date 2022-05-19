@@ -42,7 +42,7 @@ function warnOnMetadataFieldDiscrepancies (metadataFields, featureProperties) {
 
   // compare metadata to feature properties; identifies fields defined in metadata that are not found in feature properties
   // or that have a metadata type definition inconsistent with feature property's value
-  metadataFields.filter(field => {
+  metadataFields.forEach(field => {
     // look for a defined field in the features properties
     const featureField = _.find(featureFields, ['name', field.name]) || _.find(featureFields, ['name', field.alias])
     if (!featureField || (field.type !== featureField.type && !(field.type === 'Date' && featureField.type === 'Integer') && !(field.type === 'Double' && featureField.type === 'Integer'))) {
@@ -51,7 +51,7 @@ function warnOnMetadataFieldDiscrepancies (metadataFields, featureProperties) {
   })
 
   // compare feature properties to metadata fields; identifies fields found on feature that are not defined in metadata field array
-  featureFields.filter(field => {
+  featureFields.forEach(field => {
     const noNameMatch = _.find(metadataFields, ['name', field.name])
     const noAliasMatch = _.find(metadataFields, ['alias', field.name])
 
