@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.5.1] - 06-01-2022
+### Changed
+- bump winnow version
+- refactor "fields" array generation
+
 ## [3.5.0] - 04-25-2022
 ### Added
 - Add support for overrided default value for copyrightText
