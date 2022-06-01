@@ -41,8 +41,8 @@
   "dependencies": {
     "@esri/proj-codes": "^2.6.0",
     "@hapi/joi": "^17.1.1",
-    "@terraformer/arcgis": "^2.0.7",
-    "@terraformer/spatial": "^2.0.7",
+    "@terraformer/arcgis": "^2.1.1",
+    "@terraformer/spatial": "^2.1.1",
     "@turf/bbox-polygon": "^6.0.1",
     "@turf/centroid": "^6.0.0",
     "@types/geojson": "^7946.0.7",

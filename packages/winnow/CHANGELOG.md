@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* bump terraformer version
+
 ## [2.5.0] - 04-21-2022
 ### Changed
 * Nested Esri JSON properties should be stringified
