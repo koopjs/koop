@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.5.1] - 06-01-2022
 ### Changed
 * bump terraformer version
 
@@ -407,6 +407,7 @@ Deep clone for dates since mutating dates has down stream consequences if reused
 ### Added
 * Initial release
 
+[2.5.1]: https://github.com/featureserver/winnow/compare/v2.5.0...v2.5.1
 [2.5.0]: https://github.com/featureserver/winnow/compare/v2.4.0...v2.5.0
 [2.4.0]: https://github.com/featureserver/winnow/compare/v2.3.0...v2.4.0
 [2.3.0]: https://github.com/featureserver/winnow/compare/v2.2.5...v2.3.0
