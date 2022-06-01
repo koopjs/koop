@@ -1,5 +1,7 @@
 const _ = require('lodash')
-const { computeFieldObject } = require('../field')
+const {
+  QueryFields
+} = require('../helpers/fields')
 const {
   getCollectionCrs,
   normalizeSpatialReference
@@ -31,7 +33,7 @@ function renderFeaturesResponse (data = {}, params = {}) {
   const computedProperties = {
     geometryType: params.geometryType,
     spatialReference: getOutputSpatialReference(data, params),
-    fields: computeFieldObject(data, 'query', params),
+    fields: QueryFields.create({ data, ...params }),
     features: data.features || [],
     exceededTransferLimit: !!limitExceeded,
     objectIdFieldName: idField || objectIdFieldNameDefault,

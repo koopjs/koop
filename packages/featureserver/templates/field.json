@@ -1,8 +1,0 @@
-{
-  "name": "<fieldName1>",
-  "type": "<fieldType1>",
-  "alias": "<fieldAlias1>",
-  "sqlType" : "sqlTypeOther", 
-  "domain" : null, 
-  "defaultValue" : null
-}

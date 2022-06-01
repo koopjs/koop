@@ -3,14 +3,17 @@ should.config.checkProtoEql = false
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
 const { version } = require('../../../lib/defaults')
-const computeFieldSpy = sinon.spy(function () {
+const createLayerMetadataFieldsSpy = sinon.spy(function () {
   return ['fields']
 })
+const fields = {
+  LayerFields: {
+    create: createLayerMetadataFieldsSpy
+  }
+}
 
 const TableLayerMetadata = proxyquire('../../../lib/helpers/table-layer-metadata', {
-  '../field': {
-    computeFieldObject: computeFieldSpy
-  }
+  '../helpers/fields': fields
 })
 
 const defaultFixture = {
@@ -69,7 +72,7 @@ const defaultFixture = {
 
 describe('TableLayerMetadata', () => {
   beforeEach(() => {
-    computeFieldSpy.resetHistory()
+    createLayerMetadataFieldsSpy.resetHistory()
   })
 
   it('calling with new should return default metadata', () => {
@@ -92,8 +95,8 @@ describe('TableLayerMetadata', () => {
         ...defaultFixture,
         fields: ['fields']
       })
-      computeFieldSpy.callCount.should.equal(1)
-      computeFieldSpy.firstCall.args.should.deepEqual([geojson, 'layer', {}])
+      createLayerMetadataFieldsSpy.callCount.should.equal(1)
+      createLayerMetadataFieldsSpy.firstCall.args.should.deepEqual([geojson])
     })
 
     it('defers to "layerId" option for "id"', () => {

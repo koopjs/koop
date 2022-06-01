@@ -1,24 +1,27 @@
 const should = require('should') // eslint-disable-line
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
-
-const computeFieldObjectSpy = sinon.spy(function () {
+const createStatisticsFieldsSpy = sinon.spy(function () {
   return [{
     foo: 'bar'
   }]
 })
 
-const stub = {
-  '../field': {
-    computeFieldObject: computeFieldObjectSpy
+const fields = {
+  StatisticsFields: {
+    create: createStatisticsFieldsSpy
   }
+}
+
+const stub = {
+  '../helpers/fields': fields
 }
 
 const { renderStatisticsResponse } = proxyquire('../../../lib/query/render-statistics', stub)
 
 describe('renderStatisticsResponse', () => {
   afterEach(function () {
-    computeFieldObjectSpy.resetHistory()
+    createStatisticsFieldsSpy.resetHistory()
   })
 
   it('should convert statistics array to Geoservices JSON', () => {
@@ -42,11 +45,10 @@ describe('renderStatisticsResponse', () => {
         }
       ]
     })
-    computeFieldObjectSpy.callCount.should.equal(1)
-    computeFieldObjectSpy.firstCall.args.should.deepEqual([
-      { type: 'FeatureCollection', features: [{ attributes: { min_precip: 0 } }] },
-      'statistics',
+    createStatisticsFieldsSpy.callCount.should.equal(1)
+    createStatisticsFieldsSpy.firstCall.args.should.deepEqual([
       {
+        statistics: [{ min_precip: 0 }],
         outStatistics: [{
           statisticType: 'MIN',
           onStatisticField: 'total precip',
@@ -77,11 +79,10 @@ describe('renderStatisticsResponse', () => {
         }
       ]
     })
-    computeFieldObjectSpy.callCount.should.equal(1)
-    computeFieldObjectSpy.firstCall.args.should.deepEqual([
-      { type: 'FeatureCollection', features: [{ attributes: { min_precip: 0 } }] },
-      'statistics',
+    createStatisticsFieldsSpy.callCount.should.equal(1)
+    createStatisticsFieldsSpy.firstCall.args.should.deepEqual([
       {
+        statistics: { min_precip: 0 },
         outStatistics: [{
           statisticType: 'MIN',
           onStatisticField: 'total precip',

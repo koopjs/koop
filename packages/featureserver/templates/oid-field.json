@@ -1,8 +1,0 @@
-{
-  "name": "OBJECTID",
-  "type": "esriFieldTypeOID",
-  "alias": "OBJECTID",
-  "sqlType": "sqlTypeInteger",
-  "domain": null,
-  "defaultValue": null
-}

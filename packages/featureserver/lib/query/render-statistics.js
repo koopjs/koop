@@ -1,4 +1,6 @@
-const { computeFieldObject } = require('../field')
+const {
+  StatisticsFields
+} = require('../helpers/fields')
 
 function renderStatisticsResponse (input = {}, options = {}) {
   const { statistics } = input
@@ -7,12 +9,14 @@ function renderStatisticsResponse (input = {}, options = {}) {
     return { attributes }
   })
 
+  const fields = StatisticsFields.create({
+    statistics,
+    ...options
+  })
+
   return {
     displayFieldName: '',
-    fields: computeFieldObject({
-      type: 'FeatureCollection',
-      features
-    }, 'statistics', options),
+    fields,
     features
   }
 }

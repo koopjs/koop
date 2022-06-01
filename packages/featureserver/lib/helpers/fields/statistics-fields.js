@@ -1,4 +1,4 @@
-const { isDate } = require('./data-type-utils')
+const { isDate } = require('../data-type-utils')
 const { getEsriTypeFromDefinition } = require('./esri-type-utils')
 const { ESRI_FIELD_TYPE_DATE } = require('./constants')
 const {

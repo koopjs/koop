@@ -6,7 +6,9 @@ const {
   normalizeExtent,
   normalizeInputData
 } = require('./helpers')
-const { computeFieldObject } = require('./field')
+const {
+  LayerFields
+} = require('./helpers/fields')
 const { layerMetadata: layerMetadataDefaults, renderers: rendererDefaults } = require('./defaults')
 
 module.exports = function relationshipsMetadata (providerResponse, queryParams = {}) {
@@ -54,7 +56,7 @@ function formatResponse (geojson = {}, options = {}) {
 
   const json = {
     id: id || layerId,
-    fields: computeFieldObject(geojson, 'layer', queryParams) || [],
+    fields: LayerFields.create({ ...geojson, ...queryParams }) || [],
     type: isLayer ? 'Feature Layer' : 'Table',
     geometryType,
     drawingInfo: {

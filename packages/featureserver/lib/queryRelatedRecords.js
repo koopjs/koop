@@ -1,6 +1,8 @@
 const _ = require('lodash')
 const { getCollectionCrs, getGeometryTypeFromGeojson } = require('./helpers')
-const { computeFieldObject } = require('./field')
+const {
+  QueryFields
+} = require('./helpers/fields')
 
 module.exports = queryRelatedRecords
 
@@ -9,7 +11,7 @@ function queryRelatedRecords (data, params = {}) {
     relatedRecordGroups: []
   }
 
-  if (!params.returnCountOnly) response.fields = computeFieldObject(data, 'query', params)
+  if (!params.returnCountOnly) response.fields = QueryFields.create(data, params)
 
   const geomType = getGeometryTypeFromGeojson(data)
   if (geomType) {

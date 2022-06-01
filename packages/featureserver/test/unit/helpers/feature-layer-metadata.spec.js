@@ -33,7 +33,18 @@ const defaultFixture = {
   htmlPopupType: 'esriServerHTMLPopupTypeNone',
   displayField: 'OBJECTID',
   typeIdField: null,
-  fields: [],
+  fields: [
+    {
+      alias: 'OBJECTID',
+      defaultValue: null,
+      domain: null,
+      editable: false,
+      name: 'OBJECTID',
+      nullable: false,
+      sqlType: 'sqlTypeInteger',
+      type: 'esriFieldTypeOID'
+    }
+  ],
   relationships: [],
   capabilities: 'Query',
   maxRecordCount: 2000,
@@ -111,7 +122,10 @@ describe('FeatureLayerMetadata', () => {
 
   it('calling with new should return default metadata', () => {
     const featureLayerMetadata = new FeatureLayerMetadata()
-    featureLayerMetadata.should.deepEqual(defaultFixture)
+    featureLayerMetadata.should.deepEqual({
+      ...defaultFixture,
+      fields: []
+    })
   })
 
   describe('mixinOverrides', () => {

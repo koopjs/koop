@@ -2,7 +2,7 @@ const should = require('should') // eslint-disable-line
 const {
   getDataTypeFromValue,
   isDate
-} = require('../../../../lib/helpers/fields/data-type-utils')
+} = require('../../../lib/helpers/data-type-utils')
 
 describe('getDataTypeFromValue', () => {
   it('should return integer', () => {

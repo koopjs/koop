@@ -9,5 +9,6 @@ module.exports = {
   getSpatialReference: require('./get-spatial-reference'),
   TableLayerMetadata: require('./table-layer-metadata'),
   FeatureLayerMetadata: require('./feature-layer-metadata'),
+  ...(require('./data-type-utils')),
   ...(require('./renderers'))
 }

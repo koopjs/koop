@@ -1,6 +1,8 @@
 const _ = require('lodash')
 const { version } = require('../defaults')
-const { computeFieldObject } = require('../field')
+const {
+  LayerFields
+} = require('../helpers/fields')
 
 class TableLayerMetadata {
   static create (geojson = {}, options = {}) {
@@ -130,7 +132,7 @@ class TableLayerMetadata {
   }
 
   _setFields (data, options) {
-    const fields = computeFieldObject(data, 'layer', options)
+    const fields = LayerFields.create({ ...data, ...options })
     if (fields) {
       this.fields = fields
     }

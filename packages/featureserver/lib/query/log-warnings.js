@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const Utils = require('../utils')
+const { getDataTypeFromValue } = require('../helpers')
 const chalk = require('chalk')
 
 function logWarnings (geojson, format) {
@@ -36,7 +36,7 @@ function warnOnMetadataFieldDiscrepancies (metadataFields, featureProperties) {
   const featureFields = Object.keys(featureProperties).map(name => {
     return {
       name,
-      type: Utils.detectType(featureProperties[name])
+      type: getDataTypeFromValue(featureProperties[name])
     }
   })
 

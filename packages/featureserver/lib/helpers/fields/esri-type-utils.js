@@ -1,4 +1,4 @@
-const { getDataTypeFromValue } = require('./data-type-utils')
+const { getDataTypeFromValue } = require('../data-type-utils')
 const {
   ESRI_FIELD_TYPE_STRING,
   ESRI_FIELD_TYPE_DATE,

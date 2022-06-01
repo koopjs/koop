@@ -1,5 +1,5 @@
 const esriProjCodes = require('@esri/proj-codes')
-const Joi = require('@hapi/joi')
+const Joi = require('joi')
 const wktParser = require('wkt-parser')
 const wktLookup = new Map()
 const schema = Joi.alternatives(
