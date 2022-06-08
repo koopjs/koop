@@ -1,5 +1,8 @@
 const _ = require('lodash')
-const { version } = require('../defaults')
+const {
+  CURRENT_VERSION,
+  FULL_VERSION
+} = require('../constants')
 const {
   LayerFields
 } = require('../helpers/fields')
@@ -14,7 +17,7 @@ class TableLayerMetadata {
     return tableMetadata.mixinOverrides(normalizedGeojson, normalizedOptions)
   }
 
-  static normalizeInput (geojson, options) {
+  static normalizeInput (geojson, req) {
     const {
       metadata = {},
       capabilities,
@@ -23,14 +26,17 @@ class TableLayerMetadata {
 
     const {
       params: { layer: layerId } = {},
-      query = {},
-      ...otherOptions
-    } = options
+      query = {}
+    } = req
+
+    const currentVersion = _.get(req, 'app.locals.config.featureServer.currentVersion', CURRENT_VERSION)
+    const fullVersion = _.get(req, 'app.locals.config.featureServer.fullVersion', FULL_VERSION)
 
     const normalizedOptions = {
       layerId,
+      currentVersion,
+      fullVersion,
       ...query,
-      ...otherOptions,
       ...metadata,
       capabilities: normalizeCapabilities(capabilities, metadata.capabilities)
     }
@@ -97,7 +103,8 @@ class TableLayerMetadata {
         name: 'OBJECTID',
         isSystemMaintained: true
       },
-      ...version
+      currentVersion: CURRENT_VERSION,
+      fullVersion: FULL_VERSION
     })
   }
 
@@ -198,7 +205,9 @@ class TableLayerMetadata {
       idField,
       timeInfo,
       maxRecordCount,
-      defaultVisibility
+      defaultVisibility,
+      currentVersion,
+      fullVersion
     } = options
 
     _.merge(this, {
@@ -210,7 +219,9 @@ class TableLayerMetadata {
       objectIdField: idField,
       timeInfo,
       maxRecordCount,
-      defaultVisibility
+      defaultVisibility,
+      currentVersion,
+      fullVersion
     })
   }
 }

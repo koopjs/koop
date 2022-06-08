@@ -47,7 +47,7 @@ module.exports = function route (req, res, geojson = {}, options = {}) {
     if (method) {
       result = handleMethodRequest({ method, geojson, req })
     } else if (isRestInfoRequest(route)) {
-      result = restInfo(geojson)
+      result = restInfo(geojson, req)
     } else if (isServerMetadataRequest(route)) {
       result = serverInfo(geojson, req)
     } else if (isLayersMetadataRequest(route)) {

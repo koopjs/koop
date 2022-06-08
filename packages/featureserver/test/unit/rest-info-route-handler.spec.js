@@ -3,7 +3,12 @@ const restInfo = require('../../lib/rest-info-route-handler')
 
 describe('rest/info handler', () => {
   it('should return default info', () => {
-    const result = restInfo()
+    const req = {
+      app: {
+        locals: {}
+      }
+    }
+    const result = restInfo({}, req)
     result.should.deepEqual({
       currentVersion: 10.51,
       fullVersion: '10.5.1'
@@ -16,13 +21,38 @@ describe('rest/info handler', () => {
         world: true
       }
     }
-    const result = restInfo(data)
+    const req = {
+      app: {
+        locals: {}
+      }
+    }
+    const result = restInfo(data, req)
     result.should.deepEqual({
       currentVersion: 10.51,
       fullVersion: '10.5.1',
       hello: {
         world: true
       }
+    })
+  })
+
+  it('should return versions from app.locals', () => {
+    const req = {
+      app: {
+        locals: {
+          config: {
+            featureServer: {
+              currentVersion: 10.81,
+              fullVersion: '10.8.1'
+            }
+          }
+        }
+      }
+    }
+    const result = restInfo({}, req)
+    result.should.deepEqual({
+      currentVersion: 10.81,
+      fullVersion: '10.8.1'
     })
   })
 })

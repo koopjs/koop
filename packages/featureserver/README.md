@@ -35,6 +35,26 @@ routes.forEach(route => {
 })
 ```
 
+### Version Configuration
+By default, the service and layer metadata endpoints will respond with the following version attributes:
+```json
+currentVersion: 10.51,
+fullVersion: '10.5.1'
+```
+
+You can alter these defaults by setting properties on Express's `app.locals`:
+
+```js
+app.locals.config = {
+  featureServer: {
+    currentVersion: 10.81,
+    fullVersion: '10.8.1'
+  }
+}
+```
+Note, if you are using FeatureServer as part of the Koop platform, the equivalent of Express's `app.locals` is `koop.server.locals`.
+
+
 ## API
 * [FeatureServer.route](#FeatureServer.route)
 * [FeatureServer.query](#FeatureServer.query)

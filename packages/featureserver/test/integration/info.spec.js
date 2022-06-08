@@ -10,13 +10,19 @@ const { serverTemplateSchema } = require('./schemas')
 describe('Info operations', () => {
   describe('rest info', () => {
     it('should conform to the prescribed schema', () => {
+      const req = {
+        app: {
+          locals: {}
+        }
+      }
+
       const supplementalRestInfo = {
         authInfo: {
           isTokenBasedSecurity: true,
           tokenServicesUrl: 'http://localhost/provider/generateToken'
         }
       }
-      const restInfo = FeatureServer.restInfo(supplementalRestInfo)
+      const restInfo = FeatureServer.restInfo(supplementalRestInfo, req)
       restInfo.should.have.property('currentVersion', 10.51)
       restInfo.should.have.property('authInfo')
       restInfo.authInfo.should.have.property('isTokenBasedSecurity', true)

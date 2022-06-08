@@ -8,9 +8,19 @@ const {
   normalizeInputData
 } = require('./helpers')
 const { serverMetadata: serverMetadataDefaults } = require('./defaults')
+const {
+  CURRENT_VERSION,
+  FULL_VERSION
+} = require('./constants')
 const debug = process.env.KOOP_LOG_LEVEL === 'debug' || process.env.LOG_LEVEL === 'debug'
 
-function serverMetadata (json, { query = {} } = {}) {
+function serverMetadata (json, req = {}) {
+  const {
+    query = {}
+  } = req
+  const currentVersion = _.get(req, 'app.locals.config.featureServer.currentVersion', CURRENT_VERSION)
+  const fullVersion = _.get(req, 'app.locals.config.featureServer.fullVersion', FULL_VERSION)
+
   const { extent, metadata, ...rest } = json
   const { maxRecordCount, hasStaticData, description, copyrightText } = { ...metadata, ...rest }
   const spatialReference = getSpatialReference(json, query)
@@ -20,6 +30,8 @@ function serverMetadata (json, { query = {} } = {}) {
   // TODO reproject default extents when non WGS84 CRS is found or passed
 
   return _.defaults({
+    currentVersion,
+    fullVersion,
     spatialReference,
     fullExtent,
     initialExtent: fullExtent,

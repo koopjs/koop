@@ -2,7 +2,9 @@ const should = require('should')
 should.config.checkProtoEql = false
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
-const { version } = require('../../../lib/defaults')
+const CURRENT_VERSION = 10.51
+const FULL_VERSION = '10.5.1'
+
 const createLayerMetadataFieldsSpy = sinon.spy(function () {
   return ['fields']
 })
@@ -67,7 +69,8 @@ const defaultFixture = {
     name: 'OBJECTID',
     isSystemMaintained: true
   },
-  ...version
+  currentVersion: CURRENT_VERSION,
+  fullVersion: FULL_VERSION
 }
 
 describe('TableLayerMetadata', () => {
@@ -247,7 +250,9 @@ describe('TableLayerMetadata', () => {
         templates: ['templates'],
         timeInfo: { time: 'June of 44' },
         maxRecordCount: 9999,
-        defaultVisibility: false
+        defaultVisibility: false,
+        currentVersion: 90.99,
+        fullVersion: '90.9.9'
       })
 
       tableLayerMetadata.should.deepEqual({
@@ -260,8 +265,25 @@ describe('TableLayerMetadata', () => {
         templates: ['templates'],
         timeInfo: { time: 'June of 44' },
         maxRecordCount: 9999,
-        defaultVisibility: false
+        defaultVisibility: false,
+        currentVersion: 90.99,
+        fullVersion: '90.9.9'
       })
+    })
+  })
+
+  it('static method "normalizeInput" should create expected geojson and default options', () => {
+    const { geojson, options } = TableLayerMetadata.normalizeInput({
+      features: ['feature']
+    }, {
+      params: { layer: '99' }
+    })
+    geojson.should.deepEqual({ features: ['feature'] })
+    options.should.deepEqual({
+      capabilities: {},
+      layerId: '99',
+      currentVersion: CURRENT_VERSION,
+      fullVersion: FULL_VERSION
     })
   })
 
@@ -276,18 +298,19 @@ describe('TableLayerMetadata', () => {
         world: 'hellow'
       }
     }, {
-      key: 'GMajor',
-      params: { layer: '99' }
+      params: { layer: '99' },
+      app: { locals: { config: { featureServer: { currentVersion: 90.99, fullVersion: '90.9.9' } } } }
     })
     geojson.should.deepEqual({ features: ['feature'] })
     options.should.deepEqual({
       foo: 'bar',
-      key: 'GMajor',
       layerId: '99',
       capabilities: {
         list: 'list,of,stuff',
         world: 'hellow'
-      }
+      },
+      currentVersion: 90.99,
+      fullVersion: '90.9.9'
     })
   })
 
@@ -303,7 +326,7 @@ describe('TableLayerMetadata', () => {
         world: 'hellow'
       }
     }, {
-      name: 'GMajor',
+
       params: { layer: '99' }
     })
     tableLayerMetadata.should.deepEqual({
@@ -312,7 +335,8 @@ describe('TableLayerMetadata', () => {
       displayField: 'myField',
       fields: ['fields'],
       id: 99,
-      name: 'GMajor'
+      currentVersion: CURRENT_VERSION,
+      fullVersion: FULL_VERSION
     })
   })
 })

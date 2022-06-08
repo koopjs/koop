@@ -2,8 +2,9 @@ const should = require('should')
 should.config.checkProtoEql = false
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
-const { version } = require('../../../lib/defaults')
 const { PointRenderer } = require('../../../lib/helpers/renderers')
+const CURRENT_VERSION = 10.51
+const FULL_VERSION = '10.5.1'
 
 const calculateBoundsSpy = sinon.spy(function () {
   return [0, 1, 2, 3]
@@ -102,7 +103,8 @@ const defaultFixture = {
   },
   supportsCoordinatesQuantization: false,
   hasLabels: false,
-  ...version
+  currentVersion: CURRENT_VERSION,
+  fullVersion: FULL_VERSION
 }
 
 const FeatureLayerMetadata = proxyquire('../../../lib/helpers/feature-layer-metadata', {
@@ -259,7 +261,9 @@ describe('FeatureLayerMetadata', () => {
           renderer: new PointRenderer()
         },
         minScale: 1,
-        maxScale: 10
+        maxScale: 10,
+        currentVersion: CURRENT_VERSION,
+        fullVersion: FULL_VERSION
       })
     })
   })
@@ -276,7 +280,6 @@ describe('FeatureLayerMetadata', () => {
         world: 'hellow'
       }
     }, {
-      name: 'GMajor',
       params: { layer: '99' }
     })
     featureLayerMetadata.should.deepEqual({
@@ -288,8 +291,7 @@ describe('FeatureLayerMetadata', () => {
       },
       capabilities: 'list,of,stuff',
       displayField: 'myField',
-      id: 99,
-      name: 'GMajor'
+      id: 99
     })
   })
 })
