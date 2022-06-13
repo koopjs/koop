@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Added
 - override default currentVersion and fullVersion via app.locals.config.featureServer
+- override default service-description and layer-description via app.locals.config.featureServer
 
 ## [3.5.1] - 06-01-2022
 ### Changed

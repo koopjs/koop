@@ -281,36 +281,55 @@ describe('TableLayerMetadata', () => {
     geojson.should.deepEqual({ features: ['feature'] })
     options.should.deepEqual({
       capabilities: {},
-      layerId: '99',
-      currentVersion: CURRENT_VERSION,
-      fullVersion: FULL_VERSION
+      layerId: '99'
     })
   })
 
-  it('static method "normalizeInput" should create expected geojson and options', () => {
+  it('static method "normalizeInput" should merge capabilities', () => {
     const { geojson, options } = TableLayerMetadata.normalizeInput({
       features: ['feature'],
       metadata: {
-        foo: 'bar',
         capabilities: 'list,of,stuff'
       },
       capabilities: {
         world: 'hellow'
       }
     }, {
-      params: { layer: '99' },
-      app: { locals: { config: { featureServer: { currentVersion: 90.99, fullVersion: '90.9.9' } } } }
+      params: { layer: '99' }
     })
     geojson.should.deepEqual({ features: ['feature'] })
     options.should.deepEqual({
-      foo: 'bar',
       layerId: '99',
       capabilities: {
         list: 'list,of,stuff',
         world: 'hellow'
-      },
-      currentVersion: 90.99,
-      fullVersion: '90.9.9'
+      }
+    })
+  })
+
+  it('static method "normalizeInput" should defer to metadata description', () => {
+    const { geojson, options } = TableLayerMetadata.normalizeInput({
+      features: ['feature'],
+      metadata: {
+        description: 'Metadata description'
+      }
+    }, {
+      params: { layer: '99' },
+      app: {
+        locals: {
+          config: {
+            featureServer: {
+              description: 'Overrides default layer description.'
+            }
+          }
+        }
+      }
+    })
+    geojson.should.deepEqual({ features: ['feature'] })
+    options.should.deepEqual({
+      layerId: '99',
+      description: 'Metadata description',
+      capabilities: {}
     })
   })
 
@@ -326,8 +345,18 @@ describe('TableLayerMetadata', () => {
         world: 'hellow'
       }
     }, {
-
-      params: { layer: '99' }
+      params: { layer: '99' },
+      app: {
+        locals: {
+          config: {
+            featureServer: {
+              currentVersion: 90.99,
+              fullVersion: '90.9.9',
+              description: 'Overrides default layer description.'
+            }
+          }
+        }
+      }
     })
     tableLayerMetadata.should.deepEqual({
       ...defaultFixture,
@@ -335,8 +364,9 @@ describe('TableLayerMetadata', () => {
       displayField: 'myField',
       fields: ['fields'],
       id: 99,
-      currentVersion: CURRENT_VERSION,
-      fullVersion: FULL_VERSION
+      currentVersion: 90.99,
+      fullVersion: '90.9.9',
+      description: 'Overrides default layer description.'
     })
   })
 })

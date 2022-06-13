@@ -25,21 +25,27 @@ class TableLayerMetadata {
     } = geojson
 
     const {
-      params: { layer: layerId } = {},
+      params: {
+        layer: layerId
+      } = {},
       query = {}
     } = req
 
-    const currentVersion = _.get(req, 'app.locals.config.featureServer.currentVersion', CURRENT_VERSION)
-    const fullVersion = _.get(req, 'app.locals.config.featureServer.fullVersion', FULL_VERSION)
-
-    const normalizedOptions = {
-      layerId,
+    const {
       currentVersion,
       fullVersion,
+      description
+    } = _.get(req, 'app.locals.config.featureServer', {})
+
+    const normalizedOptions = _.pickBy({
+      currentVersion,
+      fullVersion,
+      description,
+      layerId,
       ...query,
       ...metadata,
       capabilities: normalizeCapabilities(capabilities, metadata.capabilities)
-    }
+    }, (value) => value)
 
     if (!normalizedGeojson.features) {
       normalizedGeojson.features = []

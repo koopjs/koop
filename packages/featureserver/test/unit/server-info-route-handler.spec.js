@@ -713,7 +713,7 @@ describe('server info', () => {
     })
   })
 
-  it('should use req.app.locals.config.featureServer for version', () => {
+  it('should use req.app.locals.config.featureServer for version and serviceDescription', () => {
     const simpleCollectionFixture = {
       type: 'FeatureCollection',
       crs: {
@@ -782,7 +782,11 @@ describe('server info', () => {
       app: {
         locals: {
           config: {
-            featureServer: { currentVersion: 11.01, fullVersion: '11.0.1' }
+            featureServer: {
+              currentVersion: 11.01,
+              fullVersion: '11.0.1',
+              serviceDescription: 'Overrides default service description'
+            }
           }
         }
       }
@@ -803,7 +807,7 @@ describe('server info', () => {
     serverInfo.should.deepEqual({
       foo: 'bar',
       maxRecordCount: 'max-record-count',
-      serviceDescription: 'service-description',
+      serviceDescription: 'Overrides default service description',
       copyrightText: 'copyright-text',
       hasStaticData: false,
       supportsRelationshipsResource: false,

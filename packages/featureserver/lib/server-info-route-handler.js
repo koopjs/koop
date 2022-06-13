@@ -18,16 +18,25 @@ function serverMetadata (json, req = {}) {
   const {
     query = {}
   } = req
-  const currentVersion = _.get(req, 'app.locals.config.featureServer.currentVersion', CURRENT_VERSION)
-  const fullVersion = _.get(req, 'app.locals.config.featureServer.fullVersion', FULL_VERSION)
 
-  const { extent, metadata, ...rest } = json
-  const { maxRecordCount, hasStaticData, description, copyrightText } = { ...metadata, ...rest }
+  const { extent, metadata = {}, ...rest } = json
+  const {
+    maxRecordCount,
+    hasStaticData,
+    copyrightText,
+    description: providerLayerDescription,
+    serviceDescription: providerServiceDescription
+  } = { ...metadata, ...rest }
   const spatialReference = getSpatialReference(json, query)
   const { layers, tables, relationships } = normalizeInputData(json)
+  // TODO reproject default extents when non WGS84 CRS is found or passed
   const fullExtent = getServiceExtent({ extent, metadata, layers, spatialReference })
 
-  // TODO reproject default extents when non WGS84 CRS is found or passed
+  const {
+    currentVersion = CURRENT_VERSION,
+    fullVersion = FULL_VERSION,
+    serviceDescription
+  } = _.get(req, 'app.locals.config.featureServer', {})
 
   return _.defaults({
     currentVersion,
@@ -41,7 +50,7 @@ function serverMetadata (json, req = {}) {
     }),
     relationships: relationships.map(relationshipInfo),
     supportsRelationshipsResource: relationships && relationships.length > 0,
-    serviceDescription: description,
+    serviceDescription: serviceDescription || providerServiceDescription || providerLayerDescription,
     copyrightText: copyrightText,
     maxRecordCount: maxRecordCount || _.get(layers, '[0].metadata.maxRecordCount'),
     hasStaticData: typeof hasStaticData === 'boolean' ? hasStaticData : false
