@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.1.5] - 2022-06-14
+### Changed
+* Bump FeatureServer to 4.0.0
+
 ## [3.1.4] - 2022-05-03
 ### Changed
 * Bump FeatureServer to 3.4.0
@@ -117,6 +121,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[3.1.5]: https://github.com/koopjs/koop-output-geoservices/compare/v3.1.5...v3.1.4
 [3.1.4]: https://github.com/koopjs/koop-output-geoservices/compare/v3.1.3...v3.1.4
 [3.1.3]: https://github.com/koopjs/koop-output-geoservices/compare/v3.1.2...v3.1.3
 [3.1.2]: https://github.com/koopjs/koop-output-geoservices/compare/v3.1.1...v3.1.2
