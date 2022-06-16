@@ -1,6 +1,9 @@
+const {
+  createClassBreakInfos,
+  createUniqueValueInfos
+} = require('./createClassificationInfos')
 const Winnow = require('winnow')
 const { getGeom } = require('./getGeom')
-const { renderClassBreaks, renderUniqueValue } = require('../templates')
 
 module.exports = generateRenderer
 
@@ -12,23 +15,67 @@ module.exports = generateRenderer
  * @param {function} callback
  */
 function generateRenderer (data = {}, params = {}) {
-  if (Object.keys(data).length === 0) throw new Error('there must be input features in order to generate a renderer')
+  const {
+    statistics = {},
+    features
+  } = data
 
-  let breaks = []
-  if (data.statistics && data.statistics.classBreaks) {
-    breaks = data.statistics.classBreaks.sort((a, b) => a - b)
+  if (statistics.classBreaks) {
+    const breaks = statistics.classBreaks.sort((a, b) => a - b)
     return renderClassBreaks(breaks, {}, '')
-  } else if (data.features) breaks = Winnow.query(data, params)
-  else throw new Error('Must supply statistics or data features')
-  // TODO: ? handle uniqueValue statistics
+  }
 
-  if (params.classificationDef && params.classificationDef.type) {
+  if (features) {
+    return generateRendererFromFeatures(data, params)
+  }
+
+  return {}
+}
+
+function generateRendererFromFeatures (data, params) {
+  const { classificationDef = {} } = params
+  const breaks = Winnow.query(data, params)
+
+  if (classificationDef.type) {
     const geomType = getGeom(data, params)
-    const classification = params.classificationDef
-    if (classification.type && classification.type === 'classBreaksDef') {
-      return renderClassBreaks(breaks, classification, geomType)
-    } else if (classification.type && classification.type === 'uniqueValueDef') {
-      return renderUniqueValue(breaks, classification, geomType)
-    } else { throw new Error('invalid classification type: ', classification.type) }
-  } else { throw new Error('invalid classification: ', params.classificationDef) }
+
+    if (classificationDef.type === 'classBreaksDef') {
+      return renderClassBreaks(breaks, classificationDef, geomType)
+    }
+
+    if (classificationDef.type === 'uniqueValueDef') {
+      return renderUniqueValue(breaks, classificationDef, geomType)
+    }
+
+    throw new Error('invalid classification type: ', classificationDef.type)
+  }
+
+  throw new Error('invalid classification: ', classificationDef)
+}
+
+function renderClassBreaks (breaks, classificationDef, geomType) {
+  if (!Array.isArray(breaks) || !Array.isArray(breaks[0])) {
+    throw new Error('Breaks must be an array of break ranges')
+  }
+
+  return {
+    type: 'classBreaks',
+    field: classificationDef.classificationField || '',
+    classificationMethod: classificationDef.classificationMethod || '',
+    minValue: breaks[0][0],
+    classBreakInfos: createClassBreakInfos(breaks, classificationDef, geomType)
+  }
+}
+
+function renderUniqueValue (breaks, classificationDef, geomType) {
+  return {
+    type: 'uniqueValue',
+    field1: classificationDef.uniqueValueFields[0],
+    field2: '',
+    field3: '',
+    fieldDelimiter: classificationDef.fieldDelimiter,
+    defaultSymbol: {},
+    defaultLabel: '',
+    uniqueValueInfos: createUniqueValueInfos(breaks, classificationDef, geomType)
+  }
 }

@@ -28,10 +28,10 @@ describe('when a class breaks classification passed in', () => {
       data = _.cloneDeep(ProviderStatsClassBreaks)
     })
     describe('do not exist', () => {
-      it('should throw an error', () => {
+      it('should return empty object', () => {
         const options = {}
         data.statistics = []
-        generateRenderer.bind(this, data, options).should.throw()
+        generateRenderer(data, options).should.deepEqual({})
       })
     })
     it('should properly return a renderer', () => {
@@ -53,9 +53,9 @@ describe('when a class breaks classification passed in', () => {
     })
   })
   describe('with no input data', () => {
-    it('should throw and error', () => {
+    it('should return empty object', () => {
       data = {}
-      generateRenderer.bind(this, data, options).should.throw()
+      generateRenderer(data, options).should.deepEqual({})
     })
   })
   describe('returns no queried features', () => {
@@ -139,9 +139,10 @@ describe('when a unique value classification passed in', () => {
     })
   })
   describe('with no input data', () => {
-    it('should throw and error', () => {
+    it('should return empty object with empty data argument', () => {
       data = {}
-      generateRenderer.bind(this, data, options).should.throw()
+      const result = generateRenderer(data, options)
+      result.should.deepEqual({})
     })
   })
   describe('returns no queried features', () => {
