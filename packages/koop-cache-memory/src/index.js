@@ -1,12 +1,13 @@
 const Util = require('util')
 const EventEmitter = require('events')
 const _ = require('lodash')
+const { asCachableGeojson } = require('./helper')
 const Readable = require('stream').Readable
 
 // Convenience to make callbacks optional in most functions
-function noop () {}
+function noop() { }
 
-function Cache (options = {}) {
+function Cache(options = {}) {
   this.store = new Map()
   this.catalog.store = new Map()
   this.catalog.dataStore = this.store
@@ -19,13 +20,12 @@ Cache.version = require('../package.json').version
 Util.inherits(Cache, EventEmitter)
 
 Cache.prototype.insert = function (key, geojson, options = {}, callback = noop) {
-  // support a feature collection or an array of features
   if (this.store.has(key)) return callback(new Error('Cache key is already in use'))
-  const features = geojson.features ? geojson.features : geojson
-  this.store.set(key, features)
-  const metadata = geojson.metadata || {}
+  geojson = asCachableGeojson(geojson);
+  this.store.set(key, geojson)
+  const metadata = geojson.metadata;
   if (options.ttl) metadata.expires = Date.now() + (options.ttl * 1000)
-  this.catalog.insert(key, metadata, callback)
+  this.catalog.insert(key, geojson.metadata, callback)
 }
 
 Cache.prototype.upsert = function (key, geojson, options = {}, callback = noop) {
@@ -37,10 +37,9 @@ Cache.prototype.upsert = function (key, geojson, options = {}, callback = noop) 
 }
 
 Cache.prototype.update = function (key, geojson, options = {}, callback = noop) {
-  // support a feature collection or an array of features
   if (!this.store.has(key)) return callback(new Error('Resource not found'))
-  const features = geojson.features ? geojson.features : geojson
-  this.store.set(key, features)
+  geojson = asCachableGeojson(geojson);
+  this.store.set(key, geojson)
   const existingMetadata = this.catalog.store.get(key)
   const metadata = geojson.metadata || existingMetadata
   if (options.ttl) metadata.expires = Date.now() + (options.ttl * 1000)
@@ -48,25 +47,24 @@ Cache.prototype.update = function (key, geojson, options = {}, callback = noop) 
 }
 
 Cache.prototype.append = function (key, geojson, options = {}, callback = noop) {
-  const features = geojson.features ? geojson.features : geojson
+  geojson = asCachableGeojson(geojson);
   const existing = this.store.get(key)
-  this.store.set(key, features.concat(existing))
+  existing.features = existing.features.concat(geojson.features)
   this.catalog.update(key, { updated: Date.now() })
   callback()
 }
 
 Cache.prototype.retrieve = function (key, options, callback = noop) {
   if (!this.store.has(key)) return callback(new Error('Resource not found'))
-  const features = this.store.get(key)
-  const metadata = this.catalog.store.get(key)
-  const geojson = { type: 'FeatureCollection', metadata, features }
+  const geojson = this.store.get(key)
+  geojson.metadata = this.catalog.store.get(key)
   callback(null, geojson)
   return geojson
 }
 
 Cache.prototype.createStream = function (key, options = {}) {
-  const features = this.store.get(key)
-  return Readable.from(features)
+  const geojson = this.store.get(key)
+  return Readable.from(geojson.features)
 }
 
 Cache.prototype.delete = function (key, callback = noop) {

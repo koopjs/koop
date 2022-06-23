@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Fixed an issue where some geojson properties (like `crs`) were lost in the caching procedure
+
 ## [1.1.2] - 2022-04-15
 ### Changed
 * Remove buble build
