@@ -1,111 +1,154 @@
-const Util = require('util')
-const EventEmitter = require('events')
-const _ = require('lodash')
-const { asCachableGeojson } = require('./helper')
-const Readable = require('stream').Readable
+const Util = require('util');
+const EventEmitter = require('events');
+const _ = require('lodash');
+const { asCachableGeojson } = require('./helper');
+const Readable = require('stream').Readable;
 
 // Convenience to make callbacks optional in most functions
-function noop() { }
+function noop() {}
 
-function Cache(options = {}) {
-  this.store = new Map()
-  this.catalog.store = new Map()
-  this.catalog.dataStore = this.store
-}
+class Cache extends EventEmitter {
+  static name = 'Memory Cache';
+  static type = 'cache';
+  static version = require('../package.json').version;
 
-Cache.name = 'Memory Cache'
-Cache.type = 'cache'
-Cache.version = require('../package.json').version
+  constructor(options = {}) {
+    super();
+    this.featuresStore = new Map();
+    this.catalogStore = new Map();
+  }
 
-Util.inherits(Cache, EventEmitter)
+  insert(key, geojson, options = {}, callback = noop) {
+    if (this.featuresStore.has(key)) {
+      return callback(new Error('Cache key is already in use'));
+    }
+    const { features, ...rest } = asCachableGeojson(geojson);
+    this.featuresStore.set(key, features);
 
-Cache.prototype.insert = function (key, geojson, options = {}, callback = noop) {
-  if (this.store.has(key)) return callback(new Error('Cache key is already in use'))
-  geojson = asCachableGeojson(geojson);
-  this.store.set(key, geojson)
-  const metadata = geojson.metadata;
-  if (options.ttl) metadata.expires = Date.now() + (options.ttl * 1000)
-  this.catalog.insert(key, geojson.metadata, callback)
-}
+    this.catalogInsert(key, rest, options, callback);
+  }
 
-Cache.prototype.upsert = function (key, geojson, options = {}, callback = noop) {
-  if (this.store.has(key)) {
-    this.update(key, geojson, options, callback)
-  } else {
-    this.insert(key, geojson, options, callback)
+  update(key, geojson, options = {}, callback = noop) {
+    if (!this.featuresStore.has(key)) {
+      return callback(new Error('Resource not found'));
+    }
+    const { features, ...rest } = asCachableGeojson(geojson);
+
+    this.featuresStore.set(key, features);
+
+    const existingCatalogEntry = this.catalogStore.get(key);
+
+    const catalogEntry = rest || existingCatalogEntry;
+
+    this.catalogUpdate(key, catalogEntry, callback);
+  }
+
+  upsert(key, geojson, options = {}, callback = noop) {
+    if (this.featuresStore.has(key)) {
+      this.update(key, geojson, options, callback);
+    } else {
+      this.insert(key, geojson, options, callback);
+    }
+  }
+
+  append(key, geojson, options = {}, callback = noop) {
+    const { features } = asCachableGeojson(geojson);
+    const existingFeatures = this.featuresStore.get(key);
+    const appendedFeatureArray = existingFeatures.concat(features);
+    this.featuresStore.set(key, appendedFeatureArray);
+    this.catalogUpdate(key, {
+      cache: {
+        updated: Date.now(),
+      },
+    });
+    callback();
+  }
+
+  retrieve(key, options, callback = noop) {
+    if (!this.featuresStore.has(key)) {
+      return callback(new Error('Resource not found'));
+    }
+    const features = this.featuresStore.get(key);
+
+    const geojsonWrapper = this.catalogStore.get(key);
+
+    const geojson = { ...geojsonWrapper, features };
+
+    callback(null, geojson);
+
+    return geojson;
+  }
+
+  createStream(key, options = {}) {
+    const features = this.featuresStore.get(key);
+    return Readable.from(features);
+  }
+
+  delete(key, callback = noop) {
+    if (!this.featuresStore.has(key)) {
+      return callback(new Error('Resource not found'));
+    }
+    this.featuresStore.delete(key);
+    const catalogEntry = this.catalogStore.get(key);
+    this.catalogStore.set(key, {
+      ...catalogEntry,
+      _cache: {
+        status: 'deleted',
+        updated: Date.now(),
+      },
+    });
+    callback();
+  }
+
+  catalogInsert(key, catalogEntry, options, callback = noop) {
+    if (this.catalogStore.has(key)) {
+      return callback(new Error('Catalog key is already in use'));
+    }
+    const clonedEntry = _.cloneDeep(catalogEntry);
+
+    _.set(clonedEntry, '_cache.updated', Date.now());
+
+    if (options.ttl) {
+      _.set(clonedEntry, '_cache.expires', Date.now() + options.ttl * 1000);
+    }
+
+    this.catalogStore.set(key, clonedEntry);
+
+    callback();
+  }
+
+  catalogUpdate = function (key, update, options, callback = noop) {
+    if (!this.catalogStore.has(key)) {
+      return callback(new Error('Resource not found'));
+    }
+    const existingCatalogEntry = this.catalogStore.get(key);
+    const catalogEntry = {
+      ...existingCatalogEntry,
+      ..._.cloneDeep(update),
+    };
+    catalogEntry._cache.updated = Date.now();
+    this.catalogStore.set(key, catalogEntry);
+    callback();
+  };
+
+  catalogRetrieve(key, callback = noop) {
+    if (!this.catalogStore.has(key)) {
+      return callback(new Error('Resource not found'));
+    }
+    const catalogEntry = this.catalogStore.get(key);
+    callback(null, catalogEntry);
+    return catalogEntry;
+  }
+
+  catalogDelete(key, callback = noop) {
+    if (this.featuresStore.has(key)) {
+      return callback(
+        new Error('Cannot delete catalog entry while data is still in cache')
+      );
+    }
+    this.catalogStore.delete(key);
+    callback();
   }
 }
 
-Cache.prototype.update = function (key, geojson, options = {}, callback = noop) {
-  if (!this.store.has(key)) return callback(new Error('Resource not found'))
-  geojson = asCachableGeojson(geojson);
-  this.store.set(key, geojson)
-  const existingMetadata = this.catalog.store.get(key)
-  const metadata = geojson.metadata || existingMetadata
-  if (options.ttl) metadata.expires = Date.now() + (options.ttl * 1000)
-  this.catalog.update(key, metadata, callback)
-}
-
-Cache.prototype.append = function (key, geojson, options = {}, callback = noop) {
-  geojson = asCachableGeojson(geojson);
-  const existing = this.store.get(key)
-  existing.features = existing.features.concat(geojson.features)
-  this.catalog.update(key, { updated: Date.now() })
-  callback()
-}
-
-Cache.prototype.retrieve = function (key, options, callback = noop) {
-  if (!this.store.has(key)) return callback(new Error('Resource not found'))
-  const geojson = this.store.get(key)
-  geojson.metadata = this.catalog.store.get(key)
-  callback(null, geojson)
-  return geojson
-}
-
-Cache.prototype.createStream = function (key, options = {}) {
-  const geojson = this.store.get(key)
-  return Readable.from(geojson.features)
-}
-
-Cache.prototype.delete = function (key, callback = noop) {
-  if (!this.store.has(key)) return callback(new Error('Resource not found'))
-  this.store.delete(key)
-  const metadata = this.catalog.store.get(key)
-  metadata.status = 'deleted'
-  metadata.updated = Date.now()
-  this.catalog.store.set(key, metadata)
-  callback()
-}
-
-Cache.prototype.catalog = {}
-
-Cache.prototype.catalog.insert = function (key, metadata, callback = noop) {
-  if (this.store.has(key)) return callback(new Error('Catalog key is already in use'))
-  metadata.updated = Date.now()
-  this.store.set(key, metadata)
-  callback()
-}
-
-Cache.prototype.catalog.update = function (key, update, callback = noop) {
-  if (!this.store.has(key)) return callback(new Error('Resource not found'))
-  const existing = this.store.get(key)
-  const metadata = _.merge(existing, update)
-  metadata.updated = Date.now()
-  this.store.set(key, metadata)
-  callback()
-}
-
-Cache.prototype.catalog.retrieve = function (key, callback = noop) {
-  if (!this.store.has(key)) return callback(new Error('Resource not found'))
-  const metadata = this.store.get(key)
-  callback(null, metadata)
-  return metadata
-}
-
-Cache.prototype.catalog.delete = function (key, callback = noop) {
-  if (this.dataStore.has(key)) return callback(new Error('Cannot delete catalog entry while data is still in cache'))
-  this.store.delete(key)
-  callback()
-}
-
-module.exports = Cache
+module.exports = Cache;

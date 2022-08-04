@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* items in the cache no longer mutable by other post-caching manipulation
+
+### Changed
+* Moved to class syntax and removed prototype-namespacing of catalog methods (breaking, since public methods, but not breaking for usage in koop-core)
+
 ## [1.2.0] - 2022-06-23
 ### Changed
 * Fixed an issue where some geojson properties (like `crs`) were lost in the caching procedure
