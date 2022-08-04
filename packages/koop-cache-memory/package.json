@@ -1,6 +1,6 @@
 {
   "name": "@koopjs/cache-memory",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "An in-memory cache for KOop",
   "main": "src/index.js",
   "scripts": {
@@ -15,7 +15,15 @@
     "cache",
     "memory"
   ],
-  "author": "Daniel Fenton <dfenton@esri.com>",
+  "contributors": [
+    {
+      "name": "Rich Gwozdz",
+      "email": "rgwozdz@esri.com"
+    },
+    {
+      "name": "Daniel Fenton"
+    }
+  ],
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/koopjs/koop-cache-memory/issues"
