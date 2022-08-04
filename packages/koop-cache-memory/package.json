@@ -24,7 +24,7 @@
   "devDependencies": {
     "standard": "^14.0.0",
     "tap-spec": "^5.0.0",
-    "tape": "^4.6.3"
+    "tape": "^5.0.0"
   },
   "dependencies": {
     "lodash": "^4.17.4"
