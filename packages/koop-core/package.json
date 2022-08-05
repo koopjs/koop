@@ -23,7 +23,7 @@
   ],
   "dependencies": {
     "@hapi/joi": "^17.1.0",
-    "@koopjs/cache-memory": "^1.1.2",
+    "@koopjs/cache-memory": "^2.0.2",
     "@koopjs/logger": "^2.0.6",
     "@koopjs/output-geoservices": "^3.1.5",
     "body-parser": "^1.19.0",

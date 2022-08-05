@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Pull in updated cache-memory plugin
+* Remove support for Node 10
+
 ## [4.2.4] - 2022-06-14
 ### Changed
 * Bump output-geoservices

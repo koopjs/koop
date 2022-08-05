@@ -7,7 +7,7 @@
 [![js-standard-style][standard-img]][standard-url]
 [![Greenkeeper badge](https://badges.greenkeeper.io/koopjs/koop-core.svg)](https://greenkeeper.io/)
 
-**Note: Koop 4.0 was just released and it no longer supports versions of Node.js older than 6.4. All plugins written for 3.x should work with Koop 4.x.**
+**Note: Koop 5.0 was just released and it no longer supports versions of Node.js older than 12. All plugins written for 3.x should work with Koop 5.x.**
 
 This is the core code for Koop.
 

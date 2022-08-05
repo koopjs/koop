@@ -15,9 +15,9 @@ describe('Datsets API', function () {
         .expect('Content-Type', /json/)
         .end((req, res) => {
           const fc = koop.cache.retrieve('key')
-          const metadata = koop.cache.catalog.retrieve('key')
+          const catalogEntry = koop.cache.catalogRetrieve('key')
           fc.features.length.should.equal(417)
-          metadata.name.should.equal('Snow')
+          catalogEntry.metadata.name.should.equal('Snow')
           done()
         })
     })
@@ -56,14 +56,14 @@ describe('Datsets API', function () {
         .expect(200)
         .expect('Content-Type', /json/)
         .end((req, res) => {
-          const metadata = koop.cache.catalog.retrieve('metaKey')
+          const metadata = koop.cache.catalogRetrieve('metaKey')
           metadata.name.should.equal('Test')
           done()
         })
     })
 
     it('should read metadata on GET', done => {
-      koop.cache.catalog.insert('metadataInsert', { name: 'Test' })
+      koop.cache.catalogInsert('metadataInsert', { name: 'Test' })
       request(koop.server)
         .get('/datasets/metadataInsert/metadata')
         .expect(200)
@@ -75,12 +75,12 @@ describe('Datsets API', function () {
     })
 
     it('should delete metadata on DELETE', done => {
-      koop.cache.catalog.insert('deleteMetaKey', { foo: 'bar' })
+      koop.cache.catalogInsert('deleteMetaKey', { foo: 'bar' })
       request(koop.server)
         .delete('/datasets/deleteMetaKey/metadata')
         .expect(200)
         .end((req, res) => {
-          const meta = koop.cache.catalog.retrieve('deleteMetaKey')
+          const meta = koop.cache.catalogRetrieve('deleteMetaKey')
           should.not.exist(meta)
           done()
         })
