@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [2.0.2] - 2022-08-05
 ### Fixed
 * removed ?? operator so as to support older node versions
 
@@ -45,6 +45,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-02-13
 * Initial Release
 
+[2.0.2]: https://github.com/koopjs/koop-cache-memory/releases/tag/v2.0.2
+[2.0.1]: https://github.com/koopjs/koop-cache-memory/releases/tag/v2.0.1
+[2.0.0]: https://github.com/koopjs/koop-cache-memory/releases/tag/v2.0.0
 [1.2.0]: https://github.com/koopjs/koop-cache-memory/releases/tag/v1.2.0
 [1.1.2]: https://github.com/koopjs/koop-cache-memory/releases/tag/v1.1.2
 [1.1.1]: https://github.com/koopjs/koop-cache-memory/releases/tag/v1.1.1
