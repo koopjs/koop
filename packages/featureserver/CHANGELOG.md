@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.1] - 08-05-2022
+### Changed
+- bump winnow version
+
 ## [4.0.0] - 06-14-2022
 ### Added
 - override default currentVersion and fullVersion via app.locals.config.featureServer
@@ -487,6 +491,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[4.0.1]: https://github.com/koopjs/featureserver/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/koopjs/featureserver/compare/v3.5.0...v4.0.0
 [3.5.0]: https://github.com/koopjs/featureserver/compare/v3.4.0...v3.5.0
 [3.4.0]: https://github.com/koopjs/featureserver/compare/v3.3.4...v3.4.0
