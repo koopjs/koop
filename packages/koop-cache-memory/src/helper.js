@@ -1,10 +1,10 @@
 const _ = require('lodash');
 
 function asCachableGeojson(geojson) {
-  if (!geojson || Array.isArray(geojson)) {
+  if (geojson === undefined || geojson === null || Array.isArray(geojson)) {
     return {
       type: 'FeatureCollection',
-      features: geojson ?? [],
+      features: geojson ||  [],
       metadata: {},
     };
   }
