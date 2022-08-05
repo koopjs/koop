@@ -1,7 +1,7 @@
 {
   "name": "koop",
-  "description": "Transform, query, & download geospatial data on the web",
-  "version": "4.2.4",
+  "description": "Serve, transform, and query geospatial data on the web",
+  "version": "5.0.0",
   "bugs": {
     "url": "https://github.com/koopjs/koop/issues"
   },
@@ -34,6 +34,7 @@
     "easy-table": "^1.1.1",
     "ejs": "^3.1.2",
     "express": "^4.17.1",
+    "featureserver": "^4.0.1",
     "koop-localfs": "^1.1.2",
     "lodash": "^4.17.15"
   },
