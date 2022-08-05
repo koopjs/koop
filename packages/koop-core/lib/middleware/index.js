@@ -59,6 +59,19 @@ function tryParse (json) {
   }
 }
 
+function copyBodyToQuery (req, res, next) {
+  const { query = {}, body = {} } = req
+
+  // prefer token to from query to prevent issues with agol proxies
+  const token = query.token || body.token
+
+  req.query = { ...query, ...body, token }
+  next()
+}
+
 module.exports = {
-  paramTrim, paramParse, paramCoerce
+  paramTrim,
+  paramParse,
+  paramCoerce,
+  copyBodyToQuery
 }

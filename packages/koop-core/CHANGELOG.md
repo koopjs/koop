@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 * Pull in updated cache-memory plugin
 * Remove support for Node 10
+* prefer req.query.token over req.body.token
 
 ## [4.2.4] - 2022-06-14
 ### Changed

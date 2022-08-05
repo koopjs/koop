@@ -48,4 +48,28 @@ describe('Middleware tests', function () {
       req.query.param4.should.equal(false)
     })
   })
+
+  describe('copyBodyToQuery middleware', function () {
+    it('should combine query and body, body overrides query, except for token', function () {
+      const req = {
+        query: {
+          queryParam: 'foo',
+          param: 'hello',
+          token: '123'
+        },
+        body: {
+          bodyParam: 'bar',
+          param: 'world',
+          token: 'abc'
+        }
+      }
+      middleware.copyBodyToQuery(req, {}, function () {})
+      req.query.should.deepEqual({
+        queryParam: 'foo',
+        bodyParam: 'bar',
+        param: 'world',
+        token: '123'
+      })
+    })
+  })
 })

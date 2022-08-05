@@ -5,7 +5,6 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const compression = require('compression')
 const pkg = require('./package.json')
-const _ = require('lodash')
 const Cache = require('@koopjs/cache-memory')
 const Logger = require('@koopjs/logger')
 const datasetsProvider = require('./lib/datasets')
@@ -53,15 +52,7 @@ function initServer (config) {
     .use(bodyParser.urlencoded({ extended: false }))
     .disable('x-powered-by')
     // TODO this should just live inside featureserver
-    .use((req, res, next) => {
-      // request parameters can come from query url or POST body
-      // prefer token to from query to prevent issues with agol proxies
-      if (req.query.token && req.body.token) {
-        delete req.body.token;
-      }
-      req.query = _.extend(req.query || {}, req.body || {})
-      next()
-    })
+    .use(middleware.copyBodyToQuery)
     .use(middleware.paramTrim)
     .use(middleware.paramParse)
     .use(middleware.paramCoerce)
