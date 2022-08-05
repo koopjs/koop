@@ -54,7 +54,11 @@ function initServer (config) {
     .disable('x-powered-by')
     // TODO this should just live inside featureserver
     .use((req, res, next) => {
-    // request parameters can come from query url or POST body
+      // request parameters can come from query url or POST body
+      // prefer token to from query to prevent issues with agol proxies
+      if (req.query.token && req.body.token) {
+        delete req.body.token;
+      }
       req.query = _.extend(req.query || {}, req.body || {})
       next()
     })
