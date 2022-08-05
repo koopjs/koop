@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* default options object on catalog methods
+
 ## [2.0.0] - 2022-08-04
 ### Fixed
 * items in the cache no longer mutable by other post-caching manipulation

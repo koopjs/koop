@@ -100,7 +100,7 @@ class Cache extends EventEmitter {
     callback();
   }
 
-  catalogInsert(key, catalogEntry, options, callback = noop) {
+  catalogInsert(key, catalogEntry, options = {}, callback = noop) {
     if (this.catalogStore.has(key)) {
       return callback(new Error('Catalog key is already in use'));
     }
@@ -117,7 +117,7 @@ class Cache extends EventEmitter {
     callback();
   }
 
-  catalogUpdate = function (key, update, options, callback = noop) {
+  catalogUpdate = function (key, update, options = {}, callback = noop) {
     if (!this.catalogStore.has(key)) {
       return callback(new Error('Resource not found'));
     }
