@@ -1,5 +1,5 @@
 const joi = require('joi')
-const geojsonhint = require('@mapbox/geojsonhint')
+const geojsonhint = require('geojson-validation')
 const chalk = require('chalk')
 const layerInfo = require('./layer-metadata')
 const query = require('./query')
@@ -93,7 +93,7 @@ function shouldValidateGeojson () {
 }
 
 function validateGeojson (geojson, path) {
-  const geojsonErrors = geojsonhint.hint(geojson)
+  const geojsonErrors = geojsonhint.valid(geojson, true)
   if (geojsonErrors.length > 0) {
     console.log(chalk.yellow(`WARNING: source data for ${path} contains invalid GeoJSON; ${geojsonErrors[0]}`))
   }

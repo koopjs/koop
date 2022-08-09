@@ -11,8 +11,8 @@ describe('Route module unit tests', () => {
     const chalkSpy = sinon.spy()
 
     const route = proxyquire('../../lib/route', {
-      '@mapbox/geojsonhint': {
-        hint: hintSpy
+      'geojson-validation': {
+        valid: hintSpy
       },
       chalk: {
         yellow: chalkSpy
@@ -25,7 +25,7 @@ describe('Route module unit tests', () => {
       process.env.KOOP_LOG_LEVEL = 'debug'
       route({ params: {}, query: {}, url: '/rest/info' }, {}, { foo: 'geojson' })
       hintSpy.calledOnce.should.equal(true)
-      hintSpy.firstCall.args.should.deepEqual([{ foo: 'geojson' }])
+      hintSpy.firstCall.args.should.deepEqual([{ foo: 'geojson' }, true])
       chalkSpy.calledOnce.should.equal(true)
     })
 
