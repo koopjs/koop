@@ -122,7 +122,8 @@ class TableLayerMetadata {
       capabilities,
       layerId,
       hasStaticData,
-      supportsPagination
+      supportsPagination,
+      hasAttachments
     } = options
 
     this._setFields(geojson, options)
@@ -140,6 +141,8 @@ class TableLayerMetadata {
     this._setPagination(supportsPagination)
 
     this._setDirectOverrides(options)
+
+    this._setHasAttachments(hasAttachments)
 
     return this
   }
@@ -198,6 +201,12 @@ class TableLayerMetadata {
   _setPagination (supportsPagination) {
     if (typeof supportsPagination === 'boolean') {
       this.advancedQueryCapabilities.supportsPagination = supportsPagination
+    }
+  }
+
+  _setHasAttachments (hasAttachments) {
+    if (hasAttachments != null && typeof hasAttachments === 'boolean') {
+      this.hasAttachments = hasAttachments
     }
   }
 

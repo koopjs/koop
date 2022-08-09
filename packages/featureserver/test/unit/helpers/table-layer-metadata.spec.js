@@ -240,6 +240,28 @@ describe('TableLayerMetadata', () => {
       })
     })
 
+    it('"hasAttachments" option used if a boolean value', () => {
+      const tableLayerMetadata = new TableLayerMetadata()
+      tableLayerMetadata.mixinOverrides({}, { hasAttachments: true })
+
+      tableLayerMetadata.should.deepEqual({
+        ...defaultFixture,
+        fields: ['fields'],
+        hasAttachments: true
+      })
+    })
+
+    it('"hasAttachments" option ignored if not a boolean value', () => {
+      const tableLayerMetadata = new TableLayerMetadata()
+      tableLayerMetadata.mixinOverrides({}, { hasAttachments: 'true' })
+
+      tableLayerMetadata.should.deepEqual({
+        ...defaultFixture,
+        fields: ['fields'],
+        hasAttachments: false
+      })
+    })
+
     it('use supported options for direct overrides', () => {
       const tableLayerMetadata = new TableLayerMetadata()
       tableLayerMetadata.mixinOverrides({}, {

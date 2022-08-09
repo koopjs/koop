@@ -194,6 +194,7 @@ const server = {
   copyrightText: String // Optional copyright text
   maxRecordCount: Number // the maximum number of features a provider can return at once,
   hasStaticData: Boolean // whether or not the server contains any data that is not changing
+  hasAttachments: Boolean // whether or not the server contains any attachments for this layer
   layers: [{ // A collection of all the layers managed by the server
     type: 'FeatureCollection',
     metadata: {
@@ -260,6 +261,7 @@ Note that the layer info is modified with properties `metadata` and `capabilites
 |`metadata.displayField`| overrides default (`OBJECTID`) |
 |`metadata.objectIdField`| overrides default  (`OBJECTID`) |
 |`metadata.hasStaticData`| overrides default (`false`) |
+|`metadata.hasAttachments`| overrides default (`false`) |
 |`metadata.renderer`| overrides default |
 |`metadata.defaultVisibility`| overrides default |
 |`metadata.minScale`| overrides default |
