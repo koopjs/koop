@@ -33,7 +33,7 @@ function renderFeaturesResponse (data = {}, params = {}) {
   const computedProperties = {
     geometryType: params.geometryType,
     spatialReference: getOutputSpatialReference(data, params),
-    fields: QueryFields.create({ data, ...params }),
+    fields: QueryFields.create({ ...data, ...params }),
     features: data.features || [],
     exceededTransferLimit: !!limitExceeded,
     objectIdFieldName: idField || objectIdFieldNameDefault,

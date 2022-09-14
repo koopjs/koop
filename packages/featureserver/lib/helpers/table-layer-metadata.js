@@ -26,10 +26,12 @@ class TableLayerMetadata {
 
     const {
       params: {
-        layer: layerId
+        layer: reqLayer
       } = {},
       query = {}
     } = req
+
+    const layerId = reqLayer != null ? reqLayer : req.layerId
 
     const {
       currentVersion,

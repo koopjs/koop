@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Fixed
 - geojson validation security vulnerablity
+- fix ids in layers metadata
+- fix params passed to QueryFields.create
 
 ## [4.0.1] - 08-05-2022
 ### Changed

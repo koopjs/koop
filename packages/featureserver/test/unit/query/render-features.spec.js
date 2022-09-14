@@ -79,7 +79,7 @@ describe('renderFeaturesResponse', () => {
       exceededTransferLimit: false
     })
     createQueryFieldsSpy.callCount.should.equal(1)
-    createQueryFieldsSpy.firstCall.args.should.deepEqual([{ data: json, geometryType: 'esriGeometryPoint' }])
+    createQueryFieldsSpy.firstCall.args.should.deepEqual([{ ...json, geometryType: 'esriGeometryPoint' }])
     getCollectionCrsSpy.callCount.should.equal(1)
     getCollectionCrsSpy.firstCall.args.should.deepEqual([json])
     normalizeSpatialReferenceSpy.callCount.should.equal(1)
@@ -134,7 +134,7 @@ describe('renderFeaturesResponse', () => {
       transform: 'transform'
     })
     createQueryFieldsSpy.callCount.should.equal(1)
-    createQueryFieldsSpy.firstCall.args.should.deepEqual([{ data: json, geometryType: 'esriGeometryPoint' }])
+    createQueryFieldsSpy.firstCall.args.should.deepEqual([{ ...json, geometryType: 'esriGeometryPoint' }])
     getCollectionCrsSpy.callCount.should.equal(1)
     getCollectionCrsSpy.firstCall.args.should.deepEqual([json])
     normalizeSpatialReferenceSpy.callCount.should.equal(1)

@@ -11,7 +11,7 @@ function queryRelatedRecords (data, params = {}) {
     relatedRecordGroups: []
   }
 
-  if (!params.returnCountOnly) response.fields = QueryFields.create(data, params)
+  if (!params.returnCountOnly) response.fields = QueryFields.create({ ...data, ...params })
 
   const geomType = getGeometryTypeFromGeojson(data)
   if (geomType) {
