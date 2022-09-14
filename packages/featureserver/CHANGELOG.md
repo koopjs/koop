@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [4.0.2] - 09-14-2022
 ### Fixed
 - geojson validation security vulnerablity
 - fix ids in layers metadata
@@ -497,6 +497,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[4.0.2]: https://github.com/koopjs/featureserver/compare/v4.0.1...v4.0.2
 [4.0.1]: https://github.com/koopjs/featureserver/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/koopjs/featureserver/compare/v3.5.0...v4.0.0
 [3.5.0]: https://github.com/koopjs/featureserver/compare/v3.4.0...v3.5.0

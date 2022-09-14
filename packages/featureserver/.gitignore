@@ -2,3 +2,5 @@ node_modules
 .vscode
 yarn.lock
 **/.DS_Store
+.nyc_output/
+coverage/
