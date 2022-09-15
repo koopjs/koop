@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [4.1.0] - 09-15-2022
 ### Added
 - Set hasZ from metadata setting when present
 
@@ -502,6 +502,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2017-01-25
 * Initial Release
 
+[4.1.0]: https://github.com/koopjs/featureserver/compare/v4.0.2...v4.1.0
 [4.0.2]: https://github.com/koopjs/featureserver/compare/v4.0.1...v4.0.2
 [4.0.1]: https://github.com/koopjs/featureserver/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/koopjs/featureserver/compare/v3.5.0...v4.0.0
