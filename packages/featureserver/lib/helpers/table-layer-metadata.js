@@ -224,7 +224,8 @@ class TableLayerMetadata {
       maxRecordCount,
       defaultVisibility,
       currentVersion,
-      fullVersion
+      fullVersion,
+      hasZ
     } = options
 
     _.merge(this, {
@@ -238,7 +239,8 @@ class TableLayerMetadata {
       maxRecordCount,
       defaultVisibility,
       currentVersion,
-      fullVersion
+      fullVersion,
+      hasZ
     })
   }
 }

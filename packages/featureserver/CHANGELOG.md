@@ -2,11 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Added
+- Set hasZ from metadata setting when present
+
 ## [4.0.2] - 09-14-2022
 ### Fixed
 - geojson validation security vulnerablity
 - fix ids in layers metadata
 - fix params passed to QueryFields.create
+
 
 ## [4.0.1] - 08-05-2022
 ### Changed

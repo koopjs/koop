@@ -151,6 +151,17 @@ describe('TableLayerMetadata', () => {
       })
     })
 
+    it('"hasZ" option used when present in metadata', () => {
+      const tableLayerMetadata = new TableLayerMetadata()
+      tableLayerMetadata.mixinOverrides({}, { hasZ: true })
+
+      tableLayerMetadata.should.deepEqual({
+        ...defaultFixture,
+        fields: ['fields'],
+        hasZ: true
+      })
+    })
+
     it('"hasStaticData" option used if a boolean value', () => {
       const tableLayerMetadata = new TableLayerMetadata()
       tableLayerMetadata.mixinOverrides({}, { hasStaticData: true })
