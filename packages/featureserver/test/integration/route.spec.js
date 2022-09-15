@@ -6,7 +6,6 @@ const should = require('should')
 const _ = require('lodash')
 const snow = require('./fixtures/snow.json')
 const noGeom = require('./fixtures/no-geometry.json')
-const ProviderStatsClassBreaks = require('./fixtures/generateRenderer/provider-statistics-with-classBreaks.json')
 const relatedData = require('./fixtures/relatedData.json')
 const app = express()
 
@@ -267,7 +266,25 @@ describe('Routing feature server requests', () => {
   describe('generateRenderer', () => {
     describe('when statistics are passed in', () => {
       beforeEach(() => {
-        data = _.cloneDeep(ProviderStatsClassBreaks)
+        data = _.cloneDeep({
+          type: 'FeatureCollection',
+          metadata: {
+            name: 'GDeltGKG'
+          },
+          statistics: {
+            classBreaks: [
+              [80, 147],
+              [147, 174],
+              [174, 195],
+              [195, 218],
+              [240, 270],
+              [307, 360],
+              [360, 558],
+              [558, 799],
+              [799, 2000]
+            ]
+          }
+        })
       })
       it('should properly route and handle when a provider passes in class breaks statistics', done => {
         request(app)

@@ -1,6 +1,0 @@
-{
-  "type": "algorithmic",
-  "fromColor": [0, 255, 0],
-  "toColor": [0, 0, 255],
-  "algorithm": "HSVAlgorithm"
-}
