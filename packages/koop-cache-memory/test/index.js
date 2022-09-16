@@ -31,6 +31,28 @@ function getFeatures() {
   };
 }
 
+const serverInfo = {
+  layers: [
+    getFeatures()
+  ],
+  metadata: {
+    name: 'Test',
+    description: 'Test'
+  },
+}
+
+test('Inserting and retreiving from the cache when cached object is collection of layers', t => {
+  cache.insert('keyserverinfo', serverInfo, {ttl: 600})
+  const cached = cache.retrieve('keyserverinfo')
+  t.ok(cached.layers, 'has layers');
+  t.ok(cached.layers[0].type === 'FeatureCollection', 'has feature collection')
+  t.equal(cached.metadata.name, 'Test', 'retrieved metadata')
+  t.ok(cached._cache.expires, 'expiration set')
+  t.ok(cached._cache.updated, 'updated set')
+  t.end()
+})
+
+
 test('Inserting and retreiving from the cache', (t) => {
   const geojson = getFeatures();
   cache.insert('key', geojson, { ttl: 600 });
@@ -184,6 +206,7 @@ test('Retrieve catalog entry after its data has been deleted', (t) => {
     type: 'FeatureCollection',
     crs: { type: 'name', properties: { type: 'EPSG:4326' } },
     metadata: { name: 'Test', description: 'Test' },
+    layers: []
   });
 });
 

@@ -11,6 +11,7 @@ function asCachableGeojson(geojson) {
 
   geojson.type = geojson.type || 'FeatureCollection';
   geojson.features = geojson.features || [];
+  geojson.layers = geojson.layers || [];
   geojson.metadata = geojson.metadata || {};
   return _.cloneDeep(geojson);
 }

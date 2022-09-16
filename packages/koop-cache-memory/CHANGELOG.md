@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* retrieve method will now return `layers` if they have been cached
+
 ## [2.0.2] - 2022-08-05
 ### Fixed
 * removed ?? operator so as to support older node versions
