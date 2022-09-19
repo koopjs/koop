@@ -1,12 +1,12 @@
-const _ = require('lodash')
-const { geojsonToArcGIS } = require('@terraformer/arcgis')
+const _ = require('lodash');
+const { geojsonToArcGIS } = require('@terraformer/arcgis');
 
 module.exports = function convert (geometry = {}) {
-  if (!geometry || !geometry.type) return null
+  if (!geometry || !geometry.type) return null;
 
-  const result = geojsonToArcGIS(_.clone(geometry))
+  const result = geojsonToArcGIS(_.clone(geometry));
 
-  if (_.isEmpty(result)) return null
+  if (_.isEmpty(result)) return null;
 
-  return _.omit(result, 'spatialReference')
-}
+  return _.omit(result, 'spatialReference');
+};

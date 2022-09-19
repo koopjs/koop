@@ -1,0 +1,6 @@
+{
+    "all": true,
+    "include": ["packages/winnow/lib/**/*.js", "packages/winnow/index.js"],
+    "exclude": ["**/*.spec.js"],
+    "includeAllSources": true
+}

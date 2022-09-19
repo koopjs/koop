@@ -1,13 +1,13 @@
-const { create: createSqlStatement } = require('../sql-query-builder')
-const normalizeQueryOptions = require('../normalize-query-options')
-const standardQuery = require('./standard-query')
+const { create: createSqlStatement } = require('../sql-query-builder');
+const normalizeQueryOptions = require('../normalize-query-options');
+const standardQuery = require('./standard-query');
 
 module.exports = function uniqueValueQuery (features, { fields } = {}) {
-  if (fields.length > 3) throw new Error('Cannot classify using more than three fields')
+  if (fields.length > 3) throw new Error('Cannot classify using more than three fields');
 
   fields.map(field => {
-    if (!features[0].properties[field]) throw new Error(`Unknown field: ${field}`)
-  })
+    if (!features[0].properties[field]) throw new Error(`Unknown field: ${field}`);
+  });
 
   const uniqueValueOptions = {
     aggregates: [
@@ -18,9 +18,9 @@ module.exports = function uniqueValueQuery (features, { fields } = {}) {
       }
     ],
     groupBy: fields
-  }
+  };
 
-  const options = normalizeQueryOptions(uniqueValueOptions, features)
-  const sql = createSqlStatement(options)
-  return standardQuery(features, sql, { ...options, skipLimitHandling: true })
-}
+  const options = normalizeQueryOptions(uniqueValueOptions, features);
+  const sql = createSqlStatement(options);
+  return standardQuery(features, sql, { ...options, skipLimitHandling: true });
+};

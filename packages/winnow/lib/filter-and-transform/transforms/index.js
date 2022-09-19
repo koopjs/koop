@@ -7,4 +7,4 @@ module.exports = {
   toHash: require('./to-hash'),
   toEsriGeometry: require('./to-esri-geometry'),
   reducePrecision: require('./reduce-precision')
-}
+};

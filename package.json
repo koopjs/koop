@@ -4,7 +4,12 @@
   "description": "Monorepo for Koop's core dependencies",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint \"packages/**/*.js\"",
+    "lint:fix": "eslint \"packages/**/*.js\" --fix",
+    "test": "npm run test:winnow",
+    "test:winnow": "tape 'packages/winnow/**/*.spec.js' | tap-spec",
+    "test:cov:winnow": "nyc --reporter=text-summary --reporter=html tape 'packages/winnow/**/*.spec.js' | tap-spec",
+    "test:cov:winnow:unit": "nyc --reporter=text-summary --reporter=html tape 'packages/winnow/lib/**/*.spec.js' | tap-spec "
   },
   "repository": {
     "type": "git",
@@ -20,6 +25,7 @@
     "packages/*"
   ],
   "devDependencies": {
-    "lerna": "^5.5.1"
+    "lerna": "^5.5.1",
+    "nyc": "^15.1.0"
   }
 }

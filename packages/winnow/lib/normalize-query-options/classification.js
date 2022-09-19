@@ -1,7 +1,7 @@
 function normalizeClassification ({ classification, classificationDef } = {}) {
-  if (classification) return classification // TODO: ? normalize standard classification
-  else if (classificationDef) return normalizeGeoservicesClassBreaks(classificationDef)
-  else return undefined
+  if (classification) return classification; // TODO: ? normalize standard classification
+  else if (classificationDef) return normalizeGeoservicesClassBreaks(classificationDef);
+  else return undefined;
 }
 
 function normalizeGeoservicesClassBreaks (classificationDef) {
@@ -14,7 +14,7 @@ function normalizeGeoservicesClassBreaks (classificationDef) {
     normalizationType,
     normalizationField,
     uniqueValueFields
-  } = classificationDef
+  } = classificationDef;
 
   if (type === 'classBreaksDef') {
     return {
@@ -25,37 +25,37 @@ function normalizeGeoservicesClassBreaks (classificationDef) {
       breakCount: breakCount,
       normType: normalizeTranformationMethod(normalizationType),
       normField: normalizationField
-    }
+    };
   }
 
   if (type === 'uniqueValueDef') {
     return {
       type: 'unique',
       fields: uniqueValueFields
-    }
+    };
   }
 
-  throw new Error(`Input classification type invalid: ${type}`)
+  throw new Error(`Input classification type invalid: ${type}`);
 }
 
 function normalizeClassificationMethod (method) {
   switch (method) {
-    case 'esriClassifyEqualInterval': return 'equalInterval'
-    case 'esriClassifyNaturalBreaks': return 'naturalBreaks'
-    case 'esriClassifyQuantile': return 'quantile'
-    case 'esriClassifyGeometricalInterval': return 'geomInterval'
-    case 'esriClassifyStandardDeviation': return 'stddev'
-    default: return method
+  case 'esriClassifyEqualInterval': return 'equalInterval';
+  case 'esriClassifyNaturalBreaks': return 'naturalBreaks';
+  case 'esriClassifyQuantile': return 'quantile';
+  case 'esriClassifyGeometricalInterval': return 'geomInterval';
+  case 'esriClassifyStandardDeviation': return 'stddev';
+  default: return method;
   }
 }
 
 function normalizeTranformationMethod (method) {
   switch (method) {
-    case 'esriNormalizeByField': return 'field'
-    case 'esriNormalizeByLog': return 'log'
-    case 'esriNormalizeByPercentOfTotal': return 'percent'
-    default: return method
+  case 'esriNormalizeByField': return 'field';
+  case 'esriNormalizeByLog': return 'log';
+  case 'esriNormalizeByPercentOfTotal': return 'percent';
+  default: return method;
   }
 }
 
-module.exports = normalizeClassification
+module.exports = normalizeClassification;

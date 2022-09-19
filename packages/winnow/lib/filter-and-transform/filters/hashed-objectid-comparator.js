@@ -1,4 +1,4 @@
-const createIntegerHash = require('../helpers/create-integer-hash')
+const createIntegerHash = require('../helpers/create-integer-hash');
 
 /**
  * This function is used when the where option includes an OBJECTID, but the data
@@ -13,12 +13,12 @@ const createIntegerHash = require('../helpers/create-integer-hash')
  * @param {*} operator the predicate operator
  */
 module.exports = function (properties, geometry, objectId, operator) {
-  const hashedFeature = createIntegerHash(JSON.stringify({ properties, geometry }))
-  if (operator === '=' && hashedFeature === objectId) return true
-  if (operator === '!=' && hashedFeature !== objectId) return true
-  if (operator === '>' && hashedFeature > objectId) return true
-  if (operator === '<' && hashedFeature < objectId) return true
-  if (operator === '>=' && hashedFeature >= objectId) return true
-  if (operator === '<=' && hashedFeature <= objectId) return true
-  return false
-}
+  const hashedFeature = createIntegerHash(JSON.stringify({ properties, geometry }));
+  if (operator === '=' && hashedFeature === objectId) return true;
+  if (operator === '!=' && hashedFeature !== objectId) return true;
+  if (operator === '>' && hashedFeature > objectId) return true;
+  if (operator === '<' && hashedFeature < objectId) return true;
+  if (operator === '>=' && hashedFeature >= objectId) return true;
+  if (operator === '<=' && hashedFeature <= objectId) return true;
+  return false;
+};

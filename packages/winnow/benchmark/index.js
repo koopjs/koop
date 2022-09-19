@@ -1,23 +1,23 @@
-process.env.KOOP_WARNINGS = 'suppress'
+process.env.KOOP_WARNINGS = 'suppress';
 
-const Benchmark = require('benchmark')
-const fs = require('fs-extra')
-const path = require('path')
-const winnow = require('../index.js')
+const Benchmark = require('benchmark');
+const fs = require('fs-extra');
+const path = require('path');
+const winnow = require('../index.js');
 
-const features = fs.readJSONSync(path.join(__dirname, './fixtures.geojson')).features
-const suite = new Benchmark.Suite()
+const features = fs.readJSONSync(path.join(__dirname, './fixtures.geojson')).features;
+const suite = new Benchmark.Suite();
 
 suite
   .add('query all', function () {
     winnow.query(features, {
       where: '1=1'
-    })
+    });
   })
   .add('query with filter', function () {
     winnow.query(features, {
       where: 'OBJECTID = \'east\''
-    })
+    });
   })
   .add('query with geo filter', function () {
     winnow.query(features, {
@@ -31,9 +31,9 @@ suite
         }
       },
       spatialPredicate: 'ST_Within'
-    })
+    });
   })
   .on('cycle', function (event) {
-    console.log(String(event.target))
+    console.log(String(event.target));
   })
-  .run({ async: true })
+  .run({ async: true });

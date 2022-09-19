@@ -4,4 +4,4 @@ module.exports = {
   intersects: require('./intersects'),
   envelopeIntersects: require('./envelope-intersects'),
   hashedObjectIdComparator: require('./hashed-objectid-comparator')
-}
+};

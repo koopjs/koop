@@ -1,21 +1,21 @@
-const translateSqlWhere = require('./translate-sql-where')
-const createGeometryPredicate = require('./geometry-predicate')
+const translateSqlWhere = require('./translate-sql-where');
+const createGeometryPredicate = require('./geometry-predicate');
 
 function createWhereClause (options = {}) {
-  const { where, geometry } = options
-  if (!where && !geometry) return ''
+  const { where, geometry } = options;
+  if (!where && !geometry) return '';
 
-  const fragments = []
+  const fragments = [];
 
   if (where) {
-    fragments.push(translateSqlWhere(options))
+    fragments.push(translateSqlWhere(options));
   }
 
   if (geometry) {
-    fragments.push(createGeometryPredicate(options))
+    fragments.push(createGeometryPredicate(options));
   }
 
-  return ` WHERE ${fragments.join(' AND ')}`
+  return ` WHERE ${fragments.join(' AND ')}`;
 }
 
-module.exports = createWhereClause
+module.exports = createWhereClause;

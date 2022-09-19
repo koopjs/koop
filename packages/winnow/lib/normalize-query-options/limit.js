@@ -4,24 +4,24 @@
  * @returns {integer} or undefined
  */
 function normalizeLimit (options) {
-  const limit = getLimitFromOptions(options)
+  const limit = getLimitFromOptions(options);
 
   if (limit !== undefined && !Number.isInteger(limit)) {
-    console.warn('"limit" option is not an integer; skipping')
-    return
+    console.warn('"limit" option is not an integer; skipping');
+    return;
   }
   // If there is a limit, add 1 to it so we can later calculate a limitExceeded. The result set will be resized accordingly, post SQL
-  return limit ? limit + 1 : undefined
+  return limit ? limit + 1 : undefined;
 }
 
 function getLimitFromOptions (options) {
-  if (options.limit !== undefined) return options.limit
+  if (options.limit !== undefined) return options.limit;
 
-  if (options.resultRecordCount !== undefined) return options.resultRecordCount
+  if (options.resultRecordCount !== undefined) return options.resultRecordCount;
 
-  if (options.count !== undefined) return options.count
+  if (options.count !== undefined) return options.count;
 
-  if (options.maxFeatures !== undefined) return options.maxFeatures
+  if (options.maxFeatures !== undefined) return options.maxFeatures;
 }
 
-module.exports = normalizeLimit
+module.exports = normalizeLimit;

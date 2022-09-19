@@ -1,8 +1,8 @@
-const _ = require('lodash')
+const _ = require('lodash');
 
 function selectFields (properties, delimitedFields) {
-  const fields = delimitedFields.split(',')
-  return _.pick(properties, fields)
+  const fields = delimitedFields.split(',');
+  return _.pick(properties, fields);
 }
 
-module.exports = selectFields
+module.exports = selectFields;

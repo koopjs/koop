@@ -1,22 +1,22 @@
-const moment = require('moment')
-const DATE_FORMATS = [moment.ISO_8601]
+const moment = require('moment');
+const DATE_FORMATS = [moment.ISO_8601];
 
 function detectEsriFieldType (value) {
-  var type = typeof value
+  var type = typeof value;
 
   if (Number.isInteger(value)) {
-    return 'Integer'
+    return 'Integer';
   }
 
   if (type === 'number') {
-    return 'Double'
+    return 'Double';
   }
 
   if (moment(value, DATE_FORMATS, true).isValid()) {
-    return 'Date'
+    return 'Date';
   }
 
-  return 'String'
+  return 'String';
 }
 
-module.exports = detectEsriFieldType
+module.exports = detectEsriFieldType;
