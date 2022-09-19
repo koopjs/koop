@@ -1,19 +1,19 @@
-const Fields = require('./fields')
+const Fields = require('./fields');
 
 class LayerFields extends Fields {
   static create (inputOptions) {
-    const options = Fields.normalizeOptions(inputOptions)
-    return new LayerFields(options)
+    const options = Fields.normalizeOptions(inputOptions);
+    return new LayerFields(options);
   }
 
   constructor (options) {
-    super(options)
+    super(options);
 
     return this.fields.map(field => {
-      field.setEditable().setNullable()
-      return field
-    })
+      field.setEditable().setNullable();
+      return field;
+    });
   }
 }
 
-module.exports = LayerFields
+module.exports = LayerFields;

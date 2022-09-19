@@ -24,7 +24,7 @@ class PointRenderer {
         type: 'esriSMS',
         style: 'esriSMSCircle'
       }
-    })
+    });
   }
 }
 
@@ -43,7 +43,7 @@ class LineRenderer {
         type: 'esriSLS',
         style: 'esriSLSSolid'
       }
-    })
+    });
   }
 }
 
@@ -72,7 +72,7 @@ class PolygonRenderer {
         type: 'esriSFS',
         style: 'esriSFSSolid'
       }
-    })
+    });
   }
 }
 
@@ -80,4 +80,4 @@ module.exports = {
   PointRenderer,
   PolygonRenderer,
   LineRenderer
-}
+};

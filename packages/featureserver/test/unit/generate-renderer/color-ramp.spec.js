@@ -1,8 +1,7 @@
-/* global describe, it */
 const should = require('should'); // eslint-disable-line
 const {
   createColorRamp
-} = require('../../../lib/generate-renderer/color-ramp')
+} = require('../../../lib/generate-renderer/color-ramp');
 
 const classification = [
   [80, 147],
@@ -14,21 +13,21 @@ const classification = [
   [360, 558],
   [558, 799],
   [799, 2000]
-]
+];
 
 describe('when creating a color ramp that', () => {
   describe('is algorithmic', () => {
     it('should throw an error on no breaks option', () => {
-      createColorRamp.bind().should.throw()
-    })
+      createColorRamp.bind().should.throw();
+    });
 
     it('should throw an error on invalid type option', () => {
-      createColorRamp.bind(null, { classification, type: 'foo' }).should.throw()
-    })
+      createColorRamp.bind(null, { classification, type: 'foo' }).should.throw();
+    });
 
     it('should throw an error on multipart type with color-ramps', () => {
-      createColorRamp.bind(null, { classification, type: 'multipart' }).should.throw()
-    })
+      createColorRamp.bind(null, { classification, type: 'multipart' }).should.throw();
+    });
 
     it('should return correct hsv color ramp', () => {
       const response = createColorRamp({
@@ -37,7 +36,7 @@ describe('when creating a color ramp that', () => {
         fromColor: [0, 255, 0],
         toColor: [0, 0, 255],
         algorithm: 'esriHSVAlgorithm'
-      })
+      });
       response.should.deepEqual([
         [0, 255, 0],
         [0, 255, 64],
@@ -48,8 +47,8 @@ describe('when creating a color ramp that', () => {
         [0, 127, 255],
         [0, 64, 255],
         [0, 0, 255]
-      ])
-    })
+      ]);
+    });
 
     it('should return correct lab color ramp', () => {
       const response = createColorRamp({
@@ -58,7 +57,7 @@ describe('when creating a color ramp that', () => {
         fromColor: [0, 255, 0],
         toColor: [0, 0, 255],
         algorithm: 'esriCIELabAlgorithm'
-      })
+      });
       response.should.deepEqual([
         [0, 255, 0],
         [87, 228, 79],
@@ -69,8 +68,8 @@ describe('when creating a color ramp that', () => {
         [108, 91, 211],
         [83, 58, 233],
         [0, 0, 255]
-      ])
-    })
+      ]);
+    });
 
     it('should return correct lch color ramp', () => {
       const response = createColorRamp({
@@ -79,7 +78,7 @@ describe('when creating a color ramp that', () => {
         fromColor: [0, 255, 0],
         toColor: [0, 0, 255],
         algorithm: 'esriLabLChAlgorithm'
-      })
+      });
       response.should.deepEqual([
         [0, 255, 0],
         [0, 242, 105],
@@ -90,8 +89,8 @@ describe('when creating a color ramp that', () => {
         [0, 135, 255],
         [0, 96, 255],
         [0, 0, 255]
-      ])
-    })
+      ]);
+    });
 
     it('should return multiple color ramps', () => {
       const multipartRamp = {
@@ -116,8 +115,8 @@ describe('when creating a color ramp that', () => {
             algorithm: 'esriLabLChAlgorithm'
           }
         ]
-      }
-      const response = createColorRamp({ classification, ...multipartRamp })
+      };
+      const response = createColorRamp({ classification, ...multipartRamp });
       response.should.deepEqual([
         [
           [0, 255, 0],
@@ -152,7 +151,7 @@ describe('when creating a color ramp that', () => {
           [0, 96, 255],
           [0, 0, 255]
         ]
-      ])
-    })
-  })
-})
+      ]);
+    });
+  });
+});

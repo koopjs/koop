@@ -1,6 +1,6 @@
 const should = require('should') // eslint-disable-line
-should.config.checkProtoEql = false
-const Fields = require('../../../../lib/helpers/fields/fields')
+should.config.checkProtoEql = false;
+const Fields = require('../../../../lib/helpers/fields/fields');
 
 describe('Fields', () => {
   describe('static normalizeOptions method', () => {
@@ -11,10 +11,10 @@ describe('Fields', () => {
         metadata: {
           fields: 'snafu'
         }
-      })
+      });
 
-      fieldDefinitions.should.equal('foo')
-    })
+      fieldDefinitions.should.equal('foo');
+    });
 
     it('should defer to root-level "fields" when supplied', () => {
       const { fieldDefinitions } = Fields.normalizeOptions({
@@ -22,20 +22,20 @@ describe('Fields', () => {
         metadata: {
           fields: 'snafu'
         }
-      })
+      });
 
-      fieldDefinitions.should.equal('bar')
-    })
+      fieldDefinitions.should.equal('bar');
+    });
 
     it('should use "metadata.fields" when supplied', () => {
       const { fieldDefinitions } = Fields.normalizeOptions({
         metadata: {
           fields: 'snafu'
         }
-      })
+      });
 
-      fieldDefinitions.should.equal('snafu')
-    })
+      fieldDefinitions.should.equal('snafu');
+    });
 
     it('should defer to root-level "idField" when supplied', () => {
       const { idField } = Fields.normalizeOptions({
@@ -43,28 +43,28 @@ describe('Fields', () => {
         metadata: {
           idField: 'snafu'
         }
-      })
+      });
 
-      idField.should.equal('bar')
-    })
+      idField.should.equal('bar');
+    });
 
     it('should use "metadata.idField" when supplied', () => {
       const { idField } = Fields.normalizeOptions({
         metadata: {
           idField: 'snafu'
         }
-      })
+      });
 
-      idField.should.equal('snafu')
-    })
+      idField.should.equal('snafu');
+    });
 
     it('should defer to root-level "attributeSample" when supplied', () => {
       const { attributeSample } = Fields.normalizeOptions({
         attributeSample: 'bar'
-      })
+      });
 
-      attributeSample.should.equal('bar')
-    })
+      attributeSample.should.equal('bar');
+    });
 
     it('should acquire "attributeSample" from features[0].attributes', () => {
       const { attributeSample } = Fields.normalizeOptions({
@@ -72,10 +72,10 @@ describe('Fields', () => {
           { attributes: { name: 'foo' } },
           { attributes: { name: 'bar' } }
         ]
-      })
+      });
 
-      attributeSample.should.deepEqual({ name: 'foo' })
-    })
+      attributeSample.should.deepEqual({ name: 'foo' });
+    });
 
     it('should acquire "attributeSample" from features[0].properties', () => {
       const { attributeSample } = Fields.normalizeOptions({
@@ -83,19 +83,19 @@ describe('Fields', () => {
           { properties: { name: 'foo' } },
           { properties: { name: 'bar' } }
         ]
-      })
+      });
 
-      attributeSample.should.deepEqual({ name: 'foo' })
-    })
+      attributeSample.should.deepEqual({ name: 'foo' });
+    });
 
     it('should have "attributeSample" default to empty object', () => {
       const { attributeSample } = Fields.normalizeOptions({
         features: []
-      })
+      });
 
-      attributeSample.should.deepEqual({})
-    })
-  })
+      attributeSample.should.deepEqual({});
+    });
+  });
 
   describe('constructor', () => {
     it('should set fields from definitions, add OBJECTID', () => {
@@ -103,7 +103,7 @@ describe('Fields', () => {
         fieldDefinitions: [
           { name: 'foo', type: 'String' }
         ]
-      })
+      });
 
       fields.should.deepEqual({
         fields: [{
@@ -122,8 +122,8 @@ describe('Fields', () => {
           defaultValue: null,
           length: 128
         }]
-      })
-    })
+      });
+    });
 
     it('should set fields from definitions, including OBJECTID', () => {
       const fields = new Fields({
@@ -131,7 +131,7 @@ describe('Fields', () => {
           { name: 'foo', type: 'String' },
           { name: 'OBJECTID', type: 'Integer' }
         ]
-      })
+      });
 
       fields.should.deepEqual({
         fields: [{
@@ -150,8 +150,8 @@ describe('Fields', () => {
           defaultValue: null,
           length: 128
         }]
-      })
-    })
+      });
+    });
 
     it('should set fields from definitions, noting idField as OBJECTID', () => {
       const fields = new Fields({
@@ -160,7 +160,7 @@ describe('Fields', () => {
           { name: 'foo', type: 'String' },
           { name: 'bar', type: 'Integer' }
         ]
-      })
+      });
 
       fields.should.deepEqual({
         fields: [{
@@ -179,13 +179,13 @@ describe('Fields', () => {
           defaultValue: null,
           length: 128
         }]
-      })
-    })
+      });
+    });
 
     it('should set fields from attributeSample, add OBJECTID', () => {
       const fields = new Fields({
         attributeSample: { foo: 'bar' }
-      })
+      });
 
       fields.should.deepEqual({
         fields: [{
@@ -204,13 +204,13 @@ describe('Fields', () => {
           defaultValue: null,
           length: 128
         }]
-      })
-    })
+      });
+    });
 
     it('should set fields from attributeSample, use included OBJECTID', () => {
       const fields = new Fields({
         attributeSample: { OBJECTID: 1234, foo: 'bar' }
-      })
+      });
 
       fields.should.deepEqual({
         fields: [{
@@ -229,14 +229,14 @@ describe('Fields', () => {
           defaultValue: null,
           length: 128
         }]
-      })
-    })
+      });
+    });
 
     it('should set fields from attributeSample, use included OBJECTID', () => {
       const fields = new Fields({
         idField: 'hello',
         attributeSample: { hello: 1234, foo: 'bar' }
-      })
+      });
 
       fields.should.deepEqual({
         fields: [{
@@ -255,7 +255,7 @@ describe('Fields', () => {
           defaultValue: null,
           length: 128
         }]
-      })
-    })
-  })
-})
+      });
+    });
+  });
+});

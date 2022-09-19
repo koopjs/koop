@@ -1,32 +1,32 @@
-const _ = require('lodash')
+const _ = require('lodash');
 const {
   calculateExtent,
   getGeometryTypeFromGeojson,
   getSpatialReference,
   normalizeExtent,
   normalizeInputData
-} = require('./helpers')
+} = require('./helpers');
 const {
   LayerFields
-} = require('./helpers/fields')
-const { layerMetadata: layerMetadataDefaults, renderers: rendererDefaults } = require('./defaults')
+} = require('./helpers/fields');
+const { layerMetadata: layerMetadataDefaults, renderers: rendererDefaults } = require('./defaults');
 
 module.exports = function relationshipsMetadata (providerResponse, queryParams = {}) {
-  const { layers: layersInput, tables: tablesInput } = normalizeInputData(providerResponse)
+  const { layers: layersInput, tables: tablesInput } = normalizeInputData(providerResponse);
 
   const layers = layersInput.map((layer, i) => {
-    return formatResponse(layer, { queryParams, layerId: i, isLayer: true })
-  })
+    return formatResponse(layer, { queryParams, layerId: i, isLayer: true });
+  });
 
   const tables = tablesInput.map((table, i) => {
-    return formatResponse(table, { queryParams, layerId: layers.length + i })
-  })
+    return formatResponse(table, { queryParams, layerId: layers.length + i });
+  });
 
-  return { layers, tables }
-}
+  return { layers, tables };
+};
 
 function formatResponse (geojson = {}, options = {}) {
-  const { layerId, isLayer, queryParams } = options
+  const { layerId, isLayer, queryParams } = options;
 
   const {
     metadata = {},
@@ -34,7 +34,7 @@ function formatResponse (geojson = {}, options = {}) {
       quantization,
       extract
     } = {}
-  } = geojson
+  } = geojson;
 
   const {
     id,
@@ -49,10 +49,10 @@ function formatResponse (geojson = {}, options = {}) {
     minScale,
     maxScale,
     hasStaticData
-  } = metadata
-  const geometryType = isLayer ? getGeometryTypeFromGeojson(geojson) : undefined
-  const spatialReference = getSpatialReference(geojson, queryParams)
-  const extent = metadata.extent ? normalizeExtent(metadata.extent, spatialReference) : calculateExtent({ isLayer, geojson, spatialReference })
+  } = metadata;
+  const geometryType = isLayer ? getGeometryTypeFromGeojson(geojson) : undefined;
+  const spatialReference = getSpatialReference(geojson, queryParams);
+  const extent = metadata.extent ? normalizeExtent(metadata.extent, spatialReference) : calculateExtent({ isLayer, geojson, spatialReference });
 
   const json = {
     id: id || layerId,
@@ -79,9 +79,9 @@ function formatResponse (geojson = {}, options = {}) {
     timeInfo,
     maxRecordCount,
     supportsCoordinatesQuantization: !!quantization
-  }
+  };
 
   return _.defaults(json, {
     capabilities: extract ? `${layerMetadataDefaults.capabilities},Extract` : layerMetadataDefaults.capabilities
-  }, layerMetadataDefaults)
+  }, layerMetadataDefaults);
 }

@@ -1,29 +1,29 @@
 const should = require('should'); // eslint-disable-line
-const proxyquire = require('proxyquire')
-const sinon = require('sinon')
+const proxyquire = require('proxyquire');
+const sinon = require('sinon');
 
 describe('generate-renderer', () => {
   it('should handle empty data', () => {
-    const generateRenderer = require('../../../lib/generate-renderer')
+    const generateRenderer = require('../../../lib/generate-renderer');
 
-    const result = generateRenderer()
+    const result = generateRenderer();
 
-    result.should.deepEqual({})
-  })
+    result.should.deepEqual({});
+  });
 
   describe('with pre-calculated statistics', () => {
     it('should render precalculated statistics', () => {
       const getGeometrySpy = sinon.spy(function () {
-        return 'esriGeometryPoint'
-      })
+        return 'esriGeometryPoint';
+      });
 
       const createSymbolSpy = sinon.spy(function () {
-        return 'symbol'
-      })
+        return 'symbol';
+      });
 
       const createColorRampSpy = sinon.spy(function () {
-        return ['color-1', 'color-2']
-      })
+        return ['color-1', 'color-2'];
+      });
 
       const generateRenderer = proxyquire('../../../lib/generate-renderer', {
         '../helpers': {
@@ -35,7 +35,7 @@ describe('generate-renderer', () => {
         './color-ramp': {
           createColorRamp: createColorRampSpy
         }
-      })
+      });
 
       const data = {
         statistics: {
@@ -45,8 +45,8 @@ describe('generate-renderer', () => {
             [11, 20]
           ]
         }
-      }
-      const result = generateRenderer(data)
+      };
+      const result = generateRenderer(data);
 
       result.should.deepEqual({
         type: 'classBreaks',
@@ -76,39 +76,39 @@ describe('generate-renderer', () => {
             symbol: undefined
           }
         ]
-      })
+      });
 
-      getGeometrySpy.calledOnce.should.equal(true)
-      getGeometrySpy.firstCall.args.should.deepEqual([data])
-      createColorRampSpy.calledOnce.should.equal(true)
+      getGeometrySpy.calledOnce.should.equal(true);
+      getGeometrySpy.firstCall.args.should.deepEqual([data]);
+      createColorRampSpy.calledOnce.should.equal(true);
       createColorRampSpy.firstCall.args.should.deepEqual([
         { classification: data.statistics.classBreaks }
-      ])
-      createSymbolSpy.calledTwice.should.equal(true)
+      ]);
+      createSymbolSpy.calledTwice.should.equal(true);
       createSymbolSpy.firstCall.args.should.deepEqual([
         undefined,
         'color-1',
         'esriGeometryPoint'
-      ])
+      ]);
       createSymbolSpy.secondCall.args.should.deepEqual([
         undefined,
         'color-2',
         'esriGeometryPoint'
-      ])
-    })
+      ]);
+    });
 
     it('should render precalculated statistics with default geometry type', () => {
       const getGeometrySpy = sinon.spy(function () {
 
-      })
+      });
 
       const createSymbolSpy = sinon.spy(function () {
-        return 'symbol'
-      })
+        return 'symbol';
+      });
 
       const createColorRampSpy = sinon.spy(function () {
-        return ['color-1', 'color-2']
-      })
+        return ['color-1', 'color-2'];
+      });
 
       const generateRenderer = proxyquire('../../../lib/generate-renderer', {
         '../helpers': {
@@ -120,7 +120,7 @@ describe('generate-renderer', () => {
         './color-ramp': {
           createColorRamp: createColorRampSpy
         }
-      })
+      });
 
       const data = {
         statistics: {
@@ -130,8 +130,8 @@ describe('generate-renderer', () => {
             [11, 20]
           ]
         }
-      }
-      const result = generateRenderer(data)
+      };
+      const result = generateRenderer(data);
 
       result.should.deepEqual({
         type: 'classBreaks',
@@ -161,27 +161,27 @@ describe('generate-renderer', () => {
             symbol: undefined
           }
         ]
-      })
+      });
 
-      getGeometrySpy.calledOnce.should.equal(true)
-      getGeometrySpy.firstCall.args.should.deepEqual([data])
-      createColorRampSpy.calledOnce.should.equal(true)
+      getGeometrySpy.calledOnce.should.equal(true);
+      getGeometrySpy.firstCall.args.should.deepEqual([data]);
+      createColorRampSpy.calledOnce.should.equal(true);
       createColorRampSpy.firstCall.args.should.deepEqual([
         { classification: data.statistics.classBreaks }
-      ])
-      createSymbolSpy.calledTwice.should.equal(true)
+      ]);
+      createSymbolSpy.calledTwice.should.equal(true);
       createSymbolSpy.firstCall.args.should.deepEqual([
         undefined,
         'color-1',
         'esriGeometryPoint'
-      ])
+      ]);
       createSymbolSpy.secondCall.args.should.deepEqual([
         undefined,
         'color-2',
         'esriGeometryPoint'
-      ])
-    })
-  })
+      ]);
+    });
+  });
 
   describe('with winnow statistics', () => {
     it('should throw error when no classificationDef provided', () => {
@@ -190,30 +190,30 @@ describe('generate-renderer', () => {
           [0, 10],
           [11, 20],
           [21, 30]
-        ]
-      })
+        ];
+      });
 
       const getGeometrySpy = sinon.spy(function () {
-        return 'esriGeometryPoint'
-      })
+        return 'esriGeometryPoint';
+      });
 
       const generateRenderer = proxyquire('../../../lib/generate-renderer', {
-        winnow: {
+        '@koopjs/winnow': {
           query: winnowSpy
         },
         '../helpers': {
           getGeometryTypeFromGeojson: getGeometrySpy
         },
-        './validate-classification-definition': () => { throw new Error('invalid classification definition') }
-      })
+        './validate-classification-definition': () => { throw new Error('invalid classification definition'); }
+      });
 
       try {
-        generateRenderer({ features: ['feature'] }, {})
-        should.fail('should have thrown error')
+        generateRenderer({ features: ['feature'] }, {});
+        should.fail('should have thrown error');
       } catch (error) {
-        error.message.should.equal('invalid classification definition')
+        error.message.should.equal('invalid classification definition');
       }
-    })
+    });
 
     it('should calculate breaks and use classBreaksDef for renderer', () => {
       const winnowSpy = sinon.spy(function () {
@@ -221,23 +221,23 @@ describe('generate-renderer', () => {
           [0, 10],
           [11, 20],
           [21, 30]
-        ]
-      })
+        ];
+      });
 
       const getGeometrySpy = sinon.spy(function () {
-        return 'esriGeometryPoint'
-      })
+        return 'esriGeometryPoint';
+      });
 
       const createSymbolSpy = sinon.spy(function () {
-        return 'symbol'
-      })
+        return 'symbol';
+      });
 
       const createColorRampSpy = sinon.spy(function () {
-        return ['color-1', 'color-2']
-      })
+        return ['color-1', 'color-2'];
+      });
 
       const generateRenderer = proxyquire('../../../lib/generate-renderer', {
-        winnow: {
+        '@koopjs/winnow': {
           query: winnowSpy
         },
         '../helpers': {
@@ -247,7 +247,7 @@ describe('generate-renderer', () => {
           createColorRamp: createColorRampSpy
         },
         './create-symbol': { createSymbol: createSymbolSpy }
-      })
+      });
 
       const result = generateRenderer(
         { features: ['feature'] },
@@ -258,7 +258,7 @@ describe('generate-renderer', () => {
             classificationMethod: 'classification-method'
           }
         }
-      )
+      );
 
       result.should.deepEqual({
         type: 'classBreaks',
@@ -288,13 +288,13 @@ describe('generate-renderer', () => {
             symbol: undefined
           }
         ]
-      })
+      });
 
-      getGeometrySpy.calledOnce.should.equal(true)
+      getGeometrySpy.calledOnce.should.equal(true);
       getGeometrySpy.firstCall.args.should.deepEqual([
         { features: ['feature'] }
-      ])
-      winnowSpy.calledOnce.should.equal(true)
+      ]);
+      winnowSpy.calledOnce.should.equal(true);
       winnowSpy.firstCall.args.should.deepEqual([
         { features: ['feature'] },
         {
@@ -305,8 +305,8 @@ describe('generate-renderer', () => {
           },
           geometryType: 'esriGeometryPoint'
         }
-      ])
-    })
+      ]);
+    });
 
     it('should calculate breaks and use uniqueValueDef for renderer', () => {
       const winnowSpy = sinon.spy(function () {
@@ -323,23 +323,23 @@ describe('generate-renderer', () => {
             count: 24,
             Genus: 'JACARANDA'
           }
-        ]
-      })
+        ];
+      });
 
       const getGeometrySpy = sinon.spy(function () {
-        return 'esriGeometryPoint'
-      })
+        return 'esriGeometryPoint';
+      });
 
       const createSymbolSpy = sinon.spy(function () {
-        return 'symbol'
-      })
+        return 'symbol';
+      });
 
       const createColorRampSpy = sinon.spy(function () {
-        return ['color-1', 'color-2']
-      })
+        return ['color-1', 'color-2'];
+      });
 
       const generateRenderer = proxyquire('../../../lib/generate-renderer', {
-        winnow: {
+        '@koopjs/winnow': {
           query: winnowSpy
         },
         '../helpers': {
@@ -349,7 +349,7 @@ describe('generate-renderer', () => {
           createColorRamp: createColorRampSpy
         },
         './create-symbol': { createSymbol: createSymbolSpy }
-      })
+      });
 
       const result = generateRenderer(
         { features: ['feature'] },
@@ -360,7 +360,7 @@ describe('generate-renderer', () => {
             fieldDelimiter: ','
           }
         }
-      )
+      );
 
       result.should.deepEqual({
         type: 'uniqueValue',
@@ -394,13 +394,13 @@ describe('generate-renderer', () => {
             symbol: undefined
           }
         ]
-      })
+      });
 
-      getGeometrySpy.calledOnce.should.equal(true)
+      getGeometrySpy.calledOnce.should.equal(true);
       getGeometrySpy.firstCall.args.should.deepEqual([
         { features: ['feature'] }
-      ])
-      winnowSpy.calledOnce.should.equal(true)
+      ]);
+      winnowSpy.calledOnce.should.equal(true);
       winnowSpy.firstCall.args.should.deepEqual([
         { features: ['feature'] },
         {
@@ -411,7 +411,7 @@ describe('generate-renderer', () => {
           },
           geometryType: 'esriGeometryPoint'
         }
-      ])
-    })
-  })
-})
+      ]);
+    });
+  });
+});

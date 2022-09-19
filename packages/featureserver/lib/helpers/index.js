@@ -11,4 +11,4 @@ module.exports = {
   FeatureLayerMetadata: require('./feature-layer-metadata'),
   ...(require('./data-type-utils')),
   ...(require('./renderers'))
-}
+};

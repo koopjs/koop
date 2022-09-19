@@ -1,23 +1,23 @@
 const should = require('should') // eslint-disable-line
-should.config.checkProtoEql = false
-const StatisticsFields = require('../../../../lib/helpers/fields/statistics-fields')
+should.config.checkProtoEql = false;
+const StatisticsFields = require('../../../../lib/helpers/fields/statistics-fields');
 
 describe('StatisticsFields', () => {
   describe('static normalizeOptions method', () => {
     it('should use first element of statistics array as sample', () => {
       const { statisticsSample } = StatisticsFields.normalizeOptions({
         statistics: [{ foo: '1.234' }]
-      })
+      });
 
-      statisticsSample.should.deepEqual({ foo: '1.234' })
-    })
+      statisticsSample.should.deepEqual({ foo: '1.234' });
+    });
 
     it('should use statistics object as sample', () => {
       const { statisticsSample } = StatisticsFields.normalizeOptions({
         statistics: { foo: '1.234' }
-      })
-      statisticsSample.should.deepEqual({ foo: '1.234' })
-    })
+      });
+      statisticsSample.should.deepEqual({ foo: '1.234' });
+    });
 
     it('should defer to fieldsDefinitions when supplied', () => {
       const { fieldDefinitions } = StatisticsFields.normalizeOptions({
@@ -26,10 +26,10 @@ describe('StatisticsFields', () => {
         metadata: {
           fields: 'snafu'
         }
-      })
+      });
 
-      fieldDefinitions.should.equal('foo')
-    })
+      fieldDefinitions.should.equal('foo');
+    });
 
     it('should defer to root-level "fields" when supplied', () => {
       const { fieldDefinitions } = StatisticsFields.normalizeOptions({
@@ -37,49 +37,49 @@ describe('StatisticsFields', () => {
         metadata: {
           fields: 'snafu'
         }
-      })
+      });
 
-      fieldDefinitions.should.equal('bar')
-    })
+      fieldDefinitions.should.equal('bar');
+    });
 
     it('should use "metadata.fields" when supplied', () => {
       const { fieldDefinitions } = StatisticsFields.normalizeOptions({
         metadata: {
           fields: 'snafu'
         }
-      })
+      });
 
-      fieldDefinitions.should.equal('snafu')
-    })
+      fieldDefinitions.should.equal('snafu');
+    });
 
     it('should convert groupByFieldsForStatistics string to array and remove whitespace', () => {
       const { groupByFieldsForStatistics } = StatisticsFields.normalizeOptions({
         groupByFieldsForStatistics: 'hello, world , today '
-      })
+      });
 
-      groupByFieldsForStatistics.should.deepEqual(['hello', 'world', 'today'])
-    })
+      groupByFieldsForStatistics.should.deepEqual(['hello', 'world', 'today']);
+    });
 
     it('should use groupByFieldsForStatistics array', () => {
       const { groupByFieldsForStatistics } = StatisticsFields.normalizeOptions({
         groupByFieldsForStatistics: ['hello']
-      })
+      });
 
-      groupByFieldsForStatistics.should.deepEqual(['hello'])
-    })
+      groupByFieldsForStatistics.should.deepEqual(['hello']);
+    });
 
     it('should default groupByFieldsForStatistics to empty array', () => {
-      const { groupByFieldsForStatistics } = StatisticsFields.normalizeOptions({})
+      const { groupByFieldsForStatistics } = StatisticsFields.normalizeOptions({});
 
-      groupByFieldsForStatistics.should.deepEqual([])
-    })
-  })
+      groupByFieldsForStatistics.should.deepEqual([]);
+    });
+  });
 
   describe('static create method', () => {
     it('should create fields from statistics and without definitions', () => {
       const result = StatisticsFields.create({
         statisticsSample: { foo: 1.234 }
-      })
+      });
       result.should.deepEqual([{
         name: 'foo',
         type: 'esriFieldTypeDouble',
@@ -87,13 +87,13 @@ describe('StatisticsFields', () => {
         alias: 'foo',
         domain: null,
         defaultValue: null
-      }])
-    })
+      }]);
+    });
 
     it('should create date field when value is ISO-string date', () => {
       const result = StatisticsFields.create({
         statisticsSample: { foo: new Date().toISOString() }
-      })
+      });
       result.should.deepEqual([{
         name: 'foo',
         type: 'esriFieldTypeDate',
@@ -101,15 +101,15 @@ describe('StatisticsFields', () => {
         alias: 'foo',
         domain: null,
         defaultValue: null
-      }])
-    })
+      }]);
+    });
 
     it('should create date field when field is defined as date', () => {
       const result = StatisticsFields.create({
         statisticsSample: { foo: 100000 },
         fieldDefinitions: [{ name: 'foo', type: 'Date' }],
         outStatistics: [{ onStatisticField: 'foo' }]
-      })
+      });
       result.should.deepEqual([{
         name: 'foo',
         type: 'esriFieldTypeDate',
@@ -117,15 +117,15 @@ describe('StatisticsFields', () => {
         alias: 'foo',
         domain: null,
         defaultValue: null
-      }])
-    })
+      }]);
+    });
 
     it('should create date field when field is defined as date, but custom label requested', () => {
       const result = StatisticsFields.create({
         statisticsSample: { bar: 100000 },
         fieldDefinitions: [{ name: 'foo', type: 'Date' }],
         outStatistics: [{ onStatisticField: 'foo', outStatisticFieldName: 'bar' }]
-      })
+      });
       result.should.deepEqual([{
         name: 'bar',
         type: 'esriFieldTypeDate',
@@ -133,8 +133,8 @@ describe('StatisticsFields', () => {
         alias: 'bar',
         domain: null,
         defaultValue: null
-      }])
-    })
+      }]);
+    });
 
     it('should create date field and groupBy fields', () => {
       const result = StatisticsFields.create({
@@ -142,7 +142,7 @@ describe('StatisticsFields', () => {
         fieldDefinitions: [{ name: 'foo', type: 'Date' }],
         outStatistics: [{ onStatisticField: 'foo' }],
         groupByFieldsForStatistics: 'bar,walter'
-      })
+      });
       result.should.deepEqual([{
         name: 'foo',
         type: 'esriFieldTypeDate',
@@ -165,7 +165,7 @@ describe('StatisticsFields', () => {
         alias: 'walter',
         domain: null,
         defaultValue: null
-      }])
-    })
-  })
-})
+      }]);
+    });
+  });
+});

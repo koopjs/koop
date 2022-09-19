@@ -1,4 +1,4 @@
-const getGeometryTypeFromGeojson = require('./get-geometry-type-from-geojson')
+const getGeometryTypeFromGeojson = require('./get-geometry-type-from-geojson');
 
 module.exports = function normalizeInput (input = {}) {
   const {
@@ -6,15 +6,15 @@ module.exports = function normalizeInput (input = {}) {
     tables = [],
     layers = [],
     relationships = []
-  } = input
+  } = input;
 
   if (type === 'FeatureCollection') {
-    const geometryType = getGeometryTypeFromGeojson(input)
+    const geometryType = getGeometryTypeFromGeojson(input);
     if (geometryType) {
-      return { layers: [input], tables, relationships }
+      return { layers: [input], tables, relationships };
     }
-    return { tables: [input], layers, relationships }
+    return { tables: [input], layers, relationships };
   }
 
-  return { layers, tables, relationships }
-}
+  return { layers, tables, relationships };
+};

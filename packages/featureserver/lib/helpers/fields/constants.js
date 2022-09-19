@@ -7,4 +7,4 @@ module.exports = {
   SQL_TYPE_OTHER: 'sqlTypeOther',
   SQL_TYPE_FLOAT: 'sqlTypeFloat',
   OBJECTID_DEFAULT_KEY: 'OBJECTID'
-}
+};

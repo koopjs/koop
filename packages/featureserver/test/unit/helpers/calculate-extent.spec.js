@@ -1,11 +1,11 @@
 const should = require('should') // eslint-disable-line
-const calculateExtent = require('../../../lib/helpers/calculate-extent')
+const calculateExtent = require('../../../lib/helpers/calculate-extent');
 
 describe('calculate-extent', () => {
   it('calculateExtent: no data passed', () => {
-    const extent = calculateExtent({})
-    should(extent).equal(undefined)
-  })
+    const extent = calculateExtent({});
+    should(extent).equal(undefined);
+  });
 
   it('calculateExtent: Point', () => {
     const extent = calculateExtent({
@@ -21,9 +21,9 @@ describe('calculate-extent', () => {
         }
       },
       spatialReference: 4326
-    })
-    should(extent).deepEqual({ xmin: 102, ymin: 0.5, xmax: 102, ymax: 0.5, spatialReference: 4326 })
-  })
+    });
+    should(extent).deepEqual({ xmin: 102, ymin: 0.5, xmax: 102, ymax: 0.5, spatialReference: 4326 });
+  });
 
   it('calculateExtent: LineString', () => {
     const extent = calculateExtent({
@@ -45,9 +45,9 @@ describe('calculate-extent', () => {
         }
       },
       spatialReference: 4326
-    })
-    should(extent).deepEqual({ xmin: 102, ymin: 0.5, xmax: 103.1, ymax: 1.2, spatialReference: 4326 })
-  })
+    });
+    should(extent).deepEqual({ xmin: 102, ymin: 0.5, xmax: 103.1, ymax: 1.2, spatialReference: 4326 });
+  });
 
   it('calculateExtent: Polygon', () => {
     const extent = calculateExtent({
@@ -71,7 +71,7 @@ describe('calculate-extent', () => {
         }
       },
       spatialReference: 102100
-    })
-    should(extent).deepEqual({ xmin: 100, ymin: 0.0, xmax: 101.0, ymax: 1.0, spatialReference: 102100 })
-  })
-})
+    });
+    should(extent).deepEqual({ xmin: 100, ymin: 0.0, xmax: 101.0, ymax: 1.0, spatialReference: 102100 });
+  });
+});

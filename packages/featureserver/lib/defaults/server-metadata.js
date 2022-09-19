@@ -38,6 +38,6 @@ const serviceResponseDefaults = {
   syncEnabled: false,
   layers: [],
   tables: []
-}
+};
 
-module.exports = serviceResponseDefaults
+module.exports = serviceResponseDefaults;

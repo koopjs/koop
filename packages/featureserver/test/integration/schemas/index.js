@@ -1,4 +1,4 @@
-const Joi = require('joi')
+const Joi = require('joi');
 
 const featuresTemplateSchema = Joi.object().keys({
   objectIdFieldName: 'OBJECTID',
@@ -16,7 +16,7 @@ const featuresTemplateSchema = Joi.object().keys({
   fields: Joi.array(),
   features: Joi.array(),
   exceededTransferLimit: Joi.boolean().valid(false)
-})
+});
 
 const fieldsTemplateSchema = Joi.object().keys({
   name: Joi.string(),
@@ -25,7 +25,7 @@ const fieldsTemplateSchema = Joi.object().keys({
   sqlType: Joi.string().valid('sqlTypeOther'),
   domain: Joi.valid(null),
   defaultValue: Joi.valid(null)
-})
+});
 
 const layerTemplateSchema = Joi.object().keys({
   currentVersion: Joi.number().valid(10.51),
@@ -112,7 +112,7 @@ const layerTemplateSchema = Joi.object().keys({
     renderer: Joi.object().keys({}),
     labelingInfo: Joi.valid(null)
   })
-})
+});
 
 const oidTemplateSchema = Joi.object().keys({
   name: Joi.string().valid('OBJECTID'),
@@ -121,7 +121,7 @@ const oidTemplateSchema = Joi.object().keys({
   sqlType: Joi.string().valid('sqlTypeInteger'),
   domain: Joi.valid(null),
   defaultValue: Joi.valid(null)
-})
+});
 
 const serverTemplateSchema = Joi.object().keys({
   currentVersion: Joi.number().valid(10.51),
@@ -166,6 +166,6 @@ const serverTemplateSchema = Joi.object().keys({
   layers: Joi.array().min(0),
   tables: Joi.array().min(0),
   supportsRelationshipsResource: Joi.boolean()
-})
+});
 
-module.exports = { featuresTemplateSchema, fieldsTemplateSchema, layerTemplateSchema, oidTemplateSchema, serverTemplateSchema }
+module.exports = { featuresTemplateSchema, fieldsTemplateSchema, layerTemplateSchema, oidTemplateSchema, serverTemplateSchema };

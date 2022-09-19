@@ -1,7 +1,7 @@
-const chroma = require('chroma-js')
-const { CodedError } = require('../helpers/errors')
+const chroma = require('chroma-js');
+const { CodedError } = require('../helpers/errors');
 
-module.exports = { createColorRamp }
+module.exports = { createColorRamp };
 
 function createColorRamp (params = {}) {
   const {
@@ -11,10 +11,10 @@ function createColorRamp (params = {}) {
     fromColor = [0, 255, 0],
     toColor = [0, 0, 255],
     algorithm = 'HSVAlgorithm'
-  } = params
+  } = params;
 
   if (!classification || classification.length === 0) {
-    throw new Error('Must supply classification')
+    throw new Error('Must supply classification');
   }
 
   if (type === 'algorithmic') {
@@ -23,44 +23,44 @@ function createColorRamp (params = {}) {
       toColor,
       algorithm,
       classificationCount: classification.length
-    })
+    });
   }
 
   if (type === 'multipart') {
-    return createMultipartRamp({ colorRamps, classificationCount: classification.length })
+    return createMultipartRamp({ colorRamps, classificationCount: classification.length });
   }
 
-  throw new CodedError(`Invalid color ramp type: ${type}`, 400)
+  throw new CodedError(`Invalid color ramp type: ${type}`, 400);
 }
 
 function createMultipartRamp (options) {
-  const { colorRamps, classificationCount } = options
+  const { colorRamps, classificationCount } = options;
 
   if (!colorRamps || !Array.isArray(colorRamps)) {
     throw new CodedError(
       'Multipart color-ramps need a valid color-ramp configuration array'
-    )
+    );
   }
 
   return colorRamps.map((ramp) => {
     return createAlgorithmicRamp({
       ...ramp,
       classificationCount
-    })
-  })
+    });
+  });
 }
 
 function createAlgorithmicRamp (options) {
-  const { fromColor, toColor, algorithm, classificationCount } = options
-  const colorRamp = chroma.scale([fromColor.slice(0, 3), toColor.slice(0, 3)])
+  const { fromColor, toColor, algorithm, classificationCount } = options;
+  const colorRamp = chroma.scale([fromColor.slice(0, 3), toColor.slice(0, 3)]);
 
   if (algorithm === 'esriCIELabAlgorithm') {
-    return colorRamp.mode('lab').colors(classificationCount, 'rgb')
+    return colorRamp.mode('lab').colors(classificationCount, 'rgb');
   }
 
   if (algorithm === 'esriLabLChAlgorithm') {
-    return colorRamp.mode('lch').colors(classificationCount, 'rgb')
+    return colorRamp.mode('lch').colors(classificationCount, 'rgb');
   }
 
-  return colorRamp.mode('hsl').colors(classificationCount, 'rgb')
+  return colorRamp.mode('hsl').colors(classificationCount, 'rgb');
 }

@@ -1,20 +1,20 @@
-const _ = require('lodash')
+const _ = require('lodash');
 const {
   CURRENT_VERSION,
   FULL_VERSION
-} = require('../constants')
+} = require('../constants');
 const {
   LayerFields
-} = require('../helpers/fields')
+} = require('../helpers/fields');
 
 class TableLayerMetadata {
   static create (geojson = {}, options = {}) {
     const {
       geojson: normalizedGeojson,
       options: normalizedOptions
-    } = TableLayerMetadata.normalizeInput(geojson, options)
-    const tableMetadata = new TableLayerMetadata()
-    return tableMetadata.mixinOverrides(normalizedGeojson, normalizedOptions)
+    } = TableLayerMetadata.normalizeInput(geojson, options);
+    const tableMetadata = new TableLayerMetadata();
+    return tableMetadata.mixinOverrides(normalizedGeojson, normalizedOptions);
   }
 
   static normalizeInput (geojson, req) {
@@ -22,22 +22,22 @@ class TableLayerMetadata {
       metadata = {},
       capabilities,
       ...normalizedGeojson
-    } = geojson
+    } = geojson;
 
     const {
       params: {
         layer: reqLayer
       } = {},
       query = {}
-    } = req
+    } = req;
 
-    const layerId = reqLayer != null ? reqLayer : req.layerId
+    const layerId = reqLayer != null ? reqLayer : req.layerId;
 
     const {
       currentVersion,
       fullVersion,
       description
-    } = _.get(req, 'app.locals.config.featureServer', {})
+    } = _.get(req, 'app.locals.config.featureServer', {});
 
     const normalizedOptions = _.pickBy({
       currentVersion,
@@ -47,16 +47,16 @@ class TableLayerMetadata {
       ...query,
       ...metadata,
       capabilities: normalizeCapabilities(capabilities, metadata.capabilities)
-    }, (value) => value)
+    }, (value) => value);
 
     if (!normalizedGeojson.features) {
-      normalizedGeojson.features = []
+      normalizedGeojson.features = [];
     }
 
     return {
       geojson: normalizedGeojson,
       options: normalizedOptions
-    }
+    };
   }
 
   constructor () {
@@ -113,7 +113,7 @@ class TableLayerMetadata {
       },
       currentVersion: CURRENT_VERSION,
       fullVersion: FULL_VERSION
-    })
+    });
   }
 
   mixinOverrides (geojson = {}, options = {}) {
@@ -126,89 +126,89 @@ class TableLayerMetadata {
       hasStaticData,
       supportsPagination,
       hasAttachments
-    } = options
+    } = options;
 
-    this._setFields(geojson, options)
+    this._setFields(geojson, options);
 
-    this._setId(layerId, id)
+    this._setId(layerId, id);
 
-    this._setDisplayField(displayField, idField)
+    this._setDisplayField(displayField, idField);
 
-    this._setHasStaticData(hasStaticData)
+    this._setHasStaticData(hasStaticData);
 
-    this._setCapabilities(capabilities)
+    this._setCapabilities(capabilities);
 
-    this._setUniqueIdField(idField)
+    this._setUniqueIdField(idField);
 
-    this._setPagination(supportsPagination)
+    this._setPagination(supportsPagination);
 
-    this._setDirectOverrides(options)
+    this._setDirectOverrides(options);
 
-    this._setHasAttachments(hasAttachments)
+    this._setHasAttachments(hasAttachments);
 
-    return this
+    return this;
   }
 
   _setFields (data, options) {
-    const fields = LayerFields.create({ ...data, ...options })
+    const fields = LayerFields.create({ ...data, ...options });
     if (fields) {
-      this.fields = fields
+      this.fields = fields;
     }
   }
 
   _setId (layerId, metadataId) {
-    const requestPathLayerId = parseInt(layerId)
-    const id = !isNaN(requestPathLayerId) ? requestPathLayerId : metadataId
+    const requestPathLayerId = parseInt(layerId);
+    const id = !isNaN(requestPathLayerId) ? requestPathLayerId : metadataId;
 
     if (id) {
-      this.id = id
+      this.id = id;
     }
   }
 
   _setDisplayField (displayField, idField) {
-    const overrideDisplayField = displayField || idField
+    const overrideDisplayField = displayField || idField;
 
     if (overrideDisplayField) {
-      this.displayField = overrideDisplayField
+      this.displayField = overrideDisplayField;
     }
   }
 
   _setHasStaticData (hasStaticData) {
     if (typeof hasStaticData === 'boolean') {
-      this.hasStaticData = hasStaticData
+      this.hasStaticData = hasStaticData;
     }
   }
 
   _setCapabilities (capabilities) {
     if (!capabilities) {
-      return
+      return;
     }
 
     if (capabilities.list) {
-      this.capabilities = capabilities.list
-      return
+      this.capabilities = capabilities.list;
+      return;
     }
 
     if (_.has(capabilities, 'extract') && !this.capabilities.includes('Extract')) {
-      this.capabilities = `${this.capabilities},Extract`
+      this.capabilities = `${this.capabilities},Extract`;
     }
   }
 
   _setUniqueIdField (idField) {
     if (idField) {
-      this.uniqueIdField.name = idField
+      this.uniqueIdField.name = idField;
     }
   }
 
   _setPagination (supportsPagination) {
     if (typeof supportsPagination === 'boolean') {
-      this.advancedQueryCapabilities.supportsPagination = supportsPagination
+      this.advancedQueryCapabilities.supportsPagination = supportsPagination;
     }
   }
 
   _setHasAttachments (hasAttachments) {
     if (hasAttachments != null && typeof hasAttachments === 'boolean') {
-      this.hasAttachments = hasAttachments
+      this.hasAttachments = hasAttachments;
     }
   }
 
@@ -226,7 +226,7 @@ class TableLayerMetadata {
       currentVersion,
       fullVersion,
       hasZ
-    } = options
+    } = options;
 
     _.merge(this, {
       name,
@@ -241,7 +241,7 @@ class TableLayerMetadata {
       currentVersion,
       fullVersion,
       hasZ
-    })
+    });
   }
 }
 
@@ -250,13 +250,13 @@ function normalizeCapabilities (capabilities, metadataCapabilites) {
     return {
       ...capabilities,
       list: metadataCapabilites
-    }
+    };
   }
 
   return {
     ...(metadataCapabilites || {}),
     ...capabilities
-  }
+  };
 }
 
-module.exports = TableLayerMetadata
+module.exports = TableLayerMetadata;

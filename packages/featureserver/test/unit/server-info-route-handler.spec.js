@@ -1,15 +1,15 @@
 const should = require("should"); // eslint-disable-line
-const sinon = require('sinon')
-const proxyquire = require('proxyquire')
-const CURRENT_VERSION = 10.51
-const FULL_VERSION = '10.5.1'
+const sinon = require('sinon');
+const proxyquire = require('proxyquire');
+const CURRENT_VERSION = 10.51;
+const FULL_VERSION = '10.5.1';
 
 describe('server info', () => {
   it('empty geojson should use and result in defaults', () => {
-    const getCollectionCrs = sinon.spy()
-    const getGeometryTypeFromGeojson = sinon.spy()
-    const normalizeSpatialReference = sinon.spy()
-    const normalizeExtent = sinon.spy()
+    const getCollectionCrs = sinon.spy();
+    const getGeometryTypeFromGeojson = sinon.spy();
+    const normalizeSpatialReference = sinon.spy();
+    const normalizeExtent = sinon.spy();
 
     const serverInfoHandler = proxyquire(
       '../../lib/server-info-route-handler',
@@ -34,9 +34,9 @@ describe('server info', () => {
           }
         }
       }
-    )
+    );
 
-    const serverInfo = serverInfoHandler({})
+    const serverInfo = serverInfoHandler({});
 
     serverInfo.should.deepEqual({
       hasStaticData: false,
@@ -53,23 +53,23 @@ describe('server info', () => {
       relationships: [],
       currentVersion: CURRENT_VERSION,
       fullVersion: FULL_VERSION
-    })
+    });
 
-    getCollectionCrs.notCalled.should.equal(true)
-    getGeometryTypeFromGeojson.notCalled.should.equal(true)
-    normalizeSpatialReference.notCalled.should.equal(true)
-    normalizeExtent.notCalled.should.equal(true)
-  })
+    getCollectionCrs.notCalled.should.equal(true);
+    getGeometryTypeFromGeojson.notCalled.should.equal(true);
+    normalizeSpatialReference.notCalled.should.equal(true);
+    normalizeExtent.notCalled.should.equal(true);
+  });
 
   it('geojson feature collection with no CRS and no features, should generate tables, use defaults', () => {
-    const simpleCollectionFixture = { type: 'FeatureCollection', features: [] }
-    const getCollectionCrs = sinon.spy()
-    const getGeometryTypeFromGeojson = sinon.spy()
-    const normalizeSpatialReference = sinon.spy()
-    const normalizeExtent = sinon.spy()
+    const simpleCollectionFixture = { type: 'FeatureCollection', features: [] };
+    const getCollectionCrs = sinon.spy();
+    const getGeometryTypeFromGeojson = sinon.spy();
+    const normalizeSpatialReference = sinon.spy();
+    const normalizeExtent = sinon.spy();
     const normalizeInputData = sinon.spy(function (input) {
-      return { tables: [input], layers: [], relationships: [] }
-    })
+      return { tables: [input], layers: [], relationships: [] };
+    });
 
     const serverInfoHandler = proxyquire(
       '../../lib/server-info-route-handler',
@@ -96,14 +96,14 @@ describe('server info', () => {
           }
         }
       }
-    )
-    const serverInfo = serverInfoHandler(simpleCollectionFixture)
-    normalizeInputData.calledOnce.should.equal(true)
-    normalizeSpatialReference.notCalled.should.equal(true)
-    normalizeExtent.notCalled.should.equal(true)
-    getCollectionCrs.calledOnce.should.equal(true)
-    getCollectionCrs.firstCall.args.should.deepEqual([simpleCollectionFixture])
-    getGeometryTypeFromGeojson.calledOnce.should.equal(false)
+    );
+    const serverInfo = serverInfoHandler(simpleCollectionFixture);
+    normalizeInputData.calledOnce.should.equal(true);
+    normalizeSpatialReference.notCalled.should.equal(true);
+    normalizeExtent.notCalled.should.equal(true);
+    getCollectionCrs.calledOnce.should.equal(true);
+    getCollectionCrs.firstCall.args.should.deepEqual([simpleCollectionFixture]);
+    getGeometryTypeFromGeojson.calledOnce.should.equal(false);
 
     serverInfo.should.deepEqual({
       foo: 'bar',
@@ -131,8 +131,8 @@ describe('server info', () => {
       relationships: [],
       currentVersion: CURRENT_VERSION,
       fullVersion: FULL_VERSION
-    })
-  })
+    });
+  });
 
   it('geojson feature collection with no CRS and null geom features, should generate tables, use defaults', () => {
     const simpleCollectionFixture = {
@@ -142,14 +142,14 @@ describe('server info', () => {
         { type: 'Feature', properties: {}, geometry: null },
         { type: 'Feature', properties: {}, geometry: null }
       ]
-    }
-    const getCollectionCrs = sinon.spy()
-    const getGeometryTypeFromGeojson = sinon.spy()
-    const normalizeSpatialReference = sinon.spy()
-    const normalizeExtent = sinon.spy()
+    };
+    const getCollectionCrs = sinon.spy();
+    const getGeometryTypeFromGeojson = sinon.spy();
+    const normalizeSpatialReference = sinon.spy();
+    const normalizeExtent = sinon.spy();
     const normalizeInputData = sinon.spy(function (input) {
-      return { tables: [input], layers: [], relationships: [] }
-    })
+      return { tables: [input], layers: [], relationships: [] };
+    });
 
     const serverInfoHandler = proxyquire(
       '../../lib/server-info-route-handler',
@@ -175,12 +175,12 @@ describe('server info', () => {
           }
         }
       }
-    )
-    const serverInfo = serverInfoHandler(simpleCollectionFixture)
-    normalizeSpatialReference.notCalled.should.equal(true)
-    normalizeExtent.notCalled.should.equal(true)
-    getCollectionCrs.calledOnce.should.equal(true)
-    normalizeInputData.calledOnce.should.equal(true)
+    );
+    const serverInfo = serverInfoHandler(simpleCollectionFixture);
+    normalizeSpatialReference.notCalled.should.equal(true);
+    normalizeExtent.notCalled.should.equal(true);
+    getCollectionCrs.calledOnce.should.equal(true);
+    normalizeInputData.calledOnce.should.equal(true);
 
     serverInfo.should.deepEqual({
       foo: 'bar',
@@ -208,8 +208,8 @@ describe('server info', () => {
       relationships: [],
       currentVersion: CURRENT_VERSION,
       fullVersion: FULL_VERSION
-    })
-  })
+    });
+  });
 
   it('simple geojson with CRS should generate layers, extent, spatialReference', () => {
     const simpleCollectionFixture = {
@@ -235,21 +235,21 @@ describe('server info', () => {
           geometry: { type: 'Point', coordinates: [-99, 39] }
         }
       ]
-    }
+    };
 
     const getCollectionCrs = sinon.spy(function () {
-      return 4326
-    })
+      return 4326;
+    });
     const getGeometryTypeFromGeojson = sinon.spy(function () {
-      return 'esriGeometryPoint'
-    })
+      return 'esriGeometryPoint';
+    });
     const normalizeSpatialReference = sinon.spy(function () {
-      return { wkid: 4326, latestWkid: 4326 }
-    })
-    const normalizeExtent = sinon.spy()
+      return { wkid: 4326, latestWkid: 4326 };
+    });
+    const normalizeExtent = sinon.spy();
     const normalizeInputData = sinon.spy(function (input) {
-      return { tables: [], layers: [input], relationships: [] }
-    })
+      return { tables: [], layers: [input], relationships: [] };
+    });
     const serverInfoHandler = proxyquire(
       '../../lib/server-info-route-handler',
       {
@@ -274,19 +274,19 @@ describe('server info', () => {
           }
         }
       }
-    )
-    const serverInfo = serverInfoHandler(simpleCollectionFixture)
+    );
+    const serverInfo = serverInfoHandler(simpleCollectionFixture);
 
-    normalizeExtent.notCalled.should.equal(true)
-    normalizeInputData.calledOnce.should.equal(true)
-    getCollectionCrs.calledOnce.should.equal(true)
-    getCollectionCrs.firstCall.args.should.deepEqual([simpleCollectionFixture])
-    getGeometryTypeFromGeojson.calledOnce.should.equal(true)
+    normalizeExtent.notCalled.should.equal(true);
+    normalizeInputData.calledOnce.should.equal(true);
+    getCollectionCrs.calledOnce.should.equal(true);
+    getCollectionCrs.firstCall.args.should.deepEqual([simpleCollectionFixture]);
+    getGeometryTypeFromGeojson.calledOnce.should.equal(true);
     getGeometryTypeFromGeojson.firstCall.args.should.deepEqual([
       simpleCollectionFixture
-    ])
-    normalizeSpatialReference.calledOnce.should.equal(true)
-    normalizeSpatialReference.firstCall.args.should.deepEqual([4326])
+    ]);
+    normalizeSpatialReference.calledOnce.should.equal(true);
+    normalizeSpatialReference.firstCall.args.should.deepEqual([4326]);
 
     serverInfo.should.deepEqual({
       foo: 'bar',
@@ -335,23 +335,23 @@ describe('server info', () => {
       relationships: [],
       currentVersion: CURRENT_VERSION,
       fullVersion: FULL_VERSION
-    })
-  })
+    });
+  });
 
   it('metadata object input should generate layers, extent, spatialReference', () => {
     const getCollectionCrs = sinon.spy(function () {
-      return 4326
-    })
+      return 4326;
+    });
     const getGeometryTypeFromGeojson = sinon.spy(function () {
       if (
         getGeometryTypeFromGeojson.callCount === 3 ||
         getGeometryTypeFromGeojson.callCount === 6
-      ) { return }
-      return 'esriGeometryPoint'
-    })
+      ) { return; }
+      return 'esriGeometryPoint';
+    });
     const normalizeSpatialReference = sinon.spy(function () {
-      return { wkid: 4326, latestWkid: 4326 }
-    })
+      return { wkid: 4326, latestWkid: 4326 };
+    });
     const normalizeExtent = sinon.spy(function () {
       return {
         xmin: -180,
@@ -362,11 +362,11 @@ describe('server info', () => {
           wkid: 4326,
           latestWkid: 4326
         }
-      }
-    })
+      };
+    });
     const normalizeInputData = sinon.spy(function (input) {
-      return { tables: input.tables, layers: input.layers, relationships: [] }
-    })
+      return { tables: input.tables, layers: input.layers, relationships: [] };
+    });
     const layer1 = {
       type: 'FeatureCollection',
       crs: {
@@ -390,7 +390,7 @@ describe('server info', () => {
           geometry: { type: 'Point', coordinates: [-99, 39] }
         }
       ]
-    }
+    };
     const layer2 = {
       type: 'FeatureCollection',
       crs: {
@@ -414,7 +414,7 @@ describe('server info', () => {
           geometry: { type: 'Point', coordinates: [-110, 43] }
         }
       ]
-    }
+    };
     const tables = [
       {
         type: 'FeatureCollection',
@@ -428,7 +428,7 @@ describe('server info', () => {
           { type: 'Feature', properties: {}, geometry: null }
         ]
       }
-    ]
+    ];
     const input = {
       maxRecordCount: 5000,
       hasStaticData: true,
@@ -439,7 +439,7 @@ describe('server info', () => {
       geometryType: 'set by metadata',
       layers: [layer1, layer2],
       tables
-    }
+    };
 
     const serverInfoHandler = proxyquire(
       '../../lib/server-info-route-handler',
@@ -464,26 +464,26 @@ describe('server info', () => {
           }
         }
       }
-    )
+    );
 
-    const serverInfo = serverInfoHandler(input)
+    const serverInfo = serverInfoHandler(input);
 
-    normalizeInputData.calledOnce.should.equal(true)
-    getCollectionCrs.calledOnce.should.equal(true)
-    getCollectionCrs.firstCall.args.should.deepEqual([input])
-    getGeometryTypeFromGeojson.callCount.should.equal(2)
-    getGeometryTypeFromGeojson.firstCall.args.should.deepEqual([layer1])
-    getGeometryTypeFromGeojson.secondCall.args.should.deepEqual([layer2])
-    normalizeSpatialReference.calledOnce.should.equal(true)
-    normalizeSpatialReference.firstCall.args.should.deepEqual([4326])
-    normalizeExtent.calledOnce.should.equal(true)
+    normalizeInputData.calledOnce.should.equal(true);
+    getCollectionCrs.calledOnce.should.equal(true);
+    getCollectionCrs.firstCall.args.should.deepEqual([input]);
+    getGeometryTypeFromGeojson.callCount.should.equal(2);
+    getGeometryTypeFromGeojson.firstCall.args.should.deepEqual([layer1]);
+    getGeometryTypeFromGeojson.secondCall.args.should.deepEqual([layer2]);
+    normalizeSpatialReference.calledOnce.should.equal(true);
+    normalizeSpatialReference.firstCall.args.should.deepEqual([4326]);
+    normalizeExtent.calledOnce.should.equal(true);
     normalizeExtent.firstCall.args.should.deepEqual([
       [-180, -90, 180, 90],
       {
         wkid: 4326,
         latestWkid: 4326
       }
-    ])
+    ]);
 
     serverInfo.should.deepEqual({
       foo: 'bar',
@@ -553,8 +553,8 @@ describe('server info', () => {
       relationships: [],
       currentVersion: CURRENT_VERSION,
       fullVersion: FULL_VERSION
-    })
-  })
+    });
+  });
 
   it('geojson with metadata property should generate layers, extent, spatialReference', () => {
     const simpleCollectionFixture = {
@@ -593,17 +593,17 @@ describe('server info', () => {
           geometry: { type: 'Point', coordinates: [-99, 39] }
         }
       ]
-    }
+    };
 
     const getCollectionCrs = sinon.spy(function () {
-      return 4326
-    })
+      return 4326;
+    });
     const getGeometryTypeFromGeojson = sinon.spy(function () {
-      return 'esriGeometryPoint'
-    })
+      return 'esriGeometryPoint';
+    });
     const normalizeSpatialReference = sinon.spy(function () {
-      return { wkid: 4326, latestWkid: 4326 }
-    })
+      return { wkid: 4326, latestWkid: 4326 };
+    });
     const normalizeExtent = sinon.spy(function () {
       return {
         xmin: -180,
@@ -614,11 +614,11 @@ describe('server info', () => {
           wkid: 4326,
           latestWkid: 4326
         }
-      }
-    })
+      };
+    });
     const normalizeInputData = sinon.spy(function (input) {
-      return { layers: [input], tables: [], relationships: [] }
-    })
+      return { layers: [input], tables: [], relationships: [] };
+    });
 
     const serverInfoHandler = proxyquire(
       '../../lib/server-info-route-handler',
@@ -643,25 +643,25 @@ describe('server info', () => {
           }
         }
       }
-    )
-    const serverInfo = serverInfoHandler(simpleCollectionFixture)
+    );
+    const serverInfo = serverInfoHandler(simpleCollectionFixture);
 
-    getCollectionCrs.calledOnce.should.equal(true)
-    getCollectionCrs.firstCall.args.should.deepEqual([simpleCollectionFixture])
-    getGeometryTypeFromGeojson.callCount.should.equal(1)
+    getCollectionCrs.calledOnce.should.equal(true);
+    getCollectionCrs.firstCall.args.should.deepEqual([simpleCollectionFixture]);
+    getGeometryTypeFromGeojson.callCount.should.equal(1);
     getGeometryTypeFromGeojson.firstCall.args.should.deepEqual([
       simpleCollectionFixture
-    ])
-    normalizeSpatialReference.calledOnce.should.equal(true)
-    normalizeSpatialReference.firstCall.args.should.deepEqual([4326])
-    normalizeExtent.calledOnce.should.equal(true)
+    ]);
+    normalizeSpatialReference.calledOnce.should.equal(true);
+    normalizeSpatialReference.firstCall.args.should.deepEqual([4326]);
+    normalizeExtent.calledOnce.should.equal(true);
     normalizeExtent.firstCall.args.should.deepEqual([
       [-180, -90, 180, 90],
       {
         wkid: 4326,
         latestWkid: 4326
       }
-    ])
+    ]);
 
     serverInfo.should.deepEqual({
       foo: 'bar',
@@ -710,8 +710,8 @@ describe('server info', () => {
       relationships: [],
       currentVersion: CURRENT_VERSION,
       fullVersion: FULL_VERSION
-    })
-  })
+    });
+  });
 
   it('should use req.app.locals.config.featureServer for version and serviceDescription', () => {
     const simpleCollectionFixture = {
@@ -737,21 +737,21 @@ describe('server info', () => {
           geometry: { type: 'Point', coordinates: [-99, 39] }
         }
       ]
-    }
+    };
 
     const getCollectionCrs = sinon.spy(function () {
-      return 4326
-    })
+      return 4326;
+    });
     const getGeometryTypeFromGeojson = sinon.spy(function () {
-      return 'esriGeometryPoint'
-    })
+      return 'esriGeometryPoint';
+    });
     const normalizeSpatialReference = sinon.spy(function () {
-      return { wkid: 4326, latestWkid: 4326 }
-    })
-    const normalizeExtent = sinon.spy()
+      return { wkid: 4326, latestWkid: 4326 };
+    });
+    const normalizeExtent = sinon.spy();
     const normalizeInputData = sinon.spy(function (input) {
-      return { tables: [], layers: [input], relationships: [] }
-    })
+      return { tables: [], layers: [input], relationships: [] };
+    });
     const serverInfoHandler = proxyquire(
       '../../lib/server-info-route-handler',
       {
@@ -776,7 +776,7 @@ describe('server info', () => {
           }
         }
       }
-    )
+    );
 
     const options = {
       app: {
@@ -790,19 +790,19 @@ describe('server info', () => {
           }
         }
       }
-    }
-    const serverInfo = serverInfoHandler(simpleCollectionFixture, options)
+    };
+    const serverInfo = serverInfoHandler(simpleCollectionFixture, options);
 
-    normalizeExtent.notCalled.should.equal(true)
-    normalizeInputData.calledOnce.should.equal(true)
-    getCollectionCrs.calledOnce.should.equal(true)
-    getCollectionCrs.firstCall.args.should.deepEqual([simpleCollectionFixture])
-    getGeometryTypeFromGeojson.calledOnce.should.equal(true)
+    normalizeExtent.notCalled.should.equal(true);
+    normalizeInputData.calledOnce.should.equal(true);
+    getCollectionCrs.calledOnce.should.equal(true);
+    getCollectionCrs.firstCall.args.should.deepEqual([simpleCollectionFixture]);
+    getGeometryTypeFromGeojson.calledOnce.should.equal(true);
     getGeometryTypeFromGeojson.firstCall.args.should.deepEqual([
       simpleCollectionFixture
-    ])
-    normalizeSpatialReference.calledOnce.should.equal(true)
-    normalizeSpatialReference.firstCall.args.should.deepEqual([4326])
+    ]);
+    normalizeSpatialReference.calledOnce.should.equal(true);
+    normalizeSpatialReference.firstCall.args.should.deepEqual([4326]);
 
     serverInfo.should.deepEqual({
       foo: 'bar',
@@ -851,23 +851,23 @@ describe('server info', () => {
       relationships: [],
       currentVersion: 11.01,
       fullVersion: '11.0.1'
-    })
-  })
+    });
+  });
 
   it('geojson with metadata property including relationships should generate layers, extent, spatialReference and relationships', () => {
     const getCollectionCrs = sinon.spy(function () {
-      return 4326
-    })
+      return 4326;
+    });
     const getGeometryTypeFromGeojson = sinon.spy(function () {
       if (
         getGeometryTypeFromGeojson.callCount === 3 ||
         getGeometryTypeFromGeojson.callCount === 6
-      ) { return }
-      return 'esriGeometryPoint'
-    })
+      ) { return; }
+      return 'esriGeometryPoint';
+    });
     const normalizeSpatialReference = sinon.spy(function () {
-      return { wkid: 4326, latestWkid: 4326 }
-    })
+      return { wkid: 4326, latestWkid: 4326 };
+    });
     const normalizeExtent = sinon.spy(function () {
       return {
         xmin: -180,
@@ -878,15 +878,15 @@ describe('server info', () => {
           wkid: 4326,
           latestWkid: 4326
         }
-      }
-    })
+      };
+    });
     const normalizeInputData = sinon.spy(function (input) {
       return {
         tables: input.tables,
         layers: input.layers,
         relationships: input.relationships
-      }
-    })
+      };
+    });
     const layer1 = {
       type: 'FeatureCollection',
       crs: {
@@ -910,7 +910,7 @@ describe('server info', () => {
           geometry: { type: 'Point', coordinates: [-99, 39] }
         }
       ]
-    }
+    };
     const layer2 = {
       type: 'FeatureCollection',
       crs: {
@@ -934,7 +934,7 @@ describe('server info', () => {
           geometry: { type: 'Point', coordinates: [-110, 43] }
         }
       ]
-    }
+    };
     const tables = [
       {
         type: 'FeatureCollection',
@@ -948,11 +948,11 @@ describe('server info', () => {
           { type: 'Feature', properties: {}, geometry: null }
         ]
       }
-    ]
+    ];
     const relationships = [
       { id: 0, name: 'Relationship_0' },
       { id: 1, name: 'Relationship_1' }
-    ]
+    ];
     const input = {
       maxRecordCount: 5000,
       hasStaticData: true,
@@ -963,7 +963,7 @@ describe('server info', () => {
       layers: [layer1, layer2],
       tables,
       relationships
-    }
+    };
 
     const serverInfoHandler = proxyquire(
       '../../lib/server-info-route-handler',
@@ -989,23 +989,23 @@ describe('server info', () => {
           }
         }
       }
-    )
-    const serverInfo = serverInfoHandler(input)
+    );
+    const serverInfo = serverInfoHandler(input);
 
-    getCollectionCrs.calledOnce.should.equal(true)
-    getCollectionCrs.firstCall.args.should.deepEqual([input])
-    getGeometryTypeFromGeojson.callCount.should.equal(2)
-    getGeometryTypeFromGeojson.firstCall.args.should.deepEqual([layer1])
-    normalizeSpatialReference.calledOnce.should.equal(true)
-    normalizeSpatialReference.firstCall.args.should.deepEqual([4326])
-    normalizeExtent.calledOnce.should.equal(true)
+    getCollectionCrs.calledOnce.should.equal(true);
+    getCollectionCrs.firstCall.args.should.deepEqual([input]);
+    getGeometryTypeFromGeojson.callCount.should.equal(2);
+    getGeometryTypeFromGeojson.firstCall.args.should.deepEqual([layer1]);
+    normalizeSpatialReference.calledOnce.should.equal(true);
+    normalizeSpatialReference.firstCall.args.should.deepEqual([4326]);
+    normalizeExtent.calledOnce.should.equal(true);
     normalizeExtent.firstCall.args.should.deepEqual([
       [-180, -90, 180, 90],
       {
         wkid: 4326,
         latestWkid: 4326
       }
-    ])
+    ]);
 
     serverInfo.should.deepEqual({
       foo: 'bar',
@@ -1084,6 +1084,6 @@ describe('server info', () => {
       ],
       currentVersion: CURRENT_VERSION,
       fullVersion: FULL_VERSION
-    })
-  })
-})
+    });
+  });
+});

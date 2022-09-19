@@ -1,13 +1,13 @@
-const authenticationErrorResponse = require('../templates/errors/credentials-invalid.json')
-const authorizationErrorResponse = require('../templates/errors/unauthorized.json')
-const responseHandler = require('./response-handler')
+const authenticationErrorResponse = require('../templates/errors/credentials-invalid.json');
+const authorizationErrorResponse = require('../templates/errors/unauthorized.json');
+const responseHandler = require('./response-handler');
 
 /**
  * Respond with a authorization error response
  * @param {object} res express.js response object
  */
 function authorization (req, res) {
-  responseHandler(req, res, 200, authorizationErrorResponse)
+  responseHandler(req, res, 200, authorizationErrorResponse);
 }
 
 /**
@@ -15,7 +15,7 @@ function authorization (req, res) {
  * @param {object} res express.js response object
  */
 function authentication (req, res) {
-  responseHandler(req, res, 200, authenticationErrorResponse)
+  responseHandler(req, res, 200, authenticationErrorResponse);
 }
 
-module.exports = { authorization, authentication }
+module.exports = { authorization, authentication };

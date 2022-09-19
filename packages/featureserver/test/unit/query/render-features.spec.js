@@ -1,24 +1,24 @@
 const should = require('should') // eslint-disable-line
-const sinon = require('sinon')
-const proxyquire = require('proxyquire')
+const sinon = require('sinon');
+const proxyquire = require('proxyquire');
 
 const createQueryFieldsSpy = sinon.spy(function () {
-  return 'fields'
-})
+  return 'fields';
+});
 
 const fields = {
   QueryFields: {
     create: createQueryFieldsSpy
   }
-}
+};
 
 const normalizeSpatialReferenceSpy = sinon.spy(function () {
-  return { wkid: 1234 }
-})
+  return { wkid: 1234 };
+});
 
 const getCollectionCrsSpy = sinon.spy(function () {
-  return 'crs'
-})
+  return 'crs';
+});
 
 const stub = {
   '../helpers/fields': fields,
@@ -26,16 +26,16 @@ const stub = {
     getCollectionCrs: getCollectionCrsSpy,
     normalizeSpatialReference: normalizeSpatialReferenceSpy
   }
-}
+};
 
-const { renderFeaturesResponse } = proxyquire('../../../lib/query/render-features', stub)
+const { renderFeaturesResponse } = proxyquire('../../../lib/query/render-features', stub);
 
 describe('renderFeaturesResponse', () => {
   afterEach(function () {
-    createQueryFieldsSpy.resetHistory()
-    getCollectionCrsSpy.resetHistory()
-    normalizeSpatialReferenceSpy.resetHistory()
-  })
+    createQueryFieldsSpy.resetHistory();
+    getCollectionCrsSpy.resetHistory();
+    normalizeSpatialReferenceSpy.resetHistory();
+  });
 
   it('should convert json with no metadata to Geoservices JSON', () => {
     const json = {
@@ -60,9 +60,9 @@ describe('renderFeaturesResponse', () => {
           }
         }
       ]
-    }
+    };
 
-    const result = renderFeaturesResponse(json, { geometryType: 'esriGeometryPoint' })
+    const result = renderFeaturesResponse(json, { geometryType: 'esriGeometryPoint' });
     result.should.deepEqual({
       objectIdFieldName: 'OBJECTID',
       uniqueIdField: {
@@ -77,14 +77,14 @@ describe('renderFeaturesResponse', () => {
       fields: 'fields',
       features: json.features,
       exceededTransferLimit: false
-    })
-    createQueryFieldsSpy.callCount.should.equal(1)
-    createQueryFieldsSpy.firstCall.args.should.deepEqual([{ ...json, geometryType: 'esriGeometryPoint' }])
-    getCollectionCrsSpy.callCount.should.equal(1)
-    getCollectionCrsSpy.firstCall.args.should.deepEqual([json])
-    normalizeSpatialReferenceSpy.callCount.should.equal(1)
-    normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual(['crs'])
-  })
+    });
+    createQueryFieldsSpy.callCount.should.equal(1);
+    createQueryFieldsSpy.firstCall.args.should.deepEqual([{ ...json, geometryType: 'esriGeometryPoint' }]);
+    getCollectionCrsSpy.callCount.should.equal(1);
+    getCollectionCrsSpy.firstCall.args.should.deepEqual([json]);
+    normalizeSpatialReferenceSpy.callCount.should.equal(1);
+    normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual(['crs']);
+  });
 
   it('should convert json with metadata to Geoservices JSON', () => {
     const json = {
@@ -114,9 +114,9 @@ describe('renderFeaturesResponse', () => {
           }
         }
       ]
-    }
+    };
 
-    const result = renderFeaturesResponse(json, { geometryType: 'esriGeometryPoint' })
+    const result = renderFeaturesResponse(json, { geometryType: 'esriGeometryPoint' });
     result.should.deepEqual({
       objectIdFieldName: 'hello_world',
       uniqueIdField: {
@@ -132,23 +132,23 @@ describe('renderFeaturesResponse', () => {
       features: json.features,
       exceededTransferLimit: true,
       transform: 'transform'
-    })
-    createQueryFieldsSpy.callCount.should.equal(1)
-    createQueryFieldsSpy.firstCall.args.should.deepEqual([{ ...json, geometryType: 'esriGeometryPoint' }])
-    getCollectionCrsSpy.callCount.should.equal(1)
-    getCollectionCrsSpy.firstCall.args.should.deepEqual([json])
-    normalizeSpatialReferenceSpy.callCount.should.equal(1)
-    normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual(['crs'])
-  })
+    });
+    createQueryFieldsSpy.callCount.should.equal(1);
+    createQueryFieldsSpy.firstCall.args.should.deepEqual([{ ...json, geometryType: 'esriGeometryPoint' }]);
+    getCollectionCrsSpy.callCount.should.equal(1);
+    getCollectionCrsSpy.firstCall.args.should.deepEqual([json]);
+    normalizeSpatialReferenceSpy.callCount.should.equal(1);
+    normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual(['crs']);
+  });
 
   describe('Output spatial reference', () => {
     const normalizeSpatialReferenceSpy = sinon.spy(function (wkid) {
-      return { wkid }
-    })
+      return { wkid };
+    });
 
     const getCollectionCrsSpy = sinon.spy(function () {
-      return 'crs'
-    })
+      return 'crs';
+    });
 
     const stub = {
       '../helpers/fields': fields,
@@ -156,9 +156,9 @@ describe('renderFeaturesResponse', () => {
         getCollectionCrs: getCollectionCrsSpy,
         normalizeSpatialReference: normalizeSpatialReferenceSpy
       }
-    }
+    };
 
-    const { renderFeaturesResponse } = proxyquire('../../../lib/query/render-features', stub)
+    const { renderFeaturesResponse } = proxyquire('../../../lib/query/render-features', stub);
 
     const json = {
       type: 'FeatureCollection',
@@ -173,16 +173,16 @@ describe('renderFeaturesResponse', () => {
           }
         }
       ]
-    }
+    };
 
     afterEach(function () {
-      createQueryFieldsSpy.resetHistory()
-      getCollectionCrsSpy.resetHistory()
-      normalizeSpatialReferenceSpy.resetHistory()
-    })
+      createQueryFieldsSpy.resetHistory();
+      getCollectionCrsSpy.resetHistory();
+      normalizeSpatialReferenceSpy.resetHistory();
+    });
 
     it('should acquire from default', () => {
-      const result = renderFeaturesResponse(json, { geometryType: 'esriGeometryPoint' })
+      const result = renderFeaturesResponse(json, { geometryType: 'esriGeometryPoint' });
       result.should.deepEqual({
         objectIdFieldName: 'OBJECTID',
         uniqueIdField: {
@@ -197,15 +197,15 @@ describe('renderFeaturesResponse', () => {
         fields: 'fields',
         features: json.features,
         exceededTransferLimit: false
-      })
-      getCollectionCrsSpy.callCount.should.equal(1)
-      getCollectionCrsSpy.firstCall.args.should.deepEqual([json])
-      normalizeSpatialReferenceSpy.callCount.should.equal(1)
-      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual(['crs'])
-    })
+      });
+      getCollectionCrsSpy.callCount.should.equal(1);
+      getCollectionCrsSpy.firstCall.args.should.deepEqual([json]);
+      normalizeSpatialReferenceSpy.callCount.should.equal(1);
+      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual(['crs']);
+    });
 
     it('should acquire from collection', () => {
-      const result = renderFeaturesResponse(json, { geometryType: 'esriGeometryPoint' })
+      const result = renderFeaturesResponse(json, { geometryType: 'esriGeometryPoint' });
       result.should.deepEqual({
         objectIdFieldName: 'OBJECTID',
         uniqueIdField: {
@@ -220,18 +220,18 @@ describe('renderFeaturesResponse', () => {
         fields: 'fields',
         features: json.features,
         exceededTransferLimit: false
-      })
-      getCollectionCrsSpy.callCount.should.equal(1)
-      getCollectionCrsSpy.firstCall.args.should.deepEqual([json])
-      normalizeSpatialReferenceSpy.callCount.should.equal(1)
-      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual(['crs'])
-    })
+      });
+      getCollectionCrsSpy.callCount.should.equal(1);
+      getCollectionCrsSpy.firstCall.args.should.deepEqual([json]);
+      normalizeSpatialReferenceSpy.callCount.should.equal(1);
+      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual(['crs']);
+    });
 
     it('should acquire from sourceSR', () => {
       const result = renderFeaturesResponse(json, {
         geometryType: 'esriGeometryPoint',
         sourceSR: 9999
-      })
+      });
       result.should.deepEqual({
         objectIdFieldName: 'OBJECTID',
         uniqueIdField: {
@@ -246,18 +246,18 @@ describe('renderFeaturesResponse', () => {
         fields: 'fields',
         features: json.features,
         exceededTransferLimit: false
-      })
-      getCollectionCrsSpy.callCount.should.equal(0)
-      normalizeSpatialReferenceSpy.callCount.should.equal(1)
-      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual([9999])
-    })
+      });
+      getCollectionCrsSpy.callCount.should.equal(0);
+      normalizeSpatialReferenceSpy.callCount.should.equal(1);
+      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual([9999]);
+    });
 
     it('should acquire from inputCrs', () => {
       const result = renderFeaturesResponse(json, {
         geometryType: 'esriGeometryPoint',
         sourceSR: 9999,
         inputCrs: 8888
-      })
+      });
       result.should.deepEqual({
         objectIdFieldName: 'OBJECTID',
         uniqueIdField: {
@@ -272,11 +272,11 @@ describe('renderFeaturesResponse', () => {
         fields: 'fields',
         features: json.features,
         exceededTransferLimit: false
-      })
-      getCollectionCrsSpy.callCount.should.equal(0)
-      normalizeSpatialReferenceSpy.callCount.should.equal(1)
-      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual([8888])
-    })
+      });
+      getCollectionCrsSpy.callCount.should.equal(0);
+      normalizeSpatialReferenceSpy.callCount.should.equal(1);
+      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual([8888]);
+    });
 
     it('should acquire from outSR', () => {
       const result = renderFeaturesResponse(json, {
@@ -284,7 +284,7 @@ describe('renderFeaturesResponse', () => {
         sourceSR: 9999,
         inputCrs: 8888,
         outSR: 7777
-      })
+      });
       result.should.deepEqual({
         objectIdFieldName: 'OBJECTID',
         uniqueIdField: {
@@ -299,11 +299,11 @@ describe('renderFeaturesResponse', () => {
         fields: 'fields',
         features: json.features,
         exceededTransferLimit: false
-      })
-      getCollectionCrsSpy.callCount.should.equal(0)
-      normalizeSpatialReferenceSpy.callCount.should.equal(1)
-      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual([7777])
-    })
+      });
+      getCollectionCrsSpy.callCount.should.equal(0);
+      normalizeSpatialReferenceSpy.callCount.should.equal(1);
+      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual([7777]);
+    });
 
     it('should acquire from outputCrs', () => {
       const result = renderFeaturesResponse(json, {
@@ -312,7 +312,7 @@ describe('renderFeaturesResponse', () => {
         inputCrs: 8888,
         outSR: 7777,
         outputCrs: 3857
-      })
+      });
       result.should.deepEqual({
         objectIdFieldName: 'OBJECTID',
         uniqueIdField: {
@@ -329,10 +329,10 @@ describe('renderFeaturesResponse', () => {
         fields: 'fields',
         features: json.features,
         exceededTransferLimit: false
-      })
-      getCollectionCrsSpy.callCount.should.equal(0)
-      normalizeSpatialReferenceSpy.callCount.should.equal(1)
-      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual([3857])
-    })
-  })
-})
+      });
+      getCollectionCrsSpy.callCount.should.equal(0);
+      normalizeSpatialReferenceSpy.callCount.should.equal(1);
+      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual([3857]);
+    });
+  });
+});

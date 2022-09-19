@@ -9,4 +9,4 @@ module.exports = {
   generateRenderer: require('./lib/generate-renderer'),
   error: require('./lib/error'),
   authenticate: require('./lib/authenticate')
-}
+};

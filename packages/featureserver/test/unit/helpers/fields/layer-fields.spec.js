@@ -1,6 +1,6 @@
 const should = require('should') // eslint-disable-line
-should.config.checkProtoEql = false
-const LayerFields = require('../../../../lib/helpers/fields/layer-fields')
+should.config.checkProtoEql = false;
+const LayerFields = require('../../../../lib/helpers/fields/layer-fields');
 
 describe('LayerFields', () => {
   it('create fields from definitions, adds OBJECTID', () => {
@@ -8,7 +8,7 @@ describe('LayerFields', () => {
       fields: [
         { name: 'foo', type: 'String' }
       ]
-    })
+    });
     result.should.deepEqual([{
       name: 'OBJECTID',
       alias: 'OBJECTID',
@@ -28,8 +28,8 @@ describe('LayerFields', () => {
       defaultValue: null,
       editable: false,
       nullable: false
-    }])
-  })
+    }]);
+  });
 
   it('create fields from definitions, assign idField as OBJECTID', () => {
     const result = LayerFields.create({
@@ -37,7 +37,7 @@ describe('LayerFields', () => {
         { name: 'foo', type: 'Integer' }
       ],
       idField: 'foo'
-    })
+    });
     result.should.deepEqual([{
       name: 'foo',
       alias: 'foo',
@@ -47,15 +47,15 @@ describe('LayerFields', () => {
       defaultValue: null,
       editable: false,
       nullable: false
-    }])
-  })
+    }]);
+  });
 
   it('create fields from attributes sample, adds OBJECTID', () => {
     const result = LayerFields.create({
       attributeSample: {
         foo: 'bar'
       }
-    })
+    });
     result.should.deepEqual([{
       name: 'OBJECTID',
       alias: 'OBJECTID',
@@ -75,8 +75,8 @@ describe('LayerFields', () => {
       defaultValue: null,
       editable: false,
       nullable: false
-    }])
-  })
+    }]);
+  });
 
   it('create fields from attributes sample, finds and uses OBJECTID', () => {
     const result = LayerFields.create({
@@ -84,7 +84,7 @@ describe('LayerFields', () => {
         foo: 'bar',
         OBJECTID: 1
       }
-    })
+    });
     result.should.deepEqual([{
       name: 'OBJECTID',
       alias: 'OBJECTID',
@@ -104,15 +104,15 @@ describe('LayerFields', () => {
       defaultValue: null,
       editable: false,
       nullable: false
-    }])
-  })
+    }]);
+  });
 
   it('create fields from attributes sample, adds OBJECTID', () => {
     const result = LayerFields.create({
       attributeSample: {
         foo: 'bar'
       }
-    })
+    });
     result.should.deepEqual([{
       name: 'OBJECTID',
       alias: 'OBJECTID',
@@ -132,8 +132,8 @@ describe('LayerFields', () => {
       defaultValue: null,
       editable: false,
       nullable: false
-    }])
-  })
+    }]);
+  });
 
   it('create fields from geojson data, adds OBJECTID', () => {
     const result = LayerFields.create({
@@ -142,7 +142,7 @@ describe('LayerFields', () => {
           foo: 'bar'
         }
       }]
-    })
+    });
 
     result.should.deepEqual([{
       name: 'OBJECTID',
@@ -163,8 +163,8 @@ describe('LayerFields', () => {
       defaultValue: null,
       editable: false,
       nullable: false
-    }])
-  })
+    }]);
+  });
 
   it('create fields from geojson data, finds and uses OBJECTID', () => {
     const result = LayerFields.create({
@@ -174,7 +174,7 @@ describe('LayerFields', () => {
           foo: 'bar'
         }
       }]
-    })
+    });
 
     result.should.deepEqual([{
       name: 'OBJECTID',
@@ -195,8 +195,8 @@ describe('LayerFields', () => {
       defaultValue: null,
       editable: false,
       nullable: false
-    }])
-  })
+    }]);
+  });
 
   it('create fields from esri json data, adds OBJECTID', () => {
     const result = LayerFields.create({
@@ -205,7 +205,7 @@ describe('LayerFields', () => {
           foo: 'bar'
         }
       }]
-    })
+    });
 
     result.should.deepEqual([{
       name: 'OBJECTID',
@@ -226,8 +226,8 @@ describe('LayerFields', () => {
       defaultValue: null,
       editable: false,
       nullable: false
-    }])
-  })
+    }]);
+  });
 
   it('create fields from esri json data, finds and uses OBJECTID', () => {
     const result = LayerFields.create({
@@ -237,7 +237,7 @@ describe('LayerFields', () => {
           foo: 'bar'
         }
       }]
-    })
+    });
 
     result.should.deepEqual([{
       name: 'OBJECTID',
@@ -258,6 +258,6 @@ describe('LayerFields', () => {
       defaultValue: null,
       editable: false,
       nullable: false
-    }])
-  })
-})
+    }]);
+  });
+});

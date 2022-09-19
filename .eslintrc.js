@@ -1,7 +1,8 @@
 module.exports = {
     'env': {
         'commonjs': true,
-        'es6': true
+        'es6': true,
+        'mocha': true
     },
     'extends': 'eslint:recommended',
     'globals': {
@@ -10,11 +11,13 @@ module.exports = {
         'process': 'readonly',
         'console': 'readonly',
         '__dirname': 'readonly'
+
     },
     'parserOptions': {
         'ecmaVersion': 2018
     },
     'rules': {
+        "no-unused-vars": ["error", { "ignoreRestSiblings": true }],
         'indent': [
             'error',
             2

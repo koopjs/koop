@@ -1,5 +1,5 @@
-const joi = require('joi')
-const { CodedError } = require('../helpers/errors')
+const joi = require('joi');
+const { CodedError } = require('../helpers/errors');
 
 const classificationDefinitionSchema = joi
   .object({
@@ -27,24 +27,24 @@ const classificationDefinitionSchema = joi
   .unknown()
   .messages({
     'any.required': 'classification definition is required'
-  })
+  });
 
 function validateClassificationDefinition (
   definition,
   geometryType,
   classification
 ) {
-  validateDefinitionShape(definition)
-  validateDefinitionSymbolAgainstGeometry(definition.baseSymbol, geometryType)
-  validateUniqueValueFields(definition, classification)
+  validateDefinitionShape(definition);
+  validateDefinitionSymbolAgainstGeometry(definition.baseSymbol, geometryType);
+  validateUniqueValueFields(definition, classification);
 }
 
 function validateDefinitionShape (definition) {
-  const { error } = classificationDefinitionSchema.validate(definition)
+  const { error } = classificationDefinitionSchema.validate(definition);
 
   if (error) {
-    error.code = 400
-    throw error
+    error.code = 400;
+    throw error;
   }
 }
 
@@ -52,54 +52,54 @@ function validateDefinitionSymbolAgainstGeometry (
   baseSymbol = {},
   geometryType
 ) {
-  const { type: symbolType } = baseSymbol
+  const { type: symbolType } = baseSymbol;
 
   if (!symbolType) {
-    return
+    return;
   }
 
   if (symbolLookup(geometryType) !== symbolType) {
     const error = new Error(
       'Classification defintion uses a base symbol type that is incompatiable with dataset geometry'
-    )
-    error.code = 400
-    throw error
+    );
+    error.code = 400;
+    throw error;
   }
 }
 
 function symbolLookup (geometryType) {
   switch (geometryType) {
-    case 'esriGeometryPoint':
-    case 'esriGeometryMultipoint':
-      return 'esriSMS'
-    case 'esriGeometryPolyline':
-      return 'esriSLS'
-    case 'esriGeometryPolygon':
-      return 'esriSFS'
-    default:
+  case 'esriGeometryPoint':
+  case 'esriGeometryMultipoint':
+    return 'esriSMS';
+  case 'esriGeometryPolyline':
+    return 'esriSLS';
+  case 'esriGeometryPolygon':
+    return 'esriSFS';
+  default:
   }
 }
 
 function validateUniqueValueFields (definition, classification) {
-  const { uniqueValueFields, type } = definition
+  const { uniqueValueFields, type } = definition;
   if (type !== 'uniqueValueDef') {
-    return
+    return;
   }
 
   if (!uniqueValueFields) {
-    throw new CodedError('uniqueValueDef requires a classification definition with "uniqueValueFields" array', 400)
+    throw new CodedError('uniqueValueDef requires a classification definition with "uniqueValueFields" array', 400);
   }
-  const classificationFieldNames = Object.keys(classification[0])
+  const classificationFieldNames = Object.keys(classification[0]);
 
   if (areFieldsMissingFromClassification(uniqueValueFields, classificationFieldNames)) {
-    throw new CodedError(`Unique value definition fields are incongruous with classification fields: ${uniqueValueFields.join(', ')} : ${classificationFieldNames.join(', ')}`, 400)
+    throw new CodedError(`Unique value definition fields are incongruous with classification fields: ${uniqueValueFields.join(', ')} : ${classificationFieldNames.join(', ')}`, 400);
   }
 }
 
 function areFieldsMissingFromClassification (definitionFields, classificationFieldNames) {
   return definitionFields.some(
     (fieldName) => !classificationFieldNames.includes(fieldName)
-  )
+  );
 }
 
-module.exports = validateClassificationDefinition
+module.exports = validateClassificationDefinition;

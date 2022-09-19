@@ -1,6 +1,6 @@
 const should = require('should') // eslint-disable-line
-should.config.checkProtoEql = false
-const QueryFields = require('../../../../lib/helpers/fields/query-fields')
+should.config.checkProtoEql = false;
+const QueryFields = require('../../../../lib/helpers/fields/query-fields');
 
 describe('QueryFields', () => {
   it('create fields from definitions, adds OBJECTID', () => {
@@ -8,7 +8,7 @@ describe('QueryFields', () => {
       fields: [
         { name: 'foo', type: 'String' }
       ]
-    })
+    });
     result.should.deepEqual([{
       name: 'OBJECTID',
       alias: 'OBJECTID',
@@ -24,8 +24,8 @@ describe('QueryFields', () => {
       length: 128,
       domain: null,
       defaultValue: null
-    }])
-  })
+    }]);
+  });
 
   it('create fields from definitions, assign idField as OBJECTID', () => {
     const result = QueryFields.create({
@@ -33,7 +33,7 @@ describe('QueryFields', () => {
         { name: 'foo', type: 'Integer' }
       ],
       idField: 'foo'
-    })
+    });
     result.should.deepEqual([{
       name: 'foo',
       alias: 'foo',
@@ -41,15 +41,15 @@ describe('QueryFields', () => {
       sqlType: 'sqlTypeInteger',
       domain: null,
       defaultValue: null
-    }])
-  })
+    }]);
+  });
 
   it('create fields from attributes sample, adds OBJECTID', () => {
     const result = QueryFields.create({
       attributeSample: {
         foo: 'bar'
       }
-    })
+    });
     result.should.deepEqual([{
       name: 'OBJECTID',
       alias: 'OBJECTID',
@@ -65,8 +65,8 @@ describe('QueryFields', () => {
       length: 128,
       domain: null,
       defaultValue: null
-    }])
-  })
+    }]);
+  });
 
   it('create fields from attributes sample, finds and uses OBJECTID', () => {
     const result = QueryFields.create({
@@ -74,7 +74,7 @@ describe('QueryFields', () => {
         foo: 'bar',
         OBJECTID: 1
       }
-    })
+    });
     result.should.deepEqual([{
       name: 'OBJECTID',
       alias: 'OBJECTID',
@@ -90,15 +90,15 @@ describe('QueryFields', () => {
       length: 128,
       domain: null,
       defaultValue: null
-    }])
-  })
+    }]);
+  });
 
   it('create fields from attributes sample, adds OBJECTID', () => {
     const result = QueryFields.create({
       attributeSample: {
         foo: 'bar'
       }
-    })
+    });
     result.should.deepEqual([{
       name: 'OBJECTID',
       alias: 'OBJECTID',
@@ -114,8 +114,8 @@ describe('QueryFields', () => {
       length: 128,
       domain: null,
       defaultValue: null
-    }])
-  })
+    }]);
+  });
 
   it('create fields from geojson data, adds OBJECTID', () => {
     const result = QueryFields.create({
@@ -124,7 +124,7 @@ describe('QueryFields', () => {
           foo: 'bar'
         }
       }]
-    })
+    });
 
     result.should.deepEqual([{
       name: 'OBJECTID',
@@ -141,8 +141,8 @@ describe('QueryFields', () => {
       length: 128,
       domain: null,
       defaultValue: null
-    }])
-  })
+    }]);
+  });
 
   it('create fields from geojson data, finds and uses OBJECTID', () => {
     const result = QueryFields.create({
@@ -152,7 +152,7 @@ describe('QueryFields', () => {
           foo: 'bar'
         }
       }]
-    })
+    });
 
     result.should.deepEqual([{
       name: 'OBJECTID',
@@ -169,8 +169,8 @@ describe('QueryFields', () => {
       length: 128,
       domain: null,
       defaultValue: null
-    }])
-  })
+    }]);
+  });
 
   it('create fields from esri json data, adds OBJECTID', () => {
     const result = QueryFields.create({
@@ -179,7 +179,7 @@ describe('QueryFields', () => {
           foo: 'bar'
         }
       }]
-    })
+    });
 
     result.should.deepEqual([{
       name: 'OBJECTID',
@@ -196,8 +196,8 @@ describe('QueryFields', () => {
       length: 128,
       domain: null,
       defaultValue: null
-    }])
-  })
+    }]);
+  });
 
   it('create fields from esri json data, finds and uses OBJECTID', () => {
     const result = QueryFields.create({
@@ -207,7 +207,7 @@ describe('QueryFields', () => {
           foo: 'bar'
         }
       }]
-    })
+    });
 
     result.should.deepEqual([{
       name: 'OBJECTID',
@@ -224,8 +224,8 @@ describe('QueryFields', () => {
       length: 128,
       domain: null,
       defaultValue: null
-    }])
-  })
+    }]);
+  });
 
   it('outFields option filters fields array', () => {
     const result = QueryFields.create({
@@ -235,7 +235,7 @@ describe('QueryFields', () => {
         { name: 'hello', type: 'String' }
       ],
       outFields: 'foo,hello'
-    })
+    });
     result.should.deepEqual([{
       name: 'foo',
       alias: 'foo',
@@ -252,8 +252,8 @@ describe('QueryFields', () => {
       length: 128,
       domain: null,
       defaultValue: null
-    }])
-  })
+    }]);
+  });
 
   it('outFields wildcard does not filter fields array', () => {
     const result = QueryFields.create({
@@ -262,7 +262,7 @@ describe('QueryFields', () => {
         { name: 'hello', type: 'String' }
       ],
       outFields: '*'
-    })
+    });
     result.should.deepEqual([{
       name: 'OBJECTID',
       alias: 'OBJECTID',
@@ -286,8 +286,8 @@ describe('QueryFields', () => {
       length: 128,
       domain: null,
       defaultValue: null
-    }])
-  })
+    }]);
+  });
 
   it('outFields empty string does not filter fields array', () => {
     const result = QueryFields.create({
@@ -296,7 +296,7 @@ describe('QueryFields', () => {
         { name: 'hello', type: 'String' }
       ],
       outFields: ''
-    })
+    });
     result.should.deepEqual([{
       name: 'OBJECTID',
       alias: 'OBJECTID',
@@ -320,8 +320,8 @@ describe('QueryFields', () => {
       length: 128,
       domain: null,
       defaultValue: null
-    }])
-  })
+    }]);
+  });
 
   it('outFields null value does not filter fields array', () => {
     const result = QueryFields.create({
@@ -330,7 +330,7 @@ describe('QueryFields', () => {
         { name: 'hello', type: 'String' }
       ],
       outFields: null
-    })
+    });
     result.should.deepEqual([{
       name: 'OBJECTID',
       alias: 'OBJECTID',
@@ -354,6 +354,6 @@ describe('QueryFields', () => {
       length: 128,
       domain: null,
       defaultValue: null
-    }])
-  })
-})
+    }]);
+  });
+});

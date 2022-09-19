@@ -1,42 +1,42 @@
-const _ = require('lodash')
-const { calculateBounds } = require('@terraformer/spatial')
+const _ = require('lodash');
+const { calculateBounds } = require('@terraformer/spatial');
 const {
   getCollectionCrs,
   getGeometryTypeFromGeojson,
   normalizeExtent,
   normalizeSpatialReference,
   normalizeInputData
-} = require('./helpers')
-const { serverMetadata: serverMetadataDefaults } = require('./defaults')
+} = require('./helpers');
+const { serverMetadata: serverMetadataDefaults } = require('./defaults');
 const {
   CURRENT_VERSION,
   FULL_VERSION
-} = require('./constants')
-const debug = process.env.KOOP_LOG_LEVEL === 'debug' || process.env.LOG_LEVEL === 'debug'
+} = require('./constants');
+const debug = process.env.KOOP_LOG_LEVEL === 'debug' || process.env.LOG_LEVEL === 'debug';
 
 function serverMetadata (json, req = {}) {
   const {
     query = {}
-  } = req
+  } = req;
 
-  const { extent, metadata = {}, ...rest } = json
+  const { extent, metadata = {}, ...rest } = json;
   const {
     maxRecordCount,
     hasStaticData,
     copyrightText,
     description: providerLayerDescription,
     serviceDescription: providerServiceDescription
-  } = { ...metadata, ...rest }
-  const spatialReference = getSpatialReference(json, query)
-  const { layers, tables, relationships } = normalizeInputData(json)
+  } = { ...metadata, ...rest };
+  const spatialReference = getSpatialReference(json, query);
+  const { layers, tables, relationships } = normalizeInputData(json);
   // TODO reproject default extents when non WGS84 CRS is found or passed
-  const fullExtent = getServiceExtent({ extent, metadata, layers, spatialReference })
+  const fullExtent = getServiceExtent({ extent, metadata, layers, spatialReference });
 
   const {
     currentVersion = CURRENT_VERSION,
     fullVersion = FULL_VERSION,
     serviceDescription
-  } = _.get(req, 'app.locals.config.featureServer', {})
+  } = _.get(req, 'app.locals.config.featureServer', {});
 
   return _.defaults({
     currentVersion,
@@ -46,7 +46,7 @@ function serverMetadata (json, req = {}) {
     initialExtent: fullExtent,
     layers: layers.map(layerInfo),
     tables: tables.map((json, idx) => {
-      return tableInfo(json, layers.length + idx)
+      return tableInfo(json, layers.length + idx);
     }),
     relationships: relationships.map(relationshipInfo),
     supportsRelationshipsResource: relationships && relationships.length > 0,
@@ -54,34 +54,34 @@ function serverMetadata (json, req = {}) {
     copyrightText: copyrightText,
     maxRecordCount: maxRecordCount || _.get(layers, '[0].metadata.maxRecordCount'),
     hasStaticData: typeof hasStaticData === 'boolean' ? hasStaticData : false
-  }, serverMetadataDefaults)
+  }, serverMetadataDefaults);
 }
 
 function getServiceExtent ({ extent, metadata = {}, layers, spatialReference = { wkid: 4326, latestWkid: 4326 } }) {
-  if (extent || metadata.extent) return normalizeExtent(extent || metadata.extent, spatialReference)
-  return calculateServiceExtentFromLayers(layers, spatialReference)
+  if (extent || metadata.extent) return normalizeExtent(extent || metadata.extent, spatialReference);
+  return calculateServiceExtentFromLayers(layers, spatialReference);
 }
 
 function calculateServiceExtentFromLayers (layers, spatialReference) {
   try {
     if (layers.length === 0) {
-      return
+      return;
     }
 
     const layerBounds = layers.filter(layer => {
-      return _.has(layer, 'features[0]')
-    }).map(calculateBounds)
+      return _.has(layer, 'features[0]');
+    }).map(calculateBounds);
 
-    if (layerBounds.length === 0) return
+    if (layerBounds.length === 0) return;
 
     const { xmins, xmaxs, ymins, ymaxs } = layerBounds.reduce((accumulator, bounds) => {
-      const [xmin, ymin, xmax, ymax] = bounds
-      accumulator.xmins.push(xmin)
-      accumulator.xmaxs.push(xmax)
-      accumulator.ymins.push(ymin)
-      accumulator.ymaxs.push(ymax)
-      return accumulator
-    }, { xmins: [], xmaxs: [], ymins: [], ymaxs: [] })
+      const [xmin, ymin, xmax, ymax] = bounds;
+      accumulator.xmins.push(xmin);
+      accumulator.xmaxs.push(xmax);
+      accumulator.ymins.push(ymin);
+      accumulator.ymaxs.push(ymax);
+      return accumulator;
+    }, { xmins: [], xmaxs: [], ymins: [], ymaxs: [] });
 
     return {
       xmin: Math.min(...xmins),
@@ -89,20 +89,20 @@ function calculateServiceExtentFromLayers (layers, spatialReference) {
       ymin: Math.min(...ymins),
       ymax: Math.max(...ymaxs),
       spatialReference
-    }
+    };
   } catch (error) {
     if (debug) {
-      console.log(`Could not calculate extent from data: ${error.message}`)
+      console.log(`Could not calculate extent from data: ${error.message}`);
     }
   }
 }
 
 function layerInfo (json = {}, defaultId) {
-  return formatInfo(json, defaultId, 'layer')
+  return formatInfo(json, defaultId, 'layer');
 }
 
 function tableInfo (json = {}, defaultId) {
-  return formatInfo(json, defaultId, 'table')
+  return formatInfo(json, defaultId, 'table');
 }
 
 function formatInfo (json = {}, defaultId, type) {
@@ -114,9 +114,9 @@ function formatInfo (json = {}, defaultId, type) {
       maxScale = 0,
       defaultVisibility
     } = {}
-  } = json
+  } = json;
 
-  const defaultName = type === 'layer' ? `Layer_${id || defaultId}` : `Table_${id || defaultId}`
+  const defaultName = type === 'layer' ? `Layer_${id || defaultId}` : `Table_${id || defaultId}`;
   return {
     id: id || defaultId,
     name: name || defaultName,
@@ -126,38 +126,38 @@ function formatInfo (json = {}, defaultId, type) {
     minScale,
     maxScale,
     geometryType: type === 'layer' ? getGeometryTypeFromGeojson(json) : undefined
-  }
+  };
 }
 
 function relationshipInfo (json = {}, relationshipIndex) {
   const {
     id,
     name
-  } = json
+  } = json;
 
-  const defaultName = `Relationship_${id || relationshipIndex}`
+  const defaultName = `Relationship_${id || relationshipIndex}`;
   return {
     id: id || relationshipIndex,
     name: name || defaultName
-  }
+  };
 }
 
 function getSpatialReference (collection, {
   inputCrs,
   sourceSR
 }) {
-  if (!inputCrs && !sourceSR && _.isEmpty(collection)) return
-  const spatialReference = inputCrs || sourceSR || getCollectionCrs(collection)
+  if (!inputCrs && !sourceSR && _.isEmpty(collection)) return;
+  const spatialReference = inputCrs || sourceSR || getCollectionCrs(collection);
 
-  if (!spatialReference) return
+  if (!spatialReference) return;
 
-  const { latestWkid, wkid, wkt } = normalizeSpatialReference(spatialReference)
+  const { latestWkid, wkid, wkt } = normalizeSpatialReference(spatialReference);
 
   if (wkid) {
-    return { wkid, latestWkid }
+    return { wkid, latestWkid };
   }
 
-  return { wkt }
+  return { wkt };
 }
 
-module.exports = serverMetadata
+module.exports = serverMetadata;

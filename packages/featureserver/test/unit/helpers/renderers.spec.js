@@ -1,15 +1,15 @@
-const should = require('should')
-should.config.checkProtoEql = false
+const should = require('should');
+should.config.checkProtoEql = false;
 
 const {
   PointRenderer,
   PolygonRenderer,
   LineRenderer
-} = require('../../../lib/helpers/renderers')
+} = require('../../../lib/helpers/renderers');
 
 describe('Renderers', () => {
   it('should produce default PointRenderer instance', () => {
-    const renderer = new PointRenderer()
+    const renderer = new PointRenderer();
     renderer.should.deepEqual({
       type: 'simple',
       symbol: {
@@ -34,11 +34,11 @@ describe('Renderers', () => {
         type: 'esriSMS',
         style: 'esriSMSCircle'
       }
-    })
-  })
+    });
+  });
 
   it('should produce default LineRenderer instance', () => {
-    const renderer = new LineRenderer()
+    const renderer = new LineRenderer();
     renderer.should.deepEqual({
       type: 'simple',
       symbol: {
@@ -52,11 +52,11 @@ describe('Renderers', () => {
         type: 'esriSLS',
         style: 'esriSLSSolid'
       }
-    })
-  })
+    });
+  });
 
   it('should produce default PolygonRenderer instance', () => {
-    const renderer = new PolygonRenderer()
+    const renderer = new PolygonRenderer();
     renderer.should.deepEqual({
       type: 'simple',
       symbol: {
@@ -80,6 +80,6 @@ describe('Renderers', () => {
         type: 'esriSFS',
         style: 'esriSFSSolid'
       }
-    })
-  })
-})
+    });
+  });
+});

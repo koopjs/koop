@@ -1,5 +1,5 @@
 {
-  "name": "winnow",
+  "name": "@koopjs/winnow",
   "version": "2.5.2",
   "description": "Apply sql-like filters to GeoJSON",
   "main": "lib/index.js",

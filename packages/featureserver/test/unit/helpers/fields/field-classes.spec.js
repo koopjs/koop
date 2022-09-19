@@ -1,5 +1,5 @@
 const should = require('should') // eslint-disable-line
-should.config.checkProtoEql = false
+should.config.checkProtoEql = false;
 const {
   FieldFromKeyValue,
   ObjectIdField,
@@ -7,11 +7,11 @@ const {
   ObjectIdFieldFromDefinition,
   StatisticField,
   StatisticDateField
-} = require('../../../../lib/helpers/fields/field-classes')
+} = require('../../../../lib/helpers/fields/field-classes');
 
 describe('FieldFromKeyValue', () => {
   it('should produce expected instance', () => {
-    const result = new FieldFromKeyValue('foo', 'bar')
+    const result = new FieldFromKeyValue('foo', 'bar');
     result.should.deepEqual({
       name: 'foo',
       alias: 'foo',
@@ -20,9 +20,9 @@ describe('FieldFromKeyValue', () => {
       length: 128,
       domain: null,
       defaultValue: null
-    })
+    });
 
-    result.setEditable().setNullable()
+    result.setEditable().setNullable();
     result.should.deepEqual({
       name: 'foo',
       alias: 'foo',
@@ -33,9 +33,9 @@ describe('FieldFromKeyValue', () => {
       defaultValue: null,
       editable: false,
       nullable: false
-    })
+    });
 
-    result.setEditable(true).setNullable(true)
+    result.setEditable(true).setNullable(true);
     result.should.deepEqual({
       name: 'foo',
       alias: 'foo',
@@ -46,13 +46,13 @@ describe('FieldFromKeyValue', () => {
       defaultValue: null,
       editable: true,
       nullable: true
-    })
-  })
-})
+    });
+  });
+});
 
 describe('ObjectIdField', () => {
   it('should produce expected instance', () => {
-    const result = new ObjectIdField('idFoo')
+    const result = new ObjectIdField('idFoo');
     result.should.deepEqual({
       name: 'idFoo',
       alias: 'idFoo',
@@ -60,9 +60,9 @@ describe('ObjectIdField', () => {
       sqlType: 'sqlTypeInteger',
       domain: null,
       defaultValue: null
-    })
+    });
 
-    result.setEditable().setNullable()
+    result.setEditable().setNullable();
     result.should.deepEqual({
       name: 'idFoo',
       alias: 'idFoo',
@@ -72,9 +72,9 @@ describe('ObjectIdField', () => {
       defaultValue: null,
       editable: false,
       nullable: false
-    })
+    });
 
-    result.setEditable(true).setNullable(true)
+    result.setEditable(true).setNullable(true);
     result.should.deepEqual({
       name: 'idFoo',
       alias: 'idFoo',
@@ -84,16 +84,16 @@ describe('ObjectIdField', () => {
       defaultValue: null,
       editable: true,
       nullable: true
-    })
-  })
-})
+    });
+  });
+});
 
 describe('FieldFromFieldDefinition', () => {
   it('should produce expected instance from name, type definitions', () => {
     const result = new FieldFromFieldDefinition({
       name: 'foo',
       type: 'String'
-    })
+    });
     result.should.deepEqual({
       name: 'foo',
       alias: 'foo',
@@ -102,9 +102,9 @@ describe('FieldFromFieldDefinition', () => {
       length: 128,
       domain: null,
       defaultValue: null
-    })
+    });
 
-    result.setEditable().setNullable()
+    result.setEditable().setNullable();
     result.should.deepEqual({
       name: 'foo',
       alias: 'foo',
@@ -115,9 +115,9 @@ describe('FieldFromFieldDefinition', () => {
       defaultValue: null,
       editable: false,
       nullable: false
-    })
+    });
 
-    result.setEditable(true).setNullable(true)
+    result.setEditable(true).setNullable(true);
     result.should.deepEqual({
       name: 'foo',
       alias: 'foo',
@@ -128,8 +128,8 @@ describe('FieldFromFieldDefinition', () => {
       defaultValue: null,
       editable: true,
       nullable: true
-    })
-  })
+    });
+  });
 
   it('should produce expected instance from name, type, plus all optional definitions', () => {
     const result = new FieldFromFieldDefinition({
@@ -139,7 +139,7 @@ describe('FieldFromFieldDefinition', () => {
       domain: 'domain-value',
       defaultValue: 'default-value',
       length: 256
-    })
+    });
     result.should.deepEqual({
       name: 'foo',
       alias: 'foolish',
@@ -148,9 +148,9 @@ describe('FieldFromFieldDefinition', () => {
       domain: 'domain-value',
       defaultValue: 'default-value',
       length: 256
-    })
-  })
-})
+    });
+  });
+});
 
 describe('ObjectIdFieldFromFieldDefinition', () => {
   it('should produce expected instance', () => {
@@ -159,7 +159,7 @@ describe('ObjectIdFieldFromFieldDefinition', () => {
       type: 'String',
       editable: true,
       nullable: true
-    })
+    });
     result.should.deepEqual({
       name: 'foo',
       alias: 'foo',
@@ -167,9 +167,9 @@ describe('ObjectIdFieldFromFieldDefinition', () => {
       sqlType: 'sqlTypeInteger',
       domain: null,
       defaultValue: null
-    })
+    });
 
-    result.setEditable().setNullable()
+    result.setEditable().setNullable();
     result.should.deepEqual({
       name: 'foo',
       alias: 'foo',
@@ -179,9 +179,9 @@ describe('ObjectIdFieldFromFieldDefinition', () => {
       defaultValue: null,
       editable: false,
       nullable: false
-    })
+    });
 
-    result.setEditable(true).setNullable(true)
+    result.setEditable(true).setNullable(true);
     result.should.deepEqual({
       name: 'foo',
       alias: 'foo',
@@ -191,13 +191,13 @@ describe('ObjectIdFieldFromFieldDefinition', () => {
       defaultValue: null,
       editable: true,
       nullable: true
-    })
-  })
-})
+    });
+  });
+});
 
 describe('StatisticsField', () => {
   it('should produce expected instance', () => {
-    const result = new StatisticField('foo')
+    const result = new StatisticField('foo');
     result.should.deepEqual({
       name: 'foo',
       alias: 'foo',
@@ -205,13 +205,13 @@ describe('StatisticsField', () => {
       sqlType: 'sqlTypeFloat',
       domain: null,
       defaultValue: null
-    })
-  })
-})
+    });
+  });
+});
 
 describe('StatisticsDateField', () => {
   it('should produce expected instance', () => {
-    const result = new StatisticDateField('foo')
+    const result = new StatisticDateField('foo');
     result.should.deepEqual({
       name: 'foo',
       alias: 'foo',
@@ -219,6 +219,6 @@ describe('StatisticsDateField', () => {
       sqlType: 'sqlTypeOther',
       domain: null,
       defaultValue: null
-    })
-  })
-})
+    });
+  });
+});

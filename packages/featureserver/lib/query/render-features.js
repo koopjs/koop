@@ -1,12 +1,12 @@
-const _ = require('lodash')
+const _ = require('lodash');
 const {
   QueryFields
-} = require('../helpers/fields')
+} = require('../helpers/fields');
 const {
   getCollectionCrs,
   normalizeSpatialReference
-} = require('../helpers')
-const featureResponseTemplate = require('../../templates/features.json')
+} = require('../helpers');
+const featureResponseTemplate = require('../../templates/features.json');
 
 /**
  * Modifies a template features json file with metadata, capabilities, and data from the model
@@ -15,12 +15,12 @@ const featureResponseTemplate = require('../../templates/features.json')
  * @return {object} formatted features data
  */
 function renderFeaturesResponse (data = {}, params = {}) {
-  const template = _.cloneDeep(featureResponseTemplate)
+  const template = _.cloneDeep(featureResponseTemplate);
 
   const {
     uniqueIdField: uniqueIdFieldDefault,
     objectIdFieldName: objectIdFieldNameDefault
-  } = template
+  } = template;
 
   const {
     metadata: {
@@ -28,7 +28,7 @@ function renderFeaturesResponse (data = {}, params = {}) {
       transform,
       idField
     } = {}
-  } = data
+  } = data;
 
   const computedProperties = {
     geometryType: params.geometryType,
@@ -41,13 +41,13 @@ function renderFeaturesResponse (data = {}, params = {}) {
       ...uniqueIdFieldDefault,
       name: idField || uniqueIdFieldDefault.name
     }
-  }
+  };
 
   if (transform) {
-    computedProperties.transform = transform
+    computedProperties.transform = transform;
   }
 
-  return { ...template, ...computedProperties }
+  return { ...template, ...computedProperties };
 }
 
 function getOutputSpatialReference (collection, {
@@ -56,23 +56,23 @@ function getOutputSpatialReference (collection, {
   inputCrs,
   sourceSR
 }) {
-  const spatialReference = outputCrs || outSR || inputCrs || sourceSR || getCollectionCrs(collection) || 4326
+  const spatialReference = outputCrs || outSR || inputCrs || sourceSR || getCollectionCrs(collection) || 4326;
 
-  const { wkid, wkt, latestWkid } = normalizeSpatialReference(spatialReference)
+  const { wkid, wkt, latestWkid } = normalizeSpatialReference(spatialReference);
 
   if (wkid && latestWkid) {
-    return { wkid, latestWkid }
+    return { wkid, latestWkid };
   }
 
   if (wkid) {
-    return { wkid }
+    return { wkid };
   }
 
   if (latestWkid) {
-    return { latestWkid }
+    return { latestWkid };
   }
 
-  return { wkt }
+  return { wkt };
 }
 
-module.exports = { renderFeaturesResponse }
+module.exports = { renderFeaturesResponse };

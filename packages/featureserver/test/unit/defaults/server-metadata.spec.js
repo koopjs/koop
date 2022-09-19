@@ -1,5 +1,5 @@
 const should = require('should') // eslint-disable-line
-const defaultServerMetadata = require('../../../lib/defaults/server-metadata')
+const defaultServerMetadata = require('../../../lib/defaults/server-metadata');
 
 describe('server metadata defaults', () => {
   it('defaults should have expected values', () => {
@@ -43,6 +43,6 @@ describe('server metadata defaults', () => {
       syncEnabled: false,
       layers: [],
       tables: []
-    })
-  })
-})
+    });
+  });
+});

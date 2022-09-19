@@ -7,8 +7,8 @@
  * @param {boolean} ssl flag that indicates if token must always be passed back via HTTPS
  */
 function authentication (res, auth, ssl = false) {
-  auth.ssl = ssl
-  res.status(200).json(auth)
+  auth.ssl = ssl;
+  res.status(200).json(auth);
 }
 
-module.exports = authentication
+module.exports = authentication;

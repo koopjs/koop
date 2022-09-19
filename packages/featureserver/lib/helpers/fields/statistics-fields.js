@@ -1,12 +1,12 @@
-const { isDate } = require('../data-type-utils')
-const { getEsriTypeFromDefinition } = require('./esri-type-utils')
-const { ESRI_FIELD_TYPE_DATE } = require('./constants')
+const { isDate } = require('../data-type-utils');
+const { getEsriTypeFromDefinition } = require('./esri-type-utils');
+const { ESRI_FIELD_TYPE_DATE } = require('./constants');
 const {
   StatisticField,
   StatisticDateField,
   FieldFromFieldDefinition,
   FieldFromKeyValue
-} = require('./field-classes')
+} = require('./field-classes');
 
 class StatisticsFields {
   static normalizeOptions (inputOptions = {}) {
@@ -18,7 +18,7 @@ class StatisticsFields {
       groupByFieldsForStatistics = [],
       attributeSample,
       ...options
-    } = inputOptions
+    } = inputOptions;
 
     return {
       statisticsSample: Array.isArray(statistics) ? statistics[0] : statistics,
@@ -29,12 +29,12 @@ class StatisticsFields {
         .replace(/\s*$/, '')
         .split(','),
       ...options
-    }
+    };
   }
 
   static create (inputOptions) {
-    const options = StatisticsFields.normalizeOptions(inputOptions)
-    return new StatisticsFields(options)
+    const options = StatisticsFields.normalizeOptions(inputOptions);
+    return new StatisticsFields(options);
   }
 
   constructor (options = {}) {
@@ -43,43 +43,43 @@ class StatisticsFields {
       groupByFieldsForStatistics = [],
       fieldDefinitions = [],
       outStatistics
-    } = options
-    const dateFieldRegexs = getDateFieldRegexs(fieldDefinitions, outStatistics)
+    } = options;
+    const dateFieldRegexs = getDateFieldRegexs(fieldDefinitions, outStatistics);
 
     this.fields = Object
       .entries(statisticsSample)
       .map(([key, value]) => {
         if (groupByFieldsForStatistics.includes(key)) {
-          const fieldDefinition = fieldDefinitions.find(({ name }) => name === key)
+          const fieldDefinition = fieldDefinitions.find(({ name }) => name === key);
 
           if (fieldDefinition) {
-            return new FieldFromFieldDefinition(fieldDefinition)
+            return new FieldFromFieldDefinition(fieldDefinition);
           }
 
-          return new FieldFromKeyValue(key, value)
+          return new FieldFromKeyValue(key, value);
         }
 
         if (isDateField(dateFieldRegexs, key, value)) {
-          return new StatisticDateField(key)
+          return new StatisticDateField(key);
         }
 
-        return new StatisticField(key)
-      })
+        return new StatisticField(key);
+      });
 
-    return this.fields
+    return this.fields;
   }
 }
 
 function isDateField (regexs, fieldName, value) {
   return regexs.some(regex => {
-    return regex.test(fieldName)
-  }) || isDate(value)
+    return regex.test(fieldName);
+  }) || isDate(value);
 }
 
 function getDateFieldRegexs (fieldDefinitions = [], outStatistics = []) {
   const dateFields = fieldDefinitions.filter(({ type }) => {
-    return getEsriTypeFromDefinition(type) === ESRI_FIELD_TYPE_DATE
-  }).map(({ name }) => name)
+    return getEsriTypeFromDefinition(type) === ESRI_FIELD_TYPE_DATE;
+  }).map(({ name }) => name);
 
   return outStatistics
     .filter(({ onStatisticField }) => dateFields.includes(onStatisticField))
@@ -87,12 +87,12 @@ function getDateFieldRegexs (fieldDefinitions = [], outStatistics = []) {
       const {
         onStatisticField,
         outStatisticFieldName
-      } = statistic
+      } = statistic;
 
-      const name = outStatisticFieldName || onStatisticField
-      const spaceEscapedName = name.replace(/\s/g, '_')
-      return new RegExp(`${spaceEscapedName}$`)
-    })
+      const name = outStatisticFieldName || onStatisticField;
+      const spaceEscapedName = name.replace(/\s/g, '_');
+      return new RegExp(`${spaceEscapedName}$`);
+    });
 }
 
-module.exports = StatisticsFields
+module.exports = StatisticsFields;
