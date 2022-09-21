@@ -1,6 +1,12 @@
 {
     "all": true,
-    "include": ["packages/winnow/lib/**/*.js", "packages/winnow/index.js"],
+    "include": [
+        "packages/winnow/lib/**/*.js",
+        "packages/winnow/index.js",
+        "packages/featureserver/lib/**/*.js",
+        "packages/featureserver/index.js"
+    ],
     "exclude": ["**/*.spec.js"],
-    "includeAllSources": true
+    "includeAllSources": true,
+    "cwd": "../.."
 }

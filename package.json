@@ -6,10 +6,7 @@
   "scripts": {
     "lint": "eslint \"packages/**/*.js\"",
     "lint:fix": "eslint \"packages/**/*.js\" --fix",
-    "test": "npm run test:winnow",
-    "test:winnow": "tape 'packages/winnow/**/*.spec.js' | tap-spec",
-    "test:cov:winnow": "nyc --reporter=text-summary --reporter=html tape 'packages/winnow/**/*.spec.js' | tap-spec",
-    "test:cov:winnow:unit": "nyc --reporter=text-summary --reporter=html tape 'packages/winnow/lib/**/*.spec.js' | tap-spec "
+    "test:winnow": "tape 'packages/winnow/**/*.spec.js' | tap-spec"
   },
   "repository": {
     "type": "git",

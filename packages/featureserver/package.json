@@ -7,9 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha 'test/**/*.spec.js' --recursive -t 5000",
-    "test:cov": "nyc --reporter=html mocha 'test/**/*.spec.js' ",
-    "test:cov-unit": "nyc --reporter=html mocha 'test/unit/**/*.spec.js' "
+    "test": "mocha '**/*.spec.js' --recursive -t 5000",
+    "test:cov": "nyc --reporter=html mocha '**/*.spec.js' ",
+    "test:cov:unit": "nyc --reporter=html mocha 'lib/**/*.spec.js' "
   },
   "contributors": [
     {
@@ -23,6 +23,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@esri/proj-codes": "^2.6.0",
+    "@koopjs/winnow": "^2.5.2",
     "@terraformer/spatial": "^2.0.7",
     "chalk": "^4.0.0",
     "chroma-js": "^2.0.0",
