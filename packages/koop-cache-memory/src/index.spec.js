@@ -158,7 +158,7 @@ test('Inserting and deleting from the cache', (t) => {
   t.plan(2);
   cache.insert('key4', geojson);
   cache.delete('key4');
-  cache.retrieve('key4', {}, (err, data) => {
+  cache.retrieve('key4', {}, (err) => {
     t.ok(err, 'Should return an error');
     t.equal(
       err.message,

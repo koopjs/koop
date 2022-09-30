@@ -2,9 +2,12 @@
   "name": "@koopjs/logger",
   "version": "2.0.6",
   "description": "A shared logger for Koop",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "standard src"
+    "test": "tape src/**/*.spec.js | tap-spec",
+    "test:cov": "nyc --reporter=text-summary --reporter=html tape './src/**/*.spec.js' | tap-spec",
+    "test:cov:unit": "nyc --reporter=text-summary --reporter=html tape 'src/**/*.spec.js' | tap-spec"
+ 
   },
   "repository": {
     "type": "git",
@@ -20,7 +23,6 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
-    "standard": "^14.3.4",
     "tap-spec": "^5.0.0",
     "tape": "^5.0.1"
   }

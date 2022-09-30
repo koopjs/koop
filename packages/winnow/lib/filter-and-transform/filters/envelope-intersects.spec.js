@@ -90,7 +90,7 @@ test('envelopeIntersects: Point inside polygon envelope, true', t => {
           52.02
         ],
         [
-          17.551345825195312,
+          17.55134582519531,
           52.01
         ],
         [
@@ -126,7 +126,7 @@ test('envelopeIntersects: Point outside polygon envelope, false', t => {
           52.02
         ],
         [
-          17.551345825195312,
+          17.55134582519531,
           52.01
         ],
         [

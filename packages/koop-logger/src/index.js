@@ -1,6 +1,6 @@
 /* @flow */
-const winston = require('winston')
-const path = require('path')
+const winston = require('winston');
+const path = require('path');
 
 /**
  * creates new custom winston logger
@@ -9,14 +9,14 @@ const path = require('path')
  * @return {Logger} custom logger instance
  */
 function createLogger (config) {
-  config = config || {}
-  let level
+  config = config || {};
+  let level;
   if (process.env.KOOP_LOG_LEVEL) {
-    level = process.env.KOOP_LOG_LEVEL
+    level = process.env.KOOP_LOG_LEVEL;
   } else if (process.env.NODE_ENV === 'production') {
-    level = 'info'
+    level = 'info';
   } else {
-    level = 'debug'
+    level = 'debug';
   }
 
   if (!config.logfile) {
@@ -26,12 +26,12 @@ function createLogger (config) {
       level,
       stringify: true,
       json: true
-    })
-    return winston.createLogger({ transports: [debugConsole] })
+    });
+    return winston.createLogger({ transports: [debugConsole] });
   }
 
   // we need a dir to do log rotation so we get the dir from the file
-  const logpath = path.dirname(config.logfile)
+  const logpath = path.dirname(config.logfile);
   const logAll = new winston.transports.File({
     filename: config.logfile,
     name: 'log.all',
@@ -40,7 +40,7 @@ function createLogger (config) {
     json: false,
     level,
     formatter: formatter
-  })
+  });
   const logError = new winston.transports.File({
     filename: config.logfile.replace('.log', '.error.log'),
     name: 'log.error',
@@ -49,16 +49,16 @@ function createLogger (config) {
     json: false,
     level: 'error',
     formatter: formatter
-  })
+  });
 
   // always log errors
-  const transports = [logError]
+  const transports = [logError];
   // only log everthing if debug mode is on
   if (process.env.LOG_LEVEL === 'debug') {
-    transports.push(logAll)
+    transports.push(logAll);
   }
 
-  return winston.createLogger({ transports })
+  return winston.createLogger({ transports });
 }
 
 /**
@@ -70,13 +70,13 @@ function formatter (options) {
   const line = [
     new Date().toISOString(),
     options.level
-  ]
+  ];
 
-  if (options.message !== undefined) line.push(options.message)
+  if (options.message !== undefined) line.push(options.message);
 
-  if (options.meta && Object.keys(options.meta).length) line.push(JSON.stringify(options.meta))
+  if (options.meta && Object.keys(options.meta).length) line.push(JSON.stringify(options.meta));
 
-  return line.join(' ')
+  return line.join(' ');
 }
 
-module.exports = createLogger
+module.exports = createLogger;
