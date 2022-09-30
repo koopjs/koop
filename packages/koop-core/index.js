@@ -59,7 +59,9 @@ function initServer (config) {
     // for demos and preview maps in providers
     .set('view engine', 'ejs')
     .use(express.static(path.join(__dirname, '/public')))
-    .use(cors())
+
+  // Use CORS unless explicitly disable in the config
+  if (!config.disableCors) app.use(cors())
 
   // Use compression unless explicitly disable in the config
   if (!config.disableCompression) app.use(compression())

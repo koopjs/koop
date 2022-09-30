@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Add ability to override CORS settings
+
 ## [5.0.0] - 2022-08-05
 ### Changed
 * Pull in updated cache-memory plugin
