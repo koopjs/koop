@@ -2,9 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
-### Changed
-* Add ability to override CORS settings
+## [5.1.0] - 2022-09-30
+### Added
+* Ability to override CORS settings
 
 ## [5.0.0] - 2022-08-05
 ### Changed
@@ -975,6 +975,7 @@ Koop is now just a node module that exposes an express middleware app with hooks
   - koop-server is no more; all central code is in the koop project
   - to use Koop you must use it as middleware in an app that boots up an http server
 
+[5.1.0]: https://github.com/koopjs/koop-core/compare/v5.0.0...v5.1.0
 [5.0.0]: https://github.com/koopjs/koop-core/compare/v4.2.4...v5.0.0
 [4.2.4]: https://github.com/koopjs/koop-core/compare/v4.2.3...v4.2.4
 [4.2.3]: https://github.com/koopjs/koop-core/compare/v4.2.2...v4.2.3
