@@ -13,8 +13,9 @@ module.exports = {
         '__dirname': 'readonly'
 
     },
+    //parser: '@babel/eslint-parser',
     'parserOptions': {
-        'ecmaVersion': 2018
+        'ecmaVersion': 2022
     },
     'rules': {
         "no-unused-vars": ["error", { "ignoreRestSiblings": true }],

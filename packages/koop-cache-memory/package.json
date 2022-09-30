@@ -4,7 +4,9 @@
   "description": "An in-memory cache for KOop",
   "main": "src/index.js",
   "scripts": {
-    "test": "standard src && tape test/*.js | tap-spec"
+    "test": "tape src/**/*.spec.js | tap-spec",
+    "test:cov": "nyc --reporter=text-summary --reporter=html tape './src/**/*.spec.js' | tap-spec",
+    "test:cov:unit": "nyc --reporter=text-summary --reporter=html tape 'src/**/*.spec.js' | tap-spec"
   },
   "repository": {
     "type": "git",

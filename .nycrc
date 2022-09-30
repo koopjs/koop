@@ -4,7 +4,8 @@
         "packages/winnow/lib/**/*.js",
         "packages/winnow/index.js",
         "packages/featureserver/lib/**/*.js",
-        "packages/featureserver/index.js"
+        "packages/featureserver/index.js",
+        "packages/koop-cache-memory/**/*.js"
     ],
     "exclude": ["**/*.spec.js"],
     "includeAllSources": true,

@@ -1,4 +1,3 @@
-const Util = require('util');
 const EventEmitter = require('events');
 const _ = require('lodash');
 const { asCachableGeojson } = require('./helper');
@@ -8,11 +7,11 @@ const Readable = require('stream').Readable;
 function noop() {}
 
 class Cache extends EventEmitter {
-  static name = 'Memory Cache';
+  static pluginName = 'Memory Cache';
   static type = 'cache';
   static version = require('../package.json').version;
 
-  constructor(options = {}) {
+  constructor() {
     super();
     this.featuresStore = new Map();
     this.catalogStore = new Map();
@@ -28,7 +27,7 @@ class Cache extends EventEmitter {
     this.catalogInsert(key, rest, options, callback);
   }
 
-  update(key, geojson, options = {}, callback = noop) {
+  update(key, geojson, options = {}, callback = noop) { // eslint-disable-line
     if (!this.featuresStore.has(key)) {
       return callback(new Error('Resource not found'));
     }
@@ -51,7 +50,7 @@ class Cache extends EventEmitter {
     }
   }
 
-  append(key, geojson, options = {}, callback = noop) {
+  append(key, geojson, options = {}, callback = noop) { // eslint-disable-line
     const { features } = asCachableGeojson(geojson);
     const existingFeatures = this.featuresStore.get(key);
     const appendedFeatureArray = existingFeatures.concat(features);
@@ -79,7 +78,7 @@ class Cache extends EventEmitter {
     return geojson;
   }
 
-  createStream(key, options = {}) {
+  createStream(key, options = {}) { // eslint-disable-line
     const features = this.featuresStore.get(key);
     return Readable.from(features);
   }
@@ -117,7 +116,7 @@ class Cache extends EventEmitter {
     callback();
   }
 
-  catalogUpdate = function (key, update, options = {}, callback = noop) {
+  catalogUpdate = function (key, update, options = {}, callback = noop) { // eslint-disable-line
     if (!this.catalogStore.has(key)) {
       return callback(new Error('Resource not found'));
     }
