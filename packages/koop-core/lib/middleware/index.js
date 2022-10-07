@@ -7,9 +7,9 @@
 function paramTrim (req, res, next) {
   Object.keys(req.query).map(param => {
     req.query[param] = (typeof req.query[param] === 'string' || req.query[param] instanceof String)
-      ? req.query[param].trim() : req.query[param]
-  })
-  next()
+      ? req.query[param].trim() : req.query[param];
+  });
+  next();
 }
 
 /**
@@ -20,9 +20,9 @@ function paramTrim (req, res, next) {
  */
 function paramParse (req, res, next) {
   Object.keys(req.query).map(param => {
-    req.query[param] = tryParse(req.query[param])
-  })
-  next()
+    req.query[param] = tryParse(req.query[param]);
+  });
+  next();
 }
 
 /**
@@ -32,18 +32,18 @@ function paramParse (req, res, next) {
  * @param {function} next fire next middleware function
  */
 function paramCoerce (req, res, next) {
-  const falsyStrings = ['false', 'False']
-  const truthyStrings = ['true', 'True']
+  const falsyStrings = ['false', 'False'];
+  const truthyStrings = ['true', 'True'];
 
   Object.keys(req.query).forEach(param => {
     if (falsyStrings.includes(req.query[param])) {
-      req.query[param] = false
+      req.query[param] = false;
     } else if (truthyStrings.includes(req.query[param])) {
-      req.query[param] = true
+      req.query[param] = true;
     }
-  })
+  });
 
-  next()
+  next();
 }
 
 /**
@@ -53,20 +53,20 @@ function paramCoerce (req, res, next) {
  */
 function tryParse (json) {
   try {
-    return JSON.parse(json)
+    return JSON.parse(json);
   } catch (e) {
-    return json
+    return json;
   }
 }
 
 function copyBodyToQuery (req, res, next) {
-  const { query = {}, body = {} } = req
+  const { query = {}, body = {} } = req;
 
   // prefer token to from query to prevent issues with agol proxies
-  const token = query.token || body.token
+  const token = query.token || body.token;
 
-  req.query = { ...query, ...body, token }
-  next()
+  req.query = { ...query, ...body, token };
+  next();
 }
 
 module.exports = {
@@ -74,4 +74,4 @@ module.exports = {
   paramParse,
   paramCoerce,
   copyBodyToQuery
-}
+};

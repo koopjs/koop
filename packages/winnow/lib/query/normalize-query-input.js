@@ -1,4 +1,4 @@
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 
 const featureSchema = Joi.object({
   geometry: Joi.object().allow(null).optional(),

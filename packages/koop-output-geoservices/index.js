@@ -1,8 +1,8 @@
-const FeatureServer = require('featureserver')
-const koopConfig = require("config");
-const Logger = require('@koopjs/logger')
-const log = new Logger()
-console.log('WARNING: "/MapServer" routes will be registered, but only for specialized 404 handling in FeatureServer.')
+const FeatureServer = require('@koopjs/featureserver');
+const koopConfig = require('config');
+const Logger = require('@koopjs/logger');
+const log = new Logger();
+console.log('WARNING: "/MapServer" routes will be registered, but only for specialized 404 handling in FeatureServer.');
 
 function Geoservices () {}
 
@@ -13,9 +13,9 @@ function Geoservices () {}
  */
 function sendError(req, res, error) {
   if (!error.error) {
-    const err = normalizeError(error)
-    if (err.code === 401) FeatureServer.error.authentication(req, res)
-    else res.status(err.code || 500).json({ error: err.message })
+    const err = normalizeError(error);
+    if (err.code === 401) FeatureServer.error.authentication(req, res);
+    else res.status(err.code || 500).json({ error: err.message });
   // if the error is already in the esri REST API format send back with 200 code, e.g.
   // {
   //   "error" : {
@@ -36,9 +36,9 @@ function sendError(req, res, error) {
  */
 function pullDataAndRoute (model, req, res) {
   model.pull(req, function (error, data) {
-    if (error) sendError(req, res, error)
-    else FeatureServer.route(req, res, data)
-  })
+    if (error) sendError(req, res, error);
+    else FeatureServer.route(req, res, data);
+  });
 }
 
 /**
@@ -50,19 +50,19 @@ Geoservices.prototype.featureServer = function (req, res) {
   // Is model configured for token-authorization?
   if (typeof this.model.authorize === 'function') {
     this.model.authorize(req)
-      .then(valid => {
+      .then(() => {
         // model will be available when this is instantiated with the Koop controller
-        pullDataAndRoute(this.model, req, res)
+        pullDataAndRoute(this.model, req, res);
       })
       .catch(error => {
-        const err = normalizeError(error)
-        if (err.code === 401) FeatureServer.error.authorization(req, res)
-        else res.status(err.code || 500).json({ error: err.message })
-      })
+        const err = normalizeError(error);
+        if (err.code === 401) FeatureServer.error.authorization(req, res);
+        else res.status(err.code || 500).json({ error: err.message });
+      });
   } else {
-    pullDataAndRoute(this.model, req, res)
+    pullDataAndRoute(this.model, req, res);
   }
-}
+};
 
 /**
  * Handler for the $namepace/rest/info route. Inspects model for authentation info and passes any on to the
@@ -72,15 +72,15 @@ Geoservices.prototype.featureServer = function (req, res) {
  */
 Geoservices.prototype.featureServerRestInfo = function (req, res) {
   const authInfo = koopConfig && koopConfig.authInfo || {};
-  const authSpec = this.model.authenticationSpecification
+  const authSpec = this.model.authenticationSpecification;
   if (authSpec) {
-    authInfo.isTokenBasedSecurity = true
+    authInfo.isTokenBasedSecurity = true;
     // Use https by default, unless KOOP_AUTH_HTTP or authSpec.useHttp are defined and set to true
-    const protocol = (authSpec.useHttp === true || process.env.KOOP_AUTH_HTTP === 'true') ? 'http' : 'https'
-    authInfo.tokenServicesUrl = `${protocol}://${req.headers.host}${req.baseUrl}/${authSpec.provider}/tokens/`
+    const protocol = (authSpec.useHttp === true || process.env.KOOP_AUTH_HTTP === 'true') ? 'http' : 'https';
+    authInfo.tokenServicesUrl = `${protocol}://${req.headers.host}${req.baseUrl}/${authSpec.provider}/tokens/`;
   }
-  FeatureServer.route(req, res, { authInfo })
-}
+  FeatureServer.route(req, res, { authInfo });
+};
 
 /**
  * Handler for $namespace/authenticate route. Passes request and response object to the model's "authenticate" function
@@ -92,33 +92,33 @@ Geoservices.prototype.generateToken = function (req, res) {
   if (typeof this.model.authenticate === 'function') {
     this.model.authenticate(req)
       .then(tokenJson => {
-        FeatureServer.authenticate(res, tokenJson)
+        FeatureServer.authenticate(res, tokenJson);
       })
       .catch(error => {
-        const err = normalizeError(error)
-        if (err.code === 401) FeatureServer.error.authentication(req, res)
-        else res.status(err.code || 500).json({ error: err.message })
-      })
+        const err = normalizeError(error);
+        if (err.code === 401) FeatureServer.error.authentication(req, res);
+        else res.status(err.code || 500).json({ error: err.message });
+      });
   } else {
-    res.status(500).json({ error: '"authenticate" not implemented for this provider' })
+    res.status(500).json({ error: '"authenticate" not implemented for this provider' });
   }
-}
+};
 
 function normalizeError (error) {
-  const { code, message, stack } = error
-  let normalizedErrorCode = code
+  const { code, message, stack } = error;
+  let normalizedErrorCode = code;
   if (code === 'COM_0019') {
-    normalizedErrorCode = 401
+    normalizedErrorCode = 401;
   } else if (typeof code !== 'number') {
-    normalizedErrorCode = 500
+    normalizedErrorCode = 500;
   }
 
   if (normalizedErrorCode === 500) {
     // Log error then make generic for response
-    log.error('error', error)
-    return { message: 'Internal Server Error', code: 500}
+    log.error('error', error);
+    return { message: 'Internal Server Error', code: 500};
   }
-  return { message, stack, code: normalizedErrorCode }
+  return { message, stack, code: normalizedErrorCode };
 }
 
 /**
@@ -207,9 +207,9 @@ Geoservices.routes = [
     methods: ['get', 'post'],
     handler: 'featureServer'
   }
-]
+];
 
-Geoservices.type = 'output'
-Geoservices.version = require('./package.json').version
+Geoservices.type = 'output';
+Geoservices.version = require('./package.json').version;
 
-module.exports = Geoservices
+module.exports = Geoservices;

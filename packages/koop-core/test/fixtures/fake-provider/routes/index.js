@@ -5,4 +5,4 @@ module.exports = [
     methods: ['get'],
     handler: 'get'
   }
-]
+];

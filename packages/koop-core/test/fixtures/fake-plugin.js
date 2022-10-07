@@ -1,47 +1,47 @@
 class fakePlugin {
   testFunc () {
-    return true
+    return true;
   }
 }
-fakePlugin.type = 'plugin'
-fakePlugin.version = '0.0.0'
+fakePlugin.type = 'plugin';
+fakePlugin.version = '0.0.0';
 
 class legacyPlugin {
   testFunc () {
-    return true
+    return true;
   }
 }
-legacyPlugin.plugin_name = 'legacyPluginName'
-legacyPlugin.type = 'plugin'
-legacyPlugin.version = '0.0.0'
+legacyPlugin.plugin_name = 'legacyPluginName';
+legacyPlugin.type = 'plugin';
+legacyPlugin.version = '0.0.0';
 
 class renamedPlugin {
   testFunc () {
-    return true
+    return true;
   }
 }
-renamedPlugin.pluginName = 'test-plugin'
-renamedPlugin.type = 'plugin'
-renamedPlugin.version = '0.0.0'
+renamedPlugin.pluginName = 'test-plugin';
+renamedPlugin.type = 'plugin';
+renamedPlugin.version = '0.0.0';
 
 class dependencyPlugin {
   constructor (deps) {
-    this.deps = deps
+    this.deps = deps;
   }
 }
 dependencyPlugin.dependencies = [
   'fakePlugin',
   'legacyPluginName',
   'test-plugin'
-]
-dependencyPlugin.type = 'plugin'
-dependencyPlugin.version = '0.0.0'
+];
+dependencyPlugin.type = 'plugin';
+dependencyPlugin.version = '0.0.0';
 
 class namePrecedencePlugin {}
-namePrecedencePlugin.pluginName = 'correctPluginName'
-namePrecedencePlugin.plugin_name = 'incorrectPluginName'
-namePrecedencePlugin.type = 'plugin'
-namePrecedencePlugin.version = '0.0.0'
+namePrecedencePlugin.pluginName = 'correctPluginName';
+namePrecedencePlugin.plugin_name = 'incorrectPluginName';
+namePrecedencePlugin.type = 'plugin';
+namePrecedencePlugin.version = '0.0.0';
 
 module.exports = {
   fakePlugin,
@@ -49,4 +49,4 @@ module.exports = {
   renamedPlugin,
   dependencyPlugin,
   namePrecedencePlugin
-}
+};

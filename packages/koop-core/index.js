@@ -1,45 +1,41 @@
 /* @flow */
-'use strict'
-const express = require('express')
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const compression = require('compression')
-const pkg = require('./package.json')
-const Cache = require('@koopjs/cache-memory')
-const Logger = require('@koopjs/logger')
-const datasetsProvider = require('./lib/datasets')
-const ProviderRegistration = require('./lib/provider-registration')
-const middleware = require('./lib/middleware')
-const Events = require('events')
-const Util = require('util')
-const path = require('path')
-const geoservices = require('@koopjs/output-geoservices')
-const LocalFS = require('koop-localfs')
+'use strict';
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const compression = require('compression');
+const pkg = require('./package.json');
+const Cache = require('@koopjs/cache-memory');
+const Logger = require('@koopjs/logger');
+const ProviderRegistration = require('./lib/provider-registration');
+const middleware = require('./lib/middleware');
+const Events = require('events');
+const Util = require('util');
+const path = require('path');
+const geoservices = require('@koopjs/output-geoservices');
 
 function Koop (config) {
-  this.version = pkg.version
-  this.config = config || require('config')
-  this.server = initServer(this.config)
+  this.version = pkg.version;
+  this.config = config || require('config');
+  this.server = initServer(this.config);
 
   // default to LocalDB cache
   // cache registration overrides this
-  this.cache = new Cache()
-  this.log = new Logger(this.config)
-  this.providers = []
-  this.pluginRoutes = []
-  this.outputs = []
-  this.register(geoservices)
-  this.register(LocalFS)
-  this.register(datasetsProvider)
+  this.cache = new Cache();
+  this.log = new Logger(this.config);
+  this.providers = [];
+  this.pluginRoutes = [];
+  this.outputs = [];
+  this.register(geoservices);
 
   this.server
     .on('mount', () => {
-      this.log.info(`Koop ${this.version} mounted at ${this.server.mountpath}`)
+      this.log.info(`Koop ${this.version} mounted at ${this.server.mountpath}`);
     })
-    .get('/status', (req, res) => res.json(this.status))
+    .get('/status', (req, res) => res.json(this.status));
 }
 
-Util.inherits(Koop, Events)
+Util.inherits(Koop, Events);
 
 /**
  * express middleware setup
@@ -58,44 +54,44 @@ function initServer (config) {
     .use(middleware.paramCoerce)
     // for demos and preview maps in providers
     .set('view engine', 'ejs')
-    .use(express.static(path.join(__dirname, '/public')))
+    .use(express.static(path.join(__dirname, '/public')));
 
   // Use CORS unless explicitly disable in the config
-  if (!config.disableCors) app.use(cors())
+  if (!config.disableCors) app.use(cors());
 
   // Use compression unless explicitly disable in the config
-  if (!config.disableCompression) app.use(compression())
-  return app
+  if (!config.disableCompression) app.use(compression());
+  return app;
 }
 
 Koop.prototype.register = function (plugin, options) {
-  if (typeof plugin === 'undefined') throw new Error('Plugin undefined.')
+  if (typeof plugin === 'undefined') throw new Error('Plugin undefined.');
   switch (plugin.type) {
-    case 'provider':
-      return this._registerProvider(plugin, options)
-    case 'cache':
-      return this._registerCache(plugin, options)
-    case 'plugin':
-      return this._registerPlugin(plugin, options)
-    case 'filesystem':
-      return this._registerFilesystem(plugin, options)
-    case 'output':
-      return this._registerOutput(plugin, options)
-    case 'auth':
-      return this._registerAuth(plugin, options)
-    default:
-      this.log.warn('Unrecognized plugin type: "' + plugin.type + '". Defaulting to provider.')
-      return this._registerProvider(plugin, options)
+  case 'provider':
+    return this._registerProvider(plugin, options);
+  case 'cache':
+    return this._registerCache(plugin, options);
+  case 'plugin':
+    return this._registerPlugin(plugin, options);
+  case 'filesystem':
+    return this._registerFilesystem(plugin, options);
+  case 'output':
+    return this._registerOutput(plugin, options);
+  case 'auth':
+    return this._registerAuth(plugin, options);
+  default:
+    this.log.warn('Unrecognized plugin type: "' + plugin.type + '". Defaulting to provider.');
+    return this._registerProvider(plugin, options);
   }
-}
+};
 
 /**
  * Store an Authentication plugin on the koop instance for use during provider registration.
  * @param {object} auth
  */
 Koop.prototype._registerAuth = function (auth) {
-  this._authModule = auth
-}
+  this._authModule = auth;
+};
 
 /**
  * registers a provider
@@ -104,10 +100,10 @@ Koop.prototype._registerAuth = function (auth) {
  * @param {object} provider - the provider to be registered
  */
 Koop.prototype._registerProvider = function (provider, options = {}) {
-  const providerRegistration = ProviderRegistration.create({ koop: this, provider, options })
-  this.providers.push(providerRegistration)
-  this.log.info('registered provider:', providerRegistration.namespace, providerRegistration.version)
-}
+  const providerRegistration = ProviderRegistration.create({ koop: this, provider, options });
+  this.providers.push(providerRegistration);
+  this.log.info('registered provider:', providerRegistration.namespace, providerRegistration.version);
+};
 
 /**
  * registers a provider
@@ -116,9 +112,9 @@ Koop.prototype._registerProvider = function (provider, options = {}) {
  * @param {object} output - the output plugin to be registered
  */
 Koop.prototype._registerOutput = function (Output) {
-  this.outputs.push(Output)
-  this.log.info('registered output:', Output.name, Output.version)
-}
+  this.outputs.push(Output);
+  this.log.info('registered output:', Output.name, Output.version);
+};
 
 /**
  * registers a cache
@@ -127,9 +123,9 @@ Koop.prototype._registerOutput = function (Output) {
  * @param {object} cache - a koop database adapter
  */
 Koop.prototype._registerCache = function (Cache, options) {
-  this.cache = new Cache(options)
-  this.log.info('registered cache:', Cache.name, Cache.version)
-}
+  this.cache = new Cache(options);
+  this.log.info('registered cache:', Cache.name, Cache.version);
+};
 
 /**
  * registers a filesystem
@@ -138,9 +134,9 @@ Koop.prototype._registerCache = function (Cache, options) {
  * @param {object} filesystem - a koop filesystem adapter
  */
 Koop.prototype._registerFilesystem = function (Filesystem) {
-  this.fs = new Filesystem()
-  this.log.info('registered filesystem:', Filesystem.pluginName || Filesystem.plugin_name || Filesystem.name, Filesystem.version)
-}
+  this.fs = new Filesystem();
+  this.log.info('registered filesystem:', Filesystem.pluginName || Filesystem.plugin_name || Filesystem.name, Filesystem.version);
+};
 
 /**
  * registers a plugin
@@ -150,17 +146,17 @@ Koop.prototype._registerFilesystem = function (Filesystem) {
  * @param {object} any koop plugin
  */
 Koop.prototype._registerPlugin = function (Plugin) {
-  const name = Plugin.pluginName || Plugin.plugin_name || Plugin.name
-  if (!name) throw new Error('Plugin is missing name')
-  let dependencies
+  const name = Plugin.pluginName || Plugin.plugin_name || Plugin.name;
+  if (!name) throw new Error('Plugin is missing name');
+  let dependencies;
   if (Array.isArray(Plugin.dependencies) && Plugin.dependencies.length) {
     dependencies = Plugin.dependencies.reduce((deps, dep) => {
-      deps[dep] = this[dep]
-      return deps
-    }, {})
+      deps[dep] = this[dep];
+      return deps;
+    }, {});
   }
-  this[name] = new Plugin(dependencies)
-  this.log.info('registered plugin:', name, Plugin.version)
-}
+  this[name] = new Plugin(dependencies);
+  this.log.info('registered plugin:', name, Plugin.version);
+};
 
-module.exports = Koop
+module.exports = Koop;

@@ -1,5 +1,5 @@
 const esriProjCodes = require('@esri/proj-codes');
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 const wktParser = require('wkt-parser');
 const PROJ4_WKIDS = [4326, 4269, 3857, 3785, 900913, 102113];
 const wktLookup = new Map();

@@ -1,6 +1,6 @@
 {
   "name": "@koopjs/featureserver",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "*An open source implementation of the GeoServices specification*",
   "main": "index.js",
   "directories": {
@@ -43,16 +43,6 @@
     "should-sinon": "0.0.6",
     "sinon": "^9.2.3",
     "supertest": "^4.0.0"
-  },
-  "standard": {
-    "globals": [
-      "describe",
-      "it",
-      "before",
-      "after",
-      "beforeEach",
-      "afterEach"
-    ]
   },
   "repository": {
     "type": "git",

@@ -1,11 +1,11 @@
 class MockOutput {
   pullData (req, res) {
-    this.model.pull(req, (err, data) => {
-      if (err) res.status(err.code || 500).json({ error: err.message })
+    this.model.pull(req, (err) => {
+      if (err) res.status(err.code || 500).json({ error: err.message });
       else {
-        res.status(200).json({ message: 'success' })
+        res.status(200).json({ message: 'success' });
       }
-    })
+    });
   }
 }
 
@@ -15,7 +15,7 @@ MockOutput.routes = [
     methods: ['get', 'post'],
     handler: 'pullData'
   }
-]
-MockOutput.type = 'output'
-MockOutput.version = '1.0.0'
-module.exports = MockOutput
+];
+MockOutput.type = 'output';
+MockOutput.version = '1.0.0';
+module.exports = MockOutput;

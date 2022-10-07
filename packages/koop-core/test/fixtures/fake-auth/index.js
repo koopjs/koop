@@ -3,11 +3,11 @@ function fakeAuth () {
   return {
     type: 'auth',
     authenticationSpecification: function () {
-      return function () { }
+      return function () { };
     },
     authenticate: function () {},
     authorize: function () {}
-  }
+  };
 }
 
-module.exports = fakeAuth
+module.exports = fakeAuth;

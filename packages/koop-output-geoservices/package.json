@@ -4,7 +4,7 @@
   "description": "Wraps https://github.com/featureserver/featureserver as a plugin for koop",
   "main": "index.js",
   "scripts": {
-    "test": "standard"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -23,12 +23,9 @@
     "url": "https://github.com/koopjs/koop-output-geoservices/issues"
   },
   "homepage": "https://github.com/koopjs/koop-output-geoservices#readme",
-  "devDependencies": {
-    "standard": "^14.2.0"
-  },
   "dependencies": {
-    "@koopjs/logger": "^2.0.6",
-    "featureserver": "^4.0.0"
+    "@koopjs/featureserver": "^4.1.0",
+    "@koopjs/logger": "^2.0.6"
   },
   "peerDependencies": {
     "koop": ">=3.6.1"

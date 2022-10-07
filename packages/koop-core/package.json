@@ -1,5 +1,5 @@
 {
-  "name": "koop",
+  "name": "@koopjs/koop-core",
   "description": "Serve, transform, and query geospatial data on the web",
   "version": "5.1.0",
   "bugs": {
@@ -67,8 +67,9 @@
     "url": "git://github.com/koopjs/koop-core.git"
   },
   "scripts": {
-    "release": "gh-release",
-    "test": "standard && mocha test --recursive -t 5000"
+    "test": "mocha '**/*.spec.js' ",
+    "test:cov": "nyc --reporter=html mocha '**/*.spec.js' ",
+    "test:cov:unit": "nyc --reporter=html mocha 'lib/**/*.spec.js' "
   },
   "standard": {
     "globals": [

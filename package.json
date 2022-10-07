@@ -6,6 +6,7 @@
   "scripts": {
     "lint": "eslint \"packages/**/*.js\"",
     "lint:fix": "eslint \"packages/**/*.js\" --fix",
+    "test": "lerna run test",
     "test:winnow": "tape 'packages/winnow/**/*.spec.js' | tap-spec"
   },
   "repository": {
@@ -19,13 +20,22 @@
   },
   "homepage": "https://github.com/koopjs/koop#readme",
   "workspaces": [
-    "packages/*"
+    "packages/winnow",
+    "packages/featureserver",
+    "packages/koop-output-geoservices",
+    "packages/koop-logger",
+    "packages/koop-cache-memory",
+    "packages/koop-core"
   ],
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",
     "babel-eslint": "^10.1.0",
     "eslint": "^8.23.1",
+    "jest": "^29.1.2",
     "lerna": "^5.5.1",
     "nyc": "^15.1.0"
+  },
+  "dependencies": {
+    "joi": "^17.6.2"
   }
 }
