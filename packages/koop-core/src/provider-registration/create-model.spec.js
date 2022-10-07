@@ -4,7 +4,7 @@ require('should-sinon');
 const _ = require('lodash');
 const { Readable } = require('stream');
 const providerMock = require('../../test/fixtures/fake-provider');
-const createModel = require('../../lib/provider-registration/create-model');
+const createModel = require('./create-model');
 const koopMock = {
   test: 'value',
   cache: {

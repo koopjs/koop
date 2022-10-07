@@ -1,7 +1,7 @@
 const _ = require('lodash');
-const provider = require('./test/fixtures/fake-provider');
-const auth = require('./test/fixtures/fake-auth')();
-const plugins = require('./test/fixtures/fake-plugin');
+const provider = require('../test/fixtures/fake-provider');
+const auth = require('../test/fixtures/fake-auth')();
+const plugins = require('../test/fixtures/fake-plugin');
 const Koop = require('./');
 const Geoservices = require('@koopjs/output-geoservices');
 const request = require('supertest');
@@ -233,9 +233,9 @@ describe('Tests for registering auth plugin', function () {
 
   describe('can register an auth plugin and selectively apply methods to a provider', function () {
     it('should register successfully', function () {
-      const providerWithoutAuth = require('./test/fixtures/fake-provider-ii');
-      const providerWithAuth = require('./test/fixtures/fake-provider');
-      const auth = require('./test/fixtures/fake-auth')();
+      const providerWithoutAuth = require('../test/fixtures/fake-provider-ii');
+      const providerWithAuth = require('../test/fixtures/fake-provider');
+      const auth = require('../test/fixtures/fake-auth')();
       const koop = new Koop();
       koop.register(providerWithoutAuth);
       koop.register(auth);

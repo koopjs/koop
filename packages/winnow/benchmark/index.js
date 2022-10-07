@@ -3,7 +3,7 @@ process.env.KOOP_WARNINGS = 'suppress';
 const Benchmark = require('benchmark');
 const fs = require('fs-extra');
 const path = require('path');
-const winnow = require('../index.js');
+const winnow = require('../src/index.js');
 
 const features = fs.readJSONSync(path.join(__dirname, './fixtures.geojson')).features;
 const suite = new Benchmark.Suite();

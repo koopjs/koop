@@ -5,7 +5,7 @@ const {
 } = require('../constants');
 const {
   LayerFields
-} = require('../helpers/fields');
+} = require('./fields');
 
 class TableLayerMetadata {
   static create (geojson = {}, options = {}) {

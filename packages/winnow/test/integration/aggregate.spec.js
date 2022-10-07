@@ -1,6 +1,6 @@
 'use strict';
 const test = require('tape');
-const winnow = require('../..');
+const winnow = require('../../src');
 const features = require('./fixtures/trees.json');
 const snowFeatures = require('./fixtures/snow.json');
 

@@ -1,8 +1,8 @@
 const {
   filterAndTransform,
   prepareFilterAndTransform,
-} = require('./lib/filter-and-transform');
-const { query, prepareQuery } = require('./lib/query');
+} = require('./filter-and-transform');
+const { query, prepareQuery } = require('./query');
 module.exports = {
   query,
   prepareQuery,

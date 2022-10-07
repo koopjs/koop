@@ -5,9 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint \"packages/**/*.js\"",
-    "lint:fix": "eslint \"packages/**/*.js\" --fix",
-    "test": "lerna run test",
-    "test:winnow": "tape 'packages/winnow/**/*.spec.js' | tap-spec"
+    "lint:fix": "eslint \"packages/**/*.js\" --fix"
   },
   "repository": {
     "type": "git",

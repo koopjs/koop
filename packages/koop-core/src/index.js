@@ -1,14 +1,12 @@
-/* @flow */
-'use strict';
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const compression = require('compression');
-const pkg = require('./package.json');
+const pkg = require('../package.json');
 const Cache = require('@koopjs/cache-memory');
 const Logger = require('@koopjs/logger');
-const ProviderRegistration = require('./lib/provider-registration');
-const middleware = require('./lib/middleware');
+const ProviderRegistration = require('./provider-registration');
+const middleware = require('./middleware');
 const Events = require('events');
 const Util = require('util');
 const path = require('path');

@@ -1,4 +1,4 @@
-const namespacedRoutePath = require('../../../lib/provider-registration/helpers/namespaced-route-path');
+const namespacedRoutePath = require('./namespaced-route-path');
 const should = require('should') // eslint-disable-line
 
 describe('Tests for namespacedRoutePath', function () {
