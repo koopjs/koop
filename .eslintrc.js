@@ -3,7 +3,8 @@ module.exports = {
     commonjs: true,
     es6: true,
     mocha: true,
-    jest: true
+    jest: true,
+    jasmine: true
   },
   extends: 'eslint:recommended',
   globals: {
