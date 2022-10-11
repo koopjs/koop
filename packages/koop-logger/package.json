@@ -24,5 +24,14 @@
   "devDependencies": {
     "tap-spec": "^5.0.0",
     "tape": "^5.0.1"
-  }
+  },
+  "files": [
+    "src/**/*.js",
+    "index.d.ts",
+    "!**/*.spec.js"
+  ],
+  "bugs": {
+    "url": "https://github.com/koopjs/koop/issues"
+  },
+  "homepage": "https://github.com/koopjs/koop#readme"
 }

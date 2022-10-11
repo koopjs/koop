@@ -1,8 +1,0 @@
-language: node_js
-node_js:
-- "6"
-sudo: false
-cache:
-- node_modules
-script:
-- npm test

@@ -2,9 +2,6 @@
   "name": "@koopjs/koop-core",
   "description": "Serve, transform, and query geospatial data on the web",
   "version": "5.1.0",
-  "bugs": {
-    "url": "https://github.com/koopjs/koop/issues"
-  },
   "contributors": [
     {
       "name": "Rich Gwozdz",
@@ -22,7 +19,6 @@
     }
   ],
   "dependencies": {
-    "@hapi/joi": "^17.1.0",
     "@koopjs/cache-memory": "^2.0.2",
     "@koopjs/logger": "^2.0.6",
     "@koopjs/output-geoservices": "^3.1.5",
@@ -35,6 +31,7 @@
     "ejs": "^3.1.2",
     "express": "^4.17.1",
     "featureserver": "^4.0.1",
+    "joi": "^17.6.3",
     "koop-localfs": "^1.1.2",
     "lodash": "^4.17.15"
   },
@@ -49,7 +46,15 @@
     "standard": "^14.3.1",
     "supertest": "^4.0.2"
   },
-  "homepage": "https://github.com/koopjs/koop",
+  "files": [
+    "src/**/*.js",
+    "index.d.ts",
+    "!**/*.spec.js"
+  ],
+  "bugs": {
+    "url": "https://github.com/koopjs/koop/issues"
+  },
+  "homepage": "https://github.com/koopjs/koop#readme",
   "keywords": [
     "etl",
     "feature",

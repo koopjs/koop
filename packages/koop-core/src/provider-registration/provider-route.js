@@ -1,4 +1,4 @@
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 const routeJoiner = require('./helpers/route-joiner');
 
 const METHODS_SCHEMA = Joi.array().items(Joi.string().valid('get', 'post', 'patch', 'put', 'delete', 'head').insensitive());

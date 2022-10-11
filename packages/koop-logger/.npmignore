@@ -1,8 +1,0 @@
-.git
-yarn.lock
-test
-.babelrc
-.gitignore
-.flowconfig
-.travis.yml
-*.log

@@ -54,8 +54,13 @@
     "geojson",
     "sql"
   ],
+  "files": [
+    "src/**/*.js",
+    "index.d.ts",
+    "!**/*.spec.js"
+  ],
   "bugs": {
-    "url": "https://github.com/koopjs/FeatureServer/issues"
+    "url": "https://github.com/koopjs/koop/issues"
   },
-  "homepage": "https://github.com/koopjs/FeatureServer#readme"
+  "homepage": "https://github.com/koopjs/koop#readme"
 }

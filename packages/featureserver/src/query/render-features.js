@@ -1,12 +1,20 @@
 const _ = require('lodash');
-const {
-  QueryFields
-} = require('../helpers/fields');
-const {
-  getCollectionCrs,
-  normalizeSpatialReference
-} = require('../helpers');
-const featureResponseTemplate = require('../../templates/features.json');
+const { QueryFields } = require('../helpers/fields');
+const { getCollectionCrs, normalizeSpatialReference } = require('../helpers');
+const featureResponseTemplate = {
+  objectIdFieldName: 'OBJECTID',
+  uniqueIdField: {
+    name: 'OBJECTID',
+    isSystemMaintained: true,
+  },
+  globalIdFieldName: '',
+  hasZ: false,
+  hasM: false,
+  spatialReference: { wkid: 4326, latestWkid: 4326 },
+  fields: [],
+  features: [],
+  exceededTransferLimit: false,
+};
 
 /**
  * Modifies a template features json file with metadata, capabilities, and data from the model
@@ -14,21 +22,15 @@ const featureResponseTemplate = require('../../templates/features.json');
  * @param {object} params
  * @return {object} formatted features data
  */
-function renderFeaturesResponse (data = {}, params = {}) {
+function renderFeaturesResponse(data = {}, params = {}) {
   const template = _.cloneDeep(featureResponseTemplate);
 
   const {
     uniqueIdField: uniqueIdFieldDefault,
-    objectIdFieldName: objectIdFieldNameDefault
+    objectIdFieldName: objectIdFieldNameDefault,
   } = template;
 
-  const {
-    metadata: {
-      limitExceeded,
-      transform,
-      idField
-    } = {}
-  } = data;
+  const { metadata: { limitExceeded, transform, idField } = {} } = data;
 
   const computedProperties = {
     geometryType: params.geometryType,
@@ -39,8 +41,8 @@ function renderFeaturesResponse (data = {}, params = {}) {
     objectIdFieldName: idField || objectIdFieldNameDefault,
     uniqueIdField: {
       ...uniqueIdFieldDefault,
-      name: idField || uniqueIdFieldDefault.name
-    }
+      name: idField || uniqueIdFieldDefault.name,
+    },
   };
 
   if (transform) {
@@ -50,13 +52,17 @@ function renderFeaturesResponse (data = {}, params = {}) {
   return { ...template, ...computedProperties };
 }
 
-function getOutputSpatialReference (collection, {
-  outSR,
-  outputCrs,
-  inputCrs,
-  sourceSR
-}) {
-  const spatialReference = outputCrs || outSR || inputCrs || sourceSR || getCollectionCrs(collection) || 4326;
+function getOutputSpatialReference(
+  collection,
+  { outSR, outputCrs, inputCrs, sourceSR },
+) {
+  const spatialReference =
+    outputCrs ||
+    outSR ||
+    inputCrs ||
+    sourceSR ||
+    getCollectionCrs(collection) ||
+    4326;
 
   const { wkid, wkt, latestWkid } = normalizeSpatialReference(spatialReference);
 

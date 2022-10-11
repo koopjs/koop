@@ -1,8 +1,0 @@
-node_modules
-npm-debug.log
-complexity
-/public
-test/test.log.**
-.flowconfig
-.vscode
-.idea

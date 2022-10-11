@@ -27,10 +27,15 @@
     }
   ],
   "license": "Apache-2.0",
+  "files": [
+    "src/**/*.js",
+    "index.d.ts",
+    "!**/*.spec.js"
+  ],
   "bugs": {
-    "url": "https://github.com/koopjs/koop-cache-memory/issues"
+    "url": "https://github.com/koopjs/koop/issues"
   },
-  "homepage": "https://github.com/koopjs/koop-cache-memory#readme",
+  "homepage": "https://github.com/koopjs/koop#readme",
   "devDependencies": {
     "tap-spec": "^5.0.0",
     "tape": "^5.0.0"

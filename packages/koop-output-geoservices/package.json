@@ -19,10 +19,15 @@
   ],
   "author": "Daniel Fenton <dfenton@esri.com>",
   "license": "Apache-2.0",
+  "files": [
+    "src/**/*.js",
+    "index.d.ts",
+    "!**/*.spec.js"
+  ],
   "bugs": {
-    "url": "https://github.com/koopjs/koop-output-geoservices/issues"
+    "url": "https://github.com/koopjs/koop/issues"
   },
-  "homepage": "https://github.com/koopjs/koop-output-geoservices#readme",
+  "homepage": "https://github.com/koopjs/koop#readme",
   "dependencies": {
     "@koopjs/featureserver": "^4.1.0",
     "@koopjs/logger": "^2.0.6"
