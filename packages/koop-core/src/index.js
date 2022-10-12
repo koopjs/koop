@@ -10,7 +10,7 @@ const Logger = require('@koopjs/logger');
 const pkg = require('../package.json');
 const ProviderRegistration = require('./provider-registration');
 const middleware = require('./middleware');
-const geoservices = require('@koopjs/output-geoservices')
+const geoservices = require('@koopjs/output-geoservices');
 
 function Koop (config) {
   this.version = pkg.version;
