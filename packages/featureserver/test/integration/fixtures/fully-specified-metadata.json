@@ -1,0 +1,76 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "name": "restaurants",
+    "fields": [
+      {
+        "name": "OBJECTID",
+        "type": "Integer"
+      },
+      {
+        "name": "Facility_N",
+        "type": "String"
+      },
+      {
+        "name": "Facility_I",
+        "type": "String"
+      },
+      {
+        "name": "Address",
+        "type": "String"
+      },
+      {
+        "name": "City",
+        "type": "String"
+      },
+      {
+        "name": "Zip",
+        "type": "String"
+      },
+      {
+        "name": "Latitude",
+        "type": "Double"
+      },
+      {
+        "name": "Longitude",
+        "type": "Double"
+      },
+      {
+        "name": "Inspection",
+        "type": "Date"
+      },
+      {
+        "name": "Related_ID",
+        "type": "String"
+      },
+      {
+        "name": "Score",
+        "type": "Double"
+      }
+    ],
+    "idField": "OBJECTID",
+    "displayField": "Facility_N"
+  },
+  "filtersApplied": {
+    "geometry": true,
+    "where": true
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "OBJECTID": 1,
+        "Facility_N": "ROUND TABLE PIZZA",
+        "Facility_I": "FA0016195",
+        "Address": "14898 DALE EVANS",
+        "City": "APPLE VALLEY",
+        "Zip": "92307",
+        "Latitude": 34.525655,
+        "Longitude": -117.215373,
+        "Inspection": "2017-02-28-04:00",
+        "Related_ID": "PR0021541",
+        "Score": 94
+      }
+    }
+  ]
+}

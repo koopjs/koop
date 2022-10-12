@@ -1,0 +1,17 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "name": "GDeltGKG"
+  },
+  "filtersApplied": {
+    "geometry": true,
+    "where": true
+  },
+  "statistics": [
+    {
+      "min_2": 0,
+      "max_2": 57611,
+      "count_2": 75343
+    }
+  ]
+}

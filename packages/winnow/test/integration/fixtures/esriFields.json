@@ -1,0 +1,139 @@
+[
+  {
+    "name": "OBJECTID",
+    "type": "esriFieldTypeOID",
+    "alias": "OBJECTID",
+    "sqlType": "sqlTypeOther",
+    "nullable": false,
+    "editable": false,
+    "domain": null,
+    "defaultValue": null
+  },
+  {
+    "name": "PROPERTY_I",
+    "type": "esriFieldTypeDouble",
+    "alias": "PROPERTY_I",
+    "sqlType": "sqlTypeOther",
+    "nullable": true,
+    "editable": true,
+    "domain": null,
+    "defaultValue": null
+  },
+  {
+    "name": "LANDUSE_CO",
+    "type": "esriFieldTypeString",
+    "alias": "LANDUSE_CO",
+    "sqlType": "sqlTypeOther",
+    "length": 3,
+    "nullable": true,
+    "editable": true,
+    "domain": null,
+    "defaultValue": null
+  },
+  {
+    "name": "ZONING",
+    "type": "esriFieldTypeString",
+    "alias": "ZONING",
+    "sqlType": "sqlTypeOther",
+    "length": 6,
+    "nullable": true,
+    "editable": true,
+    "domain": null,
+    "defaultValue": null
+  },
+  {
+    "name": "PARCEL_ID",
+    "type": "esriFieldTypeInteger",
+    "alias": "PARCEL_ID",
+    "sqlType": "sqlTypeOther",
+    "nullable": true,
+    "editable": true,
+    "domain": null,
+    "defaultValue": null
+  },
+  {
+    "name": "Res",
+    "type": "esriFieldTypeSmallInteger",
+    "alias": "Res",
+    "sqlType": "sqlTypeOther",
+    "nullable": true,
+    "editable": true,
+    "domain": null,
+    "defaultValue": null
+  },
+  {
+    "name": "ZONING_S",
+    "type": "esriFieldTypeString",
+    "alias": "Zoning_simple",
+    "sqlType": "sqlTypeOther",
+    "length": 4,
+    "nullable": true,
+    "editable": true,
+    "domain": {
+      "type": "codedValue",
+      "name": "ZoningCodes",
+      "codedValues": [
+        {
+          "name": "Commercial",
+          "code": "B"
+        },
+        {
+          "name": "Flood Hazard Area",
+          "code": "FH"
+        },
+        {
+          "name": "Institutional",
+          "code": "INST"
+        },
+        {
+          "name": "Manufacturing",
+          "code": "M"
+        },
+        {
+          "name": "Office",
+          "code": "O"
+        },
+        {
+          "name": "Utility",
+          "code": "U"
+        },
+        {
+          "name": "Residential",
+          "code": "R"
+        }
+      ]
+    },
+    "defaultValue": null
+  },
+  {
+    "name": "GlobalID",
+    "type": "esriFieldTypeGlobalID",
+    "alias": "",
+    "sqlType": "sqlTypeOther",
+    "length": 38,
+    "nullable": false,
+    "editable": false,
+    "domain": null,
+    "defaultValue": null
+  },
+  {
+    "name": "Shape__Area",
+    "type": "esriFieldTypeDouble",
+    "alias": "Shape__Area",
+    "sqlType": "sqlTypeDouble",
+    "nullable": true,
+    "editable": false,
+    "domain": null,
+    "defaultValue": null
+  },
+  {
+    "name": "Shape__Length",
+    "type": "esriFieldTypeDouble",
+    "alias": "Shape__Length",
+    "sqlType": "sqlTypeDouble",
+    "nullable": true,
+    "editable": false,
+    "domain": null,
+    "defaultValue": null
+  }
+]

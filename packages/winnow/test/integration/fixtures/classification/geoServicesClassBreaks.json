@@ -1,0 +1,27 @@
+{
+  "classificationDef": {
+    "type": "classBreaksDef",
+    "classificationField": "Trunk_Diameter",
+    "classificationMethod": "esriClassifyEqualInterval",
+    "breakCount": 5,
+    "colorRamp": {
+      "type": "algorithmic",
+      "fromColor": [
+        115,
+        76,
+        0,
+        255
+      ],
+      "toColor": [
+        255,
+        25,
+        86,
+        255
+      ],
+      "algorithm": "esriHSVAlgorithm"
+    }
+  },
+  "where": "Trunk_Diameter<15",
+  "gdbVersion": "",
+  "f": "pjson"
+}

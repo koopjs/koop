@@ -1,0 +1,357 @@
+{
+  "objectIdFieldName": "OBJECTID",
+  "globalIdFieldName": "",
+  "geometryType": "esriGeometryPoint",
+  "spatialReference": {
+    "wkid": 102645,
+    "latestWkid": 2229
+  },
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "OBJECTID",
+      "sqlType": "sqlTypeOther",
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "Common_Name",
+      "type": "esriFieldTypeString",
+      "alias": "Common_Name",
+      "sqlType": "sqlTypeOther",
+      "length": 75,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "Genus",
+      "type": "esriFieldTypeString",
+      "alias": "Genus",
+      "sqlType": "sqlTypeOther",
+      "length": 50,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "Species",
+      "type": "esriFieldTypeString",
+      "alias": "Species",
+      "sqlType": "sqlTypeOther",
+      "length": 30,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "House_Number",
+      "type": "esriFieldTypeInteger",
+      "alias": "House_Number",
+      "sqlType": "sqlTypeOther",
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "Street_Direction",
+      "type": "esriFieldTypeString",
+      "alias": "Street_Direction",
+      "sqlType": "sqlTypeOther",
+      "length": 2,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "Street_Name",
+      "type": "esriFieldTypeString",
+      "alias": "Street_Name",
+      "sqlType": "sqlTypeOther",
+      "length": 50,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "Street_Type",
+      "type": "esriFieldTypeString",
+      "alias": "Street_Type",
+      "sqlType": "sqlTypeOther",
+      "length": 4,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "Street_Suffix",
+      "type": "esriFieldTypeString",
+      "alias": "Street_Suffix",
+      "sqlType": "sqlTypeOther",
+      "length": 5,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "Trunk_Diameter",
+      "type": "esriFieldTypeDouble",
+      "alias": "Trunk_Diameter",
+      "sqlType": "sqlTypeOther",
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "Longitude",
+      "type": "esriFieldTypeDouble",
+      "alias": "Longitude",
+      "sqlType": "sqlTypeOther",
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "Latitude",
+      "type": "esriFieldTypeDouble",
+      "alias": "Latitude",
+      "sqlType": "sqlTypeOther",
+      "domain": null,
+      "defaultValue": null
+    }
+  ],
+  "exceededTransferLimit": true,
+  "features": [
+    {
+      "attributes": {
+        "OBJECTID": 1,
+        "Common_Name": "BRUSH CHERRY",
+        "Genus": "EUGENIA",
+        "Species": "PANICULATA",
+        "House_Number": 846,
+        "Street_Direction": "N",
+        "Street_Name": "ALLEN",
+        "Street_Type": "AVE",
+        "Street_Suffix": null,
+        "Trunk_Diameter": 12,
+        "Longitude": -118.112665207,
+        "Latitude": 34.160393184
+      },
+      "geometry": {
+        "x": 6527586.805926144,
+        "y": 1880769.6166898906
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID": 2,
+        "Common_Name": "BRUSH CHERRY",
+        "Genus": "EUGENIA",
+        "Species": "PANICULATA",
+        "House_Number": 846,
+        "Street_Direction": "N",
+        "Street_Name": "ALLEN",
+        "Street_Type": "AVE",
+        "Street_Suffix": null,
+        "Trunk_Diameter": 21,
+        "Longitude": -118.112566197,
+        "Latitude": 34.1603765510001
+      },
+      "geometry": {
+        "x": 6527616.751732394,
+        "y": 1880763.5300878882
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID": 3,
+        "Common_Name": "BRUSH CHERRY",
+        "Genus": "EUGENIA",
+        "Species": "PANICULATA",
+        "House_Number": 846,
+        "Street_Direction": "N",
+        "Street_Name": "ALLEN",
+        "Street_Type": "AVE",
+        "Street_Suffix": null,
+        "Trunk_Diameter": 13,
+        "Longitude": -118.11247122,
+        "Latitude": 34.160366605
+      },
+      "geometry": {
+        "x": 6527645.480021387,
+        "y": 1880759.8781923056
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID": 4,
+        "Common_Name": "HOLLY OAK",
+        "Genus": "QUERCUS",
+        "Species": "ILEX",
+        "House_Number": 848,
+        "Street_Direction": "N",
+        "Street_Name": "ALLEN",
+        "Street_Type": "AVE",
+        "Street_Suffix": null,
+        "Trunk_Diameter": 15,
+        "Longitude": -118.113014059,
+        "Latitude": 34.160703148
+      },
+      "geometry": {
+        "x": 6527481.397672385,
+        "y": 1880882.5364115536
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID": 5,
+        "Common_Name": "LIVE OAK",
+        "Genus": "QUERCUS",
+        "Species": "AGRIFOLIA",
+        "House_Number": 862,
+        "Street_Direction": "N",
+        "Street_Name": "ALLEN",
+        "Street_Type": "AVE",
+        "Street_Suffix": null,
+        "Trunk_Diameter": 24,
+        "Longitude": -118.113014234,
+        "Latitude": 34.1608323580001
+      },
+      "geometry": {
+        "x": 6527481.397672385,
+        "y": 1880929.558627233
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID": 6,
+        "Common_Name": "HOLLY OAK",
+        "Genus": "QUERCUS",
+        "Species": "ILEX",
+        "House_Number": 870,
+        "Street_Direction": "N",
+        "Street_Name": "ALLEN",
+        "Street_Type": "AVE",
+        "Street_Suffix": null,
+        "Trunk_Diameter": 15,
+        "Longitude": -118.113017244,
+        "Latitude": 34.1609751400001
+      },
+      "geometry": {
+        "x": 6527480.545639977,
+        "y": 1880981.5204655677
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID": 7,
+        "Common_Name": "HOLLY OAK",
+        "Genus": "QUERCUS",
+        "Species": "ILEX",
+        "House_Number": 880,
+        "Street_Direction": "N",
+        "Street_Name": "ALLEN",
+        "Street_Type": "AVE",
+        "Street_Suffix": null,
+        "Trunk_Diameter": 13,
+        "Longitude": -118.113016331,
+        "Latitude": 34.1611333750001
+      },
+      "geometry": {
+        "x": 6527480.886518553,
+        "y": 1881039.1046679765
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID": 8,
+        "Common_Name": "LIVE OAK",
+        "Genus": "QUERCUS",
+        "Species": "AGRIFOLIA",
+        "House_Number": 941,
+        "Street_Direction": "N",
+        "Street_Name": "ALLEN",
+        "Street_Type": "AVE",
+        "Street_Suffix": null,
+        "Trunk_Diameter": 13,
+        "Longitude": -118.113246724,
+        "Latitude": 34.162240893
+      },
+      "geometry": {
+        "x": 6527411.642562553,
+        "y": 1881442.2288617343
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID": 9,
+        "Common_Name": "HOLLY OAK",
+        "Genus": "QUERCUS",
+        "Species": "ILEX",
+        "House_Number": 951,
+        "Street_Direction": "E",
+        "Street_Name": "MOUNTAIN",
+        "Street_Type": "ST",
+        "Street_Suffix": null,
+        "Trunk_Diameter": 17,
+        "Longitude": -118.113243957,
+        "Latitude": 34.1624357540001
+      },
+      "geometry": {
+        "x": 6527412.559555471,
+        "y": 1881513.1414495558
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID": 10,
+        "Common_Name": "HOLLY OAK",
+        "Genus": "QUERCUS",
+        "Species": "ILEX",
+        "House_Number": 965,
+        "Street_Direction": "N",
+        "Street_Name": "ALLEN",
+        "Street_Type": "AVE",
+        "Street_Suffix": null,
+        "Trunk_Diameter": 11,
+        "Longitude": -118.113243306,
+        "Latitude": 34.1627011670001
+      },
+      "geometry": {
+        "x": 6527412.8653291315,
+        "y": 1881609.7295109779
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID": 11,
+        "Common_Name": "HOLLY OAK",
+        "Genus": "QUERCUS",
+        "Species": "ILEX",
+        "House_Number": 985,
+        "Street_Direction": "N",
+        "Street_Name": "ALLEN",
+        "Street_Type": "AVE",
+        "Street_Suffix": null,
+        "Trunk_Diameter": 13,
+        "Longitude": -118.113243555,
+        "Latitude": 34.1628851070001
+      },
+      "geometry": {
+        "x": 6527412.8653291315,
+        "y": 1881676.668681562
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID": 12,
+        "Common_Name": "PINDO PALM",
+        "Genus": "BUTIA",
+        "Species": "CAPITATA",
+        "House_Number": 985,
+        "Street_Direction": "N",
+        "Street_Name": "ALLEN",
+        "Street_Type": "AVE",
+        "Street_Suffix": null,
+        "Trunk_Diameter": 19,
+        "Longitude": -118.113351541,
+        "Latitude": 34.1631634350001
+      },
+      "geometry": {
+        "x": 6527380.312572718,
+        "y": 1881777.9942663163
+      }
+    }
+  ]
+}

@@ -1,0 +1,613 @@
+{
+    "type": "FeatureCollection",
+    "crs": {
+        "type": "name",
+        "properties": {
+            "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+        }
+    },
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 11303,
+                "Common_Name": "SOUTHERN MAGNOLIA",
+                "Genus": "MAGNOLIA",
+                "Species": "GRANDIFLORA",
+                "House_Number": 505,
+                "Street_Direction": "S",
+                "Street_Name": "GRAND'S STREET'S",
+                "Street_Type": "AVE",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 13,
+                "Longitude": -118.162307,
+                "Latitude": 34.137114,
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.16230746759626,
+                    34.137113646321595
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 7359,
+                "Common_Name": "LIVE OAK",
+                "Genus": "QUERCUS",
+                "Species": "AGRIFOLIA",
+                "House_Number": 564,
+                "Street_Direction": "E",
+                "Street_Name": "CLAREMONT",
+                "Street_Type": "ST",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 7,
+                "Longitude": -118.138911,
+                "Latitude": 34.16683,
+                "survey_date": "2017-02-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.13891082012945,
+                    34.16683031375111
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 8391,
+                "Common_Name": "JACARANDA",
+                "Genus": "JACARANDA",
+                "Species": "MIMOSIFOLIA",
+                "House_Number": 542,
+                "Street_Direction": null,
+                "Street_Name": "DEL MONTE",
+                "Street_Type": "ST",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 17,
+                "Longitude": -118.161895,
+                "Latitude": 34.172534,
+                "survey_date": "2017-03-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.16189539291581,
+                    34.172533854576706
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 316,
+                "Common_Name": "XYLOSMA",
+                "Genus": "XYLOSMA",
+                "Species": "CONGESTUM",
+                "House_Number": 2180,
+                "Street_Direction": "N",
+                "Street_Name": "ALTADENA",
+                "Street_Type": "DR",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 3,
+                "Longitude": -118.100004,
+                "Latitude": 34.183324,
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.10000401285822,
+                    34.183324216717196
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 11304,
+                "Common_Name": "SOUTHERN MAGNOLIA",
+                "Genus": "MAGNOLIA",
+                "Species": "GRANDIFLORA",
+                "House_Number": 505,
+                "Street_Direction": "S",
+                "Street_Name": "GRAND",
+                "Street_Type": "AVE",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 16,
+                "Longitude": -118.162312,
+                "Latitude": 34.13699,
+                "survey_date": "2017-02-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.16231151145712,
+                    34.13699015455558
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 7360,
+                "Common_Name": "LIVE OAK",
+                "Genus": "QUERCUS",
+                "Species": "AGRIFOLIA",
+                "House_Number": 565,
+                "Street_Direction": "E",
+                "Street_Name": "CLAREMONT",
+                "Street_Type": "ST",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 1,
+                "Longitude": -118.139013,
+                "Latitude": 34.166939,
+                "survey_date": "2017-03-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.1390127851391,
+                    34.16693855073808
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 8392,
+                "Common_Name": "JACARANDA",
+                "Genus": "JACARANDA",
+                "Species": "MIMOSIFOLIA",
+                "House_Number": 545,
+                "Street_Direction": null,
+                "Street_Name": "DEL MONTE",
+                "Street_Type": "ST",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 22,
+                "Longitude": -118.162084,
+                "Latitude": 34.172669,
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.16208413983006,
+                    34.172669220084885
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 317,
+                "Common_Name": "HOLLY OAK",
+                "Genus": "QUERCUS",
+                "Species": "ILEX",
+                "House_Number": 2180,
+                "Street_Direction": "N",
+                "Street_Name": "ALTADENA",
+                "Street_Type": "DR",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 8,
+                "Longitude": -118.100279,
+                "Latitude": 34.183244,
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.10027873531907,
+                    34.18324442644466
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 11305,
+                "Common_Name": "SOUTHERN MAGNOLIA",
+                "Genus": "MAGNOLIA",
+                "Species": "GRANDIFLORA",
+                "House_Number": 505,
+                "Street_Direction": "S",
+                "Street_Name": "GRAND",
+                "Street_Type": "AVE",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 8,
+                "Longitude": -118.162317,
+                "Latitude": 34.136875,
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.16231699933272,
+                    34.13687497477171
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 7361,
+                "Common_Name": "WINDMILL PALM",
+                "Genus": "TRACHYCARPUS",
+                "Species": "FORTUNEI",
+                "House_Number": 565,
+                "Street_Direction": "E",
+                "Street_Name": "CLAREMONT",
+                "Street_Type": "ST",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 4,
+                "Longitude": -118.138968,
+                "Latitude": 34.166942,
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.13896814755172,
+                    34.16694157078453
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 11306,
+                "Common_Name": "SOUTHERN MAGNOLIA",
+                "Genus": "MAGNOLIA",
+                "Species": "GRANDIFLORA",
+                "House_Number": 524,
+                "Street_Direction": "S",
+                "Street_Name": "GRAND",
+                "Street_Type": "AVE",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 18,
+                "Longitude": -118.162161,
+                "Latitude": 34.136792,
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.1621608729996,
+                    34.13679169620391
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 8393,
+                "Common_Name": "JACARANDA",
+                "Genus": "JACARANDA",
+                "Species": "MIMOSIFOLIA",
+                "House_Number": 550,
+                "Street_Direction": null,
+                "Street_Name": "DEL MONTE",
+                "Street_Type": "ST",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 1,
+                "Longitude": -118.162098,
+                "Latitude": 34.172564,
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.1620980015195,
+                    34.17256398103076
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 318,
+                "Common_Name": "FLAX-LEAF PAPERBARK",
+                "Genus": "MELALEUCA",
+                "Species": "LINARIIFOLIA",
+                "House_Number": 2190,
+                "Street_Direction": "N",
+                "Street_Name": "ALTADENA",
+                "Street_Type": "DR",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 7,
+                "Longitude": -118.100121,
+                "Latitude": 34.183455,
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.10012107937855,
+                    34.18345506366259
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 11308,
+                "Common_Name": "SOUTHERN MAGNOLIA",
+                "Genus": "MAGNOLIA",
+                "Species": "GRANDIFLORA",
+                "House_Number": 530,
+                "Street_Direction": "S",
+                "Street_Name": "GRAND",
+                "Street_Type": "AVE",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 24,
+                "Longitude": -118.162167,
+                "Latitude": 34.136504,
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.16216749121132,
+                    34.136504054696836
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 8395,
+                "Common_Name": "JACARANDA",
+                "Genus": "JACARANDA",
+                "Species": "MIMOSIFOLIA",
+                "House_Number": 560,
+                "Street_Direction": null,
+                "Street_Name": "DEL MONTE",
+                "Street_Type": "ST",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 8,
+                "Longitude": -118.162258,
+                "Latitude": 34.172585,
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.1622583946417,
+                    34.17258481039977
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 7364,
+                "Common_Name": "LIVE OAK",
+                "Genus": "QUERCUS",
+                "Species": "AGRIFOLIA",
+                "House_Number": 580,
+                "Street_Direction": "E",
+                "Street_Name": "CLAREMONT",
+                "Street_Type": "ST",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 9,
+                "Longitude": -118.138614,
+                "Latitude": 34.166824,
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.13861360553399,
+                    34.16682401771622
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 320,
+                "Common_Name": "LIVE OAK",
+                "Genus": "QUERCUS",
+                "Species": "AGRIFOLIA",
+                "House_Number": 2190,
+                "Street_Direction": "N",
+                "Street_Name": "ALTADENA",
+                "Street_Type": "DR",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 12,
+                "Longitude": -118.100081,
+                "Latitude": 34.183479,
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.10008124132926,
+                    34.1834787014212
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 11309,
+                "Common_Name": "SOUTHERN MAGNOLIA",
+                "Genus": "MAGNOLIA",
+                "Species": "GRANDIFLORA",
+                "House_Number": 530,
+                "Street_Direction": "S",
+                "Street_Name": "GRAND",
+                "Street_Type": "AVE",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 0,
+                "Longitude": -118.162067,
+                "Latitude": 34.136461,
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.16206693622065,
+                    34.13646122437432
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 8396,
+                "Common_Name": "JACARANDA",
+                "Genus": "JACARANDA",
+                "Species": "MIMOSIFOLIA",
+                "House_Number": 565,
+                "Street_Direction": null,
+                "Street_Name": "DEL MONTE",
+                "Street_Type": "ST",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 13,
+                "Longitude": -118.162394,
+                "Latitude": 34.172716,
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.16239368231766,
+                    34.17271556999126
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 7365,
+                "Common_Name": "LIVE OAK",
+                "Genus": "QUERCUS",
+                "Species": "AGRIFOLIA",
+                "House_Number": 585,
+                "Street_Direction": "E",
+                "Street_Name": "CLAREMONT",
+                "Street_Type": "ST",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 27,
+                "Longitude": -118.138609,
+                "Latitude": 34.166936,
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.13860929277861,
+                    34.16693619930697
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 321,
+                "Common_Name": "HOLLY OAK",
+                "Genus": "QUERCUS",
+                "Species": "ILEX",
+                "House_Number": 2190,
+                "Street_Direction": "N",
+                "Street_Name": "ALTADENA",
+                "Street_Type": "DR",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 12,
+                "Longitude": -118.099986,
+                "Latitude": 34.183479,
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.09998560225344,
+                    34.18347878141796
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 11310,
+                "Common_Name": "JACARANDA",
+                "Genus": "JACARANDA",
+                "House_Number": 530,
+                "Street_Direction": "S",
+                "Street_Name": "GRAND",
+                "Street_Type": "AVE",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 0,
+                "Longitude": -118.162045,
+                "Latitude": 34.136476,
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.16204543419569,
+                    34.13647557492385
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 8397,
+                "Common_Name": "JACARANDA",
+                "Genus": "JACARANDA",
+                "Species": "MIMOSIFOLIA",
+                "House_Number": 565,
+                "Street_Direction": null,
+                "Street_Name": "DEL MONTE",
+                "Street_Type": "ST",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 15,
+                "Longitude": -118.162498,
+                "Latitude": 34.172734,
+                "Test/Field": "foo",
+                "survey_date": "2017-01-05T00:00:00.000Z"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.16249780679253,
+                    34.17273413601301
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "OBJECTID": 7366,
+                "Common_Name": "LIVE OAK",
+                "Genus": "QUERCUS",
+                "Species": "AGRIFOLIA",
+                "House_Number": 585,
+                "Street_Direction": "E",
+                "Street_Name": "CLAREMONT",
+                "Street_Type": "ST",
+                "Street_Suffix": null,
+                "Trunk_Diameter": 18,
+                "Longitude": -118.138558,
+                "Latitude": 34.166936,
+                "Test/Field": "foo",
+                "survey_date": "2017-01-05T00:00:00.000Z"
+
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.13855756141967,
+                    34.166936258589594
+                ]
+            }
+        }
+    ]
+}

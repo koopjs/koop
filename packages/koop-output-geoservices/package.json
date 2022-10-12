@@ -1,0 +1,38 @@
+{
+  "name": "@koopjs/output-geoservices",
+  "version": "3.1.5",
+  "description": "Wraps https://github.com/featureserver/featureserver as a plugin for koop",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koopjs/koop-output-geoservices.git"
+  },
+  "keywords": [
+    "koop",
+    "featureserver",
+    "plugin",
+    "output",
+    "geoservices"
+  ],
+  "author": "Daniel Fenton <dfenton@esri.com>",
+  "license": "Apache-2.0",
+  "files": [
+    "src/**/*.js",
+    "index.d.ts",
+    "!**/*.spec.js"
+  ],
+  "bugs": {
+    "url": "https://github.com/koopjs/koop/issues"
+  },
+  "homepage": "https://github.com/koopjs/koop#readme",
+  "dependencies": {
+    "@koopjs/featureserver": "^4.1.0",
+    "@koopjs/logger": "^2.0.6"
+  },
+  "peerDependencies": {
+    "koop": ">=3.6.1"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "name": "koop",
+  "version": "1.0.0",
+  "description": "Monorepo for Koop's core dependencies",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint \"packages/**/*.js\"",
+    "lint:fix": "eslint \"packages/**/*.js\" --fix",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koopjs/koop.git"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/koopjs/koop/issues"
+  },
+  "homepage": "https://github.com/koopjs/koop#readme",
+  "workspaces": [
+    "packages/winnow",
+    "packages/featureserver",
+    "packages/koop-output-geoservices",
+    "packages/koop-logger",
+    "packages/koop-cache-memory",
+    "packages/koop-core"
+  ],
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.19.1",
+    "@koopjs/provider-file-geojson": "^2.0.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.23.1",
+    "husky": "^8.0.1",
+    "jest": "^29.1.2",
+    "lerna": "^5.5.1",
+    "lint-staged": "^13.0.3",
+    "nyc": "^15.1.0",
+    "prettier": "^2.7.1",
+    "supertest": "^6.3.0"
+  }
+}

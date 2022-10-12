@@ -1,0 +1,213 @@
+{
+  "metadata": {
+    "fields": [
+      {
+        "name": "FID",
+        "type": "Integer",
+        "alias": "FID",
+        "nullable": true
+      },
+      {
+        "name": "FID2",
+        "type": "Integer",
+        "alias": "FID",
+        "nullable": false
+      },
+      {
+        "name": "OBJECTID",
+        "type": "Integer",
+        "alias": "FID",
+        "nullable": false
+      },
+      {
+        "name": "Fruits",
+        "type": "String",
+        "alias": "Fruits",
+        "nullable": true
+      },
+      {
+        "name": "Veggies",
+        "type": "String",
+        "alias": "Fruits",
+        "nullable": true
+      },
+      {
+        "name": "Fruits",
+        "type": "String",
+        "alias": "Veggies",
+        "nullable": true
+      },
+      {
+        "name": "Meats",
+        "type": "String",
+        "alias": "Meats",
+        "nullable": true
+      },
+      {
+        "name": "Latitude",
+        "type": "Double",
+        "alias": "Latitude",
+        "nullable": false
+      },
+      {
+        "name": "Longitude",
+        "type": "Double",
+        "alias": "Longitude",
+        "nullable": false
+      },
+      {
+        "name": "ReportDate",
+        "type": "Date",
+        "alias": "Report Date",
+        "nullable": true
+      },
+      {
+        "name": "Date1",
+        "type": "Date",
+        "alias": "Date 1",
+        "nullable": true
+      },
+      {
+        "name": "Date2",
+        "type": "Date",
+        "alias": "Date 1",
+        "nullable": true
+      },
+      {
+        "name": "Date3",
+        "type": "Date",
+        "alias": "Date 1",
+        "nullable": true
+      },
+      {
+        "name": "Date4",
+        "type": "Date",
+        "alias": "Date 1",
+        "nullable": true
+      },
+      {
+        "name": "Date5",
+        "type": "Date",
+        "alias": "Date 1",
+        "nullable": true
+      },
+      {
+        "name": "Date6",
+        "type": "Date",
+        "alias": "Date 1",
+        "nullable": true
+      }
+    ]
+  },
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "OBJECTID": 1,
+        "ReportDate": "2012-03-15T00:00:00.000Z",
+        "Fruits": "Apples",
+        "Veggies": "Potato",
+        "Meats": "Meats",
+        "Date1": "2012-03-15T00:00:00.000Z",
+        "Date2": "2012-03-15T00:00:00.000Z",
+        "Date3": "2012-04-14T00:00:00.000Z",
+        "Date4": "2012-03-15T00:00:00.000Z",
+        "Latitude": 43.010365,
+        "Longitude": -87.988828,
+        "Date5": "2012-03-15T00:00:00.000Z",
+        "Date6": "2012-03-15T00:00:00.000Z",
+        "FID": null,
+        "FID2": 1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.98882799999998,
+          43.010365
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "OBJECTID": 2,
+        "ReportDate": "2012-03-17T00:00:00.000Z",
+        "Fruits": "Apples",
+        "Veggies": "Potato",
+        "Meats": "Meats",
+        "Date1": "2012-03-17T00:00:00.000Z",
+        "Date2": "2012-03-17T00:00:00.000Z",
+        "Date3": "2012-04-16T00:00:00.000Z",
+        "Date4": "2012-03-17T00:00:00.000Z",
+        "Latitude": 43.010409,
+        "Longitude": -87.999928,
+        "Date5": "2012-03-17T00:00:00.000Z",
+        "Date6": "2012-03-17T00:00:00.000Z",
+        "FID": null,
+        "FID2": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.999928,
+          43.01040900000001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "OBJECTID": 3,
+        "ReportDate": "2012-03-17T00:00:00.000Z",
+        "Fruits": "Apples",
+        "Veggies": "Potato",
+        "Meats": "Meats",
+        "Date1": "2012-03-17T00:00:00.000Z",
+        "Date2": "2012-03-17T00:00:00.000Z",
+        "Date3": "2012-04-16T00:00:00.000Z",
+        "Date4": "2012-03-17T00:00:00.000Z",
+        "Latitude": 43.014603,
+        "Longitude": -87.996801,
+        "Date5": "2012-03-17T00:00:00.000Z",
+        "Date6": "2012-03-17T00:00:00.000Z",
+        "FID": null,
+        "FID2": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.996801,
+          43.014602999999994
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "OBJECTID": 30,
+        "ReportDate": "2012-07-20T00:00:00.000Z",
+        "Fruits": "Strawberry",
+        "Veggies": "Carrot",
+        "Meats": "Fish",
+        "Date1": "2020-01-20T00:00:00.000Z",
+        "Date2": "2020-01-20T00:00:00.000Z",
+        "Date3": "2020-01-19T00:00:00.000Z",
+        "Date4": null,
+        "Latitude": 43.009807,
+        "Longitude": -87.98796,
+        "Date5": null,
+        "Date6": null,
+        "FID": null,
+        "FID2": 30
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.98796,
+          43.00980699999999
+        ]
+      }
+    }
+  ]
+}

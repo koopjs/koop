@@ -1,0 +1,24 @@
+{
+  "type": "FeatureCollection",
+  "features": [],
+  "count": 0,
+  "metadata": {
+    "name": "ArcGIS Search",
+    "description": "Search content in ArcGIS Online",
+    "displayField": "title",
+    "fields": [
+      {
+        "name": "id",
+        "type": "esriFieldTypeString",
+        "alias": "id",
+        "length": null,
+        "editable": false,
+        "nullable": true,
+        "domain": null
+      }
+    ]
+  },
+  "filtersApplied": {
+    "where": true
+  }
+}

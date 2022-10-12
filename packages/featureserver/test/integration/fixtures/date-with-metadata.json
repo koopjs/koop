@@ -1,0 +1,20 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "dateField": "2017-06-16T01:58:36.179Z"
+      }
+    }
+  ],
+  "metadata": {
+    "fields": [
+      {
+        "name": "dateField",
+        "type": "Date"
+      }
+    ]
+  }
+}

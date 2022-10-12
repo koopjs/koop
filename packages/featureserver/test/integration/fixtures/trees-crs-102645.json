@@ -1,0 +1,14 @@
+{
+  "type": "FeatureCollection",
+  "name": "street-trees-102645",
+  "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::102645" } },
+  "features": [
+  { "type": "Feature", "properties": { "OBJECTID": 31724, "Common_Nam": "JACARANDA", "Genus": "JACARANDA", "Species": "MIMOSIFOLIA", "House_Numb": 1999, "Street_Dir": null, "Street_Nam": "MENTONE", "Street_Typ": "AVE", "Street_Suf": null, "Trunk_Diam": 23, "Longitude": -118.15747343, "Latitude": 34.180086872000103 }, "geometry": { "type": "Point", "coordinates": [ 6514038.953486103564501, 1887956.492762538837269 ] } },
+  { "type": "Feature", "properties": { "OBJECTID": 31722, "Common_Nam": "JACARANDA", "Genus": "JACARANDA", "Species": "MIMOSIFOLIA", "House_Numb": 1991, "Street_Dir": null, "Street_Nam": "MENTONE", "Street_Typ": "AVE", "Street_Suf": null, "Trunk_Diam": 19, "Longitude": -118.15747179100001, "Latitude": 34.179981473000097 }, "geometry": { "type": "Point", "coordinates": [ 6514039.389178796671331, 1887918.135223435005173 ] } },
+  { "type": "Feature", "properties": { "OBJECTID": 31723, "Common_Nam": "JACARANDA", "Genus": "JACARANDA", "Species": "MIMOSIFOLIA", "House_Numb": 1996, "Street_Dir": null, "Street_Nam": "MENTONE", "Street_Typ": "AVE", "Street_Suf": null, "Trunk_Diam": 17, "Longitude": -118.157324903, "Latitude": 34.180040354 }, "geometry": { "type": "Point", "coordinates": [ 6514083.84874156396836, 1887939.493448474211618 ] } },
+  { "type": "Feature", "properties": { "OBJECTID": 31720, "Common_Nam": "JACARANDA", "Genus": "JACARANDA", "Species": "MIMOSIFOLIA", "House_Numb": 1980, "Street_Dir": null, "Street_Nam": "MENTONE", "Street_Typ": "AVE", "Street_Suf": null, "Trunk_Diam": 15, "Longitude": -118.15732032, "Latitude": 34.179902619000103 }, "geometry": { "type": "Point", "coordinates": [ 6514085.156479243189096, 1887889.367230779025704 ] } },
+  { "type": "Feature", "properties": { "OBJECTID": 31721, "Common_Nam": "JACARANDA", "Genus": "JACARANDA", "Species": "MIMOSIFOLIA", "House_Numb": 1981, "Street_Dir": null, "Street_Nam": "MENTONE", "Street_Typ": "AVE", "Street_Suf": null, "Trunk_Diam": 18, "Longitude": -118.157470069, "Latitude": 34.179832955000101 }, "geometry": { "type": "Point", "coordinates": [ 6514039.825198765844107, 1887864.086112950462848 ] } },
+  { "type": "Feature", "properties": { "OBJECTID": 31719, "Common_Nam": "JACARANDA", "Genus": "JACARANDA", "Species": "MIMOSIFOLIA", "House_Numb": 1980, "Street_Dir": null, "Street_Nam": "MENTONE", "Street_Typ": "AVE", "Street_Suf": null, "Trunk_Diam": 14, "Longitude": -118.157321544, "Latitude": 34.179787634 }, "geometry": { "type": "Point", "coordinates": [ 6514084.720782318152487, 1887847.522821671096608 ] } }
+  ]
+  }
+  

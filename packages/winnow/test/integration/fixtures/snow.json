@@ -1,0 +1,294 @@
+{
+  "name": "snow.geojson",
+  "next_feature": null,
+  "type": "FeatureCollection",
+  "start": 0,
+  "features": [
+    {
+      "type": "Feature",
+      "id": "adtdmr052uaw",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -104.9476,
+          39.9448
+        ]
+      },
+      "properties": {
+        "station name": "Northglenn 4.6 NNE",
+        "latitude": 39.9448,
+        "daily precip": 0.31,
+        "total precip": 0.31,
+        "daily snow total": 4.9,
+        "longitude": -104.9476,
+        "station": "�CO-AD-50",
+        "multi-day precip": null,
+        "num of reports": 1
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "adtdmrcvhg8l",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -104.8424,
+          39.9137
+        ]
+      },
+      "properties": {
+        "station name": "Thornton 7.5 ENE",
+        "latitude": 39.9137,
+        "daily precip": 0,
+        "total precip": 0,
+        "daily snow total": 3,
+        "longitude": -104.8424,
+        "station": "�CO-AD-75",
+        "multi-day precip": null,
+        "num of reports": 1
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "adtdmr4es2lv",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -104.991153,
+          39.898467
+        ]
+      },
+      "properties": {
+        "station name": "Northglenn 0.9 SW",
+        "latitude": 39.898467,
+        "daily precip": 0.61,
+        "total precip": 0.61,
+        "daily snow total": 5.5,
+        "longitude": -104.991153,
+        "station": "�CO-AD-98",
+        "multi-day precip": null,
+        "num of reports": 1
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "adtdmre0e54q",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -104.9553999,
+          39.92227505
+        ]
+      },
+      "properties": {
+        "station name": "Thornton 2.1 N",
+        "latitude": 39.92227505,
+        "daily precip": 0.49,
+        "total precip": 0.49,
+        "daily snow total": 4.1,
+        "longitude": -104.9553999,
+        "station": "�CO-AD-100",
+        "multi-day precip": null,
+        "num of reports": 1
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "adtdmreebnu8",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -104.9246,
+          39.8786
+        ]
+      },
+      "properties": {
+        "station name": "Thornton 1.9 ESE",
+        "latitude": 39.8786,
+        "daily precip": 0.32,
+        "total precip": 0.32,
+        "daily snow total": 3,
+        "longitude": -104.9246,
+        "station": "�CO-AD-119",
+        "multi-day precip": null,
+        "num of reports": 1
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "adtdmr3tllwa",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -104.868338,
+          39.971369
+        ]
+      },
+      "properties": {
+        "station name": "Brighton 4.0 WNW",
+        "latitude": 39.971369,
+        "daily precip": 0.48,
+        "total precip": 0.48,
+        "daily snow total": 3,
+        "longitude": -104.868338,
+        "station": "�CO-AD-123",
+        "multi-day precip": null,
+        "num of reports": 1
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "adtdmra1haa1",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -104.85429,
+          39.75166
+        ]
+      },
+      "properties": {
+        "station name": "Aurora 4.2 NNW",
+        "latitude": 39.75166,
+        "daily precip": 0.4,
+        "total precip": 0.4,
+        "daily snow total": 6,
+        "longitude": -104.85429,
+        "station": "�CO-AD-127",
+        "multi-day precip": null,
+        "num of reports": 1
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "adtdmr04feur",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -104.497224,
+          39.782008
+        ]
+      },
+      "properties": {
+        "station name": "Bennett 4.3 WNW",
+        "latitude": 39.782008,
+        "daily precip": 0.46,
+        "total precip": 0.46,
+        "daily snow total": 0,
+        "longitude": -104.497224,
+        "station": "�CO-AD-145",
+        "multi-day precip": null,
+        "num of reports": 1
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "adtdmrdkep6y",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -105.0275574,
+          39.89636993
+        ]
+      },
+      "properties": {
+        "station name": "Westminster 1.6 NE",
+        "latitude": 39.89636993,
+        "daily precip": 0.35,
+        "total precip": 0.35,
+        "daily snow total": 3.5,
+        "longitude": -105.0275574,
+        "station": "�CO-AD-153",
+        "multi-day precip": null,
+        "num of reports": 1
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "adtdmr08v6lf",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -105.026047,
+          39.869518
+        ]
+      },
+      "properties": {
+        "station name": "Westminster 1.6 ESE",
+        "latitude": 39.869518,
+        "daily precip": 0.33,
+        "total precip": 0.33,
+        "daily snow total": 4,
+        "longitude": -105.026047,
+        "station": "�CO-AD-162",
+        "multi-day precip": null,
+        "num of reports": 1
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "adtdmr8z5eb6",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -105.015569,
+          39.884561
+        ]
+      },
+      "properties": {
+        "station name": "Federal Heights 1.3 N",
+        "latitude": 39.884561,
+        "daily precip": 0.53,
+        "total precip": 0.53,
+        "daily snow total": 4.1,
+        "longitude": -105.015569,
+        "station": "�CO-AD-166",
+        "multi-day precip": null,
+        "num of reports": 1
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "adtdmr2x0g2k",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -104.8207855,
+          39.7559967
+        ]
+      },
+      "properties": {
+        "station name": "Aurora 4.0 N",
+        "latitude": 39.7559967,
+        "daily precip": 0.4,
+        "total precip": 0.4,
+        "daily snow total": 0,
+        "longitude": -104.8207855,
+        "station": "�CO-AD-169",
+        "multi-day precip": null,
+        "num of reports": 1
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "adtdmr3wh085",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -104.861938,
+          39.752254
+        ]
+      },
+      "properties": {
+        "station name": "Aurora 4.5 NW",
+        "latitude": 39.752254,
+        "daily precip": 0.62,
+        "total precip": 0.62,
+        "daily snow total": 5.5,
+        "longitude": -104.861938,
+        "station": "�CO-AD-170",
+        "multi-day precip": null,
+        "num of reports": 1
+      }
+    }
+  ]
+}

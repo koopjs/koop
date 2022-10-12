@@ -1,0 +1,292 @@
+{
+	"type": "FeatureCollection",
+	"features": [{
+			"type": "FeatureCollection",
+			"features": [{
+					"type": "Feature",
+					"properties": {
+						"abv": "4.5",
+						"add_user": 0,
+						"brewery_id": 863,
+						"cat_id": 8,
+						"descript": "Milwaukee's Best Light is Miller Brewing Company's lead low-calorie brand in the near-premium segment. Brewed to uncompromising standards using select pale malt, cereal grains and yeast, this is a smooth, highly drinkable beer at an affordable price. Available nationwide, Miller first rolled out Milwaukee's Best Light in 1986 with an ambition to become the beer choice for guys. Our marketing, including sponsorship with the World Series of Poker and award-winning TV spots, takes a humorous approach to reinforce the idea that \"Men should act like men and light beer should taste like beer.\"",
+						"filepath": "",
+						"globalid": "jjY7BWSMSTS9keZaEfEdAw==",
+						"ibu": "0.0",
+						"id": 3780,
+						"last_mod": "2010-07-22T18:00:00.000Z",
+						"name": "Milwaukee's Best Light",
+						"OBJECTID": 265183,
+						"srm": "0.0",
+						"style_id": 96,
+						"upc": "0"
+					},
+					"geometry": null
+				}, {
+					"type": "Feature",
+					"properties": {
+						"abv": "5.0",
+						"add_user": 0,
+						"brewery_id": 863,
+						"cat_id": 8,
+						"descript": "",
+						"filepath": "",
+						"globalid": "McP0HCLQSqC+2Cqxyaj46Q==",
+						"ibu": "0.0",
+						"id": 4539,
+						"last_mod": "2010-07-22T18:00:00.000Z",
+						"name": "Red Dog",
+						"OBJECTID": 266609,
+						"srm": "0.0",
+						"style_id": 96,
+						"upc": "0"
+					},
+					"geometry": null
+				}, {
+					"type": "Feature",
+					"properties": {
+						"abv": "4.099999904632568",
+						"add_user": 0,
+						"brewery_id": 863,
+						"cat_id": 8,
+						"descript": "Launched in 2007, Miller Chill is the only light beer brewed with a hint of lime and a pinch of salt to provide a truly refreshing beer experience. Through all of our marketing efforts, beer drinkers will see that Miller Chill is a celebration and fusion of the best of two cultures, great light beer from America and the chelada style from Mexico. It's the new alternative in mainstream low-cal beers ... one that provides a crisper, smoother, more refreshing beer experience.",
+						"filepath": "",
+						"globalid": "XDW0iSK0Rm2PlzS04SIKFA==",
+						"ibu": "0.0",
+						"id": 3777,
+						"last_mod": "2010-07-22T18:00:00.000Z",
+						"name": "Miller Chill",
+						"OBJECTID": 268794,
+						"srm": "0.0",
+						"style_id": 96,
+						"upc": "0"
+					},
+					"geometry": null
+				}, {
+					"type": "Feature",
+					"properties": {
+						"abv": "5.800000190734863",
+						"add_user": 0,
+						"brewery_id": 863,
+						"cat_id": 8,
+						"descript": "",
+						"filepath": "",
+						"globalid": "ykMMcsUxTWyv4kYgpUMEVQ==",
+						"ibu": "0.0",
+						"id": 4540,
+						"last_mod": "2010-07-22T18:00:00.000Z",
+						"name": "Mickey's Ice",
+						"OBJECTID": 269106,
+						"srm": "0.0",
+						"style_id": 96,
+						"upc": "0"
+					},
+					"geometry": null
+				}, {
+					"type": "Feature",
+					"properties": {
+						"abv": "5.5",
+						"add_user": 0,
+						"brewery_id": 863,
+						"cat_id": 8,
+						"descript": "America's first domestic ice beer, Icehouse is traditionally brewed, fermented and, just before aging, its temperature is lowered to below freezing. This process imparts the beer's smoothness and an alcohol content that's slightly higher (5.5% by volume) than other regular premium beer brands. Icehouse was introduced in 1993 and has reinforced its position as the ultimate beer for wind-up and pre-game occasions. Blending humor and high-energy excitement, Icehouse marketing encourages its target consumers to take occasions to the next level with a great-tasting beer.",
+						"filepath": "",
+						"globalid": "PcC17W88TMq1bHzuOzmf6A==",
+						"ibu": "0.0",
+						"id": 3781,
+						"last_mod": "2010-07-22T18:00:00.000Z",
+						"name": "Icehouse",
+						"OBJECTID": 269906,
+						"srm": "0.0",
+						"style_id": 96,
+						"upc": "0"
+					},
+					"geometry": null
+				}, {
+					"type": "Feature",
+					"properties": {
+						"abv": "5.0",
+						"add_user": 0,
+						"brewery_id": 863,
+						"cat_id": 8,
+						"descript": "Miller High Life, the \"champagne of beers,\" dates back to 1903. Miller High Life is a classic American-style lager recognized for its consistently crisp, smooth taste and classic clear-glass bottle. Miller High Life embraces its rich heritage and is positioned as common sense in a bottle. Its drinkers know Miller High Life is an authentic, unpretentious beer. As the best beer value in America, we encourage our target consumers to \"Celebrate the High Life.\"",
+						"filepath": "",
+						"globalid": "L0f6P2SAQLeuLZyjnRqInw==",
+						"ibu": "0.0",
+						"id": 3778,
+						"last_mod": "2010-07-22T18:00:00.000Z",
+						"name": "Miller High Life",
+						"OBJECTID": 271291,
+						"srm": "0.0",
+						"style_id": 96,
+						"upc": "0"
+					},
+					"geometry": null
+				}, {
+					"type": "Feature",
+					"properties": {
+						"abv": "4.659999847412109",
+						"add_user": 0,
+						"brewery_id": 863,
+						"cat_id": 8,
+						"descript": "Miller Genuine Draft debuted in 1985 with fresh, smooth flavor that's a result of being cold-filtered four times. As we capitalize on the growing trend towards \"mainstream sophistication,\" MGD is positioned as the only beer refined to ideal smoothness for those who pursue their passion with integrity and conviction. For our target consumer, MGD is a brand that celebrates their experiences ... past, present, and future. Because, ultimately, in beer as in life, \"Experience is Golden.\"",
+						"filepath": "",
+						"globalid": "HzhhcZwKTJ+5qI7vazXKdA==",
+						"ibu": "0.0",
+						"id": 3779,
+						"last_mod": "2010-07-22T18:00:00.000Z",
+						"name": "Miller Genuine Draft",
+						"OBJECTID": 273788,
+						"srm": "0.0",
+						"style_id": 96,
+						"upc": "0"
+					},
+					"geometry": null
+				}, {
+					"type": "Feature",
+					"properties": {
+						"abv": "4.5",
+						"add_user": 0,
+						"brewery_id": 863,
+						"cat_id": 8,
+						"descript": "",
+						"filepath": "",
+						"globalid": "PHIrLzmEQYeNGoBZjm2j+g==",
+						"ibu": "0.0",
+						"id": 3782,
+						"last_mod": "2010-07-22T18:00:00.000Z",
+						"name": "Milwaukees Best",
+						"OBJECTID": 274619,
+						"srm": "0.0",
+						"style_id": 96,
+						"upc": "0"
+					},
+					"geometry": null
+				}, {
+					"type": "Feature",
+					"properties": {
+						"abv": "2.799999952316284",
+						"add_user": 0,
+						"brewery_id": 863,
+						"cat_id": 8,
+						"descript": "",
+						"filepath": "",
+						"globalid": "zBfWsCQFRd+ebE9HV/h39A==",
+						"ibu": "0.0",
+						"id": 5566,
+						"last_mod": "2010-07-22T18:00:00.000Z",
+						"name": "Miller Genuine Draft 64",
+						"OBJECTID": 274984,
+						"srm": "0.0",
+						"style_id": 96,
+						"upc": "0"
+					},
+					"geometry": null
+				}, {
+					"type": "Feature",
+					"properties": {
+						"abv": "0.0",
+						"add_user": 0,
+						"brewery_id": 863,
+						"cat_id": -1,
+						"descript": "",
+						"filepath": "",
+						"globalid": "DgTK7Y8KRC+PWdBSfMDZBg==",
+						"ibu": "0.0",
+						"id": 4542,
+						"last_mod": "2010-07-22T18:00:00.000Z",
+						"name": "Olde English 800",
+						"OBJECTID": 280757,
+						"srm": "0.0",
+						"style_id": -1,
+						"upc": "0"
+					},
+					"geometry": null
+				}, {
+					"type": "Feature",
+					"properties": {
+						"abv": "4.199999809265137",
+						"add_user": 0,
+						"brewery_id": 863,
+						"cat_id": 8,
+						"descript": "Our flagship brand, Miller Lite, is the great tasting, less filling beer that defined the American light beer category in 1975. We deliver a clear, simple message to consumers: \"Miller Lite is the better beer choice.\" What's our proof? \n1) Miller Lite is the original light beer. \n2) Miller Lite has real beer taste because it's never watered down. \n3) Miller Lite is the only beer to win four gold awards in the World Beer Cup for best American-style light lager. (2006, 2002, 1998, 1996) \n4) Miller Lite has half the carbs of Bud Light and fewer calories*. \"Miller Lite. Good Call.\"",
+						"filepath": "",
+						"globalid": "bHWH95UrTeK9msGRR72kcQ==",
+						"ibu": "0.0",
+						"id": 3811,
+						"last_mod": "2010-07-22T18:00:00.000Z",
+						"name": "Miller Lite",
+						"OBJECTID": 282664,
+						"srm": "0.0",
+						"style_id": 96,
+						"upc": "0"
+					},
+					"geometry": null
+				}
+			],
+			"properties": {
+				"objectid": 261193
+			}
+		}
+	],
+	"metadata": {
+		"idField": "OBJECTID",
+		"fields": [{
+				"name": "OBJECTID",
+				"alias": "objectid",
+				"type": "OID"
+			}, {
+				"name": "upc",
+				"type": "String"
+			}, {
+				"name": "filepath",
+				"type": "String"
+			}, {
+				"name": "descript",
+				"type": "String"
+			}, {
+				"name": "brewery_id",
+				"type": "Integer"
+			}, {
+				"name": "ibu",
+				"type": "String"
+			}, {
+				"name": "abv",
+				"type": "String"
+			}, {
+				"name": "cat_id",
+				"type": "SmallInteger"
+			}, {
+				"name": "NewProperty",
+				"alias": "NewProperty",
+				"type": "Integer"
+			}, {
+				"name": "globalid",
+				"alias": "globalid",
+				"type": "GlobalID"
+			}, {
+				"name": "style_id",
+				"type": "Integer"
+			}, {
+				"name": "srm",
+				"type": "String"
+			}, {
+				"name": "id",
+				"type": "Integer"
+			}, {
+				"name": "add_user",
+				"type": "SmallInteger"
+			}, {
+				"name": "name",
+				"type": "String"
+			}, {
+				"name": "last_mod",
+				"type": "String"
+			}
+		]
+	},
+	"filtersApplied": {
+		"where": true,
+		"geometry": true
+	}
+}
