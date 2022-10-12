@@ -16,7 +16,15 @@
     "koop",
     "logging"
   ],
-  "author": "Daniel Fenton <dfenton@esri.com>",
+  "contributors": [
+    {
+      "name": "Rich Gwozdz",
+      "email": "rgwozdz@esri.com"
+    },
+    {
+      "name": "Daniel Fenton"
+    }
+  ],
   "license": "Apache-2.0",
   "dependencies": {
     "winston": "^3.2.1"
