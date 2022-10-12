@@ -210,6 +210,6 @@ Geoservices.routes = [
 ];
 
 Geoservices.type = 'output';
-Geoservices.version = require('./package.json').version;
+Geoservices.version = require('../package.json').version;
 
 module.exports = Geoservices;
