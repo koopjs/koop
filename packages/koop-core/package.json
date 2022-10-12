@@ -37,13 +37,10 @@
   },
   "devDependencies": {
     "gh-release": "^3.5.0",
-    "husky": "^4.2.5",
-    "lint-staged": "^10.1.7",
     "mocha": "^7.1.2",
     "should": "^13.2.3",
     "should-sinon": "0.0.6",
     "sinon": "^9.0.2",
-    "standard": "^14.3.1",
     "supertest": "^4.0.2"
   },
   "files": [
@@ -75,23 +72,5 @@
     "test": "mocha '**/*.spec.js' ",
     "test:cov": "nyc --reporter=html mocha '**/*.spec.js' ",
     "test:cov:unit": "nyc --reporter=html mocha 'lib/**/*.spec.js' "
-  },
-  "standard": {
-    "globals": [
-      "describe",
-      "it",
-      "before",
-      "after",
-      "beforeEach",
-      "afterEach"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.js": "standard --fix"
   }
 }
