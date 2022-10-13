@@ -64,7 +64,7 @@ class TableLayerMetadata {
       id: 0,
       name: 'Not Set',
       type: 'Table',
-      description: 'This is a feature service powered by https://github.com/featureserver/featureserver',
+      description: 'This is a feature service powered by https://github.com/koopjs/koop/tree/master/packages/featureserver#readme',
       copyrightText: ' ',
       parentLayer: null,
       subLayers: null,

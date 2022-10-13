@@ -30,13 +30,10 @@
     "easy-table": "^1.1.1",
     "ejs": "^3.1.2",
     "express": "^4.17.1",
-    "featureserver": "^4.0.1",
     "joi": "^17.6.3",
-    "koop-localfs": "^1.1.2",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "gh-release": "^3.5.0",
     "mocha": "^7.1.2",
     "should": "^13.2.3",
     "should-sinon": "0.0.6",
