@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* migrate to Koop monorepo
+* move code to `/src` directory
+* co-locate unit test files
+* migrate to eslint
+
 ## [2.0.6] - 2020-05-30
 ### Fixed
 * Update winston syntax
