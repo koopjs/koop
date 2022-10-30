@@ -5,7 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Changed
 * Removed default `datasets` plugin
-* Removed defualt inclusion of LocalFS
+* Removed default inclusion of LocalFS - 10-13-2022
+* scope repo to koop organization
+* migrate to Koop monorepo
+* move code to `/src` directory
+* co-locate unit test files
+* migrate to eslint
 
 ## [5.1.0] - 2022-09-30
 ### Added

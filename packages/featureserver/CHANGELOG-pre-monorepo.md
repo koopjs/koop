@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* scope repo to koop organization
+* migrate to Koop monorepo
+* move code to `/src` directory
+* co-locate unit test files
+* migrate to eslint
+
 ## [4.1.0] - 09-15-2022
 ### Added
 - Set hasZ from metadata setting when present
