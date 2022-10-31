@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+echo "\nRunning commit linting...\n"
+npx --no -- commitlint --edit ${1} || (echo "
+${RED}!Commit-linting failed!${NC}
+Commit messages should follow conventional commit format.
+Use \"npm run commit\" to generate conventional-commit message.\n\n "; false)
