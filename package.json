@@ -7,7 +7,8 @@
     "lint": "eslint \"packages/**/*.js\"",
     "lint:fix": "eslint \"packages/**/*.js\" --fix",
     "prepare": "husky install",
-    "commit": "cz"
+    "commit": "cz",
+    "precommit": "lint-staged && npm test --workspaces"
   },
   "repository": {
     "type": "git",
@@ -33,7 +34,6 @@
     "@koopjs/provider-file-geojson": "^2.0.0",
     "babel-eslint": "^10.1.0",
     "commitizen": "^4.2.5",
-    "commitlint": "^17.2.0",
     "cz-git": "^1.3.12",
     "eslint": "^8.23.1",
     "husky": "^8.0.1",
