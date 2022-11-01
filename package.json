@@ -8,7 +8,9 @@
     "lint:fix": "eslint \"packages/**/*.js\" --fix",
     "prepare": "husky install",
     "commit": "cz",
-    "precommit": "lint-staged && npm test --workspaces"
+    "precommit": "lint-staged && npm test --workspaces",
+    "test": "npm test --workspaces",
+    "test:e2e": "DATA_DIR=./test/provider-data jest ./test/*.spec.js"
   },
   "repository": {
     "type": "git",
