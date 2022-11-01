@@ -8,8 +8,8 @@ on:
       - master
       - next
       - beta
-    paths-ignore:
-      - "**.md"
+    paths:
+      - "**/packages/**.js"
 
 jobs:
   pr-tests:
