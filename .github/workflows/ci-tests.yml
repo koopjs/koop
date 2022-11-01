@@ -4,7 +4,7 @@ on:
   push:
     branches: [ master ]
   pull_request:
-    types: [opened, reopened, ready_for_review, synchronize]
+    # types: [opened, reopened, ready_for_review, synchronize]
     branches:
       - master
       - next
