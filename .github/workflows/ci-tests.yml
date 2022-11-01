@@ -34,7 +34,7 @@ jobs:
       run: npm run lint
 
     - name: Unit tests
-      run: npm run test --workspaces
+      run: npm run test:packages
     
     - name: E2E tests
       run: npm run test:e2e

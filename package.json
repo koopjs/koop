@@ -10,6 +10,13 @@
     "commit": "cz",
     "precommit": "lint-staged && npm test --workspaces",
     "test": "npm test --workspaces",
+    "test:featureserver": "(cd packages/featureserver && npm test)",
+    "test:koop-cache-memory": "(cd packages/koop-cache-memory && npm test)",
+    "test:koop-core": "(cd packages/koop-core && npm test)",
+    "test:koop-logger": "(cd packages/koop-logger && npm test)",
+    "test:koop-output-geoservices": "(cd packages/koop-output-geoservices && npm test)",
+    "test:winnow": "(cd packages/winnow && npm test)",
+    "test:packages": "npm run test:featureserver && npm run test:koop-cache-memory && npm run test:koop-core && npm run test:koop-logger && npm run test:koop-output-geoservices && npm run test:winnow",
     "test:e2e": "DATA_DIR=./test/provider-data jest ./test/*.spec.js"
   },
   "repository": {
