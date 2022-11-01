@@ -27,6 +27,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    - name: Install npm 7
+      run: npm i -g npm@7 --registry=https://registry.npmjs.org
+      
     - name: Install
       run: npm ci
 
@@ -34,7 +37,7 @@ jobs:
       run: npm run lint
 
     - name: Unit tests
-      run: npm run test:packages
+      run: npm test --workspaces
     
     - name: E2E tests
       run: npm run test:e2e
