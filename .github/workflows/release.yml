@@ -3,7 +3,7 @@ name: Test and Release on merge to main
 on:
   push:
     branches:
-     - main
+     - master
 
 jobs:
   merge_job:
