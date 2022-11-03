@@ -6,7 +6,8 @@ describe('LayerFields', () => {
   it('create fields from definitions, adds OBJECTID', () => {
     const result = LayerFields.create({
       fields: [
-        { name: 'foo', type: 'String' }
+        { name: 'foo', type: 'String' },
+        { name: 'bar', type: 'String', editable: true, nullable: true }
       ]
     });
     result.should.deepEqual([{
@@ -28,6 +29,16 @@ describe('LayerFields', () => {
       defaultValue: null,
       editable: false,
       nullable: false
+    }, {
+      name: 'bar',
+      alias: 'bar',
+      type: 'esriFieldTypeString',
+      sqlType: 'sqlTypeOther',
+      length: 128,
+      domain: null,
+      defaultValue: null,
+      editable: true,
+      nullable: true
     }]);
   });
 
