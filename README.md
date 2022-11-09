@@ -2,10 +2,6 @@
 
 *Translate, query, & integrate any geospatial API on the web*
 
-[![npm version][npm-img]][npm-url]
-[![build status][travis-img]][travis-url]
-[![js-standard-style][standard-img]][standard-url]
-
 Koop is a JavaScript toolkit for making requests to spatial APIs. It exposes a Node.js web server that faciliates on-the-fly transformations of geospatial data from one format to another and delivers it to clients by HTTP.  Koop allows you to keep your data in its native format, while making it accessible in any format required.  Out-of-the-box, Koop can translates your data into the GeoServices specification supported by ArcGIS products. It's plugin architecture supports output in other formats including vector-tile, WMS, and plain old GeoJSON. Learn more at [https://koopjs.github.io](https://koopjs.github.io).
 
 Koop's plugin-architecture facilate custom deployments specific to your needs. "Provider" plugins to connect to novel data formats and translate to a common format (GeoJSON), while "output" plugins then transform that GeoJSON to other specifications. See a list of plugins already authored and maintained [here](https://koopjs.github.io/docs/available-plugins). If you have a novel datasource or require an as-yet unsupported output format, new plugins can be easily developed and integrated. See the [development section of the Koop docs](https://koopjs.github.io/docs/development).
@@ -38,10 +34,3 @@ Esri welcomes contributions from anyone and everyone. Please see our [guidelines
 <!-- [](Esri Tags: ArcGIS Web Mapping GeoJson FeatureServices) -->
 <!-- [](Esri Language: JavaScript) -->
 
-
-[npm-img]: https://img.shields.io/npm/v/koop.svg?style=flat-square
-[npm-url]: https://www.npmjs.com/package/koop
-[travis-img]: https://img.shields.io/travis/koopjs/koop/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/koopjs/koop
-[standard-img]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
-[standard-url]: http://standardjs.com/

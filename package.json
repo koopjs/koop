@@ -18,7 +18,10 @@
     "test:winnow": "(cd packages/winnow && npm test)",
     "test:packages": "npm run test:featureserver && npm run test:koop-cache-memory && npm run test:koop-core && npm run test:koop-logger && npm run test:koop-output-geoservices && npm run test:winnow",
     "test:e2e": "DATA_DIR=./test/provider-data jest ./test/*.spec.js",
-    "release": "lerna publish --include-merged-tags --conventional-commits --changelog-preset conventionalcommits --create-release github --yes --message 'chore: release' --"
+    "version": "changeset version",
+    "release:npm": "changeset publish",
+    "release:github": "node gh-release.js",
+    "add:changeset": "changeset"
   },
   "repository": {
     "type": "git",
