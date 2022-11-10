@@ -10,10 +10,16 @@ class LayerFields extends Fields {
     super(options);
 
     return this.fields.map(field => {
-      field.setEditable().setNullable();
+      const { editable = false, nullable = false } = findDefinition(field.name, options.fieldDefinitions);
+      field.setEditable(editable).setNullable(nullable);
       return field;
     });
   }
 }
 
+function findDefinition (fieldName, fieldDefinitions = []) {
+  return fieldDefinitions.find(definition => {
+    return definition.name === fieldName;
+  }) || {};
+}
 module.exports = LayerFields;
