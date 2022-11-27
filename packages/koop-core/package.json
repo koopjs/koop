@@ -1,7 +1,7 @@
 {
   "name": "@koopjs/koop-core",
   "description": "Serve, transform, and query geospatial data on the web",
-  "version": "5.1.0",
+  "version": "6.0.0",
   "contributors": [
     {
       "name": "Rich Gwozdz",
@@ -19,9 +19,9 @@
     }
   ],
   "dependencies": {
-    "@koopjs/cache-memory": "2.0.3",
-    "@koopjs/logger": "2.0.6",
-    "@koopjs/output-geoservices": "3.1.5",
+    "@koopjs/cache-memory": "3.0.0",
+    "@koopjs/logger": "3.0.0",
+    "@koopjs/output-geoservices": "4.0.0",
     "body-parser": "^1.19.0",
     "chalk": "^4.0.0",
     "compression": "^1.7.4",
