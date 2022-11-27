@@ -43,12 +43,18 @@ jobs:
       run: npm run version
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
+
+    - name: Git add and commit
+      run: "git add --all && git commit -m 'chore: version and changelog' --follow-tags --no-verify"
+
     - name: Push versioning changes
       run: git push origin master --follow-tags --no-verify
     
     - name: Publish to NPM
       run: npm run release:npm
+
+    - name: Push versioning changes
+      run: git push origin master --follow-tags --no-verify
 
     - name: Github release
       run: npm run release:github
