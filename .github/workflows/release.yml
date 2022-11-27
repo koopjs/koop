@@ -45,7 +45,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Git add and commit
-      run: "git add --all && git commit -m 'chore: version and changelog' --follow-tags --no-verify"
+      run: "git add --all && git commit -m 'chore: version and changelog' --no-verify"
 
     - name: Push versioning changes
       run: git push origin master --follow-tags --no-verify
