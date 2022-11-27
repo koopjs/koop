@@ -1,8 +1,4 @@
-[![Build Status](https://travis-ci.org/koopjs/koop-cache-memory.svg?branch=master)](https://travis-ci.org/koopjs/koop-cache-memory) [![Greenkeeper badge](https://badges.greenkeeper.io/koopjs/koop-cache-memory.svg)](https://greenkeeper.io/)
-
-
 # Koop Memory Cache
-
 
 ## Usage
 

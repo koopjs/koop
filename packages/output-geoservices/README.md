@@ -1,9 +1,5 @@
 # Koop Geoservices Output Plugin
 
-[![npm](https://img.shields.io/npm/v/koop-output-geoservices.svg?style=flat-square)](https://www.npmjs.com/package/koop-output-geoservices)
-[![Greenkeeper badge](https://badges.greenkeeper.io/koopjs/koop-output-geoservices.svg)](https://greenkeeper.io/)
-[![Build Status](https://travis-ci.org/koopjs/koop-output-geoservices.svg?branch=master)](https://travis-ci.org/koopjs/koop-output-geoservices)
-
 Wraps [FeatureServer](https://github.com/featureserver/featureserver) into a [Koop](http://koopjs.github.io) Output plugin.
 
 ## Usage
@@ -11,12 +7,12 @@ Wraps [FeatureServer](https://github.com/featureserver/featureserver) into a [Ko
 const Koop = require('koop')
 const config = require('config')
 const koop = new Koop(config)
-const FeatureServer = require('koop-output-geoservices')
-const Provider = require('koop-agol') // any koop provider here
+const outputGeoservices = require('@koopjs/output-geoservices')
+const provider = require('koop-agol') // any koop provider here
 
 // All output plugins must be registered before any providers are registered
-koop.register(FeatureServer)
-koop.register(Provider)
+koop.register(outputGeoservices)
+koop.register(provider)
 
 koop.server.listen(80)
 ```

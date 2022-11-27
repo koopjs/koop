@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/koopjs/koop-output-geoservices.git"
+    "url": "git+https://github.com/koopjs/koop.git"
   },
   "keywords": [
     "koop",

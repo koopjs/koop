@@ -6,11 +6,11 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const compression = require('compression');
 const Cache = require('@koopjs/cache-memory');
-const Logger = require('@koopjs/logger');
+const Logger = require('../../logger/src');
 const pkg = require('../package.json');
 const ProviderRegistration = require('./provider-registration');
 const middleware = require('./middleware');
-const geoservices = require('@koopjs/output-geoservices');
+const geoservices = require('../../output-geoservices/src');
 
 function Koop (config) {
   this.version = pkg.version;

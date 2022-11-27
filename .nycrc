@@ -2,11 +2,11 @@
     "all": true,
     "include": [
         "packages/winnow/src/**/*.js",
-        "packages/winnow/index.js",
         "packages/featureserver/src/**/*.js",
-        "packages/featureserver/index.js",
-        "packages/koop-cache-memory/**/*.js",
-        "packages/koop-logger/**/*.js"
+        "packages/cache-memory/src/**/*.js",
+        "packages/logger/src/**/*.js",
+        "packages/output-geoservices/src/**/*.js",
+        "packages/koop-core/src/**/*.js"
     ],
     "exclude": ["**/*.spec.js"],
     "includeAllSources": true,
