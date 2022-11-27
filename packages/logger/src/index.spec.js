@@ -1,5 +1,5 @@
 const test = require('tape');
-const koopLogger = require('./');
+const koopLogger = require('.');
 
 test('koop-logger', spec => {
   try {

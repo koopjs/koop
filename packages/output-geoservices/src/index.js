@@ -1,6 +1,6 @@
 const FeatureServer = require('@koopjs/featureserver');
 const koopConfig = require('config');
-const Logger = require('@koopjs/logger');
+const Logger = require('../../logger/src');
 const log = new Logger();
 console.log('WARNING: "/MapServer" routes will be registered, but only for specialized 404 handling in FeatureServer.');
 

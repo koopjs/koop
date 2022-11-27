@@ -1,7 +1,7 @@
 {
-  "name": "@koopjs/cache-memory",
+  "name": "@koopjs/logger",
   "version": "3.0.1",
-  "description": "An in-memory cache for KOop",
+  "description": "A shared logger for Koop",
   "main": "src/index.js",
   "scripts": {
     "test": "tape src/**/*.spec.js | tap-spec",
@@ -10,12 +10,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/koopjs/koop-cache-memory.git"
+    "url": "https://www.github.com/koopjs/koop.git"
   },
   "keywords": [
     "koop",
-    "cache",
-    "memory"
+    "logging"
   ],
   "contributors": [
     {
@@ -27,6 +26,13 @@
     }
   ],
   "license": "Apache-2.0",
+  "dependencies": {
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "tap-spec": "^5.0.0",
+    "tape": "^5.0.1"
+  },
   "files": [
     "src/**/*.js",
     "index.d.ts",
@@ -35,12 +41,5 @@
   "bugs": {
     "url": "https://github.com/koopjs/koop/issues"
   },
-  "homepage": "https://github.com/koopjs/koop#readme",
-  "devDependencies": {
-    "tap-spec": "^5.0.0",
-    "tape": "^5.0.0"
-  },
-  "dependencies": {
-    "lodash": "^4.17.4"
-  }
+  "homepage": "https://github.com/koopjs/koop#readme"
 }
