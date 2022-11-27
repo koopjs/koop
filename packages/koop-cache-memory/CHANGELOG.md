@@ -1,5 +1,11 @@
 # @koopjs/cache-memory
 
+## 3.0.1
+
+### Patch Changes
+
+- Patch bumping for a clean release
+
 ## 3.0.0
 
 ### Major Changes

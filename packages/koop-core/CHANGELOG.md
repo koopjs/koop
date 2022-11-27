@@ -1,5 +1,17 @@
 # @koopjs/koop-core
 
+## 6.0.1
+
+### Patch Changes
+
+- Patch bumping for a clean release
+- Updated dependencies [c7decc5]
+- Updated dependencies [c7decc5]
+- Updated dependencies [c7decc5]
+  - @koopjs/cache-memory@3.0.1
+  - @koopjs/logger@3.0.1
+  - @koopjs/output-geoservices@4.0.1
+
 ## 6.0.0
 
 ### Major Changes
