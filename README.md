@@ -14,9 +14,19 @@ This repository is home of the Koop monorepo.  In contains a collection of packa
 The Koop dependency graph is shown below.
 ![Screen Shot 2022-11-30 at 1 03 46 PM](https://user-images.githubusercontent.com/4369192/204908289-82659cfe-fcf3-404a-aa70-79baf540f1b8.png)
 
+## Contributing
+Pull requests are welcomed and encouraged. Please consider the following PR guidelines:
+1. Provide a clear description of what the PR is trying to solve.  Link to any existing issues
+2. Aim for clear, readable code.
+3. Use conventional commit messages. For convenience, you can add commits with `npm run commit`.
+3. Add unit tests and ensure any new code has 100% test coverage. You can do this by running `npm run test:cov` and then looking for your file in the `/coverage/index.html` output.
+4. Run `npm run lint:fix` and ensure you're not commiting lint
+5. If your new code requires a release, please run `npm run changeset:add` and commit the generated changeset file as a part of your PR.
+
+Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/Esri/contributing).
 
 ## Issues
-Find a bug or want to request a new feature? If you are new to Koop and have an issue but are not sure which repository it should be attached to, feel free to post it [here](https://github.com/koopjs/koop/issues)..  Otherwise, post the issue to its originating repository.
+Find a bug or want to request a new feature? Post it [here](https://github.com/koopjs/koop/issues).
 
 ## Resources
 
@@ -24,16 +34,6 @@ Find a bug or want to request a new feature? If you are new to Koop and have an 
 * [ArcGIS REST API Documentation](http://resources.arcgis.com/en/help/arcgis-rest-api/)
 * [ArcGIS for Developers](http://developers.arcgis.com)
 * [@esri](http://twitter.com/esri)
-
-## Contributing
-Pull requests are welcomed and encouraged. Please consider the following PR guidelines:
-1. Provide a clear description of what the PR is trying to solve.  Link to any existing issues
-2. Aim for clear, readable code.
-3. Add unit tests and ensure any new code has 100% test coverage. You can do this by running `npm run test:cov` and then looking for your file in the `/coverage/index.html` output.
-4. Run `npm run lint:fix` and ensure you're not commiting lint
-5. If your new code requires a release, please run `npm run changeset:add` and commit the generated changeset file as a part of your PR.
-
-Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/Esri/contributing).
 
 ## License
 
