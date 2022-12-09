@@ -4,7 +4,8 @@
   "description": "Wraps https://github.com/featureserver/featureserver as a plugin for koop",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:cov": "nyc --reporter=text-summary --reporter=html jest"
   },
   "repository": {
     "type": "git",

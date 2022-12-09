@@ -1,12 +1,8 @@
 # Winnow
 
-*Winnow* is made for applying sql to geojson in memory. It is useful for working against geojson objects, but also has built-in primitives for piping streams.
+*Winnow* is made for applying sql to geojson in memory. It is useful for working against geojson objects, but also has built-in primitives for piping streams. 
 
-<!--
 [![npm version][npm-img]][npm-url]
-[![js-standard-style][standard-img]][standard-url]
-[![Greenkeeper badge][greenkeeper-image]][greenkeeper-url]
--->
 
 ## Install
 ```sh
@@ -14,8 +10,6 @@ npm install @koopjs/winnow
 ```
 
 <br>
-
-
 
 # API
 ## `winnow.query`
@@ -291,14 +285,7 @@ Find a bug or want to request a new feature? Please let us know by submitting an
 Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/Esri/contributing) and the [RELEASE.md](RELEASE.md) for a description of our release process.
 
 # License
-
 [Apache 2.0](LICENSE)
 
-[npm-img]: https://img.shields.io/npm/v/winnow.svg?style=flat-square
-[npm-url]: https://www.npmjs.com/package/winnow
-[travis-img]: https://img.shields.io/travis/koopjs/winnow/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/koopjs/winnow
-[standard-img]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
-[standard-url]: http://standardjs.com/
-[greenkeeper-image]: https://badges.greenkeeper.io/koopjs/winnow.svg
-[greenkeeper-url]: https://greenkeeper.io/
+[npm-img]: https://img.shields.io/npm/v/@koopjs/winnow.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/@koopjs/winnow

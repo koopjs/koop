@@ -9,9 +9,11 @@ Koop's plugin-architecture facilate custom deployments specific to your needs. "
 ![lots of geojson into feature services](https://user-images.githubusercontent.com/7832202/28444721-43eb6ea6-6d8d-11e7-8d56-3af46fd5bf88.png)
 
 ## Koop Monorepo
-This repository is home of the Koop Monorepo.  In contains a collection of packages that are employed by every Koop instance.  [koop-core](https://github.com/koopjs/koop/packages/koop-core) is the parent package and is used to generate a default configuration of Koop. References to the "Koop version" refer to the version of this package. 
+This repository is home of the Koop monorepo.  In contains a collection of packages that are shipped by default with every Koop instance.  [koop-core](https://github.com/koopjs/koop/packages/koop-core) is the parent package and is used to generate a default configuration of Koop. References to the "Koop version" refer to the version of this package. The other packages in this monorepo are dependencies of koop-core and include the Geoservices output-plugin and its dependencies, the default in-memory data cache, and a logger.  All other plugins (providers, outputs, etc) are in separate repositories.
 
-The other packages in this monorepo are dependencies of koop-core and include the Geoservices output-plugin and its dependencies, the default in-memory data cache, and a logger.  All other plugins (providers, outputs, etc) are in separate repositories.
+The Koop dependency graph is shown below.
+![Screen Shot 2022-11-30 at 1 03 46 PM](https://user-images.githubusercontent.com/4369192/204908289-82659cfe-fcf3-404a-aa70-79baf540f1b8.png)
+
 
 ## Issues
 Find a bug or want to request a new feature? If you are new to Koop and have an issue but are not sure which repository it should be attached to, feel free to post it [here](https://github.com/koopjs/koop/issues)..  Otherwise, post the issue to its originating repository.
@@ -24,6 +26,12 @@ Find a bug or want to request a new feature? If you are new to Koop and have an 
 * [@esri](http://twitter.com/esri)
 
 ## Contributing
+Pull requests are welcomed and encouraged. Please consider the following PR guidelines:
+1. Provide a clear description of what the PR is trying to solve.  Link to any existing issues
+2. Aim for clear, readable code.
+3. Add unit tests and ensure any new code has 100% test coverage. You can do this by running `npm run test:cov` and then looking for your file in the `/coverage/index.html` output.
+4. Run `npm run lint:fix` and ensure you're not commiting lint
+5. If your new code requires a release, please run `npm run changeset:add` and commit the generated changeset file as a part of your PR.
 
 Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/Esri/contributing).
 
