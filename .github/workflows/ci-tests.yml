@@ -10,6 +10,7 @@ on:
       - beta
     paths:
       - "**/packages/**.js"
+      - "**/packages/**/package.json"
 
 jobs:
   pr-tests:
