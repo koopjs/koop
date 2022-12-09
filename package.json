@@ -10,6 +10,7 @@
     "commit": "cz",
     "precommit": "lint-staged && npm test --workspaces",
     "test": "npm test --workspaces",
+    "test:cov": "npm run test:cov --workspaces",
     "test:featureserver": "(cd packages/featureserver && npm test)",
     "test:cache-memory": "(cd packages/cache-memory && npm test)",
     "test:koop-core": "(cd packages/koop-core && npm test)",
@@ -21,7 +22,7 @@
     "version": "changeset version",
     "release:npm": "changeset publish",
     "release:github": "node gh-release.js",
-    "add:changeset": "changeset"
+    "changeset:add": "changeset"
   },
   "repository": {
     "type": "git",

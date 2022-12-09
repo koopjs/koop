@@ -3,18 +3,14 @@
 *An open source implementation of the GeoServices specification*
 
 [![npm][npm-image]][npm-url]
-[![travis][travis-image]][travis-url]
-[![Greenkeeper badge][greenkeeper-image]][greenkeeper-url]
-
 ## Usage
+FeatureServer is the underlying dependency of the Koop Output-Geoservices plugin.  However, it can also be used on its own with Express.
 
-This is meant to be used as a plugin to Express
-
-### Example server
+### Example of direct usage with Express
 ```js
 const express = require('express')
 const app = express() // set up a basic express server
-const FeatureServer = require('featureserver')
+const FeatureServer = require('@koopjs/featureserver')
 const cache = require('cache')
 
 // We only need one handler because FeatureServer.route is going to do all the work
@@ -497,14 +493,9 @@ Pass in an outgoing response object and this function will route and return a fo
     }
 
 
-[npm-image]: https://img.shields.io/npm/v/featureserver.svg?style=flat-square
-[npm-url]: https://www.npmjs.com/package/featureserver
-[travis-image]: https://img.shields.io/travis/koopjs/FeatureServer.svg?style=flat-square
-[travis-url]: https://travis-ci.org/koopjs/FeatureServer
-[greenkeeper-image]: https://badges.greenkeeper.io/koopjs/FeatureServer.svg
-[greenkeeper-url]: https://greenkeeper.io/
+[npm-image]: https://img.shields.io/npm/v/@koopjs/featureserver.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/@koopjs/featureserver
 
-## Unreleased
 
 ### FeatureServer.queryRelatedRecords
 Pass in `geojson` and `options`, and the function will return a valid queryRelatedRecords object. Required attributes within `options` are `objectIds` and `relationshipId`.

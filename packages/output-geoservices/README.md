@@ -1,10 +1,12 @@
 # Koop Geoservices Output Plugin
 
+[![npm version][npm-img]][npm-url]
+
 Wraps [FeatureServer](https://github.com/featureserver/featureserver) into a [Koop](http://koopjs.github.io) Output plugin.
 
 ## Usage
 ```js
-const Koop = require('koop')
+const Koop = require('@koopjs/koop-core')
 const config = require('config')
 const koop = new Koop(config)
 const outputGeoservices = require('@koopjs/output-geoservices')
@@ -98,3 +100,6 @@ Geoservices.routes = [
   }
 ]
 ```
+
+[npm-img]: https://img.shields.io/npm/v/@koopjs/output-geoservices.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/@koopjs/output-geoservices
