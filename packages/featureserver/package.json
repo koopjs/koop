@@ -22,7 +22,7 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "@esri/proj-codes": "^2.6.0",
+    "@esri/proj-codes": "^3.0.0",
     "@koopjs/winnow": "3.0.1",
     "@terraformer/spatial": "^2.0.7",
     "chalk": "^4.0.0",
