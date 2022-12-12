@@ -43,7 +43,7 @@ describe('Index tests', function () {
       const routePaths = koop.server._router.stack
         .filter((layer) => { return _.has(layer, 'route.path'); })
         .map(layer => { return _.get(layer, 'route.path'); });
-      const pluginRouteIndex = routePaths.findIndex(path => path.includes('/test-provider/:id/FeatureServer'));
+      const pluginRouteIndex = routePaths.findIndex(path => path.includes('/test-provider/rest/services/:id/FeatureServer'));
       const providerRouteIndex = routePaths.findIndex(path => path.includes('/fake/:id'));
       providerRouteIndex.should.be.below(pluginRouteIndex);
     });
@@ -55,7 +55,7 @@ describe('Index tests', function () {
       const routePaths = koop.server._router.stack
         .filter((layer) => { return _.has(layer, 'route.path'); })
         .map(layer => { return _.get(layer, 'route.path'); });
-      const pluginRouteIndex = routePaths.findIndex(path => path.includes('/test-provider/:id/FeatureServer'));
+      const pluginRouteIndex = routePaths.findIndex(path => path.includes('/test-provider/rest/services/:id/FeatureServer'));
       const providerRouteIndex = routePaths.findIndex(path => path.includes('/fake/:id'));
       pluginRouteIndex.should.be.below(providerRouteIndex);
     });
@@ -196,7 +196,7 @@ describe('Index tests', function () {
       const koop = new Koop();
       koop.register(provider, { routePrefix: '/api/test' });
       request(koop.server)
-        .get('/api/test/test-provider/foo/FeatureServer')
+        .get('/api/test/test-provider/rest/services/foo/FeatureServer')
         .then((res) => {
           res.should.have.property('error', false);
           done();
