@@ -124,12 +124,9 @@ function normalizeError (error) {
 /**
  * Collection of route objects that define geoservices
  *
- * These routes are bound to the Koop API for each provider. Note that FeatureServer,
- * FeatureServer/layers, FeatureServer/:layer, and FeatureServer/:layer/:method are found
- * in the collection with and without the "$namespace/rest/services/$providerParams" prefix.
- * These prefixed routes have been added due to some clients requiring the "rest/services"
- * URL fragment in geoservices routes. The $namespace and $providerParams are placeholders
- * that koop-core replaces with provider-specific settings.
+ * These routes are bound to the Koop API for each provider. $namespace and 
+ * $providerParams will be replaced by a registered providers namespace an
+ * configured parameters
  */
 Geoservices.routes = [
   {
@@ -168,42 +165,12 @@ Geoservices.routes = [
     handler: 'featureServer'
   },
   {
-    path: 'FeatureServer/:layer/:method',
-    methods: ['get', 'post'],
-    handler: 'featureServer'
-  },
-  {
-    path: 'FeatureServer/layers',
-    methods: ['get', 'post'],
-    handler: 'featureServer'
-  },
-  {
-    path: 'FeatureServer/:layer',
-    methods: ['get', 'post'],
-    handler: 'featureServer'
-  },
-  {
-    path: 'FeatureServer',
-    methods: ['get', 'post'],
-    handler: 'featureServer'
-  },
-  {
     path: '$namespace/rest/services/$providerParams/FeatureServer*',
     methods: ['get', 'post'],
     handler: 'featureServer'
   },
   {
-    path: 'FeatureServer*',
-    methods: ['get', 'post'],
-    handler: 'featureServer'
-  },
-  {
     path: '$namespace/rest/services/$providerParams/MapServer*',
-    methods: ['get', 'post'],
-    handler: 'featureServer'
-  },
-  {
-    path: 'MapServer*',
     methods: ['get', 'post'],
     handler: 'featureServer'
   }
