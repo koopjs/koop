@@ -2,7 +2,7 @@
 
 [![npm version][npm-img]][npm-url]
 
-Wraps [FeatureServer](https://github.com/featureserver/featureserver) into a [Koop](http://koopjs.github.io) Output plugin.
+Wraps FeatureServer into a [Koop](http://koopjs.github.io) Output plugin.
 
 ## Usage
 ```js
@@ -59,42 +59,12 @@ Geoservices.routes = [
     handler: 'featureServer'
   },
   {
-    path: 'FeatureServer/:layer/:method',
-    methods: ['get', 'post'],
-    handler: 'featureServer'
-  },
-  {
-    path: 'FeatureServer/layers',
-    methods: ['get', 'post'],
-    handler: 'featureServer'
-  },
-  {
-    path: 'FeatureServer/:layer',
-    methods: ['get', 'post'],
-    handler: 'featureServer'
-  },
-  {
-    path: 'FeatureServer',
-    methods: ['get', 'post'],
-    handler: 'featureServer'
-  },
-  {
     path: '$namespace/rest/services/$providerParams/FeatureServer*',
     methods: ['get', 'post'],
     handler: 'featureServer'
   },
   {
-    path: 'FeatureServer*',
-    methods: ['get', 'post'],
-    handler: 'featureServer'
-  },
-  {
     path: '$namespace/rest/services/$providerParams/MapServer*',
-    methods: ['get', 'post'],
-    handler: 'featureServer'
-  },
-  {
-    path: 'MapServer*',
     methods: ['get', 'post'],
     handler: 'featureServer'
   }
