@@ -4,7 +4,7 @@
 
 ### Major Changes
 
-- remove FeatureServer routes that do not include `/rest/services. This is technically a breaking change but should not affect any Koop applications that are specifically used with ArcGIS clients, as they only use routes with `/rest/services`.
+- remove FeatureServer routes that do not include `/rest/services`. This is technically a breaking change but should not affect any Koop applications that are specifically used with ArcGIS clients, as they only use routes with `/rest/services`.
 
 ## 4.0.1
 
