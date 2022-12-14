@@ -1,5 +1,18 @@
 # @koopjs/koop-core
 
+## 6.1.0
+
+### Minor Changes
+
+- allow use of custom logger when passed in as part of configuration object
+
+### Patch Changes
+
+- Updated dependencies [2d8106f]
+- Updated dependencies [2d8106f]
+  - @koopjs/logger@4.0.0
+  - @koopjs/output-geoservices@5.1.0
+
 ## 6.0.2
 
 ### Patch Changes

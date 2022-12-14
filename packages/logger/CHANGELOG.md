@@ -1,5 +1,12 @@
 # @koopjs/logger
 
+## 4.0.0
+
+### Major Changes
+
+- change default level to "info"
+- allow custom level to be set via configuration object
+
 ## 3.0.1
 
 ### Patch Changes

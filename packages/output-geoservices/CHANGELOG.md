@@ -1,5 +1,16 @@
 # @koopjs/output-geoservices
 
+## 5.1.0
+
+### Minor Changes
+
+- allow custom logger from output-plugin registration options
+
+### Patch Changes
+
+- Updated dependencies [2d8106f]
+  - @koopjs/logger@4.0.0
+
 ## 5.0.0
 
 ### Major Changes
