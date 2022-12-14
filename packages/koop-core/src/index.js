@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const compression = require('compression');
 const Cache = require('@koopjs/cache-memory');
-const Logger = require('../../logger/src');
+const Logger = require('@koopjs/logger');
 const pkg = require('../package.json');
 const ProviderRegistration = require('./provider-registration');
 const middleware = require('./middleware');
@@ -17,14 +17,13 @@ function Koop (config) {
   this.config = config || require('config');
   this.server = initServer(this.config);
 
-  // default to LocalDB cache
-  // cache registration overrides this
+  // default to in-memory cache; another cache registration overrides this
   this.cache = new Cache();
-  this.log = new Logger(this.config);
+  this.log = this.config.logger || new Logger(this.config);
   this.providers = [];
   this.pluginRoutes = [];
   this.outputs = [];
-  this.register(geoservices);
+  this.register(geoservices, { logger: this.log });
 
   this.server
     .on('mount', () => {
@@ -107,11 +106,11 @@ Koop.prototype._registerProvider = function (provider, options = {}) {
  * registers a provider
  * exposes the provider's routes, controller, and model
  *
- * @param {object} output - the output plugin to be registered
+ * @param {object} outputClass - the output plugin to be registered
  */
-Koop.prototype._registerOutput = function (Output) {
-  this.outputs.push(Output);
-  this.log.info('registered output:', Output.name, Output.version);
+Koop.prototype._registerOutput = function (outputClass, options) {
+  this.outputs.push({ outputClass, options });
+  this.log.info('registered output:', outputClass.name, outputClass.version);
 };
 
 /**

@@ -14,7 +14,7 @@ describe('Tests for Provider', function () {
     });
     const koopMock = {
       server: serverSpy,
-      outputs: [mockOutputPlugin],
+      outputs: [{ outputClass: mockOutputPlugin }],
       cache: {
         retrieve: () => {},
         upsert: () => {}

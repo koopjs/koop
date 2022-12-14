@@ -14,7 +14,7 @@ describe('Tests for ProviderOutputRoute', function () {
     const provider = new ProviderRegistration({
       provider: mockProviderPlugin,
       koop: {
-        outputs: [mockOutputPlugin],
+        outputs: [{ outputClass: mockOutputPlugin }],
         cache: {
           retrieve: () => {},
           upsert: () => {}
