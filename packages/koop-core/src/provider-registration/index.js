@@ -44,8 +44,8 @@ module.exports = class ProviderRegistration {
     this.model = createModel({ ProviderModel: provider.Model, namespace: this.namespace, koop }, options);
     this.routes = provider.routes || [];
     this.registeredOutputs = [];
-    this.outputs = koop.outputs.map(Output => {
-      return createController(this.model, Output);
+    this.outputs = koop.outputs.map(({ outputClass, options }) => {
+      return createController(this.model, outputClass, options);
     });
     this.controller = createController(this.model, provider.Controller);
   }

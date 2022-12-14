@@ -10,30 +10,38 @@ const path = require('path');
  */
 function createLogger (config) {
   config = config || {};
-  let level;
-  if (process.env.KOOP_LOG_LEVEL) {
-    level = process.env.KOOP_LOG_LEVEL;
-  } else if (process.env.NODE_ENV === 'production') {
-    level = 'info';
-  } else {
-    level = 'debug';
+  const level = setLogLevel(config.logLevel);
+
+  if (config.logfile) {
+    const fileTransports = setupFileTransport(config.logfile, level);
+    return winston.createLogger({ transports: fileTransports });
   }
 
-  if (!config.logfile) {
-    // no logfile defined, log to STDOUT an STDERRv
-    const debugConsole = new winston.transports.Console({
-      colorize: process.env.NODE_ENV === 'production',
-      level,
-      stringify: true,
-      json: true
-    });
-    return winston.createLogger({ transports: [debugConsole] });
+  const consoleTransport = new winston.transports.Console({
+    colorize: true,
+    level,
+    stringify: true,
+    json: true
+  });
+  return winston.createLogger({ transports: [consoleTransport] });
+}
+
+function setLogLevel (logLevel) {
+  if (logLevel) {
+    return logLevel;
   }
 
-  // we need a dir to do log rotation so we get the dir from the file
-  const logpath = path.dirname(config.logfile);
+  if (process.env.KOOP_LOG_LEVEL || process.env.LOG_LEVEL) {
+    return process.env.KOOP_LOG_LEVEL || process.env.LOG_LEVEL;
+  } 
+  
+  return 'info';
+}
+
+function setupFileTransport (logfile, level) {
+  const logpath = path.dirname(logfile);
   const logAll = new winston.transports.File({
-    filename: config.logfile,
+    filename: logfile,
     name: 'log.all',
     dirname: logpath,
     colorize: true,
@@ -41,8 +49,9 @@ function createLogger (config) {
     level,
     formatter: formatter
   });
+
   const logError = new winston.transports.File({
-    filename: config.logfile.replace('.log', '.error.log'),
+    filename: logfile.replace('.log', '.error.log'),
     name: 'log.error',
     dirname: logpath,
     colorize: true,
@@ -51,14 +60,13 @@ function createLogger (config) {
     formatter: formatter
   });
 
-  // always log errors
   const transports = [logError];
-  // only log everthing if debug mode is on
-  if (process.env.LOG_LEVEL === 'debug') {
+
+  if (level === 'debug') {
     transports.push(logAll);
   }
 
-  return winston.createLogger({ transports });
+  return transports;
 }
 
 /**

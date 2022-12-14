@@ -1,10 +1,14 @@
 const FeatureServer = require('@koopjs/featureserver');
 const koopConfig = require('config');
-const Logger = require('../../logger/src');
-const log = new Logger();
-console.log('WARNING: "/MapServer" routes will be registered, but only for specialized 404 handling in FeatureServer.');
+const Logger = require('@koopjs/logger');
+let logger = new Logger();
 
-function Geoservices () {}
+function Geoservices (model, options) {
+  this.model = model;
+  if (options.logger) {
+    logger = options.logger;
+  }
+}
 
 /**
  * Helper for sending error responses 
@@ -115,7 +119,7 @@ function normalizeError (error) {
 
   if (normalizedErrorCode === 500) {
     // Log error then make generic for response
-    log.error('error', error);
+    logger.error('error', error);
     return { message: 'Internal Server Error', code: 500};
   }
   return { message, stack, code: normalizedErrorCode };
