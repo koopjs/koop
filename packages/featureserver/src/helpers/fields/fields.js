@@ -1,11 +1,11 @@
 const _ = require('lodash');
-const chalk = require('chalk');
 const {
   ObjectIdField,
   FieldFromKeyValue,
   FieldFromFieldDefinition,
   ObjectIdFieldFromDefinition
 } = require('./field-classes');
+const { logger } = require('../../logger');
 
 class Fields {
   static normalizeOptions (inputOptions) {
@@ -35,9 +35,7 @@ class Fields {
     } = options;
 
     if (shouldWarnAboutMissingIdFieldDefinition(idField, fieldDefinitions)) {
-      console.warn(
-        chalk.yellow(`WARNING: provider's "idField" is set to ${idField}, but this field is not found in field-definitions`)
-      );
+      logger.debug(`WARNING: provider's "idField" is set to ${idField}, but this field is not found in field-definitions`);
     }
 
     const normalizedIdField = idField || 'OBJECTID';

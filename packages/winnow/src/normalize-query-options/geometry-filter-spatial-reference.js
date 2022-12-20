@@ -1,7 +1,7 @@
 const _ = require('lodash');
+const { logger } = require('../logger');
 const { normalizeArray } = require('./helpers');
 const normalizeSpatialReference = require('./spatial-reference');
-const logWarning = process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress';
 
 /**
  * Normalize the input spatial reference for a geometry filter. Look on options.geometry object first.
@@ -15,8 +15,9 @@ function normalizeGeometryFilterSpatialReference (options = {}) {
 
   const spatialReference = normalizeSpatialReference(geometryEnvelopeSpatialReference || options.inSR);
 
-  if (!spatialReference && logWarning) console.log('WARNING: geometry filter spatial reference unknown. Defaulting to EPSG:4326.');
-
+  if (!spatialReference) {
+    logger.debug('WARNING: geometry filter spatial reference unknown. Defaulting to EPSG:4326.');
+  }
   return spatialReference || { wkid: 4326 };
 }
 

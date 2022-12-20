@@ -1,6 +1,7 @@
 const esriProjCodes = require('@esri/proj-codes');
 const Joi = require('joi');
 const wktParser = require('wkt-parser');
+const { logger } = require('../logger');
 const PROJ4_WKIDS = [4326, 4269, 3857, 3785, 900913, 102113];
 const wktLookup = new Map();
 const schema = Joi.alternatives(
@@ -20,9 +21,7 @@ function normalizeSpatialReference (input) {
   const { error } = schema.validate(input);
 
   if (error) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.log(`WARNING: ${input} is not a valid spatial reference; defaulting to none`);
-    }
+    logger.debug(`WARNING: ${input} is not a valid spatial reference; defaulting to none`);
     // Todo: throw error
     return;
   }
@@ -94,9 +93,7 @@ function esriWktLookup (wkid) {
 
   if (!result) {
     // Todo - throw error
-    if (process.env.NODE_ENV !== 'production') {
-      console.log(`WARNING: An unknown spatial reference was detected: ${wkid}; defaulting to none`);
-    }
+    logger.debug(`An unknown spatial reference was detected: ${wkid}; defaulting to none`);
     return;
   }
 
@@ -117,9 +114,7 @@ function convertStringToSpatialReference (wkt) {
       wkid: wkid ? Number(wkid) : undefined
     };
   } catch (err) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.log(`WARNING: An un-parseable WKT spatial reference was detected: ${wkt}`);
-    }
+    logger.debug(`WARNING: An un-parseable WKT spatial reference was detected: ${wkt}`);
     // Todo: throw error
   }
 }

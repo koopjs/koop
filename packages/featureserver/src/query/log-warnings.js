@@ -1,17 +1,17 @@
 const _ = require('lodash');
 const { getDataTypeFromValue } = require('../helpers');
-const chalk = require('chalk');
+const { logger } = require('../logger');
 
 function logWarnings (geojson, format) {
   const { metadata = {}, features } = geojson;
   const esriFormat = format !== geojson;
 
   if (esriFormat && !metadata.idField) {
-    console.warn(chalk.yellow('WARNING: requested provider has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an unchanging 32-bit integer. Koop will create an OBJECTID field in the absence of an "idField" assignment.'));
+    logger.debug('requested provider has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an unchanging 32-bit integer. Koop will create an OBJECTID field in the absence of an "idField" assignment.');
   }
 
   if (esriFormat && hasMixedCaseObjectIdKey(metadata.idField)) {
-    console.warn(chalk.yellow('WARNING: requested provider\'s "idField" is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients.'));
+    logger.debug('WARNING: requested provider\'s "idField" is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients.');
   }
 
   // Compare provider metadata fields to feature properties
@@ -46,7 +46,7 @@ function warnOnMetadataFieldDiscrepancies (metadataFields, featureProperties) {
     // look for a defined field in the features properties
     const featureField = _.find(featureFields, ['name', field.name]) || _.find(featureFields, ['name', field.alias]);
     if (!featureField || (field.type !== featureField.type && !(field.type === 'Date' && featureField.type === 'Integer') && !(field.type === 'Double' && featureField.type === 'Integer'))) {
-      console.warn(chalk.yellow(`WARNING: requested provider's metadata field "${field.name} (${field.type})" not found in feature properties)`));
+      logger.debug(`requested provider's metadata field "${field.name} (${field.type})" not found in feature properties)`);
     }
   });
 
@@ -57,7 +57,7 @@ function warnOnMetadataFieldDiscrepancies (metadataFields, featureProperties) {
 
     // Exclude warnings on feature fields named OBJECTID because OBJECTID may have been added by winnow in which case it should not be in the metadata fields array
     if (!(noNameMatch || noAliasMatch) && field.name !== 'OBJECTID') {
-      console.warn(chalk.yellow(`WARNING: requested provider's features have property "${field.name} (${field.type})" that was not defined in metadata fields array)`));
+      logger.debug(`WARNING: requested provider's features have property "${field.name} (${field.type})" that was not defined in metadata fields array)`);
     }
   });
 }
