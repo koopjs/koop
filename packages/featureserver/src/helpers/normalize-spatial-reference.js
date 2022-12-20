@@ -99,7 +99,7 @@ function convertStringToSpatialReference (wkt) {
     const wkid = getWktWkid(wkt);
     return wktLookup.get(wkid) || esriWktLookup(wkid) || { wkt };
   } catch (err) {
-    logger.debug(`WARNING: An un-parseable WKT spatial reference was detected: ${wkt}`);
+    logger.debug(`An un-parseable WKT spatial reference was detected: ${wkt}`);
     // Todo: throw error
   }
 }

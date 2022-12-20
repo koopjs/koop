@@ -21,7 +21,7 @@ function normalizeSpatialReference (input) {
   const { error } = schema.validate(input);
 
   if (error) {
-    logger.debug(`WARNING: ${input} is not a valid spatial reference; defaulting to none`);
+    logger.debug(`${input} is not a valid spatial reference; defaulting to none`);
     // Todo: throw error
     return;
   }
@@ -114,7 +114,7 @@ function convertStringToSpatialReference (wkt) {
       wkid: wkid ? Number(wkid) : undefined
     };
   } catch (err) {
-    logger.debug(`WARNING: An un-parseable WKT spatial reference was detected: ${wkt}`);
+    logger.debug(`An un-parseable WKT spatial reference was detected: ${wkt}`);
     // Todo: throw error
   }
 }

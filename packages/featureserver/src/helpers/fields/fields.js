@@ -35,7 +35,7 @@ class Fields {
     } = options;
 
     if (shouldWarnAboutMissingIdFieldDefinition(idField, fieldDefinitions)) {
-      logger.debug(`WARNING: provider's "idField" is set to ${idField}, but this field is not found in field-definitions`);
+      logger.debug(`provider's "idField" is set to ${idField}, but this field is not found in field-definitions`);
     }
 
     const normalizedIdField = idField || 'OBJECTID';

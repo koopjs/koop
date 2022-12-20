@@ -11,7 +11,7 @@ function logWarnings (geojson, format) {
   }
 
   if (esriFormat && hasMixedCaseObjectIdKey(metadata.idField)) {
-    logger.debug('WARNING: requested provider\'s "idField" is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients.');
+    logger.debug('requested provider\'s "idField" is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients.');
   }
 
   // Compare provider metadata fields to feature properties
@@ -57,7 +57,7 @@ function warnOnMetadataFieldDiscrepancies (metadataFields, featureProperties) {
 
     // Exclude warnings on feature fields named OBJECTID because OBJECTID may have been added by winnow in which case it should not be in the metadata fields array
     if (!(noNameMatch || noAliasMatch) && field.name !== 'OBJECTID') {
-      logger.debug(`WARNING: requested provider's features have property "${field.name} (${field.type})" that was not defined in metadata fields array)`);
+      logger.debug(`requested provider's features have property "${field.name} (${field.type})" that was not defined in metadata fields array)`);
     }
   });
 }
