@@ -1,6 +1,6 @@
 const { calculateBounds } = require('@terraformer/spatial');
-const { logger } = require('../logger');
 const normalizeExtent = require('./normalize-extent');
+const debug = process.env.KOOP_LOG_LEVEL === 'debug' || process.env.LOG_LEVEL === 'debug';
 
 function calculateExtent ({ isLayer, geojson, spatialReference }) {
   if (!isLayer) {
@@ -11,7 +11,9 @@ function calculateExtent ({ isLayer, geojson, spatialReference }) {
     const bounds = calculateBounds(geojson);
     return normalizeExtent(bounds, spatialReference);
   } catch (error) {
-    logger.debug(`Could not calculate extent from data: ${error.message}`);
+    if (debug) {
+      console.log(`Could not calculate extent from data: ${error.message}`);
+    }
   }
 }
 

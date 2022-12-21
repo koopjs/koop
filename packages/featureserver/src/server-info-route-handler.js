@@ -7,12 +7,12 @@ const {
   normalizeSpatialReference,
   normalizeInputData
 } = require('./helpers');
-const { logger } = require('./logger');
 const { serverMetadata: serverMetadataDefaults } = require('./defaults');
 const {
   CURRENT_VERSION,
   FULL_VERSION
 } = require('./constants');
+const debug = process.env.KOOP_LOG_LEVEL === 'debug' || process.env.LOG_LEVEL === 'debug';
 
 function serverMetadata (json, req = {}) {
   const {
@@ -91,7 +91,9 @@ function calculateServiceExtentFromLayers (layers, spatialReference) {
       spatialReference
     };
   } catch (error) {
-    logger.debug(`Could not calculate extent from data: ${error.message}`);
+    if (debug) {
+      console.log(`Could not calculate extent from data: ${error.message}`);
+    }
   }
 }
 

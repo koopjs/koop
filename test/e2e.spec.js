@@ -10,8 +10,7 @@ describe('koop', () => {
       const response = await request(koop.server).get('/file-geojson/rest/services/polygon/FeatureServer/0/query');
       expect(response.status).toBe(200);
     } catch (error) {
-      console.error(error);
-      throw error;
+      fail(error);
     }
   });
 });

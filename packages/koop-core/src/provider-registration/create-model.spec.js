@@ -10,10 +10,6 @@ const koopMock = {
   cache: {
     retrieve () {},
     upsert () {}
-  },
-  log: {
-    debug: () => {},
-    info: () => {}
   }
 };
 
@@ -189,10 +185,6 @@ describe('Tests for create-model', function () {
         authenticate: () => {},
         authorize: () => {},
         authenticationSpecification: sinon.spy()
-      },
-      log: {
-        debug: () => {},
-        info: () => {}
       }
     };
 

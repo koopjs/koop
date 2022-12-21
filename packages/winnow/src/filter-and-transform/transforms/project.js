@@ -1,4 +1,3 @@
-const { logger } = require('../../logger');
 const projectCoordinates = require('../../helpers/project-coordinates');
 
 function project (geometry, sourceCoordinateSystem, targetCoordinateSystem) {
@@ -22,10 +21,15 @@ function tryProjectingGeometry ({ type, sourceCoordinates, sourceCoordinateSyste
       })
     };
   } catch (error) {
-    logger.debug(error);
+    if (shouldLogProjectError()) console.error(error);
     // TODO: should we throw error instead of returning null?
     return null;
   }
+}
+
+function shouldLogProjectError () {
+  if (process.env.KOOP_LOG_LEVEL === 'debug') return true;
+  return process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress';
 }
 
 module.exports = project;

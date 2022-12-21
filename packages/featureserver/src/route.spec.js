@@ -8,9 +8,14 @@ describe('Route module unit tests', () => {
     const hintSpy = sinon.spy(() => {
       return ['validatation error'];
     });
+    const chalkSpy = sinon.spy();
+
     const route = proxyquire('./route', {
       'geojson-validation': {
         valid: hintSpy
+      },
+      chalk: {
+        yellow: chalkSpy
       },
       './rest-info-route-handler': function () {},
       './response-handler': function () {}
@@ -21,10 +26,21 @@ describe('Route module unit tests', () => {
       route({ params: {}, query: {}, url: '/rest/info' }, {}, { foo: 'geojson' });
       hintSpy.calledOnce.should.equal(true);
       hintSpy.firstCall.args.should.deepEqual([{ foo: 'geojson' }, true]);
+      chalkSpy.calledOnce.should.equal(true);
+    });
+
+    it('should not validate geojson when KOOP_LOG_LEVEL === debug and KOOP_DISABLE_GEOJSON_VALIDATION = true', () => {
+      process.env.KOOP_LOG_LEVEL = 'debug';
+      process.env.KOOP_DISABLE_GEOJSON_VALIDATION = 'true';
+      route({ params: {}, query: {}, url: '/rest/info' }, {}, { foo: 'geojson' });
+      hintSpy.notCalled.should.equal(true);
+      hintSpy.resetHistory();
+      chalkSpy.resetHistory();
     });
 
     afterEach(() => {
       hintSpy.resetHistory();
+      chalkSpy.resetHistory();
       process.env.KOOP_LOG_LEVEL = undefined;
       process.env.KOOP_DISABLE_GEOJSON_VALIDATION = undefined;
     });

@@ -23,7 +23,9 @@ function query (json, requestParams = {}) {
 
   const data = (skipFiltering || !features) ? json : filterAndTransform(json, requestParams);
 
-  logWarnings(data, requestParams.f);
+  if (shouldLogWarnings()) {
+    logWarnings(data, requestParams.f);
+  }
 
   if (requestedFormat === 'geojson') {
     return {
@@ -82,6 +84,10 @@ function renderPrecalculatedData (data, {
   }
 
   return retVal;
+}
+
+function shouldLogWarnings () {
+  return process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress';
 }
 
 function renderGeoservicesResponse (data, params = {}) {
