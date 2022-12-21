@@ -12,9 +12,11 @@ const ProviderRegistration = require('./provider-registration');
 const middleware = require('./middleware');
 const geoservices = require('../../output-geoservices/src');
 
-function Koop (config) {
+function Koop (options) {
   this.version = pkg.version;
-  this.config = config || require('config');
+
+  // TODO: remove usage of "config" module
+  this.config = options || require('config');
   this.server = initServer(this.config);
 
   // default to in-memory cache; another cache registration overrides this
@@ -37,7 +39,7 @@ Util.inherits(Koop, Events);
 /**
  * express middleware setup
  */
-function initServer (config) {
+function initServer (options) {
   const app = express()
   // parse application/json
     .use(bodyParser.json({ limit: '10000kb' }))
@@ -53,11 +55,16 @@ function initServer (config) {
     .set('view engine', 'ejs')
     .use(express.static(path.join(__dirname, '/public')));
 
-  // Use CORS unless explicitly disable in the config
-  if (!config.disableCors) app.use(cors());
+  // Use CORS unless explicitly disabled in the config
+  if (!options.disableCors) {
+    app.use(cors());
+  }
 
   // Use compression unless explicitly disable in the config
-  if (!config.disableCompression) app.use(compression());
+  if (!options.disableCompression) {
+    app.use(compression());
+  }
+
   return app;
 }
 
