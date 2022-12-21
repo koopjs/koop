@@ -48,6 +48,7 @@
     "@changesets/cli": "^2.25.2",
     "@commitlint/config-conventional": "^17.1.0",
     "@koopjs/provider-file-geojson": "^2.0.0",
+    "await-spawn": "^4.0.2",
     "babel-eslint": "^10.1.0",
     "byline": "^5.0.0",
     "commitizen": "^4.2.5",

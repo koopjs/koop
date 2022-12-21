@@ -1,25 +1,23 @@
-const { promisify } = require('util');
 const fs = require('fs');
 const byline = require('byline');
-const exec = promisify(require('child_process').exec);
+const spawn = require('await-spawn');
 const { baseBranch } = require('./.changeset/config.json');
 
 const TAG_REGEX = /@(?<owner>.+)\/(?<package>.+)@(?<version>.+)/;
 const START_REGEX = /## [0-9]+.[0-9]+.[0-9]+/;
 const END_REGEX = /## [0-9]+.[0-9]+.[0-9]|^All notable changes/;
 
-async function execCommandLine(command) {
-  const { stdout, stderr } = await exec(command);
-
-  if (stderr !== '') {
-    throw new Error(stderr);
+async function execCommandLine(cmd, args) {
+  try {
+    const bufferedListResult = await spawn(cmd, args);
+    return bufferedListResult.toString();
+  } catch (e) {
+    throw new Error(e.stderr.toString())
   }
-
-  return stdout;
 }
 
 async function getTags() {
-  const output = await execCommandLine('git tag --contains HEAD');
+  const output = await execCommandLine('git', ['tag', '--contains', 'HEAD^']);
   return output.trimEnd().split('\n');
 }
 
@@ -57,11 +55,7 @@ async function getChangelogEntry(tag) {
 }
 
 async function createRelease(tag, description) {
-  const { stdout, stderr } = await exec(
-    `gh release create ${tag} --target ${baseBranch} --notes "${description}"`,
-  );
-  console.log(stdout, stderr);
-  return;
+  return execCommandLine('gh', ['release', 'create', tag, '--target', baseBranch, '--notes', description]);
 }
 
 async function execute() {
