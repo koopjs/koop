@@ -19,7 +19,7 @@
     "test:winnow": "(cd packages/winnow && npm test)",
     "test:packages": "npm run test:featureserver && npm run test:cache-memory && npm run test:koop-core && npm run test:logger && npm run test:output-geoservices && npm run test:winnow",
     "test:e2e": "DATA_DIR=./test/provider-data jest ./test/*.spec.js",
-    "version": "changeset version && npm install --package-lock-only",
+    "version": "changeset version",
     "release:npm": "changeset publish",
     "release:github": "node gh-release.js",
     "changeset:add": "changeset"

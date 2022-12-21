@@ -44,7 +44,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Git add and commit
+    - name: Commit version and changelog updates
       run: "git add --all && git commit -m 'chore: version and changelog' --no-verify"
 
     - name: Push versioning changes
@@ -53,7 +53,13 @@ jobs:
     - name: Publish to NPM
       run: npm run release:npm
 
-    - name: Push versioning changes
+    - name: Update root package-lock.json
+      run:  npm install --package-lock-only
+
+    - name: Commit package-lock update
+      run: "git add --all && git commit -m 'chore: update package-lock post-npm release' --no-verify"
+
+    - name: Push tags and package-lock changes
       run: git push origin master --follow-tags --no-verify
 
     - name: Github release
