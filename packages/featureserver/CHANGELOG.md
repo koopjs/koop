@@ -1,5 +1,19 @@
 # @koopjs/featureserver
 
+## 5.1.0
+
+### Minor Changes
+
+- use koop or other winston-based logger instead of console
+- add a Logger singleton
+- add a public `setLogger` method that can be used to override default logger or set level
+- pass logger instance on to Winnow
+
+### Patch Changes
+
+- Updated dependencies [c1b0bce]
+  - @koopjs/winnow@3.1.0
+
 ## 5.0.1
 
 ### Patch Changes

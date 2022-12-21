@@ -1,5 +1,17 @@
 # @koopjs/output-geoservices
 
+## 5.2.0
+
+### Minor Changes
+
+- use koop or other winston-based logger instead of console
+- pass logger on to FeatureServer
+
+### Patch Changes
+
+- Updated dependencies [c1b0bce]
+  - @koopjs/featureserver@5.1.0
+
 ## 5.1.0
 
 ### Minor Changes

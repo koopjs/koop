@@ -1,5 +1,13 @@
 # @koopjs/winnow
 
+## 3.1.0
+
+### Minor Changes
+
+- use koop or other winston-based logger instead of console
+- add a Logger singleton
+- add a public `setLogger` method that can be used to override default logger or set level
+
 ## 3.0.1
 
 ### Patch Changes
