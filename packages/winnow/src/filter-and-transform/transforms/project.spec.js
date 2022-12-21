@@ -3,7 +3,6 @@ const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 const project = require('./project');
 const modulePath = './project';
-process.env.KOOP_WARNINGS = 'suppress';
 
 test('project, empty input, returns undefined', t => {
   const result = project();

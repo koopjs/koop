@@ -1,8 +1,8 @@
 const joi = require('joi');
 const geojsonhint = require('geojson-validation');
-const chalk = require('chalk');
 const layerInfo = require('./layer-metadata');
 const query = require('./query');
+const { logger } = require('./logger');
 const queryRelatedRecords = require('./queryRelatedRecords.js');
 const generateRenderer = require('./generate-renderer');
 const restInfo = require('./rest-info-route-handler');
@@ -64,7 +64,7 @@ module.exports = function route (req, res, geojson = {}) {
 
     return responseHandler(req, res, 200, result);
   } catch (error) {
-    if (process.env.KOOP_LOG_LEVEL === 'debug') console.trace(error);
+    logger.debug(error);
     return responseHandler(req, res, error.code || 500, { error: error.message });
   }
 };
@@ -87,15 +87,15 @@ function handleMethodRequest ({ method, geojson, req }) {
 function shouldValidateGeojson () {
   const {
     KOOP_LOG_LEVEL,
-    KOOP_DISABLE_GEOJSON_VALIDATION
+    LOG_LEVEL
   } = process.env;
-  return KOOP_LOG_LEVEL === 'debug' && KOOP_DISABLE_GEOJSON_VALIDATION !== 'true';
+  return LOG_LEVEL === 'debug' || KOOP_LOG_LEVEL === 'debug';
 }
 
 function validateGeojson (geojson, path) {
   const geojsonErrors = geojsonhint.valid(geojson, true);
   if (geojsonErrors.length > 0) {
-    console.log(chalk.yellow(`WARNING: source data for ${path} contains invalid GeoJSON; ${geojsonErrors[0]}`));
+    logger.debug(`Source data for ${path} contains invalid GeoJSON; ${geojsonErrors[0]}`);
   }
 }
 
