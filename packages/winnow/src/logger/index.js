@@ -1,13 +1,13 @@
-let logger  = require('./logger');
-const Logger = require('@koopjs/logger'); 
+let logger = require('./logger');
+const Logger = require('@koopjs/logger');
 
 module.exports = {
   logger,
-  setLogger
+  setLogger,
 };
 
 function setLogger({ logger: _logger, logLevel }) {
-  if(_logger) {
+  if (_logger) {
     logger = _logger;
     logger.silly('Winnow no longer using default logger.');
     return;

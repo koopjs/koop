@@ -1,4 +1,4 @@
-//const { setLogger } = require('./logger');
+const { setLogger } = require('./logger');
 
 const {
   filterAndTransform,
@@ -11,5 +11,5 @@ module.exports = {
   prepareQuery,
   querySql: filterAndTransform,
   prepareSql: prepareFilterAndTransform,
-  // setLogger
+  setLogger
 };
