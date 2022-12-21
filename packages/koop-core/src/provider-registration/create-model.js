@@ -17,7 +17,6 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
       this.cacheRetrieve = promisify(this.cache.retrieve).bind(this.cache);
       this.cacheUpsert = promisify(this.cache.upsert).bind(this.cache);
       this.getData = promisify(this.getData).bind(this);
-      this.logger = koop.log;
     }
 
     async pull (req, callback) {
@@ -27,9 +26,10 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
         const cached = await this.cacheRetrieve(key, req.query);
         if (isFresh(cached)) return callback(null, cached);
       } catch (err) {
-        this.logger.debug(err);
+        if (process.env.KOOP_LOG_LEVEL === 'debug') {
+          console.log(err);
+        }
       }
-      
       try {
         await this.before(req);
         const providerGeojson = await this.getData(req);

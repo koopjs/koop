@@ -1,3 +1,5 @@
+process.env.KOOP_WARNINGS = 'suppress';
+
 const Benchmark = require('benchmark');
 const fs = require('fs-extra');
 const path = require('path');

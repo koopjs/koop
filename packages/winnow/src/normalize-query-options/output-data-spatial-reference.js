@@ -1,6 +1,6 @@
 const normalizeSpatialReference = require('./spatial-reference');
 const { getCollectionCrs } = require('./helpers');
-const { logger } = require('../logger');
+const logWarning = process.env.NODE_ENV !== 'production' && process.env.KOOP_WARNINGS !== 'suppress';
 
 function normalizeOutputDataSpatialReference (options = {}) {
   const {
@@ -19,10 +19,7 @@ function normalizeOutputDataSpatialReference (options = {}) {
 
   const spatialReference = normalizeSpatialReference(outputSpatialReference);
 
-  if (!spatialReference) {
-    logger.debug(`spatial reference "${outputSpatialReference}" could not be normalized. Defaulting to EPSG:4326.`);
-    // @TODO: throw error
-  }
+  if (!spatialReference && logWarning) console.log(`WARNING: spatial reference "${outputSpatialReference}" could not be normalized. Defaulting to EPSG:4326.`);
 
   return spatialReference || { wkid: 4326 };
 }

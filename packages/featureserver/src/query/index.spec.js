@@ -266,6 +266,68 @@ describe('query', () => {
       });
       logWarningsSpy.callCount.should.equal(1);
     });
+
+    it('should not try to log warnings in production', () => {
+      const json = {
+        type: 'FeatureCollection',
+        features: [
+          {
+            properties: {
+              OBJECTID: 1138516379
+            },
+            geometry: {
+              type: 'Point',
+              coordinates: [
+                -104,
+                40
+              ]
+            }
+          }
+        ]
+      };
+
+      const params = { f: 'geojson' };
+
+      const nodeEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'production';
+      const result = queryHandler(json, params);
+      result.should.deepEqual({
+        type: 'FeatureCollection',
+        features: ['filtered-feature']
+      });
+      logWarningsSpy.callCount.should.equal(0);
+      process.env.NODE_ENV = nodeEnv;
+    });
+
+    it('should not try to log warnings when suppressed', () => {
+      const json = {
+        type: 'FeatureCollection',
+        features: [
+          {
+            properties: {
+              OBJECTID: 1138516379
+            },
+            geometry: {
+              type: 'Point',
+              coordinates: [
+                -104,
+                40
+              ]
+            }
+          }
+        ]
+      };
+
+      const params = { f: 'geojson' };
+
+      process.env.KOOP_WARNINGS = 'suppress';
+      const result = queryHandler(json, params);
+      result.should.deepEqual({
+        type: 'FeatureCollection',
+        features: ['filtered-feature']
+      });
+      logWarningsSpy.callCount.should.equal(0);
+    });
   });
 
   it('should get geometryType from json', () => {

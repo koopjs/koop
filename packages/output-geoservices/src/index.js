@@ -7,7 +7,6 @@ function Geoservices (model, options) {
   this.model = model;
   if (options.logger) {
     logger = options.logger;
-    FeatureServer.setLogger({logger});
   }
 }
 

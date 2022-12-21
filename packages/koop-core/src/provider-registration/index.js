@@ -1,3 +1,5 @@
+const chalk = require('chalk');
+const Table = require('easy-table');
 const _ = require('lodash');
 const Joi = require('joi');
 const createController = require('./create-controller');
@@ -46,7 +48,6 @@ module.exports = class ProviderRegistration {
       return createController(this.model, outputClass, options);
     });
     this.controller = createController(this.model, provider.Controller);
-    this.logger = koop.log;
   }
 
   registerRoutes (server) {
@@ -110,6 +111,8 @@ module.exports = class ProviderRegistration {
   }
 
   logRoutes () {
+    if (process.env.NODE_ENV === 'test' || process.env.KOOP_DISABLE_CONSOLE_ROUTES === 'true') return;
+
     if (this.registerOutputRoutesFirst) {
       this.logOutputDefinedRoutes();
       this.logProviderDefinedRoutes();
@@ -120,20 +123,24 @@ module.exports = class ProviderRegistration {
   }
 
   logProviderDefinedRoutes () {
-    if (this.registeredProviderRoutes > 0) {
-      this.logger.info(`[${this.namespace}] custom routes`);
-    }
+    const table = new Table();
     this.registeredProviderRoutes.forEach(route => {
-      this.logger.info(`ROUTE | [${route.methods.join(', ').toUpperCase()}] | ${route.registeredPath}`);
+      table.cell(chalk.cyan(`"${this.namespace}" provider routes`), chalk.yellow(route.registeredPath));
+      table.cell(chalk.cyan('Methods'), chalk.green(route.methods.join(', ').toUpperCase()));
+      table.newRow();
     });
+    console.log(`\n${table.toString()}`);
   }
 
   logOutputDefinedRoutes () {
     this.registeredOutputs.forEach(output => {
-      this.logger.info(`[${output.namespace}] routes for [${this.namespace}] provider`);
+      const table = new Table();
       output.routes.forEach(route => {
-        this.logger.info(`ROUTE | [${route.methods.join(', ').toUpperCase()}] | ${route.registeredPath}`);
+        table.cell(chalk.cyan(`"${output.namespace}" output routes for the "${this.namespace}" provider`), chalk.yellow(route.registeredPath));
+        table.cell(chalk.cyan('Methods'), chalk.green(route.methods.join(', ').toUpperCase()));
+        table.newRow();
       });
+      console.log(`\n${table.toString()}`);
     });
   }
 };
