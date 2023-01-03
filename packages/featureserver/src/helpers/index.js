@@ -10,5 +10,7 @@ module.exports = {
   TableLayerMetadata: require('./table-layer-metadata'),
   FeatureLayerMetadata: require('./feature-layer-metadata'),
   ...(require('./data-type-utils')),
-  ...(require('./renderers'))
+  ...(require('./renderers')),
+  ...(require('./validate-inputs')),
+  ...(require('./normalize-request-params'))
 };

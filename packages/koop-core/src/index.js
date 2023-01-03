@@ -9,7 +9,6 @@ const Cache = require('@koopjs/cache-memory');
 const Logger = require('@koopjs/logger');
 const pkg = require('../package.json');
 const ProviderRegistration = require('./provider-registration');
-const middleware = require('./middleware');
 const geoservices = require('../../output-geoservices/src');
 
 function Koop (options) {
@@ -46,11 +45,6 @@ function initServer (options) {
     // parse application/x-www-form-urlencoded
     .use(bodyParser.urlencoded({ extended: false }))
     .disable('x-powered-by')
-    // TODO this should just live inside featureserver
-    .use(middleware.copyBodyToQuery)
-    .use(middleware.paramTrim)
-    .use(middleware.paramParse)
-    .use(middleware.paramCoerce)
     // for demos and preview maps in providers
     .set('view engine', 'ejs')
     .use(express.static(path.join(__dirname, '/public')));

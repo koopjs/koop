@@ -4,103 +4,6 @@ require('should-sinon');
 const proxyquire = require('proxyquire');
 
 describe('Route module unit tests', () => {
-  describe('Validate geojson', () => {
-    const hintSpy = sinon.spy(() => {
-      return ['validatation error'];
-    });
-    const route = proxyquire('./route', {
-      'geojson-validation': {
-        valid: hintSpy
-      },
-      './rest-info-route-handler': function () {},
-      './response-handler': function () {}
-    });
-
-    it('should validate geojson when KOOP_LOG_LEVEL === debug', () => {
-      process.env.KOOP_LOG_LEVEL = 'debug';
-      route({ params: {}, query: {}, url: '/rest/info' }, {}, { foo: 'geojson' });
-      hintSpy.calledOnce.should.equal(true);
-      hintSpy.firstCall.args.should.deepEqual([{ foo: 'geojson' }, true]);
-    });
-
-    afterEach(() => {
-      hintSpy.resetHistory();
-      process.env.KOOP_LOG_LEVEL = undefined;
-      process.env.KOOP_DISABLE_GEOJSON_VALIDATION = undefined;
-    });
-  });
-
-  describe('Validate geojson metadata', () => {
-    const restInfoSpy = sinon.spy();
-    const responseHandlerSpy = sinon.spy();
-
-    const route = proxyquire('./route', {
-      './rest-info-route-handler': restInfoSpy,
-      './response-handler': responseHandlerSpy
-    });
-
-    it('should validate geojson metadata and find no error', () => {
-      route({ params: {}, query: {}, url: '/rest/info' }, {}, { metadata: { maxRecordCount: 1 } });
-      responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args[2].should.equal(200);
-    });
-
-    it('should validate geojson metadata and find error', () => {
-      route({ params: {}, query: {}, url: '/rest/info' }, {}, { metadata: { maxRecordCount: '1' } });
-      responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args[2].should.equal(500);
-    });
-
-    afterEach(() => {
-      responseHandlerSpy.resetHistory();
-    });
-  });
-
-  describe('Validate and coerce required query parameters', () => {
-    const restInfoSpy = sinon.spy();
-    const responseHandlerSpy = sinon.spy();
-
-    const route = proxyquire('./route', {
-      './rest-info-route-handler': restInfoSpy,
-      './response-handler': responseHandlerSpy
-    });
-
-    it('should validate query parameters', () => {
-      route({
-        params: {},
-        query: { foo: 'bar', limit: 1, resultRecordCount: 1 },
-        url: '/rest/info'
-      }, {}, { metadata: { maxRecordCount: 1 } });
-      responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args[2].should.equal(200);
-    });
-
-    it('should validate and coerce query parameters', () => {
-      route({
-        params: {},
-        query: { foo: 'bar', limit: '1', resultRecordCount: '1' },
-        url: '/rest/info'
-      }, {}, { metadata: { maxRecordCount: 1 } });
-      responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args[2].should.equal(200);
-      responseHandlerSpy.firstCall.args[0].query.should.deepEqual({ foo: 'bar', limit: 1, resultRecordCount: 1 });
-    });
-
-    it('should provide default limit value', () => {
-      route({
-        params: {},
-        query: { foo: 'bar' },
-        url: '/rest/info'
-      }, {}, {});
-      responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args[2].should.equal(200);
-      responseHandlerSpy.firstCall.args[0].query.should.deepEqual({ foo: 'bar', limit: 2000 });
-    });
-    afterEach(() => {
-      responseHandlerSpy.resetHistory();
-    });
-  });
-
   describe('/query route', () => {
     const querySpy = sinon.spy(function () {
       return {
@@ -125,12 +28,12 @@ describe('Route module unit tests', () => {
       querySpy.firstCall.args.should.deepEqual([{
         metadata: { maxRecordCount: 2000 }
       }, {
-        limit: 2000
+        resultRecordCount: 2000
       }]);
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([{
         params: { method: 'query' },
-        query: { limit: 2000 },
+        query: { resultRecordCount: 2000 },
         url: '/FeatureServer/0/query'
       },
       {},
@@ -158,7 +61,7 @@ describe('Route module unit tests', () => {
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([{
         params: { method: 'query' },
-        query: { limit: 2000 },
+        query: { resultRecordCount: 2000 },
         url: '/FeatureServer/0/query'
       },
       {},
@@ -196,7 +99,7 @@ describe('Route module unit tests', () => {
           metadata: { maxRecordCount: 2000 }
         }, {
           params: {},
-          query: { limit: 2000 },
+          query: { resultRecordCount: 2000 },
           url: '/rest/info'
         }
       ]);
@@ -204,7 +107,7 @@ describe('Route module unit tests', () => {
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([{
         params: {},
-        query: { limit: 2000 },
+        query: { resultRecordCount: 2000 },
         url: '/rest/info'
       },
       {},
@@ -234,7 +137,7 @@ describe('Route module unit tests', () => {
         },
         {
           params: {},
-          query: { limit: 2000 },
+          query: { resultRecordCount: 2000 },
           url: '/rest/info'
         }
       ]);
@@ -242,7 +145,7 @@ describe('Route module unit tests', () => {
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([{
         params: {},
-        query: { limit: 2000 },
+        query: { resultRecordCount: 2000 },
         url: '/rest/info'
       },
       {},
@@ -280,14 +183,14 @@ describe('Route module unit tests', () => {
         metadata: { maxRecordCount: 2000 }
       }, {
         params: {},
-        query: { limit: 2000 },
+        query: { resultRecordCount: 2000 },
         url: '/rest/services/test/FeatureServer'
       }]);
 
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([{
         params: {},
-        query: { limit: 2000 },
+        query: { resultRecordCount: 2000 },
         url: '/rest/services/test/FeatureServer'
       },
       {},
@@ -315,14 +218,14 @@ describe('Route module unit tests', () => {
         metadata: { maxRecordCount: 2000 }
       }, {
         params: {},
-        query: { limit: 2000 },
+        query: { resultRecordCount: 2000 },
         url: '/rest/services/test/FeatureServer'
       }]);
 
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([{
         params: {},
-        query: { limit: 2000 },
+        query: { resultRecordCount: 2000 },
         url: '/rest/services/test/FeatureServer'
       },
       {},
@@ -359,13 +262,13 @@ describe('Route module unit tests', () => {
       layersInfoSpy.firstCall.args.should.deepEqual([{
         metadata: { maxRecordCount: 2000 }
       }, {
-        limit: 2000
+        resultRecordCount: 2000
       }]);
 
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([{
         params: {},
-        query: { limit: 2000 },
+        query: { resultRecordCount: 2000 },
         url: '/rest/services/test/FeatureServer/layers'
       },
       {},
@@ -392,13 +295,13 @@ describe('Route module unit tests', () => {
       layersInfoSpy.firstCall.args.should.deepEqual([{
         metadata: { maxRecordCount: 2000 }
       }, {
-        limit: 2000
+        resultRecordCount: 2000
       }]);
 
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([{
         params: {},
-        query: { limit: 2000 },
+        query: { resultRecordCount: 2000 },
         url: '/rest/services/test/FeatureServer/layers'
       },
       {},
@@ -436,14 +339,14 @@ describe('Route module unit tests', () => {
         metadata: { maxRecordCount: 2000 }
       }, {
         params: {},
-        query: { limit: 2000 },
+        query: { resultRecordCount: 2000 },
         url: '/rest/services/test/FeatureServer/0'
       }]);
 
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([{
         params: {},
-        query: { limit: 2000 },
+        query: { resultRecordCount: 2000 },
         url: '/rest/services/test/FeatureServer/0'
       },
       {},
@@ -471,14 +374,14 @@ describe('Route module unit tests', () => {
         metadata: { maxRecordCount: 2000 }
       }, {
         params: {},
-        query: { limit: 2000 },
+        query: { resultRecordCount: 2000 },
         url: '/rest/services/test/FeatureServer/0'
       }]);
 
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([{
         params: {},
-        query: { limit: 2000 },
+        query: { resultRecordCount: 2000 },
         url: '/rest/services/test/FeatureServer/0'
       },
       {},
@@ -508,7 +411,7 @@ describe('Route module unit tests', () => {
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([{
         params: {},
-        query: { limit: 2000 },
+        query: { resultRecordCount: 2000 },
         url: '/hello/world'
       },
       {},

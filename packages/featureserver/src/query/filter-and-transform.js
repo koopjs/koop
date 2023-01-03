@@ -50,10 +50,6 @@ class FilterAndTransformParams {
         delete this.resultOffset;
       }
 
-      if (key === 'limit') {
-        delete this.resultRecordCount;
-      }
-
       delete this[key];
     }
 
