@@ -1,5 +1,4 @@
-const joi = require('joi');
-const geojsonhint = require('geojson-validation');
+const _ = require('lodash');
 const layerInfo = require('./layer-metadata');
 const query = require('./query');
 const { logger } = require('./logger');
@@ -10,38 +9,29 @@ const serverInfo = require('./server-info-route-handler');
 const layersInfo = require('./layers-metadata');
 const relationshipsInfo = require('./relationships-info-route-handler');
 const responseHandler = require('./response-handler');
+const { validateInputs, normalizeRequestParameters } = require('./helpers');
 
-const queryParamSchema = joi.object({
-  limit: joi.number().optional(),
-  resultRecordCount: joi.number().optional()
-}).unknown();
-
-const geojsonMetadataSchema = joi.object({
-  maxRecordCount: joi.number().prefs({ convert: false }).optional().default(2000)
-}).unknown();
-
-module.exports = function route (req, res, geojson = {}) {
+module.exports = function route(req, res, geojson = {}) {
   const {
-    params: {
-      method
-    },
+    params: { method },
     url,
     originalUrl,
-    path
   } = req;
 
   const [route] = (url || originalUrl).split('?');
 
-  if (shouldValidateGeojson()) {
-    validateGeojson(geojson, path);
-  }
-
   try {
-    const metadata = validateGeojsonMetadata(geojson.metadata);
-    const queryParams = validateAndCoerceQueryParams(req.query, metadata);
+    const params = normalizeRequestParameters(
+      req.query,
+      req.body,
+      _.get(geojson, 'metadata.maxRecordCount'),
+    );
 
-    geojson = { ...geojson, metadata };
-    req = { ...req, query: queryParams };
+    validateInputs(params, geojson);
+
+    req = { ...req, query: params };
+    geojson.metadata = geojson.metadata || { maxRecordCount: 2000 };
+
     let result;
 
     if (method) {
@@ -51,9 +41,9 @@ module.exports = function route (req, res, geojson = {}) {
     } else if (isServerMetadataRequest(route)) {
       result = serverInfo(geojson, req);
     } else if (isLayersMetadataRequest(route)) {
-      result = layersInfo(geojson, queryParams);
+      result = layersInfo(geojson, params);
     } else if (isRelationshipsMetadataRequest(route)) {
-      result = relationshipsInfo(geojson, queryParams);
+      result = relationshipsInfo(geojson, params);
     } else if (isLayerMetadataRequest(route)) {
       result = layerInfo(geojson, req);
     } else {
@@ -65,94 +55,59 @@ module.exports = function route (req, res, geojson = {}) {
     return responseHandler(req, res, 200, result);
   } catch (error) {
     logger.debug(error);
-    return responseHandler(req, res, error.code || 500, { error: error.message });
+    return responseHandler(req, res, error.code || 500, {
+      error: error.message,
+    });
   }
 };
 
-function handleMethodRequest ({ method, geojson, req }) {
+function handleMethodRequest({ method, geojson, req }) {
   if (method === 'query') {
     return query(geojson, req.query);
-  } else if (method === 'queryRelatedRecords') {
+  }
+
+  if (method === 'queryRelatedRecords') {
     return queryRelatedRecords(geojson, req.query);
-  } else if (method === 'generateRenderer') {
+  }
+
+  if (method === 'generateRenderer') {
     return generateRenderer(geojson, req.query);
-  } else if (method === 'info') {
+  }
+
+  if (method === 'info') {
     return layerInfo(geojson, req);
   }
+
   const error = new Error('Method not supported');
   error.code = 400;
   throw error;
 }
 
-function shouldValidateGeojson () {
-  const {
-    KOOP_LOG_LEVEL,
-    LOG_LEVEL
-  } = process.env;
-  return LOG_LEVEL === 'debug' || KOOP_LOG_LEVEL === 'debug';
-}
 
-function validateGeojson (geojson, path) {
-  const geojsonErrors = geojsonhint.valid(geojson, true);
-  if (geojsonErrors.length > 0) {
-    logger.debug(`Source data for ${path} contains invalid GeoJSON; ${geojsonErrors[0]}`);
-  }
-}
-
-function validateGeojsonMetadata (metadata = {}) {
-  const { error, value } = geojsonMetadataSchema.validate(metadata);
-  if (error) {
-    error.code = 500;
-    throw error;
-  }
-  return value;
-}
-
-function validateAndCoerceQueryParams (queryParams, { maxRecordCount }) {
-  const { error, value: query } = queryParamSchema.validate(queryParams);
-
-  if (error) {
-    error.code = 400;
-    throw error;
-  }
-
-  const { limit, resultRecordCount } = query;
-  query.limit = limit || resultRecordCount || maxRecordCount;
-  return Object.keys(query).reduce((acc, key) => {
-    const value = query[key];
-    if (value === 'false') acc[key] = false;
-    else if (value === 'true') acc[key] = true;
-    else {
-      acc[key] = tryParse(value);
-    }
-    return acc;
-  }, {});
-}
-
-function tryParse (value) {
-  try {
-    return JSON.parse(value);
-  } catch (e) {
-    return value;
-  }
-}
-
-function isRestInfoRequest (url) {
+function isRestInfoRequest(url) {
   return /\/rest\/info$/i.test(url);
 }
 
-function isServerMetadataRequest (url) {
-  return /\/FeatureServer$/i.test(url) || /\/FeatureServer\/info$/i.test(url) || /\/FeatureServer\/($|\?)/.test(url);
+function isServerMetadataRequest(url) {
+  return (
+    /\/FeatureServer$/i.test(url) ||
+    /\/FeatureServer\/info$/i.test(url) ||
+    /\/FeatureServer\/($|\?)/.test(url)
+  );
 }
 
-function isLayersMetadataRequest (url) {
+function isLayersMetadataRequest(url) {
   return /\/FeatureServer\/layers$/i.test(url);
 }
 
-function isRelationshipsMetadataRequest (url) {
+function isRelationshipsMetadataRequest(url) {
   return /\/FeatureServer\/relationships$/i.test(url);
 }
 
-function isLayerMetadataRequest (url) {
-  return /\/FeatureServer\/\d+$/i.test(url) || /\/FeatureServer\/\d+\/info$/i.test(url) || /\/FeatureServer\/\d+\/$/.test(url);
+function isLayerMetadataRequest(url) {
+  return (
+    /\/FeatureServer\/\d+$/i.test(url) ||
+    /\/FeatureServer\/\d+\/info$/i.test(url) ||
+    /\/FeatureServer\/\d+\/$/.test(url)
+  );
 }

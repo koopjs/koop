@@ -1,4 +1,5 @@
 module.exports = {
   CURRENT_VERSION: 10.51,
-  FULL_VERSION: '10.5.1'
+  FULL_VERSION: '10.5.1',
+  MAX_RECORD_COUNT: 2000,
 };

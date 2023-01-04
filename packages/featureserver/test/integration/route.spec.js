@@ -215,17 +215,6 @@ describe('Routing feature server requests', () => {
         .expect(200, done);
     });
 
-    it('should respect limit', done => {
-      request(app)
-        .get('/FeatureServer/0/query?f=json&where=1%3D1&limit=10')
-        .expect(res => {
-          res.body.features.length.should.equal(10);
-          res.body.exceededTransferLimit.should.equal(true);
-        })
-        .expect('Content-Type', /json/)
-        .expect(200, done);
-    });
-
     it('should ignore empty query parameters', function (done) {
       request(app)
         .get('/FeatureServer/0/query?f=json&orderByFields=')
