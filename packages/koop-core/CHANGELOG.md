@@ -1,5 +1,11 @@
 # @koopjs/koop-core
 
+## 6.1.2
+
+### Patch Changes
+
+- fix reference to geoservices package
+
 ## 6.1.1
 
 ### Patch Changes

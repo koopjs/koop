@@ -9,7 +9,7 @@ const Cache = require('@koopjs/cache-memory');
 const Logger = require('@koopjs/logger');
 const pkg = require('../package.json');
 const ProviderRegistration = require('./provider-registration');
-const geoservices = require('../../output-geoservices/src');
+const geoservices = require('@koopjs/output-geoservices');
 
 function Koop (options) {
   this.version = pkg.version;
