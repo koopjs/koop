@@ -14,7 +14,6 @@ module.exports = {
     console: 'readonly',
     __dirname: 'readonly',
   },
-  //parser: '@babel/eslint-parser',
   parserOptions: {
     ecmaVersion: 2022,
   },

@@ -43,7 +43,6 @@
     "packages/koop-core"
   ],
   "devDependencies": {
-    "@babel/eslint-parser": "^7.19.1",
     "@changesets/changelog-git": "^0.1.13",
     "@changesets/cli": "^2.25.2",
     "@commitlint/config-conventional": "^17.1.0",
