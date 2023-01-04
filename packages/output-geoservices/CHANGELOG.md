@@ -1,5 +1,12 @@
 # @koopjs/output-geoservices
 
+## 5.2.1
+
+### Patch Changes
+
+- Updated dependencies [352d2fd]
+  - @koopjs/featureserver@6.0.0
+
 ## 5.2.0
 
 ### Minor Changes

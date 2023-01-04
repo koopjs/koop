@@ -1,5 +1,13 @@
 # @koopjs/featureserver
 
+## 6.0.0
+
+### Major Changes
+
+- BREAKING CHANGE: remove support for "limit" query param as it is not part of the Geoservices API specification
+- add coercion of query params (empty string to undefined, "true"/"false" to bool, stringified JSON to JSON)
+- merge body and query params into one set of request parameters
+
 ## 5.1.0
 
 ### Minor Changes
