@@ -1,5 +1,11 @@
 # @koopjs/winnow
 
+## 3.1.1
+
+### Patch Changes
+
+- convert fixture to js module
+
 ## 3.1.0
 
 ### Minor Changes

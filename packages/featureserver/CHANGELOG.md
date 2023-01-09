@@ -1,5 +1,12 @@
 # @koopjs/featureserver
 
+## 6.0.1
+
+### Patch Changes
+
+- Updated dependencies [c2882fa]
+  - @koopjs/winnow@3.1.1
+
 ## 6.0.0
 
 ### Major Changes
