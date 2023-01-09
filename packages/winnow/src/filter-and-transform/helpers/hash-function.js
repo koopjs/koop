@@ -1,4 +1,4 @@
-const hashFixture = require('./hash-fixture.json');
+const hashFixture = require('./hash-fixture');
 const USE_JAVASCRIPT_HASHING = process.env.OBJECTID_FEATURE_HASH === 'javascript';
 const stringHash = require('string-hash');
 
