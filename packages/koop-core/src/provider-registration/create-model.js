@@ -7,11 +7,11 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
   class Model extends ProviderModel {
     constructor (koop, options) {
       // Merging the koop object into options to preserve backward compatibility; consider removing in future major release
-      const modelOptions = _.chain(options).omit(options, 'cache', 'before', 'after').assign(koop).value();
-      super(modelOptions);
+      const mergedKoopOptions = _.chain(options).omit(options, 'cache', 'before', 'after').assign(koop).value();
+      super(mergedKoopOptions, options);
       // Provider constructor's may assign values to this.cache and this.options; so check before assigning defaults
       if (!this.cache) this.cache = options.cache || koop.cache;
-      if (!this.options) this.options = modelOptions;
+      if (!this.options) this.options = mergedKoopOptions;
       this.before = promisify(options.before || before);
       this.after = promisify(options.after || after);
       this.cacheRetrieve = promisify(this.cache.retrieve).bind(this.cache);
