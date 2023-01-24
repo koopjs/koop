@@ -30,7 +30,7 @@ function renderFeaturesResponse(data = {}, params = {}) {
     objectIdFieldName: objectIdFieldNameDefault,
   } = template;
 
-  const { metadata: { limitExceeded, transform, idField } = {} } = data;
+  const { metadata: { limitExceeded, transform, idField, hasZ } = {} } = data;
 
   const computedProperties = {
     geometryType: params.geometryType,
@@ -43,6 +43,7 @@ function renderFeaturesResponse(data = {}, params = {}) {
       ...uniqueIdFieldDefault,
       name: idField || uniqueIdFieldDefault.name,
     },
+    hasZ: !!hasZ,
   };
 
   if (transform) {

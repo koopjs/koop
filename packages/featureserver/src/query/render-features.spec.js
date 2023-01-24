@@ -91,7 +91,8 @@ describe('renderFeaturesResponse', () => {
       metadata: {
         limitExceeded: true,
         transform: 'transform',
-        idField: 'hello_world'
+        idField: 'hello_world',
+        hasZ: true
       },
       type: 'FeatureCollection',
       features: [
@@ -125,7 +126,7 @@ describe('renderFeaturesResponse', () => {
       },
       geometryType: 'esriGeometryPoint',
       globalIdFieldName: '',
-      hasZ: false,
+      hasZ: true,
       hasM: false,
       spatialReference: { wkid: 1234 },
       fields: 'fields',
