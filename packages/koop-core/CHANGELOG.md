@@ -1,5 +1,11 @@
 # @koopjs/koop-core
 
+## 7.1.0
+
+### Minor Changes
+
+- support explicit options argument in provider Model constructor
+
 ## 7.0.2
 
 ### Patch Changes
