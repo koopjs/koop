@@ -18,6 +18,23 @@ const koopMock = {
 };
 
 describe('Tests for create-model', function () {
+  describe('model constructor', () => {
+    it('should receive expected arguments', () => {
+      class Model extends providerMock.Model {
+        constructor(koop, options) {
+          super(koop, options);
+          this.koop = koop;
+          this.options = options;
+        }
+      }
+      const model = createModel({ ProviderModel: Model, koop: koopMock }, {
+        foo: 'bar'
+      });
+      model.koop.should.deepEqual({...koopMock, foo: 'bar' });
+      model.options.should.deepEqual({ foo: 'bar' });
+    });
+  });
+
   describe('model pull method', () => {
     it('should work in callback form, no upsert to cache', (done) => {
       const beforeSpy = sinon.spy((req, beforeCallback) => {
@@ -547,7 +564,7 @@ describe('Tests for create-model', function () {
       providerMock.Model.prototype.getStream = getStreamSpy;
     });
 
-    after(function () {
+    afterEach(function () {
       // reset the getStream() function to default
       providerMock.Model.prototype.getStream = undefined;
     });

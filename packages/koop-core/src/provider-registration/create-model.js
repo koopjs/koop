@@ -6,12 +6,14 @@ const after = (req, data, callback) => { callback(null, data); };
 module.exports = function createModel ({ ProviderModel, koop, namespace }, options = {}) {
   class Model extends ProviderModel {
     constructor (koop, options) {
-      // Merging the koop object into options to preserve backward compatibility; consider removing in future major release
-      const modelOptions = _.chain(options).omit(options, 'cache', 'before', 'after').assign(koop).value();
-      super(modelOptions);
+      // Merging the koop object into options to preserve backward compatibility
+      // This should be removed in future major release now that registration 
+      // options are passed as separate arg
+      const koopAndOptions = _.chain(options).omit(options, 'cache', 'before', 'after').assign(koop).value();
+      super(koopAndOptions, options);
       // Provider constructor's may assign values to this.cache and this.options; so check before assigning defaults
       if (!this.cache) this.cache = options.cache || koop.cache;
-      if (!this.options) this.options = modelOptions;
+      if (!this.options) this.options = koopAndOptions;
       this.before = promisify(options.before || before);
       this.after = promisify(options.after || after);
       this.cacheRetrieve = promisify(this.cache.retrieve).bind(this.cache);
