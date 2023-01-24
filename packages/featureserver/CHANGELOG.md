@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 6.1.0
+
+### Minor Changes
+
+set hasZ from feature metadata in query handler
+
 ## 6.0.1
 
 ### Patch Changes
