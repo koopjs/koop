@@ -4,7 +4,7 @@ const request = require('supertest');
 
 describe('koop', () => {
   const koop = new Koop({ dataDir: './provider-data' });
-  koop.register(provider);
+  koop.register(provider, { dataDir: '.foo' });
   test('should return true', async () => {
     try {
       const response = await request(koop.server).get('/file-geojson/rest/services/polygon/FeatureServer/0/query');

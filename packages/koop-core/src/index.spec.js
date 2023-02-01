@@ -17,14 +17,14 @@ const providerFixtureRoutes = provider.routes.reduce((acc, route) => {
 describe('Index tests', function () {
   describe('Koop instantiation', function () {
     it('should instantiate Koop with config', function () {
-      const koop = new Koop({ foo: 'bar' });
+      const koop = new Koop({ foo: 'bar', logLevel: 'error' });
       koop.config.should.have.property('foo', 'bar');
     });
   });
 
   describe('Provider registration', function () {
     it('should register provider and add output and provider routes to router stack', function () {
-      const koop = new Koop();
+      const koop = new Koop({ logLevel: 'error' });
       koop.register(provider);
       const registeredProvider = koop.providers.find(provider => { return provider.namespace === 'test-provider'; });
       registeredProvider.should.have.property('namespace', 'test-provider');
@@ -37,7 +37,7 @@ describe('Index tests', function () {
     });
 
     it('should register provider-routes before plugin-routes', function () {
-      const koop = new Koop();
+      const koop = new Koop({ logLevel: 'error' });
       koop.register(provider);
       // Check that the stack index of the plugin routes are prior to index of provider routes
       const routePaths = koop.server._router.stack
@@ -49,7 +49,7 @@ describe('Index tests', function () {
     });
 
     it('should register plugin-routes before provider-routes', function () {
-      const koop = new Koop();
+      const koop = new Koop({ logLevel: 'error' });
       koop.register(provider, { defaultToOutputRoutes: true });
       // Check that the stack index of the plugin routes are prior to index of provider routes
       const routePaths = koop.server._router.stack
@@ -61,14 +61,14 @@ describe('Index tests', function () {
     });
 
     it('should register successfully a provider with a routePrefix', function () {
-      const koop = new Koop();
+      const koop = new Koop({ logLevel: 'error' });
       koop.register(provider, { routePrefix: 'path-to-route' });
       const registeredProvider = koop.providers.find(provider => { return provider.namespace === 'test-provider'; });
       registeredProvider.options.should.have.property('routePrefix', 'path-to-route');
     });
 
     it('should register successfully and attach cache and options object to model', function () {
-      const koop = new Koop();
+      const koop = new Koop({ logLevel: 'error' });
       koop.register(provider, { foo: 'bar' });
       const registeredProvider = koop.providers.find(provider => { return provider.namespace === 'test-provider'; });
       registeredProvider.model.should.have.property('cache');
@@ -77,7 +77,7 @@ describe('Index tests', function () {
     });
 
     it('should register successfully and attach optional custom cache to model', function () {
-      const koop = new Koop();
+      const koop = new Koop({ logLevel: 'error' });
       koop.register(provider, {
         cache: {
           retrieve: (key, query, callback) => {}, // eslint-disable-line -- this allow validation to occur
@@ -91,7 +91,7 @@ describe('Index tests', function () {
     });
 
     it('should reject cache option missing an upsert method', function () {
-      const koop = new Koop();
+      const koop = new Koop({ logLevel: 'error' });
       try {
         koop.register(provider, {
           cache: {
@@ -104,7 +104,7 @@ describe('Index tests', function () {
     });
 
     it('should reject cache option missing a retrieve method', function () {
-      const koop = new Koop();
+      const koop = new Koop({ logLevel: 'error' });
       try {
         koop.register(provider, {
           cache: {
@@ -117,7 +117,7 @@ describe('Index tests', function () {
     });
 
     it('should reject routePrefix option that is not a string', function () {
-      const koop = new Koop();
+      const koop = new Koop({ logLevel: 'error' });
       try {
         koop.register(provider, {
           routePrefix: {}
@@ -129,7 +129,7 @@ describe('Index tests', function () {
     });
 
     it('should register successfully and attach optional "before" and "after" function to model', function () {
-      const koop = new Koop();
+      const koop = new Koop({ logLevel: 'error' });
       koop.register(provider, {
         before: (req, next) => {}, // eslint-disable-line -- this allow validation to occur
         after: (req, data, callback) => {} // eslint-disable-line -- this allow validation to occur
@@ -140,7 +140,7 @@ describe('Index tests', function () {
     });
 
     it('should reject optional "before" function that does not have correct arity', function () {
-      const koop = new Koop();
+      const koop = new Koop({ logLevel: 'error' });
       try {
         koop.register(provider, {
           before: () => {}
@@ -151,7 +151,7 @@ describe('Index tests', function () {
     });
 
     it('should reject optional "after" function that does not have correct arity', function () {
-      const koop = new Koop();
+      const koop = new Koop({ logLevel: 'error' });
       try {
         koop.register(provider, {
           after: () => {}
@@ -162,7 +162,7 @@ describe('Index tests', function () {
     });
 
     it('should successfully use options "name" in route', function () {
-      const koop = new Koop();
+      const koop = new Koop({ logLevel: 'error' });
       koop.register(provider, {
         name: 'options-name'
       });
@@ -179,7 +179,7 @@ describe('Index tests', function () {
 
   describe('can register a provider and apply a route prefix to all routes', function () {
     it('should not return 404 for prefixed custom route', function (done) {
-      const koop = new Koop();
+      const koop = new Koop({ logLevel: 'error' });
       koop.register(provider, { routePrefix: '/api/test' });
       request(koop.server)
         .get('/api/test/fake/1234')
@@ -193,7 +193,7 @@ describe('Index tests', function () {
     });
 
     it('should not return 404 for prefixed plugin route', function (done) {
-      const koop = new Koop();
+      const koop = new Koop({ logLevel: 'error' });
       koop.register(provider, { routePrefix: '/api/test' });
       request(koop.server)
         .get('/api/test/test-provider/rest/services/foo/FeatureServer')
@@ -211,7 +211,7 @@ describe('Index tests', function () {
 describe('Tests for registering auth plugin', function () {
   describe('can register an auth plugin', function () {
     it('should register successfully', function () {
-      const koop = new Koop();
+      const koop = new Koop({ logLevel: 'error' });
       koop.register(auth);
       koop._authModule.should.be.instanceOf(Object);
       koop._authModule.authenticate.should.be.instanceOf(Function);
@@ -222,7 +222,7 @@ describe('Tests for registering auth plugin', function () {
 
   describe('can register an auth plugin and apply methods to a provider', function () {
     it('should register successfully', function () {
-      const koop = new Koop();
+      const koop = new Koop({ logLevel: 'error' });
       koop.register(auth);
       koop.register(provider);
       koop.providers[0].model.should.have.property('authenticationSpecification').and.deepEqual({ provider: 'test-provider' });
@@ -236,7 +236,7 @@ describe('Tests for registering auth plugin', function () {
       const providerWithoutAuth = require('../test/fixtures/fake-provider-ii');
       const providerWithAuth = require('../test/fixtures/fake-provider');
       const auth = require('../test/fixtures/fake-auth')();
-      const koop = new Koop();
+      const koop = new Koop({ logLevel: 'error' });
       koop.register(providerWithoutAuth);
       koop.register(auth);
       koop.register(providerWithAuth);
@@ -253,7 +253,7 @@ describe('Tests for registering auth plugin', function () {
 });
 
 describe('Tests for registering plugins', function () {
-  const koop = new Koop();
+  const koop = new Koop({ logLevel: 'error' });
   describe('can register a plugin', function () {
     it('should register successfully', function () {
       koop.register(plugins.fakePlugin);
