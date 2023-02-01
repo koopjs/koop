@@ -24,10 +24,11 @@ function createLogger(config) {
     stringify: true,
     json: true,
   });
+
   return winston.createLogger({
     transports: [consoleTransport],
     format: format.combine(
-      format.errors({ stack: ['debug', 'silly'].includes(config.logLevel) }),
+      format.errors({ stack: ['debug', 'silly'].includes(level) }),
       format.timestamp(),
       format.colorize(),
       format.printf(({ level, message, timestamp, stack }) => {
