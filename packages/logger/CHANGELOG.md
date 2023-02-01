@@ -1,5 +1,11 @@
 # @koopjs/logger
 
+## 4.1.0
+
+### Minor Changes
+
+- log stack trace when logLevel is debug or silly
+
 ## 4.0.0
 
 ### Major Changes

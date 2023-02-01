@@ -1,5 +1,12 @@
 # @koopjs/output-geoservices
 
+## 5.2.4
+
+### Patch Changes
+
+- Updated dependencies [b8f21bd]
+  - @koopjs/logger@4.1.0
+
 ## 5.2.3
 
 ### Patch Changes
