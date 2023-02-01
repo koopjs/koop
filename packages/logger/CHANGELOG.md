@@ -1,5 +1,11 @@
 # @koopjs/logger
 
+## 4.1.1
+
+### Patch Changes
+
+- pull level from ENVs
+
 ## 4.1.0
 
 ### Minor Changes

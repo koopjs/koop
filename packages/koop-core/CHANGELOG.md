@@ -1,5 +1,13 @@
 # @koopjs/koop-core
 
+## 7.1.2
+
+### Patch Changes
+
+- Updated dependencies [6e2ce57]
+  - @koopjs/logger@4.1.1
+  - @koopjs/output-geoservices@5.2.5
+
 ## 7.1.1
 
 ### Patch Changes
