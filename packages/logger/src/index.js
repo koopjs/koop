@@ -1,5 +1,6 @@
 /* @flow */
 const winston = require('winston');
+const { format } = winston;
 const path = require('path');
 
 /**
@@ -8,7 +9,7 @@ const path = require('path');
  * @param {object} config - koop configuration
  * @return {Logger} custom logger instance
  */
-function createLogger (config) {
+function createLogger(config) {
   config = config || {};
   const level = setLogLevel(config.logLevel);
 
@@ -21,24 +22,38 @@ function createLogger (config) {
     colorize: true,
     level,
     stringify: true,
-    json: true
+    json: true,
   });
-  return winston.createLogger({ transports: [consoleTransport] });
+  return winston.createLogger({
+    transports: [consoleTransport],
+    format: format.combine(
+      format.errors({ stack: ['debug', 'silly'].includes(config.logLevel) }),
+      format.timestamp(),
+      format.colorize(),
+      format.printf(({ level, message, timestamp, stack }) => {
+        if (stack) {
+          // print log trace
+          return `${timestamp} ${level}: ${message} - ${stack}`;
+        }
+        return `${timestamp} ${level}: ${message}`;
+      }),
+    ),
+  });
 }
 
-function setLogLevel (logLevel) {
+function setLogLevel(logLevel) {
   if (logLevel) {
     return logLevel;
   }
 
   if (process.env.KOOP_LOG_LEVEL || process.env.LOG_LEVEL) {
     return process.env.KOOP_LOG_LEVEL || process.env.LOG_LEVEL;
-  } 
-  
+  }
+
   return 'info';
 }
 
-function setupFileTransport (logfile, level) {
+function setupFileTransport(logfile, level) {
   const logpath = path.dirname(logfile);
   const logAll = new winston.transports.File({
     filename: logfile,
@@ -47,7 +62,7 @@ function setupFileTransport (logfile, level) {
     colorize: true,
     json: false,
     level,
-    formatter: formatter
+    formatter: formatter,
   });
 
   const logError = new winston.transports.File({
@@ -57,7 +72,7 @@ function setupFileTransport (logfile, level) {
     colorize: true,
     json: false,
     level: 'error',
-    formatter: formatter
+    formatter: formatter,
   });
 
   const transports = [logError];
@@ -74,15 +89,13 @@ function setupFileTransport (logfile, level) {
  * @param {object} options - log info from winston
  * @return {string} formatted log line
  */
-function formatter (options) {
-  const line = [
-    new Date().toISOString(),
-    options.level
-  ];
+function formatter(options) {
+  const line = [new Date().toISOString(), options.level];
 
   if (options.message !== undefined) line.push(options.message);
 
-  if (options.meta && Object.keys(options.meta).length) line.push(JSON.stringify(options.meta));
+  if (options.meta && Object.keys(options.meta).length)
+    line.push(JSON.stringify(options.meta));
 
   return line.join(' ');
 }
