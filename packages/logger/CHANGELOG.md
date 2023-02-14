@@ -1,5 +1,11 @@
 # @koopjs/logger
 
+## 5.0.0
+
+### Major Changes
+
+- drop support for Node 12
+
 ## 4.1.1
 
 ### Patch Changes

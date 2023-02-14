@@ -1,5 +1,11 @@
 # @koopjs/cache-memory
 
+## 4.0.0
+
+### Major Changes
+
+- drop support for Node 12
+
 ## 3.0.1
 
 ### Patch Changes

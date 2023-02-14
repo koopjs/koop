@@ -1,5 +1,16 @@
 # @koopjs/featureserver
 
+## 7.0.0
+
+### Major Changes
+
+- drop support for Node 12
+
+### Patch Changes
+
+- Updated dependencies [98fe5ca]
+  - @koopjs/winnow@4.0.0
+
 ## 6.1.0
 
 ### Minor Changes

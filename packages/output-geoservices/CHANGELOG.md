@@ -1,5 +1,17 @@
 # @koopjs/output-geoservices
 
+## 6.0.0
+
+### Major Changes
+
+- drop support for Node 12
+
+### Patch Changes
+
+- Updated dependencies [98fe5ca]
+  - @koopjs/featureserver@7.0.0
+  - @koopjs/logger@5.0.0
+
 ## 5.2.5
 
 ### Patch Changes

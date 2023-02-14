@@ -1,5 +1,18 @@
 # @koopjs/koop-core
 
+## 8.0.0
+
+### Major Changes
+
+- drop support for Node 12
+
+### Patch Changes
+
+- Updated dependencies [98fe5ca]
+  - @koopjs/cache-memory@4.0.0
+  - @koopjs/logger@5.0.0
+  - @koopjs/output-geoservices@6.0.0
+
 ## 7.1.2
 
 ### Patch Changes
