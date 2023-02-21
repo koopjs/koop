@@ -30,3 +30,9 @@ test('createSelectSql: returnGeometry:false option', async (spec) => {
   const result = createSelectSql({ returnGeometry: false });
   spec.equals(result, 'SELECT fields fragment FROM ?');
 });
+
+test('createSelectSql: distinct:true option', async (spec) => {
+  spec.plan(1);
+  const result = createSelectSql({ distinct: true, returnGeometry: false });
+  spec.equals(result, 'SELECT DISTINCT fields fragment FROM ?');
+});

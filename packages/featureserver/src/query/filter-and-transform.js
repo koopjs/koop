@@ -36,8 +36,19 @@ class FilterAndTransformParams {
     return new FilterAndTransformParams(requestParams);
   }
 
+  static standardize (requestParams) {
+    const {returnDistinctValues, ...rest } = requestParams;
+    
+    if (returnDistinctValues === true) {
+      rest.distinct = true;
+    }
+    
+    return rest;
+  }
+
   constructor (requestParams) {
-    Object.assign(this, requestParams);
+    const params = FilterAndTransformParams.standardize(requestParams);
+    Object.assign(this, params);
   }
 
   removeParamsAlreadyApplied (alreadyApplied) {

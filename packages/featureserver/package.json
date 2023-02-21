@@ -9,7 +9,7 @@
   "scripts": {
     "test": "mocha '**/*.spec.js' --recursive -t 5000",
     "test:cov": "nyc --reporter=html mocha '**/*.spec.js' ",
-    "test:cov:unit": "nyc --reporter=html mocha 'lib/**/*.spec.js' "
+    "test:cov:unit": "nyc --reporter=html mocha 'src/**/*.spec.js' "
   },
   "contributors": [
     {
