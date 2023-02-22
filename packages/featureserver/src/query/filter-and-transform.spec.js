@@ -4,6 +4,7 @@ const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 
 describe('filterAndTransform', () => {
+
   describe('should prepare parameters correctly', () => {
     afterEach(function () {
       filterAndTransformSpy.resetHistory();
@@ -29,6 +30,35 @@ describe('filterAndTransform', () => {
       './filter-and-transform',
       stub
     );
+
+    describe('should standardize parameters', () => {
+      it('should convert "returnDistinctValues" to "distinct"', () => {
+        const result = filterAndTransform({ features: [{}] }, { returnDistinctValues: true });
+        result.should.deepEqual({
+          features: 'expected-result'
+        });
+        filterAndTransformSpy.callCount.should.equal(1);
+        filterAndTransformSpy.firstCall.args.should.deepEqual([
+          { features: [{}] },
+          { inputCrs: 4326, toEsri: true, distinct: true }
+        ]);
+      });
+
+      it('should set toEsri:false when returnExtentOnly: true', () => {
+        const result = filterAndTransform(
+          { features: [{}] },
+          { returnExtentOnly: true }
+        );
+        result.should.deepEqual({
+          features: 'expected-result'
+        });
+        filterAndTransformSpy.callCount.should.equal(1);
+        filterAndTransformSpy.firstCall.args.should.deepEqual([
+          { features: [{}] },
+          { returnExtentOnly: true, inputCrs: 4326, toEsri: false }
+        ]);
+      });
+    });
 
     describe('should set toEsri:false and pass to filter/transform', () => {
       it('should set toEsri:false when requested format is geojson', () => {
