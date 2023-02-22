@@ -1,5 +1,16 @@
 # @koopjs/featureserver
 
+## 7.1.0
+
+### Minor Changes
+
+- add support for returnDistinctValues
+
+### Patch Changes
+
+- Updated dependencies [3097431]
+  - @koopjs/winnow@4.0.1
+
 ## 7.0.0
 
 ### Major Changes

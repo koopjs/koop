@@ -1,5 +1,11 @@
 # @koopjs/winnow
 
+## 4.0.1
+
+### Patch Changes
+
+- add option for DISTINCT value query
+
 ## 4.0.0
 
 ### Major Changes
