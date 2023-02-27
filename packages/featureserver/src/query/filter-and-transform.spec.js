@@ -43,21 +43,6 @@ describe('filterAndTransform', () => {
           { inputCrs: 4326, toEsri: true, distinct: true }
         ]);
       });
-
-      it('should set toEsri:false when returnExtentOnly: true', () => {
-        const result = filterAndTransform(
-          { features: [{}] },
-          { returnExtentOnly: true }
-        );
-        result.should.deepEqual({
-          features: 'expected-result'
-        });
-        filterAndTransformSpy.callCount.should.equal(1);
-        filterAndTransformSpy.firstCall.args.should.deepEqual([
-          { features: [{}] },
-          { returnExtentOnly: true, inputCrs: 4326, toEsri: false }
-        ]);
-      });
     });
 
     describe('should set toEsri:false and pass to filter/transform', () => {
