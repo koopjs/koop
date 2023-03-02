@@ -4,6 +4,8 @@ const {
   isValidDate
 } = require('iso-datestring-validator');
 
+const PROBLEMATIC_STRING_SYMBOLS = ['(', '[', '*', '+', '\\', '?'];
+
 function getDataTypeFromValue (value) {
   if (_.isNumber(value)) {
     return Number.isInteger(value) ? 'Integer' : 'Double';
@@ -17,7 +19,12 @@ function getDataTypeFromValue (value) {
 }
 
 function isDate (value) {
-  return value instanceof Date || ((typeof value === 'string') && (isValidDate(value) || isValidISODateString(value)));
+  // this is required due to RegExp error in in the iso-datestring-validator module
+  if (typeof value === 'string' && PROBLEMATIC_STRING_SYMBOLS.includes(value.charAt(0))) {
+    return false;
+  }
+
+  return (value instanceof Date || (typeof value === 'string') && (isValidDate(value) || isValidISODateString(value)));
 }
 
 module.exports = {

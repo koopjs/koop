@@ -42,4 +42,12 @@ describe('isDate', () => {
   it('should return false for number', () => {
     isDate(1000).should.equal(false);
   });
+
+  it('should return false for a string', () => {
+    isDate('foo').should.equal(false);
+  });
+
+  it('should return false for a string in parenthesis', () => {
+    isDate('(foo').should.equal(false);
+  });
 });
