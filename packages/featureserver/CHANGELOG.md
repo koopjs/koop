@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 7.1.1
+
+### Patch Changes
+
+- tolerate strings that begin with problematic characters
+
 ## 7.1.0
 
 ### Minor Changes
