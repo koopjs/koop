@@ -9,6 +9,5 @@
         "packages/koop-core/src/**/*.js"
     ],
     "exclude": ["**/*.spec.js"],
-    "includeAllSources": true,
-    "cwd": "../.."
+    "includeAllSources": true
 }

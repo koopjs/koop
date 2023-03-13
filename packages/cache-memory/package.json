@@ -5,8 +5,10 @@
   "main": "src/index.js",
   "scripts": {
     "test": "tape src/**/*.spec.js | tap-spec",
-    "test:cov": "nyc --reporter=text-summary --reporter=html tape './src/**/*.spec.js' | tap-spec",
-    "test:cov:unit": "nyc --reporter=text-summary --reporter=html tape 'src/**/*.spec.js' | tap-spec"
+    "test:cov": "nyc -r=json-summary tape './src/**/*.spec.js' | tap-spec && npm run cov:badge",
+    "test:cov:unit": "nyc -r=json-summary --report-dir=coverage_unit --temp-dir=.nyc_output_unit tape 'src/**/*.spec.js' | tap-spec && npm run cov:badge:unit",
+    "cov:badge": "coverage-badges-cli --output ./coverage.svg",
+    "cov:badge:unit": "coverage-badges-cli --source coverage_unit/coverage-summary.json --output ./coverage-unit.svg"
   },
   "repository": {
     "type": "git",

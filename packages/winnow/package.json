@@ -8,8 +8,10 @@
   },
   "scripts": {
     "test": "tape '**/*.spec.js' | tap-spec",
-    "test:cov": "nyc --reporter=text-summary --reporter=html tape '**/*.spec.js' | tap-spec",
-    "test:cov:unit": "nyc --reporter=text-summary --reporter=html tape 'src/**/*.spec.js' | tap-spec",
+    "test:cov": "nyc -r=json-summary tape '**/*.spec.js' | tap-spec && npm run cov:badge",
+    "test:cov:unit": "nyc -r=json-summary --report-dir=coverage_unit --temp-dir=.nyc_output_unit tape 'src/**/*.spec.js' | tap-spec && npm run cov:badge:unit",
+    "cov:badge": "coverage-badges-cli --output ./coverage.svg",
+    "cov:badge:unit": "coverage-badges-cli --source coverage_unit/coverage-summary.json --output ./coverage-unit.svg",
     "benchmark": "node benchmark/index.js",
     "benchmark:ci": "node benchmark/index.js | tee benchmark-result.txt"
   },
