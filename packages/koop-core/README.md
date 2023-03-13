@@ -1,8 +1,8 @@
 # Koop
+[![npm version][npm-img]][npm-url]
+![coverage](./coverage.svg)
 
 > Transform, query, & download geospatial data on the web.  See [koopjs.github.io](https://koopjs.github.io) for details.
-
-[![npm version][npm-img]][npm-url]
 
 This is the core dependency for setting up a Koop instance.  By default it includes the Output-Geoservices plugin and an in-memory data cache.
 

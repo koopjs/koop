@@ -1,8 +1,9 @@
 # FeatureServer
+[![npm][npm-image]][npm-url]
+![coverage](./coverage.svg)
 
 *An open source implementation of the GeoServices specification*
 
-[![npm][npm-image]][npm-url]
 ## Usage
 FeatureServer is the underlying dependency of the Koop Output-Geoservices plugin.  However, it can also be used on its own with Express.
 

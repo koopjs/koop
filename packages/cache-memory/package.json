@@ -6,10 +6,8 @@
   "scripts": {
     "test": "tape src/**/*.spec.js | tap-spec",
     "test:cov": "nyc -r=json-summary tape './src/**/*.spec.js' | tap-spec && npm run cov:badge",
-    "test:cov:unit": "nyc -r=json-summary --report-dir=coverage_unit --temp-dir=.nyc_output_unit tape 'src/**/*.spec.js' | tap-spec && npm run cov:badge:unit",
-    "cov:badge": "coverage-badges-cli --output ./coverage.svg",
-    "cov:badge:unit": "coverage-badges-cli --source coverage_unit/coverage-summary.json --output ./coverage-unit.svg"
-  },
+    "cov:badge": "coverage-badges-cli --output ./coverage.svg"
+    },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/koopjs/koop.git"
