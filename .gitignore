@@ -1,6 +1,8 @@
 node_modules
 coverage
+coverage_unit
 .nyc_output
+.nyc_output_unit
 .vscode
 **/.DS_Store
 .env

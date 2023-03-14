@@ -1,6 +1,7 @@
 # Koop Geoservices Output Plugin
 
 [![npm version][npm-img]][npm-url]
+![coverage](./coverage.svg)
 
 Wraps FeatureServer into a [Koop](http://koopjs.github.io) Output plugin.
 

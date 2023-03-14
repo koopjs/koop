@@ -1,4 +1,6 @@
 # Koop Memory Cache
+[![npm version][npm-img]][npm-url]
+![coverage](./coverage.svg)
 
 ## Usage
 
@@ -190,3 +192,5 @@ cache.catalog.delete('key', err => {
   // This function will call back with an error if there is nothing to delete or if there is still data in the cache using the same key
 })
 ```
+[npm-img]: https://img.shields.io/npm/v/@koopjs/cache-memory.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/@koopjs/cache-memory

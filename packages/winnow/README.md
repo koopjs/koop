@@ -1,8 +1,8 @@
 # Winnow
+[![npm version][npm-img]][npm-url]
+![coverage](./coverage.svg)
 
 *Winnow* is made for applying sql to geojson in memory. It is useful for working against geojson objects, but also has built-in primitives for piping streams. 
-
-[![npm version][npm-img]][npm-url]
 
 ## Install
 ```sh

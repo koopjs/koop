@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "jest",
-    "test:cov": "nyc --reporter=text-summary --reporter=html jest"
+    "test:cov": "nyc -r=json-summary jest && npm run cov:badge",
+    "cov:badge": "coverage-badges-cli --output ./coverage.svg"
   },
   "repository": {
     "type": "git",
