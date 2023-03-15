@@ -24,3 +24,7 @@ updates:
   directory: "/packages/winnow"
   schedule:
     interval: "daily"
+- package-ecosystem: "npm"
+  directory: "/"
+  schedule:
+    interval: "daily"
