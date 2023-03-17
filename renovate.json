@@ -3,5 +3,12 @@
   "extends": [
     "config:base"
   ],
-  "updateInternalDeps": true
+  "updateInternalDeps": true,
+  "schedule": ["every weekend"],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    }
+  ]
 }

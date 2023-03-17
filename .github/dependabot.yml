@@ -3,28 +3,28 @@ updates:
 - package-ecosystem: "npm"
   directory: "/packages/cache-memory"
   schedule:
-    interval: "daily" 
+    interval: "weekly" 
 - package-ecosystem: "npm"
   directory: "/packages/featureserver"
   schedule:
-    interval: "daily"
+    interval: "weekly"
 - package-ecosystem: "npm"
   directory: "/packages/koop-core"
   schedule:
-    interval: "daily"
+    interval: "weekly"
 - package-ecosystem: "npm"
   directory: "/packages/logger"
   schedule:
-    interval: "daily"
+    interval: "weekly"
 - package-ecosystem: "npm"
   directory: "/packages/output-geoservices"
   schedule:
-    interval: "daily"
+    interval: "weekly"
 - package-ecosystem: "npm"
   directory: "/packages/winnow"
   schedule:
-    interval: "daily"
+    interval: "weekly"
 - package-ecosystem: "npm"
   directory: "/"
   schedule:
-    interval: "daily"
+    interval: "weekly"
