@@ -8,6 +8,47 @@ Koop's plugin-architecture facilates custom deployments specific to your needs. 
 
 ![lots of geojson into feature services](https://user-images.githubusercontent.com/7832202/28444721-43eb6ea6-6d8d-11e7-8d56-3af46fd5bf88.png)
 
+## Demo
+Want to see Koop in action? The repository ships with a demo that shows Koops support for GeoServices (ArcGIS). It leverages the file-geojson data provider and the GeoServices output-plugin:
+
+```bash
+git clone https://github.com/koopjs/koop
+cd koop
+npm run demo
+```
+
+Koop will start listening on port 8080. You should the following console logging noting the exposed file-geojson/GeoService routes:
+
+```bash
+2023-03-17T19:18:29.416Z info: [Geoservices] routes for [file-geojson] provider
+2023-03-17T19:18:29.416Z info: ROUTE | [GET, POST] | /file-geojson/rest/info
+2023-03-17T19:18:29.416Z info: ROUTE | [GET, POST] | /file-geojson/tokens/:method
+2023-03-17T19:18:29.417Z info: ROUTE | [GET, POST] | /file-geojson/tokens
+2023-03-17T19:18:29.417Z info: ROUTE | [GET, POST] | /file-geojson/rest/services/:id/FeatureServer/:layer/:method
+2023-03-17T19:18:29.417Z info: ROUTE | [GET, POST] | /file-geojson/rest/services/:id/FeatureServer/layers
+2023-03-17T19:18:29.417Z info: ROUTE | [GET, POST] | /file-geojson/rest/services/:id/FeatureServer/:layer
+2023-03-17T19:18:29.417Z info: ROUTE | [GET, POST] | /file-geojson/rest/services/:id/FeatureServer
+2023-03-17T19:18:29.417Z info: ROUTE | [GET, POST] | /file-geojson/rest/services/:id/FeatureServer*
+```
+
+The following request will take the demo data from `demo/provider-data/line.geojson` and send it as geojson:
+
+```
+http://localhost:8080/file-geojson/rest/services/line/FeatureServer/0/query
+```
+
+Query for features with a specific property value:
+
+```
+http://localhost:8080/file-geojson/rest/services/line/FeatureServer/0/query?where=foo='bar'
+```
+
+Return data in a different coordinate system:
+
+```
+http://localhost:8080/file-geojson/rest/services/line/FeatureServer/0/query?outSR=3857
+```
+
 ## Koop Monorepo
 
 This repository is home of the Koop monorepo.  In contains a collection of packages that are shipped by default with every Koop instance.  [koop-core](https://github.com/koopjs/koop/packages/koop-core) is the parent package and is used to generate a default configuration of Koop. References to the "Koop version" refer to the version of this package. The other packages in this monorepo are dependencies of koop-core and include the Geoservices output-plugin and its dependencies, the default in-memory data cache, and a logger.  All other plugins (providers, outputs, etc) are in separate repositories.

@@ -19,7 +19,8 @@
     "version": "changeset version",
     "release:npm": "changeset publish",
     "release:github": "node gh-release.js",
-    "changeset:add": "changeset"
+    "changeset:add": "changeset",
+    "demo": "node demo/index.js"
   },
   "repository": {
     "type": "git",
