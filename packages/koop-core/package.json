@@ -1,7 +1,7 @@
 {
   "name": "@koopjs/koop-core",
   "description": "Serve, transform, and query geospatial data on the web",
-  "version": "8.0.2",
+  "version": "8.0.3",
   "contributors": [
     {
       "name": "Rich Gwozdz",
@@ -68,5 +68,5 @@
     "test": "mocha '**/*.spec.js' ",
     "test:cov": "nyc -r=json-summary mocha '**/*.spec.js' && npm run cov:badge",
     "cov:badge": "coverage-badges-cli --output ./coverage.svg"
-    }
+  }
 }

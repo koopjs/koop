@@ -1,5 +1,11 @@
 # @koopjs/koop-core
 
+## 8.0.3
+
+### Patch Changes
+
+- use new \_cache metadata property when available
+
 ## 8.0.2
 
 ### Patch Changes
