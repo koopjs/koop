@@ -27,7 +27,9 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
 
       try {
         const cached = await this.cacheRetrieve(key, req.query);
-        if (isFresh(cached)) return callback(null, cached);
+        if (isFresh(cached)) {
+          return callback(null, cached);
+        }
       } catch (err) {
         this.logger.debug(err);
       }
@@ -114,9 +116,12 @@ function createKey (req) {
   return key;
 }
 
-function isFresh (geojson) {
-  // TODO: if the cache plugin developer forgets to set the metadata.expires,
-  // the data will be forever fresh. This should be fixed.
-  if (!geojson || !geojson.metadata || !geojson.metadata.expires) return true;
-  else return Date.now() < geojson.metadata.expires;
+function isFresh ({_cache, metadata}) {
+  // older cache plugins stored cache timing in "metadata"
+  const cacheMetadata = _cache || metadata || {};
+  if (!cacheMetadata?.expires) {
+    return true;
+  }
+  
+  return Date.now() < cacheMetadata.expires;
 }
