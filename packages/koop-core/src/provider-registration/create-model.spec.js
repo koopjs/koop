@@ -76,7 +76,7 @@ describe('Tests for create-model', function () {
       });
     });
 
-    it('should work in callback form, should upsert to cache', (done) => {
+    it('should pull from cache and use _cache info', (done) => {
       const beforeSpy = sinon.spy((req, beforeCallback) => {
         beforeCallback();
       });
@@ -85,8 +85,14 @@ describe('Tests for create-model', function () {
         callback(null, data);
       });
 
+      const now = Date.now();
       const cacheRetrieveSpy = sinon.spy((key, query, callback) => {
-        callback(new Error('no cache'));
+        callback(null, { _cache: {
+          updated: 0,
+          expires: now + 86400000
+        },
+        features: ['foo']
+        });
       });
 
       const cacheUpsertSpy = sinon.spy(() => {});
@@ -106,12 +112,72 @@ describe('Tests for create-model', function () {
         after: afterSpy
       });
 
-      model.pull({ url: 'domain/test-provider', params: {}, query: {} }, function () {
+      model.pull({ url: 'domain/test-provider', params: {}, query: {} }, function (error, data) {
+        (error === null).should.equal(true);
+        data.should.deepEqual({ _cache: {
+          updated: 0,
+          expires: now + 86400000
+        },
+        features: ['foo']
+        });
         cacheRetrieveSpy.calledOnce.should.equal(true);
-        beforeSpy.calledOnce.should.equal(true);
-        getDataSpy.calledOnce.should.equal(true);
-        afterSpy.calledOnce.should.equal(true);
-        cacheUpsertSpy.calledOnce.should.equal(true);
+        beforeSpy.notCalled.should.equal(true);
+        getDataSpy.notCalled.should.equal(true);
+        afterSpy.notCalled.should.equal(true);
+        cacheUpsertSpy.notCalled.should.equal(true);
+        done();
+      });
+    });
+
+    it('should pull from cache and use metadata info', (done) => {
+      const beforeSpy = sinon.spy((req, beforeCallback) => {
+        beforeCallback();
+      });
+
+      const afterSpy = sinon.spy(function (req, data, callback) {
+        callback(null, data);
+      });
+
+      const now = Date.now();
+      const cacheRetrieveSpy = sinon.spy((key, query, callback) => {
+        callback(null, { metadata: {
+          updated: 0,
+          expires: now + 86400000
+        },
+        features: ['foo']
+        });
+      });
+
+      const cacheUpsertSpy = sinon.spy(() => {});
+
+      const getDataSpy = sinon.spy(function (req, callback) {
+        callback(null, { ttl: 10, metadata: {} });
+      });
+
+      class Model extends providerMock.Model {}
+      Model.prototype.getData = getDataSpy;
+      const model = createModel({ ProviderModel: Model, koop: koopMock }, {
+        cache: {
+          retrieve: cacheRetrieveSpy,
+          upsert: cacheUpsertSpy
+        },
+        before: beforeSpy,
+        after: afterSpy
+      });
+
+      model.pull({ url: 'domain/test-provider', params: {}, query: {} }, function (error, data) {
+        (error === null).should.equal(true);
+        data.should.deepEqual({ metadata: {
+          updated: 0,
+          expires: now + 86400000
+        },
+        features: ['foo']
+        });
+        cacheRetrieveSpy.calledOnce.should.equal(true);
+        beforeSpy.notCalled.should.equal(true);
+        getDataSpy.notCalled.should.equal(true);
+        afterSpy.notCalled.should.equal(true);
+        cacheUpsertSpy.notCalled.should.equal(true);
         done();
       });
     });
