@@ -35,7 +35,7 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
       }
       
       try {
-        await this.before(req); 
+        await this.before(req);
         const providerGeojson = await this.getData(req);
         const afterFuncGeojson = await this.after(req, providerGeojson);
         const { ttl } = afterFuncGeojson;
