@@ -1,13 +1,13 @@
 {
   "name": "@koopjs/cache-memory",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "An in-memory cache for KOop",
   "main": "src/index.js",
   "scripts": {
     "test": "tape src/**/*.spec.js | tap-spec",
     "test:cov": "nyc -r=json-summary tape './src/**/*.spec.js' | tap-spec && npm run cov:badge",
     "cov:badge": "coverage-badges-cli --output ./coverage.svg"
-    },
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/koopjs/koop.git"

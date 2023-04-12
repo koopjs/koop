@@ -1,5 +1,12 @@
 # @koopjs/koop-core
 
+## 8.0.4
+
+### Patch Changes
+
+- Updated dependencies [1e8df8d]
+  - @koopjs/cache-memory@4.0.1
+
 ## 8.0.3
 
 ### Patch Changes
