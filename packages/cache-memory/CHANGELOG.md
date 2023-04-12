@@ -1,5 +1,11 @@
 # @koopjs/cache-memory
 
+## 4.0.1
+
+### Patch Changes
+
+- update cache expire time when updating the cache
+
 ## 4.0.0
 
 ### Major Changes
