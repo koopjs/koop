@@ -21,10 +21,29 @@ class Cache extends EventEmitter {
     if (this.featuresStore.has(key)) {
       return callback(new Error('Cache key is already in use'));
     }
+
+    // Store features separately from rest of geojson
     const { features, ...rest } = asCachableGeojson(geojson);
     this.featuresStore.set(key, features);
 
     this.catalogInsert(key, rest, options, callback);
+  }
+
+  catalogInsert(key, catalogEntry, options = {}, callback = noop) {
+    if (this.catalogStore.has(key)) {
+      return callback(new Error('Catalog key is already in use'));
+    }
+    const clonedEntry = _.cloneDeep(catalogEntry);
+
+    _.set(clonedEntry, '_cache.updated', Date.now());
+
+    if (options.ttl) {
+      _.set(clonedEntry, '_cache.expires', Date.now() + options.ttl * 1000);
+    }
+
+    this.catalogStore.set(key, clonedEntry);
+
+    callback();
   }
 
   update(key, geojson, options = {}, callback = noop) { // eslint-disable-line
@@ -39,7 +58,7 @@ class Cache extends EventEmitter {
 
     const catalogEntry = rest || existingCatalogEntry;
 
-    this.catalogUpdate(key, catalogEntry, callback);
+    this.catalogUpdate(key, catalogEntry, options, callback);
   }
 
   upsert(key, geojson, options = {}, callback = noop) {
@@ -99,23 +118,6 @@ class Cache extends EventEmitter {
     callback();
   }
 
-  catalogInsert(key, catalogEntry, options = {}, callback = noop) {
-    if (this.catalogStore.has(key)) {
-      return callback(new Error('Catalog key is already in use'));
-    }
-    const clonedEntry = _.cloneDeep(catalogEntry);
-
-    _.set(clonedEntry, '_cache.updated', Date.now());
-
-    if (options.ttl) {
-      _.set(clonedEntry, '_cache.expires', Date.now() + options.ttl * 1000);
-    }
-
-    this.catalogStore.set(key, clonedEntry);
-
-    callback();
-  }
-
   catalogUpdate = function (key, update, options = {}, callback = noop) { // eslint-disable-line
     if (!this.catalogStore.has(key)) {
       return callback(new Error('Resource not found'));
@@ -126,6 +128,11 @@ class Cache extends EventEmitter {
       ..._.cloneDeep(update),
     };
     catalogEntry._cache.updated = Date.now();
+
+    if (options.ttl) {
+      catalogEntry._cache.expires = Date.now() + options.ttl * 1000;
+    }
+
     this.catalogStore.set(key, catalogEntry);
     callback();
   };
