@@ -27,7 +27,7 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
 
       try {
         const cached = await this.cacheRetrieve(key, req.query);
-        if (isFresh(cached)) {
+        if (shouldUseCache(cached)) {
           return callback(null, cached);
         }
       } catch (err) {
@@ -39,7 +39,9 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
         const providerGeojson = await this.getData(req);
         const afterFuncGeojson = await this.after(req, providerGeojson);
         const { ttl } = afterFuncGeojson;
-        if (ttl) this.cacheUpsert(key, afterFuncGeojson, { ttl });
+        if (ttl) {
+          this.cacheUpsert(key, afterFuncGeojson, { ttl });
+        }
         callback(null, afterFuncGeojson);
       } catch (err) {
         callback(err);
@@ -51,7 +53,7 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
     pullLayer (req, callback) {
       const key = (this.createKey) ? this.createKey(req) : `${createKey(req)}::layer`;
       this.cache.retrieve(key, req.query, (err, cached) => {
-        if (!err && isFresh(cached)) {
+        if (!err && shouldUseCache(cached)) {
           callback(null, cached);
         } else if (this.getLayer) {
           this.getLayer(req, (err, data) => {
@@ -68,7 +70,7 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
     pullCatalog (req, callback) {
       const key = (this.createKey) ? this.createKey(req) : `${createKey(req)}::catalog`;
       this.cache.retrieve(key, req.query, (err, cached) => {
-        if (!err && isFresh(cached)) {
+        if (!err && shouldUseCache(cached)) {
           callback(null, cached);
         } else if (this.getCatalog) {
           this.getCatalog(req, (err, data) => {
@@ -116,7 +118,7 @@ function createKey (req) {
   return key;
 }
 
-function isFresh ({_cache, metadata}) {
+function shouldUseCache ({_cache, metadata}) {
   // older cache plugins stored cache timing in "metadata"
   const cacheMetadata = _cache || metadata || {};
   if (!cacheMetadata?.expires) {
