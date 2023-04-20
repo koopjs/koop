@@ -3,7 +3,14 @@ module.exports = function responseHandler (req, res, statusCode, payload) {
     let sanitizedCallback = req.query.callback.replace(/[^\w\d\.\(\)\[\]]/g, '') // eslint-disable-line
     res.set('Content-Type', 'application/javascript');
     res.status(statusCode);
-    res.send(`${sanitizedCallback}(${JSON.stringify(payload)})`);
-  } else if (req.query && req.query.f === 'pjson') res.set('Content-type', 'application/json; charset=utf-8').status(statusCode).send(JSON.stringify(payload, null, 2));
-  else res.status(statusCode).json(payload);
+    return res.send(`${sanitizedCallback}(${JSON.stringify(payload)})`);
+  }
+  
+  if (req.query?.f === 'pjson') {
+    res.set('Content-type', 'application/json; charset=utf-8');
+    res.status(statusCode);
+    return res.send(JSON.stringify(payload, null, 2));
+  }
+  
+  return res.status(statusCode).json(payload);
 };
