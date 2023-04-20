@@ -1,0 +1,49 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "fields": [
+      { "name": "timestamp", "type": "Date" } 
+      ]
+    },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "timestamp": "2023-04-10T16:15:30.000Z"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -104.9476,
+          39.9448
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "timestamp": "2020-04-10T16:15:30.000Z"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -104.9476,
+          39.9448
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "timestamp": "2015-04-10T16:15:30.000Z"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -104.9476,
+          39.9448
+        ]
+      }
+    }
+  ]
+}

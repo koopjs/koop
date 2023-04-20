@@ -1,4 +1,4 @@
-const should = require('should') // eslint-disable-line
+const should = require('should'); // eslint-disable-line
 const sinon = require('sinon');
 require('should-sinon');
 const proxyquire = require('proxyquire');
@@ -7,7 +7,7 @@ describe('Route module unit tests', () => {
   describe('/query route', () => {
     const querySpy = sinon.spy(function () {
       return {
-        features: []
+        features: [],
       };
     });
 
@@ -15,58 +15,77 @@ describe('Route module unit tests', () => {
 
     const route = proxyquire('./route', {
       './query': querySpy,
-      './response-handler': responseHandlerSpy
+      './response-handler': responseHandlerSpy,
     });
 
     it('should use query handler and return 200', () => {
-      route({
-        params: { method: 'query' },
-        query: {},
-        url: '/FeatureServer/0/query'
-      }, {}, {});
+      route(
+        {
+          params: { method: 'query' },
+          query: {},
+          url: '/FeatureServer/0/query',
+        },
+        {},
+        {},
+      );
       querySpy.calledOnce.should.equal(true);
-      querySpy.firstCall.args.should.deepEqual([{
-        metadata: { maxRecordCount: 2000 }
-      }, {
-        resultRecordCount: 2000
-      }]);
+      querySpy.firstCall.args.should.deepEqual([
+        {
+          metadata: { maxRecordCount: 2000 },
+        },
+        {
+          resultRecordCount: 2000,
+        },
+      ]);
       responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args.should.deepEqual([{
-        params: { method: 'query' },
-        query: { resultRecordCount: 2000 },
-        url: '/FeatureServer/0/query'
-      },
-      {},
-      200,
-      { features: [] }
+      responseHandlerSpy.firstCall.args.should.deepEqual([
+        {
+          params: { method: 'query' },
+          query: { resultRecordCount: 2000 },
+          url: '/FeatureServer/0/query',
+        },
+        {},
+        200,
+        { features: [] },
       ]);
     });
 
     it('should use query handler and handle error', () => {
       const querySpy = sinon.spy(function () {
-        throw new Error('Food bar');
+        throw new Error('Fool bar');
       });
 
       const route = proxyquire('./route', {
         './query': querySpy,
-        './response-handler': responseHandlerSpy
+        './response-handler': responseHandlerSpy,
       });
 
-      route({
-        params: { method: 'query' },
-        query: {},
-        url: '/FeatureServer/0/query'
-      }, {}, {});
+      route(
+        {
+          params: { method: 'query' },
+          query: {},
+          url: '/FeatureServer/0/query',
+        },
+        {},
+        {},
+      );
       querySpy.calledOnce.should.equal(true);
       responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args.should.deepEqual([{
-        params: { method: 'query' },
-        query: { resultRecordCount: 2000 },
-        url: '/FeatureServer/0/query'
-      },
-      {},
-      500,
-      { error: 'Food bar' }
+      responseHandlerSpy.firstCall.args.should.deepEqual([
+        {
+          params: { method: 'query' },
+          query: { resultRecordCount: 2000 },
+          url: '/FeatureServer/0/query',
+        },
+        {},
+        200,
+        {
+          error: {
+            code: 500,
+            message: 'Fool bar',
+            details: ['Fool bar'],
+          },
+        },
       ]);
     });
     afterEach(() => {
@@ -84,35 +103,41 @@ describe('Route module unit tests', () => {
 
     const route = proxyquire('./route', {
       './rest-info-route-handler': restInfoSpy,
-      './response-handler': responseHandlerSpy
+      './response-handler': responseHandlerSpy,
     });
 
     it('should use restInfo handler and return 200', () => {
-      route({
-        params: {},
-        query: {},
-        url: '/rest/info'
-      }, {}, {});
+      route(
+        {
+          params: {},
+          query: {},
+          url: '/rest/info',
+        },
+        {},
+        {},
+      );
       restInfoSpy.calledOnce.should.equal(true);
       restInfoSpy.firstCall.args.should.deepEqual([
         {
-          metadata: { maxRecordCount: 2000 }
-        }, {
+          metadata: { maxRecordCount: 2000 },
+        },
+        {
           params: {},
           query: { resultRecordCount: 2000 },
-          url: '/rest/info'
-        }
+          url: '/rest/info',
+        },
       ]);
 
       responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args.should.deepEqual([{
-        params: {},
-        query: { resultRecordCount: 2000 },
-        url: '/rest/info'
-      },
-      {},
-      200,
-      { restInfo: true }
+      responseHandlerSpy.firstCall.args.should.deepEqual([
+        {
+          params: {},
+          query: { resultRecordCount: 2000 },
+          url: '/rest/info',
+        },
+        {},
+        200,
+        { restInfo: true },
       ]);
     });
 
@@ -122,35 +147,46 @@ describe('Route module unit tests', () => {
       });
       const route = proxyquire('./route', {
         './rest-info-route-handler': restInfoSpy,
-        './response-handler': responseHandlerSpy
+        './response-handler': responseHandlerSpy,
       });
 
-      route({
-        params: {},
-        query: {},
-        url: '/rest/info'
-      }, {}, {});
+      route(
+        {
+          params: {},
+          query: {},
+          url: '/rest/info',
+        },
+        {},
+        {},
+      );
       restInfoSpy.calledOnce.should.equal(true);
       restInfoSpy.firstCall.args.should.deepEqual([
         {
-          metadata: { maxRecordCount: 2000 }
+          metadata: { maxRecordCount: 2000 },
         },
         {
           params: {},
           query: { resultRecordCount: 2000 },
-          url: '/rest/info'
-        }
+          url: '/rest/info',
+        },
       ]);
 
       responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args.should.deepEqual([{
-        params: {},
-        query: { resultRecordCount: 2000 },
-        url: '/rest/info'
-      },
-      {},
-      500,
-      { error: 'Fool bar' }
+      responseHandlerSpy.firstCall.args.should.deepEqual([
+        {
+          params: {},
+          query: { resultRecordCount: 2000 },
+          url: '/rest/info',
+        },
+        {},
+        200,
+        {
+          error: {
+            code: 500,
+            message: 'Fool bar',
+            details: ['Fool bar'],
+          },
+        },
       ]);
     });
 
@@ -169,33 +205,41 @@ describe('Route module unit tests', () => {
 
     const route = proxyquire('./route', {
       './server-info-route-handler': serverInfoSpy,
-      './response-handler': responseHandlerSpy
+      './response-handler': responseHandlerSpy,
     });
 
     it('should use serverInfo handler and return 200', () => {
-      route({
-        params: {},
-        query: {},
-        url: '/rest/services/test/FeatureServer'
-      }, {}, {});
+      route(
+        {
+          params: {},
+          query: {},
+          url: '/rest/services/test/FeatureServer',
+        },
+        {},
+        {},
+      );
       serverInfoSpy.calledOnce.should.equal(true);
-      serverInfoSpy.firstCall.args.should.deepEqual([{
-        metadata: { maxRecordCount: 2000 }
-      }, {
-        params: {},
-        query: { resultRecordCount: 2000 },
-        url: '/rest/services/test/FeatureServer'
-      }]);
+      serverInfoSpy.firstCall.args.should.deepEqual([
+        {
+          metadata: { maxRecordCount: 2000 },
+        },
+        {
+          params: {},
+          query: { resultRecordCount: 2000 },
+          url: '/rest/services/test/FeatureServer',
+        },
+      ]);
 
       responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args.should.deepEqual([{
-        params: {},
-        query: { resultRecordCount: 2000 },
-        url: '/rest/services/test/FeatureServer'
-      },
-      {},
-      200,
-      { serverInfo: true }
+      responseHandlerSpy.firstCall.args.should.deepEqual([
+        {
+          params: {},
+          query: { resultRecordCount: 2000 },
+          url: '/rest/services/test/FeatureServer',
+        },
+        {},
+        200,
+        { serverInfo: true },
       ]);
     });
 
@@ -205,32 +249,46 @@ describe('Route module unit tests', () => {
       });
       const route = proxyquire('./route', {
         './server-info-route-handler': serverInfoSpy,
-        './response-handler': responseHandlerSpy
+        './response-handler': responseHandlerSpy,
       });
 
-      route({
-        params: {},
-        query: {},
-        url: '/rest/services/test/FeatureServer'
-      }, {}, {});
+      route(
+        {
+          params: {},
+          query: {},
+          url: '/rest/services/test/FeatureServer',
+        },
+        {},
+        {},
+      );
       serverInfoSpy.calledOnce.should.equal(true);
-      serverInfoSpy.firstCall.args.should.deepEqual([{
-        metadata: { maxRecordCount: 2000 }
-      }, {
-        params: {},
-        query: { resultRecordCount: 2000 },
-        url: '/rest/services/test/FeatureServer'
-      }]);
+      serverInfoSpy.firstCall.args.should.deepEqual([
+        {
+          metadata: { maxRecordCount: 2000 },
+        },
+        {
+          params: {},
+          query: { resultRecordCount: 2000 },
+          url: '/rest/services/test/FeatureServer',
+        },
+      ]);
 
       responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args.should.deepEqual([{
-        params: {},
-        query: { resultRecordCount: 2000 },
-        url: '/rest/services/test/FeatureServer'
-      },
-      {},
-      500,
-      { error: 'Fool bar' }
+      responseHandlerSpy.firstCall.args.should.deepEqual([
+        {
+          params: {},
+          query: { resultRecordCount: 2000 },
+          url: '/rest/services/test/FeatureServer',
+        },
+        {},
+        200,
+        {
+          error: {
+            code: 500,
+            message: 'Fool bar',
+            details: ['Fool bar'],
+          },
+        },
       ]);
     });
 
@@ -249,31 +307,39 @@ describe('Route module unit tests', () => {
 
     const route = proxyquire('./route', {
       './layers-metadata': layersInfoSpy,
-      './response-handler': responseHandlerSpy
+      './response-handler': responseHandlerSpy,
     });
 
     it('should use layersInfo handler and return 200', () => {
-      route({
-        params: {},
-        query: {},
-        url: '/rest/services/test/FeatureServer/layers'
-      }, {}, {});
+      route(
+        {
+          params: {},
+          query: {},
+          url: '/rest/services/test/FeatureServer/layers',
+        },
+        {},
+        {},
+      );
       layersInfoSpy.calledOnce.should.equal(true);
-      layersInfoSpy.firstCall.args.should.deepEqual([{
-        metadata: { maxRecordCount: 2000 }
-      }, {
-        resultRecordCount: 2000
-      }]);
+      layersInfoSpy.firstCall.args.should.deepEqual([
+        {
+          metadata: { maxRecordCount: 2000 },
+        },
+        {
+          resultRecordCount: 2000,
+        },
+      ]);
 
       responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args.should.deepEqual([{
-        params: {},
-        query: { resultRecordCount: 2000 },
-        url: '/rest/services/test/FeatureServer/layers'
-      },
-      {},
-      200,
-      { layersInfo: true }
+      responseHandlerSpy.firstCall.args.should.deepEqual([
+        {
+          params: {},
+          query: { resultRecordCount: 2000 },
+          url: '/rest/services/test/FeatureServer/layers',
+        },
+        {},
+        200,
+        { layersInfo: true },
       ]);
     });
 
@@ -283,30 +349,44 @@ describe('Route module unit tests', () => {
       });
       const route = proxyquire('./route', {
         './layers-metadata': layersInfoSpy,
-        './response-handler': responseHandlerSpy
+        './response-handler': responseHandlerSpy,
       });
 
-      route({
-        params: {},
-        query: {},
-        url: '/rest/services/test/FeatureServer/layers'
-      }, {}, {});
+      route(
+        {
+          params: {},
+          query: {},
+          url: '/rest/services/test/FeatureServer/layers',
+        },
+        {},
+        {},
+      );
       layersInfoSpy.calledOnce.should.equal(true);
-      layersInfoSpy.firstCall.args.should.deepEqual([{
-        metadata: { maxRecordCount: 2000 }
-      }, {
-        resultRecordCount: 2000
-      }]);
+      layersInfoSpy.firstCall.args.should.deepEqual([
+        {
+          metadata: { maxRecordCount: 2000 },
+        },
+        {
+          resultRecordCount: 2000,
+        },
+      ]);
 
       responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args.should.deepEqual([{
-        params: {},
-        query: { resultRecordCount: 2000 },
-        url: '/rest/services/test/FeatureServer/layers'
-      },
-      {},
-      500,
-      { error: 'Fool bar' }
+      responseHandlerSpy.firstCall.args.should.deepEqual([
+        {
+          params: {},
+          query: { resultRecordCount: 2000 },
+          url: '/rest/services/test/FeatureServer/layers',
+        },
+        {},
+        200,
+        {
+          error: {
+            code: 500,
+            message: 'Fool bar',
+            details: ['Fool bar'],
+          },
+        },
       ]);
     });
 
@@ -325,33 +405,41 @@ describe('Route module unit tests', () => {
 
     const route = proxyquire('./route', {
       './layer-metadata': layerInfoSpy,
-      './response-handler': responseHandlerSpy
+      './response-handler': responseHandlerSpy,
     });
 
     it('should use layerInfo handler and return 200', () => {
-      route({
-        params: {},
-        query: {},
-        url: '/rest/services/test/FeatureServer/0'
-      }, {}, {});
+      route(
+        {
+          params: {},
+          query: {},
+          url: '/rest/services/test/FeatureServer/0',
+        },
+        {},
+        {},
+      );
       layerInfoSpy.calledOnce.should.equal(true);
-      layerInfoSpy.firstCall.args.should.deepEqual([{
-        metadata: { maxRecordCount: 2000 }
-      }, {
-        params: {},
-        query: { resultRecordCount: 2000 },
-        url: '/rest/services/test/FeatureServer/0'
-      }]);
+      layerInfoSpy.firstCall.args.should.deepEqual([
+        {
+          metadata: { maxRecordCount: 2000 },
+        },
+        {
+          params: {},
+          query: { resultRecordCount: 2000 },
+          url: '/rest/services/test/FeatureServer/0',
+        },
+      ]);
 
       responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args.should.deepEqual([{
-        params: {},
-        query: { resultRecordCount: 2000 },
-        url: '/rest/services/test/FeatureServer/0'
-      },
-      {},
-      200,
-      'layer-metadata'
+      responseHandlerSpy.firstCall.args.should.deepEqual([
+        {
+          params: {},
+          query: { resultRecordCount: 2000 },
+          url: '/rest/services/test/FeatureServer/0',
+        },
+        {},
+        200,
+        'layer-metadata',
       ]);
     });
 
@@ -361,32 +449,46 @@ describe('Route module unit tests', () => {
       });
       const route = proxyquire('./route', {
         './layer-metadata': layerInfoSpy,
-        './response-handler': responseHandlerSpy
+        './response-handler': responseHandlerSpy,
       });
 
-      route({
-        params: {},
-        query: {},
-        url: '/rest/services/test/FeatureServer/0'
-      }, {}, {});
+      route(
+        {
+          params: {},
+          query: {},
+          url: '/rest/services/test/FeatureServer/0',
+        },
+        {},
+        {},
+      );
       layerInfoSpy.calledOnce.should.equal(true);
-      layerInfoSpy.firstCall.args.should.deepEqual([{
-        metadata: { maxRecordCount: 2000 }
-      }, {
-        params: {},
-        query: { resultRecordCount: 2000 },
-        url: '/rest/services/test/FeatureServer/0'
-      }]);
+      layerInfoSpy.firstCall.args.should.deepEqual([
+        {
+          metadata: { maxRecordCount: 2000 },
+        },
+        {
+          params: {},
+          query: { resultRecordCount: 2000 },
+          url: '/rest/services/test/FeatureServer/0',
+        },
+      ]);
 
       responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args.should.deepEqual([{
-        params: {},
-        query: { resultRecordCount: 2000 },
-        url: '/rest/services/test/FeatureServer/0'
-      },
-      {},
-      500,
-      { error: 'Fool bar' }
+      responseHandlerSpy.firstCall.args.should.deepEqual([
+        {
+          params: {},
+          query: { resultRecordCount: 2000 },
+          url: '/rest/services/test/FeatureServer/0',
+        },
+        {},
+        200,
+        {
+          error: {
+            code: 500,
+            message: 'Fool bar',
+            details: ['Fool bar'],
+          },
+        },
       ]);
     });
 
@@ -400,23 +502,34 @@ describe('Route module unit tests', () => {
     it('should handle unknown route', () => {
       const responseHandlerSpy = sinon.spy();
       const route = proxyquire('./route', {
-        './response-handler': responseHandlerSpy
+        './response-handler': responseHandlerSpy,
       });
 
-      route({
-        params: {},
-        query: {},
-        url: '/hello/world'
-      }, {}, {});
+      route(
+        {
+          params: {},
+          query: {},
+          url: '/hello/world',
+        },
+        {},
+        {},
+      );
       responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args.should.deepEqual([{
-        params: {},
-        query: { resultRecordCount: 2000 },
-        url: '/hello/world'
-      },
-      {},
-      404,
-      { error: 'Not Found' }
+      responseHandlerSpy.firstCall.args.should.deepEqual([
+        {
+          params: {},
+          query: { resultRecordCount: 2000 },
+          url: '/hello/world',
+        },
+        {},
+        200,
+        {
+          error: {
+            code: 404,
+            message: 'Not Found',
+            details: ['Not Found'],
+          },
+        },
       ]);
     });
   });
