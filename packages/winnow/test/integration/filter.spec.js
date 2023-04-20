@@ -541,7 +541,7 @@ test('with a between query', t => {
 
 test('with escaped single quote in query', t => {
   const options = {
-    where: "Street_Name = 'GRAND\\'S STREET\\'S'"
+    where: 'Street_Name = \'GRAND\\\'S STREET\\\'S\''
   };
   run('trees', options, 1, t);
 });

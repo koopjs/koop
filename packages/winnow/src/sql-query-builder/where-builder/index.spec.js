@@ -1,41 +1,45 @@
+/* eslint-disable quotes */
 const test = require('tape');
 const WhereBuilder = require('.');
 
-test('WhereBuilder.create: returns empty string if no options', t => {
+test('WhereBuilder.create: returns empty string if no options', (t) => {
   t.plan(1);
   const whereClause = WhereBuilder.create();
   t.equals(whereClause, undefined);
 });
 
-test('WhereBuilder.create: returns empty string if empty options', t => {
+test('WhereBuilder.create: returns empty string if empty options', (t) => {
   t.plan(1);
   const whereClause = WhereBuilder.create({});
   t.equals(whereClause, undefined);
 });
 
-test('WhereBuilder.create: returns where clause with translated SQL where', t => {
+test('WhereBuilder.create: returns where clause with translated SQL where', (t) => {
   t.plan(1);
   const whereClause = WhereBuilder.create({
-    where: 'color=\'red\''
+    where: "color='red'",
   });
-  t.equals(whereClause, 'properties->`color` = \'red\'');
+  t.equals(whereClause, "properties->`color` = 'red'");
 });
 
-test('WhereBuilder.create: returns where clause with geometry predicate', t => {
+test('WhereBuilder.create: returns where clause with geometry predicate', (t) => {
   t.plan(1);
   const whereClause = WhereBuilder.create({
-    geometry: [0, 0, 0, 0]
+    geometry: [0, 0, 0, 0],
   });
   t.equals(whereClause, 'ST_Intersects(geometry, ?)');
 });
 
-test('WhereBuilder.create: returns where clause with translated sql-where and geometry predicate', t => {
+test('WhereBuilder.create: returns where clause with translated sql-where and geometry predicate', (t) => {
   t.plan(1);
   const whereClause = WhereBuilder.create({
     geometry: [0, 0, 0, 0],
-    where: 'color=\'red\''
+    where: "color='red'",
   });
-  t.equals(whereClause, 'properties->`color` = \'red\' AND ST_Intersects(geometry, ?)');
+  t.equals(
+    whereClause,
+    "properties->`color` = 'red' AND ST_Intersects(geometry, ?)",
+  );
 });
 
 test('WhereBuilder.create: transform a predicate with OBJECTID and no metadata fields to user-defined function', (t) => {
@@ -52,7 +56,7 @@ test('WhereBuilder.create: transform a predicate with OBJECTID and no metadata f
   t.plan(1);
   const options = {
     esri: true,
-    where: 'OBJECTID=1234'
+    where: 'OBJECTID=1234',
   };
 
   const whereClause = WhereBuilder.create(options);
@@ -66,7 +70,7 @@ test('WhereBuilder.create: transform an inverse predicate with OBJECTID and no m
   t.plan(1);
   const options = {
     esri: true,
-    where: '1234>OBJECTID'
+    where: '1234>OBJECTID',
   };
 
   const whereClause = WhereBuilder.create(options);
@@ -79,9 +83,9 @@ test('WhereBuilder.create: transform an inverse predicate with OBJECTID and no m
 test('WhereBuilder.create: handle BETWEEN', (t) => {
   t.plan(1);
 
-  const whereClause = WhereBuilder.create(
-    { where: "the_date BETWEEN DATE '2015-01-01' AND DATE '2019-01-01'" }
-  );
+  const whereClause = WhereBuilder.create({
+    where: "the_date BETWEEN DATE '2015-01-01' AND DATE '2019-01-01'",
+  });
   t.equals(
     whereClause,
     "properties->`the_date` BETWEEN '2015-01-01T00:00:00.000Z' AND '2019-01-01T00:00:00.000Z'",
@@ -98,16 +102,18 @@ test('WhereBuilder.create: handle mixed-case DATE cast', (t) => {
 test('WhereBuilder.create: handle escaped single quotes', (t) => {
   t.plan(1);
 
-  const whereClause = WhereBuilder.create(
-    { where: "Street_Name = 'GRAND''S STREET''S'"}
-  );
+  const whereClause = WhereBuilder.create({
+    where: "Street_Name = 'GRAND''S STREET''S'",
+  });
   t.equals(whereClause, "properties->`Street_Name` = 'GRAND\\'S STREET\\'S'"); // eslint-disable-line
 });
 
 test('WhereBuilder.create: handle TIMESTAMP cast', (t) => {
   t.plan(1);
 
-  const whereClause = WhereBuilder.create({ where: "foo > TIMESTAMP '2012-02-01 12:15'" });
+  const whereClause = WhereBuilder.create({
+    where: "foo > TIMESTAMP '2012-02-01 12:15'",
+  });
   t.equals(whereClause, "properties->`foo` > '2012-02-01T12:15:00.000Z'");
 });
 
@@ -122,7 +128,7 @@ test('WhereBuilder.create: handle TIMESTAMP cast error', (t) => {
   t.plan(1);
 
   try {
-    WhereBuilder.create({where: "foo > TIMESTAMP 'barz'"});
+    WhereBuilder.create({ where: "foo > TIMESTAMP 'barz'" });
     t.fail('should have thrown');
   } catch (error) {
     t.equals(
