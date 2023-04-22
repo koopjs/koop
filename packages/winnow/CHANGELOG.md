@@ -1,5 +1,11 @@
 # @koopjs/winnow
 
+## 4.0.2
+
+### Patch Changes
+
+- fix regressed WHERE support
+
 ## 4.0.1
 
 ### Patch Changes

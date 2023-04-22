@@ -1,5 +1,13 @@
 # @koopjs/featureserver
 
+## 7.1.2
+
+### Patch Changes
+
+- wrap errors like ArcGIS server
+- Updated dependencies [ba532e2]
+  - @koopjs/winnow@4.0.2
+
 ## 7.1.1
 
 ### Patch Changes
