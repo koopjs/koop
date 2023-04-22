@@ -70,7 +70,7 @@ test('checking if an object id exists', t => {
   };
   const fixture = _.cloneDeep(oidFeature);
   const result = Winnow.query(fixture, options);
-  t.equal(result.features[0].attributes.OBJECTID, 1430702552);
+  t.equal(result.features[0].attributes.OBJECTID, 1738126944);
   t.equal(result.metadata.idField, undefined);
   t.end();
 });
@@ -103,7 +103,7 @@ test('adding an object id', t => {
   try {
     // If requiring farmhash is successful we use that hash
     require('farmhash');
-    hash = 239375164;
+    hash = 1301409517;
   } catch (e) {
     // Else use the string-hash number
     hash = 1729830217;
