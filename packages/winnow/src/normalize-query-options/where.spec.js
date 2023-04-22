@@ -8,6 +8,17 @@ test('normalize-options, where: undefined', t => {
   t.equal(normalized, undefined);
 });
 
+test('normalize-options, where: error on non-strings', t => {
+  t.plan(1);
+
+  try {
+    normalizeWhere(9999);
+    t.fail('should have thrown');
+  } catch (error) {
+    t.equals(error.message, 'Invalid "where" parameter: must be a string if defined');
+  }
+});
+
 test('normalize-options, where: no changes', t => {
   t.plan(1);
 

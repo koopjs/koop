@@ -1,6 +1,19 @@
-function normalizeWhere (where) {
-  if (isEsriSelectAll(where)) return undefined;
-  if (containsSqlDates(where)) return convertToISODates(where);
+const _ = require('lodash');
+const { InvalidWhereParameterError } = require('../errors');
+
+function normalizeWhere (where = '') {
+  if(!_.isString(where)) {
+    throw new InvalidWhereParameterError('must be a string if defined');
+  }
+
+  if (isEsriSelectAll(where) || where.trim() === '') {
+    return undefined;
+  }
+
+  if (containsSqlDates(where)) {
+    return convertToISODates(where);
+  }
+  
   return where;
 }
 
