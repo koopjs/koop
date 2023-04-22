@@ -12,6 +12,7 @@ const authorizationErrorResponse = {
     details: [],
   },
 };
+
 const responseHandler = require('./response-handler');
 
 /**

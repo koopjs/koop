@@ -164,10 +164,16 @@ describe('Routing feature server requests', () => {
       request(app)
         .get('/FeatureServer/0/foobarbaz')
         .expect(res => {
-          res.body.error.should.equal('Method not supported');
+          res.body.should.deepEqual({
+            error: {
+              code: 400,
+              message: 'Method not supported',
+              details: ['Method not supported']
+            }
+          });
         })
         .expect('Content-Type', /json/)
-        .expect(400, done);
+        .expect(200, done);
     });
   });
 

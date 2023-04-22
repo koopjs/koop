@@ -22,8 +22,12 @@ function classificationQuery (features, sqlstatement, options) {
 }
 
 function validateQueryResult (features) {
-  if (features === undefined) throw new Error('query results include undefined features');
-  if (features.length === 0) throw new Error('query results in zero features; features needed in order to classify');
+  if (features === undefined) {
+    throw new Error('query results include undefined features');
+  }
+  if (features.length === 0) {
+    throw new Error('query results in zero features; features needed in order to classify');
+  }
 }
 
 module.exports = classificationQuery;

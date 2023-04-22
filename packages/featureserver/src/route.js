@@ -55,8 +55,11 @@ module.exports = function route(req, res, geojson = {}) {
     return responseHandler(req, res, 200, result);
   } catch (error) {
     logger.debug(error);
-    return responseHandler(req, res, error.code || 500, {
-      error: error.message,
+    const { code = 500 , message, details = [message] } = error;
+    
+    // Geoservice spec wraps all errors in a 200 response (!)
+    return responseHandler(req, res, 200, {
+      error: { code, message, details }
     });
   }
 };

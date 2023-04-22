@@ -1,4 +1,3 @@
-'use strict';
 const _ = require('lodash');
 const test = require('tape');
 const winnow = require('../..');
@@ -35,7 +34,11 @@ test('With a field that has been uppercased', t => {
   const options = {
     where: 'UPPER(Genus) like \'%Quercus%\''
   };
-  run('trees', options, 8, t);
+  t.plan(1);
+  const fixtures = _.cloneDeep(require('./fixtures/trees.json'));
+  const features = fixtures.features;
+  const filtered = winnow.query(features, options);
+  t.equal(filtered.length, 8);
 });
 
 test('With the toEsri option', t => {
@@ -57,7 +60,11 @@ test('With a field with a space', t => {
   const options = {
     where: '"total precip" > 0.5'
   };
-  run('snow', options, 3, t);
+  t.plan(1);
+  const fixtures = _.cloneDeep(require('./fixtures/snow.json'));
+  const features = fixtures.features;
+  const filtered = winnow.query(features, options);
+  t.equal(filtered.length, 3);
 });
 
 test('With esri json', t => {
@@ -496,7 +503,12 @@ test('with a coded value domain', t => {
     where: 'ZONING_S = \'INST\'',
     esriFields: require('./fixtures/esriFields.json')
   };
-  run('cvd2', options, 1, t);
+
+  t.plan(1);
+  const fixtures = _.cloneDeep(require('./fixtures/cvd2.json'));
+  const features = fixtures.features;
+  const filtered = winnow.query(features, options);
+  t.equal(filtered.length, 1);
 });
 
 test('with a date query', t => {
@@ -529,7 +541,7 @@ test('with a between query', t => {
 
 test('with escaped single quote in query', t => {
   const options = {
-    where: 'Street_Name = \'GRAND\'\'S STREET\'\'S\''
+    where: 'Street_Name = \'GRAND\\\'S STREET\\\'S\''
   };
   run('trees', options, 1, t);
 });

@@ -41,12 +41,12 @@
     "packages/koop-core"
   ],
   "devDependencies": {
+    "@babel/eslint-parser": "^7.11.0",
     "@changesets/changelog-git": "^0.1.13",
     "@changesets/cli": "^2.25.2",
     "@commitlint/config-conventional": "^17.1.0",
     "@koopjs/provider-file-geojson": "^2.1.0",
     "await-spawn": "^4.0.2",
-    "@babel/eslint-parser": "^7.11.0",
     "byline": "^5.0.0",
     "commitizen": "^4.2.5",
     "commitlint": "^17.2.0",
