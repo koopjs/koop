@@ -82,21 +82,25 @@ class WhereBuilder {
       return this;
     }
 
-    let insideSingleQuote = false;
+    let insideValueDefinition = false;
     
     const charArr = this.#where.split('');
   
+    // loop thru each character of the WHERE string and replace any single-quote escape sequence ('') with \'
     charArr.forEach((currentChar, i) => {
       const nextChar = charArr[i + 1];
       const prevChar = charArr[i - 1];
       const lastTwoChars = `${charArr[i - 1]}${charArr[i - 0]}`;
   
-      if (isBeginningOfSingleQuoteWrap(currentChar, insideSingleQuote)) {
-        insideSingleQuote = true;
-      } else if (isSingleQuoteEscapeChar(currentChar, nextChar, prevChar, insideSingleQuote)) {
+      if (isBeginningOfValueDefinition(currentChar, insideValueDefinition)) {
+        // Encountered a ' that begins a value definition (e.g the 7th char of "foo = 'bar'"").
+        // Flag that we are now inside the value definition
+        insideValueDefinition = true;
+      } else if (isSingleQuoteEscapeChar(currentChar, nextChar, prevChar, insideValueDefinition)) {
+        // The current char is a ' used to escape a subsequent ' (e.g 'bar''s')
         charArr[i] = SINGLE_QUOTE_ESCAPE;
-      } else if (isEndOfSingleQuoteWrap(currentChar, lastTwoChars, insideSingleQuote)) {
-        insideSingleQuote = false;
+      } else if (isEndOfValueDefinition(currentChar, lastTwoChars, insideValueDefinition)) {
+        insideValueDefinition = false;
       }
     });
   
@@ -171,7 +175,7 @@ function normalizeTimestamp(timestamp) {
   }
 }
 
-function isBeginningOfSingleQuoteWrap(char, insideSingleQuotes) {
+function isBeginningOfValueDefinition(char, insideSingleQuotes) {
   return insideSingleQuotes === false && char === '\'';
 }
 
@@ -181,7 +185,7 @@ function isSingleQuoteEscapeChar(char, next, prev, insideSingleQuotes) {
   );
 }
 
-function isEndOfSingleQuoteWrap(char, lastTwoChars, insideSingleQuotes) {
+function isEndOfValueDefinition(char, lastTwoChars, insideSingleQuotes) {
   return insideSingleQuotes === true && char === '\'' && lastTwoChars !== `${SINGLE_QUOTE_ESCAPE}'`;
 }
 module.exports = WhereBuilder;
