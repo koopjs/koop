@@ -2,35 +2,34 @@ const _ = require('lodash');
 const { logger } = require('../../logger');
 const { createIntegerHash } = require('../helpers');
 
-module.exports = function transformToEsriProperties (inputProperties, geometry, delimitedDateFields, requiresObjectId, idField) {
+module.exports = function transformToEsriProperties (properties, geometry, delimitedDateFields, requiresObjectId, idField) {
   requiresObjectId = requiresObjectId === 'true';
   idField = idField === 'null' ? null : idField;
 
   const dateFields = delimitedDateFields.split(',');
-  const properties = transformProperties(inputProperties, dateFields);
 
   if (requiresObjectId && !idField) {
-    return injectObjectId({ properties, geometry });
-  }
-  
-  if (requiresObjectId && shouldLogIdFieldWarning(properties[idField])) {
-    logger.debug(`OBJECTIDs created from provider's "idField" (${idField}: ${inputProperties[idField]}) are not integers from 0 to 2147483647`);
+    properties = injectObjectId({ properties, geometry });
   }
 
-  return properties;
+  if (requiresObjectId && shouldLogIdFieldWarning(properties[idField])) {
+    logger.debug(`OBJECTIDs created from provider's "idField" (${idField}: ${properties[idField]}) are not integers from 0 to 2147483647`);
+  }
+
+  return transformProperties(properties, dateFields);
 };
 
 function injectObjectId (feature) {
-  const { properties } = feature;
-  const OBJECTID = createIntegerHash(JSON.stringify(feature));
+  const { properties, geometry } = feature;
+  const OBJECTID = createIntegerHash(JSON.stringify({ properties, geometry }));
   return {
     ...properties,
     OBJECTID
   };
 }
 
-function shouldLogIdFieldWarning (idField) {
-  return (!Number.isInteger(idField) || idField > 2147483647);
+function shouldLogIdFieldWarning (idFieldValue) {
+  return idFieldValue && (!Number.isInteger(idFieldValue) || idFieldValue > 2147483647);
 }
 
 function transformProperties (properties, dateFields) {

@@ -2,37 +2,39 @@ const _ = require('lodash');
 const test = require('tape');
 const winnow = require('../..');
 
-test('With a where option', t => {
+test('With a where option', (t) => {
   const options = {
-    where: 'Genus like \'%Quercus%\''
+    where: 'Genus like \'%Quercus%\'',
   };
   run('trees', options, 8, t);
 });
 
-test('With a where options 1=1', t => {
+test('With a where options 1=1', (t) => {
   const options = {
-    where: '1=1'
+    where: '1=1',
   };
   run('trees', options, 24, t);
 });
 
-test('With a where option with multiple statements', t => {
+test('With a where option with multiple statements', (t) => {
   const options = {
-    where: 'Genus like \'%Quercus%\' AND Street_Name = \'CLAREMONT\' AND House_Number < 600 AND Trunk_Diameter = 9'
+    where:
+      'Genus like \'%Quercus%\' AND Street_Name = \'CLAREMONT\' AND House_Number < 600 AND Trunk_Diameter = 9',
   };
   run('trees', options, 1, t);
 });
 
-test('With a where option with multiple statements with appended 1=1', t => {
+test('With a where option with multiple statements with appended 1=1', (t) => {
   const options = {
-    where: 'Genus like \'%Quercus%\' AND Street_Name = \'CLAREMONT\' AND House_Number < 600 AND Trunk_Diameter = 9 AND 1=1'
+    where:
+      'Genus like \'%Quercus%\' AND Street_Name = \'CLAREMONT\' AND House_Number < 600 AND Trunk_Diameter = 9 AND 1=1',
   };
   run('trees', options, 1, t);
 });
 
-test('With a field that has been uppercased', t => {
+test('With a field that has been uppercased', (t) => {
   const options = {
-    where: 'UPPER(Genus) like \'%Quercus%\''
+    where: 'UPPER(Genus) like \'%Quercus%\'',
   };
   t.plan(1);
   const fixtures = _.cloneDeep(require('./fixtures/trees.json'));
@@ -41,24 +43,24 @@ test('With a field that has been uppercased', t => {
   t.equal(filtered.length, 8);
 });
 
-test('With the toEsri option', t => {
+test('With the toEsri option', (t) => {
   const options = {
     toEsri: true,
-    where: 'Genus like \'%Quercus%\''
+    where: 'Genus like \'%Quercus%\'',
   };
   run('trees', options, 8, t);
 });
 
-test('With the toEsri option and a null geometry', t => {
+test('With the toEsri option and a null geometry', (t) => {
   const options = {
-    toEsri: true
+    toEsri: true,
   };
   run('nogeom', options, 18, t);
 });
 
-test('With a field with a space', t => {
+test('With a field with a space', (t) => {
   const options = {
-    where: '"total precip" > 0.5'
+    where: '"total precip" > 0.5',
   };
   t.plan(1);
   const fixtures = _.cloneDeep(require('./fixtures/snow.json'));
@@ -67,78 +69,80 @@ test('With a field with a space', t => {
   t.equal(filtered.length, 3);
 });
 
-test('With esri json', t => {
+test('With esri json', (t) => {
   const options = {
     where: 'Genus like \'%Quercus%\'',
-    esri: true
+    esri: true,
   };
   run('esri', options, 8, t);
 });
 
-test('With multiple like clauses', t => {
+test('With multiple like clauses', (t) => {
   const options = {
-    where: 'Genus like \'%Quercus%\' AND Common_Name like \'%Live Oak%\' AND Street_Type like \'%ST%\''
+    where:
+      'Genus like \'%Quercus%\' AND Common_Name like \'%Live Oak%\' AND Street_Type like \'%ST%\'',
   };
   run('trees', options, 5, t);
 });
 
-test('With an in parameter', t => {
+test('With an in parameter', (t) => {
   const options = {
-    where: 'Genus IN (\'QUERCUS\', \'EUGENIA\')'
+    where: 'Genus IN (\'QUERCUS\', \'EUGENIA\')',
   };
   run('trees', options, 8, t);
 });
 
-test('With an is parameter', t => {
+test('With an is parameter', (t) => {
   const options = {
-    where: 'Species IS NULL'
+    where: 'Species IS NULL',
   };
   run('trees', options, 1, t);
 });
 
-test('With two is and one and parameters', t => {
+test('With two is and one and parameters', (t) => {
   const options = {
-    where: 'Species IS NULL AND Street_Direction IS NOT NULL'
+    where: 'Species IS NULL AND Street_Direction IS NOT NULL',
   };
   run('trees', options, 1, t);
 });
 
-test('With an > parameter', t => {
+test('With an > parameter', (t) => {
   const options = {
-    where: 'Trunk_Diameter>10'
+    where: 'Trunk_Diameter>10',
   };
   run('trees', options, 12, t);
 });
 
-test('With an >= parameter', t => {
+test('With an >= parameter', (t) => {
   const options = {
-    where: 'Trunk_Diameter>=10'
+    where: 'Trunk_Diameter>=10',
   };
   run('trees', options, 12, t);
 });
 
-test('With an IN parameter and a numeric test', t => {
+test('With an IN parameter and a numeric test', (t) => {
   const options = {
-    where: 'Genus IN (\'QUERCUS\', \'JACARANDA\') AND Trunk_Diameter>=13'
+    where: 'Genus IN (\'QUERCUS\', \'JACARANDA\') AND Trunk_Diameter>=13',
   };
   run('trees', options, 6, t);
 });
 
-test('With an AND and an OR', t => {
+test('With an AND and an OR', (t) => {
   const options = {
-    where: '(Genus like \'%Quercus%\' AND Common_Name like \'%Live Oak%\') OR Street_Type like \'%AVE%\''
+    where:
+      '(Genus like \'%Quercus%\' AND Common_Name like \'%Live Oak%\') OR Street_Type like \'%AVE%\'',
   };
   run('trees', options, 13, t);
 });
 
-test('With an equality parameter', t => {
+test('With an equality parameter', (t) => {
   const options = {
-    where: 'Common_Name = \'LIVE OAK\''
+    where: 'Common_Name = \'LIVE OAK\'',
   };
   run('trees', options, 6, t);
 });
 
-test('With an esri style envelope', t => {
+test('With an esri style envelope', (t) => {
   const options = {
     geometry: {
       xmin: -13151597,
@@ -146,9 +150,9 @@ test('With an esri style envelope', t => {
       xmax: -13150342,
       ymax: 4051582,
       spatialReference: {
-        wkid: 102100
-      }
-    }
+        wkid: 102100,
+      },
+    },
   };
   const fixtures = _.cloneDeep(require('./fixtures/trees.json'));
   const features = fixtures.features;
@@ -157,7 +161,7 @@ test('With an esri style envelope', t => {
   t.end();
 });
 
-test('With an esri style envelope and features with missing geometry', t => {
+test('With an esri style envelope and features with missing geometry', (t) => {
   const options = {
     outSr: 4326,
     inSr: 4326,
@@ -167,15 +171,15 @@ test('With an esri style envelope and features with missing geometry', t => {
       xmax: 90,
       ymax: 85,
       spatialReference: {
-        wkid: 4326
-      }
+        wkid: 4326,
+      },
     },
-    esri: true
+    esri: true,
   };
   run('missing-geometry', options, 2, t);
 });
 
-test('With an esri style envelope and wkt string for web mercator', t => {
+test('With an esri style envelope and wkt string for web mercator', (t) => {
   const options = {
     geometry: {
       xmin: -13151597,
@@ -183,15 +187,14 @@ test('With an esri style envelope and wkt string for web mercator', t => {
       xmax: -13150342,
       ymax: 4051582,
       spatialReference: {
-        wkt:
-          'PROJCS["WGS_1984_Web_Mercator_Auxiliary_Sphere",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Mercator_Auxiliary_Sphere"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-97.03124999997486],PARAMETER["Standard_Parallel_1",0.0],PARAMETER["Auxiliary_Sphere_Type",0.0],UNIT["Meter",1.0]]'
-      }
-    }
+        wkt: 'PROJCS["WGS_1984_Web_Mercator_Auxiliary_Sphere",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Mercator_Auxiliary_Sphere"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-97.03124999997486],PARAMETER["Standard_Parallel_1",0.0],PARAMETER["Auxiliary_Sphere_Type",0.0],UNIT["Meter",1.0]]',
+      },
+    },
   };
   run('trees', options, 6, t);
 });
 
-test('With an empty multipolygon', t => {
+test('With an empty multipolygon', (t) => {
   const options = {
     geometry: {
       xmin: -8968940.494006854,
@@ -199,26 +202,26 @@ test('With an empty multipolygon', t => {
       xmax: -8944480.644955631,
       ymax: 2949342.3497730596,
       spatialReference: {
-        wkid: 102100
-      }
-    }
+        wkid: 102100,
+      },
+    },
   };
   run('emptyMultiPolygon', options, 1, t);
 });
 
-test('Without a spatialReference property on an Esri-style Envelope', t => {
+test('Without a spatialReference property on an Esri-style Envelope', (t) => {
   const options = {
     geometry: {
       xmin: -118.1406,
       ymin: 34.1635,
       xmax: -118.1348,
-      ymax: 34.1685
-    }
+      ymax: 34.1685,
+    },
   };
   run('trees', options, 6, t);
 });
 
-test('With an esri style envelope with xmin = 0, ans esri features', t => {
+test('With an esri style envelope with xmin = 0, ans esri features', (t) => {
   const options = {
     outSr: 4326,
     inSr: 4326,
@@ -228,15 +231,15 @@ test('With an esri style envelope with xmin = 0, ans esri features', t => {
       xmax: 90,
       ymax: 85,
       spatialReference: {
-        wkid: 4326
-      }
+        wkid: 4326,
+      },
     },
-    esri: true
+    esri: true,
   };
   run('startups', options, 2, t);
 });
 
-test('With an esri style envelope in EPSG:102645 defined by wkt', t => {
+test('With an esri style envelope in EPSG:102645 defined by wkt', (t) => {
   const options = {
     geometry: {
       xmin: 6518475,
@@ -258,15 +261,15 @@ test('With an esri style envelope in EPSG:102645 defined by wkt', t => {
         PARAMETER["Standard_Parallel_2",35.46666666666667],
         PARAMETER["Latitude_Of_Origin",33.5],
         UNIT["Foot_US",0.30480060960121924],
-        AUTHORITY["EPSG","102645"]]`
-      }
+        AUTHORITY["EPSG","102645"]]`,
+      },
     },
-    esri: true
+    esri: true,
   };
   run('trees', options, 6, t);
 });
 
-test('With a an Esri-style Polygon', t => {
+test('With a an Esri-style Polygon', (t) => {
   const options = {
     geometry: {
       rings: [
@@ -275,104 +278,145 @@ test('With a an Esri-style Polygon', t => {
           [-118.108, 34.162],
           [-118.108, 34.173],
           [-118.163, 34.173],
-          [-118.163, 34.162]
-        ]
-      ]
+          [-118.163, 34.162],
+        ],
+      ],
     },
-    inSR: 4326
+    inSR: 4326,
   };
   run('trees', options, 12, t);
 });
 
-test('With an array-style geometry', t => {
+test('With an array-style geometry', (t) => {
   const options = {
-    geometry: [-118.1406, 34.1635, -118.1348, 34.1685]
+    geometry: [-118.1406, 34.1635, -118.1348, 34.1685],
   };
   run('trees', options, 6, t);
 });
 
-test('With a string-style geometry', t => {
+test('With a string-style geometry', (t) => {
   const options = {
-    geometry: '-118.1406, 34.1635, -118.1348, 34.1685'
+    geometry: '-118.1406, 34.1635, -118.1348, 34.1685',
   };
   run('trees', options, 6, t);
 });
 
-test('With a point geometry filter', t => {
+test('With a point geometry filter', (t) => {
   const options = {
-    geometry: '-118.16230746759626,34.137113646321595'
+    geometry: '-118.16230746759626,34.137113646321595',
   };
   run('trees', options, 1, t);
 });
 
-test('With a ST_Contains geometry predicate', t => {
-  const options = {
-    geometry: {
-      type: 'Polygon',
-      coordinates: [[[-118.163, 34.162], [-118.108, 34.162], [-118.108, 34.173], [-118.163, 34.173], [-118.163, 34.162]]]
-    },
-    spatialPredicate: 'ST_Contains'
-  };
-  run('trees', options, 12, t);
-});
-
-test('With a ST_Within geometry predicate', t => {
-  const options = {
-    geometry: {
-      type: 'Polygon',
-      coordinates: [[[-118.163, 34.162], [-118.108, 34.162], [-118.108, 34.173], [-118.163, 34.173], [-118.163, 34.162]]]
-    },
-    spatialPredicate: 'ST_Within'
-  };
-  run('trees', options, 12, t);
-});
-
-test('With a ST_EnvelopeIntersects geometry predicate', t => {
+test('With a ST_Contains geometry predicate', (t) => {
   const options = {
     geometry: {
       type: 'Polygon',
       coordinates: [
-        [[-128, 29], [-108, 29], [-108, 50], [-128, 50], [-128, 29]]
-      ]
+        [
+          [-118.163, 34.162],
+          [-118.108, 34.162],
+          [-118.108, 34.173],
+          [-118.163, 34.173],
+          [-118.163, 34.162],
+        ],
+      ],
     },
-    spatialPredicate: 'ST_EnvelopeIntersects'
+    spatialPredicate: 'ST_Contains',
+  };
+  run('trees', options, 12, t);
+});
+
+test('With a ST_Within geometry predicate', (t) => {
+  const options = {
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [-118.163, 34.162],
+          [-118.108, 34.162],
+          [-118.108, 34.173],
+          [-118.163, 34.173],
+          [-118.163, 34.162],
+        ],
+      ],
+    },
+    spatialPredicate: 'ST_Within',
+  };
+  run('trees', options, 12, t);
+});
+
+test('With a ST_EnvelopeIntersects geometry predicate', (t) => {
+  const options = {
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [-128, 29],
+          [-108, 29],
+          [-108, 50],
+          [-128, 50],
+          [-128, 29],
+        ],
+      ],
+    },
+    spatialPredicate: 'ST_EnvelopeIntersects',
   };
   run('states', options, 2, t);
 });
 
-test('With a ST_Intersects geometry predicate', t => {
+test('With a ST_Intersects geometry predicate', (t) => {
   const options = {
     geometry: {
       type: 'LineString',
-      coordinates: [[-85.983201784023521, 34.515410848143297, 204.5451898127248], [-121.278821256198796, 39.823566607727578, 1173.189682061974963]]
+      coordinates: [
+        [-85.983201784023521, 34.515410848143297, 204.5451898127248],
+        [-121.278821256198796, 39.823566607727578, 1173.189682061974963],
+      ],
     },
-    spatialPredicate: 'ST_Intersects'
+    spatialPredicate: 'ST_Intersects',
   };
   run('states', options, 1, t);
 });
 
-test('With a where and a geometry option', t => {
+test('With a where and a geometry option', (t) => {
   const options = {
     where: 'Genus like \'%Quercus%\'',
     geometry: {
       type: 'Polygon',
-      coordinates: [[[-118.163, 34.162], [-118.108, 34.162], [-118.108, 34.173], [-118.163, 34.173], [-118.163, 34.162]]]
-    }
+      coordinates: [
+        [
+          [-118.163, 34.162],
+          [-118.108, 34.162],
+          [-118.108, 34.173],
+          [-118.163, 34.173],
+          [-118.163, 34.162],
+        ],
+      ],
+    },
   };
   run('trees', options, 5, t);
 });
 
-test('With a where, geometry, limit and offset option', t => {
+test('With a where, geometry, limit and offset option', (t) => {
   t.plan(5);
   const data = 'trees';
   const options = {
     where: 'Genus like \'%Quercus%\'',
     geometry: {
       type: 'Polygon',
-      coordinates: [[[-118.163, 34.162], [-118.108, 34.162], [-118.108, 34.173], [-118.163, 34.173], [-118.163, 34.162]]]
+      coordinates: [
+        [
+          [-118.163, 34.162],
+          [-118.108, 34.162],
+          [-118.108, 34.173],
+          [-118.163, 34.173],
+          [-118.163, 34.162],
+        ],
+      ],
     },
     limit: 4,
-    offset: 1
+    offset: 1,
   };
   const features = require(`./fixtures/${data}.json`).features;
   const filtered = winnow.query(features, options);
@@ -383,7 +427,7 @@ test('With a where, geometry, limit and offset option', t => {
   t.equal(filtered[3].properties.Trunk_Diameter, 18);
 });
 
-test('With an envelope, an inSR and an outSR', t => {
+test('With an envelope, an inSR and an outSR', (t) => {
   const options = {
     f: 'json',
     returnGeometry: true,
@@ -395,18 +439,18 @@ test('With an envelope, an inSR and an outSR', t => {
       ymax: 4051582,
       spatialReference: {
         wkid: 102100,
-        latestWkid: 3857
-      }
+        latestWkid: 3857,
+      },
     },
     geometryType: 'esriGeometryEnvelope',
     inSR: 102100,
     outFields: '*',
-    outSR: 102100
+    outSR: 102100,
   };
   run('trees', options, 6, t);
 });
 
-test('With a multi-ring geometry and an inSR', t => {
+test('With a multi-ring geometry and an inSR', (t) => {
   const options = {
     geometry: {
       rings: [
@@ -415,24 +459,24 @@ test('With a multi-ring geometry and an inSR', t => {
           [19930537.269606635, 13148258.807095852],
           [20037508.342788905, 13148258.807095852],
           [20037508.342788905, -1018885.7633881811],
-          [19930537.269606635, -1018885.7633881811]
+          [19930537.269606635, -1018885.7633881811],
         ],
         [
           [-20037508.342788905, -1018885.7633881811],
           [-20037508.342788905, 13148258.807095852],
           [-4568447.54013514, 13148258.807095852],
           [-4568447.54013514, -1018885.7633881811],
-          [-20037508.342788905, -1018885.7633881811]
-        ]
-      ]
+          [-20037508.342788905, -1018885.7633881811],
+        ],
+      ],
     },
     geometryType: 'esriGeometryPolygon',
-    inSR: 102100
+    inSR: 102100,
   };
   run('ringbug', options, 30, t);
 });
 
-test('with a coded value domain', t => {
+test('with a coded value domain', (t) => {
   const options = {
     where: 'State = \'1\'',
     esriFields: [
@@ -450,22 +494,22 @@ test('with a coded value domain', t => {
           codedValues: [
             {
               name: 'Virginia',
-              code: '1'
+              code: '1',
             },
             {
               name: 'Maryland',
-              code: '2'
-            }
-          ]
+              code: '2',
+            },
+          ],
         },
-        defaultValue: null
-      }
-    ]
+        defaultValue: null,
+      },
+    ],
   };
   run('cvd', options, 2, t);
 });
 
-test('with a numeric coded value domain', t => {
+test('with a numeric coded value domain', (t) => {
   const options = {
     where: 'State = 1',
     esriFields: [
@@ -483,25 +527,25 @@ test('with a numeric coded value domain', t => {
           codedValues: [
             {
               name: 'Virginia',
-              code: 1
+              code: 1,
             },
             {
               name: 'Maryland',
-              code: 2
-            }
-          ]
+              code: 2,
+            },
+          ],
         },
-        defaultValue: null
-      }
-    ]
+        defaultValue: null,
+      },
+    ],
   };
   run('cvd', options, 2, t);
 });
 
-test('with a coded value domain', t => {
+test('with a coded value domain', (t) => {
   const options = {
     where: 'ZONING_S = \'INST\'',
-    esriFields: require('./fixtures/esriFields.json')
+    esriFields: require('./fixtures/esriFields.json'),
   };
 
   t.plan(1);
@@ -511,60 +555,94 @@ test('with a coded value domain', t => {
   t.equal(filtered.length, 1);
 });
 
-test('with a date query', t => {
+test('with a date query', (t) => {
   const options = {
-    where: 'survey_date >= date 2017-02-05'
+    where: 'survey_date >= date 2017-02-05',
   };
   run('trees', options, 4, t);
 });
 
-test('with an esri-style date query', t => {
+test('with an esri-style date query', (t) => {
   const options = {
-    where: 'survey_date >= \'2017-02-05T00:00:00.000Z\' AND survey_date <= \'2017-03-06T23:59:59.000Z\''
+    where:
+      'survey_date >= \'2017-02-05T00:00:00.000Z\' AND survey_date <= \'2017-03-06T23:59:59.000Z\'',
   };
   run('trees', options, 4, t);
 });
 
-test('with a timestamp query', t => {
+test('with a timestamp query', (t) => {
   const options = {
-    where: 'survey_date >= timestamp \'2017-02-05\''
+    where: 'survey_date >= timestamp \'2017-02-05\'',
   };
   run('trees', options, 4, t);
 });
 
-test('with a between query', t => {
+test('with a between query', (t) => {
   const options = {
-    where: 'survey_date between timestamp \'2017-01-06T00:00:00.000Z\' AND timestamp \'2017-02-06T23:59:59.000Z\''
+    where:
+      'survey_date between timestamp \'2017-01-06T00:00:00.000Z\' AND timestamp \'2017-02-06T23:59:59.000Z\'',
   };
   run('trees', options, 2, t);
 });
 
-test('with escaped single quote in query', t => {
+test('with escaped single quote in query', (t) => {
   const options = {
-    where: 'Street_Name = \'GRAND\\\'S STREET\\\'S\''
+    where: 'Street_Name = \'GRAND\'\'S STREET\'\'S\'',
   };
   run('trees', options, 1, t);
 });
 
-test('with a OBJECTID query on data that requires dynamic OBJECTID generation', t => {
+test('with a OBJECTID query on data that requires dynamic OBJECTID generation', (t) => {
   t.plan(1);
   const options = {
     where: 'OBJECTID=1138516379',
-    toEsri: true
+    toEsri: true,
   };
   const fixtures = _.cloneDeep(require('./fixtures/snow.json'));
   const filtered = winnow.query(fixtures, options);
   t.equal(filtered.features.length, 1);
 });
 
-test('with null dates in data source', t => {
+test('with a OBJECTID query on data that requires dynamic OBJECTID generation', (t) => {
+  t.plan(1);
+  const options = {
+    toEsri: true,
+  };
+  const fixtures = {
+    type: 'FeatureCollection',
+    features: [
+      {
+        type: 'Feature',
+        properties: {
+          OBJECTID: 11303,
+          Common_Name: 'SOUTHERN MAGNOLIA',
+          survey_date: '2017-01-05T00:00:00.000Z',
+        },
+        geometry: {
+          type: 'Point',
+          coordinates: [-118.16230746759626, 34.137113646321595],
+        },
+      },
+    ],
+  };
+  const queryResult = winnow.query(fixtures, options);
+  const objectId = queryResult.features[0].attributes.OBJECTID;
+  const filteredResult = winnow.query(fixtures, {
+    toEsri: true,
+    where: `OBJECTID = ${objectId}`
+  });
+  t.equal(filteredResult.features.length, 1);
+});
+
+test('with null dates in data source', (t) => {
   // Ensure null dates are returned as null, not as 0
   // Bug only occurs when:
   // * 'toEsri' option enabled
   // * the geojson is passed to winnow.query with the metadata.fields populated
   const options = {
-    where: 'Date1 >= timestamp \'2020-01-05 00:00:00\' AND Date1 <= timestamp \'2020-02-08 23:59:59\'',
-    toEsri: true
+    where:
+      'Date1 >= timestamp \'2020-01-05 00:00:00\' AND Date1 <= timestamp \'2020-02-08 23:59:59\'',
+    toEsri: true,
   };
   t.plan(4);
   const fixtures = _.cloneDeep(require('./fixtures/dates.json'));
@@ -577,7 +655,7 @@ test('with null dates in data source', t => {
   t.equal(feature.attributes.Date6, null);
 });
 
-function run (data, options, expected, t) {
+function run(data, options, expected, t) {
   t.plan(1);
   const fixtures = _.cloneDeep(require(`./fixtures/${data}.json`));
   const features = fixtures.features;
