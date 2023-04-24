@@ -1,5 +1,11 @@
 # @koopjs/winnow
 
+## 4.0.3
+
+### Patch Changes
+
+- transform ISO dates to epoch time after hashing
+
 ## 4.0.2
 
 ### Patch Changes

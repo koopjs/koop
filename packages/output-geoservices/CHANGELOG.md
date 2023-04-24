@@ -1,5 +1,11 @@
 # @koopjs/output-geoservices
 
+## 6.0.4
+
+### Patch Changes
+
+- @koopjs/featureserver@7.1.3
+
 ## 6.0.3
 
 ### Patch Changes
