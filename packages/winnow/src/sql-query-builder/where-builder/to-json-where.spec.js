@@ -1,6 +1,5 @@
 /* eslint-disable quotes */
 const test = require('tape');
-const proxyquire = require('proxyquire').noCallThru();
 const translateSqlWhere = require('./to-json-where');
 
 test('toJsonWhere: transform a simple equality predicate', (t) => {
