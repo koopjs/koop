@@ -69,11 +69,11 @@ function isNumericSpatialReferenceId (spatialReference) {
 }
 
 function isPrefixedSpatialReferenceId (spatialReference) {
-  return /EPSG:[0-9]+/.test(spatialReference);
+  return /^(EPSG|ESRI|SR-ORG|IAU2000):[0-9]+/.test(spatialReference);
 }
 
 function extractPrefixedSpatialReferenceId (prefixedId) {
-  const spatialRefId = prefixedId.match(/EPSG:([0-9]+)/)[1];
+  const spatialRefId = prefixedId.match(/^(EPSG|ESRI|SR-ORG|IAU2000):([0-9]+)/)[2];
   return Number(spatialRefId);
 }
 
