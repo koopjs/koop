@@ -29,7 +29,7 @@ describe('get-collection-crs', () => {
 
   it('getCollectionCrs: WGS84 definition', () => {
     const crs = getCollectionCrs({ crs: { properties: { name: 'urn:ogc:def:crs:ogc:1.3:crs84' } } });
-    should(crs).equal(undefined);
+    should(crs).equal('4326');
   });
 
   it('getCollectionCrs: non-WGS84 definition', () => {
