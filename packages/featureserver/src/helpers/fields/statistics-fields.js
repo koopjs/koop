@@ -20,14 +20,11 @@ class StatisticsFields {
       ...options
     } = inputOptions;
 
+
     return {
       statisticsSample: Array.isArray(statistics) ? statistics[0] : statistics,
       fieldDefinitions: options.fieldDefinitions || options.fields || fields,
-      groupByFieldsForStatistics: Array.isArray(groupByFieldsForStatistics) ? groupByFieldsForStatistics : groupByFieldsForStatistics
-        .replace(/\s*,\s*/g, ',')
-        .replace(/^\s/, '')
-        .replace(/\s*$/, '')
-        .split(','),
+      groupByFieldsForStatistics: getGroupByFields(groupByFieldsForStatistics),
       ...options
     };
   }
@@ -68,6 +65,14 @@ class StatisticsFields {
 
     return this.fields;
   }
+}
+
+function getGroupByFields (inputVal) {
+  if (Array.isArray(inputVal)) {
+    return inputVal;
+  }
+
+  return inputVal.split(',').map(str => str.trim());
 }
 
 function isDateField (regexs, fieldName, value) {
