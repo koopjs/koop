@@ -32,7 +32,7 @@ describe('get-collection-crs', () => {
     should(crs).equal('4326');
   });
 
-  it.only('getCollectionCrs: non-WGS84 definition', () => {
+  it('getCollectionCrs: non-WGS84 definition', () => {
     const crs = getCollectionCrs({ crs: { properties: { name: 'urn:ogc:def:crs:EPSG::2285' } } });
     should(crs).equal('2285');
   });
