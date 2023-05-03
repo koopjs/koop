@@ -69,11 +69,11 @@ function isNumericSpatialReferenceId (spatialReference) {
 }
 
 function isPrefixedSpatialReferenceId (spatialReference) {
-  return /[A-Z]+:/.test(spatialReference);
+  return /EPSG:[0-9]+/.test(spatialReference);
 }
 
 function extractPrefixedSpatialReferenceId (prefixedId) {
-  const spatialRefId = prefixedId.match(/[A-Z]*:(.*)/)[1];
+  const spatialRefId = prefixedId.match(/EPSG:([0-9]+)/)[1];
   return Number(spatialRefId);
 }
 
