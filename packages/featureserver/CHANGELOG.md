@@ -1,5 +1,13 @@
 # @koopjs/featureserver
 
+## 7.1.4
+
+### Patch Changes
+
+- cleanup inefficient regexs
+- Updated dependencies [accae0c]
+  - @koopjs/winnow@4.0.4
+
 ## 7.1.3
 
 ### Patch Changes

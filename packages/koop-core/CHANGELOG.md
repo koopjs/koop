@@ -1,5 +1,11 @@
 # @koopjs/koop-core
 
+## 8.0.7
+
+### Patch Changes
+
+- @koopjs/output-geoservices@6.0.5
+
 ## 8.0.6
 
 ### Patch Changes
