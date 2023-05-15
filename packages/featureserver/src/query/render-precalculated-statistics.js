@@ -1,8 +1,9 @@
 const _ = require('lodash');
-const { isValidISODateString, isValidDate } = require('iso-datestring-validator');
+// const { isValidISODateString, isValidDate } = require('iso-datestring-validator');
 const {
   StatisticsFields
 } = require('../helpers/fields');
+const { isDate } = require('../helpers/data-type-utils');
 
 function renderPrecalculatedStatisticsResponse (input, options) {
   const {
@@ -36,10 +37,6 @@ function convertDatePropertiesToTimestamps (obj) {
     }
     return value;
   });
-}
-
-function isDate (value) {
-  return value instanceof Date || ((typeof value === 'string') && (isValidDate(value) || isValidISODateString(value)));
 }
 
 module.exports = { renderPrecalculatedStatisticsResponse };
