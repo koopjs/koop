@@ -1,5 +1,14 @@
 # @koopjs/featureserver
 
+## 7.1.5
+
+### Patch Changes
+
+- date parser fix
+- add logger
+- Updated dependencies [faf732d]
+  - @koopjs/winnow@4.0.5
+
 ## 7.1.4
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @koopjs/winnow
 
+## 4.0.5
+
+### Patch Changes
+
+- fix inefficient regex
+
 ## 4.0.4
 
 ### Patch Changes
