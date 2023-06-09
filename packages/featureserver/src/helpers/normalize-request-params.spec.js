@@ -40,4 +40,18 @@ describe('normailizeRequestParameters', () => {
     const result = normalizeRequestParameters({ resultRecordCount: '99' }, { foo: 'bart' });
     result.should.deepEqual({ resultRecordCount: 99, foo: 'bart' });
   });
+
+  it('should coerce body string parameters', () => {
+    const result = normalizeRequestParameters(
+      {},
+      { boolTrue: 'true', boolFalse: 'false', numberInt: '1', numberDecimal: '1.1', emptyParam: '' },
+    );
+    result.should.deepEqual({
+      boolTrue: true,
+      boolFalse: false,
+      numberInt: 1,
+      numberDecimal: 1.1,
+      resultRecordCount: 2000,
+    });
+  });
 });
