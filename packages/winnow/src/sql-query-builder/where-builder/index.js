@@ -109,6 +109,10 @@ class WhereBuilder {
   }
   
   toJsonSQL () {
+    if (this.#options.objectIds && this.#options.idField) {
+      this.#addObjectIdsFilter();
+    }
+
     if (!this.#where) {
       return this;
     }
@@ -117,6 +121,16 @@ class WhereBuilder {
     return this;
   }
 
+  #addObjectIdsFilter() {
+    const objectIdFilter = `${this.#options.idField} IN (${this.#options.objectIds.join(',')})`;
+
+    if (this.#where) {
+      this.#where = `${this.#where} AND ${objectIdFilter}`;
+      return;
+    }
+
+    this.#where = objectIdFilter;
+  }
   /**
    * if the where clause includes OBJECTID predicate and there is no "idField" option
    * assume ArcGIS clients querying a Koop dataset where OBJECTID is created on the fly
