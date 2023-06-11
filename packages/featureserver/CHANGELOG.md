@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 7.1.6
+
+### Patch Changes
+
+- fix: coerce POST body parameters
+
 ## 7.1.5
 
 ### Patch Changes
