@@ -11,7 +11,13 @@ function normalizeRequestParameters (
     .mapValues(coerceStrings)
     .value();
 
-  const { resultRecordCount, ...params } = { ...definedQueryParams, ...body };
+  const definedBodyParams = _.chain(body)
+    .pickBy(isNotEmptyString)
+    .mapValues(coerceStrings)
+    .value();
+
+  const { resultRecordCount, ...params } = { ...definedQueryParams, ...definedBodyParams };
+
 
   return {
     ...params,
