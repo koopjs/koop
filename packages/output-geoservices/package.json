@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/koopjs/koop#readme",
   "dependencies": {
-    "@koopjs/featureserver": "7.1.6",
+    "@koopjs/featureserver": "7.1.5",
     "@koopjs/logger": "5.0.0"
   }
 }
