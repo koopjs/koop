@@ -1,5 +1,13 @@
 # @koopjs/featureserver
 
+## 7.1.7
+
+### Patch Changes
+
+- move filtering of objectIds to winnow dependency
+- Updated dependencies [8671389]
+  - @koopjs/winnow@4.1.0
+
 ## 7.1.6
 
 ### Patch Changes

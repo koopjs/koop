@@ -1,5 +1,11 @@
 # @koopjs/winnow
 
+## 4.1.0
+
+### Minor Changes
+
+- add an objectIds parameter, so that filtering by object can occur at query time
+
 ## 4.0.5
 
 ### Patch Changes
