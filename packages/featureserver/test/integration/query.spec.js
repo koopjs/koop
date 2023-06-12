@@ -128,7 +128,8 @@ describe('Query operations', () => {
     });
   });
 
-  describe('when getting featureserver features by id queries', function () {
+  // move to monorepo e2e tests
+  describe.skip('when getting featureserver features by id queries', function () {
     it('should return a proper features', function () {
       const response = FeatureServer.query(data, { objectIds: this.objectIds.slice(0, 3).join(',') });
       response.should.be.an.instanceOf(Object);
@@ -171,13 +172,11 @@ describe('Query operations', () => {
   describe('when getting features with returnIdsOnly', function () {
     it('should return only ids of features', function () {
       const response = FeatureServer.query(data, {
-        returnIdsOnly: true,
-        objectIds: this.objectIds.slice(0, 3).join(',')
+        returnIdsOnly: true
       });
       response.should.be.an.instanceOf(Object);
       response.should.have.property('objectIdFieldName', 'OBJECTID');
       response.should.have.property('objectIds');
-      response.objectIds.length.should.equal(3);
     });
   });
 

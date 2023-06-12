@@ -14,12 +14,31 @@ test('WhereBuilder.create: returns empty string if empty options', (t) => {
   t.equals(whereClause, undefined);
 });
 
-test('WhereBuilder.create: returns where clause with translated SQL where', (t) => {
+test('WhereBuilder.create: where param', (t) => {
   t.plan(1);
   const whereClause = WhereBuilder.create({
     where: "color='red'",
   });
   t.equals(whereClause, "properties->`color` = 'red'");
+});
+
+test('WhereBuilder.create: objectIds param', (t) => {
+  t.plan(1);
+  const whereClause = WhereBuilder.create({
+    objectIds: [1, 2],
+    idField: 'OBJECTID'
+  });
+  t.equals(whereClause, "properties->`OBJECTID` IN (1, 2 )");
+});
+
+test('WhereBuilder.create: where param and objectIds param', (t) => {
+  t.plan(1);
+  const whereClause = WhereBuilder.create({
+    where: "color='red'",
+    objectIds: [1, 2],
+    idField: 'OBJECTID'
+  });
+  t.equals(whereClause, "properties->`color` = 'red' AND properties->`OBJECTID` IN (1, 2 )");
 });
 
 test('WhereBuilder.create: returns where clause with geometry predicate', (t) => {

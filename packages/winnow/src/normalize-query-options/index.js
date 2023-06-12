@@ -14,6 +14,7 @@ const normalizeGeometryFilter = require('./geometry-filter');
 const normalizeIdField = require('./id-field');
 const normalizeLimit = require('./limit');
 const normalizeOffset = require('./offset');
+const normalizeObjectIds = require('./object-ids');
 
 function normalizeQueryOptions (options, features) {
   const {
@@ -34,7 +35,8 @@ function normalizeQueryOptions (options, features) {
     limit: normalizeLimit(options),
     outputCrs: normalizeOutputDataSpatialReference(options),
     inputCrs: normalizeSourceDataSpatialReference(options),
-    classification: normalizeClassification(options)
+    classification: normalizeClassification(options),
+    objectIds: normalizeObjectIds(options.objectIds)
   });
   normalizedOptions.offset = normalizeOffset(normalizedOptions);
   normalizedOptions.dateFields = deriveDateFields(normalizedOptions.collection, normalizedOptions.fields);

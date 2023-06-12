@@ -5,7 +5,7 @@ const createGroupByClause = require('./group-by');
 
 function create (options = {}) {
   const select = createSelectSql(options);
-  const where = options.where || options.geometry ? ` WHERE ${SqlWhereBuilder.create(options)}` : '';
+  const where = options.objectIds || options.where || options.geometry ? ` WHERE ${SqlWhereBuilder.create(options)}` : '';
   const orderBy = createOrderByClause(options);
   const groupBy = createGroupByClause(options);
   const limit = options.limit ? ` LIMIT ${options.limit}` : '';

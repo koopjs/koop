@@ -120,7 +120,8 @@ test('uniqueValueQuery, one field', t => {
       classification: undefined,
       offset: undefined,
       dateFields: [],
-      skipLimitHandling: true
+      skipLimitHandling: true,
+      objectIds: undefined
     }
   ]);
 });
@@ -203,7 +204,8 @@ test('uniqueValueQuery, two fields', t => {
       classification: undefined,
       offset: undefined,
       dateFields: [],
-      skipLimitHandling: true
+      skipLimitHandling: true,
+      objectIds: undefined
     }
   ]);
 });

@@ -16,13 +16,19 @@ function normalizeIdField (options, features = []) {
 }
 
 function extractIdField ({ idField, fields } = {}, feature = {}) {
-  if (idField) return idField;
+  if (idField) {
+    return idField;
+  }
 
   // metadata.idField is not set, but fields array includes OBJECTID, use that as idField
-  if (_.find(fields, { name: 'OBJECTID' })) return 'OBJECTID';
+  if (_.find(fields, { name: 'OBJECTID' })) {
+    return 'OBJECTID';
+  }
 
   const properties = feature.properties || feature.attributes;
-  if (_.has(properties, 'OBJECTID') && properties.OBJECTID !== null) return 'OBJECTID';
+  if (_.has(properties, 'OBJECTID') && properties.OBJECTID !== null) { 
+    return 'OBJECTID';
+  }
 
   return null;
 }
