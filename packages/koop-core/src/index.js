@@ -3,6 +3,7 @@ const Util = require('util');
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
+const config = require('config');
 const cors = require('cors');
 const compression = require('compression');
 const Cache = require('@koopjs/cache-memory');
@@ -15,7 +16,7 @@ function Koop (options) {
   this.version = pkg.version;
 
   // TODO: remove usage of "config" module
-  this.config = options || require('config');
+  this.config = options || config;
   this.server = initServer(this.config);
 
   // default to in-memory cache; another cache registration overrides this
@@ -24,7 +25,10 @@ function Koop (options) {
   this.providers = [];
   this.pluginRoutes = [];
   this.outputs = [];
-  this.register(geoservices, { logger: this.log });
+  this.register(geoservices, { 
+    logger: this.log,
+    authInfo: options?.authInfo || config.authInfo
+  });
 
   this.server
     .on('mount', () => {

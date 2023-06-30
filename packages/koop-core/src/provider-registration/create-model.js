@@ -14,6 +14,7 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
       // Provider constructor's may assign values to this.cache and this.options; so check before assigning defaults
       if (!this.cache) this.cache = options.cache || koop.cache;
       if (!this.options) this.options = koopAndOptions;
+      this.namespace = namespace;
       this.before = promisify(options.before || before);
       this.after = promisify(options.after || after);
       this.cacheRetrieve = promisify(this.cache.retrieve).bind(this.cache);

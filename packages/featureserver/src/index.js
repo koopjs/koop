@@ -9,6 +9,5 @@ module.exports = {
   queryRelatedRecords: require('./queryRelatedRecords.js'),
   generateRenderer: require('./generate-renderer'),
   error: require('./error'),
-  authenticate: require('./authenticate'),
   setLogger,
 };
