@@ -45,6 +45,7 @@
     "@changesets/changelog-git": "^0.1.13",
     "@changesets/cli": "^2.25.2",
     "@commitlint/config-conventional": "^17.1.0",
+    "@koopjs/auth-direct-file": "^2.0.0",
     "@koopjs/provider-file-geojson": "^2.1.0",
     "await-spawn": "^4.0.2",
     "byline": "^5.0.0",
