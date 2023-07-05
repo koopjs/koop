@@ -1,5 +1,17 @@
 # @koopjs/output-geoservices
 
+## 7.0.0
+
+### Major Changes
+
+- remove usage of config module
+- add error handling for pull-data errors and auth errors
+
+### Patch Changes
+
+- Updated dependencies [34d8317]
+  - @koopjs/featureserver@8.0.0
+
 ## 6.0.8
 
 ### Patch Changes

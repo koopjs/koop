@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 8.0.0
+
+### Major Changes
+
+- remove authentication and authorization handling and move to output-geoservices
+
 ## 7.1.7
 
 ### Patch Changes

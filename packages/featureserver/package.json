@@ -1,6 +1,6 @@
 {
   "name": "@koopjs/featureserver",
-  "version": "7.1.7",
+  "version": "8.0.0",
   "description": "*An open source implementation of the GeoServices specification*",
   "main": "src/index.js",
   "directories": {
