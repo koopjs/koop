@@ -20,7 +20,7 @@ function Koop (options) {
   this.server = initServer(this.config);
 
   // default to in-memory cache; another cache registration overrides this
-  this.cache = new Cache();
+  this.cache = new Cache({ size: this.config.cacheSize });
   this.log = this.config.logger || new Logger(this.config);
   this.providers = [];
   this.pluginRoutes = [];

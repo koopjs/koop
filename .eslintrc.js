@@ -4,7 +4,8 @@ module.exports = {
     es6: true,
     mocha: true,
     jest: true,
-    jasmine: true
+    jasmine: true,
+    node: true
   },
   extends: 'eslint:recommended',
   globals: {

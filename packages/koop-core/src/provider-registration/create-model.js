@@ -12,13 +12,17 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
       const koopAndOptions = _.chain(options).omit(options, 'cache', 'before', 'after').assign(koop).value();
       super(koopAndOptions, options);
       // Provider constructor's may assign values to this.cache and this.options; so check before assigning defaults
-      if (!this.cache) this.cache = options.cache || koop.cache;
-      if (!this.options) this.options = koopAndOptions;
+      if (!this.cache) {
+        this.cache = options.cache || koop.cache;
+      }
+      if (!this.options) {
+        this.options = koopAndOptions;
+      }
       this.namespace = namespace;
       this.before = promisify(options.before || before);
       this.after = promisify(options.after || after);
       this.cacheRetrieve = promisify(this.cache.retrieve).bind(this.cache);
-      this.cacheUpsert = promisify(this.cache.upsert).bind(this.cache);
+      this.cacheInsert = promisify(this.cache.insert).bind(this.cache);
       this.getData = promisify(this.getData).bind(this);
       this.logger = koop.log;
     }
@@ -41,7 +45,7 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
         const afterFuncGeojson = await this.after(req, providerGeojson);
         const { ttl } = afterFuncGeojson;
         if (ttl) {
-          this.cacheUpsert(key, afterFuncGeojson, { ttl });
+          this.cacheInsert(key, afterFuncGeojson, { ttl });
         }
         callback(null, afterFuncGeojson);
       } catch (err) {
@@ -60,7 +64,7 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
           this.getLayer(req, (err, data) => {
             if (err) return callback(err);
             callback(null, data);
-            if (data.ttl) this.cache.upsert(key, data, { ttl: data.ttl });
+            if (data.ttl) this.cache.insert(key, data, { ttl: data.ttl });
           });
         } else {
           callback(new Error('getLayer() function is not implemented in the provider.'));
@@ -77,7 +81,7 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
           this.getCatalog(req, (err, data) => {
             if (err) return callback(err);
             callback(null, data);
-            if (data.ttl) this.cache.upsert(key, data, { ttl: data.ttl });
+            if (data.ttl) this.cache.insert(key, data, { ttl: data.ttl });
           });
         } else {
           callback(new Error('getCatalog() function is not implemented in the provider.'));
@@ -119,12 +123,16 @@ function createKey (req) {
   return key;
 }
 
-function shouldUseCache ({_cache, metadata}) {
-  // older cache plugins stored cache timing in "metadata"
-  const cacheMetadata = _cache || metadata || {};
-  if (!cacheMetadata?.expires) {
+function shouldUseCache (cacheEntry) {
+  // older cache plugins stored expiry time explicitly; all caches should move to returning empty if expired
+  if (!cacheEntry) {
+    return false;
+  }
+
+  const { expires } = cacheEntry?._cache || cacheEntry?.metadata || {};
+  if (!expires) {
     return true;
   }
   
-  return Date.now() < cacheMetadata.expires;
+  return Date.now() < expires;
 }

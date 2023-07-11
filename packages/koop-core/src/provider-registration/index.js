@@ -8,7 +8,7 @@ const ProviderOutputRoute = require('./provider-output-route');
 const providerOptionsSchema = Joi.object({
   cache: Joi.object().keys({
     retrieve: Joi.function().arity(3).required(),
-    upsert: Joi.function().arity(3).required()
+    insert: Joi.function().arity(3).required()
   }).unknown(true).optional(),
   routePrefix: Joi.string().optional(),
   before: Joi.function().arity(2).optional(),

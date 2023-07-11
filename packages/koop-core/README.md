@@ -85,6 +85,15 @@ const options = {
 }
 ```
 
+#### cacheSize
+The maximum number of items to store in the default memorey-cache. Defaults to 500:
+
+```js
+const options = {
+  cacheSize: 1000
+}
+```
+
 ## Issues
 
 Find a bug or want to request a new feature? Please let us know by submitting an [issue](https://github.com/koopjs/koop/issues).
