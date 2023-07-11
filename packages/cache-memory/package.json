@@ -43,7 +43,6 @@
   },
   "dependencies": {
     "@alloc/quick-lru": "^5.2.0",
-    "lodash": "^4.17.4",
-    "lru-cache": "^10.0.0"
+    "lodash": "^4.17.4"
   }
 }
