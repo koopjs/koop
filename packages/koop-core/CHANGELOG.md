@@ -1,5 +1,16 @@
 # @koopjs/koop-core
 
+## 9.0.0
+
+### Major Changes
+
+- changed default memory cache; this should really only be used internally, but it is exposed as a public property in registered providers. Ff providers were directly using this cache and any of the removed methods, errors will occur. Such providers should stop using Koop's internal cache implement their own in the provider code
+
+### Patch Changes
+
+- Updated dependencies [e24092c]
+  - @koopjs/cache-memory@5.0.0
+
 ## 8.0.11
 
 ### Patch Changes
