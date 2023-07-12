@@ -1,160 +1,69 @@
-const EventEmitter = require('events');
 const _ = require('lodash');
-const { asCachableGeojson } = require('./helper');
-const Readable = require('stream').Readable;
+const LRUCache = require('@alloc/quick-lru');
 
-// Convenience to make callbacks optional in most functions
-function noop() {}
-
-class Cache extends EventEmitter {
+class Cache {
   static pluginName = 'Memory Cache';
   static type = 'cache';
   static version = require('../package.json').version;
 
-  constructor() {
-    super();
-    this.featuresStore = new Map();
-    this.catalogStore = new Map();
+  #cache;
+
+  constructor(options) {
+    this.#cache = new LRUCache({ maxSize: options?.size || 500 });
   }
 
-  insert(key, geojson, options = {}, callback = noop) {
-    if (this.featuresStore.has(key)) {
-      return callback(new Error('Cache key is already in use'));
-    }
-
-    // Store features separately from rest of geojson
-    const { features, ...rest } = asCachableGeojson(geojson);
-    this.featuresStore.set(key, features);
-
-    this.catalogInsert(key, rest, options, callback);
-  }
-
-  catalogInsert(key, catalogEntry, options = {}, callback = noop) {
-    if (this.catalogStore.has(key)) {
-      return callback(new Error('Catalog key is already in use'));
-    }
-    const clonedEntry = _.cloneDeep(catalogEntry);
-
-    _.set(clonedEntry, '_cache.updated', Date.now());
-
-    if (options.ttl) {
-      _.set(clonedEntry, '_cache.expires', Date.now() + options.ttl * 1000);
-    }
-
-    this.catalogStore.set(key, clonedEntry);
-
-    callback();
-  }
-
-  update(key, geojson, options = {}, callback = noop) { // eslint-disable-line
-    if (!this.featuresStore.has(key)) {
-      return callback(new Error('Resource not found'));
-    }
-    const { features, ...rest } = asCachableGeojson(geojson);
-
-    this.featuresStore.set(key, features);
-
-    const existingCatalogEntry = this.catalogStore.get(key);
-
-    const catalogEntry = rest || existingCatalogEntry;
-
-    this.catalogUpdate(key, catalogEntry, options, callback);
-  }
-
-  upsert(key, geojson, options = {}, callback = noop) {
-    if (this.featuresStore.has(key)) {
-      this.update(key, geojson, options, callback);
-    } else {
-      this.insert(key, geojson, options, callback);
-    }
-  }
-
-  append(key, geojson, options = {}, callback = noop) { // eslint-disable-line
-    const { features } = asCachableGeojson(geojson);
-    const existingFeatures = this.featuresStore.get(key);
-    const appendedFeatureArray = existingFeatures.concat(features);
-    this.featuresStore.set(key, appendedFeatureArray);
-    this.catalogUpdate(key, {
-      cache: {
-        updated: Date.now(),
-      },
+  insert(key, geojson, options, callback) {
+    this.#cache.set();
+    this.#cache.set(key, normalizeGeojson(geojson), {
+      maxAge: calculateMaxAge(options?.ttl),
     });
-    callback();
+    callback(null);
   }
 
-  retrieve(key, options, callback = noop) {
-    if (!this.featuresStore.has(key)) {
-      return callback(new Error('Resource not found'));
+  retrieve(key, options, callback) {
+    const cacheEntry = this.#cache.get(key);
+
+    if (!cacheEntry) {
+      return callback(null);
     }
-    const features = this.featuresStore.get(key);
 
-    const geojsonWrapper = this.catalogStore.get(key);
+    let data = cacheEntry;
 
-    const geojson = { ...geojsonWrapper, features };
-
-    callback(null, geojson);
-
-    return geojson;
-  }
-
-  createStream(key, options = {}) { // eslint-disable-line
-    const features = this.featuresStore.get(key);
-    return Readable.from(features);
-  }
-
-  delete(key, callback = noop) {
-    if (!this.featuresStore.has(key)) {
-      return callback(new Error('Resource not found'));
+    if (options?.pick) {
+      data = _.pick(data, options.pick);
+    } else if (options?.omit) {
+      data = _.omit(data, options.omit);
     }
-    this.featuresStore.delete(key);
-    const catalogEntry = this.catalogStore.get(key);
-    this.catalogStore.set(key, {
-      ...catalogEntry,
-      _cache: {
-        status: 'deleted',
-        updated: Date.now(),
-      },
-    });
-    callback();
+
+    callback(null, data);
   }
 
-  catalogUpdate = function (key, update, options = {}, callback = noop) { // eslint-disable-line
-    if (!this.catalogStore.has(key)) {
-      return callback(new Error('Resource not found'));
-    }
-    const existingCatalogEntry = this.catalogStore.get(key);
-    const catalogEntry = {
-      ...existingCatalogEntry,
-      ..._.cloneDeep(update),
+  delete(key, callback) {
+    this.#cache.delete(key);
+    callback(null);
+  }
+}
+
+function normalizeGeojson(geojson) {
+  if (geojson === undefined || geojson === null || Array.isArray(geojson)) {
+    return {
+      type: 'FeatureCollection',
+      features: geojson || [],
+      metadata: {},
     };
-    catalogEntry._cache.updated = Date.now();
-
-    if (options.ttl) {
-      catalogEntry._cache.expires = Date.now() + options.ttl * 1000;
-    }
-
-    this.catalogStore.set(key, catalogEntry);
-    callback();
-  };
-
-  catalogRetrieve(key, callback = noop) {
-    if (!this.catalogStore.has(key)) {
-      return callback(new Error('Resource not found'));
-    }
-    const catalogEntry = this.catalogStore.get(key);
-    callback(null, catalogEntry);
-    return catalogEntry;
   }
 
-  catalogDelete(key, callback = noop) {
-    if (this.featuresStore.has(key)) {
-      return callback(
-        new Error('Cannot delete catalog entry while data is still in cache')
-      );
-    }
-    this.catalogStore.delete(key);
-    callback();
+  geojson.type = geojson.type || 'FeatureCollection';
+  geojson.features = geojson.features || [];
+  return _.cloneDeep(geojson);
+}
+
+function calculateMaxAge(ttl) {
+  if (!ttl) {
+    return;
   }
+
+  return Date.now() + ttl * 1000;
 }
 
 module.exports = Cache;

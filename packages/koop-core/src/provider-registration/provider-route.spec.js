@@ -15,7 +15,7 @@ describe('Tests for ProviderRoute', function () {
         outputs: [],
         cache: {
           retrieve: () => {},
-          upsert: () => {}
+          insert: () => {}
         }
       }
     });

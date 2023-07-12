@@ -1,5 +1,6 @@
 const should = require('should');
 const sinon = require('sinon');
+const { promisify } = require('util');
 require('should-sinon');
 const _ = require('lodash');
 const { Readable } = require('stream');
@@ -9,7 +10,7 @@ const koopMock = {
   test: 'value',
   cache: {
     retrieve () {},
-    upsert () {}
+    insert () {}
   },
   log: {
     debug: () => {},
@@ -33,10 +34,26 @@ describe('Tests for create-model', function () {
       model.koop.should.deepEqual({...koopMock, foo: 'bar' });
       model.options.should.deepEqual({ foo: 'bar' });
     });
+
+    it('should use model defined cache', () => {
+      class Model extends providerMock.Model {
+        constructor(koop, options) {
+          super(koop, options);
+          this.koop = koop;
+          this.options = options;
+          this.cache = { retrieve: _.noop, insert: _.noop };
+        }
+      }
+      const model = createModel({ ProviderModel: Model, koop: koopMock }, {
+        foo: 'bar'
+      });
+      model.koop.should.deepEqual({...koopMock, foo: 'bar' });
+      model.options.should.deepEqual({ foo: 'bar' });
+    });
   });
 
   describe('model pull method', () => {
-    it('should work in callback form, no upsert to cache', (done) => {
+    it('should not find in cache, should not add to cache', (done) => {
       const beforeSpy = sinon.spy((req, beforeCallback) => {
         beforeCallback();
       });
@@ -49,7 +66,7 @@ describe('Tests for create-model', function () {
         callback(new Error('no cache'));
       });
 
-      const cacheUpsertSpy = sinon.spy(() => {});
+      const cacheinsertSpy = sinon.spy(() => {});
 
       const getDataSpy = sinon.spy(function (req, callback) {
         callback(null, { metadata: {} });
@@ -60,7 +77,7 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: Model, koop: koopMock }, {
         cache: {
           retrieve: cacheRetrieveSpy,
-          upsert: cacheUpsertSpy
+          insert: cacheinsertSpy
         },
         before: beforeSpy,
         after: afterSpy
@@ -71,9 +88,47 @@ describe('Tests for create-model', function () {
         beforeSpy.calledOnce.should.equal(true);
         getDataSpy.calledOnce.should.equal(true);
         afterSpy.calledOnce.should.equal(true);
-        cacheUpsertSpy.calledOnce.should.equal(false);
+        cacheinsertSpy.calledOnce.should.equal(false);
         done();
       });
+    });
+
+    it('should not find in cache, should add to cache', async () => {
+      const beforeSpy = sinon.spy((req, beforeCallback) => {
+        beforeCallback();
+      });
+
+      const afterSpy = sinon.spy(function (req, data, callback) {
+        callback(null, data);
+      });
+
+      const cacheRetrieveSpy = sinon.spy((key, query, callback) => {
+        callback(null);
+      });
+
+      const cacheinsertSpy = sinon.spy(() => {});
+
+      const getDataSpy = sinon.spy(function (req, callback) {
+        callback(null, { metadata: {}, ttl: 5 });
+      });
+
+      class Model extends providerMock.Model {}
+      Model.prototype.getData = getDataSpy;
+      const model = createModel({ ProviderModel: Model, koop: koopMock }, {
+        cache: {
+          retrieve: cacheRetrieveSpy,
+          insert: cacheinsertSpy
+        },
+        before: beforeSpy,
+        after: afterSpy
+      });
+      const pullPromise = promisify(model.pull).bind(model);
+      await pullPromise({ url: 'domain/test-provider', params: {}, query: {} });
+      cacheRetrieveSpy.calledOnce.should.equal(true);
+      beforeSpy.calledOnce.should.equal(true);
+      getDataSpy.calledOnce.should.equal(true);
+      afterSpy.calledOnce.should.equal(true);
+      cacheinsertSpy.calledOnce.should.equal(true);
     });
 
     it('should pull from cache and use _cache info', (done) => {
@@ -95,7 +150,7 @@ describe('Tests for create-model', function () {
         });
       });
 
-      const cacheUpsertSpy = sinon.spy(() => {});
+      const cacheinsertSpy = sinon.spy(() => {});
 
       const getDataSpy = sinon.spy(function (req, callback) {
         callback(null, { ttl: 10, metadata: {} });
@@ -106,7 +161,7 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: Model, koop: koopMock }, {
         cache: {
           retrieve: cacheRetrieveSpy,
-          upsert: cacheUpsertSpy
+          insert: cacheinsertSpy
         },
         before: beforeSpy,
         after: afterSpy
@@ -124,7 +179,7 @@ describe('Tests for create-model', function () {
         beforeSpy.notCalled.should.equal(true);
         getDataSpy.notCalled.should.equal(true);
         afterSpy.notCalled.should.equal(true);
-        cacheUpsertSpy.notCalled.should.equal(true);
+        cacheinsertSpy.notCalled.should.equal(true);
         done();
       });
     });
@@ -148,7 +203,7 @@ describe('Tests for create-model', function () {
         });
       });
 
-      const cacheUpsertSpy = sinon.spy(() => {});
+      const cacheinsertSpy = sinon.spy(() => {});
 
       const getDataSpy = sinon.spy(function (req, callback) {
         callback(null, { ttl: 10, metadata: {} });
@@ -159,7 +214,7 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: Model, koop: koopMock }, {
         cache: {
           retrieve: cacheRetrieveSpy,
-          upsert: cacheUpsertSpy
+          insert: cacheinsertSpy
         },
         before: beforeSpy,
         after: afterSpy
@@ -177,10 +232,49 @@ describe('Tests for create-model', function () {
         beforeSpy.notCalled.should.equal(true);
         getDataSpy.notCalled.should.equal(true);
         afterSpy.notCalled.should.equal(true);
-        cacheUpsertSpy.notCalled.should.equal(true);
+        cacheinsertSpy.notCalled.should.equal(true);
         done();
       });
     });
+
+    it('should send error in callback', async () => {
+      const beforeSpy = sinon.spy((req, beforeCallback) => {
+        beforeCallback();
+      });
+
+      const afterSpy = sinon.spy(function (req, data, callback) {
+        callback(null, data);
+      });
+
+      const cacheRetrieveSpy = sinon.spy((key, query, callback) => {
+        callback(null);
+      });
+
+      const cacheinsertSpy = sinon.spy(() => {});
+
+      const getDataSpy = sinon.spy(function (req, callback) {
+        callback(new Error('err in getData'));
+      });
+
+      class Model extends providerMock.Model {}
+      Model.prototype.getData = getDataSpy;
+      const model = createModel({ ProviderModel: Model, koop: koopMock }, {
+        cache: {
+          retrieve: cacheRetrieveSpy,
+          insert: cacheinsertSpy
+        },
+        before: beforeSpy,
+        after: afterSpy
+      });
+      const pullPromise = promisify(model.pull).bind(model);
+      try {
+        await pullPromise({ url: 'domain/test-provider', params: {}, query: {} });
+        should.fail();
+      } catch (err) {
+        err.message.should.equal('err in getData');
+      }
+    });
+
   });
 
   describe('createKey', function () {
@@ -194,7 +288,7 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy,
-          upsert: () => {}
+          insert: () => {}
         }
       });
 
@@ -219,7 +313,7 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy,
-          upsert: () => {}
+          insert: () => {}
         }
       });
 
@@ -249,7 +343,7 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy,
-          upsert: () => {}
+          insert: () => {}
         }
       });
       await model.pull({ url: 'domain/test-provider', query: {} }, pullSpy);
@@ -283,7 +377,7 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: providerMock.Model, namespace: 'test-provider', koop: koopMock }, {
         cache: {
           retrieve: () => {},
-          upsert: () => {}
+          insert: () => {}
         }
       });
       model.should.have.property('authorize').and.be.a.Function();
@@ -313,7 +407,7 @@ describe('Tests for create-model', function () {
           retrieve: (key, query, callback) => {
             callback(new Error('no cache'));
           },
-          upsert: () => {}
+          insert: () => {}
         },
         before: beforeSpy
       });
@@ -356,7 +450,7 @@ describe('Tests for create-model', function () {
           retrieve: (key, query, callback) => {
             callback(new Error('no cache'));
           },
-          upsert: () => {}
+          insert: () => {}
         },
         after: afterSpy
       });
@@ -399,7 +493,7 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy,
-          upsert: () => {}
+          insert: () => {}
         }
       });
 
@@ -426,7 +520,7 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy,
-          upsert: () => {}
+          insert: () => {}
         }
       });
 
@@ -457,7 +551,7 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy,
-          upsert: () => {}
+          insert: () => {}
         }
       });
 
@@ -492,7 +586,7 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy,
-          upsert: () => { }
+          insert: () => { }
         }
       });
 
@@ -519,7 +613,7 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy,
-          upsert: () => {}
+          insert: () => {}
         }
       });
 
@@ -544,7 +638,7 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy,
-          upsert: () => {}
+          insert: () => {}
         }
       });
 
@@ -577,7 +671,7 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy,
-          upsert: () => {}
+          insert: () => {}
         }
       });
 
@@ -612,7 +706,7 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: Model, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy,
-          upsert: () => { }
+          insert: () => { }
         }
       });
 

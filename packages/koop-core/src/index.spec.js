@@ -81,7 +81,7 @@ describe('Index tests', function () {
       koop.register(provider, {
         cache: {
           retrieve: (key, query, callback) => {}, // eslint-disable-line -- this allow validation to occur
-          upsert: (key, data, options) => {}, // eslint-disable-line -- this allow validation to occur
+          insert: (key, data, options) => {}, // eslint-disable-line -- this allow validation to occur
           customFunction: () => {}
         }
       });
@@ -90,7 +90,7 @@ describe('Index tests', function () {
       registeredProvider.model.cache.should.have.property('customFunction').and.be.a.Function();
     });
 
-    it('should reject cache option missing an upsert method', function () {
+    it('should reject cache option missing an insert method', function () {
       const koop = new Koop({ logLevel: 'error' });
       try {
         koop.register(provider, {
@@ -99,7 +99,7 @@ describe('Index tests', function () {
           }
         });
       } catch (err) {
-        err.should.have.property('message', 'Provider options ValidationError: "cache.upsert" is required');
+        err.should.have.property('message', 'Provider options ValidationError: "cache.insert" is required');
       }
     });
 
@@ -108,7 +108,7 @@ describe('Index tests', function () {
       try {
         koop.register(provider, {
           cache: {
-            upsert: (key, data, options) => {}  // eslint-disable-line -- this allow validation to occur
+            insert: (key, data, options) => {}  // eslint-disable-line -- this allow validation to occur
           }
         });
       } catch (err) {

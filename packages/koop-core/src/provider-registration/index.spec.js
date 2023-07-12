@@ -17,7 +17,7 @@ describe('Tests for Provider', function () {
       outputs: [{ outputClass: mockOutputPlugin }],
       cache: {
         retrieve: () => {},
-        upsert: () => {}
+        insert: () => {}
       },
       log: {
         debug: () => {},

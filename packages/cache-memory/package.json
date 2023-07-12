@@ -38,9 +38,11 @@
   "homepage": "https://github.com/koopjs/koop#readme",
   "devDependencies": {
     "tap-spec": "^5.0.0",
-    "tape": "^5.0.0"
+    "tape": "^5.0.0",
+    "uuid": "^9.0.0"
   },
   "dependencies": {
+    "@alloc/quick-lru": "^5.2.0",
     "lodash": "^4.17.4"
   }
 }
