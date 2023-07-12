@@ -31,7 +31,7 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: Model, koop: koopMock }, {
         foo: 'bar'
       });
-      model.koop.should.deepEqual({...koopMock, foo: 'bar' });
+      model.koop.should.deepEqual({...koopMock });
       model.options.should.deepEqual({ foo: 'bar' });
     });
 
@@ -47,7 +47,7 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: Model, koop: koopMock }, {
         foo: 'bar'
       });
-      model.koop.should.deepEqual({...koopMock, foo: 'bar' });
+      model.koop.should.deepEqual(koopMock);
       model.options.should.deepEqual({ foo: 'bar' });
     });
   });

@@ -1,4 +1,5 @@
-function Fake () {
+function Fake (koop, options) {
+  this.options = options;
   this.find = function find (id, options, callback) {
     callback(null, [{}]);
   };

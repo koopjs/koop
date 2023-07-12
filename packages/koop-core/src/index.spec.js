@@ -71,12 +71,11 @@ describe('Index tests', function () {
       const koop = new Koop({ logLevel: 'error' });
       koop.register(provider, { foo: 'bar' });
       const registeredProvider = koop.providers.find(provider => { return provider.namespace === 'test-provider'; });
-      registeredProvider.model.should.have.property('cache');
       registeredProvider.model.should.have.property('options');
       registeredProvider.model.options.should.have.property('foo', 'bar');
     });
 
-    it('should register successfully and attach optional custom cache to model', function () {
+    it('should register successfully and pass optional cache to model', function () {
       const koop = new Koop({ logLevel: 'error' });
       koop.register(provider, {
         cache: {
@@ -86,8 +85,8 @@ describe('Index tests', function () {
         }
       });
       const registeredProvider = koop.providers.find(provider => { return provider.namespace === 'test-provider'; });
-      registeredProvider.model.should.have.property('cache');
-      registeredProvider.model.cache.should.have.property('customFunction').and.be.a.Function();
+      registeredProvider.model.options.should.have.property('cache');
+      registeredProvider.model.options.cache.should.have.property('customFunction').and.be.a.Function();
     });
 
     it('should reject cache option missing an insert method', function () {
@@ -126,17 +125,6 @@ describe('Index tests', function () {
       } catch (err) {
         err.should.have.property('message', 'Provider options ValidationError: "routePrefix" must be a string');
       }
-    });
-
-    it('should register successfully and attach optional "before" and "after" function to model', function () {
-      const koop = new Koop({ logLevel: 'error' });
-      koop.register(provider, {
-        before: (req, next) => {}, // eslint-disable-line -- this allow validation to occur
-        after: (req, data, callback) => {} // eslint-disable-line -- this allow validation to occur
-      });
-      const registeredProvider = koop.providers.find(provider => { return provider.namespace === 'test-provider'; });
-      registeredProvider.model.should.have.property('before').and.be.a.Function();
-      registeredProvider.model.should.have.property('after').and.be.a.Function();
     });
 
     it('should reject optional "before" function that does not have correct arity', function () {
