@@ -1,5 +1,13 @@
 # @koopjs/koop-core
 
+## 9.1.0
+
+### Minor Changes
+
+- make 'cache', 'before', and 'after' private model props
+- add `cacheSize` option
+- add `cacheTtl` option for provider registration
+
 ## 9.0.0
 
 ### Major Changes
