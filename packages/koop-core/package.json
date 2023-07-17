@@ -22,6 +22,7 @@
     "@koopjs/cache-memory": "5.0.0",
     "@koopjs/logger": "5.0.0",
     "@koopjs/output-geoservices": "7.0.0",
+    "@sindresorhus/fnv1a": "^2.0.1",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "config": "^3.3.9",

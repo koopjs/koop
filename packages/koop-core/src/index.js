@@ -104,7 +104,6 @@ Koop.prototype._registerAuth = function (auth) {
 Koop.prototype._registerProvider = function (provider, options = {}) {
   const providerRegistration = ProviderRegistration.create({ koop: this, provider, options });
   this.providers.push(providerRegistration);
-  this.log.info('registered provider:', providerRegistration.namespace, providerRegistration.version);
 };
 
 /**
@@ -115,7 +114,7 @@ Koop.prototype._registerProvider = function (provider, options = {}) {
  */
 Koop.prototype._registerOutput = function (outputClass, options) {
   this.outputs.push({ outputClass, options });
-  this.log.info('registered output:', outputClass.name, outputClass.version);
+  this.log.info(`registered output: ${outputClass.name} ${outputClass.version}`);
 };
 
 /**

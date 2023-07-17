@@ -94,6 +94,44 @@ const options = {
 }
 ```
 
+### Registering Providers
+When registering a provider you can pass an options object that provides some useful functionality:
+
+```js
+const Koop = require('@koopjs/koop-core')
+const koop = new Koop()
+
+const providerOptions = {
+  name: 'special-name',
+  cacheTtl: 600,
+  before: (req, callback) => {
+    req.query.myHardCodedParam = 'foo';
+    callback();
+  }
+  after: (req, geojson, callback) => {
+    geojson.crs = 'my coordinate system';
+    callback(null, geojson);
+  }
+}
+
+/* Register Koop data providers with options */
+const provider = require('@koopjs/provider-github')
+koop.register(provider, providerOptions)
+```
+
+#### Provider registration options
+##### name
+Use this param to override the name of the provider.  If you supply a value for `name` it will be used in the path for routes registered to this provider.
+
+##### cacheTtl
+Use this param to set the default caching time (in seconds) for any data acquired by this provider. It can be overridden on a request-by-request basis by adding a `ttl` property to the root level of the geojson produced by the provider.
+
+##### before
+Supply a function that is executed _before_ a provider's `getData` method and has access to the Express request object.  This is useful is you want to modify incoming request params before they arrive in a providers `getData` method.
+
+##### after
+Supply a function that is executed _after_ a provider's `getData` method and has access to the Express request object.  This is useful is you want to modify the GeoJSON produce by the provider before it is passed on to the cache or any output plugin.  It's a way of modifying a provider's getData functionality without having to modify the code of the provider itself.
+
 ## Issues
 
 Find a bug or want to request a new feature? Please let us know by submitting an [issue](https://github.com/koopjs/koop/issues).
