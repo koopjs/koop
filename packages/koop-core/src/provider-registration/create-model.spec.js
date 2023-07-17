@@ -4,7 +4,7 @@ const { promisify } = require('util');
 require('should-sinon');
 const _ = require('lodash');
 const { Readable } = require('stream');
-const providerMock = require('../../test/fixtures/fake-provider');
+
 const createModel = require('./create-model');
 const koopMock = {
   test: 'value',
@@ -13,15 +13,44 @@ const koopMock = {
     insert () {}
   },
   log: {
-    debug: () => {},
+    debug: (sinon.spy()),
     info: () => {}
   }
 };
 
+class MockModel {
+  constructor (koop, options) {
+    this.options = options;
+  }
+
+  getData (req, callback) {
+    callback(null, {
+      type: 'FeatureCollection',
+      features: []
+    });
+  }
+
+  getLayer (req, callback) {
+    callback(null, {
+      layer: 'foo'
+    });
+  }
+
+  getCatalog (req, callback) {
+    callback(null, {
+      catalog: 'foo'
+    });
+  }
+}
+
 describe('Tests for create-model', function () {
+  beforeEach(() => {
+    koopMock.log.debug.resetHistory();
+  });
+
   describe('model constructor', () => {
     it('should receive expected arguments', () => {
-      class Model extends providerMock.Model {
+      class Model extends MockModel {
         constructor(koop, options) {
           super(koop, options);
           this.koop = koop;
@@ -31,12 +60,12 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: Model, koop: koopMock }, {
         foo: 'bar'
       });
-      model.koop.should.deepEqual({...koopMock });
+      model.koop.should.deepEqual(koopMock);
       model.options.should.deepEqual({ foo: 'bar' });
     });
 
     it('should use model defined cache', () => {
-      class Model extends providerMock.Model {
+      class Model extends MockModel {
         constructor(koop, options) {
           super(koop, options);
           this.koop = koop;
@@ -53,7 +82,7 @@ describe('Tests for create-model', function () {
   });
 
   describe('model pull method', () => {
-    it('should not find in cache, should not add to cache', (done) => {
+    it('should not find in cache, should not add to cache', async () => {
       const beforeSpy = sinon.spy((req, beforeCallback) => {
         beforeCallback();
       });
@@ -63,7 +92,7 @@ describe('Tests for create-model', function () {
       });
 
       const cacheRetrieveSpy = sinon.spy((key, query, callback) => {
-        callback(new Error('no cache'));
+        callback(null);
       });
 
       const cacheinsertSpy = sinon.spy(() => {});
@@ -72,8 +101,9 @@ describe('Tests for create-model', function () {
         callback(null, { metadata: {} });
       });
 
-      class Model extends providerMock.Model {}
+      class Model extends MockModel {}
       Model.prototype.getData = getDataSpy;
+      
       const model = createModel({ ProviderModel: Model, koop: koopMock }, {
         cache: {
           retrieve: cacheRetrieveSpy,
@@ -83,17 +113,19 @@ describe('Tests for create-model', function () {
         after: afterSpy
       });
 
-      model.pull({ url: 'domain/test-provider', params: {}, query: {} }, function () {
-        cacheRetrieveSpy.calledOnce.should.equal(true);
-        beforeSpy.calledOnce.should.equal(true);
-        getDataSpy.calledOnce.should.equal(true);
-        afterSpy.calledOnce.should.equal(true);
-        cacheinsertSpy.calledOnce.should.equal(false);
-        done();
-      });
+      const pullData = promisify(model.pull).bind(model);
+
+      const data = await pullData({ url: 'domain/test-provider', params: {}, query: {} });
+      data.should.deepEqual({ metadata: {} });
+      cacheRetrieveSpy.calledOnce.should.equal(true);
+      beforeSpy.called.should.equal(true);
+      getDataSpy.called.should.equal(true);
+      afterSpy.called.should.equal(true);
+      cacheinsertSpy.notCalled.should.equal(true);
+
     });
 
-    it('should not find in cache, should add to cache', async () => {
+    it('should not find in cache, should add to cache due to data\'s ttl', async () => {
       const beforeSpy = sinon.spy((req, beforeCallback) => {
         beforeCallback();
       });
@@ -112,7 +144,7 @@ describe('Tests for create-model', function () {
         callback(null, { metadata: {}, ttl: 5 });
       });
 
-      class Model extends providerMock.Model {}
+      class Model extends MockModel {}
       Model.prototype.getData = getDataSpy;
       const model = createModel({ ProviderModel: Model, koop: koopMock }, {
         cache: {
@@ -122,8 +154,9 @@ describe('Tests for create-model', function () {
         before: beforeSpy,
         after: afterSpy
       });
-      const pullPromise = promisify(model.pull).bind(model);
-      await pullPromise({ url: 'domain/test-provider', params: {}, query: {} });
+      const pullData = promisify(model.pull).bind(model);
+      const data = await pullData({ url: 'domain/test-provider', params: {}, query: {} });
+      data.should.deepEqual({ metadata: {}, ttl: 5 });
       cacheRetrieveSpy.calledOnce.should.equal(true);
       beforeSpy.calledOnce.should.equal(true);
       getDataSpy.calledOnce.should.equal(true);
@@ -131,7 +164,47 @@ describe('Tests for create-model', function () {
       cacheinsertSpy.calledOnce.should.equal(true);
     });
 
-    it('should pull from cache and use _cache info', (done) => {
+    it('should not find in cache, should add to cache due to providers\'s ttl', async () => {
+      const beforeSpy = sinon.spy((req, beforeCallback) => {
+        beforeCallback();
+      });
+
+      const afterSpy = sinon.spy(function (req, data, callback) {
+        callback(null, data);
+      });
+
+      const cacheRetrieveSpy = sinon.spy((key, query, callback) => {
+        callback(null);
+      });
+
+      const cacheinsertSpy = sinon.spy(() => {});
+
+      const getDataSpy = sinon.spy(function (req, callback) {
+        callback(null, { metadata: {}});
+      });
+
+      class Model extends MockModel {}
+      Model.prototype.getData = getDataSpy;
+      const model = createModel({ ProviderModel: Model, koop: koopMock }, {
+        cache: {
+          retrieve: cacheRetrieveSpy,
+          insert: cacheinsertSpy
+        },
+        before: beforeSpy,
+        after: afterSpy,
+        cacheTtl: 10
+      });
+      const pullData = promisify(model.pull).bind(model);
+      const data = await pullData({ url: 'domain/test-provider', params: {}, query: {} });
+      data.should.deepEqual({ metadata: {} });
+      cacheRetrieveSpy.calledOnce.should.equal(true);
+      beforeSpy.calledOnce.should.equal(true);
+      getDataSpy.calledOnce.should.equal(true);
+      afterSpy.calledOnce.should.equal(true);
+      cacheinsertSpy.calledOnce.should.equal(true);
+    });
+
+    it('should pull from cache and use _cache info', async () => {
       const beforeSpy = sinon.spy((req, beforeCallback) => {
         beforeCallback();
       });
@@ -156,7 +229,7 @@ describe('Tests for create-model', function () {
         callback(null, { ttl: 10, metadata: {} });
       });
 
-      class Model extends providerMock.Model {}
+      class Model extends MockModel {}
       Model.prototype.getData = getDataSpy;
       const model = createModel({ ProviderModel: Model, koop: koopMock }, {
         cache: {
@@ -167,24 +240,24 @@ describe('Tests for create-model', function () {
         after: afterSpy
       });
 
-      model.pull({ url: 'domain/test-provider', params: {}, query: {} }, function (error, data) {
-        (error === null).should.equal(true);
-        data.should.deepEqual({ _cache: {
-          updated: 0,
-          expires: now + 86400000
-        },
-        features: ['foo']
-        });
-        cacheRetrieveSpy.calledOnce.should.equal(true);
-        beforeSpy.notCalled.should.equal(true);
-        getDataSpy.notCalled.should.equal(true);
-        afterSpy.notCalled.should.equal(true);
-        cacheinsertSpy.notCalled.should.equal(true);
-        done();
+      const pullData = promisify(model.pull).bind(model);
+
+      const data = await pullData({ url: 'domain/test-provider', params: {}, query: {} });
+      data.should.deepEqual({ _cache: {
+        updated: 0,
+        expires: now + 86400000
+      },
+      features: ['foo']
       });
+      cacheRetrieveSpy.calledOnce.should.equal(true);
+      beforeSpy.notCalled.should.equal(true);
+      getDataSpy.notCalled.should.equal(true);
+      afterSpy.notCalled.should.equal(true);
+      cacheinsertSpy.notCalled.should.equal(true);
+
     });
 
-    it('should pull from cache and use metadata info', (done) => {
+    it('should pull from cache and use metadata info', async () => {
       const beforeSpy = sinon.spy((req, beforeCallback) => {
         beforeCallback();
       });
@@ -209,7 +282,7 @@ describe('Tests for create-model', function () {
         callback(null, { ttl: 10, metadata: {} });
       });
 
-      class Model extends providerMock.Model {}
+      class Model extends MockModel {}
       Model.prototype.getData = getDataSpy;
       const model = createModel({ ProviderModel: Model, koop: koopMock }, {
         cache: {
@@ -220,21 +293,20 @@ describe('Tests for create-model', function () {
         after: afterSpy
       });
 
-      model.pull({ url: 'domain/test-provider', params: {}, query: {} }, function (error, data) {
-        (error === null).should.equal(true);
-        data.should.deepEqual({ metadata: {
-          updated: 0,
-          expires: now + 86400000
-        },
-        features: ['foo']
-        });
-        cacheRetrieveSpy.calledOnce.should.equal(true);
-        beforeSpy.notCalled.should.equal(true);
-        getDataSpy.notCalled.should.equal(true);
-        afterSpy.notCalled.should.equal(true);
-        cacheinsertSpy.notCalled.should.equal(true);
-        done();
+      const pullData = promisify(model.pull).bind(model);
+
+      const data = await pullData({ url: 'domain/test-provider', params: {}, query: {} });
+      data.should.deepEqual({ metadata: {
+        updated: 0,
+        expires: now + 86400000
+      },
+      features: ['foo']
       });
+      cacheRetrieveSpy.calledOnce.should.equal(true);
+      beforeSpy.notCalled.should.equal(true);
+      getDataSpy.notCalled.should.equal(true);
+      afterSpy.notCalled.should.equal(true);
+      cacheinsertSpy.notCalled.should.equal(true);
     });
 
     it('should send error in callback', async () => {
@@ -256,7 +328,7 @@ describe('Tests for create-model', function () {
         callback(new Error('err in getData'));
       });
 
-      class Model extends providerMock.Model {}
+      class Model extends MockModel {}
       Model.prototype.getData = getDataSpy;
       const model = createModel({ ProviderModel: Model, koop: koopMock }, {
         cache: {
@@ -266,77 +338,25 @@ describe('Tests for create-model', function () {
         before: beforeSpy,
         after: afterSpy
       });
-      const pullPromise = promisify(model.pull).bind(model);
+      const pullData = promisify(model.pull).bind(model);
+
       try {
-        await pullPromise({ url: 'domain/test-provider', params: {}, query: {} });
+        await pullData({ url: 'domain/test-provider', params: {}, query: {} });
         should.fail();
       } catch (err) {
         err.message.should.equal('err in getData');
       }
     });
-
   });
 
   describe('createKey', function () {
-    it('should create cache-key as provider name', async () => {
-      const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
-        callback(null, {});
-      });
-      const pullSpy = sinon.spy(() => {});
-
-      // create a model with mocked cache "retrieve" function
-      const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
-        cache: {
-          retrieve: retrieveSpy,
-          insert: () => {}
-        }
-      });
-
-      await model.pull({ url: 'domain/test-provider', params: {}, query: {} }, pullSpy);
-      pullSpy.should.be.calledOnce();
-      pullSpy.firstCall.args.length.should.equal(2);
-      pullSpy.firstCall.args.should.deepEqual([null, {}]);
-      retrieveSpy.should.be.calledOnce();
-      retrieveSpy.firstCall.args.length.should.equal(3);
-      retrieveSpy.firstCall.args[0].should.equal('test-provider');
-      retrieveSpy.firstCall.args[1].should.be.an.Object().and.be.empty();
-      retrieveSpy.firstCall.args[2].should.be.an.Function();
-    });
-
-    it('should create cache-key as provider name and concenated url params', async () => {
-      const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
-        callback(null, {});
-      });
-      const pullSpy = sinon.spy(() => {});
-
-      // create a model with mocked cache "retrieve" function
-      const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
-        cache: {
-          retrieve: retrieveSpy,
-          insert: () => {}
-        }
-      });
-
-      await model.pull({ url: 'domain/test-provider', params: { host: 'host-param', id: 'id-param', layer: 'layer-param' }, query: {} }, pullSpy);
-
-      pullSpy.should.be.calledOnce();
-      pullSpy.firstCall.args.length.should.equal(2);
-      should.not.exist(pullSpy.firstCall.args[0]);
-      pullSpy.firstCall.args[1].should.be.an.Object().and.be.empty();
-      retrieveSpy.should.be.calledOnce();
-      retrieveSpy.firstCall.args.length.should.equal(3);
-      retrieveSpy.firstCall.args[0].should.equal('test-provider::host-param::id-param::layer-param');
-      retrieveSpy.firstCall.args[1].should.be.an.Object().and.be.empty();
-      retrieveSpy.firstCall.args[2].should.be.an.Function();
-    });
-
     it('should create cache-key from Model defined createKey function', async () => {
       const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
         callback(null, {});
       });
       const pullSpy = sinon.spy();
 
-      class Model extends providerMock.Model {
+      class Model extends MockModel {
         createKey () { return 'custom-key'; }
       }
       // create a model with mocked cache "retrieve" function
@@ -374,7 +394,7 @@ describe('Tests for create-model', function () {
     };
 
     it('should attach auth methods when auth plugin is registered with Koop', () => {
-      const model = createModel({ ProviderModel: providerMock.Model, namespace: 'test-provider', koop: koopMock }, {
+      const model = createModel({ ProviderModel: MockModel, namespace: 'test-provider', koop: koopMock }, {
         cache: {
           retrieve: () => {},
           insert: () => {}
@@ -399,7 +419,7 @@ describe('Tests for create-model', function () {
       const getDataSpy = sinon.spy(function (req, callback) {
         callback(null, { metadata: {} });
       });
-      class Model extends providerMock.Model {}
+      class Model extends MockModel {}
       Model.prototype.getData = getDataSpy;
 
       const model = createModel({ ProviderModel: Model, koop: koopMock }, {
@@ -434,7 +454,7 @@ describe('Tests for create-model', function () {
         callback(null, { metadata: {} });
       });
 
-      class Model extends providerMock.Model {}
+      class Model extends MockModel {}
       Model.prototype.getData = getDataSpy;
 
       const afterSpy = sinon.spy(function (req, data, callback) {
@@ -448,7 +468,7 @@ describe('Tests for create-model', function () {
       const model = createModel({ ProviderModel: Model, koop: koopMock }, {
         cache: {
           retrieve: (key, query, callback) => {
-            callback(new Error('no cache'));
+            callback(null);
           },
           insert: () => {}
         },
@@ -476,244 +496,355 @@ describe('Tests for create-model', function () {
     });
   });
 
-  describe('fetch layer metadata', function () {
+  describe('model pullLayer method', function () {
     afterEach(function () {
       // reset the getLayer() function to default
       createModel.prototype.getLayer = undefined;
       createModel.prototype.createKey = undefined;
     });
 
-    it('should throw an error if the getLayer() function is not implemented', function () {
-      const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
-        callback(new Error('not found'));
-      });
-      const callbackSpy = sinon.spy();
+    it('should throw an error if the getLayer() function is not implemented', async () => {
+
+      class Model extends MockModel {}
+      Model.prototype.getLayer = undefined;
 
       // create a model with mocked cache "retrieve" function
-      const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
+      const model = createModel({ ProviderModel: Model, koop: koopMock, namespace: 'test-provider' }, {});
+
+      const pullLayer = promisify(model.pullLayer).bind(model);
+
+      try {
+        await pullLayer({ url: 'domain/test-provider', params: {}, query: {} });
+        should.fail('should have thrown');
+      } catch (err) {
+        err.message.should.equal('getLayer() method is not implemented in the test-provider provider.');
+      }
+    });
+
+    it('logs error from cache retrieve', async function () {
+      const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
+        callback(new Error('cache error'));
+      });
+
+      // create a model with mocked cache "retrieve" function
+      const model = createModel({ ProviderModel: MockModel, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy,
           insert: () => {}
         }
       });
 
-      model.pullLayer({ url: 'domain/test-provider', params: {}, query: {} }, callbackSpy);
+      const pullLayer = promisify(model.pullLayer).bind(model);
 
+      const data = await pullLayer({ url: 'domain/test-provider', params: {}, query: {} });
+      data.should.deepEqual({
+        layer: 'foo'
+      });
       retrieveSpy.should.be.calledOnce();
-      callbackSpy.should.be.calledOnce();
-      callbackSpy.firstCall.args.length.should.equal(1);
-      callbackSpy.firstCall.args[0].should.be.an.Error();
+      koopMock.log.debug.should.be.calledOnce();
     });
 
-    it('should try to fetch from cache', function () {
+    it('should try to fetch from cache', async function () {
       const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
-        callback(null, {});
+        callback(null, {
+          layer: 'cached'
+        });
       });
+
       const getLayerSpy = sinon.spy(function (req, callback) {
         callback(null, {});
       });
-      const callbackSpy = sinon.spy();
 
       createModel.prototype.getLayer = getLayerSpy;
 
       // create a model with mocked cache "retrieve" function
-      const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
+      const model = createModel({ ProviderModel: MockModel, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy,
           insert: () => {}
         }
       });
 
-      model.pullLayer({ url: 'domain/test-provider', params: {}, query: {} }, callbackSpy);
+      const pullLayer = promisify(model.pullLayer).bind(model);
 
+      const data = await pullLayer({ url: 'domain/test-provider', params: {}, query: {} });
+      data.should.deepEqual({
+        layer: 'cached'
+      });
       retrieveSpy.should.be.calledOnce();
-      retrieveSpy.firstCall.args.length.should.equal(3);
-      retrieveSpy.firstCall.args[0].should.equal('test-provider::layer');
-      retrieveSpy.firstCall.args[1].should.be.an.Object().and.be.empty();
-      retrieveSpy.firstCall.args[2].should.be.an.Function();
       getLayerSpy.should.not.be.called();
-      callbackSpy.should.be.calledOnce();
-      callbackSpy.firstCall.args.length.should.equal(2);
-      should.not.exist(callbackSpy.firstCall.args[0]);
-      callbackSpy.firstCall.args[1].should.be.an.Object();
     });
 
-    it('should call the getLayer() function if cache misses', function () {
+    it('should call the getLayer() function if cache misses', async function () {
       const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
         callback(new Error('not found'));
       });
-      const getLayerSpy = sinon.spy(function (req, callback) {
-        callback(null, {});
-      });
-      const callbackSpy = sinon.spy();
 
       // create a model with mocked cache "retrieve" function
-      const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
+      const model = createModel({ ProviderModel: MockModel, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy,
           insert: () => {}
+        }
+      });
+
+
+      const pullLayer = promisify(model.pullLayer).bind(model);
+
+      const data = await pullLayer({ url: 'domain/test-provider', params: {}, query: {} });
+      data.should.deepEqual({
+        layer: 'foo'
+      });
+      retrieveSpy.should.be.calledOnce();
+    });
+
+    it('should call the getLayer() function if cache misses, inserts to cache', async function () {
+      const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
+        callback(null);
+      });
+
+      const insertSpy = sinon.spy();
+      
+      const getLayerSpy = sinon.spy(function (req, callback) {
+        callback(null, { layer: 'foo', ttl: 10 });
+      });
+
+      MockModel.prototype.getLayer = getLayerSpy;
+
+      // create a model with mocked cache "retrieve" function
+      const model = createModel({ ProviderModel: MockModel, koop: koopMock }, {
+        cache: {
+          retrieve: retrieveSpy,
+          insert: insertSpy
         }
       });
 
       model.getLayer = getLayerSpy;
 
-      model.pullLayer({ url: 'domain/test-provider', params: {}, query: {} }, callbackSpy);
+      const pullLayer = promisify(model.pullLayer).bind(model);
 
+      const data = await pullLayer({ url: 'domain/test-provider', params: {}, query: {} });
+      data.should.deepEqual({
+        layer: 'foo',
+        ttl: 10
+      });
       retrieveSpy.should.be.calledOnce();
-      getLayerSpy.should.be.calledOnce();
-      callbackSpy.should.be.calledOnce();
-      callbackSpy.firstCall.args.length.should.equal(2);
-      should.not.exist(callbackSpy.firstCall.args[0]);
-      callbackSpy.firstCall.args[1].should.be.an.Object();
+      insertSpy.should.be.calledOnce();
     });
 
-    it('should use the provided createKey function', function () {
-      const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
-        callback(null, {});
+    it('should send error in callback', async () => {
+      const beforeSpy = sinon.spy((req, beforeCallback) => {
+        beforeCallback();
       });
+
+      const afterSpy = sinon.spy(function (req, data, callback) {
+        callback(null, data);
+      });
+
+      const cacheRetrieveSpy = sinon.spy((key, query, callback) => {
+        callback(null);
+      });
+
+      const cacheinsertSpy = sinon.spy(() => {});
+
       const getLayerSpy = sinon.spy(function (req, callback) {
-        callback(null, {});
+        callback(new Error('err in getLayer'));
       });
-      const callbackSpy = sinon.spy();
 
-      createModel.prototype.getLayer = getLayerSpy;
-
-      class Model extends providerMock.Model {
-        createKey () { return 'test-key'; }
-      }
-
-      // create a model with mocked cache "retrieve" function
+      class Model extends MockModel {}
+      Model.prototype.getLayer = getLayerSpy;
       const model = createModel({ ProviderModel: Model, koop: koopMock }, {
         cache: {
-          retrieve: retrieveSpy,
-          insert: () => { }
-        }
+          retrieve: cacheRetrieveSpy,
+          insert: cacheinsertSpy
+        },
+        before: beforeSpy,
+        after: afterSpy
       });
+      const pullLayer = promisify(model.pullLayer).bind(model);
 
-      model.pullLayer({ url: 'domain/test-provider', params: {}, query: {} }, callbackSpy);
-
-      retrieveSpy.should.be.calledOnce();
-      retrieveSpy.firstCall.args[0].should.equal('test-key');
+      try {
+        await pullLayer({ url: 'domain/test-provider', params: {}, query: {} });
+        should.fail();
+      } catch (err) {
+        err.message.should.equal('err in getLayer');
+      }
     });
   });
 
-  describe('fetch catalog metadata', function () {
+  describe('model pullCatalog method', function () {
     afterEach(function () {
       // reset the getCatalog() function to default
       createModel.prototype.getCatalog = undefined;
     });
 
-    it('should throw an error if the getCatalog() function is not implemented', function () {
-      const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
-        callback(new Error('not found'));
-      });
-      const callbackSpy = sinon.spy();
+    it('should throw an error if the getCatalog() function is not implemented', async () => {
+
+      class Model extends MockModel {}
+      Model.prototype.getCatalog = undefined;
 
       // create a model with mocked cache "retrieve" function
-      const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
-        cache: {
-          retrieve: retrieveSpy,
-          insert: () => {}
-        }
-      });
+      const model = createModel({ ProviderModel: Model, koop: koopMock, namespace: 'test-provider' }, {});
 
-      model.pullCatalog({ url: 'domain/test-provider', params: {}, query: {} }, callbackSpy);
+      const pullCatalog = promisify(model.pullCatalog).bind(model);
 
-      retrieveSpy.should.be.calledOnce();
-      callbackSpy.should.be.calledOnce();
-      callbackSpy.firstCall.args.length.should.equal(1);
-      callbackSpy.firstCall.args[0].should.be.an.Error();
+      try {
+        await pullCatalog({ url: 'domain/test-provider', params: {}, query: {} });
+        should.fail('should have thrown');
+      } catch (err) {
+        err.message.should.equal('getCatalog() method is not implemented in the test-provider provider.');
+      }
     });
 
-    it('should try to fetch from cache', function () {
+    it('should try to fetch from cache', async function () {
       const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
-        callback(null, {});
+        callback(null, { foo: 'bar' });
       });
       const getCatalogSpy = sinon.spy(function (req, callback) {
         callback(null, {});
       });
-      const callbackSpy = sinon.spy();
+
+      class Model extends MockModel {}
+      Model.prototype.getCatalog = getCatalogSpy;
 
       // create a model with mocked cache "retrieve" function
-      const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
+      const model = createModel({ ProviderModel: MockModel, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy,
           insert: () => {}
         }
       });
 
-      model.getCatalog = getCatalogSpy;
 
-      model.pullCatalog({ url: 'domain/test-provider', params: {}, query: {} }, callbackSpy);
+      const pullCatalog = promisify(model.pullCatalog).bind(model);
 
+      const data = await pullCatalog({ url: 'domain/test-provider', params: {}, query: {} });
+      data.should.deepEqual({ foo: 'bar' });
       retrieveSpy.should.be.calledOnce();
       retrieveSpy.firstCall.args.length.should.equal(3);
-      retrieveSpy.firstCall.args[0].should.equal('test-provider::catalog');
+      retrieveSpy.firstCall.args[0].should.be.a.String();
       retrieveSpy.firstCall.args[1].should.be.an.Object().and.be.empty();
       retrieveSpy.firstCall.args[2].should.be.an.Function();
       getCatalogSpy.should.not.be.called();
-      callbackSpy.should.be.calledOnce();
-      callbackSpy.firstCall.args.length.should.equal(2);
-      should.not.exist(callbackSpy.firstCall.args[0]);
-      callbackSpy.firstCall.args[1].should.be.an.Object();
     });
 
-    it('should call the getCatalog() function is cache misses', function () {
+    it('logs error from cache retrieve', async function () {
       const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
-        callback(new Error('not found'));
+        callback(new Error('cache error'));
       });
-      const getCatalogSpy = sinon.spy(function (req, callback) {
-        callback(null, {});
-      });
-      const callbackSpy = sinon.spy();
 
       // create a model with mocked cache "retrieve" function
-      const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, {
+      const model = createModel({ ProviderModel: MockModel, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy,
           insert: () => {}
         }
       });
 
-      model.getCatalog = getCatalogSpy;
+      const pullCatalog = promisify(model.pullCatalog).bind(model);
 
-      model.pullCatalog({ url: 'domain/test-provider', params: {}, query: {} }, callbackSpy);
-
+      const data = await pullCatalog({ url: 'domain/test-provider', params: {}, query: {} });
+      data.should.deepEqual({
+        catalog: 'foo'
+      });
       retrieveSpy.should.be.calledOnce();
-      getCatalogSpy.should.be.calledOnce();
-      callbackSpy.should.be.calledOnce();
-      callbackSpy.firstCall.args.length.should.equal(2);
-      should.not.exist(callbackSpy.firstCall.args[0]);
-      callbackSpy.firstCall.args[1].should.be.an.Object();
+      koopMock.log.debug.should.be.calledOnce();
     });
 
-    it('should use the provided createKey function', function () {
+    it('should call the getCatalog() function if cache misses', async function () {
       const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
-        callback(null, {});
+        callback();
       });
-      const getLayerSpy = sinon.spy(function (req, callback) {
-        callback(null, {});
-      });
-      const callbackSpy = sinon.spy();
-
-      createModel.prototype.getLayer = getLayerSpy;
-
-      class Model extends providerMock.Model {
-        createKey () { return 'test-key'; }
-      }
 
       // create a model with mocked cache "retrieve" function
-      const model = createModel({ ProviderModel: Model, koop: koopMock }, {
+      const model = createModel({ ProviderModel: MockModel, koop: koopMock }, {
         cache: {
           retrieve: retrieveSpy,
-          insert: () => { }
+          insert: () => {}
         }
       });
 
-      model.pullCatalog({ url: 'domain/test-provider', params: {}, query: {} }, callbackSpy);
+      const pullCatalog = promisify(model.pullCatalog).bind(model);
 
+      const data = await pullCatalog({ url: 'domain/test-provider', params: {}, query: {} });
+      data.should.deepEqual({
+        catalog: 'foo'
+      });
       retrieveSpy.should.be.calledOnce();
-      retrieveSpy.firstCall.args[0].should.equal('test-key');
+
+    });
+
+    it('should call the getCatalog() function if cache misses, inserts to cache', async function () {
+      const retrieveSpy = sinon.spy(function (key, queryParams, callback) {
+        callback(null);
+      });
+
+      const insertSpy = sinon.spy();
+      
+      const getCatalogSpy = sinon.spy(function (req, callback) {
+        callback(null, { catalog: 'foo', ttl: 10 });
+      });
+
+      MockModel.prototype.getCatalog = getCatalogSpy;
+
+      // create a model with mocked cache "retrieve" function
+      const model = createModel({ ProviderModel: MockModel, koop: koopMock }, {
+        cache: {
+          retrieve: retrieveSpy,
+          insert: insertSpy
+        }
+      });
+
+      model.getLayer = getCatalogSpy;
+
+      const pullCatalog = promisify(model.pullCatalog).bind(model);
+
+      const data = await pullCatalog({ url: 'domain/test-provider', params: {}, query: {} });
+      data.should.deepEqual({
+        catalog: 'foo',
+        ttl: 10
+      });
+      retrieveSpy.should.be.calledOnce();
+      insertSpy.should.be.calledOnce();
+    });
+
+    it('should send error in callback', async () => {
+      const beforeSpy = sinon.spy((req, beforeCallback) => {
+        beforeCallback();
+      });
+
+      const afterSpy = sinon.spy(function (req, data, callback) {
+        callback(null, data);
+      });
+
+      const cacheRetrieveSpy = sinon.spy((key, query, callback) => {
+        callback(null);
+      });
+
+      const cacheinsertSpy = sinon.spy(() => {});
+
+      const getCatalogSpy = sinon.spy(function (req, callback) {
+        callback(new Error('err in getCatalog'));
+      });
+
+      class Model extends MockModel {}
+      Model.prototype.getCatalog = getCatalogSpy;
+      const model = createModel({ ProviderModel: Model, koop: koopMock }, {
+        cache: {
+          retrieve: cacheRetrieveSpy,
+          insert: cacheinsertSpy
+        },
+        before: beforeSpy,
+        after: afterSpy
+      });
+      const pullCatalog = promisify(model.pullCatalog).bind(model);
+
+      try {
+        await pullCatalog({ url: 'domain/test-provider', params: {}, query: {} });
+        should.fail();
+      } catch (err) {
+        err.message.should.equal('err in getCatalog');
+      }
     });
   });
 
@@ -721,16 +852,16 @@ describe('Tests for create-model', function () {
     let getStreamSpy;
     beforeEach(function () {
       getStreamSpy = sinon.stub().resolves(new Readable({ read () { } }));
-      providerMock.Model.prototype.getStream = getStreamSpy;
+      MockModel.prototype.getStream = getStreamSpy;
     });
 
     afterEach(function () {
       // reset the getStream() function to default
-      providerMock.Model.prototype.getStream = undefined;
+      MockModel.prototype.getStream = undefined;
     });
 
     it('should resolve with result of getStream', async function () {
-      const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock });
+      const model = createModel({ ProviderModel: MockModel, koop: koopMock });
 
       const stream = await model.pullStream({ some: 'options' });
 
@@ -741,7 +872,7 @@ describe('Tests for create-model', function () {
     it('should call "before" before getStream', async function () {
       const beforeSpy = sinon.stub().callsFake((_, cb) => cb());
 
-      const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock }, { before: beforeSpy });
+      const model = createModel({ ProviderModel: MockModel, koop: koopMock }, { before: beforeSpy });
 
       await model.pullStream({ some: 'options' });
 
@@ -751,9 +882,9 @@ describe('Tests for create-model', function () {
     });
 
     it('should reject if the getStream() function is not implemented', async function () {
-      providerMock.Model.prototype.getStream = undefined; // no getStream function
+      MockModel.prototype.getStream = undefined; // no getStream function
 
-      const model = createModel({ ProviderModel: providerMock.Model, koop: koopMock });
+      const model = createModel({ ProviderModel: MockModel, koop: koopMock });
 
       try {
         await model.pullStream({ some: 'options' });

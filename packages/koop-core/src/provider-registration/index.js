@@ -21,6 +21,7 @@ module.exports = class ProviderRegistration {
   static create (params) {
     const provider = new ProviderRegistration(params);
     provider.registerRoutes(params.koop.server);
+    params.koop.log.info(`registered provider: ${provider.namespace} v${provider.version}`);
     provider.logRoutes();
     return provider;
   }
