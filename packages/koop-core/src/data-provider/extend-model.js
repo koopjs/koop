@@ -6,7 +6,7 @@ const after = (req, data, callback) => { callback(null, data); };
 const cacheRetrieveNoop = (key, options, callback) => { callback(); };
 const cacheInsertNoop = (key, options, data, callback) => { callback(); };
 
-module.exports = function createModel ({ ProviderModel, namespace, logger, cache, authModule }, options = {}) {
+module.exports = function extendModel ({ ProviderModel, namespace, logger, cache, authModule }, options = {}) {
   class Model extends ProviderModel {
     #cacheTtl;
     #before;

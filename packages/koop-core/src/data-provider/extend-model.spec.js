@@ -5,7 +5,7 @@ require('should-sinon');
 const _ = require('lodash');
 const { Readable } = require('stream');
 
-const createModel = require('./create-model');
+const extendModel = require('./extend-model');
 
 const mockCache = {
   retrieve(req, callback) {
@@ -44,7 +44,7 @@ class MockModel {
   }
 }
 
-describe('Tests for create-model', function () {
+describe('Tests for extend-model', function () {
   beforeEach(() => {
     mockLogger.debug.resetHistory();
   });
@@ -58,7 +58,7 @@ describe('Tests for create-model', function () {
           this.options = options;
         }
       }
-      const model = createModel(
+      const model = extendModel(
         { ProviderModel: Model, logger: mockLogger, cache: mockCache },
         {
           foo: 'bar',
@@ -78,7 +78,7 @@ describe('Tests for create-model', function () {
           this.cache = modelDefinedCache;
         }
       }
-      const model = createModel(
+      const model = extendModel(
         { ProviderModel: Model, logger: mockLogger, cache: mockCache },
         {
           foo: 'bar',
@@ -89,7 +89,7 @@ describe('Tests for create-model', function () {
     });
 
     it('should work without cache', () => {
-      const model = createModel(
+      const model = extendModel(
         { ProviderModel: MockModel, logger: mockLogger },
         {
           foo: 'bar',
@@ -116,7 +116,7 @@ describe('Tests for create-model', function () {
       class Model extends MockModel {}
       Model.prototype.getData = getDataSpy;
 
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: Model,
         logger: mockLogger,
         cache: mockCache,
@@ -149,7 +149,7 @@ describe('Tests for create-model', function () {
 
       class Model extends MockModel {}
       Model.prototype.getData = getDataSpy;
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: Model,
         logger: mockLogger,
         cache: mockCache,
@@ -180,7 +180,7 @@ describe('Tests for create-model', function () {
 
       class Model extends MockModel {}
       Model.prototype.getData = getDataSpy;
-      const model = createModel(
+      const model = extendModel(
         { ProviderModel: Model, logger: mockLogger, cache: mockCache },
         {
           cacheTtl: 10,
@@ -212,7 +212,7 @@ describe('Tests for create-model', function () {
 
       class Model extends MockModel {}
       Model.prototype.getData = getDataSpy;
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: Model,
         logger: mockLogger,
         cache: mockCache,
@@ -254,7 +254,7 @@ describe('Tests for create-model', function () {
 
       class Model extends MockModel {}
       Model.prototype.getData = getDataSpy;
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: Model,
         logger: mockLogger,
         cache: mockCache,
@@ -300,7 +300,7 @@ describe('Tests for create-model', function () {
 
       class Model extends MockModel {}
       Model.prototype.getData = getDataSpy;
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: Model,
         logger: mockLogger,
         cache: mockCache,
@@ -339,7 +339,7 @@ describe('Tests for create-model', function () {
 
       class Model extends MockModel {}
       Model.prototype.getData = getDataSpy;
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: Model,
         logger: mockLogger,
         cache: mockCache,
@@ -371,7 +371,7 @@ describe('Tests for create-model', function () {
         }
       }
       // create a model with mocked cache "retrieve" function
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: Model,
         logger: mockLogger,
         cache: mockCache,
@@ -391,7 +391,7 @@ describe('Tests for create-model', function () {
 
   describe('auth methods', () => {
     it('should attach auth methods when auth plugin is registered with Koop', () => {
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: MockModel,
         namespace: 'test-provider',
         logger: mockLogger,
@@ -424,7 +424,7 @@ describe('Tests for create-model', function () {
       class Model extends MockModel {}
       Model.prototype.getData = getDataSpy;
 
-      const model = createModel(
+      const model = extendModel(
         { ProviderModel: Model, logger: mockLogger, cache: mockCache },
         {
           before: beforeSpy,
@@ -468,7 +468,7 @@ describe('Tests for create-model', function () {
         callback(null, data);
       });
       const pullCallbackSpy = sinon.spy(function () {});
-      const model = createModel(
+      const model = extendModel(
         { ProviderModel: Model, logger: mockLogger, cache: mockCache },
         {
           after: afterSpy,
@@ -516,8 +516,8 @@ describe('Tests for create-model', function () {
   describe('model pullLayer method', function () {
     afterEach(function () {
       // reset the getLayer() function to default
-      createModel.prototype.getLayer = undefined;
-      createModel.prototype.createKey = undefined;
+      extendModel.prototype.getLayer = undefined;
+      extendModel.prototype.createKey = undefined;
     });
 
     it('should throw an error if the getLayer() function is not implemented', async () => {
@@ -525,7 +525,7 @@ describe('Tests for create-model', function () {
       Model.prototype.getLayer = undefined;
 
       // create a model with mocked cache "retrieve" function
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: Model,
         logger: mockLogger,
         cache: mockCache,
@@ -552,7 +552,7 @@ describe('Tests for create-model', function () {
         insert: sinon.spy(() => {}),
       };
 
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: MockModel,
         logger: mockLogger,
         cache: mockCache,
@@ -586,9 +586,9 @@ describe('Tests for create-model', function () {
         callback(null, {});
       });
 
-      createModel.prototype.getLayer = getLayerSpy;
+      extendModel.prototype.getLayer = getLayerSpy;
 
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: MockModel,
         logger: mockLogger,
         cache: mockCache,
@@ -616,7 +616,7 @@ describe('Tests for create-model', function () {
         insert: sinon.spy(() => {}),
       };
 
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: MockModel,
         logger: mockLogger,
         cache: mockCache,
@@ -643,7 +643,7 @@ describe('Tests for create-model', function () {
       MockModel.prototype.getLayer = getLayerSpy;
 
       // create a model with mocked cache "retrieve" function
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: MockModel,
         logger: mockLogger,
       });
@@ -680,7 +680,7 @@ describe('Tests for create-model', function () {
       MockModel.prototype.getLayer = getLayerSpy;
 
       // create a model with mocked cache "retrieve" function
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: MockModel,
         logger: mockLogger,
         cache: mockCache,
@@ -719,7 +719,7 @@ describe('Tests for create-model', function () {
 
       class Model extends MockModel {}
       Model.prototype.getLayer = getLayerSpy;
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: Model,
         logger: mockLogger,
         cache: mockCache,
@@ -738,7 +738,7 @@ describe('Tests for create-model', function () {
   describe('model pullCatalog method', function () {
     afterEach(function () {
       // reset the getCatalog() function to default
-      createModel.prototype.getCatalog = undefined;
+      extendModel.prototype.getCatalog = undefined;
     });
 
     it('should throw an error if the getCatalog() function is not implemented', async () => {
@@ -746,7 +746,7 @@ describe('Tests for create-model', function () {
       Model.prototype.getCatalog = undefined;
 
       // create a model with mocked cache "retrieve" function
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: Model,
         logger: mockLogger,
         cache: mockCache,
@@ -784,7 +784,7 @@ describe('Tests for create-model', function () {
       class Model extends MockModel {}
       Model.prototype.getCatalog = getCatalogSpy;
 
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: Model,
         logger: mockLogger,
         cache: mockCache,
@@ -816,7 +816,7 @@ describe('Tests for create-model', function () {
       };
 
       // create a model with mocked cache "retrieve" function
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: MockModel,
         logger: mockLogger,
         cache: mockCache,
@@ -850,7 +850,7 @@ describe('Tests for create-model', function () {
 
       MockModel.prototype.getCatalog = getCatalogSpy;
 
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: MockModel,
         logger: mockLogger,
         cache: mockCache,
@@ -888,7 +888,7 @@ describe('Tests for create-model', function () {
 
       class Model extends MockModel {}
       Model.prototype.getCatalog = getCatalogSpy;
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: Model,
         logger: mockLogger,
         cache: mockCache,
@@ -922,7 +922,7 @@ describe('Tests for create-model', function () {
     });
 
     it('should resolve with result of getStream', async function () {
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: MockModel,
         logger: mockLogger,
         cache: mockCache,
@@ -938,7 +938,7 @@ describe('Tests for create-model', function () {
     it('should call "before" before getStream', async function () {
       const beforeSpy = sinon.stub().callsFake((_, cb) => cb());
 
-      const model = createModel(
+      const model = extendModel(
         {
           ProviderModel: MockModel,
           logger: mockLogger,
@@ -958,7 +958,7 @@ describe('Tests for create-model', function () {
     it('should reject if the getStream() function is not implemented', async function () {
       MockModel.prototype.getStream = undefined; // no getStream function
 
-      const model = createModel({
+      const model = extendModel({
         ProviderModel: MockModel,
         logger: mockLogger,
         cache: mockCache,

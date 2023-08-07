@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const Joi = require('joi');
-const createRouteController = require('./create-controller');
-const createModel = require('./create-model');
+const extendRouteController = require('./extend-controller');
+const extendModel = require('./extend-model');
 const ProviderRoute = require('./provider-route');
 
 const providerOptionsSchema = Joi.object({
@@ -56,7 +56,7 @@ module.exports = class DataProvider {
       .replace(/\s/g, '-')
       .toLowerCase();
 
-    const model = createModel(
+    const model = extendModel(
       {
         ProviderModel: pluginDefinition.Model,
         namespace: this.namespace,
@@ -68,10 +68,10 @@ module.exports = class DataProvider {
     this.#definedProviderRoutes = pluginDefinition.routes || [];
 
     this.#outputPluginControllers = outputPlugins.map(({ outputClass, options }) => {
-      return createRouteController(model, outputClass, options);
+      return extendRouteController(model, outputClass, options);
     });
 
-    this.#providerController = createRouteController(
+    this.#providerController = extendRouteController(
       model,
       pluginDefinition.Controller,
     );
