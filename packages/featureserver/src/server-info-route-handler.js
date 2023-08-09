@@ -23,8 +23,8 @@ function serverMetadataResponse(data, req = {}) {
   const appConfig = req.app?.locals?.config?.featureServer || {};
 
   return ServerMetadata.create({
-    ...serverConfig,
     ...appConfig,
+    ...serverConfig,
     ...providerMetadata,
     currentVersion: serverConfig.currentVersion || appConfig.currentVersion,
     fullVersion: serverConfig.fullVersion || appConfig.fullVersion,

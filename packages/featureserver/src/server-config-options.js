@@ -9,10 +9,9 @@ const allowedOptions = [
   'initialExtent',
   'fullExtent',
   'hasStaticData',
-  'units',
 ];
 
-class ServerMetadataOptions {
+class ServerConfigOptions {
   #options;
 
   constructor() {
@@ -25,12 +24,12 @@ class ServerMetadataOptions {
   setOptions(options) {
     if(!this.#options) {
       this.#options = _.pick(options, allowedOptions);
+      return;
     }
   }
-
 }
 
-const serverMetadataOptions = new ServerMetadataOptions();
+const serverMetadataOptions = new ServerConfigOptions();
 
 module.exports = {
   get: serverMetadataOptions.getOptions.bind(serverMetadataOptions),

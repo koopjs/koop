@@ -37,6 +37,64 @@ describe('server info', () => {
     ]);
   });
 
+
+  it('should construct options from empty geojson and app config', () => {
+    const serverInfo = serverInfoHandler({}, { app: { locals: { config: { featureServer: { currentVersion: 101.1 } } } }});
+
+    serverInfo.should.deepEqual({ server: 'metadata' });
+
+    serverMetadataCreateSpy.firstCall.args.should.deepEqual([
+      {
+        currentVersion: 101.1,
+        fullVersion: undefined,
+        initialExtent: undefined,
+        fullExtent: undefined,
+        layers: [],
+        tables: [],
+        relationships: [],
+      },
+    ]);
+  });
+
+  it('should construct options from geojson metadata, server-config settings, and app config', () => {
+
+    const serverInfoHandler = proxyquire('./server-info-route-handler', {
+      './helpers/server-metadata': {
+        create: serverMetadataCreateSpy,
+      },
+      './server-config-options': {
+        get: () => {
+          return {
+            currentVersion: 99.1,
+            description: 'From server config',
+            serviceDescription: 'From server config'
+          };
+        }
+      }
+    });
+    const serverInfo = serverInfoHandler({
+      metadata: {
+        description: 'From provider meta'
+      }
+    }, { app: { locals: { config: { featureServer: { currentVersion: 101.1, serviceDescription: 'From app config' } } } }});
+
+    serverInfo.should.deepEqual({ server: 'metadata' });
+
+    serverMetadataCreateSpy.firstCall.args.should.deepEqual([
+      {
+        currentVersion: 99.1,
+        fullVersion: undefined,
+        description: 'From provider meta',
+        serviceDescription: 'From server config',
+        initialExtent: undefined,
+        fullExtent: undefined,
+        layers: [],
+        tables: [],
+        relationships: [],
+      },
+    ]);
+  });
+
   it('should construct options from empty feature collection and no settings', () => {
     const simpleCollectionFixture = { type: 'FeatureCollection', features: [] };
     const serverInfo = serverInfoHandler(simpleCollectionFixture);
@@ -177,7 +235,7 @@ describe('server info', () => {
     ]);
   });
 
-  it('should construct options using metadata where defined', () => {
+  it('should construct options using metadata where defined, no settings', () => {
     const layer1 = {
       type: 'FeatureCollection',
       crs: {

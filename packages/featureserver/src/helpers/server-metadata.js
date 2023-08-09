@@ -1,5 +1,9 @@
 const _ = require('lodash');
+const wktParser = require('wkt-parser');
+const projCodes = require('@esri/proj-codes');
+const { logger } = require('../logger');
 const { CURRENT_VERSION, FULL_VERSION } = require('../constants');
+const esriUnitsLookup = require('./esri-units-lookup');
 
 const DEFAULTS = {
   currentVersion: CURRENT_VERSION,
@@ -59,27 +63,29 @@ const OVERRIDABLE_DEFAULTS = [
   'initialExtent',
   'fullExtent',
   'hasStaticData',
-  'units',
   'layers',
   'tables',
-  'relationships'
+  'relationships',
 ];
 
 class ServerMetadata {
-  static create (options) {
+  static create(options) {
     return new ServerMetadata(options);
   }
 
-  constructor(options) {
+  constructor(options = {}) {
     const { relationships = [] } = options;
     const overrides = _.chain(options)
       .pick(options, OVERRIDABLE_DEFAULTS)
       .pickBy((prop) => !_.isUndefined(prop))
       .value();
 
-    overrides.serviceDescription =
-      overrides.serviceDescription ? overrides. serviceDescription : overrides.description;
-    overrides.initialExtent = overrides.initialExtent ? overrides.initialExtent : overrides.fullExtent;
+    overrides.serviceDescription = overrides.serviceDescription
+      ? overrides.serviceDescription
+      : overrides.description;
+    overrides.initialExtent = overrides.initialExtent
+      ? overrides.initialExtent
+      : overrides.fullExtent;
 
     Object.assign(this, {
       ...DEFAULTS,
@@ -87,8 +93,26 @@ class ServerMetadata {
     });
 
     this.supportsRelationshipsResource = relationships.length > 0;
+
+    if (options.spatialReference) {
+      this.units = getUnits(options.spatialReference) || this.units;
+    }
   }
 }
 
+function getUnits({ latestWkid, wkid, wkt }) {
+  try {
+    if (!wkt) {
+      ({ wkt } = projCodes.lookup(latestWkid || wkid));
+    }
+
+    const units = wktParser(wkt)?.units;
+    return esriUnitsLookup(units);
+  } catch (error) {
+    logger.debug(
+      `Could not set feature service units from spatial reference: ${error}`,
+    );
+  }
+}
 
 module.exports = ServerMetadata;
