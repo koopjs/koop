@@ -102,6 +102,9 @@ class GeoServices {
       this.model.authenticationSpecification?.useHttp === true ||
       process.env.KOOP_AUTH_HTTP === 'true';
     FeatureServer.setLogger({ logger: this.logger });
+
+    // Set overrides
+    FeatureServer.setServerConfigurationOptions(options);
   }
 
   async generalHandler(req, res) {

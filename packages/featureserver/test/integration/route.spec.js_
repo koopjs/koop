@@ -1,4 +1,4 @@
-const FeatureServer = require('../..');
+const FeatureServer = require('../../src');
 const request = require('supertest');
 const express = require('express');
 const should = require('should');

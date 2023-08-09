@@ -1,3 +1,3 @@
 module.exports = {
-  serverMetadata: require('./server-metadata')
+  serverMetadata: require('./server-metadata'),
 };

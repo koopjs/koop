@@ -1,4 +1,4 @@
-const FeatureServer = require('../..');
+const FeatureServer = require('../../src');
 const data = require('./fixtures/snow.json');
 const should = require('should');
 should.config.checkProtoEql = false;
@@ -22,7 +22,7 @@ describe('Info operations', () => {
         }
       };
       const restInfo = FeatureServer.restInfo(supplementalRestInfo, req);
-      restInfo.should.have.property('currentVersion', 10.51);
+      restInfo.should.have.property('currentVersion', 11.1);
       restInfo.should.have.property('authInfo');
       restInfo.authInfo.should.have.property('isTokenBasedSecurity', true);
       restInfo.authInfo.should.have.property('tokenServicesUrl').be.type('string');
