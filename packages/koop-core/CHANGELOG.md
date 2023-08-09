@@ -1,5 +1,11 @@
 # @koopjs/koop-core
 
+## 9.1.1
+
+### Patch Changes
+
+- refactor provider registration
+
 ## 9.1.0
 
 ### Minor Changes
