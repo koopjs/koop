@@ -3,10 +3,11 @@ const hasher = require('@sindresorhus/fnv1a');
 
 const before = (req, callback) => { callback(); };
 const after = (req, data, callback) => { callback(null, data); };
+const cacheRetrieveNoop = (key, options, callback) => { callback(); };
+const cacheInsertNoop = (key, options, data, callback) => { callback(); };
 
-module.exports = function createModel ({ ProviderModel, koop, namespace }, options = {}) {
+module.exports = function extendModel ({ ProviderModel, namespace, logger, cache, authModule }, options = {}) {
   class Model extends ProviderModel {
-    #cache;
     #cacheTtl;
     #before;
     #after;
@@ -16,18 +17,18 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
     #getLayer;
     #getCatalog;
 
-    constructor (koop, options) {
+    constructor ({ logger, cache }, options) {
 
-      super(koop, options);
+      super({ logger, log: logger }, options);
       // Provider constructor's may assign values to this.cache
+      const modelCache = this.cache || options.cache || cache;
       this.#cacheTtl = options.cacheTtl;
-      this.#cache = this.cache || options.cache || koop.cache;
       this.namespace = namespace;
-      this.logger = koop.log;
+      this.logger = logger;
       this.#before = promisify(options.before || before);
       this.#after = promisify(options.after || after);
-      this.#cacheRetrieve = promisify(this.#cache.retrieve).bind(this.#cache);
-      this.#cacheInsert = promisify(this.#cache.insert).bind(this.#cache);
+      this.#cacheRetrieve = promisify(modelCache?.retrieve || cacheRetrieveNoop).bind(modelCache);
+      this.#cacheInsert = promisify(modelCache?.insert || cacheInsertNoop).bind(modelCache);
       this.#getProviderData = promisify(this.getData).bind(this);
       this.#getLayer = this.getLayer ? promisify(this.getLayer).bind(this) : undefined;
       this.#getCatalog = this.getCatalog ? promisify(this.getCatalog).bind(this) : undefined;
@@ -81,7 +82,7 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
         const data = await this.#getLayer(req);
         const ttl = data.ttl || this.#cacheTtl;
         if (ttl) {
-          this.#cacheInsert(key, data, { ttl });
+          await this.#cacheInsert(key, data, { ttl });
         }
         callback(null, data);
       } catch (err) {
@@ -137,18 +138,18 @@ module.exports = function createModel ({ ProviderModel, koop, namespace }, optio
   }
 
   // Add auth methods if auth plugin registered with Koop
-  if (koop._authModule) {
+  if (authModule) {
     const {
       authenticationSpecification,
       authenticate,
       authorize
-    } = koop._authModule;
+    } = authModule;
 
     Model.prototype.authenticationSpecification = Object.assign({}, authenticationSpecification(namespace), { provider: namespace });
     Model.prototype.authenticate = authenticate;
     Model.prototype.authorize = authorize;
   }
-  return new Model(koop, options);
+  return new Model({ logger, cache }, options);
 };
 
 

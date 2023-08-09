@@ -3,7 +3,7 @@ class DefaultController {}
 /**
  * We extend all controllers to ensure the following properties exist: this.model, this.routes, this.namespace
  */
-module.exports = function createController (model, BaseController = DefaultController, options) {
+module.exports = function extendController (model, BaseController = DefaultController, options) {
   class Controller extends BaseController {
     constructor (model, options) {
       super(model, options);

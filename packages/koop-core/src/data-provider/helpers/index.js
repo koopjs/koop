@@ -1,5 +1,5 @@
 
 module.exports = {
-  namespacedRoutePath: require('./namespaced-route-path'),
+  composeRoutePath: require('./compose-route-path'),
   routeJoiner: require('./route-joiner')
 };
