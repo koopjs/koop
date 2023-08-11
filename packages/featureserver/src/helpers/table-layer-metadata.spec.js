@@ -2,7 +2,8 @@ const should = require('should');
 should.config.checkProtoEql = false;
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
-const { CURRENT_VERSION, FULL_VERSION } = require('../constants');
+const CURRENT_VERSION = 11.1;
+const FULL_VERSION = '11.1.0';
 
 const createLayerMetadataFieldsSpy = sinon.spy(function () {
   return ['fields'];

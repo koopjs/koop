@@ -1,5 +1,0 @@
-module.exports = {
-  CURRENT_VERSION: 11.1,
-  FULL_VERSION: '11.1.0',
-  MAX_RECORD_COUNT: 2000,
-};

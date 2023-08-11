@@ -3,7 +3,8 @@ should.config.checkProtoEql = false;
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 const { PointRenderer } = require('./renderers');
-const { CURRENT_VERSION, FULL_VERSION } = require('../constants');
+const CURRENT_VERSION = 11.1;
+const FULL_VERSION = '11.1.0';
 
 const calculateBoundsSpy = sinon.spy(function () {
   return [0, 1, 2, 3];
