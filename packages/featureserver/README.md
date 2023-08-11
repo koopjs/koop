@@ -32,32 +32,6 @@ routes.forEach(route => {
 })
 ```
 
-### Setting defaults at runtime
-FeatureServer allows several defaults to be set at runtime via Express's `app.locals` method.  Specifically, you will need to set:
-
-```js
-app.locals.config = {
-  featureServer: {
-    // define default here
-  }
-}
-```
-
-If you are using FeatureServer as part of a Koop instance, the equivalent of Express's `app.locals` is `koop.server.locals`.
-
-The follow properties can be set at runtime with the noted method:
-
-```js
-app.locals.config = {
-  featureServer: {
-    currentVersion: 11.01, // defaults to 10.51
-    fullVersion: '11.0.1', // defaults to '10.5.1'
-    serviceDescription: 'default service description',
-    description: 'default layer description'
-  }
-}
-```
-
 ## API
 * [FeatureServer.route](#FeatureServer.route)
 * [FeatureServer.query](#FeatureServer.query)
@@ -69,6 +43,7 @@ app.locals.config = {
 * [FeatureServer.error.authorize](#FeatureServer.error.authorize)
 * [FeatureServer.authenticate](#FeatureServer.error.authenticate)
 * [FeatureServer.queryRelatedRecords](#FeatureServer.queryRelatedRecords)
+* [FeatureServer.setDefaults](#FeatureServer.setDefaults)
 
 ### FeatureServer.route
 Pass in an `incoming request object`, an `outgoing response object`, a `geojson` object, and `options` and this function will route and return a geoservices compliant response
@@ -568,4 +543,47 @@ Output:
     }
   ]
 }
+```
+
+### FeatureServer.setDefaults
+FeatureServer allows setting some server and layer metadata values that are returned by the `FeatureServer.serverInfo` and `FeatureServer.layerInfo` methods. You can use the `setDefaults` method with an object that follows the following schema, though it need not have all properties listed below.
+
+```js
+{
+  currentVersion, // number; feature server version,
+  fullVersion, // string; feature server full version
+  maxRecordCount // number; max record count for queries
+  server: {
+    serviceDescription, // string; default serviceDescription returned in server metadata
+    description, // string; default description returned in server metadata
+    copyrightText, // string; default copyrightText return in server metadata
+    hasStaticData, // boolean; 
+    spatialReference, // ArcGIS spatial reference; https://developers.arcgis.com/web-map-specification/objects/spatialReference/
+    initialExtent, // ArcGIS extent; https://developers.arcgis.com/web-map-specification/objects/extent/
+    fullExtent // ArcGIS extent; https://developers.arcgis.com/web-map-specification/objects/extent/
+  }),
+  layer: {
+    description, // string; default description returned in server metadata
+    copyrightText, // string; default copyrightText return in server metadata
+    extent // ArcGIS extent; https://developers.arcgis.com/web-map-specification/objects/extent/
+  }
+}
+```
+
+#### Examples:
+
+If you are using FeatureServer directly (i.e., not via Koop):
+
+```js
+const FeatureServer = require('@koopjs/featureserver');
+FeatureServer.setDefaults({ currentVersion: 99.0 })
+```
+
+If you are using FeatureServer as part of a Koop instance, FeatureServer is registered on instantiation. But you can pass the `geoservicesDefaults` option to the Koop constructor:
+
+```js
+const koop = new Koop({
+  geoservicesDefaults: { currentVersion: 99.0 }
+});
+ 
 ```

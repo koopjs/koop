@@ -7,7 +7,6 @@ const {
   normalizeSpatialReference,
   normalizeInputData,
 } = require('./helpers');
-const serverConfigurationOptions = require('./server-config-options');
 const { logger } = require('./logger');
 const ServerMetadata = require('./helpers/server-metadata');
 
@@ -18,16 +17,15 @@ function serverMetadataResponse(data, req = {}) {
     inputCrs,
     sourceSR,
   );
-  const serverConfig = serverConfigurationOptions.get();
+
   // TODO: deprecate in favor or server-metadata-settings
   const appConfig = req.app?.locals?.config?.featureServer || {};
 
   return ServerMetadata.create({
     ...appConfig,
-    ...serverConfig,
     ...providerMetadata,
-    currentVersion: serverConfig.currentVersion || appConfig.currentVersion,
-    fullVersion: serverConfig.fullVersion || appConfig.fullVersion,
+    currentVersion: appConfig.currentVersion,
+    fullVersion: appConfig.fullVersion,
   });
 }
 
@@ -50,8 +48,8 @@ function normalizeMetadataFromProvider(data, inputCrs, sourceSR) {
     ...flattenMetadata(tables[0]),
     ...flattenMetadata(layers[0]),
     ...flattenMetadata(data),
-    fullExtent: normalizeExtent(extent, spatialReference),
-    initialExtent: normalizeExtent(
+    fullExtent: getExtent(extent, spatialReference),
+    initialExtent: getExtent(
       collectionMetadata?.initialExtent || extent,
       spatialReference,
     ),
@@ -127,6 +125,14 @@ function flattenMetadata(data) {
     ...metadata,
     ...rest,
   };
+}
+
+function getExtent(extent, spatialReference) {
+  try {
+    return normalizeExtent(extent, spatialReference);
+  } catch (error) {
+    logger.warn(`Could not normalize extent: ${ error }`);
+  }
 }
 
 function formatServerItemInfo(json, defaultId) {

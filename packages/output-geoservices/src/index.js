@@ -104,7 +104,7 @@ class GeoServices {
     FeatureServer.setLogger({ logger: this.logger });
 
     // Set overrides
-    FeatureServer.setServerConfigurationOptions(options);
+    FeatureServer.setDefaults(options.defaults);
   }
 
   async generalHandler(req, res) {
@@ -192,10 +192,12 @@ class GeoServices {
 
     try {
       const tokenResponse = await this.model.authenticate(req);
-      res.status(200).json({ ...tokenResponse, ssl: tokenResponse.ssl || false});
+      res
+        .status(200)
+        .json({ ...tokenResponse, ssl: tokenResponse.ssl || false });
     } catch (error) {
       const { code, message, details = [] } = normalizeError(error);
-      
+
       res.status(200);
 
       if (isGenerateTokenError(code, message)) {
@@ -213,24 +215,23 @@ class GeoServices {
   }
 }
 
-function isMissingTokenError (code, token) {
-  return (code === 'COM_0019' || code === 499 || (code === 401 && !token));
+function isMissingTokenError(code, token) {
+  return code === 'COM_0019' || code === 499 || (code === 401 && !token);
 }
 
-function isInvalidTokenError (code, token) {
-  return (code === 498 || (code === 401 && token));
+function isInvalidTokenError(code, token) {
+  return code === 498 || (code === 401 && token);
 }
 
-function isUnauthorizedError (code, message) {
-  return (code === 403 || message === ARCGIS_UNAUTHORIZED_MESSAGE);
+function isUnauthorizedError(code, message) {
+  return code === 403 || message === ARCGIS_UNAUTHORIZED_MESSAGE;
 }
 
-function isGenerateTokenError (code, message) {
-  return (code === 401 || message === ARCGIS_UNABLE_TO_GENERATE_TOKEN_MESSAGE);
+function isGenerateTokenError(code, message) {
+  return code === 401 || message === ARCGIS_UNABLE_TO_GENERATE_TOKEN_MESSAGE;
 }
 
 function normalizeError(error) {
-
   if (error.error) {
     return error.error;
   }

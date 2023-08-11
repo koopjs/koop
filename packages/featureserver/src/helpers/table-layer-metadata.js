@@ -1,8 +1,5 @@
 const _ = require('lodash');
-const {
-  CURRENT_VERSION,
-  FULL_VERSION
-} = require('../constants');
+const defaults = require('../metadata-defaults');
 const {
   LayerFields
 } = require('./fields');
@@ -33,6 +30,7 @@ class TableLayerMetadata {
 
     const layerId = reqLayer != null ? reqLayer : req.layerId;
 
+    // TODO: deprecate req.app.locals.config usage
     const {
       currentVersion,
       fullVersion,
@@ -60,60 +58,7 @@ class TableLayerMetadata {
   }
 
   constructor () {
-    Object.assign(this, {
-      id: 0,
-      name: 'Not Set',
-      type: 'Table',
-      description: 'This is a feature service powered by https://github.com/koopjs/koop/tree/master/packages/featureserver#readme',
-      copyrightText: ' ',
-      parentLayer: null,
-      subLayers: null,
-      defaultVisibility: true,
-      hasAttachments: false,
-      htmlPopupType: 'esriServerHTMLPopupTypeNone',
-      displayField: 'OBJECTID',
-      typeIdField: null,
-      fields: [],
-      relationships: [],
-      capabilities: 'Query',
-      maxRecordCount: 2000,
-      supportsStatistics: true,
-      supportsAdvancedQueries: true,
-      supportedQueryFormats: 'JSON',
-      ownershipBasedAccessControlForFeatures: {
-        allowOthersToQuery: true
-      },
-      useStandardizedQueries: true,
-      advancedQueryCapabilities: {
-        useStandardizedQueries: true,
-        supportsStatistics: true,
-        supportsOrderBy: true,
-        supportsDistinct: true,
-        supportsPagination: true,
-        supportsTrueCurve: false,
-        supportsReturningQueryExtent: true,
-        supportsQueryWithDistance: true
-      },
-      canModifyLayer: false,
-      dateFieldsTimeReference: null,
-      isDataVersioned: false,
-      supportsRollbackOnFailureParameter: true,
-      hasM: false,
-      hasZ: false,
-      allowGeometryUpdates: true,
-      objectIdField: 'OBJECTID',
-      globalIdField: '',
-      types: [],
-      templates: [],
-      hasStaticData: false,
-      timeInfo: {},
-      uniqueIdField: {
-        name: 'OBJECTID',
-        isSystemMaintained: true
-      },
-      currentVersion: CURRENT_VERSION,
-      fullVersion: FULL_VERSION
-    });
+    Object.assign(this, defaults.tableLayerDefaults());
   }
 
   mixinOverrides (geojson = {}, options = {}) {

@@ -9,7 +9,7 @@ describe('rest/info handler', () => {
         locals: {}
       }
     };
-    const result = restInfo({}, req);
+    const result = restInfo(undefined, req);
     result.should.deepEqual({
       currentVersion: CURRENT_VERSION,
       fullVersion: FULL_VERSION

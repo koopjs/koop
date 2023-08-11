@@ -4,20 +4,18 @@ const proxyquire = require('proxyquire');
 const ServerMetadata = require('./server-metadata');
 
 describe('ServerMetadata', () => {
-  // no overrides
   it('should use defaults when no overrides', () => {
     const result = ServerMetadata.create();
-    console.log(JSON.stringify(result));
     result.should.deepEqual({
       currentVersion: 11.1,
       fullVersion: '11.1.0',
       serviceDescription:
-        'This is a feature service exposed with Koop, an open source project that turns APIs into features. Service Description information may not be available for all services. For more information, check out https://github.com/koopjs/koop.',
+        'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
       maxRecordCount: 2000,
       description:
-        'This is a feature service exposed with Koop, an open source project that turns APIs into features. Service Description information may not be available for all services. For more information, check out https://github.com/koopjs/koop.',
+        'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
       copyrightText:
-        'Copyright information varies from provider to provider, for more information please contact the source of this data',
+        'Copyright information varies by provider. For more information please contact the source of this data.',
       spatialReference: { wkid: 4326, latestWkid: 4326 },
       fullExtent: {
         xmin: -180,
@@ -105,12 +103,12 @@ describe('ServerMetadata', () => {
       currentVersion: 11.1,
       fullVersion: '11.1.0',
       serviceDescription:
-        'This is a feature service exposed with Koop, an open source project that turns APIs into features. Service Description information may not be available for all services. For more information, check out https://github.com/koopjs/koop.',
+        'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
       maxRecordCount: 2000,
       description:
-        'This is a feature service exposed with Koop, an open source project that turns APIs into features. Service Description information may not be available for all services. For more information, check out https://github.com/koopjs/koop.',
+        'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
       copyrightText:
-        'Copyright information varies from provider to provider, for more information please contact the source of this data',
+        'Copyright information varies by provider. For more information please contact the source of this data.',
       spatialReference: { wkid: 4326, latestWkid: 4326 },
       fullExtent: {
         xmin: -180,

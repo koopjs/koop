@@ -2,55 +2,8 @@ const _ = require('lodash');
 const wktParser = require('wkt-parser');
 const projCodes = require('@esri/proj-codes');
 const { logger } = require('../logger');
-const { CURRENT_VERSION, FULL_VERSION } = require('../constants');
 const esriUnitsLookup = require('./esri-units-lookup');
-
-const DEFAULTS = {
-  currentVersion: CURRENT_VERSION,
-  fullVersion: FULL_VERSION,
-  serviceDescription:
-    'This is a feature service exposed with Koop, an open source project that turns APIs into features. Service Description information may not be available for all services. For more information, check out https://github.com/koopjs/koop.',
-  maxRecordCount: 2000,
-  description:
-    'This is a feature service exposed with Koop, an open source project that turns APIs into features. Service Description information may not be available for all services. For more information, check out https://github.com/koopjs/koop.',
-  copyrightText:
-    'Copyright information varies from provider to provider, for more information please contact the source of this data',
-  spatialReference: {
-    wkid: 4326,
-    latestWkid: 4326,
-  },
-  fullExtent: {
-    xmin: -180,
-    ymin: -90,
-    xmax: 180,
-    ymax: 90,
-    spatialReference: {
-      wkid: 4326,
-      latestWkid: 4326,
-    },
-  },
-  initialExtent: {
-    xmin: -180,
-    ymin: -90,
-    xmax: 180,
-    ymax: 90,
-    spatialReference: {
-      wkid: 4326,
-      latestWkid: 4326,
-    },
-  },
-  hasStaticData: false,
-  units: 'esriDecimalDegrees',
-  tables: [],
-  layers: [],
-  supportedQueryFormats: 'JSON',
-  capabilities: 'Query',
-  syncEnabled: false,
-  hasVersionedData: false,
-  supportsDisconnectedEditing: false,
-  supportsRelationshipsResource: false,
-  allowGeometryUpdates: false,
-};
+const defaults = require('../metadata-defaults');
 
 const OVERRIDABLE_DEFAULTS = [
   'currentVersion',
@@ -88,7 +41,7 @@ class ServerMetadata {
       : overrides.fullExtent;
 
     Object.assign(this, {
-      ...DEFAULTS,
+      ...defaults.serverDefaults(),
       ..._.pickBy(overrides, (prop) => !_.isUndefined(prop)),
     });
 

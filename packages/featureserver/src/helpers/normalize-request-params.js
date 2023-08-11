@@ -1,10 +1,10 @@
 const _ = require('lodash');
-const { MAX_RECORD_COUNT } = require('../constants');
+const defaults = require('../metadata-defaults');
 
 function normalizeRequestParameters (
   query,
   body,
-  maxRecordCount = MAX_RECORD_COUNT,
+  maxRecordCount = defaults.maxRecordCount(),
 ) {
   const definedQueryParams = _.chain(query)
     .pickBy(isNotEmptyString)

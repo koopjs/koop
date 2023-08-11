@@ -1,5 +1,5 @@
 const { setLogger } = require('./logger');
-const serverConfigurationOptions = require('./server-config-options');
+const defaults = require('./metadata-defaults');
 
 module.exports = {
   route: require('./route.js'),
@@ -11,5 +11,5 @@ module.exports = {
   queryRelatedRecords: require('./queryRelatedRecords.js'),
   generateRenderer: require('./generate-renderer'),
   setLogger,
-  setServerConfigurationOptions: serverConfigurationOptions.set
+  setDefaults: defaults.setDefaults.bind(defaults)
 };
