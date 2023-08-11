@@ -33,17 +33,17 @@ routes.forEach(route => {
 ```
 
 ## API
-* [FeatureServer.route](#FeatureServer.route)
-* [FeatureServer.query](#FeatureServer.query)
-* [FeatureServer.serverInfo](#FeatureServer.serverInfo)
-* [FeatureServer.layerInfo](#FeatureServer.layerInfo)
-* [FeatureServer.layers](#FeatureServer.layers)
-* [FeatureServer.generateRenderer](#FeatureServer.generateRenderer)
-* [FeatureServer.authenticate](#FeatureServer.authenticate)
-* [FeatureServer.error.authorize](#FeatureServer.error.authorize)
-* [FeatureServer.authenticate](#FeatureServer.error.authenticate)
-* [FeatureServer.queryRelatedRecords](#FeatureServer.queryRelatedRecords)
-* [FeatureServer.setDefaults](#FeatureServer.setDefaults)
+* [FeatureServer.route](#featureserver.route)
+* [FeatureServer.query](#featureserver.query)
+* [FeatureServer.serverInfo](#featureserver.serverInfo)
+* [FeatureServer.layerInfo](#featureserver.layerInfo)
+* [FeatureServer.layers](#featureserver.layers)
+* [FeatureServer.generateRenderer](#featureserver.generateRenderer)
+* [FeatureServer.authenticate](#featureserver.authenticate)
+* [FeatureServer.error.authorize](#featureserver.error.authorize)
+* [FeatureServer.authenticate](#featureserver.error.authenticate)
+* [FeatureServer.queryRelatedRecords](#featureserver.queryRelatedRecords)
+* [FeatureServer.setDefaults](#featureserver.setDefaults)
 
 ### FeatureServer.route
 Pass in an `incoming request object`, an `outgoing response object`, a `geojson` object, and `options` and this function will route and return a geoservices compliant response

@@ -94,6 +94,9 @@ const options = {
 }
 ```
 
+#### geoservicesDefaults
+Koop registers the Geoservices output plugin (FeatureServer) by default.  This plugin takes its own options including those to set server and layer metadata (e.g., FeatureServer version, copyrightText, maxRecordCount, etc). These are useful for overriding defaults set in the FeatureServer codebase. You can have Koop set these options at start-up by passing the `geoservicesDefaults` option.  It should be a JSON object with the specification described in the [FeatureServer documentation](packages/featureserver#featureserver.setdefaults).
+
 ### Registering Providers
 When registering a provider you can pass an options object that provides some useful functionality:
 
