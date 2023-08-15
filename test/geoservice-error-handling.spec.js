@@ -1,4 +1,4 @@
-const Koop = require('@koopjs/koop-core');
+const Koop = require('../packages/koop-core');
 const provider = require('@koopjs/provider-file-geojson');
 const request = require('supertest');
 const mockLogger = {

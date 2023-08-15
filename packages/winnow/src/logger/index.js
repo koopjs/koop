@@ -1,5 +1,5 @@
 let logger = require('./logger');
-const Logger = require('@koopjs/logger');
+const Logger = require('../../../logger');
 
 module.exports = {
   logger,

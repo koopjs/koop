@@ -1,4 +1,4 @@
-const { query } = require('@koopjs/winnow');
+const { query } = require('../../../winnow');
 const helpers = require('../helpers');
 
 function filterAndTransform (json, requestParams) {

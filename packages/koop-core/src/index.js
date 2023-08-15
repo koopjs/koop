@@ -5,11 +5,11 @@ const bodyParser = require('body-parser');
 const config = require('config');
 const cors = require('cors');
 const compression = require('compression');
-const Cache = require('@koopjs/cache-memory');
-const Logger = require('@koopjs/logger');
+const Cache = require('../../cache-memory');
+const Logger = require('../../logger');
 const pkg = require('../package.json');
 const DataProvider = require('./data-provider');
-const geoservices = require('@koopjs/output-geoservices');
+const geoservices = require('../../output-geoservices');
 
 class Koop extends Events {
   constructor(options) {

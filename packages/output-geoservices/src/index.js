@@ -1,6 +1,6 @@
 const { promisify } = require('util');
-const FeatureServer = require('@koopjs/featureserver');
-const Logger = require('@koopjs/logger');
+const FeatureServer = require('../../featureserver');
+const Logger = require('../../logger');
 let logger = new Logger();
 const ARCGIS_UNAUTHORIZED_MESSAGE = 'Item does not exist or is inaccessible.';
 const ARCGIS_UNABLE_TO_GENERATE_TOKEN_MESSAGE = 'Unable to generate token.';

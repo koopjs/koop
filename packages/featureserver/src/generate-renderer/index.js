@@ -1,4 +1,4 @@
-const Winnow = require('@koopjs/winnow');
+const Winnow = require('../../../winnow');
 const { getGeometryTypeFromGeojson } = require('../helpers');
 const validateClassificationDefinition = require('./validate-classification-definition');
 const { createColorRamp } = require('./color-ramp');

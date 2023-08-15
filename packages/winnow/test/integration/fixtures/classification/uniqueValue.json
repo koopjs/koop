@@ -1,8 +1,0 @@
-{
-  "classification": {
-    "type": "unique",
-    "fields": ["Genus"]
-  },
-  "where": "Trunk_Diameter<15",
-  "f": "pjson"
-}

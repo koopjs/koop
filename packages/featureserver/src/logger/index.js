@@ -1,6 +1,6 @@
 let logger = require('./logger');
-const Logger = require('@koopjs/logger');
-const winnow = require('@koopjs/winnow');
+const Logger = require('../../../logger');
+const winnow = require('../../../winnow');
 
 module.exports = {
   logger,
