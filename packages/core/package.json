@@ -64,7 +64,7 @@
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/koopjs/koop-core.git"
+    "url": "git://github.com/koopjs/koop.git"
   },
   "scripts": {
     "test": "mocha '**/*.spec.js' ",

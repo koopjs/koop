@@ -51,7 +51,7 @@ http://localhost:8080/file-geojson/rest/services/line/FeatureServer/0/query?outS
 
 ## Koop Monorepo
 
-This repository is home of the Koop monorepo.  In contains a collection of packages that are shipped by default with every Koop instance.  [koop-core](https://github.com/koopjs/koop/packages/koop-core) is the parent package and is used to generate a default configuration of Koop. References to the "Koop version" refer to the version of this package. The other packages in this monorepo are dependencies of koop-core and include the Geoservices output-plugin and its dependencies, the default in-memory data cache, and a logger.  All other plugins (providers, outputs, etc) are in separate repositories.
+This repository is home of the Koop monorepo.  In contains a collection of packages that are shipped by default with every Koop instance.  [koop-core](https://github.com/koopjs/koop/packages/core) is the parent package and is used to generate a default configuration of Koop. References to the "Koop version" refer to the version of this package. The other packages in this monorepo are dependencies of core and include the Geoservices output-plugin and its dependencies, the default in-memory data cache, and a logger.  All other plugins (providers, outputs, etc) are in separate repositories.
 
 The Koop dependency graph is shown below.
 ![Screen Shot 2022-11-30 at 1 03 46 PM](https://user-images.githubusercontent.com/4369192/204908289-82659cfe-fcf3-404a-aa70-79baf540f1b8.png)
@@ -63,7 +63,7 @@ Test coverages for each package are shown below. Coverage for some packages incl
 |---|---|---|
 |cache-memory|N/A|![coverage](./packages/cache-memory/coverage.svg)|
 |featureserver|![coverage](./packages/featureserver/coverage.svg)|![coverage](./packages/featureserver/coverage-unit.svg)|
-|koop-core|N/A|![coverage](./packages/koop-core/coverage.svg)|
+|koop-core|N/A|![coverage](./packages/core/coverage.svg)|
 |logger|N/A|![coverage](./packages/logger/coverage.svg)|
 |output-geoservices|N/A|![coverage](./packages/output-geoservices/coverage.svg)|
 |winnow|![coverage](./packages/winnow/coverage.svg)|![coverage](./packages/winnow/coverage-unit.svg)|
