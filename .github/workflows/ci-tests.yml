@@ -9,6 +9,7 @@ on:
       - next
       - beta
     paths:
+      - "./.github/**.yml"
       - "**/packages/**.js"
       - "**/packages/**/package.json"
 
