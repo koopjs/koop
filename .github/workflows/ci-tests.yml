@@ -35,7 +35,7 @@ jobs:
       run: npm ci
 
     - name: Lint
-      run: npm run lint --rule linebreak-style:0
+      run: npm run lint:ci
 
     - name: Unit tests
       run: npm test --workspaces
