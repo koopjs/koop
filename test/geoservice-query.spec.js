@@ -1,9 +1,16 @@
 const Koop = require('@koopjs/koop-core');
 const provider = require('@koopjs/provider-file-geojson');
 const request = require('supertest');
+const mockLogger = {
+  debug: () => {},
+  info: () => {},
+  silly: () => {},
+  warn: () => {},
+  error: () => {}
+};
 
 describe('koop', () => {
-  const koop = new Koop({ logLevel: 'error' });
+  const koop = new Koop({ logLevel: 'error', logger: mockLogger });
   koop.register(provider, { dataDir: './test/provider-data' });
   test('should return true', async () => {
     try {

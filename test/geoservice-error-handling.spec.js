@@ -1,11 +1,18 @@
 const Koop = require('@koopjs/koop-core');
 const provider = require('@koopjs/provider-file-geojson');
 const request = require('supertest');
+const mockLogger = {
+  debug: () => {},
+  info: () => {},
+  silly: () => {},
+  warn: () => {},
+  error: () => {}
+};
 
 describe('geoservices error handling', () => {
   describe('handle errors coming from pull-data calls in generalHandler', () => {
     test('should return provider 500 error', async () => {
-      const koop = new Koop({ logLevel: 'error' });
+      const koop = new Koop({ logLevel: 'error', logger: mockLogger });
       koop.register(provider, {
         dataDir: './test/provider-data',
         before: (req, callback) => { // eslint-disable-line
@@ -31,7 +38,7 @@ describe('geoservices error handling', () => {
     });
 
     test('should return 499 error', async () => {
-      const koop = new Koop({ logLevel: 'error' });
+      const koop = new Koop({ logLevel: 'error', logger: mockLogger });
       let auth = require('@koopjs/auth-direct-file')(
         'pass-in-your-secret',
         `${__dirname}/helpers/user-store.json`,
@@ -60,7 +67,7 @@ describe('geoservices error handling', () => {
     });
 
     test('should return 498 error', async () => {
-      const koop = new Koop({ logLevel: 'error' });
+      const koop = new Koop({ logLevel: 'error', logger: mockLogger });
       let auth = require('@koopjs/auth-direct-file')(
         'pass-in-your-secret',
         `${__dirname}/helpers/user-store.json`,
@@ -91,7 +98,7 @@ describe('geoservices error handling', () => {
 
   describe('handle errors coming from authenticate calls in generateToken', () => {
     test('should return 498 error', async () => {
-      const koop = new Koop({ logLevel: 'error' });
+      const koop = new Koop({ logLevel: 'error', logger: mockLogger });
       let auth = require('@koopjs/auth-direct-file')(
         'pass-in-your-secret',
         `${__dirname}/helpers/user-store.json`,
