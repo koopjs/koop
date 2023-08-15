@@ -3,8 +3,8 @@ should.config.checkProtoEql = false;
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 const { PointRenderer } = require('./renderers');
-const CURRENT_VERSION = 10.51;
-const FULL_VERSION = '10.5.1';
+const CURRENT_VERSION = 11.1;
+const FULL_VERSION = '11.1.0';
 
 const calculateBoundsSpy = sinon.spy(function () {
   return [0, 1, 2, 3];
@@ -25,8 +25,8 @@ const normalizeExtentSpy = sinon.spy(function () {
 const defaultFixture = {
   id: 0,
   name: 'Not Set',
-  description: 'This is a feature service powered by https://github.com/koopjs/koop/tree/master/packages/featureserver#readme',
-  copyrightText: ' ',
+  description: 'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+  copyrightText: 'Copyright information varies by provider. For more information please contact the source of this data.',
   parentLayer: null,
   subLayers: null,
   defaultVisibility: true,

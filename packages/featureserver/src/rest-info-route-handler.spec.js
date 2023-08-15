@@ -1,5 +1,7 @@
 const should = require('should') // eslint-disable-line
 const restInfo = require('./rest-info-route-handler');
+const CURRENT_VERSION = 11.1;
+const FULL_VERSION = '11.1.0';
 
 describe('rest/info handler', () => {
   it('should return default info', () => {
@@ -8,10 +10,10 @@ describe('rest/info handler', () => {
         locals: {}
       }
     };
-    const result = restInfo({}, req);
+    const result = restInfo(undefined, req);
     result.should.deepEqual({
-      currentVersion: 10.51,
-      fullVersion: '10.5.1'
+      currentVersion: CURRENT_VERSION,
+      fullVersion: FULL_VERSION
     });
   });
 
@@ -28,8 +30,8 @@ describe('rest/info handler', () => {
     };
     const result = restInfo(data, req);
     result.should.deepEqual({
-      currentVersion: 10.51,
-      fullVersion: '10.5.1',
+      currentVersion: CURRENT_VERSION,
+      fullVersion: FULL_VERSION,
       hello: {
         world: true
       }

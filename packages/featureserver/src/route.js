@@ -7,7 +7,6 @@ const generateRenderer = require('./generate-renderer');
 const restInfo = require('./rest-info-route-handler');
 const serverInfo = require('./server-info-route-handler');
 const layersInfo = require('./layers-metadata');
-const relationshipsInfo = require('./relationships-info-route-handler');
 const responseHandler = require('./response-handler');
 const { validateInputs, normalizeRequestParameters } = require('./helpers');
 
@@ -40,10 +39,8 @@ module.exports = function route(req, res, geojson = {}) {
       result = restInfo(geojson, req);
     } else if (isServerMetadataRequest(route)) {
       result = serverInfo(geojson, req);
-    } else if (isLayersMetadataRequest(route)) {
+    } else if (isLayersMetadataRequest(route) || isRelationshipsMetadataRequest(route)) {
       result = layersInfo(geojson, params);
-    } else if (isRelationshipsMetadataRequest(route)) {
-      result = relationshipsInfo(geojson, params);
     } else if (isLayerMetadataRequest(route)) {
       result = layerInfo(geojson, req);
     } else {

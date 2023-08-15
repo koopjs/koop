@@ -10,6 +10,7 @@ const { logger } = require('../logger');
 const getSpatialReference = require('./get-spatial-reference');
 const getGeometryTypeFromGeojson = require('./get-geometry-type-from-geojson');
 const normalizeExtent = require('./normalize-extent');
+const defaults = require('../metadata-defaults');
 
 class FeatureLayerMetadata extends TableLayerMetadata {
   static create (geojson, options) {
@@ -23,28 +24,8 @@ class FeatureLayerMetadata extends TableLayerMetadata {
 
   constructor () {
     super();
-    Object.assign(this, {
-      type: 'Feature Layer',
-      minScale: 0,
-      maxScale: 0,
-      canScaleSymbols: false,
-      drawingInfo: {
-        renderer: {},
-        labelingInfo: null
-      },
-      extent: {
-        xmin: -180,
-        ymin: -90,
-        xmax: 180,
-        ymax: 90,
-        spatialReference: {
-          wkid: 4326,
-          latestWkid: 4326
-        }
-      },
-      supportsCoordinatesQuantization: false,
-      hasLabels: false
-    });
+    Object.assign(this, defaults.featureLayerDefaults());
+    return this;
   }
 
   mixinOverrides (geojson = {}, options = {}) {

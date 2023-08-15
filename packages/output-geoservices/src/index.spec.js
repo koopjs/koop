@@ -5,6 +5,7 @@ const FeatureServer = require('@koopjs/featureserver');
 jest.mock('@koopjs/featureserver', () => ({
   setLogger: jest.fn(),
   route: jest.fn(),
+  setDefaults: jest.fn()
 }));
 
 const loggerMock = {

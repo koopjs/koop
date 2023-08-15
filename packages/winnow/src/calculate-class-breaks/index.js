@@ -32,18 +32,18 @@ function transformValuesToClassBreaksArray(values, classification) {
   classifier.setNumClasses(breakCount);
 
   switch (classification.method) {
-  case 'equalInterval':
-    return classifier.classify('equal_interval');
-  case 'naturalBreaks':
-    return classifier.classify('jenks');
-  case 'quantile':
-    return classifier.classify('quantile');
-  case 'geomInterval':
-    throw new Error('Classification method not yet supported');
-  case 'stddev':
-    return calculateStdDevIntervals(values, classification);
-  default:
-    throw new Error('invalid classificationMethod: ' + method);
+    case 'equalInterval':
+      return classifier.classify('equal_interval');
+    case 'naturalBreaks':
+      return classifier.classify('jenks');
+    case 'quantile':
+      return classifier.classify('quantile');
+    case 'geomInterval':
+      throw new Error('Classification method not yet supported');
+    case 'stddev':
+      return calculateStdDevIntervals(values, classification);
+    default:
+      throw new Error('invalid classificationMethod: ' + method);
   }
 }
 

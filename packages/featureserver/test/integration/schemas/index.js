@@ -28,8 +28,8 @@ const fieldsTemplateSchema = Joi.object().keys({
 });
 
 const layerTemplateSchema = Joi.object().keys({
-  currentVersion: Joi.number().valid(10.51),
-  fullVersion: Joi.string().valid('10.5.1'),
+  currentVersion: Joi.number().valid(11.1),
+  fullVersion: Joi.string().valid('11.1.0'),
   id: Joi.number().integer().valid(0),
   name: Joi.string().allow(''),
   type: Joi.string().allow('Feature Layer'),
@@ -124,8 +124,8 @@ const oidTemplateSchema = Joi.object().keys({
 });
 
 const serverTemplateSchema = Joi.object().keys({
-  currentVersion: Joi.number().valid(10.51),
-  fullVersion: Joi.string().valid('10.5.1'),
+  currentVersion: Joi.number().valid(11.1),
+  fullVersion: Joi.string().valid('11.1.0'),
   serviceDescription: Joi.string().allow(''),
   hasVersionedData: Joi.boolean().valid(false),
   supportsDisconnectedEditing: Joi.boolean().valid(false),
