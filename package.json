@@ -11,13 +11,9 @@
     "precommit": "lint-staged && npm test --workspaces",
     "test:e2e": "SUPPRESS_NO_CONFIG_WARNING=true DATA_DIR=./test/provider-data jest ./test/*.spec.js",
     "demo": "node demo/index.js",
-    "clean-fork-unit-tests": "shx find ./packages -name '*.spec.js' -delete"
+    "clean-fork-unit-tests": "shx find ./packages -name '*.spec.js' -delete",
   },
   "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/koopjs/koop/issues"
-  },
-  "homepage": "https://github.com/koopjs/koop#readme",
   "workspaces": [
     "packages/winnow",
     "packages/featureserver",
