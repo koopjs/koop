@@ -3,6 +3,8 @@
   "version": "7.1.0",
   "main": "src/index.js",
   "scripts": {
+    "clean": "shx rm -rf ../../customdata/framework/output-geoservices && shx rm package-lock.json",
+    "build": "shx mkdir ../../customdata/framework/output-geoservices && shx cp package.json ../../customdata/framework/output-geoservices"
   },
   "keywords": [
     "featureserver",

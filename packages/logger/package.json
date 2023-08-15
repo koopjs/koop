@@ -3,7 +3,10 @@
   "version": "5.0.0",
   "description": "A shared logger",
   "main": "src/index.js",
-  "scripts": {},
+  "scripts": {
+    "clean": "shx rm -rf ../../customdata/framework/logger && shx rm package-lock.json",
+    "build": "shx mkdir ../../customdata/framework/logger && shx cp package.json ../../customdata/framework/logger && shx cp -r ./node_modules ../../customdata/framework/logger"
+  },
   "license": "Apache-2.0",
   "dependencies": {
     "winston": "^3.2.1"

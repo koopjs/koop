@@ -4,6 +4,8 @@
   "description": "An in-memory cache for CustomData server",
   "main": "src/index.js",
   "scripts": {
+    "clean": "shx rm -rf ../../customdata/framework/cache-memory && shx rm package-lock.json",
+    "build": "shx mkdir ../../customdata/framework/cache-memory && shx cp package.json ../../customdata/framework/cache-memory && shx cp -r ./src ../../customdata/framework/cache-memory && shx cp -r ./node_modules ../../customdata/framework/cache-memory"
   },
   "keywords": [
     "cache",

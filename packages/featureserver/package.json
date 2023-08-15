@@ -4,6 +4,8 @@
   "description": "*An open source implementation of the GeoServices specification*",
   "main": "src/index.js",
   "scripts": {
+    "clean": "shx rm -rf ../../customdata/framework/featureserver && shx rm package-lock.json",
+    "build": "shx mkdir ../../customdata/framework/featureserver && shx cp package.json ../../customdata/framework/featureserver && shx cp -r ./src ../../customdata/framework/featureserver && shx cp -r ./node_modules ../../customdata/framework/featureserver"  
   },
   "license": "Apache-2.0",
   "dependencies": {

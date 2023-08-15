@@ -4,6 +4,8 @@
   "description": "Apply sql-like filters to GeoJSON",
   "main": "src/index.js",
   "scripts": {
+    "clean": "shx rm -rf ../../customdata/framework/winnow && shx rm package-lock.json",
+    "build": "shx mkdir ../../customdata/framework/winnow && shx cp package.json ../../customdata/framework/winnow && shx cp -r ./src ../../customdata/framework/winnow && shx cp -r ./node_modules ../../customdata/framework/winnow"
   },
   "keywords": [
     "geojson",
