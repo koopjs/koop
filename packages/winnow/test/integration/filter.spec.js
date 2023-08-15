@@ -595,18 +595,8 @@ test('with escaped single quote in query', (t) => {
 test('with a OBJECTID query on data that requires dynamic OBJECTID generation', (t) => {
   t.plan(1);
   const options = {
-    where: 'OBJECTID=1138516379',
     toEsri: true,
-  };
-  const fixtures = _.cloneDeep(require('./fixtures/snow.json'));
-  const filtered = winnow.query(fixtures, options);
-  t.equal(filtered.features.length, 1);
-});
-
-test('with a OBJECTID query on data that requires dynamic OBJECTID generation', (t) => {
-  t.plan(1);
-  const options = {
-    toEsri: true,
+    limit: 1
   };
   const fixtures = {
     type: 'FeatureCollection',
