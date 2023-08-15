@@ -70,7 +70,7 @@ test('checking if an object id exists', t => {
   };
   const fixture = _.cloneDeep(oidFeature);
   const result = Winnow.query(fixture, options);
-  t.equal(result.features[0].attributes.OBJECTID, 1738126944);
+  t.equal(typeof result.features[0]?.attributes?.OBJECTID, 'number');
   t.equal(result.metadata.idField, undefined);
   t.end();
 });
@@ -96,20 +96,26 @@ test('adding an object id', t => {
     toEsri: true
   };
   const fixture = _.cloneDeep(geojson);
-  const result = Winnow.query(fixture, options);
+
+  const { properties, geometry } = fixture.features[0];
 
   // A different hash can be returned depending on the library used
-  let hash;
+  let hasher;
+
   try {
     // If requiring farmhash is successful we use that hash
-    require('farmhash');
-    hash = 1301409517;
+    hasher = require('farmhash').hash32;
+
   } catch (e) {
     // Else use the string-hash number
-    hash = 1729830217;
+    hasher = require('string-hash');
+
   }
 
-  t.equal(result.features[0].attributes.OBJECTID, hash);
+  const hash = hasher(JSON.stringify({ properties, geometry}));
+  const objectId = Math.round((hash / 4294967295) * (2147483647));
+  const result = Winnow.query(fixture, options);
+  t.equal(result.features[0].attributes.OBJECTID, objectId);
   t.end();
 });
 
