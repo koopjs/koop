@@ -1,45 +1,11 @@
 {
-  "name": "@koopjs/logger",
+  "name": "logger",
   "version": "5.0.0",
-  "description": "A shared logger for Koop",
+  "description": "A shared logger",
   "main": "src/index.js",
-  "scripts": {
-    "test": "tape src/**/*.spec.js | tap-spec",
-    "test:cov": "nyc -r=json-summary tape './src/**/*.spec.js' | tap-spec && npm run cov:badge",
-    "cov:badge": "coverage-badges-cli --output ./coverage.svg"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://www.github.com/koopjs/koop.git"
-  },
-  "keywords": [
-    "koop",
-    "logging"
-  ],
-  "contributors": [
-    {
-      "name": "Rich Gwozdz",
-      "email": "rgwozdz@esri.com"
-    },
-    {
-      "name": "Daniel Fenton"
-    }
-  ],
+  "scripts": {},
   "license": "Apache-2.0",
   "dependencies": {
     "winston": "^3.2.1"
-  },
-  "devDependencies": {
-    "tap-spec": "^5.0.0",
-    "tape": "^5.0.1"
-  },
-  "files": [
-    "src/**/*.js",
-    "index.d.ts",
-    "!**/*.spec.js"
-  ],
-  "bugs": {
-    "url": "https://github.com/koopjs/koop/issues"
-  },
-  "homepage": "https://github.com/koopjs/koop#readme"
+  }
 }

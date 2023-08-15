@@ -1,46 +1,15 @@
 {
-  "name": "@koopjs/cache-memory",
+  "name": "cache-memory",
   "version": "5.0.0",
-  "description": "An in-memory cache for KOop",
+  "description": "An in-memory cache for CustomData server",
   "main": "src/index.js",
   "scripts": {
-    "test": "tape src/**/*.spec.js | tap-spec",
-    "test:cov": "nyc -r=json-summary tape './src/**/*.spec.js' | tap-spec && npm run cov:badge",
-    "cov:badge": "coverage-badges-cli --output ./coverage.svg"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/koopjs/koop.git"
   },
   "keywords": [
-    "koop",
     "cache",
     "memory"
   ],
-  "contributors": [
-    {
-      "name": "Rich Gwozdz",
-      "email": "rgwozdz@esri.com"
-    },
-    {
-      "name": "Daniel Fenton"
-    }
-  ],
   "license": "Apache-2.0",
-  "files": [
-    "src/**/*.js",
-    "index.d.ts",
-    "!**/*.spec.js"
-  ],
-  "bugs": {
-    "url": "https://github.com/koopjs/koop/issues"
-  },
-  "homepage": "https://github.com/koopjs/koop#readme",
-  "devDependencies": {
-    "tap-spec": "^5.0.0",
-    "tape": "^5.0.0",
-    "uuid": "^9.0.0"
-  },
   "dependencies": {
     "@alloc/quick-lru": "^5.2.0",
     "lodash": "^4.17.4"

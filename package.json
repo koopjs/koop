@@ -1,7 +1,7 @@
 {
   "name": "koop",
   "version": "1.0.0",
-  "description": "Monorepo for Koop's core dependencies",
+  "description": "Fork of Koop Monorepo",
   "main": "index.js",
   "scripts": {
     "lint": "eslint \"packages/**/*.js\"",
@@ -9,24 +9,9 @@
     "prepare": "husky install",
     "commit": "cz",
     "precommit": "lint-staged && npm test --workspaces",
-    "test": "npm test --workspaces",
-    "test:cov": "npm run test:cov --workspaces && npm run cov:compile && npm run cov:report",
-    "cov:compile": "nyc merge packages/cache-memory/.nyc_output .nyc_output/cache-memory.json && nyc merge packages/featureserver/.nyc_output .nyc_output/featureserver.json && nyc merge packages/koop-core/.nyc_output .nyc_output/koop-core.json && nyc merge packages/logger/.nyc_output .nyc_output/logger.json && cp packages/output-geoservices/coverage/coverage-final.json .nyc_output/output-geoservices.json && nyc merge packages/winnow/.nyc_output .nyc_output/winnow.json",
-    "cov:compile:unit": "nyc merge packages/cache-memory/.nyc_output .nyc_output_unit/cache-memory.json && nyc merge packages/featureserver/.nyc_output_unit .nyc_output_unit/featureserver.json && nyc merge packages/koop-core/.nyc_output .nyc_output_unit/koop-core.json && nyc merge packages/logger/.nyc_output .nyc_output_unit/logger.json && nyc merge packages/output-geoservices/.nyc_output .nyc_output_unit/output-geoservices.json && nyc merge packages/winnow/.nyc_output_unit .nyc_output_unit/winnow.json",
-    "cov:report": "nyc report --reporter=html",
-    "cov:report:unit": "nyc report --temp-dir=.nyc_output_unit --report-dir=coverage_unit --reporter=html",
     "test:e2e": "SUPPRESS_NO_CONFIG_WARNING=true DATA_DIR=./test/provider-data jest ./test/*.spec.js",
-    "version": "changeset version",
-    "release:npm": "changeset publish",
-    "release:github": "node gh-release.js",
-    "changeset:add": "changeset",
     "demo": "node demo/index.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/koopjs/koop.git"
-  },
-  "author": "",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/koopjs/koop/issues"
@@ -42,16 +27,12 @@
   ],
   "devDependencies": {
     "@babel/eslint-parser": "^7.11.0",
-    "@changesets/changelog-git": "^0.1.13",
-    "@changesets/cli": "^2.25.2",
     "@commitlint/config-conventional": "^17.1.0",
     "@koopjs/auth-direct-file": "^2.0.0",
     "@koopjs/provider-file-geojson": "^2.1.0",
     "await-spawn": "^4.0.2",
-    "byline": "^5.0.0",
     "commitizen": "^4.2.5",
     "commitlint": "^17.2.0",
-    "coverage-badges-cli": "^1.0.12",
     "cz-conventional-changelog": "^3.3.0",
     "cz-git": "^1.3.12",
     "eslint": "^8.23.1",
