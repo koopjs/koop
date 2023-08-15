@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 8.1.0
+
+### Minor Changes
+
+- all server and layer metadata defaults to be overriden with setDefaults method
+
 ## 8.0.0
 
 ### Major Changes

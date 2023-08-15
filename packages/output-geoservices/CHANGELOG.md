@@ -1,5 +1,16 @@
 # @koopjs/output-geoservices
 
+## 7.1.0
+
+### Minor Changes
+
+- allow server and layer metadata defaults to be overriden with `defaults` option in the output's constructor
+
+### Patch Changes
+
+- Updated dependencies [8f67c70]
+  - @koopjs/featureserver@8.1.0
+
 ## 7.0.0
 
 ### Major Changes
