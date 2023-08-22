@@ -51,7 +51,7 @@
     "@esri/proj-codes": "^3.1.0",
     "@terraformer/arcgis": "^2.1.1",
     "@terraformer/spatial": "^2.1.2",
-    "@turf/bbox-polygon": "^6.0.1",
+    "@turf/bbox-polygon": "^6.5.0",
     "@turf/centroid": "^6.5.0",
     "@types/geojson": "^7946.0.10",
     "alasql": "^4.0.0",
