@@ -2,7 +2,7 @@ name: CI tests
 
 on:
   push:
-    branches: [ master, next ]
+    branches: [ master ]
   pull_request:
     branches:
       - master
