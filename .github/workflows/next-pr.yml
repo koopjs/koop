@@ -1,4 +1,4 @@
-name: Create production promotion pull request
+name: Create next-branch pull request
 on:
   push:
     branches:

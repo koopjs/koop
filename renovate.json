@@ -4,7 +4,7 @@
     "config:base"
   ],
   "updateInternalDeps": true,
-  "schedule": ["every weekend"],
+  "baseBranches": ["next"],
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch"],
