@@ -1,0 +1,20 @@
+name: Create production promotion pull request
+on:
+  push:
+    branches:
+      - next
+jobs:
+  productionPromotion:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: master
+      - name: Reset promotion branch
+        run: |
+          git fetch origin next:next
+          git reset --hard next
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          branch: next-merge
