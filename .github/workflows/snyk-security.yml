@@ -52,7 +52,7 @@ jobs:
 
 
       - name: Snyk Dep test
-        run: snyk code test --all-projects || true
+        run: snyk test --all-projects || true
         env:
           # This is where you will need to introduce the Snyk API token created with your Snyk account
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
