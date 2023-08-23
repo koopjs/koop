@@ -41,11 +41,11 @@ jobs:
         # In this case we want to upload the SAST issues to GitHub Code Scanning
         uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
 
-        # For Snyk Open Source you must first set up the development environment for your application's dependencies
-        # For example for Node
-        #- uses: actions/setup-node@v3
-        #  with:
-        #    node-version: 16
+      # For Snyk Open Source you must first set up the development environment for your application's dependencies
+      # For example for Node
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
         env:
           # This is where you will need to introduce the Snyk API token created with your Snyk account
