@@ -2,8 +2,6 @@ name: Snyk Dep Check
 on:
   pull_request:
     branches: [ "master", "next" ]
-    paths:
-      - "**/packages/**.js"
   schedule:
     - cron: '35 13 * * 6'
 jobs:
