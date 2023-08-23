@@ -34,9 +34,6 @@
     "@koopjs/featureserver": "8.1.0",
     "@koopjs/logger": "5.0.0"
   },
-  "devDependencies": {
-    "jest-coverage-badges": "^1.1.2"
-  },
   "jest": {
     "coverageReporters": [
       "json",
