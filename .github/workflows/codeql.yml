@@ -13,12 +13,11 @@ name: "CodeQL"
 
 on:
   pull_request:
-    # The branches below must be a subset of the branches above
     branches: [ "master", "next" ]
     paths:
       - "**/packages/**.js"
   schedule:
-    - cron: '35 13 * * 5'
+    - cron: '35 13 * * 6'
 
 jobs:
   analyze:
