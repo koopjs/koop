@@ -4,5 +4,4 @@ const getReleaseLine = async (changeset) => {
   return changeset.summary;
 };
 
-
 module.exports = { getDependencyReleaseLine, getReleaseLine };
