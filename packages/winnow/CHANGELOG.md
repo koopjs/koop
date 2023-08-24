@@ -1,5 +1,11 @@
 # @koopjs/winnow
 
+## 4.1.1
+
+### Patch Changes
+
+- need logger dep for stand alone usage
+
 ## 4.1.0
 
 ### Minor Changes
