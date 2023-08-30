@@ -14,32 +14,19 @@ function logWarnings(geojson, format) {
 
   if (esriFormat && hasMixedCaseObjectIdKey(metadata.idField)) {
     logger.debug(
-      'requested provider\'s "idField" is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients.',
+      'requested provider has "idField" that is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients.',
     );
   }
 
   if (metadata.fields && _.has(features, '[0].properties')) {
-    warnOnMetadataFieldDiscrepancies(
-      geojson.metadata.fields,
-      geojson.features[0].properties,
-    );
+    compareFieldDefintionsToFeature(metadata.fields, features[0].properties);
+  
+    compareFeatureToFieldDefinitions(features[0].properties, metadata.fields);
   }
 }
 
 function hasMixedCaseObjectIdKey(idField = '') {
   return idField.toLowerCase() === 'objectid' && idField !== 'OBJECTID';
-}
-
-/**
- * Compare fields generated from metadata to properties of a data feature.
- * Warn if differences discovered
- * @param {*} fieldDefinitions
- * @param {*} properties
- */
-function warnOnMetadataFieldDiscrepancies(fieldDefinitions, featureProperties) {
-  compareFieldDefintionsToFeature(fieldDefinitions, featureProperties);
-  
-  compareFeatureToFieldDefinitions(featureProperties, fieldDefinitions);
 }
 
 function compareFieldDefintionsToFeature(fieldDefinitions, featureProperties) {
@@ -61,7 +48,7 @@ function compareFeatureToFieldDefinitions(featureProperties, fieldDefinitions) {
 
     if (!definition && key !== 'OBJECTID') {
       logger.debug(
-        `requested provider's features have property "${key}" that was not defined in metadata fields array)`,
+        `requested provider has feature with property "${key}" that was not defined in metadata fields array`,
       );
     }
   });
