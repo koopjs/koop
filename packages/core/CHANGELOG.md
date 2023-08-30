@@ -1,5 +1,11 @@
 # @koopjs/koop-core
 
+## 9.2.2
+
+### Patch Changes
+
+- ensure constructor options are optional
+
 ## 9.2.1
 
 ### Patch Changes
