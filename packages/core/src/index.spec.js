@@ -62,9 +62,14 @@ const providerFixtureRoutes = mockProviderDefinition.routes.reduce((acc, route) 
 
 describe('Index tests', function () {
   describe('Koop instantiation', function () {
-    it('should instantiate Koop with config', function () {
+    it('should instantiate Koop with options', function () {
       const koop = new Koop({ foo: 'bar', logLevel: 'error' });
       koop.config.should.have.property('foo', 'bar');
+    });
+
+    it('should instantiate Koop without options', function () {
+      const koop = new Koop();
+      koop.config.should.be.empty();
     });
   });
 
