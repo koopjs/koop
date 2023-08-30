@@ -1,15 +1,10 @@
 name: CI tests
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches:
-      - master
-      - beta
+      - next
     paths:
-      - "./.github/**.yml"
-      - "**/packages/**.js"
       - "**/packages/**/package.json"
 
 jobs:
@@ -19,7 +14,7 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
