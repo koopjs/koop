@@ -42,7 +42,7 @@
     "packages/core"
   ],
   "devDependencies": {
-    "@babel/eslint-parser": "^7.22.10",
+    "@babel/eslint-parser": "^7.22.11",
     "@changesets/changelog-git": "^0.1.14",
     "@changesets/cli": "^2.26.2",
     "@commitlint/config-conventional": "^17.7.0",
