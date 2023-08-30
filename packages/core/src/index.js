@@ -27,11 +27,11 @@ class Koop extends Events {
     this.pluginRoutes = [];
     this.outputs = [];
 
-    const { geoservicesDefaults } = options;
+    const { geoservicesDefaults } = this.config;
 
     this.register(geoservices, {
       logger: this.log,
-      authInfo: options?.authInfo || config.authInfo,
+      authInfo: this.config.authInfo,
       defaults: geoservicesDefaults
     });
 
