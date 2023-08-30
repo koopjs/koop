@@ -1,7 +1,7 @@
 name: Snyk Code Check
 on:
   pull_request:
-    branches: [ "master", "next" ]
+    branches: [ "master"]
     paths:
       - "**/packages/**.js"
   schedule:
@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+
       - name: Run Snyk to check for code vulnerabilities
         uses: snyk/actions/node@master
         continue-on-error: true # To make sure that SARIF upload gets called

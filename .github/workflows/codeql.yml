@@ -13,7 +13,7 @@ name: "CodeQL"
 
 on:
   pull_request:
-    branches: [ "master", "next" ]
+    branches: [ "master"]
     paths:
       - "**/packages/**.js"
   schedule:
