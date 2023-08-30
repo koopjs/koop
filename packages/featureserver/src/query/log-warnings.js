@@ -8,7 +8,7 @@ function logWarnings(geojson, format) {
 
   if (esriFormat && !metadata.idField) {
     logger.debug(
-      'requested provider has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an unchanging 32-bit integer. Koop will create an OBJECTID field in the absence of an "idField" assignment.',
+      'requested provider has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an unchanging 32-bit integer. An OBJECTID field will be auto-generated in the absence of an "idField" assignment.',
     );
   }
 
@@ -18,8 +18,6 @@ function logWarnings(geojson, format) {
     );
   }
 
-  // Compare provider metadata fields to feature properties
-  // TODO: refactor
   if (metadata.fields && _.has(features, '[0].properties')) {
     warnOnMetadataFieldDiscrepancies(
       geojson.metadata.fields,
@@ -39,28 +37,9 @@ function hasMixedCaseObjectIdKey(idField = '') {
  * @param {*} properties
  */
 function warnOnMetadataFieldDiscrepancies(fieldDefinitions, featureProperties) {
-  // build a comparison collection from the data samples properties
-  const featureFields = Object.keys(featureProperties).map((name) => {
-    return {
-      name,
-      type: getDataTypeFromValue(featureProperties[name]),
-    };
-  });
-
   compareFieldDefintionsToFeature(fieldDefinitions, featureProperties);
   
-  // compare feature properties to metadata fields; identifies fields found on feature that are not defined in metadata field array
-  featureFields.forEach((field) => {
-    const noNameMatch = _.find(fieldDefinitions, ['name', field.name]);
-    const noAliasMatch = _.find(fieldDefinitions, ['alias', field.name]);
-
-    // Exclude warnings on feature fields named OBJECTID because OBJECTID may have been added by winnow in which case it should not be in the metadata fields array
-    if (!(noNameMatch || noAliasMatch) && field.name !== 'OBJECTID') {
-      logger.debug(
-        `requested provider's features have property "${field.name} (${field.type})" that was not defined in metadata fields array)`,
-      );
-    }
-  });
+  compareFeatureToFieldDefinitions(featureProperties, fieldDefinitions);
 }
 
 function compareFieldDefintionsToFeature(fieldDefinitions, featureProperties) {
@@ -71,6 +50,18 @@ function compareFieldDefintionsToFeature(fieldDefinitions, featureProperties) {
     if (!featureField || hasTypeMismatch(type, featureField)) {
       logger.debug(
         `field definition "${name} (${type})" not found in first feature of provider's GeoJSON`,
+      );
+    }
+  });
+}
+
+function compareFeatureToFieldDefinitions(featureProperties, fieldDefinitions) {
+  Object.keys(featureProperties).forEach(key => {
+    const definition = _.find(fieldDefinitions, ['name', key]) || _.find(fieldDefinitions, ['name', key]);
+
+    if (!definition && key !== 'OBJECTID') {
+      logger.debug(
+        `requested provider's features have property "${key}" that was not defined in metadata fields array)`,
       );
     }
   });
