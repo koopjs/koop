@@ -27,7 +27,7 @@ describe('koop', () => {
       describe('objectIds', () => {
         test('handles empty value', async () => {
           try {
-            const response = await request(koop.server).get('/file-geojson/rest/services/points-01/FeatureServer/0/query?objectIds=');
+            const response = await request(koop.server).get('/file-geojson/rest/services/points-w-objectid/FeatureServer/0/query?objectIds=');
             expect(response.status).toBe(200);
             const { features } = response.body;
             expect(features.length).toBe(3);
@@ -40,7 +40,7 @@ describe('koop', () => {
         describe('using OBJECTID field', () => {
           test('handles single value', async () => {
             try {
-              const response = await request(koop.server).get('/file-geojson/rest/services/points-01/FeatureServer/0/query?objectIds=2');
+              const response = await request(koop.server).get('/file-geojson/rest/services/points-w-objectid/FeatureServer/0/query?objectIds=2');
               expect(response.status).toBe(200);
               const { features } = response.body;
               expect(features.length).toBe(1);
@@ -53,7 +53,7 @@ describe('koop', () => {
 
           test('handles delimited values', async () => {
             try {
-              const response = await request(koop.server).get('/file-geojson/rest/services/points-01/FeatureServer/0/query?objectIds=2,3');
+              const response = await request(koop.server).get('/file-geojson/rest/services/points-w-objectid/FeatureServer/0/query?objectIds=2,3');
               expect(response.status).toBe(200);
               const { features } = response.body;
               expect(features.length).toBe(2);
@@ -69,7 +69,7 @@ describe('koop', () => {
         describe('using defined id field', () => {
           test('handles single value', async () => {
             try {
-              const response = await request(koop.server).get('/file-geojson/rest/services/points-02/FeatureServer/0/query?objectIds=2');
+              const response = await request(koop.server).get('/file-geojson/rest/services/points-w-metadata-id/FeatureServer/0/query?objectIds=2');
               expect(response.status).toBe(200);
               const { features } = response.body;
               expect(features.length).toBe(1);
@@ -80,9 +80,38 @@ describe('koop', () => {
             }
           });
 
+          describe('without OBJECTID or idField', () => {
+            test('handles single value', async () => {
+              try {
+                const response = await request(koop.server).get('/file-geojson/rest/services/points-wo-objectid/FeatureServer/0/query?objectIds=2');
+                expect(response.status).toBe(200);
+                const { features } = response.body;
+                expect(features.length).toBe(1);
+                expect(features[0].attributes.OBJECTID).toBe(2);
+              } catch (error) {
+                console.error(error);
+                throw error;
+              }
+            });
+  
+            test('handles delimited values', async () => {
+              try {
+                const response = await request(koop.server).get('/file-geojson/rest/services/points-w-objectid/FeatureServer/0/query?objectIds=2,3');
+                expect(response.status).toBe(200);
+                const { features } = response.body;
+                expect(features.length).toBe(2);
+                expect(features[0].attributes.OBJECTID).toBe(2);
+                expect(features[1].attributes.OBJECTID).toBe(3);
+              } catch (error) {
+                console.error(error);
+                throw error;
+              }
+            });
+          });
+  
           test('handles delimited values', async () => {
             try {
-              const response = await request(koop.server).get('/file-geojson/rest/services/points-02/FeatureServer/0/query?objectIds=2,3');
+              const response = await request(koop.server).get('/file-geojson/rest/services/points-w-metadata-id/FeatureServer/0/query?objectIds=2,3');
               expect(response.status).toBe(200);
               const { features } = response.body;
               expect(features.length).toBe(2);
@@ -97,7 +126,7 @@ describe('koop', () => {
 
         test('400 error on invalid value', async () => {
           try {
-            const response = await request(koop.server).get('/file-geojson/rest/services/points-01/FeatureServer/0/query?objectIds=1.4');
+            const response = await request(koop.server).get('/file-geojson/rest/services/points-w-objectid/FeatureServer/0/query?objectIds=1.4');
             expect(response.status).toBe(200);
             const { error } = response.body;
             expect(error.message).toBe('Non-integer objectId: 1.4');
