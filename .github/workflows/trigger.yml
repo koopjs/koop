@@ -1,0 +1,14 @@
+name: trigger updates
+on: workflow_dispatch
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy Stage
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://api.github.com/repos/rgwozdz/koop/dispatches'
+        method: 'POST'
+        bearerToken: ${{ secrets.GITHUB_TOKEN }}
+        customHeaders: '{"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}'
+        data: '{"event_type":"on-demand-test","client_payload":{"foo": "bar"}}'
