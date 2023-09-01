@@ -1,5 +1,11 @@
 # @koopjs/winnow
 
+## 4.1.2
+
+### Patch Changes
+
+- fix filtering by objectIds option
+
 ## 4.1.1
 
 ### Patch Changes
