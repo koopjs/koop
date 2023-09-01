@@ -1,4 +1,5 @@
 const createIntegerHash = require('../helpers/create-integer-hash');
+const { logger } = require('../../logger');
 
 /**
  * This function is used when the where option includes an OBJECTID, but the data
@@ -9,16 +10,23 @@ const createIntegerHash = require('../helpers/create-integer-hash');
  *
  * @param {object} properties GeoJSON feature properties
  * @param {*} geometry GeoJSON feature properties
- * @param {*} objectId the objectId the feature is being compared to.  Presumed to have been created by feature hashing
+ * @param {*} value the objectId the feature is being compared to.  Presumed to have been created by feature hashing
  * @param {*} operator the predicate operator
  */
-module.exports = function (properties, geometry, objectId, operator) {
+module.exports = function (properties, geometry, value, operator) {
   const hashedFeature = createIntegerHash(JSON.stringify({ properties, geometry }));
-  if (operator === '=' && hashedFeature === objectId) return true;
-  if (operator === '!=' && hashedFeature !== objectId) return true;
-  if (operator === '>' && hashedFeature > objectId) return true;
-  if (operator === '<' && hashedFeature < objectId) return true;
-  if (operator === '>=' && hashedFeature >= objectId) return true;
-  if (operator === '<=' && hashedFeature <= objectId) return true;
+  if (operator === '=' && hashedFeature === value) return true;
+  if (operator === '!=' && hashedFeature !== value) return true;
+  if (operator === '>' && hashedFeature > value) return true;
+  if (operator === '<' && hashedFeature < value) return true;
+  if (operator === '>=' && hashedFeature >= value) return true;
+  if (operator === '<=' && hashedFeature <= value) return true;
+  
+  if (operator === 'IN') {
+    const objectIdValues = value.split(',').map(Number);
+    return objectIdValues.includes(hashedFeature);
+  }
+  
+  logger.debug(`unsupported operator "${operator}"`);
   return false;
 };
