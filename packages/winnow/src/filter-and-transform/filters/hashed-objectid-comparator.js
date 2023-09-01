@@ -16,12 +16,29 @@ const { logger } = require('../../logger');
 module.exports = function (properties, geometry, value, operator) {
   const hashedFeature = createIntegerHash(JSON.stringify({ properties, geometry }));
   
-  if (operator === '=' && hashedFeature === value) return true;
-  if (operator === '!=' && hashedFeature !== value) return true;
-  if (operator === '>' && hashedFeature > value) return true;
-  if (operator === '<' && hashedFeature < value) return true;
-  if (operator === '>=' && hashedFeature >= value) return true;
-  if (operator === '<=' && hashedFeature <= value) return true;
+  if (operator === '=' && hashedFeature === value) {
+    return true;
+  }
+
+  if (operator === '!=' && hashedFeature !== value) {
+    return true;
+  }
+
+  if (operator === '>' && hashedFeature > value) {
+    return true;
+  }
+
+  if (operator === '<' && hashedFeature < value) {
+    return true;
+  }
+
+  if (operator === '>=' && hashedFeature >= value) {
+    return true;
+  }
+
+  if (operator === '<=' && hashedFeature <= value) {
+    return true;
+  }
   
   if (operator === 'IN') {
     const objectIdValues = value.split(',').map(Number);
