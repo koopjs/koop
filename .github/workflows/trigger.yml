@@ -1,5 +1,8 @@
 name: trigger updates
-on: workflow_dispatch
+on: 
+  pull_request:
+    branches: [ "master"]
+
 jobs:
   deployment:
     runs-on: ubuntu-latest
