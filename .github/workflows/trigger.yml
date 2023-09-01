@@ -14,4 +14,4 @@ jobs:
         method: 'POST'
         bearerToken: ${{ secrets.FORK_TOKEN }}
         customHeaders: '{"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}'
-        data: '{"event_type":"on-demand-test","client_payload":{"foo": "bar"}}'
+        data: '{"event_type":"upstream-release","client_payload":{"foo": "bar"}}'
