@@ -95,4 +95,3 @@ Find a bug or want to request a new feature? Post it [here](https://github.com/k
 
 <!-- [](Esri Tags: ArcGIS Web Mapping GeoJson FeatureServices) -->
 <!-- [](Esri Language: JavaScript) -->
-
