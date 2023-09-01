@@ -71,6 +71,16 @@ test('WhereBuilder.create: transform a predicate with OBJECTID and no metadata f
   );
 });
 
+test('WhereBuilder.create: transform a predicate with OBJECTID IN (1234)', (t) => {
+  t.plan(1);
+
+  const whereClause = WhereBuilder.create({ objectIds: [1234, 4567] });
+  t.equals(
+    whereClause,
+    "hashedObjectIdComparator(properties, geometry, '1234,4567', 'IN')=true", // eslint-disable-line
+  );
+});
+
 test('WhereBuilder.create: transform a predicate with OBJECTID and no metadata fields to Esri flavor with user-defined function', (t) => {
   t.plan(1);
   const options = {

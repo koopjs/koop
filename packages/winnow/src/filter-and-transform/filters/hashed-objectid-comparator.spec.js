@@ -41,3 +41,15 @@ test('hashedObjectIdComparator: >=, should return true', t => {
   t.equals(result, true);
   t.end();
 });
+
+test('hashedObjectIdComparator: IN, should return true', t => {
+  const result = hashedObjectIdComparator(properties, geometry, `${objectId},0000`, 'IN');
+  t.equals(result, true);
+  t.end();
+});
+
+test('hashedObjectIdComparator: unsupported operator', t => {
+  const result = hashedObjectIdComparator(properties, geometry, 0, '***');
+  t.equals(result, false);
+  t.end();
+});
