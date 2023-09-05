@@ -10,7 +10,8 @@
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch"],
-      "automerge": true
+      "automerge": true,
+      "matchFileNames": ["**/package.json"]
     }
   ]
 }
