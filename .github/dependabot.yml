@@ -5,7 +5,7 @@ updates:
     versioning-strategy: "increase"
     directory: "/packages/cache-memory"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     groups:
       production-dependencies:
         dependency-type: "production"
@@ -23,7 +23,7 @@ updates:
     versioning-strategy: "increase"
     directory: "/packages/featureserver"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     groups:
       production-dependencies:
         dependency-type: "production"
@@ -41,7 +41,7 @@ updates:
     versioning-strategy: "increase"
     directory: "/packages/core"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     groups:
       production-dependencies:
         dependency-type: "production"
@@ -59,7 +59,7 @@ updates:
     versioning-strategy: "increase"
     directory: "/packages/logger"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     groups:
       production-dependencies:
         dependency-type: "production"
@@ -77,7 +77,7 @@ updates:
     versioning-strategy: "increase"
     directory: "/packages/output-geoservices"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     groups:
       production-dependencies:
         dependency-type: "production"
@@ -95,7 +95,7 @@ updates:
     versioning-strategy: "increase"
     directory: "/packages/winnow"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     groups:
       production-dependencies:
         dependency-type: "production"
@@ -113,7 +113,7 @@ updates:
     versioning-strategy: "increase"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     groups:
       production-dependencies:
         dependency-type: "production"
