@@ -58,7 +58,7 @@
     "cz-git": "^1.7.1",
     "eslint": "^8.47.0",
     "husky": "^8.0.3",
-    "jest": "^29.6.3",
+    "jest": "^29.6.4",
     "jest-coverage-badges-ng": "^1.0.1",
     "lerna": "^7.1.5",
     "lerna-changelog": "^2.2.0",
