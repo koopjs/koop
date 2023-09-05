@@ -11,7 +11,12 @@
     {
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true,
-      "matchFileNames": ["**/package.json"]
+      "matchFileNames": ["package.json", "packages/*/package.json"]
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "matchFileNames": ["package.json", "packages/*/package.json"]
     }
   ]
 }
