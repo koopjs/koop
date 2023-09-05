@@ -1,6 +1,6 @@
-name: Dependabot auto-approve/merge
+name: Dependabot PRs
 on:
-  pull_request:
+  push:
     branches:
       - 'dependabot/**'
 
@@ -9,9 +9,44 @@ permissions:
   pull-requests: write
 
 jobs:
+  pr-tests:
+    name: Install, lint, test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [18.x]
+        os: [ubuntu-latest, windows-latest]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install npm 7
+      run: npm i -g npm@7 --registry=https://registry.npmjs.org
+      
+    - name: Install
+      run: npm ci
+
+    - name: Lint
+      run: npm run lint:ci
+
+    - name: Unit tests
+      run: npm test --workspaces
+    
+    - name: E2E tests
+      run: npm run test:e2e
+
   dependabot:
-    runs-on: ubuntu-latest
-    if: ${{ github.actor == 'dependabot[bot]' }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [18.x]
+        os: [ubuntu-latest]
+
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip') }}
     steps:
       - name: Approve dependabot PR
         run: gh pr review --approve "$PR_URL"

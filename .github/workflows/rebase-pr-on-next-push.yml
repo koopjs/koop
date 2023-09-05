@@ -1,0 +1,14 @@
+name: CI tests
+
+on:
+  pull_request:
+    branches:
+      - next
+    paths:
+      - "**/packages/**/package.json"
+
+jobs:
+  rebase:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: peter-evans/rebase@v2
