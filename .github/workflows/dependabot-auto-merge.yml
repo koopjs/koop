@@ -1,4 +1,4 @@
-name: Merge Dependabot PRs to "next" branch
+name: Merge dependabot PRs for minor/patch updates
 on:
   pull_request:
     branches:
@@ -46,7 +46,7 @@ jobs:
         node-version: [18.x]
         os: [ubuntu-latest]
 
-    if: ${{ !contains(github.event.pull_request.labels.*.name, 'major') || github.actor == 'dependabot[bot]' }}
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'major') && github.actor == 'dependabot[bot]' }}
     steps:
       - name: Approve dependabot PR
         run: gh pr review --approve "$PR_URL"
@@ -60,27 +60,3 @@ jobs:
           PR_URL: ${{github.event.pull_request.html_url}}
           # The documentation incorrectly forgets `GITHUB_TOKEN` here.
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-  pr-next-to-master:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: GitHub List Pull Requests
-        id: list_prs
-        uses: jkisk/list-open-pulls@v1.0.1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          owner: koopjs
-          repo: koop
-      
-      - name: Check output
-        run: echo ${{ steps.list_prs.outputs.titles }} 
-
-      - name: Create PR (next-to-master) for Dependency Updates if none exist
-        if: ${{ !contains(steps.list_prs.outputs.titles, '[DNM] Dependency Updates') }}
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          base: master
