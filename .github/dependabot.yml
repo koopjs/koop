@@ -7,13 +7,7 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      production-dependencies:
-        dependency-type: "production"
-        update-types:
-            - "minor"
-            - "patch"
-      development-dependencies:
-        dependency-type: "development"
+      minor-dependencies:
         update-types:
             - "minor"
             - "patch"
@@ -25,13 +19,7 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      production-dependencies:
-        dependency-type: "production"
-        update-types:
-            - "minor"
-            - "patch"
-      development-dependencies:
-        dependency-type: "development"
+      minor-dependencies:
         update-types:
             - "minor"
             - "patch"
@@ -43,13 +31,7 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      production-dependencies:
-        dependency-type: "production"
-        update-types:
-            - "minor"
-            - "patch"
-      development-dependencies:
-        dependency-type: "development"
+      minor-dependencies:
         update-types:
             - "minor"
             - "patch"
@@ -61,13 +43,7 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      production-dependencies:
-        dependency-type: "production"
-        update-types:
-            - "minor"
-            - "patch"
-      development-dependencies:
-        dependency-type: "development"
+      minor-dependencies:
         update-types:
             - "minor"
             - "patch"
@@ -79,13 +55,7 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      production-dependencies:
-        dependency-type: "production"
-        update-types:
-            - "minor"
-            - "patch"
-      development-dependencies:
-        dependency-type: "development"
+      minor-dependencies:
         update-types:
             - "minor"
             - "patch"
@@ -97,13 +67,7 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      production-dependencies:
-        dependency-type: "production"
-        update-types:
-            - "minor"
-            - "patch"
-      development-dependencies:
-        dependency-type: "development"
+      minor-dependencies:
         update-types:
             - "minor"
             - "patch"
@@ -115,13 +79,7 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      production-dependencies:
-        dependency-type: "production"
-        update-types:
-            - "minor"
-            - "patch"
-      development-dependencies:
-        dependency-type: "development"
+      minor-dependencies:
         update-types:
             - "minor"
             - "patch"

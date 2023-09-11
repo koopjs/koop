@@ -1,4 +1,4 @@
-name: Dependabot PRs
+name: Merge Dependabot PRs to "next" branch
 on:
   pull_request:
     branches:
@@ -11,7 +11,7 @@ permissions:
 jobs:
   pr-tests:
     name: Install, lint, test
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [18.x]
@@ -39,8 +39,8 @@ jobs:
     - name: E2E tests
       run: npm run test:e2e
 
-  dependabot:
-    runs-on: ${{ matrix.os }}
+  merge-pr-to-next:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [18.x]
@@ -60,3 +60,27 @@ jobs:
           PR_URL: ${{github.event.pull_request.html_url}}
           # The documentation incorrectly forgets `GITHUB_TOKEN` here.
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+  pr-next-to-master:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: GitHub List Pull Requests
+        id: list_prs
+        uses: jkisk/list-open-pulls@v1.0.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          owner: koopjs
+          repo: koop
+      
+      - name: Check output
+        run: echo ${{ steps.list_prs.outputs.titles }} 
+
+      - name: Create PR (next-to-master) for Dependency Updates if none exist
+        if: ${{ !contains(steps.list_prs.outputs.titles, '[DNM] Dependency Updates') }}
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: master
