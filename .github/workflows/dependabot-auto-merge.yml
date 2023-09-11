@@ -1,4 +1,4 @@
-name: Dependabot PRs
+name: Merge dependabot PRs for minor/patch updates
 on:
   pull_request:
     branches:
@@ -11,7 +11,7 @@ permissions:
 jobs:
   pr-tests:
     name: Install, lint, test
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [18.x]
@@ -39,14 +39,14 @@ jobs:
     - name: E2E tests
       run: npm run test:e2e
 
-  dependabot:
-    runs-on: ${{ matrix.os }}
+  merge-pr-to-next:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [18.x]
         os: [ubuntu-latest]
 
-    if: ${{ !contains(github.event.pull_request.labels.*.name, 'major') || github.actor == 'dependabot[bot]' }}
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'major') && github.actor == 'dependabot[bot]' }}
     steps:
       - name: Approve dependabot PR
         run: gh pr review --approve "$PR_URL"
