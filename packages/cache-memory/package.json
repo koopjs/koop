@@ -39,7 +39,7 @@
   "devDependencies": {
     "tap-spec": "^5.0.0",
     "tape": "^5.6.6",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.1"
   },
   "dependencies": {
     "@alloc/quick-lru": "^5.2.0",
