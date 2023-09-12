@@ -1,4 +1,4 @@
-name: Rebase when next changes
+name: Rebase when next branch has push
 
 on:
   push:
