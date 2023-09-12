@@ -1,0 +1,13 @@
+name: Rebase when next branch has push
+
+on:
+  push:
+    branches: next
+
+jobs:
+  rebase:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: peter-evans/rebase@v2
+        with:
+          base: next

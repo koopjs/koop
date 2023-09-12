@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [ "master"]
   schedule:
-    - cron: '35 13 * * 6'
+    - cron: '30 10 * * *'
 jobs:
   security:
     permissions:

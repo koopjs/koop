@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    target-branch: "master"
+    target-branch: "next"
     versioning-strategy: "increase"
     directory: "/packages/cache-memory"
     schedule:
@@ -19,7 +19,7 @@ updates:
             - "patch"
     rebase-strategy: "auto"
   - package-ecosystem: "npm"
-    target-branch: "master"
+    target-branch: "next"
     versioning-strategy: "increase"
     directory: "/packages/featureserver"
     schedule:
@@ -37,7 +37,7 @@ updates:
             - "patch"
     rebase-strategy: "auto"
   - package-ecosystem: "npm"
-    target-branch: "master"
+    target-branch: "next"
     versioning-strategy: "increase"
     directory: "/packages/core"
     schedule:
@@ -55,7 +55,7 @@ updates:
             - "patch"
     rebase-strategy: "auto"
   - package-ecosystem: "npm"
-    target-branch: "master"
+    target-branch: "next"
     versioning-strategy: "increase"
     directory: "/packages/logger"
     schedule:
@@ -73,7 +73,7 @@ updates:
             - "patch"
     rebase-strategy: "auto"
   - package-ecosystem: "npm"
-    target-branch: "master"
+    target-branch: "next"
     versioning-strategy: "increase"
     directory: "/packages/output-geoservices"
     schedule:
@@ -91,7 +91,7 @@ updates:
             - "patch"
     rebase-strategy: "auto"
   - package-ecosystem: "npm"
-    target-branch: "master"
+    target-branch: "next"
     versioning-strategy: "increase"
     directory: "/packages/winnow"
     schedule:
@@ -109,7 +109,7 @@ updates:
             - "patch"
     rebase-strategy: "auto"
   - package-ecosystem: "npm"
-    target-branch: "master"
+    target-branch: "next"
     versioning-strategy: "increase"
     directory: "/"
     schedule:
