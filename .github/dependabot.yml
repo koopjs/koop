@@ -1,85 +1,127 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    target-branch: "next"
+    target-branch: "master"
     versioning-strategy: "increase"
     directory: "/packages/cache-memory"
     schedule:
       interval: "daily"
     groups:
-      minor-dependencies:
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+            - "minor"
+            - "patch"
+      development-dependencies:
+        dependency-type: "development"
         update-types:
             - "minor"
             - "patch"
     rebase-strategy: "auto"
   - package-ecosystem: "npm"
-    target-branch: "next"
+    target-branch: "master"
     versioning-strategy: "increase"
     directory: "/packages/featureserver"
     schedule:
       interval: "daily"
     groups:
-      minor-dependencies:
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+            - "minor"
+            - "patch"
+      development-dependencies:
+        dependency-type: "development"
         update-types:
             - "minor"
             - "patch"
     rebase-strategy: "auto"
   - package-ecosystem: "npm"
-    target-branch: "next"
+    target-branch: "master"
     versioning-strategy: "increase"
     directory: "/packages/core"
     schedule:
       interval: "daily"
     groups:
-      minor-dependencies:
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+            - "minor"
+            - "patch"
+      development-dependencies:
+        dependency-type: "development"
         update-types:
             - "minor"
             - "patch"
     rebase-strategy: "auto"
   - package-ecosystem: "npm"
-    target-branch: "next"
+    target-branch: "master"
     versioning-strategy: "increase"
     directory: "/packages/logger"
     schedule:
       interval: "daily"
     groups:
-      minor-dependencies:
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+            - "minor"
+            - "patch"
+      development-dependencies:
+        dependency-type: "development"
         update-types:
             - "minor"
             - "patch"
     rebase-strategy: "auto"
   - package-ecosystem: "npm"
-    target-branch: "next"
+    target-branch: "master"
     versioning-strategy: "increase"
     directory: "/packages/output-geoservices"
     schedule:
       interval: "daily"
     groups:
-      minor-dependencies:
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+            - "minor"
+            - "patch"
+      development-dependencies:
+        dependency-type: "development"
         update-types:
             - "minor"
             - "patch"
     rebase-strategy: "auto"
   - package-ecosystem: "npm"
-    target-branch: "next"
+    target-branch: "master"
     versioning-strategy: "increase"
     directory: "/packages/winnow"
     schedule:
       interval: "daily"
     groups:
-      minor-dependencies:
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+            - "minor"
+            - "patch"
+      development-dependencies:
+        dependency-type: "development"
         update-types:
             - "minor"
             - "patch"
     rebase-strategy: "auto"
   - package-ecosystem: "npm"
-    target-branch: "next"
+    target-branch: "master"
     versioning-strategy: "increase"
     directory: "/"
     schedule:
       interval: "daily"
     groups:
-      minor-dependencies:
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+            - "minor"
+            - "patch"
+      development-dependencies:
+        dependency-type: "development"
         update-types:
             - "minor"
             - "patch"
