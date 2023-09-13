@@ -1,5 +1,13 @@
 # @koopjs/featureserver
 
+## 8.1.4
+
+### Patch Changes
+
+- rename log-manager files
+- Updated dependencies [de597a6]
+  - @koopjs/winnow@4.1.4
+
 ## 8.1.3
 
 ### Patch Changes

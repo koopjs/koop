@@ -1,5 +1,12 @@
 # @koopjs/koop-core
 
+## 9.2.5
+
+### Patch Changes
+
+- koop options and config are merged, with any collisions defaulting to config
+  - @koopjs/output-geoservices@7.1.4
+
 ## 9.2.4
 
 ### Patch Changes

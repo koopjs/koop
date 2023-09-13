@@ -1,5 +1,11 @@
 # @koopjs/winnow
 
+## 4.1.4
+
+### Patch Changes
+
+- rename log-manager files
+
 ## 4.1.3
 
 ### Patch Changes
