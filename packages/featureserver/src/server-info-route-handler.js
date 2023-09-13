@@ -7,7 +7,7 @@ const {
   normalizeSpatialReference,
   normalizeInputData,
 } = require('./helpers');
-const { logger } = require('./logger');
+const logManager = require('./logger');
 const ServerMetadata = require('./helpers/server-metadata');
 
 function serverMetadataResponse(data, req = {}) {
@@ -114,7 +114,7 @@ function calculateServiceExtentFromLayers(layers, spatialReference) {
       spatialReference,
     };
   } catch (error) {
-    logger.debug(`Could not calculate extent from data: ${error.message}`);
+    logManager.logger.debug(`Could not calculate extent from data: ${error.message}`);
   }
 }
 
@@ -131,7 +131,7 @@ function getExtent(extent, spatialReference) {
   try {
     return normalizeExtent(extent, spatialReference);
   } catch (error) {
-    logger.warn(`Could not normalize extent: ${ error }`);
+    logManager.logger.warn(`Could not normalize extent: ${ error }`);
   }
 }
 

@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const layerInfo = require('./layer-metadata');
 const query = require('./query');
-const { logger } = require('./logger');
+const logManager = require('./logger');
 const queryRelatedRecords = require('./queryRelatedRecords.js');
 const generateRenderer = require('./generate-renderer');
 const restInfo = require('./rest-info-route-handler');
@@ -51,7 +51,7 @@ module.exports = function route(req, res, geojson = {}) {
 
     return responseHandler(req, res, 200, result);
   } catch (error) {
-    logger.debug(error);
+    logManager.logger.debug(error);
     const { code = 500 , message, details = [message] } = error;
     
     // Geoservice spec wraps all errors in a 200 response (!)

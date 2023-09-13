@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const wktParser = require('wkt-parser');
 const projCodes = require('@esri/proj-codes');
-const { logger } = require('../logger');
+const logManager = require('../logger');
 const esriUnitsLookup = require('./esri-units-lookup');
 const defaults = require('../metadata-defaults');
 
@@ -62,7 +62,7 @@ function getUnits({ latestWkid, wkid, wkt }) {
     const units = wktParser(wkt)?.units;
     return esriUnitsLookup(units);
   } catch (error) {
-    logger.debug(
+    logManager.logger.debug(
       `Could not set feature service units from spatial reference: ${error}`,
     );
   }

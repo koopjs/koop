@@ -12,29 +12,8 @@ describe('validateInputs', () => {
 
     const debugSpy = sinon.spy();
 
-
-
-    it('should validate geojson when LOG_LEVEL === debug', () => {
-      process.env.LOG_LEVEL = 'debug';
-
-      const { validateInputs } = proxyquire('./validate-inputs', {
-        'geojson-validation': {
-          valid: hintSpy
-        },
-        '../logger': {
-          logger: {
-            debug: debugSpy
-          }
-        }
-      });
-      validateInputs({}, { foo: 'geojson' });
-      hintSpy.calledOnce.should.equal(true);
-      hintSpy.firstCall.args.should.deepEqual([{ foo: 'geojson' }, true]);
-      debugSpy.calledOnce.should.equal(true);
-    });
-
-    it('should validate geojson when KOOP_LOG_LEVEL === debug', () => {
-      process.env.KOOP_LOG_LEVEL = 'debug';
+    it('should validate geojson when VALIDATE_GEOJSON is defined', () => {
+      process.env.VALIDATE_GEOJSON = '';
 
       const { validateInputs } = proxyquire('./validate-inputs', {
         'geojson-validation': {
@@ -51,6 +30,7 @@ describe('validateInputs', () => {
       hintSpy.calledOnce.should.equal(true);
       hintSpy.firstCall.args.should.deepEqual([{ foo: 'geojson' }, true]);
       debugSpy.calledOnce.should.equal(true);
+      delete process.env.VALIDATE_GEOJSON;
     });
 
     it('should skip geojson validation', () => {
