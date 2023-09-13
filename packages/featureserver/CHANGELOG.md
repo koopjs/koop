@@ -1,5 +1,13 @@
 # @koopjs/featureserver
 
+## 8.1.3
+
+### Patch Changes
+
+- logger needs to be acquired at request time
+- Updated dependencies [8bdc90d]
+  - @koopjs/winnow@4.1.3
+
 ## 8.1.2
 
 ### Patch Changes

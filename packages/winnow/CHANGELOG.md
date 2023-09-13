@@ -1,5 +1,11 @@
 # @koopjs/winnow
 
+## 4.1.3
+
+### Patch Changes
+
+- logger needs to be acquired at request time
+
 ## 4.1.2
 
 ### Patch Changes
