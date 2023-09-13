@@ -19,7 +19,7 @@ describe('validateInputs', () => {
         'geojson-validation': {
           valid: hintSpy
         },
-        '../logger': {
+        '../log-manager': {
           logger: {
             debug: debugSpy
           }
@@ -38,7 +38,7 @@ describe('validateInputs', () => {
         'geojson-validation': {
           valid: hintSpy
         },
-        '../logger': {
+        '../log-manager': {
           logger: {
             debug: debugSpy
           }

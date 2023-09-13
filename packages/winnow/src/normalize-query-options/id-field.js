@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const logManager = require('../logger');
+const logManager = require('../log-manager');
 /**
  * Ensure idField is set if metadata doesn't have a value but a field named OBJECTID is present
  * @param {object} metadata

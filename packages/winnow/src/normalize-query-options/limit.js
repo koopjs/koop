@@ -1,4 +1,4 @@
-const logManager = require('../logger');
+const logManager = require('../log-manager');
 
 /**
  * Normalize the limit option; defaults to undefined

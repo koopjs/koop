@@ -7,7 +7,7 @@ const {
   normalizeSpatialReference,
   normalizeInputData,
 } = require('./helpers');
-const logManager = require('./logger');
+const logManager = require('./log-manager');
 const ServerMetadata = require('./helpers/server-metadata');
 
 function serverMetadataResponse(data, req = {}) {

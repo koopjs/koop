@@ -5,7 +5,7 @@ const {
   FieldFromFieldDefinition,
   ObjectIdFieldFromDefinition
 } = require('./field-classes');
-const logManager = require('../../logger');
+const logManager = require('../../log-manager');
 
 class Fields {
   static normalizeOptions (inputOptions) {

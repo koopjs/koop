@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const wktParser = require('wkt-parser');
 const projCodes = require('@esri/proj-codes');
-const logManager = require('../logger');
+const logManager = require('../log-manager');
 const esriUnitsLookup = require('./esri-units-lookup');
 const defaults = require('../metadata-defaults');
 

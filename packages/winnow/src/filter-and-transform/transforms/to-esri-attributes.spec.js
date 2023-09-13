@@ -19,7 +19,7 @@ test('toEsriAttributes, requires idField and properties contain it', t => {
 
 test('toEsriAttributes, requires idField, properties contain it, but logs debug message', t => {
   const toEsriAttributes = proxyquire(modulePath, {
-    '../../logger': {
+    '../../log-manager': {
       logger: {
         debug: (message) => {
           t.equals(message, 'OBJECTIDs created from provider\'s "idField" (OBJECTID: 11111) are not integers from 0 to 2147483647');

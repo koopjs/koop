@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const logManager = require('../logger');
+const logManager = require('../log-manager');
 const { normalizeArray } = require('./helpers');
 const normalizeSpatialReference = require('./spatial-reference');
 

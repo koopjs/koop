@@ -1,4 +1,4 @@
-const logManager = require('../../logger');
+const logManager = require('../../log-manager');
 const projectCoordinates = require('../../helpers/project-coordinates');
 
 function project (geometry, sourceCoordinateSystem, targetCoordinateSystem) {

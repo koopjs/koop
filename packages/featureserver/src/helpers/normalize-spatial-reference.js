@@ -1,7 +1,7 @@
 const esriProjCodes = require('@esri/proj-codes');
 const Joi = require('joi');
 const wktParser = require('wkt-parser');
-const logManager = require('../logger');
+const logManager = require('../log-manager');
 const wktLookup = new Map();
 const schema = Joi.alternatives(
   Joi.string(),
