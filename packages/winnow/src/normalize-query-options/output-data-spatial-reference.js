@@ -1,6 +1,6 @@
 const normalizeSpatialReference = require('./spatial-reference');
 const { getCollectionCrs } = require('./helpers');
-const logManager = require('../logger');
+const logManager = require('../log-manager');
 
 function normalizeOutputDataSpatialReference (options = {}) {
   const {

@@ -1,7 +1,7 @@
 const joi = require('joi');
 const _ = require('lodash');
 const geojsonhint = require('geojson-validation');
-const logManager = require('../logger');
+const logManager = require('../log-manager');
 const { VALIDATE_GEOJSON } = process.env;
 
 const queryParamSchema = joi

@@ -6,7 +6,7 @@ describe('logWarnings', () => {
   const loggerSpy = sinon.spy(() => {});
 
   const { logWarnings } = proxyquire('./log-warnings', {
-    '../logger': {
+    '../log-manager': {
       logger: {
         debug: loggerSpy,
       },

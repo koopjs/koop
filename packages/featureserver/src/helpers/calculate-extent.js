@@ -1,5 +1,5 @@
 const { calculateBounds } = require('@terraformer/spatial');
-const logManager = require('../logger');
+const logManager = require('../log-manager');
 const normalizeExtent = require('./normalize-extent');
 
 function calculateExtent ({ isLayer, geojson, spatialReference }) {

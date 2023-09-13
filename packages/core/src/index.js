@@ -17,7 +17,7 @@ class Koop extends Events {
     this.version = pkg.version;
 
     // TODO: remove usage of "config" module
-    this.config = options || config;
+    this.config = { ...options, ...config };
     this.server = initServer(this.config);
     this.log = this.config.logger || new Logger(this.config);
 

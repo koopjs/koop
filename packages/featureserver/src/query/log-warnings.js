@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const { getDataTypeFromValue } = require('../helpers');
-const logManager = require('../logger');
+const logManager = require('../log-manager');
 
 function logWarnings(geojson, format) {
   const { metadata = {}, features } = geojson;

@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const logManager = require('../../logger');
+const logManager = require('../../log-manager');
 const { createIntegerHash } = require('../helpers');
 
 module.exports = function transformToEsriProperties (properties, geometry, delimitedDateFields, requiresObjectId, idField) {

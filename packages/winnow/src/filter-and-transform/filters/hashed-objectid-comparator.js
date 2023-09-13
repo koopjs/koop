@@ -1,5 +1,5 @@
 const createIntegerHash = require('../helpers/create-integer-hash');
-const logManager = require('../../logger');
+const logManager = require('../../log-manager');
 
 /**
  * This function is used when the where option includes an OBJECTID, but the data
