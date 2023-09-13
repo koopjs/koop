@@ -1,7 +1,8 @@
 const joi = require('joi');
+const _ = require('lodash');
 const geojsonhint = require('geojson-validation');
-const { logger } = require('../logger');
-const { KOOP_LOG_LEVEL, LOG_LEVEL } = process.env;
+const logManager = require('../logger');
+const { VALIDATE_GEOJSON } = process.env;
 
 const queryParamSchema = joi
   .object({
@@ -26,13 +27,14 @@ function validate(params, geojson) {
 }
 
 function shouldValidateGeojson() {
-  return LOG_LEVEL === 'debug' || KOOP_LOG_LEVEL === 'debug';
+  return !_.isUndefined(VALIDATE_GEOJSON);
 }
 
+// TODO: move this out of feature server
 function validateGeojson(geojson) {
   const geojsonErrors = geojsonhint.valid(geojson, true);
   if (geojsonErrors.length > 0) {
-    logger.debug(
+    logManager.logger.debug(
       `source data for contains invalid GeoJSON; ${geojsonErrors[0]}`,
     );
   }

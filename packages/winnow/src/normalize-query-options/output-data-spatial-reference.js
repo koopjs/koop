@@ -1,6 +1,6 @@
 const normalizeSpatialReference = require('./spatial-reference');
 const { getCollectionCrs } = require('./helpers');
-const { logger } = require('../logger');
+const logManager = require('../logger');
 
 function normalizeOutputDataSpatialReference (options = {}) {
   const {
@@ -20,7 +20,7 @@ function normalizeOutputDataSpatialReference (options = {}) {
   const spatialReference = normalizeSpatialReference(outputSpatialReference);
 
   if (!spatialReference) {
-    logger.debug(`spatial reference "${outputSpatialReference}" could not be normalized. Defaulting to EPSG:4326.`);
+    logManager.logger.debug(`spatial reference "${outputSpatialReference}" could not be normalized. Defaulting to EPSG:4326.`);
     // @TODO: throw error
   }
 

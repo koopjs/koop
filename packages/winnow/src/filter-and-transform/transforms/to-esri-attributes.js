@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { logger } = require('../../logger');
+const logManager = require('../../logger');
 const { createIntegerHash } = require('../helpers');
 
 module.exports = function transformToEsriProperties (properties, geometry, delimitedDateFields, requiresObjectId, idField) {
@@ -13,7 +13,7 @@ module.exports = function transformToEsriProperties (properties, geometry, delim
   }
 
   if (requiresObjectId && shouldLogIdFieldWarning(properties[idField])) {
-    logger.debug(`OBJECTIDs created from provider's "idField" (${idField}: ${properties[idField]}) are not integers from 0 to 2147483647`);
+    logManager.logger.debug(`OBJECTIDs created from provider's "idField" (${idField}: ${properties[idField]}) are not integers from 0 to 2147483647`);
   }
 
   return transformProperties(properties, dateFields);

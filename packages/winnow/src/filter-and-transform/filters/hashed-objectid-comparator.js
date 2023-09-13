@@ -1,5 +1,5 @@
 const createIntegerHash = require('../helpers/create-integer-hash');
-const { logger } = require('../../logger');
+const logManager = require('../../logger');
 
 /**
  * This function is used when the where option includes an OBJECTID, but the data
@@ -45,6 +45,6 @@ module.exports = function (properties, geometry, value, operator) {
     return objectIdValues.includes(hashedFeature);
   }
   
-  logger.debug(`unsupported operator "${operator}"; ignoring`);
+  logManager.logger.debug(`unsupported operator "${operator}"; ignoring`);
   return false;
 };

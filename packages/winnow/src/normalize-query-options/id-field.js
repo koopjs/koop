@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { logger } = require('../logger');
+const logManager = require('../logger');
 /**
  * Ensure idField is set if metadata doesn't have a value but a field named OBJECTID is present
  * @param {object} metadata
@@ -9,7 +9,7 @@ function normalizeIdField (options, features = []) {
   const idField = extractIdField(metadata, features[0]);
 
   if (shouldWarnIdFieldIsMissingFromData(idField, features)) {
-    logger.debug('requested provider has "idField" assignment, but this property is not found in properties of all features.');
+    logManager.logger.debug('requested provider has "idField" assignment, but this property is not found in properties of all features.');
   }
 
   return idField;
