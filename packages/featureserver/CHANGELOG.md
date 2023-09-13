@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 8.1.5
+
+### Patch Changes
+
+- allow null or empty strings as overrides for description, service description, copyrightText
+
 ## 8.1.4
 
 ### Patch Changes
