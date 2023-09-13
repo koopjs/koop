@@ -57,17 +57,17 @@ const overridablesSchema = joi.object({
   fullVersion: joi.string(),
   maxRecordCount: joi.number(),
   server: joi.object({
-    serviceDescription: joi.string(),
-    description: joi.string(),
-    copyrightText: joi.string(),
+    serviceDescription: joi.string().allow(null, ''),
+    description: joi.string().allow(null, ''),
+    copyrightText: joi.string().allow(null, ''),
     hasStaticData: joi.boolean(),
     spatialReference: spatialReferenceSchema,
     initialExtent: esriExtentSchema,
     fullExtent: esriExtentSchema,
   }),
   layer: joi.object({
-    description: joi.string(),
-    copyrightText: joi.string(),
+    description: joi.string().allow(null, ''),
+    copyrightText: joi.string().allow(null, ''),
     extent: esriExtentSchema,
   }),
 });
