@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "jest",
+    "test:cov:unit": "jest --coverage && npm run cov:badge",
     "test:cov": "jest --coverage && npm run cov:badge",
     "cov:badge": "coverage-badges --output ./coverage.svg"
   },

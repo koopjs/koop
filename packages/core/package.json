@@ -68,6 +68,7 @@
   },
   "scripts": {
     "test": "mocha '**/*.spec.js' ",
+    "test:cov:unit": "nyc -r=json-summary mocha '**/*.spec.js' && npm run cov:badge",
     "test:cov": "nyc -r=json-summary mocha '**/*.spec.js' && npm run cov:badge",
     "cov:badge": "coverage-badges-cli --output ./coverage.svg"
   }

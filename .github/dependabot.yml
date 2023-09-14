@@ -1,11 +1,11 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    target-branch: "next"
+    target-branch: "master"
     versioning-strategy: "increase"
     directory: "/packages/cache-memory"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     groups:
       production-dependencies:
         dependency-type: "production"
@@ -19,11 +19,11 @@ updates:
             - "patch"
     rebase-strategy: "auto"
   - package-ecosystem: "npm"
-    target-branch: "next"
+    target-branch: "master"
     versioning-strategy: "increase"
     directory: "/packages/featureserver"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     groups:
       production-dependencies:
         dependency-type: "production"
@@ -37,11 +37,11 @@ updates:
             - "patch"
     rebase-strategy: "auto"
   - package-ecosystem: "npm"
-    target-branch: "next"
+    target-branch: "master"
     versioning-strategy: "increase"
     directory: "/packages/core"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     groups:
       production-dependencies:
         dependency-type: "production"
@@ -55,11 +55,11 @@ updates:
             - "patch"
     rebase-strategy: "auto"
   - package-ecosystem: "npm"
-    target-branch: "next"
+    target-branch: "master"
     versioning-strategy: "increase"
     directory: "/packages/logger"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     groups:
       production-dependencies:
         dependency-type: "production"
@@ -73,11 +73,11 @@ updates:
             - "patch"
     rebase-strategy: "auto"
   - package-ecosystem: "npm"
-    target-branch: "next"
+    target-branch: "master"
     versioning-strategy: "increase"
     directory: "/packages/output-geoservices"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     groups:
       production-dependencies:
         dependency-type: "production"
@@ -91,11 +91,11 @@ updates:
             - "patch"
     rebase-strategy: "auto"
   - package-ecosystem: "npm"
-    target-branch: "next"
+    target-branch: "master"
     versioning-strategy: "increase"
     directory: "/packages/winnow"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     groups:
       production-dependencies:
         dependency-type: "production"
@@ -109,11 +109,11 @@ updates:
             - "patch"
     rebase-strategy: "auto"
   - package-ecosystem: "npm"
-    target-branch: "next"
+    target-branch: "master"
     versioning-strategy: "increase"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     groups:
       production-dependencies:
         dependency-type: "production"

@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "tape src/**/*.spec.js | tap-spec",
+    "test:cov:unit": "nyc -r=json-summary tape './src/**/*.spec.js' | tap-spec && npm run cov:badge",
     "test:cov": "nyc -r=json-summary tape './src/**/*.spec.js' | tap-spec && npm run cov:badge",
     "cov:badge": "coverage-badges-cli --output ./coverage.svg"
   },
