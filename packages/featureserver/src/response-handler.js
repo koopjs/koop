@@ -1,5 +1,5 @@
 module.exports = function responseHandler (req, res, statusCode, payload) {
-  if (req.query.callback) {
+  if (typeof req.query.callback === 'string') {
     let sanitizedCallback = req.query.callback.replace(/[^\w\d\.\(\)\[\]]/g, '') // eslint-disable-line
     res.set('Content-Type', 'application/javascript');
     res.status(statusCode);
