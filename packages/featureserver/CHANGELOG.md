@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 8.1.6
+
+### Patch Changes
+
+- add type check to callback sanitization
+
 ## 8.1.5
 
 ### Patch Changes
