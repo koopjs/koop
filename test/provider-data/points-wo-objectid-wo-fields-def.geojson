@@ -1,19 +1,11 @@
 {
   "type": "FeatureCollection",
   "metadata": {
-    "idField": "id",
-    "fields": [
-        { "name": "timestamp", "type": "Date" },
-        { "name": "id", "type": "Number" },
-        { "name": "label", "type": "String" },
-        { "name": "category", "type": "String" }
-      ]
     },
   "features": [
     {
       "type": "Feature",
       "properties": {
-        "id": 1,
         "timestamp": "2023-04-10T16:15:30.000Z",
         "label": "White Leg",
         "category": "pinto"
@@ -29,7 +21,6 @@
     {
       "type": "Feature",
       "properties": {
-        "id": 2,
         "timestamp": "2020-04-12T16:15:30.000Z",
         "label": "Fireman",
         "category": "pinto"
@@ -45,7 +36,6 @@
     {
       "type": "Feature",
       "properties": {
-        "id": 3,
         "timestamp": "2015-04-11T16:15:30.000Z",
         "label": "Workhorse",
         "category": "draft"
