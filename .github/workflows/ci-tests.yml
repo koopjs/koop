@@ -11,6 +11,7 @@ on:
       - "./.github/**.yml"
       - "**/packages/**.js"
       - "**/packages/**/package.json"
+      - "test/**/*.js"
 
 jobs:
   pr-tests:
