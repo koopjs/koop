@@ -4,9 +4,9 @@ function getServerInfo(id) {
     fullVersion: '11.1.0',
     maxRecordCount: 2000,
     serviceDescription:
-      'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+      `GeoJSON from ${id}.geojson`,
     description:
-      'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+      `GeoJSON from ${id}.geojson`,
     copyrightText:
       'Copyright information varies by provider. For more information please contact the source of this data.',
     spatialReference: { wkid: 4326, latestWkid: 4326 },
@@ -60,7 +60,7 @@ function getLayersInfo(filename, idField) {
         name: `${filename}.geojson`,
         type: 'Feature Layer',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          `GeoJSON from ${filename}.geojson`,
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         parentLayer: null,
