@@ -1,14 +1,6 @@
 const Koop = require('@koopjs/koop-core');
 const provider = require('@koopjs/provider-file-geojson');
 const request = require('supertest');
-const {
-  getFirst2000,
-  filterByObjectIds,
-  getOutStatistics,
-  paginated,
-  getWithFilter,
-  getAttributeTable,
-} = require('./helpers/client-response-fixtures');
 const mockLogger = {
   debug: () => {},
   info: () => {},
@@ -22,7 +14,7 @@ const IDFIELD = 'OBJECTID';
 const koop = new Koop({ logLevel: 'error', logger: mockLogger });
 koop.register(provider, { dataDir: './test/provider-data' });
 
-describe('Typical Geoservice Client request sequence: Dataset with defined idField', () => {
+describe('Typical Geoservice Client request sequence: Dataset with no geometry', () => {
   let objectIds;
 
   beforeAll(async () => {

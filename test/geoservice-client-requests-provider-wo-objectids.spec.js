@@ -25,7 +25,7 @@ const IDFIELD = 'OBJECTID';
 const koop = new Koop({ logLevel: 'error', logger: mockLogger });
 koop.register(provider, { dataDir: './test/provider-data' });
 
-describe('Typical Geoservice Client request sequence: Dataset with defined idField', () => {
+describe('Typical Geoservice Client request sequence: Dataset without OBJECTID attribute', () => {
   let objectIds;
 
   beforeAll(async () => {
