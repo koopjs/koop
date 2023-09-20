@@ -1,5 +1,11 @@
 # @koopjs/winnow
 
+## 4.2.0
+
+### Minor Changes
+
+- allow string attributes as objectIds parameter for filtering
+
 ## 4.1.4
 
 ### Patch Changes

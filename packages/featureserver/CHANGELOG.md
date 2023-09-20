@@ -1,5 +1,12 @@
 # @koopjs/featureserver
 
+## 8.1.7
+
+### Patch Changes
+
+- Updated dependencies [f400c85]
+  - @koopjs/winnow@4.2.0
+
 ## 8.1.6
 
 ### Patch Changes
