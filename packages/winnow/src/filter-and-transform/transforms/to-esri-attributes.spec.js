@@ -22,7 +22,7 @@ test('toEsriAttributes, requires idField, properties contain it, but logs debug 
     '../../log-manager': {
       logger: {
         debug: (message) => {
-          t.equals(message, 'OBJECTIDs created from provider\'s "idField" (OBJECTID: 11111) are not integers from 0 to 2147483647');
+          t.equals(message, 'Unique-identifier (`OBJECTID`) has a value (11111) that is not a valid integer (0 to 2147483647); this may cause problems in some clients.');
         }
       }
     }

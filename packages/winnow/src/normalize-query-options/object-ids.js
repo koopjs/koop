@@ -21,9 +21,9 @@ function normalizeIds(objectIds) {
 }
 
 function parseId(id) {
-  const castedId = Number(id);
+  const numericId = Number(id);
 
-  return Number.isInteger(castedId) ? castedId : id;
+  return Number.isInteger(numericId) ? numericId : id;
 }
 
 module.exports = normalizeIds;
