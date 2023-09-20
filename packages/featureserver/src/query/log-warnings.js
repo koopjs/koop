@@ -6,9 +6,11 @@ function logWarnings(geojson, format) {
   const { metadata = {}, features } = geojson;
   const esriFormat = format !== geojson;
 
-  if (esriFormat && !metadata.idField) {
+  const properties = _.get(features, '[0].properties') || _.get(features, '[0].attributes');
+
+  if (esriFormat && !metadata.idField && !properties?.OBJECTID) {
     logManager.logger.debug(
-      'requested provider has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an unchanging 32-bit integer. An OBJECTID field will be auto-generated in the absence of an "idField" assignment.',
+      `provider data has no OBJECTID and has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an integer in range 0 - ${Number.MAX_SAFE_INTEGER}. An OBJECTID field will be auto-generated in the absence of an "idField" assignment.`,
     );
   }
 
@@ -18,10 +20,10 @@ function logWarnings(geojson, format) {
     );
   }
 
-  if (metadata.fields && _.has(features, '[0].properties')) {
-    compareFieldDefintionsToFeature(metadata.fields, features[0].properties);
+  if (metadata.fields && properties) {
+    compareFieldDefintionsToFeature(metadata.fields, properties);
   
-    compareFeatureToFieldDefinitions(features[0].properties, metadata.fields);
+    compareFeatureToFieldDefinitions(properties, metadata.fields);
   }
 }
 

@@ -21,7 +21,7 @@ describe('logWarnings', () => {
     logWarnings({});
     loggerSpy.callCount.should.equal(1);
     loggerSpy.firstCall.args.should.deepEqual([
-      'requested provider has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an unchanging 32-bit integer. An OBJECTID field will be auto-generated in the absence of an "idField" assignment.',
+      `provider data has no OBJECTID and has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an integer in range 0 - ${Number.MAX_SAFE_INTEGER}. An OBJECTID field will be auto-generated in the absence of an "idField" assignment.`,
     ]);
   });
 
