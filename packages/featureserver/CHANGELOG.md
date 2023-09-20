@@ -1,5 +1,13 @@
 # @koopjs/featureserver
 
+## 8.1.8
+
+### Patch Changes
+
+- prevent log message when OBJECTID found in data
+- Updated dependencies [2e50b96]
+  - @koopjs/winnow@4.2.1
+
 ## 8.1.7
 
 ### Patch Changes

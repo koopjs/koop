@@ -1,5 +1,11 @@
 # @koopjs/winnow
 
+## 4.2.1
+
+### Patch Changes
+
+- alter log message for max safe integer range
+
 ## 4.2.0
 
 ### Minor Changes
