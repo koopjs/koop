@@ -119,7 +119,6 @@ describe('koop', () => {
 
           test('handles delimited values', async () => {
             try {
-              const url = `/file-geojson/rest/services/points-wo-objectid/FeatureServer/0/query?objectIds=${objectIds[1]},${objectIds[2]}`;
               const response = await request(koop.server).get(`/file-geojson/rest/services/points-wo-objectid/FeatureServer/0/query?objectIds=${objectIds[1]},${objectIds[2]}`);
               expect(response.status).toBe(200);
               const { features } = response.body;
