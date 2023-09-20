@@ -22,6 +22,13 @@ test('normalize objectIds: delimited numeric string', t => {
   t.deepEqual(normalized, [1, 2]);
 });
 
+test('normalize objectIds: delimited strings', t => {
+  t.plan(1);
+
+  const normalized = normalizeObjectIds('abc3ef,xyz123');
+  t.deepEqual(normalized, ['abc3ef','xyz123']);
+});
+
 test('normalize objectIds: integer', t => {
   t.plan(1);
 
@@ -44,18 +51,6 @@ test('normalize objectIds: throw on unsupported data type', t => {
     t.fail('should have thrown');
   } catch (err) {
     t.equals(err.message, 'Invalid objectIds: true');
-    t.equals(err.code, 400);
-  }
-});
-
-test('normalize objectIds: throw on non-integer string', t => {
-  t.plan(2);
-
-  try {
-    normalizeObjectIds('1.4');
-    t.fail('should have thrown');
-  } catch (err) {
-    t.equals(err.message, 'Non-integer objectId: 1.4');
     t.equals(err.code, 400);
   }
 });

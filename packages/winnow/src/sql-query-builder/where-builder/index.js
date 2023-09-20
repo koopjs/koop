@@ -137,9 +137,13 @@ class WhereBuilder {
   }
 
   #addObjectIdsFilter() {
+    const inValues = this.#options.objectIds.map(val => {
+      return isNaN(val) ? `'${val}'` : val;
+    });
+    
     const objectIdFilter = `${
       this.#options.idField || 'OBJECTID'
-    } IN (${this.#options.objectIds.join(',')})`;
+    } IN (${inValues.join(',')})`;
 
     if (this.#where) {
       this.#where = `${this.#where} AND ${objectIdFilter}`;

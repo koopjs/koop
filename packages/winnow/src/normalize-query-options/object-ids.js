@@ -21,13 +21,9 @@ function normalizeIds(objectIds) {
 }
 
 function parseId(id) {
-  const objectId = Number(id);
+  const numericId = Number(id);
 
-  if (Number.isInteger(objectId)) {
-    return objectId;
-  }
-
-  throw new InvalidParameterError(`Non-integer objectId: ${id}`);
+  return Number.isInteger(numericId) ? numericId : id;
 }
 
 module.exports = normalizeIds;
