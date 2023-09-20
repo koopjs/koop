@@ -8,7 +8,7 @@ function logWarnings(geojson, format) {
 
   const properties = _.get(features, '[0].properties') || _.get(features, '[0].attributes');
 
-  if (esriFormat && !metadata.idField && !properties?.OBJECTID) {
+  if (esriFormat && !metadata.idField && properties?.OBJECTID === undefined) {
     logManager.logger.debug(
       `provider data has no OBJECTID and has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an integer in range 0 - ${Number.MAX_SAFE_INTEGER}. An OBJECTID field will be auto-generated in the absence of an "idField" assignment.`,
     );
