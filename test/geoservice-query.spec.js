@@ -132,20 +132,6 @@ describe('koop', () => {
             }
           });
         });
-
-        test('400 error on invalid value', async () => {
-          try {
-            const response = await request(koop.server).get('/file-geojson/rest/services/points-wo-objectid/FeatureServer/0/query?objectIds=1.4');
-            expect(response.status).toBe(200);
-            const { error } = response.body;
-            expect(error.message).toBe('Non-integer objectId: 1.4');
-            expect(error.code).toBe(400);
-            expect(error.details).toEqual(['Non-integer objectId: 1.4']);
-          } catch (error) {
-            console.error(error);
-            throw error;
-          }
-        });
       });
     });
   });

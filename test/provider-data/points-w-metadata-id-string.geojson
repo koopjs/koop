@@ -4,7 +4,7 @@
     "idField": "id",
     "fields": [
         { "name": "timestamp", "type": "Date" },
-        { "name": "id", "type": "Number" },
+        { "name": "id", "type": "String" },
         { "name": "label", "type": "String" },
         { "name": "category", "type": "String" }
       ]
