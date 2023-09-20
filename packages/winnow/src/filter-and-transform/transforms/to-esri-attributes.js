@@ -10,10 +10,8 @@ module.exports = function transformToEsriProperties (properties, geometry, delim
 
   if (requiresObjectId && !idField) {
     properties = injectObjectId({ properties, geometry });
-  }
-
-  if (requiresObjectId && shouldLogIdFieldWarning(properties[idField])) {
-    logManager.logger.debug(`OBJECTIDs created from provider's "idField" (${idField}: ${properties[idField]}) are not integers from 0 to 2147483647`);
+  } else if (requiresObjectId && shouldLogIdFieldWarning(properties[idField])) {
+    logManager.logger.debug(`Unique-identifier (\`${idField}\`) has a value (${properties[idField]}) that is not a valid integer (0 to 2147483647); this may cause problems in some clients.`);
   }
 
   return transformProperties(properties, dateFields);

@@ -22,13 +22,22 @@ test('WhereBuilder.create: where param', (t) => {
   t.equals(whereClause, "properties->`color` = 'red'");
 });
 
-test('WhereBuilder.create: objectIds param', (t) => {
+test('WhereBuilder.create: objectIds param, numeric', (t) => {
   t.plan(1);
   const whereClause = WhereBuilder.create({
     objectIds: [1, 2],
     idField: 'OBJECTID'
   });
   t.equals(whereClause, "properties->`OBJECTID` IN (1, 2 )");
+});
+
+test('WhereBuilder.create: objectIds param, string', (t) => {
+  t.plan(1);
+  const whereClause = WhereBuilder.create({
+    objectIds: ['abc', 'xyz'],
+    idField: 'OBJECTID'
+  });
+  t.equals(whereClause, "properties->`OBJECTID` IN ('abc', 'xyz' )");
 });
 
 test('WhereBuilder.create: where param and objectIds param', (t) => {
