@@ -1,6 +1,8 @@
 const Koop = require('@koopjs/koop-core');
 const provider = require('@koopjs/provider-file-geojson');
 const request = require('supertest');
+const VERSION = process.env.VERSION || 11.1;
+const FULL_VERSION = process.env.VERSION || '11.1.0';
 const mockLogger = {
   debug: () => {},
   info: () => {},
@@ -32,8 +34,8 @@ describe('Typical Geoservice Client request sequence: Dataset with no geometry',
         );
         const serverInfo = response.body;
         expect(serverInfo).toEqual({
-          currentVersion: 11.1,
-          fullVersion: '11.1.0',
+          currentVersion: VERSION,
+          fullVersion: FULL_VERSION,
           maxRecordCount: 2000,
           serviceDescription:
             'GeoJSON from no-geom-w-objectid.geojson',
@@ -96,8 +98,8 @@ describe('Typical Geoservice Client request sequence: Dataset with no geometry',
           layers: [],
           tables: [
             {
-              currentVersion: 11.1,
-              fullVersion: '11.1.0',
+              currentVersion: VERSION,
+              fullVersion: FULL_VERSION,
               id: 0,
               name: 'no-geom-w-objectid.geojson',
               type: 'Table',
@@ -210,8 +212,8 @@ describe('Typical Geoservice Client request sequence: Dataset with no geometry',
         expect(response.status).toBe(200);
         const info = response.body;
         expect(info).toEqual({
-          currentVersion: 11.1,
-          fullVersion: '11.1.0',
+          currentVersion: VERSION,
+          fullVersion: FULL_VERSION,
           id: 0,
           name: 'no-geom-w-objectid.geojson',
           type: 'Table',
@@ -674,4 +676,6 @@ describe('Typical Geoservice Client request sequence: Dataset with no geometry',
       });
     });
   });
+  console.log(process.env.VERSION);
 });
+
