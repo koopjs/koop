@@ -1,7 +1,10 @@
+const VERSION = process.env.VERSION || 11.1;
+const FULL_VERSION = process.env.VERSION || '11.1.0';
+
 function getServerInfo(id) {
   return {
-    currentVersion: 11.1,
-    fullVersion: '11.1.0',
+    currentVersion: VERSION,
+    fullVersion: FULL_VERSION,
     maxRecordCount: 2000,
     serviceDescription:
       `GeoJSON from ${id}.geojson`,
@@ -54,8 +57,8 @@ function getLayersInfo(filename, idField) {
   return {
     layers: [
       {
-        currentVersion: 11.1,
-        fullVersion: '11.1.0',
+        currentVersion: VERSION,
+        fullVersion: FULL_VERSION,
         id: 0,
         name: `${filename}.geojson`,
         type: 'Feature Layer',
