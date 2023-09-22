@@ -1,5 +1,5 @@
 const VERSION = process.env.VERSION || 11.1;
-const FULL_VERSION = process.env.VERSION || '11.1.0';
+const FULL_VERSION = process.env.FULL_VERSION || '11.1.0';
 
 function getServerInfo(id) {
   return {
