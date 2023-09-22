@@ -1,11 +1,9 @@
 const Koop = require('@koopjs/koop-core');
 const provider = require('@koopjs/provider-file-geojson');
 const request = require('supertest');
-const VERSION = process.env.VERSION ? Number(process.env.VERSION) : 11.1;
-const FULL_VERSION = process.env.FULL_VERSION || '11.1.0';
-const COPYRIGHT_TEXT =
-  process.env.COPYRIGHT_TEXT ||
-  'Copyright information varies by provider. For more information please contact the source of this data.';
+const VERSION = 11.1;
+const FULL_VERSION = '11.1.0';
+const COPYRIGHT_TEXT = 'Copyright information varies by provider. For more information please contact the source of this data.';
 
 const mockLogger = {
   debug: () => {},
@@ -105,8 +103,7 @@ describe('Typical Geoservice Client request sequence: Dataset with no geometry',
               name: 'no-geom-w-objectid.geojson',
               type: 'Table',
               description: 'GeoJSON from no-geom-w-objectid.geojson',
-              copyrightText:
-                'Copyright information varies by provider. For more information please contact the source of this data.',
+              copyrightText: COPYRIGHT_TEXT,
               parentLayer: null,
               subLayers: null,
               defaultVisibility: true,

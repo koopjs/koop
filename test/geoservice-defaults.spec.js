@@ -1,9 +1,11 @@
 const Koop = require('@koopjs/koop-core');
 const provider = require('@koopjs/provider-file-geojson');
 const request = require('supertest');
+const VERSION = 11.2;
+const FULL_VERSION = '11.2.0';
 
 describe('Geoservices defaults settings', () => {
-  const koop = new Koop({ logLevel: 'error', geoservicesDefaults: { currentVersion: 11.2, fullVersion: '11.2.0' } });
+  const koop = new Koop({ logLevel: 'error', geoservicesDefaults: { currentVersion: VERSION, fullVersion: FULL_VERSION } });
   koop.register(provider, { dataDir: './test/provider-data' });
   test('should return server metadata with expected version', async () => {
     try {
