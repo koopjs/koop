@@ -1,17 +1,17 @@
-const VERSION = process.env.VERSION || 11.1;
+const VERSION = process.env.VERSION ? Number(process.env.VERSION) : 11.1;
 const FULL_VERSION = process.env.FULL_VERSION || '11.1.0';
+const COPYRIGHT_TEXT =
+  process.env.COPYRIGHT_TEXT ||
+  'Copyright information varies by provider. For more information please contact the source of this data.';
 
 function getServerInfo(id) {
   return {
     currentVersion: VERSION,
     fullVersion: FULL_VERSION,
     maxRecordCount: 2000,
-    serviceDescription:
-      `GeoJSON from ${id}.geojson`,
-    description:
-      `GeoJSON from ${id}.geojson`,
-    copyrightText:
-      'Copyright information varies by provider. For more information please contact the source of this data.',
+    serviceDescription: `GeoJSON from ${id}.geojson`,
+    description: `GeoJSON from ${id}.geojson`,
+    copyrightText: COPYRIGHT_TEXT,
     spatialReference: { wkid: 4326, latestWkid: 4326 },
     fullExtent: {
       spatialReference: { wkid: 4326, latestWkid: 4326 },
@@ -62,10 +62,8 @@ function getLayersInfo(filename, idField) {
         id: 0,
         name: `${filename}.geojson`,
         type: 'Feature Layer',
-        description:
-          `GeoJSON from ${filename}.geojson`,
-        copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+        description: `GeoJSON from ${filename}.geojson`,
+        copyrightText: COPYRIGHT_TEXT,
         parentLayer: null,
         subLayers: null,
         defaultVisibility: true,
@@ -230,7 +228,7 @@ function getFirst2000(idField, objectIds) {
   };
 }
 
-function filterByObjectIds (idField, objectIds) {
+function filterByObjectIds(idField, objectIds) {
   return {
     objectIdFieldName: idField,
     uniqueIdField: { name: idField, isSystemMaintained: true },
@@ -351,7 +349,7 @@ function paginated(IDFIELD) {
   };
 }
 
-function getWithFilter(idField, objectIds){
+function getWithFilter(idField, objectIds) {
   return {
     objectIdFieldName: idField,
     uniqueIdField: { name: idField, isSystemMaintained: true },
@@ -477,5 +475,5 @@ module.exports = {
   getOutStatistics,
   paginated,
   getWithFilter,
-  getAttributeTable
+  getAttributeTable,
 };

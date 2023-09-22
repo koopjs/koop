@@ -1,8 +1,12 @@
 const Koop = require('@koopjs/koop-core');
 const provider = require('@koopjs/provider-file-geojson');
 const request = require('supertest');
-const VERSION = process.env.VERSION || 11.1;
+const VERSION = process.env.VERSION ? Number(process.env.VERSION) : 11.1;
 const FULL_VERSION = process.env.FULL_VERSION || '11.1.0';
+const COPYRIGHT_TEXT =
+  process.env.COPYRIGHT_TEXT ||
+  'Copyright information varies by provider. For more information please contact the source of this data.';
+
 const mockLogger = {
   debug: () => {},
   info: () => {},
@@ -37,12 +41,9 @@ describe('Typical Geoservice Client request sequence: Dataset with no geometry',
           currentVersion: VERSION,
           fullVersion: FULL_VERSION,
           maxRecordCount: 2000,
-          serviceDescription:
-            'GeoJSON from no-geom-w-objectid.geojson',
-          description:
-            'GeoJSON from no-geom-w-objectid.geojson',
-          copyrightText:
-            'Copyright information varies by provider. For more information please contact the source of this data.',
+          serviceDescription: 'GeoJSON from no-geom-w-objectid.geojson',
+          description: 'GeoJSON from no-geom-w-objectid.geojson',
+          copyrightText: COPYRIGHT_TEXT,
           spatialReference: { wkid: 4326, latestWkid: 4326 },
           fullExtent: {
             xmin: -180,
@@ -103,8 +104,7 @@ describe('Typical Geoservice Client request sequence: Dataset with no geometry',
               id: 0,
               name: 'no-geom-w-objectid.geojson',
               type: 'Table',
-              description:
-                'GeoJSON from no-geom-w-objectid.geojson',
+              description: 'GeoJSON from no-geom-w-objectid.geojson',
               copyrightText:
                 'Copyright information varies by provider. For more information please contact the source of this data.',
               parentLayer: null,
@@ -217,10 +217,8 @@ describe('Typical Geoservice Client request sequence: Dataset with no geometry',
           id: 0,
           name: 'no-geom-w-objectid.geojson',
           type: 'Table',
-          description:
-            'GeoJSON from no-geom-w-objectid.geojson',
-          copyrightText:
-            'Copyright information varies by provider. For more information please contact the source of this data.',
+          description: 'GeoJSON from no-geom-w-objectid.geojson',
+          copyrightText: COPYRIGHT_TEXT,
           parentLayer: null,
           subLayers: null,
           defaultVisibility: true,
@@ -678,4 +676,3 @@ describe('Typical Geoservice Client request sequence: Dataset with no geometry',
   });
   console.log(process.env.VERSION);
 });
-
