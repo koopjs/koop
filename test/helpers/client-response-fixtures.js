@@ -1,8 +1,6 @@
-const VERSION = process.env.VERSION ? Number(process.env.VERSION) : 11.1;
-const FULL_VERSION = process.env.FULL_VERSION || '11.1.0';
-const COPYRIGHT_TEXT =
-  process.env.COPYRIGHT_TEXT ||
-  'Copyright information varies by provider. For more information please contact the source of this data.';
+const VERSION =  11.1;
+const FULL_VERSION = '11.1.0';
+const COPYRIGHT_TEXT = 'Copyright information varies by provider. For more information please contact the source of this data.';
 
 function getServerInfo(id) {
   return {
