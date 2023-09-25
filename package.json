@@ -57,7 +57,7 @@
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
     "cz-git": "^1.7.1",
-    "eslint": "^8.49.0",
+    "eslint": "^8.50.0",
     "eslint-plugin-no-only-tests": "^3.1.0",
     "husky": "^8.0.3",
     "jest": "^29.7.0",
@@ -67,7 +67,7 @@
     "lint-staged": "^14.0.1",
     "nyc": "^15.1.0",
     "prettier": "^3.0.3",
-    "snyk": "^1.1221.0",
+    "snyk": "^1.1227.0",
     "supertest": "^6.3.0"
   },
   "config": {
