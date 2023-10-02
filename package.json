@@ -52,7 +52,7 @@
     "await-spawn": "^4.0.2",
     "byline": "^5.0.0",
     "commitizen": "^4.3.0",
-    "commitlint": "^17.7.1",
+    "commitlint": "^17.7.2",
     "coverage-badges-cli": "^1.1.1",
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
@@ -67,7 +67,7 @@
     "lint-staged": "^14.0.1",
     "nyc": "^15.1.0",
     "prettier": "^3.0.3",
-    "snyk": "^1.1227.0",
+    "snyk": "^1.1228.0",
     "supertest": "^6.3.0"
   },
   "config": {
