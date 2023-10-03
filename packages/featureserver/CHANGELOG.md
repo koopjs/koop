@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 8.1.9
+
+### Patch Changes
+
+- handle SQL date types in field defs
+
 ## 8.1.8
 
 ### Patch Changes
