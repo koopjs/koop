@@ -36,7 +36,19 @@ describe('isDate', () => {
   });
 
   it('should return true for ISO string', () => {
-    getDataTypeFromValue(new Date().toISOString()).should.equal('Date');
+    isDate(new Date().toISOString()).should.equal(true);
+  });
+
+  it('should return true for SQL Date', () => {
+    isDate('2020-10-01').should.equal(true);
+  });
+
+  it('should return true for SQL Datetime', () => {
+    isDate('2020-10-01 10:31:45.000').should.equal(true);
+  });
+
+  it('should return false for YYYY/MM/DD', () => {
+    isDate('2020/10/01').should.equal(false);
   });
 
   it('should return false for number', () => {
