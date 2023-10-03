@@ -1,8 +1,9 @@
 const _ = require('lodash');
 const {
   isValidISODateString,
-  isValidDate
+  isValidDate,
 } = require('iso-datestring-validator');
+const dateTimeParser = require('postgres-date');
 
 const PROBLEMATIC_STRING_SYMBOLS = ['(', '[', '*', '+', '\\', '?'];
 
@@ -24,7 +25,7 @@ function isDate (value) {
     return false;
   }
 
-  return (value instanceof Date || (typeof value === 'string') && (isValidDate(value) || isValidISODateString(value)));
+  return (value instanceof Date || (typeof value === 'string') && !!(dateTimeParser(value) || isValidDate(value) || isValidISODateString(value)));
 }
 
 module.exports = {
