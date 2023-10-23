@@ -52,7 +52,7 @@
     "await-spawn": "^4.0.2",
     "byline": "^5.0.0",
     "commitizen": "^4.3.0",
-    "commitlint": "^17.8.0",
+    "commitlint": "^18.0.0",
     "coverage-badges-cli": "^1.1.1",
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
