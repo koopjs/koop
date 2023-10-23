@@ -54,7 +54,7 @@
     "@terraformer/spatial": "^2.1.2",
     "@turf/bbox-polygon": "^6.5.0",
     "@turf/centroid": "^6.5.0",
-    "@types/geojson": "^7946.0.11",
+    "@types/geojson": "^7946.0.12",
     "alasql": "^4.1.10",
     "classybrew": "0.0.3",
     "joi": "^17.11.0",
