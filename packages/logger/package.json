@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "tap-spec": "^5.0.0",
-    "tape": "^5.7.1"
+    "tape": "^5.7.2"
   },
   "files": [
     "src/**/*.js",
