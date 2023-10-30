@@ -25,7 +25,7 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "@esri/proj-codes": "^3.1.0",
+    "@esri/proj-codes": "^3.2.0",
     "@koopjs/logger": "5.0.0",
     "@koopjs/winnow": "4.2.1",
     "@terraformer/spatial": "^2.1.2",
