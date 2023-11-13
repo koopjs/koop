@@ -46,7 +46,7 @@
     "@babel/eslint-parser": "^7.22.15",
     "@changesets/changelog-git": "^0.1.14",
     "@changesets/cli": "^2.26.2",
-    "@commitlint/config-conventional": "^17.8.0",
+    "@commitlint/config-conventional": "^18.1.0",
     "@koopjs/auth-direct-file": "^2.0.2",
     "@koopjs/provider-file-geojson": "^2.2.0",
     "await-spawn": "^4.0.2",
