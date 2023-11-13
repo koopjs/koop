@@ -43,16 +43,16 @@
     "packages/core"
   ],
   "devDependencies": {
-    "@babel/eslint-parser": "^7.22.15",
+    "@babel/eslint-parser": "^7.23.3",
     "@changesets/changelog-git": "^0.1.14",
     "@changesets/cli": "^2.26.2",
-    "@commitlint/config-conventional": "^18.1.0",
+    "@commitlint/config-conventional": "^18.4.0",
     "@koopjs/auth-direct-file": "^2.0.2",
     "@koopjs/provider-file-geojson": "^2.2.0",
     "await-spawn": "^4.0.2",
     "byline": "^5.0.0",
     "commitizen": "^4.3.0",
-    "commitlint": "^18.2.0",
+    "commitlint": "^18.4.1",
     "coverage-badges-cli": "^1.1.1",
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
@@ -64,10 +64,10 @@
     "jest-coverage-badges-ng": "^1.0.1",
     "lerna": "^7.4.2",
     "lerna-changelog": "^2.2.0",
-    "lint-staged": "^15.0.2",
+    "lint-staged": "^15.1.0",
     "nyc": "^15.1.0",
-    "prettier": "^3.0.3",
-    "snyk": "^1.1238.0",
+    "prettier": "^3.1.0",
+    "snyk": "^1.1244.0",
     "supertest": "^6.3.0"
   },
   "config": {
