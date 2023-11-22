@@ -88,6 +88,7 @@ function esriWktLookup (lookupValue) {
   const { wkid, latestWkid } = result;
 
   // Add the WKT to the local lookup so we don't need to scan the Esri lookups next time
+  // TODO: move to LRU cache
   wktLookup.set(wkid, { wkid, latestWkid });
   return { latestWkid, wkid };
 }

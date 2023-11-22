@@ -6,7 +6,7 @@
         "packages/cache-memory/src/**/*.js",
         "packages/logger/src/**/*.js",
         "packages/output-geoservices/src/**/*.js",
-        "packages/koop-core/src/**/*.js"
+        "packages/core/src/**/*.js"
     ],
     "exclude": ["**/*.spec.js"],
     "includeAllSources": true

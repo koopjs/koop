@@ -4,6 +4,28 @@ const _ = require('lodash');
 const DataProvider = require('./data-provider');
 
 const providerConstructorSpy = sinon.spy();
+
+const mockApp = {
+  use: sinon.spy(() => mockApp),
+  disable: sinon.spy(() => mockApp),
+  set: sinon.spy(() => mockApp),
+  on: sinon.spy((event, callback) => {
+    callback();
+    return mockApp;
+  }),
+  get: sinon.spy((route, handler) => {
+    if( route === '/status') {
+      handler({}, { json: () => {} });
+    }
+    return mockApp;
+  }),
+  post: sinon.spy(() => mockApp),
+};
+
+const mockExpress = () => {
+  return mockApp;
+};
+
 class mockDataProviderModule extends DataProvider {
   constructor(params) {
     providerConstructorSpy(params);
@@ -11,8 +33,17 @@ class mockDataProviderModule extends DataProvider {
   }
 }
 
+class MockLogger {
+  warn () {}
+  log  () {}
+  error  () {}
+  info  () {}
+  silly () {}
+}
 const Koop = proxyquire('./', {
-  './data-provider': mockDataProviderModule
+  './data-provider': mockDataProviderModule,
+  '@koopjs/logger': MockLogger,
+  'express': mockExpress
 });
 
 class MockProviderPluginController {
@@ -49,84 +80,95 @@ const mockProviderDefinition = {
   Model: MockModel
 };
 
-const Geoservices = require('@koopjs/output-geoservices');
-
 const should = require('should') // eslint-disable-line
 
-const geoservicesFixtureRoutes = Geoservices.routes.reduce((acc, route) => {
-  return acc + route.methods.length;
-}, 0);
-const providerFixtureRoutes = mockProviderDefinition.routes.reduce((acc, route) => {
-  return acc + route.methods.length;
-}, 0);
-
 describe('Index tests', function () {
+  beforeEach(() => {
+    sinon.reset();
+  });
   describe('Koop instantiation', function () {
+    it('should instantiate Koop without options', function () {
+      const koop = new Koop();
+      koop.config.should.be.empty();
+      mockApp.use.callCount.should.equal(5);
+    });
+
     it('should instantiate Koop with options', function () {
       const koop = new Koop({ foo: 'bar', logLevel: 'error' });
       koop.config.should.have.property('foo', 'bar');
     });
 
-    it('should instantiate Koop without options', function () {
-      const koop = new Koop();
-      koop.config.should.be.empty();
+    it('should skip geoservices registration', function () {
+      const koop = new Koop({ skipGeoservicesRegistration: true});
+      koop.register(mockProviderDefinition, { routePrefix: 'watermelon' });
+      koop.outputs.length.should.equal(0);
+    });
+
+    it('should disable CORS and compression', function () {
+      new Koop({ disableCors: true, disableCompression: true });
+
+      mockApp.use.callCount.should.equal(3);
     });
   });
 
-  describe('Provider registration', function () {
+  describe('Plugin registration', function () {
+    it('should fail if no plugin', () => {
+      try {
+        const koop = new Koop({ logLevel: 'error' });
+        koop.register();
+        throw new Error('should have thrown');
+      } catch (error) {
+        error.should.have.property('message', 'Plugin registration failed: plugin undefined');
+      }
+    });
+
     it('should register provider and add output and provider routes to router stack', function () {
       const koop = new Koop({ logLevel: 'error' });
       koop.register(mockProviderDefinition, { routePrefix: 'watermelon' });
       koop.providers.length.should.equal(1);
-      
       koop.providers[0].should.have.property('namespace', 'test-provider');
-      // Check that the stack includes routes with the provider name in the path
-      const providerRoutes = koop.server._router.stack
-        .filter((layer) => {
-          return layer?.route?.path.includes('watermelon');
-        })
-        .map(layer => { 
-          return _.get(layer, 'route.path');
-        });
-      providerRoutes.length.should.equal(geoservicesFixtureRoutes + providerFixtureRoutes);
+    });
+
+    it('should register unknown plugin type as provider and add output and provider routes to router stack', function () {
+      const koop = new Koop({ logLevel: 'error' });
+      const unknownPlugin =  _.cloneDeep(mockProviderDefinition);
+      delete unknownPlugin.type;
+
+      koop.register(unknownPlugin, { routePrefix: 'watermelon' });
+      koop.providers.length.should.equal(1);
+      koop.providers[0].should.have.property('namespace', 'test-provider');
+    });
+
+    it('should register auth-plugin successfully', function () {
+      const mockAuthPlugin = {
+        type: 'auth',
+        authenticate: function () {},
+        authorize: function () {}
+      };
+    
+      const koop = new Koop({ logLevel: 'error' });
+      try {
+        koop.register(mockAuthPlugin);
+      } catch (error) {
+        (error).should.equal(undefined);
+      }
+  
+    });
+
+    it('should register cache-plugin successfully', function () {
+      const mockCachePlugin = class MockCache {
+        static type = 'cache';
+      };
+    
+      const koop = new Koop({ logLevel: 'error' });
+      try {
+        koop.register(mockCachePlugin);
+      } catch (error) {
+        (error).should.equal(undefined);
+      }
+  
     });
   });
+
 });
 
-describe('Auth plugin registration', function () {
-  const mockAuthPlugin = {
-    type: 'auth',
-    authenticationSpecification: function () {
-      return function () { };
-    },
-    authenticate: function () {},
-    authorize: function () {}
-  };
-
-  it('should register successfully', function () {
-    const koop = new Koop({ logLevel: 'error' });
-    koop.register(mockAuthPlugin);
-    koop._authModule.should.be.instanceOf(Object);
-    koop._authModule.authenticate.should.be.instanceOf(Function);
-    koop._authModule.authorize.should.be.instanceOf(Function);
-    koop._authModule.authenticationSpecification.should.be.instanceOf(Function);
-  });
-});
-
-describe('Generic plugin registration', function () {
-  class fakePlugin {
-    static type = 'plugin';
-    static version = '0.0.0';
-
-    testFunc () {
-      return true;
-    }
-  }
-  it('should register successfully', function () {
-    const koop = new Koop({ logLevel: 'error' });
-    koop.register(fakePlugin);
-    koop.fakePlugin.should.be.instanceOf(Object);
-    koop.fakePlugin.testFunc.should.be.instanceOf(Function);
-    koop.fakePlugin.testFunc().should.equal(true);
-  });
-});

@@ -35,6 +35,11 @@ module.exports = function extendModel ({ ProviderModel, namespace, logger, cache
     }
 
     async pull (req, callback) {
+      const { error } = await this.#authorizeRequest(req);
+      if (error) {
+        return callback(error);
+      }
+
       const key = this.#createCacheKey(req);
 
       try {
@@ -63,6 +68,11 @@ module.exports = function extendModel ({ ProviderModel, namespace, logger, cache
     // TODO: the pullLayer() and the pullCatalog() are very similar to the pull()
     // function. We may consider to merging them in the future.
     async pullLayer (req, callback) {
+      const { error } = await this.#authorizeRequest(req);
+      if (error) {
+        return callback(error);
+      }
+
       if (!this.#getLayer) {
         callback(new Error(`getLayer() method is not implemented in the ${this.namespace} provider.`));
       }
@@ -91,6 +101,11 @@ module.exports = function extendModel ({ ProviderModel, namespace, logger, cache
     }
 
     async pullCatalog (req, callback) {
+      const { error } = await this.#authorizeRequest(req);
+      if (error) {
+        return callback(error);
+      }
+
       if (!this.#getCatalog) {
         callback(new Error(`getCatalog() method is not implemented in the ${this.namespace} provider.`));
       }
@@ -119,6 +134,12 @@ module.exports = function extendModel ({ ProviderModel, namespace, logger, cache
     }
 
     async pullStream (req) {
+      const { error } = await this.#authorizeRequest(req);
+      
+      if (error) {
+        throw error;
+      }
+  
       if (this.getStream) {
         await this.#before(req);
         const providerStream = await this.getStream(req);
@@ -135,20 +156,48 @@ module.exports = function extendModel ({ ProviderModel, namespace, logger, cache
       }
       return hasher(req.url).toString();
     }
+
+    async #authorizeRequest (req) {
+      try {
+        await this.authorize(req);
+      } catch (error) {
+        error.code = 401;
+        return { error };
+      }
+
+      return { error: null };
+    }
   }
 
+  // If provider does not have auth-methods, 
+  // check for global auth-module. if exists, use it, 
+  // otherwise use dummy methods
+
+  if (typeof ProviderModel.prototype.authorize !== 'function') {
+    Model.prototype.authorize = typeof authModule?.authorize  === 'function' ? authModule.authorize : async () => {};
+  }
+
+  if (typeof ProviderModel.prototype.authenticate !== 'function') {
+    Model.prototype.authenticate =  typeof authModule?.authenticate === 'function' ? authModule?.authenticate : async () => { return {}; };
+  }
+
+  if(typeof authModule?.authenticationSpecification === 'function') {
+    logger.warn('Use of "authenticationSpecification" is deprecated. It will be removed in a future release.');
+    Model.prototype.authenticationSpecification =  authModule?.authenticationSpecification;
+  }
   // Add auth methods if auth plugin registered with Koop
-  if (authModule) {
-    const {
-      authenticationSpecification,
-      authenticate,
-      authorize
-    } = authModule;
+  // if (authModule) {
+  //   const {
+  //     authenticationSpecification,
+  //     authenticate,
+  //     authorize
+  //   } = authModule;
 
-    Model.prototype.authenticationSpecification = Object.assign({}, authenticationSpecification(namespace), { provider: namespace });
-    Model.prototype.authenticate = authenticate;
-    Model.prototype.authorize = authorize;
-  }
+  //   Model.prototype.authenticationSpecification = Object.assign({}, authenticationSpecification(namespace), { provider: namespace });
+  //   Model.prototype.authenticate = authenticate;
+  //   Model.prototype.authorize = authorize;
+  // }
+
   return new Model({ logger, cache }, options);
 };
 

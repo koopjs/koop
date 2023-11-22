@@ -16,6 +16,7 @@ const mockCache = {
 
 const mockLogger = {
   debug: sinon.spy(),
+  warn: sinon.spy(),
   info: () => {},
 };
 
@@ -325,6 +326,34 @@ describe('Tests for extend-model', function () {
       mockCache.insert.notCalled.should.equal(true);
     });
 
+    it('should pass authorization error in callback', async () => {
+      const mockCache = {
+        retrieve: sinon.spy((key, query, callback) => {
+          callback(null);
+        }),
+        insert: sinon.spy(() => {}),
+      };
+
+      class Model extends MockModel {}
+      Model.prototype.authorize = async () => {
+        throw new Error('unauthorized');
+      };
+
+      const model = extendModel({
+        ProviderModel: Model,
+        logger: mockLogger,
+        cache: mockCache,
+      });
+      const pullData = promisify(model.pull).bind(model);
+
+      try {
+        await pullData({ url: 'domain/test-provider', params: {}, query: {} });
+        should.fail();
+      } catch (err) {
+        err.message.should.equal('unauthorized');
+      }
+    });
+
     it('should send error in callback', async () => {
       const mockCache = {
         retrieve: sinon.spy((key, query, callback) => {
@@ -390,24 +419,76 @@ describe('Tests for extend-model', function () {
   });
 
   describe('auth methods', () => {
-    it('should attach auth methods when auth plugin is registered with Koop', () => {
+    it('should attach auth methods from authModule if provider does not already define them', async () => {
       const model = extendModel({
         ProviderModel: MockModel,
         namespace: 'test-provider',
         logger: mockLogger,
         cache: mockCache,
         authModule: {
-          authenticate: () => {},
-          authorize: () => {},
-          authenticationSpecification: sinon.spy(),
+          authenticate: () => {
+            return 'from auth-module';
+          },
+          authorize: () => {
+            return 'from auth-module';
+          },
+          authenticationSpecification: () => {
+            return 'from auth-module';
+          }
+
         },
       });
-      model.should.have.property('authorize').and.be.a.Function();
-      model.should.have.property('authenticate').and.be.a.Function();
-      model.should.have
-        .property('authenticationSpecification')
-        .and.deepEqual({ provider: 'test-provider' });
+      const authenticateResult = await model.authenticate();
+      authenticateResult.should.equal('from auth-module');
+      const authorizeResult = await model.authorize();
+      authorizeResult.should.equal('from auth-module');
+      const specResult = await model.authenticationSpecification();
+      specResult.should.equal('from auth-module');
     });
+
+    it('should use provider auth methods if defined', async () => {
+      class Model extends MockModel {}
+      Model.prototype.authenticate = async() => {
+        return 'from provider';
+      };
+
+      Model.prototype.authorize = async() => {
+        return 'from provider';
+      };
+
+      const model = extendModel({
+        ProviderModel: Model,
+        namespace: 'test-provider',
+        logger: mockLogger,
+        cache: mockCache,
+        authModule: {
+          authenticate: () => {
+            return 'from auth-module';
+          },
+          authorize: () => {
+            return 'from auth-module';
+          }
+        },
+      });
+      const authenticateResult = await model.authenticate();
+      authenticateResult.should.equal('from provider');
+      const authorizeResult = await model.authorize();
+      authorizeResult.should.equal('from provider');
+    });
+
+    it('should use dummy auth methods', async () => {
+      const model = extendModel({
+        ProviderModel: MockModel,
+        namespace: 'test-provider',
+        logger: mockLogger,
+        cache: mockCache,
+      });
+      const authenticateResult = await model.authenticate();
+      authenticateResult.should.deepEqual({});
+      const authorizeResult = await model.authorize();
+      should(authorizeResult).deepEqual(undefined);
+    });
+
   });
 
   describe('transformation functions', function () {
@@ -518,6 +599,34 @@ describe('Tests for extend-model', function () {
       // reset the getLayer() function to default
       extendModel.prototype.getLayer = undefined;
       extendModel.prototype.createKey = undefined;
+    });
+
+    it('should pass authorization error in callback', async () => {
+      const mockCache = {
+        retrieve: sinon.spy((key, query, callback) => {
+          callback(null);
+        }),
+        insert: sinon.spy(() => {}),
+      };
+
+      class Model extends MockModel {}
+      Model.prototype.authorize = async () => {
+        throw new Error('unauthorized');
+      };
+
+      const model = extendModel({
+        ProviderModel: Model,
+        logger: mockLogger,
+        cache: mockCache,
+      });
+      const pullLayer = promisify(model.pullLayer).bind(model);
+
+      try {
+        await pullLayer({ url: 'domain/test-provider', params: {}, query: {} });
+        should.fail();
+      } catch (err) {
+        err.message.should.equal('unauthorized');
+      }
     });
 
     it('should throw an error if the getLayer() function is not implemented', async () => {
@@ -907,6 +1016,34 @@ describe('Tests for extend-model', function () {
         err.message.should.equal('err in getCatalog');
       }
     });
+
+    it('should pass authorization error in callback', async () => {
+      const mockCache = {
+        retrieve: sinon.spy((key, query, callback) => {
+          callback(null);
+        }),
+        insert: sinon.spy(() => {}),
+      };
+
+      class Model extends MockModel {}
+      Model.prototype.authorize = async () => {
+        throw new Error('unauthorized');
+      };
+
+      const model = extendModel({
+        ProviderModel: Model,
+        logger: mockLogger,
+        cache: mockCache,
+      });
+      const pullCatalog = promisify(model.pullCatalog).bind(model);
+
+      try {
+        await pullCatalog({ url: 'domain/test-provider', params: {}, query: {} });
+        should.fail();
+      } catch (err) {
+        err.message.should.equal('unauthorized');
+      }
+    });
   });
 
   describe('model pullStream method', function () {
@@ -970,6 +1107,33 @@ describe('Tests for extend-model', function () {
         should.fail();
       } catch (err) {
         err.should.be.an.Error();
+      }
+    });
+
+    it('should throw authorization error', async () => {
+      const mockCache = {
+        retrieve: sinon.spy((key, query, callback) => {
+          callback(null);
+        }),
+        insert: sinon.spy(() => {}),
+      };
+
+      class Model extends MockModel {}
+      Model.prototype.authorize = async () => {
+        throw new Error('unauthorized');
+      };
+
+      const model = extendModel({
+        ProviderModel: Model,
+        logger: mockLogger,
+        cache: mockCache,
+      });
+
+      try {
+        await model.pullStream({ some: 'options' });
+        should.fail();
+      } catch (err) {
+        err.message.should.equal('unauthorized');
       }
     });
   });

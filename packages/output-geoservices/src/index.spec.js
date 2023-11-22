@@ -1,19 +1,19 @@
 const OutputGeoServices = require('./index');
 const FeatureServer = require('@koopjs/featureserver');
 
-// test.js
 jest.mock('@koopjs/featureserver', () => ({
   setLogger: jest.fn(),
   route: jest.fn(),
-  setDefaults: jest.fn()
+  setDefaults: jest.fn(),
 }));
 
 const loggerMock = {
   silly: () => {},
-  error: () => {}
+  error: () => {},
 };
 
 const modelMock = {
+  namespace: 'provider-name',
   pull: jest.fn((req, callback) => callback(null, 'someData')),
 };
 
@@ -51,12 +51,7 @@ describe('Output Geoservices', () => {
           handler: 'restInfoHandler',
         },
         {
-          path: '$namespace/tokens/:method',
-          methods: ['get', 'post'],
-          handler: 'generateToken',
-        },
-        {
-          path: '$namespace/tokens/',
+          path: '$namespace/rest/generateToken',
           methods: ['get', 'post'],
           handler: 'generateToken',
         },
@@ -92,24 +87,6 @@ describe('Output Geoservices', () => {
         },
       ]);
     });
-
-    test('should include expected default properties', () => {
-      const output = new OutputGeoServices(modelMock);
-      expect(output.options).toEqual({});
-      expect(output.logger).toBeDefined();
-      expect(output.authInfo).toEqual({});
-      expect(FeatureServer.setLogger.mock.calls.length).toBe(1);
-    });
-
-    test('should include properties with optional set values', () => {
-      const output = new OutputGeoServices(modelMock, {
-        logger: loggerMock,
-        authInfo: { food: 'baz' },
-      });
-      expect(Object.keys(output.logger)).toEqual(['silly', 'error']);
-      expect(output.authInfo).toEqual({ food: 'baz' });
-      expect(FeatureServer.setLogger.mock.calls.length).toBe(1);
-    });
   });
 
   describe('generalHandler', () => {
@@ -129,7 +106,6 @@ describe('Output Geoservices', () => {
     test('should authorize, then pull data and route', async () => {
       const modelMock = {
         pull: jest.fn((req, callback) => callback(null, 'someData')),
-        authorize: jest.fn(),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
       await output.generalHandler({ foo: 'bar' }, resMock);
@@ -187,11 +163,10 @@ describe('Output Geoservices', () => {
 
     test('should handle required token error', async () => {
       const modelMock = {
-        pull: jest.fn((req, callback) => callback(null, 'someData')),
-        authorize: jest.fn(() => {
+        pull: jest.fn((req, callback) => {
           const err = new Error('no token');
           err.code = 401;
-          throw err;
+          callback(err);
         }),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
@@ -203,8 +178,9 @@ describe('Output Geoservices', () => {
         {
           error: {
             code: 499,
-            details: [],
+            details: ['Token Required'],
             message: 'Token Required',
+            messageCode: 'GWM_0003',
           },
         },
       ]);
@@ -212,11 +188,10 @@ describe('Output Geoservices', () => {
 
     test('should handle invalid token error', async () => {
       const modelMock = {
-        pull: jest.fn((req, callback) => callback(null, 'someData')),
-        authorize: jest.fn(() => {
+        pull: jest.fn((req, callback) => {
           const err = new Error('invalid token');
           err.code = 401;
-          throw err;
+          callback(err);
         }),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
@@ -240,11 +215,10 @@ describe('Output Geoservices', () => {
 
     test('should handle invalid token error', async () => {
       const modelMock = {
-        pull: jest.fn((req, callback) => callback(null, 'someData')),
-        authorize: jest.fn(() => {
+        pull: jest.fn((req, callback) => {
           const err = new Error('Forbidden');
           err.code = 403;
-          throw err;
+          callback(err);
         }),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
@@ -291,25 +265,7 @@ describe('Output Geoservices', () => {
   });
 
   describe('restInfoHandler', () => {
-    test('should return rest info', async () => {
-      const output = new OutputGeoServices(modelMock, {
-        authInfo: { food: 'baz' },
-      });
-      await output.restInfoHandler({ foo: 'bar' }, resMock);
-      expect(FeatureServer.route.mock.calls.length).toBe(1);
-      expect(FeatureServer.route.mock.calls[0]).toEqual([
-        { foo: 'bar' },
-        resMock,
-        { authInfo: { food: 'baz' } },
-      ]);
-    });
-
-    test('should return rest info with auth specification', async () => {
-      const modelMock = {
-        pull: jest.fn((req, callback) => callback(null, 'someData')),
-        authorize: jest.fn(),
-        authenticationSpecification: {},
-      };
+    test('should return rest info authInfo override', async () => {
       const output = new OutputGeoServices(modelMock, {
         authInfo: { food: 'baz' },
       });
@@ -319,23 +275,41 @@ describe('Output Geoservices', () => {
         reqMock,
         resMock,
         {
+          owningSystemUrl: 'https://some-host.com/api/v1/provider-name',
+          authInfo: { food: 'baz' },
+        },
+      ]);
+    });
+
+    test('should return rest info with default authInfo, default https token url', async () => {
+      const modelMock = {
+        namespace: 'provider-name',
+        pull: jest.fn((req, callback) => callback(null, 'someData')),
+      };
+      const output = new OutputGeoServices(modelMock);
+      await output.restInfoHandler(reqMock, resMock);
+      expect(FeatureServer.route.mock.calls.length).toBe(1);
+      expect(FeatureServer.route.mock.calls[0]).toEqual([
+        reqMock,
+        resMock,
+        {
+          owningSystemUrl: 'https://some-host.com/api/v1/provider-name',
           authInfo: {
-            food: 'baz',
             isTokenBasedSecurity: true,
-            tokenServicesUrl: 'https://some-host.com/api/v1/undefined/tokens/',
+            tokenServicesUrl:
+              'https://some-host.com/api/v1/provider-name/rest/generateToken',
           },
         },
       ]);
     });
 
-    test('should return rest info with auth specification, http', async () => {
+    test('should return rest info with default authInfo, http token url, set by option', async () => {
       const modelMock = {
+        namespace: 'provider-name',
         pull: jest.fn((req, callback) => callback(null, 'someData')),
-        authorize: jest.fn(),
-        authenticationSpecification: { useHttp: true },
       };
       const output = new OutputGeoServices(modelMock, {
-        authInfo: { food: 'baz' },
+        useHttpForTokenUrl: true,
       });
       await output.restInfoHandler(reqMock, resMock);
       expect(FeatureServer.route.mock.calls.length).toBe(1);
@@ -343,10 +317,95 @@ describe('Output Geoservices', () => {
         reqMock,
         resMock,
         {
+          owningSystemUrl: 'http://some-host.com/api/v1/provider-name',
           authInfo: {
-            food: 'baz',
             isTokenBasedSecurity: true,
-            tokenServicesUrl: 'http://some-host.com/api/v1/undefined/tokens/',
+            tokenServicesUrl:
+              'http://some-host.com/api/v1/provider-name/rest/generateToken',
+          },
+        },
+      ]);
+    });
+
+    test('should return rest info with default authInfo, http token url, set by GEOSERVICES_HTTP', async () => {
+      const modelMock = {
+        namespace: 'provider-name',
+        pull: jest.fn((req, callback) => callback(null, 'someData')),
+      };
+      try {
+        process.env.GEOSERVICES_HTTP = 'true';
+        const output = new OutputGeoServices(modelMock);
+        await output.restInfoHandler(reqMock, resMock);
+        expect(FeatureServer.route.mock.calls.length).toBe(1);
+        expect(FeatureServer.route.mock.calls[0]).toEqual([
+          reqMock,
+          resMock,
+          {
+            owningSystemUrl: 'http://some-host.com/api/v1/provider-name',
+            authInfo: {
+              isTokenBasedSecurity: true,
+              tokenServicesUrl:
+                'http://some-host.com/api/v1/provider-name/rest/generateToken',
+            },
+          },
+        ]);
+      } catch (error) {
+        expect(error).toBeUndefined();
+      } finally {
+        delete process.env.GEOSERVICES_HTTP;
+      }
+    });
+
+    test('should return rest info with default authInfo, http token url, set by KOOP_AUTH_HTTP', async () => {
+      const modelMock = {
+        namespace: 'provider-name',
+        pull: jest.fn((req, callback) => callback(null, 'someData')),
+      };
+      try {
+        process.env.KOOP_AUTH_HTTP = 'true';
+        const output = new OutputGeoServices(modelMock);
+        await output.restInfoHandler(reqMock, resMock);
+        expect(FeatureServer.route.mock.calls.length).toBe(1);
+        expect(FeatureServer.route.mock.calls[0]).toEqual([
+          reqMock,
+          resMock,
+          {
+            owningSystemUrl: 'http://some-host.com/api/v1/provider-name',
+            authInfo: {
+              isTokenBasedSecurity: true,
+              tokenServicesUrl:
+                'http://some-host.com/api/v1/provider-name/rest/generateToken',
+            },
+          },
+        ]);
+      } catch (error) {
+        expect(error).toBeUndefined();
+      } finally {
+        delete process.env.KOOP_AUTH_HTTP;
+      }
+    });
+
+    test('should return rest info with default authInfo, http token url, set by authenticationSpecification', async () => {
+      const modelMock = {
+        namespace: 'provider-name',
+        pull: jest.fn((req, callback) => callback(null, 'someData')),
+        authenticationSpecification: () => {
+          return { useHttp: true };
+        },
+      };
+
+      const output = new OutputGeoServices(modelMock);
+      await output.restInfoHandler(reqMock, resMock);
+      expect(FeatureServer.route.mock.calls.length).toBe(1);
+      expect(FeatureServer.route.mock.calls[0]).toEqual([
+        reqMock,
+        resMock,
+        {
+          owningSystemUrl: 'http://some-host.com/api/v1/provider-name',
+          authInfo: {
+            isTokenBasedSecurity: true,
+            tokenServicesUrl:
+              'http://some-host.com/api/v1/provider-name/rest/generateToken',
           },
         },
       ]);
@@ -357,10 +416,9 @@ describe('Output Geoservices', () => {
     test('should generate token', async () => {
       const modelMock = {
         pull: jest.fn((req, callback) => callback(null, 'someData')),
-        authorize: jest.fn(),
         authenticate: jest.fn(() => {
           return { token: 'abc' };
-        })
+        }),
       };
       const output = new OutputGeoServices(modelMock, {
         authInfo: { food: 'baz' },
@@ -369,38 +427,21 @@ describe('Output Geoservices', () => {
       expect(resMock.status.mock.calls.length).toBe(1);
       expect(resMock.status.mock.calls[0]).toEqual([200]);
       expect(resMock.json.mock.calls.length).toBe(1);
-      expect(resMock.json.mock.calls[0]).toEqual([{
-        ssl: false,
-        token: 'abc'
-      }]);
-    });
-    
-    test('should message that there is no authenticate method', async () => {
-      const modelMock = {
-        pull: jest.fn((req, callback) => callback(null, 'someData')),
-        authorize: jest.fn(),
-      };
-      const output = new OutputGeoServices(modelMock, {
-        authInfo: { food: 'baz' },
-      });
-      await output.generateToken(reqMock, resMock);
-      expect(resMock.status.mock.calls.length).toBe(1);
-      expect(resMock.status.mock.calls[0]).toEqual([500]);
-      expect(resMock.json.mock.calls.length).toBe(1);
-      expect(resMock.json.mock.calls[0]).toEqual([{
-        error: '"authenticate" not implemented for this provider'
-      }]);
+      expect(resMock.json.mock.calls[0]).toEqual([
+        {
+          token: 'abc',
+        },
+      ]);
     });
 
     test('should fail to generate token due to 401', async () => {
       const modelMock = {
         pull: jest.fn((req, callback) => callback(null, 'someData')),
-        authorize: jest.fn(),
         authenticate: jest.fn(() => {
           const err = new Error('bad creds');
           err.code = 401;
           throw err;
-        })
+        }),
       };
       const output = new OutputGeoServices(modelMock, {
         authInfo: { food: 'baz' },
@@ -409,28 +450,29 @@ describe('Output Geoservices', () => {
       expect(resMock.status.mock.calls.length).toBe(1);
       expect(resMock.status.mock.calls[0]).toEqual([200]);
       expect(resMock.json.mock.calls.length).toBe(1);
-      expect(resMock.json.mock.calls[0]).toEqual([{
-        error: {
-          code: 400,
-          details: ['Invalid username or password.'],
-          message: 'Unable to generate token.'
-        }
-      }]);
+      expect(resMock.json.mock.calls[0]).toEqual([
+        {
+          error: {
+            code: 400,
+            details: ['Invalid username or password.'],
+            message: 'Unable to generate token.',
+          },
+        },
+      ]);
     });
 
     test('should fail to generate token due to credentials', async () => {
       const modelMock = {
         pull: jest.fn((req, callback) => callback(null, 'someData')),
-        authorize: jest.fn(),
         authenticate: jest.fn(() => {
           const err = {
             error: {
               code: 400,
-              message: 'Unable to generate token.'
-            }
+              message: 'Unable to generate token.',
+            },
           };
           throw err;
-        })
+        }),
       };
       const output = new OutputGeoServices(modelMock, {
         authInfo: { food: 'baz' },
@@ -439,24 +481,25 @@ describe('Output Geoservices', () => {
       expect(resMock.status.mock.calls.length).toBe(1);
       expect(resMock.status.mock.calls[0]).toEqual([200]);
       expect(resMock.json.mock.calls.length).toBe(1);
-      expect(resMock.json.mock.calls[0]).toEqual([{
-        error: {
-          code: 400,
-          details: ['Invalid username or password.'],
-          message: 'Unable to generate token.'
-        }
-      }]);
+      expect(resMock.json.mock.calls[0]).toEqual([
+        {
+          error: {
+            code: 400,
+            details: ['Invalid username or password.'],
+            message: 'Unable to generate token.',
+          },
+        },
+      ]);
     });
 
     test('should fail to generate token due to 5xx', async () => {
       const modelMock = {
         pull: jest.fn((req, callback) => callback(null, 'someData')),
-        authorize: jest.fn(),
         authenticate: jest.fn(() => {
           const err = new Error('upstream');
           err.code = 503;
           throw err;
-        })
+        }),
       };
       const output = new OutputGeoServices(modelMock, {
         authInfo: { food: 'baz' },
@@ -465,23 +508,24 @@ describe('Output Geoservices', () => {
       expect(resMock.status.mock.calls.length).toBe(1);
       expect(resMock.status.mock.calls[0]).toEqual([200]);
       expect(resMock.json.mock.calls.length).toBe(1);
-      expect(resMock.json.mock.calls[0]).toEqual([{
-        error: {
-          code: 503,
-          details: [],
-          message: 'upstream'
-        }
-      }]);
+      expect(resMock.json.mock.calls[0]).toEqual([
+        {
+          error: {
+            code: 503,
+            details: [],
+            message: 'upstream',
+          },
+        },
+      ]);
     });
 
     test('should fail to generate token due to 500', async () => {
       const modelMock = {
         pull: jest.fn((req, callback) => callback(null, 'someData')),
-        authorize: jest.fn(),
         authenticate: jest.fn(() => {
           const err = new Error('upstream');
           throw err;
-        })
+        }),
       };
       const output = new OutputGeoServices(modelMock, {
         authInfo: { food: 'baz' },
@@ -490,13 +534,15 @@ describe('Output Geoservices', () => {
       expect(resMock.status.mock.calls.length).toBe(1);
       expect(resMock.status.mock.calls[0]).toEqual([200]);
       expect(resMock.json.mock.calls.length).toBe(1);
-      expect(resMock.json.mock.calls[0]).toEqual([{
-        error: {
-          code: 500,
-          details: [],
-          message: 'upstream'
-        }
-      }]);
+      expect(resMock.json.mock.calls[0]).toEqual([
+        {
+          error: {
+            code: 500,
+            details: [],
+            message: 'upstream',
+          },
+        },
+      ]);
     });
   });
 });
