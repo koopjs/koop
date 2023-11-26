@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 8.2.0
+
+### Minor Changes
+
+- add owningSystemUrl to restInfo response
+
 ## 8.1.9
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @koopjs/koop-core
 
+## 10.0.0
+
+### Major Changes
+
+- route change in geoservices
+- generic plugins and file-system plugins no longer supported
+- add option to skip default geoservices plugin
+
+### Patch Changes
+
+- Updated dependencies [86e2028]
+  - @koopjs/output-geoservices@8.0.0
+
 ## 9.2.10
 
 ### Patch Changes

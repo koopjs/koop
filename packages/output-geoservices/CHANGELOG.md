@@ -1,5 +1,17 @@
 # @koopjs/output-geoservices
 
+## 8.0.0
+
+### Major Changes
+
+- change generateToken route so it matches latest pattern in ArcGIS
+- add option "useHttpForTokenUrl" to use http protocol on the authInfo.tokenServicesUrl returned by rest/info route
+
+### Patch Changes
+
+- Updated dependencies [86e2028]
+  - @koopjs/featureserver@8.2.0
+
 ## 7.1.9
 
 ### Patch Changes
