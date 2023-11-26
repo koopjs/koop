@@ -12,11 +12,12 @@ const DataProvider = require('./data-provider');
 const geoservices = require('@koopjs/output-geoservices');
 
 class Koop extends Events {
+  #authModule;
+
   constructor(options) {
     super();
     this.version = pkg.version;
 
-    // TODO: remove usage of "config" module
     this.config = { ...options, ...config };
     this.server = initServer(this.config);
     this.log = this.config.logger || new Logger(this.config);
@@ -29,11 +30,13 @@ class Koop extends Events {
 
     const { geoservicesDefaults } = this.config;
 
-    this.register(geoservices, {
-      logger: this.log,
-      authInfo: this.config.authInfo,
-      defaults: geoservicesDefaults
-    });
+    if (this.config.skipGeoservicesRegistration !== true) {
+      this.register(geoservices, {
+        logger: this.log,
+        authInfo: this.config.authInfo,
+        defaults: geoservicesDefaults
+      });  
+    }
 
     this.server
       .on('mount', () => {
@@ -46,7 +49,7 @@ class Koop extends Events {
       }));
   }
 
-  register(plugin = {}, options) {
+  register(plugin, options) {
     if (!plugin) {
       throw new Error('Plugin registration failed: plugin undefined');
     }
@@ -63,16 +66,8 @@ class Koop extends Events {
       return this.#registerOutput(plugin, options);
     }
 
-    if (plugin.type === 'filesystem') {
-      return this.#registerFilesystem(plugin, options);
-    }
-
     if (plugin.type === 'auth') {
       return this.#registerAuth(plugin, options);
-    }
-
-    if (plugin.type === 'plugin') {
-      return this.#registerPlugin(plugin, options);
     }
 
     this.log.warn(
@@ -87,7 +82,7 @@ class Koop extends Events {
     const dataProvider = new DataProvider({
       logger: this.log,
       cache: this.cache,
-      authModule: this._authModule,
+      authModule: this.#authModule,
       pluginDefinition,
       outputPlugins: this.outputs,
       options,
@@ -112,32 +107,8 @@ class Koop extends Events {
   }
   
   #registerAuth (auth) {
-    this._authModule = auth;
+    this.#authModule = auth;
     this.log.info(`registered auth module: ${auth.name} v${auth.version}`);
-  }
-
-  #registerFilesystem (Filesystem) {
-    this.fs = new Filesystem();
-    this.log.info(
-      `registered filesystem: ${Filesystem.pluginName || Filesystem.plugin_name || Filesystem.name} v${Filesystem.version}`
-    );
-  }
-
-  #registerPlugin (Plugin) {
-    const name = Plugin.pluginName || Plugin.plugin_name || Plugin.name;
-    if (!name) {
-      throw new Error('Plugin is missing name');
-    }
-    
-    let dependencies;
-    if (Array.isArray(Plugin.dependencies) && Plugin.dependencies.length) {
-      dependencies = Plugin.dependencies.reduce((deps, dep) => {
-        deps[dep] = this[dep];
-        return deps;
-      }, {});
-    }
-    this[name] = new Plugin(dependencies);
-    this.log.info('registered plugin:', name, Plugin.version);
   }
 }
 
@@ -156,12 +127,12 @@ function initServer(options) {
     .use(express.static(path.join(__dirname, '/public')));
 
   // Use CORS unless explicitly disabled in the config
-  if (!options.disableCors) {
+  if (options.disableCors !== true) {
     app.use(cors());
   }
 
   // Use compression unless explicitly disable in the config
-  if (!options.disableCompression) {
+  if (options.disableCompression !== true) {
     app.use(compression());
   }
 

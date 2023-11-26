@@ -9,7 +9,10 @@ function restInfo (data = {}, req) {
   return {
     currentVersion,
     fullVersion,
-    ...data
+    owningSystemUrl: data.owningSystemUrl,
+    authInfo: {
+      ...data.authInfo
+    }
   };
 }
 
