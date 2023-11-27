@@ -1,6 +1,6 @@
 # Koop Memory Cache
 [![npm version][npm-img]][npm-url]
-![coverage](./coverage.svg)
+![coverage](https://raw.githubusercontent.com/koopjs/koop/master/packages/cache-memory/coverage.svg)
 
 This is a LRU cache with ttl (time to live) expiry. It expects cache items to be GeoJSON feature collections. It is based on [quick-lru](https://github.com/sindresorhus/quick-lru). 
 

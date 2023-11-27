@@ -1,7 +1,6 @@
 # Koop Geoservices Output Plugin
 
-[![npm version][npm-img]][npm-url]
-![coverage](./coverage.svg)
+![ https://www.npmjs.com/package/@koopjs/output-geoservices](https://img.shields.io/npm/v/@koopjs/output-geoservices.svg?style=flat-square) ![coverage](https://raw.githubusercontent.com/koopjs/koop/master/packages/output-geoservices/coverage.svg)
 
 Wraps FeatureServer into a [Koop](http://koopjs.github.io) Output plugin.
 
@@ -82,6 +81,3 @@ You can leverage your own custom logger instance, but it must adhere to the Wins
 <provider-namespace>/rest/services/<provider-path-params>/FeatureServer*
 <provider-namespace>/rest/services/<provider-path-params>/MapServer*
 ```
-
-[npm-img]: https://img.shields.io/npm/v/@koopjs/output-geoservices.svg?style=flat-square
-[npm-url]: https://www.npmjs.com/package/@koopjs/output-geoservices
