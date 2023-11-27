@@ -1,6 +1,6 @@
 # Koop
 [![npm version][npm-img]][npm-url]
-![coverage](./coverage.svg)
+![coverage](https://raw.githubusercontent.com/koopjs/koop/master/packages/core/coverage.svg)
 
 > Transform, query, & download geospatial data on the web.  See [koopjs.github.io](https://koopjs.github.io) for details.
 

@@ -1,6 +1,6 @@
 # Koop-Logger
-[![npm][npm-image]][npm-url]
-![coverage](./coverage.svg)
+![https://www.npmjs.com/package/@koopjs/logger](https://img.shields.io/npm/v/@koopjs/logger.svg?style=flat-square)
+![coverage](https://raw.githubusercontent.com/koopjs/koop/master/packages/logger/coverage.svg)
 ## Usage
 `npm install @koopjs/logger`
 ```javascript
@@ -13,6 +13,3 @@ log.debug('bar')
 log.error('baz')
 log.warn('bing')
 ```
-
-[npm-img]: https://img.shields.io/npm/v/@koopjs/logger.svg?style=flat-square
-[npm-url]: https://www.npmjs.com/package/@koopjs/logger

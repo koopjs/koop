@@ -1,6 +1,6 @@
 # FeatureServer
-[![npm][npm-image]][npm-url]
-![coverage](./coverage.svg)
+![https://www.npmjs.com/package/@koopjs/featureserver](https://img.shields.io/npm/v/@koopjs/featureserver.svg?style=flat-square)
+![coverage](https://raw.githubusercontent.com/koopjs/koop/master/packages/featureserver/coverage.svg)
 
 *An open source implementation of the GeoServices specification*
 
