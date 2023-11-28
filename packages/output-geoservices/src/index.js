@@ -1,4 +1,3 @@
-const { promisify } = require('util');
 const FeatureServer = require('@koopjs/featureserver');
 const Logger = require('@koopjs/logger');
 let logger = new Logger();
@@ -42,7 +41,6 @@ const authorizationError = {
 class GeoServices {
   #useHttpForTokenUrl = false;
   #authInfo;
-  #pullData;
   #logger;
 
   static type = 'output';
@@ -92,7 +90,6 @@ class GeoServices {
 
   constructor(model, options = {}) {
     this.model = model;
-    this.#pullData = promisify(this.model.pull).bind(this.model);
     this.#logger = options.logger || logger;
     this.#authInfo = options.authInfo || {
       isTokenBasedSecurity: true,
@@ -129,7 +126,7 @@ class GeoServices {
 
   async generalHandler(req, res) {
     try {
-      const data = await this.#pullData(req);
+      const data = await this.model.pull(req);
       return FeatureServer.route(req, res, data);
     } catch (error) {
       this.#logger.error(error);

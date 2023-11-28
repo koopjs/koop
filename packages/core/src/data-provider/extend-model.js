@@ -1,10 +1,10 @@
 const { promisify } = require('util');
 const hasher = require('@sindresorhus/fnv1a');
 
-const before = (req, callback) => { callback(); };
-const after = (req, data, callback) => { callback(null, data); };
-const cacheRetrieveNoop = (key, options, callback) => { callback(); };
-const cacheInsertNoop = (key, options, data, callback) => { callback(); };
+const beforeNoop = async () => {}; // (req, callback) => { callback(); };
+const afterNoop = async (req, data) => { return data; }; //(req, data, callback) => { callback(null, data); };
+const cacheRetrieveNoop = async () => {}; // (key, options, callback) => { callback(); };
+const cacheInsertNoop = async () => {}; // (key, options, data, callback) => { callback(); };
 
 module.exports = function extendModel ({ ProviderModel, namespace, logger, cache, authModule }, options = {}) {
   class Model extends ProviderModel {
@@ -18,26 +18,31 @@ module.exports = function extendModel ({ ProviderModel, namespace, logger, cache
     #getCatalog;
 
     constructor ({ logger, cache }, options) {
-
       super({ logger, log: logger }, options);
+
       // Provider constructor's may assign values to this.cache
       const modelCache = this.cache || options.cache || cache;
+
       this.#cacheTtl = options.cacheTtl;
       this.namespace = namespace;
       this.logger = logger;
-      this.#before = promisify(options.before || before);
-      this.#after = promisify(options.after || after);
-      this.#cacheRetrieve = promisify(modelCache?.retrieve || cacheRetrieveNoop).bind(modelCache);
-      this.#cacheInsert = promisify(modelCache?.insert || cacheInsertNoop).bind(modelCache);
-      this.#getProviderData = promisify(this.getData).bind(this);
-      this.#getLayer = this.getLayer ? promisify(this.getLayer).bind(this) : undefined;
-      this.#getCatalog = this.getCatalog ? promisify(this.getCatalog).bind(this) : undefined;
+      this.#before = this.#normalizeAndBindMethod(options.before || beforeNoop, 2);
+      this.#after = this.#normalizeAndBindMethod(options.after || afterNoop, 3);
+      this.#cacheRetrieve = this.#normalizeAndBindMethod(modelCache?.retrieve || cacheRetrieveNoop, 3, modelCache);
+      this.#cacheInsert = this.#normalizeAndBindMethod(modelCache?.insert || cacheInsertNoop, 4, modelCache);
+      this.#getProviderData = this.#normalizeAndBindMethod(this.getData, 2);
+      this.#getLayer = this.getLayer ? this.#normalizeAndBindMethod(this.getLayer, 2) : undefined;
+      this.#getCatalog = this.getCatalog ? this.#normalizeAndBindMethod(this.getCatalog, 2) : undefined;
+    }
+
+    #normalizeAndBindMethod (func, callbackArgumentIndex, context = this) {
+      return func?.length === callbackArgumentIndex ? promisify(func).bind(context) : func.bind(context);
     }
 
     async pull (req, callback) {
       const { error } = await this.#authorizeRequest(req);
       if (error) {
-        return callback(error);
+        return this.#handleReturn(callback, error);
       }
 
       const key = this.#createCacheKey(req);
@@ -45,7 +50,8 @@ module.exports = function extendModel ({ ProviderModel, namespace, logger, cache
       try {
         const cached = await this.#cacheRetrieve(key, {});
         if (shouldUseCache(cached)) {
-          return callback(null, cached);
+          this.logger.debug('fetched data from cache');
+          return this.#handleReturn(callback, null, cached);
         }
       } catch (err) {
         this.logger.debug(err);
@@ -54,27 +60,41 @@ module.exports = function extendModel ({ ProviderModel, namespace, logger, cache
       try {
         await this.#before(req);
         const providerGeojson = await this.#getProviderData(req);
-        const afterFuncGeojson = await this.#after(req, providerGeojson);
-        const { ttl = this.#cacheTtl } = afterFuncGeojson;
+        const modifiedGeojson = await this.#after(req, providerGeojson);
+        const { ttl = this.#cacheTtl } = modifiedGeojson;
         if (ttl) {
-          this.#cacheInsert(key, afterFuncGeojson, { ttl });
+          this.#cacheInsert(key, modifiedGeojson, { ttl });
         }
-        callback(null, afterFuncGeojson);
+
+        return this.#handleReturn(callback, null, modifiedGeojson);
       } catch (err) {
-        callback(err);
+        return this.#handleReturn(callback, err);
       }
     }
+
+    #handleReturn(callback, error, returnValue) {
+      if (callback) {
+        return callback(error, returnValue);
+      }
+
+      if (error) {
+        throw error;
+      }
+
+      return returnValue;
+    }
+
 
     // TODO: the pullLayer() and the pullCatalog() are very similar to the pull()
     // function. We may consider to merging them in the future.
     async pullLayer (req, callback) {
       const { error } = await this.#authorizeRequest(req);
       if (error) {
-        return callback(error);
+        return this.#handleReturn(callback, error);
       }
 
       if (!this.#getLayer) {
-        callback(new Error(`getLayer() method is not implemented in the ${this.namespace} provider.`));
+        return this.#handleReturn(callback, new Error(`getLayer() method is not implemented in the ${this.namespace} provider.`));
       }
 
       const key = `${this.#createCacheKey(req)}::layer`;
@@ -82,7 +102,7 @@ module.exports = function extendModel ({ ProviderModel, namespace, logger, cache
       try {
         const cached = await this.#cacheRetrieve(key, req.query);
         if (shouldUseCache(cached)) {
-          return callback(null, cached);
+          return this.#handleReturn(callback, null, cached);
         }
       } catch (err) {
         this.logger.debug(err);
@@ -94,20 +114,20 @@ module.exports = function extendModel ({ ProviderModel, namespace, logger, cache
         if (ttl) {
           await this.#cacheInsert(key, data, { ttl });
         }
-        callback(null, data);
+        return this.#handleReturn(callback, null, data);
       } catch (err) {
-        callback(err);
+        return this.#handleReturn(callback, err);
       }
     }
 
     async pullCatalog (req, callback) {
       const { error } = await this.#authorizeRequest(req);
       if (error) {
-        return callback(error);
+        return this.#handleReturn(callback, error);
       }
 
       if (!this.#getCatalog) {
-        callback(new Error(`getCatalog() method is not implemented in the ${this.namespace} provider.`));
+        return this.#handleReturn(callback, new Error(`getCatalog() method is not implemented in the ${this.namespace} provider.`));
       }
 
       const key = `${this.#createCacheKey(req)}::catalog`;
@@ -115,7 +135,7 @@ module.exports = function extendModel ({ ProviderModel, namespace, logger, cache
       try {
         const cached = await this.#cacheRetrieve(key, req.query);
         if (shouldUseCache(cached)) {
-          return callback(null, cached);
+          return this.#handleReturn(callback, null, cached);
         }
       } catch (err) {
         this.logger.debug(err);
@@ -127,9 +147,9 @@ module.exports = function extendModel ({ ProviderModel, namespace, logger, cache
         if (ttl) {
           this.#cacheInsert(key, data, { ttl });
         }
-        callback(null, data);
+        return this.#handleReturn(callback, null, data);
       } catch (err) {
-        callback(err);
+        return this.#handleReturn(callback, err);
       }
     }
 
@@ -169,10 +189,7 @@ module.exports = function extendModel ({ ProviderModel, namespace, logger, cache
     }
   }
 
-  // If provider does not have auth-methods, 
-  // check for global auth-module. if exists, use it, 
-  // otherwise use dummy methods
-
+  // If provider has auth methods use them, then use auth-module methods, otherwise dummy methods
   if (typeof ProviderModel.prototype.authorize !== 'function') {
     Model.prototype.authorize = typeof authModule?.authorize  === 'function' ? authModule.authorize : async () => {};
   }
@@ -185,23 +202,9 @@ module.exports = function extendModel ({ ProviderModel, namespace, logger, cache
     logger.warn('Use of "authenticationSpecification" is deprecated. It will be removed in a future release.');
     Model.prototype.authenticationSpecification =  authModule?.authenticationSpecification;
   }
-  // Add auth methods if auth plugin registered with Koop
-  // if (authModule) {
-  //   const {
-  //     authenticationSpecification,
-  //     authenticate,
-  //     authorize
-  //   } = authModule;
-
-  //   Model.prototype.authenticationSpecification = Object.assign({}, authenticationSpecification(namespace), { provider: namespace });
-  //   Model.prototype.authenticate = authenticate;
-  //   Model.prototype.authorize = authorize;
-  // }
 
   return new Model({ logger, cache }, options);
 };
-
-
 
 function shouldUseCache (cacheEntry) {
   // older cache plugins stored expiry time explicitly; all caches should move to returning empty if expired

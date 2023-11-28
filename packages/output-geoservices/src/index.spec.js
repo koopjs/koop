@@ -14,7 +14,7 @@ const loggerMock = {
 
 const modelMock = {
   namespace: 'provider-name',
-  pull: jest.fn((req, callback) => callback(null, 'someData')),
+  pull: jest.fn(async () => 'someData'),
 };
 
 const resMock = {
@@ -105,7 +105,7 @@ describe('Output Geoservices', () => {
 
     test('should authorize, then pull data and route', async () => {
       const modelMock = {
-        pull: jest.fn((req, callback) => callback(null, 'someData')),
+        pull: jest.fn(async () => 'someData'),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
       await output.generalHandler({ foo: 'bar' }, resMock);
@@ -119,9 +119,11 @@ describe('Output Geoservices', () => {
 
     test('should handle 5xx error', async () => {
       const modelMock = {
-        pull: jest.fn((req, callback) =>
-          callback({ code: 503, message: 'Upstream error' }),
-        ),
+        pull: jest.fn(async () => {
+          const error = new Error('Upstream error');
+          error.code = 503;
+          throw error;
+        }),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
       await output.generalHandler(reqMock, resMock);
@@ -141,9 +143,9 @@ describe('Output Geoservices', () => {
 
     test('should handle code-less error', async () => {
       const modelMock = {
-        pull: jest.fn((req, callback) =>
-          callback({ message: 'Upstream error' }),
-        ),
+        pull: jest.fn(async () => {
+          throw new Error('Upstream error');
+        }),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
       await output.generalHandler(reqMock, resMock);
@@ -163,10 +165,10 @@ describe('Output Geoservices', () => {
 
     test('should handle required token error', async () => {
       const modelMock = {
-        pull: jest.fn((req, callback) => {
+        pull: jest.fn(async () => {
           const err = new Error('no token');
           err.code = 401;
-          callback(err);
+          throw(err);
         }),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
@@ -188,10 +190,10 @@ describe('Output Geoservices', () => {
 
     test('should handle invalid token error', async () => {
       const modelMock = {
-        pull: jest.fn((req, callback) => {
+        pull: jest.fn(async () => {
           const err = new Error('invalid token');
           err.code = 401;
-          callback(err);
+          throw err;
         }),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
@@ -215,10 +217,10 @@ describe('Output Geoservices', () => {
 
     test('should handle invalid token error', async () => {
       const modelMock = {
-        pull: jest.fn((req, callback) => {
+        pull: jest.fn(async () => {
           const err = new Error('Forbidden');
           err.code = 403;
-          callback(err);
+          throw err;
         }),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
@@ -243,9 +245,9 @@ describe('Output Geoservices', () => {
 
     test('should handle ArcGIS type-error', async () => {
       const modelMock = {
-        pull: jest.fn((req, callback) =>
-          callback({ error: { message: 'Upstream error' } }),
-        ),
+        pull: jest.fn(async () => {
+          throw new Error('Upstream error');
+        }),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
       await output.generalHandler(reqMock, resMock);
@@ -284,7 +286,7 @@ describe('Output Geoservices', () => {
     test('should return rest info with default authInfo, default https token url', async () => {
       const modelMock = {
         namespace: 'provider-name',
-        pull: jest.fn((req, callback) => callback(null, 'someData')),
+        pull: jest.fn(async () => 'someData'),
       };
       const output = new OutputGeoServices(modelMock);
       await output.restInfoHandler(reqMock, resMock);
@@ -306,7 +308,7 @@ describe('Output Geoservices', () => {
     test('should return rest info with default authInfo, http token url, set by option', async () => {
       const modelMock = {
         namespace: 'provider-name',
-        pull: jest.fn((req, callback) => callback(null, 'someData')),
+        pull: jest.fn(async () => 'someData'),
       };
       const output = new OutputGeoServices(modelMock, {
         useHttpForTokenUrl: true,
@@ -330,7 +332,7 @@ describe('Output Geoservices', () => {
     test('should return rest info with default authInfo, http token url, set by GEOSERVICES_HTTP', async () => {
       const modelMock = {
         namespace: 'provider-name',
-        pull: jest.fn((req, callback) => callback(null, 'someData')),
+        pull: jest.fn(async () => 'someData'),
       };
       try {
         process.env.GEOSERVICES_HTTP = 'true';
@@ -359,7 +361,7 @@ describe('Output Geoservices', () => {
     test('should return rest info with default authInfo, http token url, set by KOOP_AUTH_HTTP', async () => {
       const modelMock = {
         namespace: 'provider-name',
-        pull: jest.fn((req, callback) => callback(null, 'someData')),
+        pull: jest.fn(async () => 'someData'),
       };
       try {
         process.env.KOOP_AUTH_HTTP = 'true';
@@ -388,7 +390,7 @@ describe('Output Geoservices', () => {
     test('should return rest info with default authInfo, http token url, set by authenticationSpecification', async () => {
       const modelMock = {
         namespace: 'provider-name',
-        pull: jest.fn((req, callback) => callback(null, 'someData')),
+        pull: jest.fn(async () => 'someData'),
         authenticationSpecification: () => {
           return { useHttp: true };
         },
@@ -415,7 +417,7 @@ describe('Output Geoservices', () => {
   describe('generateToken', () => {
     test('should generate token', async () => {
       const modelMock = {
-        pull: jest.fn((req, callback) => callback(null, 'someData')),
+        pull: jest.fn(async () => 'someData'),
         authenticate: jest.fn(() => {
           return { token: 'abc' };
         }),
@@ -436,7 +438,7 @@ describe('Output Geoservices', () => {
 
     test('should fail to generate token due to 401', async () => {
       const modelMock = {
-        pull: jest.fn((req, callback) => callback(null, 'someData')),
+        pull: jest.fn(async () => 'someData'),
         authenticate: jest.fn(() => {
           const err = new Error('bad creds');
           err.code = 401;
@@ -463,7 +465,7 @@ describe('Output Geoservices', () => {
 
     test('should fail to generate token due to credentials', async () => {
       const modelMock = {
-        pull: jest.fn((req, callback) => callback(null, 'someData')),
+        pull: jest.fn(async () => 'someData'),
         authenticate: jest.fn(() => {
           const err = {
             error: {
@@ -494,7 +496,7 @@ describe('Output Geoservices', () => {
 
     test('should fail to generate token due to 5xx', async () => {
       const modelMock = {
-        pull: jest.fn((req, callback) => callback(null, 'someData')),
+        pull: jest.fn(async () => 'someData'),
         authenticate: jest.fn(() => {
           const err = new Error('upstream');
           err.code = 503;
@@ -521,7 +523,7 @@ describe('Output Geoservices', () => {
 
     test('should fail to generate token due to 500', async () => {
       const modelMock = {
-        pull: jest.fn((req, callback) => callback(null, 'someData')),
+        pull: jest.fn(async () => 'someData'),
         authenticate: jest.fn(() => {
           const err = new Error('upstream');
           throw err;
