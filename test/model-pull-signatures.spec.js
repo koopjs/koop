@@ -25,7 +25,7 @@ describe('test different provider getData forms', () => {
       expect(response.status).toBe(200);
       expect(response.body.features).toEqual([
         {
-          attributes: { OBJECTID: 554348191 },
+          attributes: { OBJECTID: 1 },
           geometry: { x: -104.01, y: 39.94 },
         },
       ]);
@@ -43,7 +43,7 @@ describe('test different provider getData forms', () => {
       expect(response.status).toBe(200);
       expect(response.body.features).toEqual([
         {
-          attributes: { OBJECTID: 554348191 },
+          attributes: { OBJECTID: 1 },
           geometry: { x: -104.01, y: 39.94 },
         },
       ]);
@@ -61,7 +61,7 @@ describe('test different provider getData forms', () => {
       expect(response.status).toBe(200);
       expect(response.body.features).toEqual([
         {
-          attributes: { OBJECTID: 554348191 },
+          attributes: { OBJECTID: 1 },
           geometry: { x: -104.01, y: 39.94 },
         },
       ]);

@@ -26,7 +26,7 @@ describe('test output using model.pull with callback arg', () => {
         features: [
           {
             geometry: { coordinates: [-104.01, 39.94], type: 'Point' },
-            properties: {},
+            properties: { OBJECTID: 1 },
             type: 'Feature',
           },
         ],

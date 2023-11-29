@@ -5,7 +5,9 @@ class Model {
       features: [
         {
           type: 'Feature',
-          properties: {},
+          properties: {
+            OBJECTID: 1
+          },
           geometry: {
             type: 'Point',
             coordinates: [-104.01, 39.94],
