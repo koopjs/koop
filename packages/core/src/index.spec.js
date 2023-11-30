@@ -57,11 +57,11 @@ class MockProviderPluginController {
 }
 
 class MockModel {
-  getData (req, callback) {
-    callback(null, {
+  async getData () {
+    return {
       type: 'FeatureCollection',
       features: []
-    });
+    };
   }
 }
 

@@ -671,5 +671,4 @@ describe('Typical Geoservice Client request sequence: Dataset with no geometry',
       });
     });
   });
-  console.log(process.env.VERSION);
 });
