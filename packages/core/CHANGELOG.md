@@ -1,5 +1,18 @@
 # @koopjs/koop-core
 
+## 10.1.0
+
+### Minor Changes
+
+- allow model getData, getLayer, and getCatalog methods to be used without a callback
+- allow model pull, pullLayer, and pullCatalog methods to be used without a callback
+- allow before and after functions without callback
+
+### Patch Changes
+
+- Updated dependencies [a1539aa]
+  - @koopjs/output-geoservices@8.1.0
+
 ## 10.0.0
 
 ### Major Changes

@@ -1,5 +1,11 @@
 # @koopjs/output-geoservices
 
+## 8.1.0
+
+### Minor Changes
+
+- use model.pull without callback
+
 ## 8.0.0
 
 ### Major Changes
