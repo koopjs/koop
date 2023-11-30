@@ -1,10 +1,10 @@
 const { promisify } = require('util');
 const hasher = require('@sindresorhus/fnv1a');
 
-const beforeNoop = async () => {}; // (req, callback) => { callback(); };
-const afterNoop = async (req, data) => { return data; }; //(req, data, callback) => { callback(null, data); };
-const cacheRetrieveNoop = async () => {}; // (key, options, callback) => { callback(); };
-const cacheInsertNoop = async () => {}; // (key, options, data, callback) => { callback(); };
+const beforeNoop = async () => {};
+const afterNoop = async (req, data) => { return data; };
+const cacheRetrieveNoop = async () => {};
+const cacheInsertNoop = async () => {};
 
 module.exports = function extendModel ({ ProviderModel, namespace, logger, cache, authModule }, options = {}) {
   class Model extends ProviderModel {
@@ -102,6 +102,7 @@ module.exports = function extendModel ({ ProviderModel, namespace, logger, cache
       try {
         const cached = await this.#cacheRetrieve(key, req.query);
         if (shouldUseCache(cached)) {
+          this.logger.debug('fetched data from cache');
           return this.#handleReturn(callback, null, cached);
         }
       } catch (err) {
@@ -135,6 +136,7 @@ module.exports = function extendModel ({ ProviderModel, namespace, logger, cache
       try {
         const cached = await this.#cacheRetrieve(key, req.query);
         if (shouldUseCache(cached)) {
+          this.logger.debug('fetched data from cache');
           return this.#handleReturn(callback, null, cached);
         }
       } catch (err) {
