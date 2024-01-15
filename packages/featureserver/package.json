@@ -46,7 +46,7 @@
     "should": "^13.2.3",
     "should-sinon": "0.0.6",
     "sinon": "^17.0.1",
-    "supertest": "^6.3.3"
+    "supertest": "^6.3.4"
   },
   "repository": {
     "type": "git",
