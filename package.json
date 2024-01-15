@@ -66,9 +66,9 @@
     "lerna-changelog": "^2.2.0",
     "lint-staged": "^15.2.0",
     "nyc": "^15.1.0",
-    "prettier": "^3.1.1",
-    "snyk": "^1.1268.0",
-    "supertest": "^6.3.0"
+    "prettier": "^3.2.2",
+    "snyk": "^1.1269.0",
+    "supertest": "^6.3.4"
   },
   "config": {
     "commitizen": {
