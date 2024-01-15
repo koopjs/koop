@@ -39,7 +39,7 @@
   "homepage": "https://github.com/koopjs/koop#readme",
   "devDependencies": {
     "tap-spec": "^5.0.0",
-    "tape": "^5.7.2",
+    "tape": "^5.7.3",
     "uuid": "^9.0.1"
   },
   "dependencies": {
