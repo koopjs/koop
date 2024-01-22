@@ -57,7 +57,7 @@
     "@types/geojson": "^7946.0.13",
     "alasql": "^4.2.3",
     "classybrew": "0.0.3",
-    "joi": "^17.11.1",
+    "joi": "^17.12.0",
     "js-sql-parser": "^1.5.0",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
