@@ -2,10 +2,10 @@ const should = require('should'); // eslint-disable-line
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 
-describe('logWarnings', () => {
+describe('logProviderDataWarnings', () => {
   const loggerSpy = sinon.spy(() => {});
 
-  const { logWarnings } = proxyquire('./log-warnings', {
+  const { logProviderDataWarnings } = proxyquire('./log-provider-data-warnings', {
     '../log-manager': {
       logger: {
         debug: loggerSpy,
@@ -18,7 +18,7 @@ describe('logWarnings', () => {
   });
 
   it('should log missing idField', () => {
-    logWarnings({}, {});
+    logProviderDataWarnings({}, {});
     loggerSpy.callCount.should.equal(1);
     loggerSpy.firstCall.args.should.deepEqual([
       `provider data has no OBJECTID and has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an integer in range 0 - ${Number.MAX_SAFE_INTEGER}. An OBJECTID field will be auto-generated in the absence of an "idField" assignment.`,
@@ -26,7 +26,7 @@ describe('logWarnings', () => {
   });
 
   it('should log mixed-case OBJECTID', () => {
-    logWarnings({ metadata: { idField: 'objEctId' } }, {});
+    logProviderDataWarnings({ metadata: { idField: 'objEctId' } }, {});
     loggerSpy.callCount.should.equal(1);
     loggerSpy.firstCall.args.should.deepEqual([
       'requested provider has "idField" that is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients.',
@@ -34,7 +34,7 @@ describe('logWarnings', () => {
   });
 
   it('should log field definition not found in feature', () => {
-    logWarnings({
+    logProviderDataWarnings({
       metadata: { fields: [{ name: 'foo', type: 'String' }] },
       features: [{ properties: {} }],
     }, {});
@@ -45,7 +45,7 @@ describe('logWarnings', () => {
   });
 
   it('should log field definition - feature property type mismatch', () => {
-    logWarnings({
+    logProviderDataWarnings({
       metadata: { fields: [{ name: 'foo', type: 'String' }] },
       features: [{ properties: { foo: 1000 } }],
     }, 
@@ -57,7 +57,7 @@ describe('logWarnings', () => {
   });
 
   it('should not log warning if field definition matches feature', () => {
-    logWarnings({
+    logProviderDataWarnings({
       metadata: { fields: [{ name: 'foo', type: 'String' }] },
       features: [{ properties: { foo: 'bar' } }],
     }, {});
@@ -65,7 +65,7 @@ describe('logWarnings', () => {
   });
 
   it('should not log warning if field type mismatch is Esri exception', () => {
-    logWarnings({
+    logProviderDataWarnings({
       metadata: { fields: [{ name: 'foo', type: 'Date' }] },
       features: [{ properties: { foo: 12345 } }],
     }, {});
@@ -73,7 +73,7 @@ describe('logWarnings', () => {
   });
 
   it('should log feature property not found in field definitions', () => {
-    logWarnings({
+    logProviderDataWarnings({
       metadata: { fields: [] },
       features: [{ properties: { foo: 'bar' } }],
     }, {});

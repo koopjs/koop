@@ -23,7 +23,7 @@ function query (json, requestParams = {}) {
     return renderPrecalculatedData(json, requestParams);
   }
 
-  logWarnings(json, requestParams);
+  logProviderDataWarnings(json, requestParams);
 
   const data = (skipFiltering || !features) ? json : filterAndTransform(json, requestParams);
 
