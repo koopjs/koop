@@ -2,18 +2,24 @@ const _ = require('lodash');
 const { getDataTypeFromValue } = require('../helpers');
 const logManager = require('../log-manager');
 
-function logWarnings(geojson, format, outFields = '*') {
-  const { metadata = {}, features } = geojson;
-  const esriFormat = format !== geojson;
-  const properties = _.get(features, '[0].properties') || _.get(features, '[0].attributes');
+function logFeatureCollectionWarnings(geojson, requestParams) {
+  const { f, outFields = '*', returnCountOnly, returnExtentOnly, returnIdsOnly } = requestParams;
+  
+  if (f === 'geojson' || returnCountOnly || returnExtentOnly || returnIdsOnly) {
+    return;
+  }
 
-  if (esriFormat && !metadata.idField && properties?.OBJECTID === undefined) {
+  const { metadata = {}, features } = geojson;
+
+  const properties = _.get(features, '[0].properties');
+
+  if (!metadata.idField && properties?.OBJECTID === undefined) {
     logManager.logger.debug(
       `provider data has no OBJECTID and has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an integer in range 0 - ${Number.MAX_SAFE_INTEGER}. An OBJECTID field will be auto-generated in the absence of an "idField" assignment.`,
     );
   }
 
-  if (esriFormat && hasMixedCaseObjectIdKey(metadata.idField)) {
+  if (hasMixedCaseObjectIdKey(metadata.idField)) {
     logManager.logger.debug(
       'requested provider has "idField" that is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients.',
     );
@@ -85,4 +91,4 @@ function isEsriTypeMatchException (definitionType, propertyType) {
   }
 }
 
-module.exports = { logWarnings };
+module.exports = { logWarnings: logFeatureCollectionWarnings };

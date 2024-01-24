@@ -24,11 +24,13 @@ function query (json, requestParams = {}) {
     return renderPrecalculatedData(json, requestParams);
   }
 
+  logWarnings(json, requestParams);
+
   const data = (skipFiltering || !features) ? json : filterAndTransform(json, requestParams);
 
-  if(shouldLogWarnings(requestParams)) {
-    logWarnings(data, requestedFormat, requestParams.outFields);
-  }
+
+
+  
   
 
   // TODO: Bug when count or extent requested.
@@ -45,12 +47,6 @@ function query (json, requestParams = {}) {
     attributeSample: _.get(json, 'features[0].properties'),
     geometryType: getGeometryTypeFromGeojson(json)
   });
-}
-
-function shouldLogWarnings(requestParams) {
-  const { returnCountOnly, returnExtentOnly, returnIdsOnly } = requestParams;
-  
-  return !(returnCountOnly || returnExtentOnly || returnIdsOnly);
 }
 
 function shouldRenderPrecalculatedData (json, requestParameters) {
