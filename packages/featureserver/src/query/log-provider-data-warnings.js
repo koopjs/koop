@@ -2,7 +2,7 @@ const _ = require('lodash');
 const { getDataTypeFromValue } = require('../helpers');
 const logManager = require('../log-manager');
 
-function logFeatureCollectionWarnings(geojson, requestParams) {
+function logProviderDataWarnings(geojson, requestParams) {
   const { f, outFields = '*', returnCountOnly, returnExtentOnly, returnIdsOnly } = requestParams;
   
   if (f === 'geojson' || returnCountOnly || returnExtentOnly || returnIdsOnly) {
@@ -91,4 +91,4 @@ function isEsriTypeMatchException (definitionType, propertyType) {
   }
 }
 
-module.exports = { logWarnings: logFeatureCollectionWarnings };
+module.exports = { logProviderDataWarnings };

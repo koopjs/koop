@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const { filterAndTransform } = require('./filter-and-transform');
-const { logWarnings } = require('./log-warnings');
+const { logProviderDataWarnings } = require('./log-provider-data-warnings');
 const { renderFeaturesResponse } = require('./render-features');
 const { renderStatisticsResponse } = require('./render-statistics');
 const { renderPrecalculatedStatisticsResponse } = require('./render-precalculated-statistics');
@@ -15,10 +15,9 @@ function query (json, requestParams = {}) {
       all: skipFiltering
     } = {}
   } = json;
+  const { f: requestedFormat } = requestParams;
 
   validate(requestParams);
-
-  const { f: requestedFormat } = requestParams;
 
   if (shouldRenderPrecalculatedData(json, requestParams)) {
     return renderPrecalculatedData(json, requestParams);
@@ -27,11 +26,6 @@ function query (json, requestParams = {}) {
   logWarnings(json, requestParams);
 
   const data = (skipFiltering || !features) ? json : filterAndTransform(json, requestParams);
-
-
-
-  
-  
 
   // TODO: Bug when count or extent requested.
   // QUESTION: Is this problematic if its an aggregation with stats?
