@@ -6,6 +6,7 @@ const { renderStatisticsResponse } = require('./render-statistics');
 const { renderPrecalculatedStatisticsResponse } = require('./render-precalculated-statistics');
 const { renderCountAndExtentResponse } = require('./render-count-and-extent');
 const { getGeometryTypeFromGeojson } = require('../helpers');
+const { validate } = require('./validate-query-request-parameters');
 
 function query (json, requestParams = {}) {
   const {
@@ -15,16 +16,24 @@ function query (json, requestParams = {}) {
     } = {}
   } = json;
 
+  validate(requestParams);
+
   const { f: requestedFormat } = requestParams;
 
+  // TODO: if format PBF, need to send pbf if only count requested
   if (shouldRenderPrecalculatedData(json, requestParams)) {
     return renderPrecalculatedData(json, requestParams);
   }
 
   const data = (skipFiltering || !features) ? json : filterAndTransform(json, requestParams);
 
-  logWarnings(data, requestParams.f);
+  if(shouldLogWarnings(requestParams)) {
+    logWarnings(data, requestedFormat, requestParams.outFields);
+  }
+  
 
+  // TODO: Bug when count or extent requested.
+  // QUESTION: Is this problematic if its an aggregation with stats?
   if (requestedFormat === 'geojson') {
     return {
       type: 'FeatureCollection',
@@ -39,24 +48,17 @@ function query (json, requestParams = {}) {
   });
 }
 
-function shouldRenderPrecalculatedData ({ statistics, count, extent }, { returnCountOnly, returnExtentOnly }) {
-  if (statistics) {
-    return true;
-  }
+function shouldLogWarnings(requestParams) {
+  const { returnCountOnly, returnExtentOnly, returnIdsOnly } = requestParams;
+  
+  return !(returnCountOnly || returnExtentOnly || returnIdsOnly);
+}
 
-  if (returnCountOnly === true && count !== undefined && returnExtentOnly === true && extent) {
-    return true;
-  }
+function shouldRenderPrecalculatedData (json, requestParameters) {
+  const { statistics, count, extent } = json;
+  const { returnCountOnly, returnExtentOnly } = requestParameters;
 
-  if (returnCountOnly === true && count !== undefined && !returnExtentOnly) {
-    return true;
-  }
-
-  if (returnExtentOnly === true && extent && !returnCountOnly) {
-    return true;
-  }
-
-  return false;
+  return !!statistics || (returnCountOnly === true && count !== undefined) || (returnExtentOnly === true && extent && !returnCountOnly);
 }
 
 function renderPrecalculatedData (data, {
@@ -73,6 +75,7 @@ function renderPrecalculatedData (data, {
 
   const retVal = {};
 
+  // TODO: if only count, and f=pbf need to encode response
   if (returnCountOnly) {
     retVal.count = count;
   }
@@ -92,6 +95,7 @@ function renderGeoservicesResponse (data, params = {}) {
     outSR
   } = params;
 
+  // TODO: if only count, and f=pbf need to encode response
   if (returnCountOnly || returnExtentOnly) {
     return renderCountAndExtentResponse(data, {
       returnCountOnly,

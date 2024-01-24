@@ -2,17 +2,23 @@ const should = require('should');
 should.config.checkProtoEql = false;
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
-const { PointRenderer } = require('./renderers');
-const CURRENT_VERSION = 11.1;
-const FULL_VERSION = '11.1.0';
 
 const calculateBoundsSpy = sinon.spy(function () {
-  return [0, 1, 2, 3];
+  return {
+    spatialReference: {
+      latestWkid: 4326,
+      wkid: 4326,
+    },
+    xmax: 180,
+    xmin: -180,
+    ymax: 90,
+    ymin: -90,
+  };
 });
 const getSpatialReferenceSpy = sinon.spy(function () {
   return {
     wkid: 4326,
-    latestWkid: 4326
+    latestWkid: 4326,
   };
 });
 const getGeometryTypeFromGeojsonSpy = sinon.spy(function () {
@@ -22,96 +28,13 @@ const normalizeExtentSpy = sinon.spy(function () {
   return 'normalized-extent';
 });
 
-const defaultFixture = {
-  id: 0,
-  name: 'Not Set',
-  description: 'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
-  copyrightText: 'Copyright information varies by provider. For more information please contact the source of this data.',
-  parentLayer: null,
-  subLayers: null,
-  defaultVisibility: true,
-  hasAttachments: false,
-  htmlPopupType: 'esriServerHTMLPopupTypeNone',
-  displayField: 'OBJECTID',
-  typeIdField: null,
-  fields: [
-    {
-      alias: 'OBJECTID',
-      defaultValue: null,
-      domain: null,
-      editable: false,
-      name: 'OBJECTID',
-      nullable: false,
-      sqlType: 'sqlTypeInteger',
-      type: 'esriFieldTypeOID'
-    }
-  ],
-  relationships: [],
-  capabilities: 'Query',
-  maxRecordCount: 2000,
-  supportsStatistics: true,
-  supportsAdvancedQueries: true,
-  supportedQueryFormats: 'JSON',
-  ownershipBasedAccessControlForFeatures: {
-    allowOthersToQuery: true
-  },
-  useStandardizedQueries: true,
-  advancedQueryCapabilities: {
-    useStandardizedQueries: true,
-    supportsStatistics: true,
-    supportsOrderBy: true,
-    supportsDistinct: true,
-    supportsPagination: true,
-    supportsTrueCurve: false,
-    supportsReturningQueryExtent: true,
-    supportsQueryWithDistance: true
-  },
-  canModifyLayer: false,
-  dateFieldsTimeReference: null,
-  isDataVersioned: false,
-  supportsRollbackOnFailureParameter: true,
-  hasM: false,
-  hasZ: false,
-  allowGeometryUpdates: true,
-  objectIdField: 'OBJECTID',
-  globalIdField: '',
-  types: [],
-  templates: [],
-  hasStaticData: false,
-  timeInfo: {},
-  uniqueIdField: {
-    name: 'OBJECTID',
-    isSystemMaintained: true
-  },
-  type: 'Feature Layer',
-  minScale: 0,
-  maxScale: 0,
-  canScaleSymbols: false,
-  drawingInfo: {
-    renderer: {},
-    labelingInfo: null
-  },
-  extent: {
-    xmin: -180,
-    ymin: -90,
-    xmax: 180,
-    ymax: 90,
-    spatialReference: {
-      wkid: 4326,
-      latestWkid: 4326
-    }
-  },
-  supportsCoordinatesQuantization: false,
-  hasLabels: false,
-  currentVersion: CURRENT_VERSION,
-  fullVersion: FULL_VERSION
-};
-
 const FeatureLayerMetadata = proxyquire('./feature-layer-metadata', {
-  '@terraformer/spatial': { calculateBounds: calculateBoundsSpy },
+  '@terraformer/spatial': {
+    calculateBounds: calculateBoundsSpy,
+  },
   './get-spatial-reference': getSpatialReferenceSpy,
   './get-geometry-type-from-geojson': getGeometryTypeFromGeojsonSpy,
-  './normalize-extent': normalizeExtentSpy
+  './normalize-extent': normalizeExtentSpy,
 });
 
 describe('FeatureLayerMetadata', () => {
@@ -124,73 +47,603 @@ describe('FeatureLayerMetadata', () => {
 
   it('calling with new should return default metadata', () => {
     const featureLayerMetadata = new FeatureLayerMetadata();
+
     featureLayerMetadata.should.deepEqual({
-      ...defaultFixture,
-      fields: []
+      currentVersion: 11.1,
+      id: 0,
+      name: 'Not Set',
+      type: 'Feature Layer',
+      displayField: '',
+      description:
+        'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+      copyrightText:
+        'Copyright information varies by provider. For more information please contact the source of this data.',
+      defaultVisibility: true,
+      isDataVersioned: false,
+      hasContingentValuesDefinition: false,
+      supportsAppend: false,
+      supportsCalculate: false,
+      supportsASyncCalculate: false,
+      supportsTruncate: false,
+      supportsAttachmentsByUploadId: false,
+      supportsAttachmentsResizing: false,
+      supportsRollbackOnFailureParameter: false,
+      supportsStatistics: true,
+      supportsExceedsLimitStatistics: false,
+      supportsAdvancedQueries: true,
+      supportsValidateSql: false,
+      supportsLayerOverrides: false,
+      supportsTilesAndBasicQueriesMode: true,
+      supportsFieldDescriptionProperty: false,
+      supportsQuantizationEditMode: false,
+      supportsApplyEditsWithGlobalIds: false,
+      supportsReturningQueryGeometry: false,
+      advancedQueryCapabilities: {
+        supportsPagination: true,
+        supportsQueryAttachmentsCountOnly: false,
+        supportsPaginationOnAggregatedQueries: false,
+        supportsQueryRelatedPagination: false,
+        supportsQueryWithDistance: false,
+        supportsReturningQueryExtent: true,
+        supportsStatistics: true,
+        supportsOrderBy: true,
+        supportsDistinct: true,
+        supportsQueryWithResultType: false,
+        supportsSqlExpression: false,
+        supportsAdvancedQueryRelated: false,
+        supportsCountDistinct: false,
+        supportsPercentileStatistics: false,
+        supportedSpatialAggregationStatistics: [],
+        supportsLod: false,
+        supportsQueryWithLodSR: false,
+        supportedLodTypes: [],
+        supportsReturningGeometryCentroid: false,
+        supportsReturningGeometryEnvelope: false,
+        supportsQueryWithDatumTransformation: false,
+        supportsCurrentUserQueries: false,
+        supportsHavingClause: false,
+        supportsOutFieldSQLExpression: false,
+        supportsMaxRecordCountFactor: false,
+        supportsTopFeaturesQuery: false,
+        supportsDisjointSpatialRel: false,
+        supportsQueryWithCacheHint: false,
+        supportedOperationsWithCacheHint: [],
+        supportsQueryAnalytic: false,
+        supportsDefaultSR: false,
+        supportsFullTextSearch: false,
+        advancedQueryAnalyticCapabilities: {},
+        advancedEditingCapabilities: {},
+      },
+      useStandardizedQueries: true,
+      allowGeometryUpdates: false,
+      hasAttachments: false,
+      htmlPopupType: 'esriServerHTMLPopupTypeNone',
+      hasM: false,
+      hasZ: false,
+      objectIdField: 'OBJECTID',
+      uniqueIdField: { name: 'OBJECTID', isSystemMaintained: true },
+      globalIdField: '',
+      typeIdField: '',
+      dateFieldsTimeReference: {
+        timeZone: 'UTC',
+        respectsDaylightSaving: false,
+      },
+      preferredTimeReference: null,
+      templates: [],
+      supportedQueryFormats: 'JSON,geojson,PBF',
+      supportedAppendFormats: '',
+      supportedExportFormats: '',
+      supportedSpatialRelationships: [
+        'esriSpatialRelIntersects',
+        'esriSpatialRelContains',
+        'esriSpatialRelEnvelopeIntersects',
+        'esriSpatialRelWithin',
+      ],
+      supportedContingentValuesFormats: '',
+      hasStaticData: false,
+      maxRecordCount: 2000,
+      standardMaxRecordCount: 2000,
+      standardMaxRecordCountNoGeometry: 2000,
+      tileMaxRecordCount: 2000,
+      maxRecordCountFactor: 1,
+      fields: [],
+      relationships: [],
+      capabilities: 'Query',
+      ownershipBasedAccessControlForFeatures: { allowOthersToQuery: true },
+      types: [],
+      timeInfo: {},
+      minScale: 0,
+      maxScale: 0,
+      drawingInfo: { renderer: {}, labelingInfo: null },
+      extent: {
+        xmin: -180,
+        ymin: -90,
+        xmax: 180,
+        ymax: 90,
+        spatialReference: { wkid: 4326, latestWkid: 4326 },
+      },
+      supportsCoordinatesQuantization: true,
+      hasLabels: false,
     });
   });
 
   describe('mixinOverrides', () => {
     it('should set point geometryType and renderer', () => {
       const featureLayerMetadata = new FeatureLayerMetadata();
-      featureLayerMetadata.mixinOverrides({
-        features: []
-      }, { foo: 'bar' });
+      featureLayerMetadata.mixinOverrides(
+        {
+          features: [],
+        },
+        { foo: 'bar' },
+      );
 
       featureLayerMetadata.should.deepEqual({
-        ...defaultFixture,
-        geometryType: 'esriGeometryPoint',
+        currentVersion: 11.1,
+        id: 0,
+        name: 'Not Set',
+        type: 'Feature Layer',
+        displayField: '',
+        description:
+          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+        copyrightText:
+          'Copyright information varies by provider. For more information please contact the source of this data.',
+        defaultVisibility: true,
+        isDataVersioned: false,
+        hasContingentValuesDefinition: false,
+        supportsAppend: false,
+        supportsCalculate: false,
+        supportsASyncCalculate: false,
+        supportsTruncate: false,
+        supportsAttachmentsByUploadId: false,
+        supportsAttachmentsResizing: false,
+        supportsRollbackOnFailureParameter: false,
+        supportsStatistics: true,
+        supportsExceedsLimitStatistics: false,
+        supportsAdvancedQueries: true,
+        supportsValidateSql: false,
+        supportsLayerOverrides: false,
+        supportsTilesAndBasicQueriesMode: true,
+        supportsFieldDescriptionProperty: false,
+        supportsQuantizationEditMode: false,
+        supportsApplyEditsWithGlobalIds: false,
+        supportsReturningQueryGeometry: false,
+        advancedQueryCapabilities: {
+          supportsPagination: true,
+          supportsQueryAttachmentsCountOnly: false,
+          supportsPaginationOnAggregatedQueries: false,
+          supportsQueryRelatedPagination: false,
+          supportsQueryWithDistance: false,
+          supportsReturningQueryExtent: true,
+          supportsStatistics: true,
+          supportsOrderBy: true,
+          supportsDistinct: true,
+          supportsQueryWithResultType: false,
+          supportsSqlExpression: false,
+          supportsAdvancedQueryRelated: false,
+          supportsCountDistinct: false,
+          supportsPercentileStatistics: false,
+          supportedSpatialAggregationStatistics: [],
+          supportsLod: false,
+          supportsQueryWithLodSR: false,
+          supportedLodTypes: [],
+          supportsReturningGeometryCentroid: false,
+          supportsReturningGeometryEnvelope: false,
+          supportsQueryWithDatumTransformation: false,
+          supportsCurrentUserQueries: false,
+          supportsHavingClause: false,
+          supportsOutFieldSQLExpression: false,
+          supportsMaxRecordCountFactor: false,
+          supportsTopFeaturesQuery: false,
+          supportsDisjointSpatialRel: false,
+          supportsQueryWithCacheHint: false,
+          supportedOperationsWithCacheHint: [],
+          supportsQueryAnalytic: false,
+          supportsDefaultSR: false,
+          supportsFullTextSearch: false,
+          advancedQueryAnalyticCapabilities: {},
+          advancedEditingCapabilities: {},
+        },
+        useStandardizedQueries: true,
+        allowGeometryUpdates: false,
+        hasAttachments: false,
+        htmlPopupType: 'esriServerHTMLPopupTypeNone',
+        hasM: false,
+        hasZ: false,
+        objectIdField: 'OBJECTID',
+        uniqueIdField: { name: 'OBJECTID', isSystemMaintained: true },
+        globalIdField: '',
+        typeIdField: '',
+        dateFieldsTimeReference: {
+          timeZone: 'UTC',
+          respectsDaylightSaving: false,
+        },
+        preferredTimeReference: null,
+        templates: [],
+        supportedQueryFormats: 'JSON,geojson,PBF',
+        supportedAppendFormats: '',
+        supportedExportFormats: '',
+        supportedSpatialRelationships: [
+          'esriSpatialRelIntersects',
+          'esriSpatialRelContains',
+          'esriSpatialRelEnvelopeIntersects',
+          'esriSpatialRelWithin',
+        ],
+        supportedContingentValuesFormats: '',
+        hasStaticData: false,
+        maxRecordCount: 2000,
+        standardMaxRecordCount: 2000,
+        standardMaxRecordCountNoGeometry: 2000,
+        tileMaxRecordCount: 2000,
+        maxRecordCountFactor: 1,
+        fields: [
+          {
+            name: 'OBJECTID',
+            type: 'esriFieldTypeOID',
+            alias: 'OBJECTID',
+            sqlType: 'sqlTypeInteger',
+            domain: null,
+            defaultValue: null,
+            editable: false,
+            nullable: false,
+          },
+        ],
+        relationships: [],
+        capabilities: 'Query',
+        ownershipBasedAccessControlForFeatures: { allowOthersToQuery: true },
+        types: [],
+        timeInfo: {},
+        minScale: 0,
+        maxScale: 0,
         drawingInfo: {
+          renderer: {
+            type: 'simple',
+            symbol: {
+              color: [45, 172, 128, 161],
+              outline: {
+                color: [190, 190, 190, 105],
+                width: 0.5,
+                type: 'esriSLS',
+                style: 'esriSLSSolid',
+              },
+              size: 7.5,
+              type: 'esriSMS',
+              style: 'esriSMSCircle',
+            },
+          },
           labelingInfo: null,
-          renderer: new PointRenderer()
-        }
+        },
+        extent: {
+          xmin: -180,
+          ymin: -90,
+          xmax: 180,
+          ymax: 90,
+          spatialReference: { wkid: 4326, latestWkid: 4326 },
+        },
+        supportsCoordinatesQuantization: false,
+        hasLabels: false,
+        geometryType: 'esriGeometryPoint',
       });
       getGeometryTypeFromGeojsonSpy.callCount.should.equal(1);
-      getGeometryTypeFromGeojsonSpy.firstCall.args.should.deepEqual([{
-        features: [],
-        foo: 'bar'
-      }]);
+      getGeometryTypeFromGeojsonSpy.firstCall.args.should.deepEqual([
+        {
+          features: [],
+          foo: 'bar',
+        },
+      ]);
     });
 
     it('should set quanitization if capabilities.quantization === true', () => {
       const featureLayerMetadata = new FeatureLayerMetadata();
 
-      featureLayerMetadata.mixinOverrides({
-        features: []
-      }, {
-        capabilities: {
-          quantization: true
-        }
-      });
-
-      featureLayerMetadata.should.deepEqual({
-        ...defaultFixture,
-        geometryType: 'esriGeometryPoint',
-        drawingInfo: {
-          labelingInfo: null,
-          renderer: new PointRenderer()
+      featureLayerMetadata.mixinOverrides(
+        {
+          features: [],
         },
-        supportsCoordinatesQuantization: true
+        {
+          capabilities: {
+            quantization: true,
+          },
+        },
+      );
+      featureLayerMetadata.should.deepEqual({
+        currentVersion: 11.1,
+        id: 0,
+        name: 'Not Set',
+        type: 'Feature Layer',
+        displayField: '',
+        description:
+          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+        copyrightText:
+          'Copyright information varies by provider. For more information please contact the source of this data.',
+        defaultVisibility: true,
+        isDataVersioned: false,
+        hasContingentValuesDefinition: false,
+        supportsAppend: false,
+        supportsCalculate: false,
+        supportsASyncCalculate: false,
+        supportsTruncate: false,
+        supportsAttachmentsByUploadId: false,
+        supportsAttachmentsResizing: false,
+        supportsRollbackOnFailureParameter: false,
+        supportsStatistics: true,
+        supportsExceedsLimitStatistics: false,
+        supportsAdvancedQueries: true,
+        supportsValidateSql: false,
+        supportsLayerOverrides: false,
+        supportsTilesAndBasicQueriesMode: true,
+        supportsFieldDescriptionProperty: false,
+        supportsQuantizationEditMode: false,
+        supportsApplyEditsWithGlobalIds: false,
+        supportsReturningQueryGeometry: false,
+        advancedQueryCapabilities: {
+          supportsPagination: true,
+          supportsQueryAttachmentsCountOnly: false,
+          supportsPaginationOnAggregatedQueries: false,
+          supportsQueryRelatedPagination: false,
+          supportsQueryWithDistance: false,
+          supportsReturningQueryExtent: true,
+          supportsStatistics: true,
+          supportsOrderBy: true,
+          supportsDistinct: true,
+          supportsQueryWithResultType: false,
+          supportsSqlExpression: false,
+          supportsAdvancedQueryRelated: false,
+          supportsCountDistinct: false,
+          supportsPercentileStatistics: false,
+          supportedSpatialAggregationStatistics: [],
+          supportsLod: false,
+          supportsQueryWithLodSR: false,
+          supportedLodTypes: [],
+          supportsReturningGeometryCentroid: false,
+          supportsReturningGeometryEnvelope: false,
+          supportsQueryWithDatumTransformation: false,
+          supportsCurrentUserQueries: false,
+          supportsHavingClause: false,
+          supportsOutFieldSQLExpression: false,
+          supportsMaxRecordCountFactor: false,
+          supportsTopFeaturesQuery: false,
+          supportsDisjointSpatialRel: false,
+          supportsQueryWithCacheHint: false,
+          supportedOperationsWithCacheHint: [],
+          supportsQueryAnalytic: false,
+          supportsDefaultSR: false,
+          supportsFullTextSearch: false,
+          advancedQueryAnalyticCapabilities: {},
+          advancedEditingCapabilities: {},
+        },
+        useStandardizedQueries: true,
+        allowGeometryUpdates: false,
+        hasAttachments: false,
+        htmlPopupType: 'esriServerHTMLPopupTypeNone',
+        hasM: false,
+        hasZ: false,
+        objectIdField: 'OBJECTID',
+        uniqueIdField: { name: 'OBJECTID', isSystemMaintained: true },
+        globalIdField: '',
+        typeIdField: '',
+        dateFieldsTimeReference: {
+          timeZone: 'UTC',
+          respectsDaylightSaving: false,
+        },
+        preferredTimeReference: null,
+        templates: [],
+        supportedQueryFormats: 'JSON,geojson,PBF',
+        supportedAppendFormats: '',
+        supportedExportFormats: '',
+        supportedSpatialRelationships: [
+          'esriSpatialRelIntersects',
+          'esriSpatialRelContains',
+          'esriSpatialRelEnvelopeIntersects',
+          'esriSpatialRelWithin',
+        ],
+        supportedContingentValuesFormats: '',
+        hasStaticData: false,
+        maxRecordCount: 2000,
+        standardMaxRecordCount: 2000,
+        standardMaxRecordCountNoGeometry: 2000,
+        tileMaxRecordCount: 2000,
+        maxRecordCountFactor: 1,
+        fields: [
+          {
+            name: 'OBJECTID',
+            type: 'esriFieldTypeOID',
+            alias: 'OBJECTID',
+            sqlType: 'sqlTypeInteger',
+            domain: null,
+            defaultValue: null,
+            editable: false,
+            nullable: false,
+          },
+        ],
+        relationships: [],
+        capabilities: 'Query',
+        ownershipBasedAccessControlForFeatures: { allowOthersToQuery: true },
+        types: [],
+        timeInfo: {},
+        minScale: 0,
+        maxScale: 0,
+        drawingInfo: {
+          renderer: {
+            type: 'simple',
+            symbol: {
+              color: [45, 172, 128, 161],
+              outline: {
+                color: [190, 190, 190, 105],
+                width: 0.5,
+                type: 'esriSLS',
+                style: 'esriSLSSolid',
+              },
+              size: 7.5,
+              type: 'esriSMS',
+              style: 'esriSMSCircle',
+            },
+          },
+          labelingInfo: null,
+        },
+        extent: {
+          xmin: -180,
+          ymin: -90,
+          xmax: 180,
+          ymax: 90,
+          spatialReference: { wkid: 4326, latestWkid: 4326 },
+        },
+        supportsCoordinatesQuantization: true,
+        hasLabels: false,
+        geometryType: 'esriGeometryPoint',
       });
     });
 
     it('should set extent from options', () => {
       const featureLayerMetadata = new FeatureLayerMetadata();
 
-      featureLayerMetadata.mixinOverrides({
-        features: ['feature']
-      }, {
-        extent: 'dataset-extent'
-      });
+      featureLayerMetadata.mixinOverrides(
+        {
+          features: ['feature'],
+        },
+        {
+          extent: 'dataset-extent',
+        },
+      );
 
       featureLayerMetadata.should.deepEqual({
-        ...defaultFixture,
-        geometryType: 'esriGeometryPoint',
-        drawingInfo: {
-          labelingInfo: null,
-          renderer: new PointRenderer()
+        currentVersion: 11.1,
+        id: 0,
+        name: 'Not Set',
+        type: 'Feature Layer',
+        displayField: '',
+        description:
+          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+        copyrightText:
+          'Copyright information varies by provider. For more information please contact the source of this data.',
+        defaultVisibility: true,
+        isDataVersioned: false,
+        hasContingentValuesDefinition: false,
+        supportsAppend: false,
+        supportsCalculate: false,
+        supportsASyncCalculate: false,
+        supportsTruncate: false,
+        supportsAttachmentsByUploadId: false,
+        supportsAttachmentsResizing: false,
+        supportsRollbackOnFailureParameter: false,
+        supportsStatistics: true,
+        supportsExceedsLimitStatistics: false,
+        supportsAdvancedQueries: true,
+        supportsValidateSql: false,
+        supportsLayerOverrides: false,
+        supportsTilesAndBasicQueriesMode: true,
+        supportsFieldDescriptionProperty: false,
+        supportsQuantizationEditMode: false,
+        supportsApplyEditsWithGlobalIds: false,
+        supportsReturningQueryGeometry: false,
+        advancedQueryCapabilities: {
+          supportsPagination: true,
+          supportsQueryAttachmentsCountOnly: false,
+          supportsPaginationOnAggregatedQueries: false,
+          supportsQueryRelatedPagination: false,
+          supportsQueryWithDistance: false,
+          supportsReturningQueryExtent: true,
+          supportsStatistics: true,
+          supportsOrderBy: true,
+          supportsDistinct: true,
+          supportsQueryWithResultType: false,
+          supportsSqlExpression: false,
+          supportsAdvancedQueryRelated: false,
+          supportsCountDistinct: false,
+          supportsPercentileStatistics: false,
+          supportedSpatialAggregationStatistics: [],
+          supportsLod: false,
+          supportsQueryWithLodSR: false,
+          supportedLodTypes: [],
+          supportsReturningGeometryCentroid: false,
+          supportsReturningGeometryEnvelope: false,
+          supportsQueryWithDatumTransformation: false,
+          supportsCurrentUserQueries: false,
+          supportsHavingClause: false,
+          supportsOutFieldSQLExpression: false,
+          supportsMaxRecordCountFactor: false,
+          supportsTopFeaturesQuery: false,
+          supportsDisjointSpatialRel: false,
+          supportsQueryWithCacheHint: false,
+          supportedOperationsWithCacheHint: [],
+          supportsQueryAnalytic: false,
+          supportsDefaultSR: false,
+          supportsFullTextSearch: false,
+          advancedQueryAnalyticCapabilities: {},
+          advancedEditingCapabilities: {},
         },
-        extent: 'normalized-extent'
+        useStandardizedQueries: true,
+        allowGeometryUpdates: false,
+        hasAttachments: false,
+        htmlPopupType: 'esriServerHTMLPopupTypeNone',
+        hasM: false,
+        hasZ: false,
+        objectIdField: 'OBJECTID',
+        uniqueIdField: { name: 'OBJECTID', isSystemMaintained: true },
+        globalIdField: '',
+        typeIdField: '',
+        dateFieldsTimeReference: {
+          timeZone: 'UTC',
+          respectsDaylightSaving: false,
+        },
+        preferredTimeReference: null,
+        templates: [],
+        supportedQueryFormats: 'JSON,geojson,PBF',
+        supportedAppendFormats: '',
+        supportedExportFormats: '',
+        supportedSpatialRelationships: [
+          'esriSpatialRelIntersects',
+          'esriSpatialRelContains',
+          'esriSpatialRelEnvelopeIntersects',
+          'esriSpatialRelWithin',
+        ],
+        supportedContingentValuesFormats: '',
+        hasStaticData: false,
+        maxRecordCount: 2000,
+        standardMaxRecordCount: 2000,
+        standardMaxRecordCountNoGeometry: 2000,
+        tileMaxRecordCount: 2000,
+        maxRecordCountFactor: 1,
+        fields: [
+          {
+            name: 'OBJECTID',
+            type: 'esriFieldTypeOID',
+            alias: 'OBJECTID',
+            sqlType: 'sqlTypeInteger',
+            domain: null,
+            defaultValue: null,
+            editable: false,
+            nullable: false,
+          },
+        ],
+        relationships: [],
+        capabilities: 'Query',
+        ownershipBasedAccessControlForFeatures: { allowOthersToQuery: true },
+        types: [],
+        timeInfo: {},
+        minScale: 0,
+        maxScale: 0,
+        drawingInfo: {
+          renderer: {
+            type: 'simple',
+            symbol: {
+              color: [45, 172, 128, 161],
+              outline: {
+                color: [190, 190, 190, 105],
+                width: 0.5,
+                type: 'esriSLS',
+                style: 'esriSLSSolid',
+              },
+              size: 7.5,
+              type: 'esriSMS',
+              style: 'esriSMSCircle',
+            },
+          },
+          labelingInfo: null,
+        },
+        extent: 'normalized-extent',
+        supportsCoordinatesQuantization: false,
+        hasLabels: false,
+        geometryType: 'esriGeometryPoint',
       });
 
       getSpatialReferenceSpy.callCount.should.equal(1);
@@ -201,27 +654,158 @@ describe('FeatureLayerMetadata', () => {
     it('should set extent from features', () => {
       const featureLayerMetadata = new FeatureLayerMetadata();
 
-      featureLayerMetadata.mixinOverrides({
-        features: ['feature']
-      }, {});
+      featureLayerMetadata.mixinOverrides(
+        {
+          features: ['feature'],
+        },
+        {},
+      );
 
       featureLayerMetadata.should.deepEqual({
-        ...defaultFixture,
-        geometryType: 'esriGeometryPoint',
+        currentVersion: 11.1,
+        id: 0,
+        name: 'Not Set',
+        type: 'Feature Layer',
+        displayField: '',
+        description:
+          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+        copyrightText:
+          'Copyright information varies by provider. For more information please contact the source of this data.',
+        defaultVisibility: true,
+        isDataVersioned: false,
+        hasContingentValuesDefinition: false,
+        supportsAppend: false,
+        supportsCalculate: false,
+        supportsASyncCalculate: false,
+        supportsTruncate: false,
+        supportsAttachmentsByUploadId: false,
+        supportsAttachmentsResizing: false,
+        supportsRollbackOnFailureParameter: false,
+        supportsStatistics: true,
+        supportsExceedsLimitStatistics: false,
+        supportsAdvancedQueries: true,
+        supportsValidateSql: false,
+        supportsLayerOverrides: false,
+        supportsTilesAndBasicQueriesMode: true,
+        supportsFieldDescriptionProperty: false,
+        supportsQuantizationEditMode: false,
+        supportsApplyEditsWithGlobalIds: false,
+        supportsReturningQueryGeometry: false,
+        advancedQueryCapabilities: {
+          supportsPagination: true,
+          supportsQueryAttachmentsCountOnly: false,
+          supportsPaginationOnAggregatedQueries: false,
+          supportsQueryRelatedPagination: false,
+          supportsQueryWithDistance: false,
+          supportsReturningQueryExtent: true,
+          supportsStatistics: true,
+          supportsOrderBy: true,
+          supportsDistinct: true,
+          supportsQueryWithResultType: false,
+          supportsSqlExpression: false,
+          supportsAdvancedQueryRelated: false,
+          supportsCountDistinct: false,
+          supportsPercentileStatistics: false,
+          supportedSpatialAggregationStatistics: [],
+          supportsLod: false,
+          supportsQueryWithLodSR: false,
+          supportedLodTypes: [],
+          supportsReturningGeometryCentroid: false,
+          supportsReturningGeometryEnvelope: false,
+          supportsQueryWithDatumTransformation: false,
+          supportsCurrentUserQueries: false,
+          supportsHavingClause: false,
+          supportsOutFieldSQLExpression: false,
+          supportsMaxRecordCountFactor: false,
+          supportsTopFeaturesQuery: false,
+          supportsDisjointSpatialRel: false,
+          supportsQueryWithCacheHint: false,
+          supportedOperationsWithCacheHint: [],
+          supportsQueryAnalytic: false,
+          supportsDefaultSR: false,
+          supportsFullTextSearch: false,
+          advancedQueryAnalyticCapabilities: {},
+          advancedEditingCapabilities: {},
+        },
+        useStandardizedQueries: true,
+        allowGeometryUpdates: false,
+        hasAttachments: false,
+        htmlPopupType: 'esriServerHTMLPopupTypeNone',
+        hasM: false,
+        hasZ: false,
+        objectIdField: 'OBJECTID',
+        uniqueIdField: { name: 'OBJECTID', isSystemMaintained: true },
+        globalIdField: '',
+        typeIdField: '',
+        dateFieldsTimeReference: {
+          timeZone: 'UTC',
+          respectsDaylightSaving: false,
+        },
+        preferredTimeReference: null,
+        templates: [],
+        supportedQueryFormats: 'JSON,geojson,PBF',
+        supportedAppendFormats: '',
+        supportedExportFormats: '',
+        supportedSpatialRelationships: [
+          'esriSpatialRelIntersects',
+          'esriSpatialRelContains',
+          'esriSpatialRelEnvelopeIntersects',
+          'esriSpatialRelWithin',
+        ],
+        supportedContingentValuesFormats: '',
+        hasStaticData: false,
+        maxRecordCount: 2000,
+        standardMaxRecordCount: 2000,
+        standardMaxRecordCountNoGeometry: 2000,
+        tileMaxRecordCount: 2000,
+        maxRecordCountFactor: 1,
+        fields: [
+          {
+            name: 'OBJECTID',
+            type: 'esriFieldTypeOID',
+            alias: 'OBJECTID',
+            sqlType: 'sqlTypeInteger',
+            domain: null,
+            defaultValue: null,
+            editable: false,
+            nullable: false,
+          },
+        ],
+        relationships: [],
+        capabilities: 'Query',
+        ownershipBasedAccessControlForFeatures: { allowOthersToQuery: true },
+        types: [],
+        timeInfo: {},
+        minScale: 0,
+        maxScale: 0,
         drawingInfo: {
+          renderer: {
+            type: 'simple',
+            symbol: {
+              color: [45, 172, 128, 161],
+              outline: {
+                color: [190, 190, 190, 105],
+                width: 0.5,
+                type: 'esriSLS',
+                style: 'esriSLSSolid',
+              },
+              size: 7.5,
+              type: 'esriSMS',
+              style: 'esriSMSCircle',
+            },
+          },
           labelingInfo: null,
-          renderer: new PointRenderer()
         },
         extent: {
-          spatialReference: {
-            wkid: 4326,
-            latestWkid: 4326
-          },
-          xmax: 2,
-          xmin: 0,
-          ymax: 3,
-          ymin: 1
-        }
+          xmin: -180,
+          ymin: -90,
+          xmax: 180,
+          ymax: 90,
+          spatialReference: { wkid: 4326, latestWkid: 4326 },
+        },
+        supportsCoordinatesQuantization: false,
+        hasLabels: false,
+        geometryType: 'esriGeometryPoint',
       });
 
       getSpatialReferenceSpy.callCount.should.equal(1);
@@ -232,66 +816,466 @@ describe('FeatureLayerMetadata', () => {
     it('should set renderer from options', () => {
       const featureLayerMetadata = new FeatureLayerMetadata();
 
-      featureLayerMetadata.mixinOverrides({
-        features: []
-      }, { renderer: 'custom-renderer' });
+      featureLayerMetadata.mixinOverrides(
+        {
+          features: [],
+        },
+        { renderer: 'custom-renderer' },
+      );
 
       featureLayerMetadata.should.deepEqual({
-        ...defaultFixture,
+        currentVersion: 11.1,
+        id: 0,
+        name: 'Not Set',
+        type: 'Feature Layer',
+        displayField: '',
+        description:
+          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+        copyrightText:
+          'Copyright information varies by provider. For more information please contact the source of this data.',
+        defaultVisibility: true,
+        isDataVersioned: false,
+        hasContingentValuesDefinition: false,
+        supportsAppend: false,
+        supportsCalculate: false,
+        supportsASyncCalculate: false,
+        supportsTruncate: false,
+        supportsAttachmentsByUploadId: false,
+        supportsAttachmentsResizing: false,
+        supportsRollbackOnFailureParameter: false,
+        supportsStatistics: true,
+        supportsExceedsLimitStatistics: false,
+        supportsAdvancedQueries: true,
+        supportsValidateSql: false,
+        supportsLayerOverrides: false,
+        supportsTilesAndBasicQueriesMode: true,
+        supportsFieldDescriptionProperty: false,
+        supportsQuantizationEditMode: false,
+        supportsApplyEditsWithGlobalIds: false,
+        supportsReturningQueryGeometry: false,
+        advancedQueryCapabilities: {
+          supportsPagination: true,
+          supportsQueryAttachmentsCountOnly: false,
+          supportsPaginationOnAggregatedQueries: false,
+          supportsQueryRelatedPagination: false,
+          supportsQueryWithDistance: false,
+          supportsReturningQueryExtent: true,
+          supportsStatistics: true,
+          supportsOrderBy: true,
+          supportsDistinct: true,
+          supportsQueryWithResultType: false,
+          supportsSqlExpression: false,
+          supportsAdvancedQueryRelated: false,
+          supportsCountDistinct: false,
+          supportsPercentileStatistics: false,
+          supportedSpatialAggregationStatistics: [],
+          supportsLod: false,
+          supportsQueryWithLodSR: false,
+          supportedLodTypes: [],
+          supportsReturningGeometryCentroid: false,
+          supportsReturningGeometryEnvelope: false,
+          supportsQueryWithDatumTransformation: false,
+          supportsCurrentUserQueries: false,
+          supportsHavingClause: false,
+          supportsOutFieldSQLExpression: false,
+          supportsMaxRecordCountFactor: false,
+          supportsTopFeaturesQuery: false,
+          supportsDisjointSpatialRel: false,
+          supportsQueryWithCacheHint: false,
+          supportedOperationsWithCacheHint: [],
+          supportsQueryAnalytic: false,
+          supportsDefaultSR: false,
+          supportsFullTextSearch: false,
+          advancedQueryAnalyticCapabilities: {},
+          advancedEditingCapabilities: {},
+        },
+        useStandardizedQueries: true,
+        allowGeometryUpdates: false,
+        hasAttachments: false,
+        htmlPopupType: 'esriServerHTMLPopupTypeNone',
+        hasM: false,
+        hasZ: false,
+        objectIdField: 'OBJECTID',
+        uniqueIdField: { name: 'OBJECTID', isSystemMaintained: true },
+        globalIdField: '',
+        typeIdField: '',
+        dateFieldsTimeReference: {
+          timeZone: 'UTC',
+          respectsDaylightSaving: false,
+        },
+        preferredTimeReference: null,
+        templates: [],
+        supportedQueryFormats: 'JSON,geojson,PBF',
+        supportedAppendFormats: '',
+        supportedExportFormats: '',
+        supportedSpatialRelationships: [
+          'esriSpatialRelIntersects',
+          'esriSpatialRelContains',
+          'esriSpatialRelEnvelopeIntersects',
+          'esriSpatialRelWithin',
+        ],
+        supportedContingentValuesFormats: '',
+        hasStaticData: false,
+        maxRecordCount: 2000,
+        standardMaxRecordCount: 2000,
+        standardMaxRecordCountNoGeometry: 2000,
+        tileMaxRecordCount: 2000,
+        maxRecordCountFactor: 1,
+        fields: [
+          {
+            name: 'OBJECTID',
+            type: 'esriFieldTypeOID',
+            alias: 'OBJECTID',
+            sqlType: 'sqlTypeInteger',
+            domain: null,
+            defaultValue: null,
+            editable: false,
+            nullable: false,
+          },
+        ],
+        relationships: [],
+        capabilities: 'Query',
+        ownershipBasedAccessControlForFeatures: { allowOthersToQuery: true },
+        types: [],
+        timeInfo: {},
+        minScale: 0,
+        maxScale: 0,
+        drawingInfo: { renderer: 'custom-renderer', labelingInfo: null },
+        extent: {
+          xmin: -180,
+          ymin: -90,
+          xmax: 180,
+          ymax: 90,
+          spatialReference: { wkid: 4326, latestWkid: 4326 },
+        },
+        supportsCoordinatesQuantization: false,
+        hasLabels: false,
         geometryType: 'esriGeometryPoint',
-        drawingInfo: {
-          labelingInfo: null,
-          renderer: 'custom-renderer'
-        }
       });
     });
 
     it('should set other direct overrides', () => {
       const featureLayerMetadata = new FeatureLayerMetadata();
 
-      featureLayerMetadata.mixinOverrides({
-        features: []
-      }, { minScale: 1, maxScale: 10 });
+      featureLayerMetadata.mixinOverrides(
+        {
+          features: [],
+        },
+        { minScale: 1, maxScale: 10 },
+      );
 
       featureLayerMetadata.should.deepEqual({
-        ...defaultFixture,
-        geometryType: 'esriGeometryPoint',
-        drawingInfo: {
-          labelingInfo: null,
-          renderer: new PointRenderer()
+        currentVersion: 11.1,
+        id: 0,
+        name: 'Not Set',
+        type: 'Feature Layer',
+        displayField: '',
+        description:
+          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+        copyrightText:
+          'Copyright information varies by provider. For more information please contact the source of this data.',
+        defaultVisibility: true,
+        isDataVersioned: false,
+        hasContingentValuesDefinition: false,
+        supportsAppend: false,
+        supportsCalculate: false,
+        supportsASyncCalculate: false,
+        supportsTruncate: false,
+        supportsAttachmentsByUploadId: false,
+        supportsAttachmentsResizing: false,
+        supportsRollbackOnFailureParameter: false,
+        supportsStatistics: true,
+        supportsExceedsLimitStatistics: false,
+        supportsAdvancedQueries: true,
+        supportsValidateSql: false,
+        supportsLayerOverrides: false,
+        supportsTilesAndBasicQueriesMode: true,
+        supportsFieldDescriptionProperty: false,
+        supportsQuantizationEditMode: false,
+        supportsApplyEditsWithGlobalIds: false,
+        supportsReturningQueryGeometry: false,
+        advancedQueryCapabilities: {
+          supportsPagination: true,
+          supportsQueryAttachmentsCountOnly: false,
+          supportsPaginationOnAggregatedQueries: false,
+          supportsQueryRelatedPagination: false,
+          supportsQueryWithDistance: false,
+          supportsReturningQueryExtent: true,
+          supportsStatistics: true,
+          supportsOrderBy: true,
+          supportsDistinct: true,
+          supportsQueryWithResultType: false,
+          supportsSqlExpression: false,
+          supportsAdvancedQueryRelated: false,
+          supportsCountDistinct: false,
+          supportsPercentileStatistics: false,
+          supportedSpatialAggregationStatistics: [],
+          supportsLod: false,
+          supportsQueryWithLodSR: false,
+          supportedLodTypes: [],
+          supportsReturningGeometryCentroid: false,
+          supportsReturningGeometryEnvelope: false,
+          supportsQueryWithDatumTransformation: false,
+          supportsCurrentUserQueries: false,
+          supportsHavingClause: false,
+          supportsOutFieldSQLExpression: false,
+          supportsMaxRecordCountFactor: false,
+          supportsTopFeaturesQuery: false,
+          supportsDisjointSpatialRel: false,
+          supportsQueryWithCacheHint: false,
+          supportedOperationsWithCacheHint: [],
+          supportsQueryAnalytic: false,
+          supportsDefaultSR: false,
+          supportsFullTextSearch: false,
+          advancedQueryAnalyticCapabilities: {},
+          advancedEditingCapabilities: {},
         },
+        useStandardizedQueries: true,
+        allowGeometryUpdates: false,
+        hasAttachments: false,
+        htmlPopupType: 'esriServerHTMLPopupTypeNone',
+        hasM: false,
+        hasZ: false,
+        objectIdField: 'OBJECTID',
+        uniqueIdField: { name: 'OBJECTID', isSystemMaintained: true },
+        globalIdField: '',
+        typeIdField: '',
+        dateFieldsTimeReference: {
+          timeZone: 'UTC',
+          respectsDaylightSaving: false,
+        },
+        preferredTimeReference: null,
+        templates: [],
+        supportedQueryFormats: 'JSON,geojson,PBF',
+        supportedAppendFormats: '',
+        supportedExportFormats: '',
+        supportedSpatialRelationships: [
+          'esriSpatialRelIntersects',
+          'esriSpatialRelContains',
+          'esriSpatialRelEnvelopeIntersects',
+          'esriSpatialRelWithin',
+        ],
+        supportedContingentValuesFormats: '',
+        hasStaticData: false,
+        maxRecordCount: 2000,
+        standardMaxRecordCount: 2000,
+        standardMaxRecordCountNoGeometry: 2000,
+        tileMaxRecordCount: 2000,
+        maxRecordCountFactor: 1,
+        fields: [
+          {
+            name: 'OBJECTID',
+            type: 'esriFieldTypeOID',
+            alias: 'OBJECTID',
+            sqlType: 'sqlTypeInteger',
+            domain: null,
+            defaultValue: null,
+            editable: false,
+            nullable: false,
+          },
+        ],
+        relationships: [],
+        capabilities: 'Query',
+        ownershipBasedAccessControlForFeatures: { allowOthersToQuery: true },
+        types: [],
+        timeInfo: {},
         minScale: 1,
         maxScale: 10,
-        currentVersion: CURRENT_VERSION,
-        fullVersion: FULL_VERSION
+        drawingInfo: {
+          renderer: {
+            type: 'simple',
+            symbol: {
+              color: [45, 172, 128, 161],
+              outline: {
+                color: [190, 190, 190, 105],
+                width: 0.5,
+                type: 'esriSLS',
+                style: 'esriSLSSolid',
+              },
+              size: 7.5,
+              type: 'esriSMS',
+              style: 'esriSMSCircle',
+            },
+          },
+          labelingInfo: null,
+        },
+        extent: {
+          xmin: -180,
+          ymin: -90,
+          xmax: 180,
+          ymax: 90,
+          spatialReference: { wkid: 4326, latestWkid: 4326 },
+        },
+        supportsCoordinatesQuantization: false,
+        hasLabels: false,
+        geometryType: 'esriGeometryPoint',
       });
     });
   });
 
   it('static method "create" should normalize input, call constructor, and mixin-overrides ', () => {
-    const featureLayerMetadata = FeatureLayerMetadata.create({
-      features: [],
-      metadata: {
-        foo: 'bar',
-        displayField: 'myField',
-        capabilities: 'list,of,stuff'
+    const featureLayerMetadata = FeatureLayerMetadata.create(
+      {
+        features: [],
+        metadata: {
+          foo: 'bar',
+          displayField: 'myField',
+          capabilities: 'list,of,stuff',
+        },
+        capabilities: {
+          world: 'hellow',
+        },
       },
-      capabilities: {
-        world: 'hellow'
-      }
-    }, {
-      params: { layer: '99' }
-    });
+      {
+        params: { layer: '99' },
+      },
+    );
+
     featureLayerMetadata.should.deepEqual({
-      ...defaultFixture,
-      geometryType: 'esriGeometryPoint',
-      drawingInfo: {
-        labelingInfo: null,
-        renderer: new PointRenderer()
-      },
-      capabilities: 'list,of,stuff',
+      currentVersion: 11.1,
+      id: 99,
+      name: 'Not Set',
+      type: 'Feature Layer',
       displayField: 'myField',
-      id: 99
+      description:
+        'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+      copyrightText:
+        'Copyright information varies by provider. For more information please contact the source of this data.',
+      defaultVisibility: true,
+      isDataVersioned: false,
+      hasContingentValuesDefinition: false,
+      supportsAppend: false,
+      supportsCalculate: false,
+      supportsASyncCalculate: false,
+      supportsTruncate: false,
+      supportsAttachmentsByUploadId: false,
+      supportsAttachmentsResizing: false,
+      supportsRollbackOnFailureParameter: false,
+      supportsStatistics: true,
+      supportsExceedsLimitStatistics: false,
+      supportsAdvancedQueries: true,
+      supportsValidateSql: false,
+      supportsLayerOverrides: false,
+      supportsTilesAndBasicQueriesMode: true,
+      supportsFieldDescriptionProperty: false,
+      supportsQuantizationEditMode: false,
+      supportsApplyEditsWithGlobalIds: false,
+      supportsReturningQueryGeometry: false,
+      advancedQueryCapabilities: {
+        supportsPagination: true,
+        supportsQueryAttachmentsCountOnly: false,
+        supportsPaginationOnAggregatedQueries: false,
+        supportsQueryRelatedPagination: false,
+        supportsQueryWithDistance: false,
+        supportsReturningQueryExtent: true,
+        supportsStatistics: true,
+        supportsOrderBy: true,
+        supportsDistinct: true,
+        supportsQueryWithResultType: false,
+        supportsSqlExpression: false,
+        supportsAdvancedQueryRelated: false,
+        supportsCountDistinct: false,
+        supportsPercentileStatistics: false,
+        supportedSpatialAggregationStatistics: [],
+        supportsLod: false,
+        supportsQueryWithLodSR: false,
+        supportedLodTypes: [],
+        supportsReturningGeometryCentroid: false,
+        supportsReturningGeometryEnvelope: false,
+        supportsQueryWithDatumTransformation: false,
+        supportsCurrentUserQueries: false,
+        supportsHavingClause: false,
+        supportsOutFieldSQLExpression: false,
+        supportsMaxRecordCountFactor: false,
+        supportsTopFeaturesQuery: false,
+        supportsDisjointSpatialRel: false,
+        supportsQueryWithCacheHint: false,
+        supportedOperationsWithCacheHint: [],
+        supportsQueryAnalytic: false,
+        supportsDefaultSR: false,
+        supportsFullTextSearch: false,
+        advancedQueryAnalyticCapabilities: {},
+        advancedEditingCapabilities: {},
+      },
+      useStandardizedQueries: true,
+      allowGeometryUpdates: false,
+      hasAttachments: false,
+      htmlPopupType: 'esriServerHTMLPopupTypeNone',
+      hasM: false,
+      hasZ: false,
+      objectIdField: 'OBJECTID',
+      uniqueIdField: { name: 'OBJECTID', isSystemMaintained: true },
+      globalIdField: '',
+      typeIdField: '',
+      dateFieldsTimeReference: {
+        timeZone: 'UTC',
+        respectsDaylightSaving: false,
+      },
+      preferredTimeReference: null,
+      templates: [],
+      supportedQueryFormats: 'JSON,geojson,PBF',
+      supportedAppendFormats: '',
+      supportedExportFormats: '',
+      supportedSpatialRelationships: [
+        'esriSpatialRelIntersects',
+        'esriSpatialRelContains',
+        'esriSpatialRelEnvelopeIntersects',
+        'esriSpatialRelWithin',
+      ],
+      supportedContingentValuesFormats: '',
+      hasStaticData: false,
+      maxRecordCount: 2000,
+      standardMaxRecordCount: 2000,
+      standardMaxRecordCountNoGeometry: 2000,
+      tileMaxRecordCount: 2000,
+      maxRecordCountFactor: 1,
+      fields: [
+        {
+          name: 'OBJECTID',
+          type: 'esriFieldTypeOID',
+          alias: 'OBJECTID',
+          sqlType: 'sqlTypeInteger',
+          domain: null,
+          defaultValue: null,
+          editable: false,
+          nullable: false,
+        },
+      ],
+      relationships: [],
+      capabilities: 'list,of,stuff',
+      ownershipBasedAccessControlForFeatures: { allowOthersToQuery: true },
+      types: [],
+      timeInfo: {},
+      minScale: 0,
+      maxScale: 0,
+      drawingInfo: {
+        renderer: {
+          type: 'simple',
+          symbol: {
+            color: [45, 172, 128, 161],
+            outline: {
+              color: [190, 190, 190, 105],
+              width: 0.5,
+              type: 'esriSLS',
+              style: 'esriSLSSolid',
+            },
+            size: 7.5,
+            type: 'esriSMS',
+            style: 'esriSMSCircle',
+          },
+        },
+        labelingInfo: null,
+      },
+      extent: {
+        xmin: -180,
+        ymin: -90,
+        xmax: 180,
+        ymax: 90,
+        spatialReference: { wkid: 4326, latestWkid: 4326 },
+      },
+      supportsCoordinatesQuantization: false,
+      hasLabels: false,
+      geometryType: 'esriGeometryPoint',
     });
   });
 });

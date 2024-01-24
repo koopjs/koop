@@ -2,10 +2,10 @@ const _ = require('lodash');
 const { getDataTypeFromValue } = require('../helpers');
 const logManager = require('../log-manager');
 
-function logWarnings(geojson, format) {
+function logWarnings(geojson, format, outFields = '*') {
   const { metadata = {}, features } = geojson;
   const esriFormat = format !== geojson;
-
+  const outFieldsSet = outFields === '*' || outFields === '' ? null : outFields.split(',');
   const properties = _.get(features, '[0].properties') || _.get(features, '[0].attributes');
 
   if (esriFormat && !metadata.idField && properties?.OBJECTID === undefined) {
@@ -21,9 +21,13 @@ function logWarnings(geojson, format) {
   }
 
   if (metadata.fields && properties) {
-    compareFieldDefintionsToFeature(metadata.fields, properties);
+    const fields = outFieldsSet ? metadata.fields.filter(field => {
+      return outFieldsSet.includes(field.name || field.alias);
+    }) : metadata.fields;
+    
+    compareFieldDefintionsToFeature(fields, properties);
   
-    compareFeatureToFieldDefinitions(properties, metadata.fields);
+    compareFeatureToFieldDefinitions(properties, fields);
   }
 }
 

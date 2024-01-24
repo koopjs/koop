@@ -11,52 +11,91 @@ describe('Info operations', () => {
     it('should conform to the prescribed schema', () => {
       const req = {
         app: {
-          locals: {}
-        }
+          locals: {},
+        },
       };
 
       const supplementalRestInfo = {
         authInfo: {
           isTokenBasedSecurity: true,
-          tokenServicesUrl: 'http://localhost/provider/generateToken'
-        }
+          tokenServicesUrl: 'http://localhost/provider/generateToken',
+        },
       };
       const restInfo = FeatureServer.restInfo(supplementalRestInfo, req);
       restInfo.should.have.property('currentVersion', 11.1);
       restInfo.should.have.property('authInfo');
       restInfo.authInfo.should.have.property('isTokenBasedSecurity', true);
-      restInfo.authInfo.should.have.property('tokenServicesUrl').be.type('string');
+      restInfo.authInfo.should.have
+        .property('tokenServicesUrl')
+        .be.type('string');
     });
   });
 
   describe('server info', () => {
     it('should conform to the prescribed schema', () => {
-      const server = FeatureServer.serverInfo(data);
-      const serverSchemaOverride = serverTemplateSchema.append({
-        initialExtent: Joi.object().keys({
-          xmin: Joi.number().valid(-108.9395),
-          ymin: Joi.number().valid(37.084968),
-          xmax: Joi.number().valid(-102),
-          ymax: Joi.number().valid(40.8877),
-          spatialReference: Joi.object().keys({
-            wkid: Joi.number().valid(4326),
-            latestWkid: Joi.number().valid(4326)
-          })
-        }),
-        fullExtent: Joi.object().keys({
-          xmin: Joi.number().valid(-108.9395),
-          ymin: Joi.number().valid(37.084968),
-          xmax: Joi.number().valid(-102),
-          ymax: Joi.number().valid(40.8877),
-          spatialReference: Joi.object().keys({
-            wkid: Joi.number().valid(4326),
-            latestWkid: Joi.number().valid(4326)
-          })
-        })
+      const result = FeatureServer.serverInfo(data);
+      result.should.deepEqual({
+        currentVersion: 11.1,
+        serviceDescription: 'MyTestDesc',
+        hasVersionedData: false,
+        supportsDisconnectedEditing: false,
+        hasStaticData: false,
+        hasSharedDomains: false,
+        maxRecordCount: 2000,
+        supportedQueryFormats: 'JSON',
+        supportsVCSProjection: false,
+        supportedExportFormats: '',
+        capabilities: 'Query',
+        description: 'MyTestDesc',
+        copyrightText:
+          'Copyright information varies by provider. For more information please contact the source of this data.',
+        spatialReference: { wkid: 4326, latestWkid: 4326 },
+        fullExtent: {
+          spatialReference: { wkid: 4326, latestWkid: 4326 },
+          xmin: -108.9395,
+          xmax: -102,
+          ymin: 37.084968,
+          ymax: 40.8877,
+        },
+        initialExtent: {
+          spatialReference: { wkid: 4326, latestWkid: 4326 },
+          xmin: -108.9395,
+          xmax: -102,
+          ymin: 37.084968,
+          ymax: 40.8877,
+        },
+        allowGeometryUpdates: false,
+        units: 'esriDecimalDegrees',
+        supportsAppend: false,
+        supportsSharedDomains: false,
+        supportsWebHooks: false,
+        supportsTemporalLayers: false,
+        layerOverridesEnabled: false,
+        syncEnabled: false,
+        supportsApplyEditsWithGlobalIds: false,
+        supportsReturnDeleteResults: false,
+        supportsLayerOverrides: false,
+        supportsTilesAndBasicQueriesMode: true,
+        supportsQueryContingentValues: false,
+        supportedContingentValuesFormats: '',
+        supportsContingentValuesJson: null,
+        tables: [],
+        layers: [
+          {
+            id: 0,
+            name: 'Snow',
+            type: 'Feature Layer',
+            parentLayerId: -1,
+            defaultVisibility: true,
+            subLayerIds: null,
+            minScale: 0,
+            maxScale: 0,
+            geometryType: 'esriGeometryPoint',
+          },
+        ],
+        relationships: [],
+        supportsRelationshipsResource: false,
       });
-
-      // Test response body schema
-      serverSchemaOverride.validate(server, { presence: 'required' }).should.not.have.property('error');
     });
 
     it('should work with geojson passed in', () => {
@@ -71,8 +110,11 @@ describe('Info operations', () => {
         hasStaticData: true,
         maxRecordCount: 100,
         description: 'test',
-        extent: [[11, 12], [13, 14]],
-        layers: [_.cloneDeep(data)]
+        extent: [
+          [11, 12],
+          [13, 14],
+        ],
+        layers: [_.cloneDeep(data)],
       };
       const server = FeatureServer.serverInfo(input);
       server.hasStaticData.should.equal(true);
@@ -85,7 +127,7 @@ describe('Info operations', () => {
 
     it('should not bomb out on this thing', () => {
       const input = {
-        layers: [require('./fixtures/polygon-metadata-error.json')]
+        layers: [require('./fixtures/polygon-metadata-error.json')],
       };
       const server = FeatureServer.serverInfo(input);
       server.layers.length.should.equal(1);
@@ -97,7 +139,7 @@ describe('Info operations', () => {
         hasStaticData: true,
         maxRecordCount: 100,
         description: 'test',
-        layers: [_.cloneDeep(data)]
+        layers: [_.cloneDeep(data)],
       };
       const server = FeatureServer.serverInfo(input);
       server.hasStaticData.should.equal(true);
@@ -116,8 +158,8 @@ describe('Info operations', () => {
           xmin: 0,
           ymin: 0,
           xmax: 0,
-          ymax: 0
-        }
+          ymax: 0,
+        },
       };
       const server = FeatureServer.serverInfo(input);
       server.hasStaticData.should.equal(true);
@@ -129,16 +171,19 @@ describe('Info operations', () => {
     it('should support a passed in geometry type', () => {
       const input = {
         description: 'test',
-        extent: [[11, 12], [13, 14]],
+        extent: [
+          [11, 12],
+          [13, 14],
+        ],
         layers: [
           {
             type: 'FeatureCollection',
             metadata: {
               name: 'test',
-              geometryType: 'Point'
-            }
-          }
-        ]
+              geometryType: 'Point',
+            },
+          },
+        ],
       };
       const server = FeatureServer.serverInfo(input);
       server.serviceDescription.should.equal('test');
@@ -157,21 +202,24 @@ describe('Info operations', () => {
         id: 1,
         defaultVisibility: false,
         minScale: 100,
-        maxScale: 30000
+        maxScale: 30000,
       };
       layer1.metadata = {
         ...layer1.metadata,
         id: 3,
         defaultVisibility: true,
         minScale: 200,
-        maxScale: 20000
+        maxScale: 20000,
       };
       const input = {
         hasStaticData: true,
         maxRecordCount: 100,
         description: 'test',
-        extent: [[11, 12], [13, 14]],
-        layers: [layer0, layer1]
+        extent: [
+          [11, 12],
+          [13, 14],
+        ],
+        layers: [layer0, layer1],
       };
       const server = FeatureServer.serverInfo(input);
       server.layers.length.should.equal(2);
@@ -192,14 +240,17 @@ describe('Info operations', () => {
         metadata: {
           idField: 'test',
           geometryType: 'Polygon',
-          extent: [[11, 12], [13, 14]],
+          extent: [
+            [11, 12],
+            [13, 14],
+          ],
           fields: [
             {
               name: 'test',
-              type: 'integer'
-            }
-          ]
-        }
+              type: 'integer',
+            },
+          ],
+        },
       };
       const layer = FeatureServer.layerInfo(input, {});
       layer.fields[0].type.should.equal('esriFieldTypeOID');
@@ -209,18 +260,25 @@ describe('Info operations', () => {
       const input = {
         metadata: {
           geometryType: 'Polygon',
-          extent: [[11, 12], [13, 14]],
+          extent: [
+            [11, 12],
+            [13, 14],
+          ],
           fields: [
             {
               name: 'test',
               type: 'String',
-              length: 1000
-            }
-          ]
-        }
+              length: 1000,
+            },
+          ],
+        },
       };
       const layer = FeatureServer.layerInfo(input, {});
-      layer.fields.find(f => { return f.name === 'test'; }).length.should.equal(1000);
+      layer.fields
+        .find((f) => {
+          return f.name === 'test';
+        })
+        .length.should.equal(1000);
     });
   });
 
