@@ -1,8 +1,7 @@
 const Koop = require('@koopjs/koop-core');
 const provider = require('@koopjs/provider-file-geojson');
 const request = require('supertest');
-const VERSION = 11.1;
-const FULL_VERSION = '11.1.0';
+const VERSION = 11.2;
 const COPYRIGHT_TEXT =
   'Copyright information varies by provider. For more information please contact the source of this data.';
 
@@ -38,12 +37,13 @@ describe('Typical Geoservice Client request sequence: Dataset with no geometry',
         const serverInfo = response.body;
         expect(serverInfo).toEqual({
           currentVersion: VERSION,
-          fullVersion: FULL_VERSION,
           maxRecordCount: 2000,
           serviceDescription: 'GeoJSON from no-geom-w-objectid.geojson',
           description: 'GeoJSON from no-geom-w-objectid.geojson',
           copyrightText: COPYRIGHT_TEXT,
           spatialReference: { wkid: 4326, latestWkid: 4326 },
+          layerOverridesEnabled: false,
+          hasSharedDomains: false,
           fullExtent: {
             xmin: -180,
             ymin: -90,
@@ -81,6 +81,19 @@ describe('Typical Geoservice Client request sequence: Dataset with no geometry',
           supportsRelationshipsResource: false,
           allowGeometryUpdates: false,
           relationships: [],
+          supportedContingentValuesFormats: '',
+          supportedExportFormats: '',
+          supportsAppend: false,
+          supportsApplyEditsWithGlobalIds: false,
+          supportsContingentValuesJson: null,
+          supportsLayerOverrides: false,
+          supportsQueryContingentValues: false,
+          supportsReturnDeleteResults: false,
+          supportsSharedDomains: false,
+          supportsTemporalLayers: false,
+          supportsTilesAndBasicQueriesMode: true,
+          supportsVCSProjection: false,
+          supportsWebHooks: false,
         });
       } catch (error) {
         console.error(error);

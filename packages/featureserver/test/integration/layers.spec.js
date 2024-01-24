@@ -3,19 +3,22 @@ const data = require('./fixtures/snow.json');
 const should = require('should');
 should.config.checkProtoEql = false;
 const _ = require('lodash');
+const CURRENT_VERSION = 11.2;
 
 describe('Layers operations', () => {
   describe('layers info', () => {
     it('should conform to the prescribed schema', () => {
-      const result = FeatureServer.layersInfo(data);
+      const json = _.cloneDeep(data);
+      json.metadata.idField = 'id';
+      const result = FeatureServer.layersInfo(json);
       result.should.deepEqual({
         layers: [
           {
-            currentVersion: 11.1,
+            currentVersion: CURRENT_VERSION,
             id: 0,
             name: 'Snow',
             type: 'Feature Layer',
-            displayField: '',
+            displayField: 'id',
             description: 'MyTestDesc',
             copyrightText:
               'Copyright information varies by provider. For more information please contact the source of this data.',
@@ -81,9 +84,9 @@ describe('Layers operations', () => {
             htmlPopupType: 'esriServerHTMLPopupTypeNone',
             hasM: false,
             hasZ: false,
-            objectIdField: 'OBJECTID',
+            objectIdField: 'id',
             uniqueIdField: {
-              name: 'OBJECTID',
+              name: 'id',
               isSystemMaintained: true,
             },
             globalIdField: '',
@@ -112,9 +115,9 @@ describe('Layers operations', () => {
             maxRecordCountFactor: 1,
             fields: [
               {
-                name: 'OBJECTID',
+                name: 'id',
                 type: 'esriFieldTypeOID',
-                alias: 'OBJECTID',
+                alias: 'id',
                 sqlType: 'sqlTypeInteger',
                 domain: null,
                 defaultValue: null,

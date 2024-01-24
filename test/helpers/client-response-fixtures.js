@@ -1,4 +1,4 @@
-const VERSION = 11.1;
+const VERSION = 11.2;
 const COPYRIGHT_TEXT =
   'Copyright information varies by provider. For more information please contact the source of this data.';
 

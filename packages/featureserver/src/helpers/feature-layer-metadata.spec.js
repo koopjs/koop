@@ -2,6 +2,7 @@ const should = require('should');
 should.config.checkProtoEql = false;
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
+const CURRENT_VERSION = 11.2;
 
 const calculateBoundsSpy = sinon.spy(function () {
   return {
@@ -49,7 +50,7 @@ describe('FeatureLayerMetadata', () => {
     const featureLayerMetadata = new FeatureLayerMetadata();
 
     featureLayerMetadata.should.deepEqual({
-      currentVersion: 11.1,
+      currentVersion: CURRENT_VERSION,
       id: 0,
       name: 'Not Set',
       type: 'Feature Layer',
@@ -178,11 +179,11 @@ describe('FeatureLayerMetadata', () => {
       );
 
       featureLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Feature Layer',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -346,11 +347,11 @@ describe('FeatureLayerMetadata', () => {
         },
       );
       featureLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Feature Layer',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -506,11 +507,11 @@ describe('FeatureLayerMetadata', () => {
       );
 
       featureLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Feature Layer',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -662,11 +663,11 @@ describe('FeatureLayerMetadata', () => {
       );
 
       featureLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Feature Layer',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -824,11 +825,11 @@ describe('FeatureLayerMetadata', () => {
       );
 
       featureLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Feature Layer',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -965,11 +966,11 @@ describe('FeatureLayerMetadata', () => {
       );
 
       featureLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Feature Layer',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -1132,7 +1133,7 @@ describe('FeatureLayerMetadata', () => {
     );
 
     featureLayerMetadata.should.deepEqual({
-      currentVersion: 11.1,
+      currentVersion: CURRENT_VERSION,
       id: 99,
       name: 'Not Set',
       type: 'Feature Layer',

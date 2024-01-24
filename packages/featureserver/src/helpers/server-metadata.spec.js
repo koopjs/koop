@@ -2,6 +2,7 @@ const should = require('should');
 should.config.checkProtoEql = false;
 const proxyquire = require('proxyquire');
 const ServerMetadata = require('./server-metadata');
+const CURRENT_VERSION = 11.2;
 
 describe('ServerMetadata', () => {
   it('should use defaults when no overrides', () => {
@@ -10,7 +11,7 @@ describe('ServerMetadata', () => {
     console.log(JSON.stringify(result));
 
     result.should.deepEqual({
-      currentVersion: 11.1,
+      currentVersion: CURRENT_VERSION,
       serviceDescription:
         'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
       hasVersionedData: false,
@@ -77,7 +78,7 @@ describe('ServerMetadata', () => {
     });
 
     result.should.deepEqual({
-      currentVersion: 11.1,
+      currentVersion: CURRENT_VERSION,
       serviceDescription: 'goodbye',
       hasVersionedData: false,
       supportsDisconnectedEditing: false,
@@ -132,7 +133,7 @@ describe('ServerMetadata', () => {
     });
 
     result.should.deepEqual({
-      currentVersion: 11.1,
+      currentVersion: CURRENT_VERSION,
       serviceDescription:
         'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
       hasVersionedData: false,

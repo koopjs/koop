@@ -1,7 +1,7 @@
 const joi = require('joi');
 const _ = require('lodash');
-const CURRENT_VERSION = 11.1;
-const FULL_VERSION = '11.1.0';
+const CURRENT_VERSION = 11.2;
+const FULL_VERSION = '11.2.0';
 const MAX_RECORD_COUNT = 2000;
 const description =
   'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.';

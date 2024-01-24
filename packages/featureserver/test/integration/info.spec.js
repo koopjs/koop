@@ -3,8 +3,7 @@ const data = require('./fixtures/snow.json');
 const should = require('should');
 should.config.checkProtoEql = false;
 const _ = require('lodash');
-const Joi = require('joi');
-const { serverTemplateSchema } = require('./schemas');
+const CURRENT_VERSION = 11.2;
 
 describe('Info operations', () => {
   describe('rest info', () => {
@@ -22,7 +21,7 @@ describe('Info operations', () => {
         },
       };
       const restInfo = FeatureServer.restInfo(supplementalRestInfo, req);
-      restInfo.should.have.property('currentVersion', 11.1);
+      restInfo.should.have.property('currentVersion', CURRENT_VERSION);
       restInfo.should.have.property('authInfo');
       restInfo.authInfo.should.have.property('isTokenBasedSecurity', true);
       restInfo.authInfo.should.have
@@ -35,7 +34,7 @@ describe('Info operations', () => {
     it('should conform to the prescribed schema', () => {
       const result = FeatureServer.serverInfo(data);
       result.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         serviceDescription: 'MyTestDesc',
         hasVersionedData: false,
         supportsDisconnectedEditing: false,

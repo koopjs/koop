@@ -2,6 +2,7 @@ const should = require('should');
 should.config.checkProtoEql = false;
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
+const CURRENT_VERSION = 11.2;
 
 const createLayerMetadataFieldsSpy = sinon.spy(function () {
   return ['fields'];
@@ -24,7 +25,7 @@ describe('TableLayerMetadata', () => {
   it('calling with new should return default metadata', () => {
     const tableLayerMetadata = new TableLayerMetadata();
     tableLayerMetadata.should.deepEqual({
-      currentVersion: 11.1,
+      currentVersion: CURRENT_VERSION,
       id: 0,
       name: 'Not Set',
       type: 'Table',
@@ -144,11 +145,11 @@ describe('TableLayerMetadata', () => {
       tableLayerMetadata.mixinOverrides(geojson);
 
       tableLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Table',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -257,11 +258,11 @@ describe('TableLayerMetadata', () => {
       tableLayerMetadata.mixinOverrides({}, { layerId: '2' });
 
       tableLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 2,
         name: 'Not Set',
         type: 'Table',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -368,11 +369,11 @@ describe('TableLayerMetadata', () => {
       tableLayerMetadata.mixinOverrides({}, { id: 3 });
 
       tableLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 3,
         name: 'Not Set',
         type: 'Table',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -479,7 +480,7 @@ describe('TableLayerMetadata', () => {
       tableLayerMetadata.mixinOverrides({}, { displayField: 'hellow' });
 
       tableLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Table',
@@ -590,7 +591,7 @@ describe('TableLayerMetadata', () => {
       tableLayerMetadata.mixinOverrides({}, { idField: 'fluffy' });
 
       tableLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Table',
@@ -701,11 +702,11 @@ describe('TableLayerMetadata', () => {
       tableLayerMetadata.mixinOverrides({}, { hasZ: true });
 
       tableLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Table',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -812,11 +813,11 @@ describe('TableLayerMetadata', () => {
       tableLayerMetadata.mixinOverrides({}, { hasStaticData: true });
 
       tableLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Table',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -923,11 +924,11 @@ describe('TableLayerMetadata', () => {
       tableLayerMetadata.mixinOverrides({}, { hasStaticData: 'true' });
 
       tableLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Table',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -1034,11 +1035,11 @@ describe('TableLayerMetadata', () => {
       tableLayerMetadata.mixinOverrides({}, { capabilities: {} });
 
       tableLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Table',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -1148,11 +1149,11 @@ describe('TableLayerMetadata', () => {
       );
 
       tableLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Table',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -1262,11 +1263,11 @@ describe('TableLayerMetadata', () => {
       );
 
       tableLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Table',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -1373,11 +1374,11 @@ describe('TableLayerMetadata', () => {
       tableLayerMetadata.mixinOverrides({}, { hasStaticData: true });
 
       tableLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Table',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -1484,11 +1485,11 @@ describe('TableLayerMetadata', () => {
       tableLayerMetadata.mixinOverrides({}, { supportsPagination: 'false' });
 
       tableLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Table',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -1595,11 +1596,11 @@ describe('TableLayerMetadata', () => {
       tableLayerMetadata.mixinOverrides({}, { supportsPagination: false });
 
       tableLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Table',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -1706,11 +1707,11 @@ describe('TableLayerMetadata', () => {
       tableLayerMetadata.mixinOverrides({}, { hasAttachments: true });
 
       tableLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Table',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -1817,11 +1818,11 @@ describe('TableLayerMetadata', () => {
       tableLayerMetadata.mixinOverrides({}, { hasAttachments: 'true' });
 
       tableLayerMetadata.should.deepEqual({
-        currentVersion: 11.1,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: 'Not Set',
         type: 'Table',
-        displayField: '',
+        displayField: 'OBJECTID',
         description:
           'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
@@ -1945,7 +1946,7 @@ describe('TableLayerMetadata', () => {
         id: 0,
         name: 'Hank Williams',
         type: 'Table',
-        displayField: '',
+        displayField: 'OBJECTID',
         description: 'There is a tear in my beer.',
         copyrightText: 'copyright-text',
         defaultVisibility: false,
