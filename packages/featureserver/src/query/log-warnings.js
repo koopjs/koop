@@ -5,7 +5,6 @@ const logManager = require('../log-manager');
 function logWarnings(geojson, format, outFields = '*') {
   const { metadata = {}, features } = geojson;
   const esriFormat = format !== geojson;
-  const outFieldsSet = outFields === '*' || outFields === '' ? null : outFields.split(',');
   const properties = _.get(features, '[0].properties') || _.get(features, '[0].attributes');
 
   if (esriFormat && !metadata.idField && properties?.OBJECTID === undefined) {
@@ -21,9 +20,7 @@ function logWarnings(geojson, format, outFields = '*') {
   }
 
   if (metadata.fields && properties) {
-    const fields = outFieldsSet ? metadata.fields.filter(field => {
-      return outFieldsSet.includes(field.name || field.alias);
-    }) : metadata.fields;
+    const fields = getFieldsDefinitionsForResponse(metadata.fields, outFields);
     
     compareFieldDefintionsToFeature(fields, properties);
   
@@ -33,6 +30,17 @@ function logWarnings(geojson, format, outFields = '*') {
 
 function hasMixedCaseObjectIdKey(idField = '') {
   return idField.toLowerCase() === 'objectid' && idField !== 'OBJECTID';
+}
+
+function getFieldsDefinitionsForResponse(fields, outFields) {
+  const outFieldsSet = (outFields === '*' || outFields === '') ? null : outFields.split(',');
+  if (!outFieldsSet) {
+    return fields;
+  }
+
+  return fields.filter(field => {
+    return outFieldsSet.includes(field.name || field.alias);
+  });
 }
 
 function compareFieldDefintionsToFeature(fieldDefinitions, featureProperties) {

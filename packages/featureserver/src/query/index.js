@@ -20,7 +20,6 @@ function query (json, requestParams = {}) {
 
   const { f: requestedFormat } = requestParams;
 
-  // TODO: if format PBF, need to send pbf if only count requested
   if (shouldRenderPrecalculatedData(json, requestParams)) {
     return renderPrecalculatedData(json, requestParams);
   }
@@ -75,7 +74,6 @@ function renderPrecalculatedData (data, {
 
   const retVal = {};
 
-  // TODO: if only count, and f=pbf need to encode response
   if (returnCountOnly) {
     retVal.count = count;
   }
