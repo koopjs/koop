@@ -1,10 +1,10 @@
-const VERSION = 11.2;
+const CURRENT_VERSION = 11.2;
 const COPYRIGHT_TEXT =
   'Copyright information varies by provider. For more information please contact the source of this data.';
 
 function getServerInfo(id) {
   return {
-    currentVersion: VERSION,
+    currentVersion: CURRENT_VERSION,
     maxRecordCount: 2000,
     serviceDescription: `GeoJSON from ${id}.geojson`,
     description: `GeoJSON from ${id}.geojson`,
@@ -70,7 +70,7 @@ function getLayersInfo(filename, idField) {
   return {
     layers: [
       {
-        currentVersion: VERSION,
+        currentVersion: CURRENT_VERSION,
         id: 0,
         name: `${filename}.geojson`,
         type: 'Feature Layer',
