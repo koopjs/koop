@@ -11,14 +11,13 @@ module.exports = function queryResponseHandler (res, payload, requestParameters)
     return sendCallbackResponse(res, payload, callback);
   }
   
-  if (f === 'pjson') {
-    return sendPrettyJson(res, payload);
-  }
-  
   if (f === 'pbf') {
     return sendPbf(res, payload, requestParameters);
   }
 
-  // payload here might be Esri JSON or GeoJSON
+  if (f === 'pjson') {
+    return sendPrettyJson(res, payload);
+  }
+  
   return res.status(200).json(payload);
 };

@@ -14,9 +14,9 @@ function sendPbf(res, payload, requestParameters) {
     throw error;
   }
 
-
   const pbfPayload = setPbfPayload(payload, requestParameters);
   const buffer = FeatureCollectionProto.encode(pbfPayload).finish();
+
   res.writeHead(200, [
     ['content-type', 'application/x-protobuf'],
     ['content-length', buffer.length],

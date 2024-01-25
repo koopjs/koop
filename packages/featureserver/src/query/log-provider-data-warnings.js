@@ -45,7 +45,7 @@ function getFieldsDefinitionsForResponse(fields, outFields) {
   }
 
   return fields.filter(field => {
-    return outFieldsSet.includes(field.name || field.alias);
+    return outFieldsSet.includes(field.alias) || outFieldsSet.includes(field.name);
   });
 }
 

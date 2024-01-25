@@ -26,8 +26,6 @@ function transformToPbfAttributes(attributes, fieldMap) {
     .value();
 }
 
-
-
 module.exports = {
   transformToPbfAttributes
 };

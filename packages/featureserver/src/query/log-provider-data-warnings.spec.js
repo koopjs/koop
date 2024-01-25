@@ -49,7 +49,45 @@ describe('logProviderDataWarnings', () => {
       metadata: { fields: [{ name: 'foo', type: 'String' }] },
       features: [{ properties: { foo: 1000 } }],
     }, 
+    { outFields: '' });
+    loggerSpy.callCount.should.equal(2);
+    loggerSpy.secondCall.args.should.deepEqual([
+      'field definition "foo (String)" not found in first feature of provider\'s GeoJSON',
+    ]);
+  });
+
+  it('should log field definition - feature property type mismatch (outFields as empty string)', () => {
+    logProviderDataWarnings({
+      metadata: { fields: [{ name: 'foo', type: 'String' }] },
+      features: [{ properties: { foo: 1000 } }],
+    }, 
     {});
+    loggerSpy.callCount.should.equal(2);
+    loggerSpy.secondCall.args.should.deepEqual([
+      'field definition "foo (String)" not found in first feature of provider\'s GeoJSON',
+    ]);
+  });
+
+  it('should log field definition - feature property type mismatch (outFields defined)', () => {
+    logProviderDataWarnings({
+      metadata: { fields: [{ name: 'foo', type: 'String' }] },
+      features: [{ properties: { foo: 1000 } }],
+    }, 
+    { outFields: 'foo'});
+
+    loggerSpy.callCount.should.equal(2);
+    loggerSpy.secondCall.args.should.deepEqual([
+      'field definition "foo (String)" not found in first feature of provider\'s GeoJSON',
+    ]);
+  });
+
+  it('should log field definition - feature property type mismatch (outFields defined with alias)', () => {
+    logProviderDataWarnings({
+      metadata: { fields: [{ name: 'foo', alias: 'food', type: 'String' }] },
+      features: [{ properties: { foo: 1000 } }],
+    }, 
+    { outFields: 'food'});
+    
     loggerSpy.callCount.should.equal(2);
     loggerSpy.secondCall.args.should.deepEqual([
       'field definition "foo (String)" not found in first feature of provider\'s GeoJSON',
@@ -64,7 +102,7 @@ describe('logProviderDataWarnings', () => {
     loggerSpy.callCount.should.equal(1);
   });
 
-  it('should not log warning if field type mismatch is Esri exception', () => {
+  it('should not log warning if field type mismatch is Esri date exception', () => {
     logProviderDataWarnings({
       metadata: { fields: [{ name: 'foo', type: 'Date' }] },
       features: [{ properties: { foo: 12345 } }],

@@ -3,16 +3,14 @@ const { getGeometryTransform } = require('./get-geometry-transform');
 const { transformToPbfAttributes } = require('./transform-to-pbf-attributes');
 const { transformToPbfGeometry } = require('./transform-to-pbf-geometry');
 
-
-
 function transformFeaturesForPbf(json, quantizationParameters) {
-  const fields = _.orderBy(json.fields, ['name'], ['asc']);
   const { objectIdFieldName, uniqueIdField, geometryType, spatialReference } = json;
-
+  const fields = _.orderBy(json.fields, ['name'], ['asc']);
+  
   const geometryTransform = getGeometryTransform(spatialReference, quantizationParameters);
   
   const features = json.features.map(
-    transformFunction(fields, geometryTransform),
+    transformFeatureFunction(fields, geometryTransform),
   );
 
   return {
@@ -26,7 +24,7 @@ function transformFeaturesForPbf(json, quantizationParameters) {
   };
 }
 
-function transformFunction(fields, geometryTransform) {
+function transformFeatureFunction(fields, geometryTransform) {
   const fieldMap = fields.reduce((acc, cur) => {
     acc[cur.name] = cur.type;
     return acc;
