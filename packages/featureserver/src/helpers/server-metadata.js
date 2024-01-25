@@ -7,7 +7,6 @@ const defaults = require('../metadata-defaults');
 
 const OVERRIDABLE_DEFAULTS = [
   'currentVersion',
-  'fullVersion',
   'serviceDescription',
   'description',
   'maxRecordCount',

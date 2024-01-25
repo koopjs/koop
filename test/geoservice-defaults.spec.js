@@ -12,7 +12,6 @@ describe('Geoservices defaults settings', () => {
       const response = await request(koop.server).get('/file-geojson/rest/services/polygon/FeatureServer');
       expect(response.status).toBe(200);
       expect(response.body.currentVersion).toBe(11.2);
-      expect(response.body.fullVersion).toBe('11.2.0');
     } catch (error) {
       console.error(error);
       throw error;
@@ -24,7 +23,6 @@ describe('Geoservices defaults settings', () => {
       const response = await request(koop.server).get('/file-geojson/rest/services/polygon/FeatureServer/0');
       expect(response.status).toBe(200);
       expect(response.body.currentVersion).toBe(11.2);
-      expect(response.body.fullVersion).toBe('11.2.0');
     } catch (error) {
       console.error(error);
       throw error;

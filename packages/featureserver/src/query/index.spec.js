@@ -31,8 +31,8 @@ const stub = {
   './filter-and-transform': {
     filterAndTransform: filterAndTransformSpy
   },
-  './log-warnings': {
-    logWarnings: logWarningsSpy
+  './log-provider-data-warnings': {
+    logProviderDataWarnings: logWarningsSpy
   },
   './render-features': {
     renderFeaturesResponse: renderFeaturesResponseSpy

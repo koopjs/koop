@@ -33,13 +33,11 @@ class TableLayerMetadata {
     // TODO: deprecate req.app.locals.config usage
     const {
       currentVersion,
-      fullVersion,
       description
     } = _.get(req, 'app.locals.config.featureServer', {});
 
     const normalizedOptions = _.pickBy({
       currentVersion,
-      fullVersion,
       description,
       layerId,
       ...query,
@@ -64,7 +62,7 @@ class TableLayerMetadata {
   mixinOverrides (geojson = {}, options = {}) {
     const {
       id,
-      idField,
+      idField = 'OBJECTID',
       displayField,
       capabilities,
       layerId,
@@ -169,7 +167,6 @@ class TableLayerMetadata {
       maxRecordCount,
       defaultVisibility,
       currentVersion,
-      fullVersion,
       hasZ
     } = options;
 
@@ -184,7 +181,6 @@ class TableLayerMetadata {
       maxRecordCount,
       defaultVisibility,
       currentVersion,
-      fullVersion,
       hasZ
     });
   }

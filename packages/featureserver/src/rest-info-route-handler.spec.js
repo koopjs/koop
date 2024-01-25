@@ -1,7 +1,7 @@
 const should = require('should'); // eslint-disable-line
 const restInfo = require('./rest-info-route-handler');
-const CURRENT_VERSION = 11.1;
-const FULL_VERSION = '11.1.0';
+const CURRENT_VERSION = 11.2;
+const FULL_VERSION = '11.2.0';
 
 describe('rest/info handler', () => {
   it('should return default info', () => {

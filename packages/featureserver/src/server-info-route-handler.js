@@ -25,7 +25,6 @@ function serverMetadataResponse(data, req = {}) {
     ...appConfig,
     ...providerMetadata,
     currentVersion: appConfig.currentVersion,
-    fullVersion: appConfig.fullVersion,
   });
 }
 
@@ -149,6 +148,7 @@ function formatServerItemInfo(json, defaultId) {
   const retVal = {
     id: id || defaultId,
     name: name || defaultName,
+    type: geometryType ? 'Feature Layer' : 'Table',
     parentLayerId: -1,
     defaultVisibility: defaultVisibility !== false,
     subLayerIds: null,
