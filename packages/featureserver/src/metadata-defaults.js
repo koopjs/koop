@@ -3,9 +3,11 @@ const _ = require('lodash');
 const CURRENT_VERSION = 11.2;
 const FULL_VERSION = '11.2.0';
 const MAX_RECORD_COUNT = 2000;
-const description =
+const SERVICE_DESCRIPTION =
   'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.';
-const copyrightText =
+const LAYER_DESCRIPTION =
+  'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.';
+const COPYRIGHT =
   'Copyright information varies by provider. For more information please contact the source of this data.';
 const SPATIAL_REFERENCE = {
   wkid: 4326,
@@ -24,17 +26,17 @@ const defaultOverridables = {
   fullVersion: FULL_VERSION,
   maxRecordCount: MAX_RECORD_COUNT,
   server: {
-    serviceDescription: description,
-    description,
-    copyrightText,
+    serviceDescription: SERVICE_DESCRIPTION,
+    description: SERVICE_DESCRIPTION,
+    copyrightText: COPYRIGHT,
     fullExtent: EXTENT,
     initialExtent: EXTENT,
     hasStaticData: false,
     spatialReference: SPATIAL_REFERENCE,
   },
   layer: {
-    description,
-    copyrightText,
+    description: LAYER_DESCRIPTION,
+    copyrightText: COPYRIGHT,
     extent: EXTENT,
   },
 };

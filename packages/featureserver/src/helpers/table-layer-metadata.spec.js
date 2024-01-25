@@ -31,7 +31,7 @@ describe('TableLayerMetadata', () => {
       type: 'Table',
       displayField: '',
       description:
-        'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+        'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
       copyrightText:
         'Copyright information varies by provider. For more information please contact the source of this data.',
       defaultVisibility: true,
@@ -151,7 +151,7 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -264,7 +264,7 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -375,7 +375,7 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -486,7 +486,7 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'hellow',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -597,7 +597,7 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'fluffy',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -708,7 +708,7 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -819,7 +819,7 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -930,7 +930,7 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -1041,7 +1041,7 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -1155,7 +1155,7 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -1269,7 +1269,7 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -1380,7 +1380,7 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -1491,7 +1491,7 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -1602,7 +1602,7 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -1713,7 +1713,7 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -1824,7 +1824,7 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,

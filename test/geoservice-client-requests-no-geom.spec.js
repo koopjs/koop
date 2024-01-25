@@ -1,7 +1,7 @@
 const Koop = require('@koopjs/koop-core');
 const provider = require('@koopjs/provider-file-geojson');
 const request = require('supertest');
-const VERSION = 11.2;
+const CURRENT_VERSION = 11.2;
 const COPYRIGHT_TEXT =
   'Copyright information varies by provider. For more information please contact the source of this data.';
 
@@ -36,7 +36,7 @@ describe('Typical Geoservice Client request sequence: Dataset with no geometry',
         );
         const serverInfo = response.body;
         expect(serverInfo).toEqual({
-          currentVersion: VERSION,
+          currentVersion: CURRENT_VERSION,
           maxRecordCount: 2000,
           serviceDescription: 'GeoJSON from no-geom-w-objectid.geojson',
           description: 'GeoJSON from no-geom-w-objectid.geojson',
@@ -112,7 +112,7 @@ describe('Typical Geoservice Client request sequence: Dataset with no geometry',
           layers: [],
           tables: [
             {
-              currentVersion: VERSION,
+              currentVersion: CURRENT_VERSION,
               id: 0,
               name: 'no-geom-w-objectid.geojson',
               type: 'Table',
@@ -278,7 +278,7 @@ describe('Typical Geoservice Client request sequence: Dataset with no geometry',
         expect(response.status).toBe(200);
         const info = response.body;
         expect(info).toEqual({
-          currentVersion: VERSION,
+          currentVersion: CURRENT_VERSION,
           id: 0,
           name: 'no-geom-w-objectid.geojson',
           type: 'Table',

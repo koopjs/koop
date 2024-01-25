@@ -56,7 +56,7 @@ describe('FeatureLayerMetadata', () => {
       type: 'Feature Layer',
       displayField: '',
       description:
-        'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+        'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
       copyrightText:
         'Copyright information varies by provider. For more information please contact the source of this data.',
       defaultVisibility: true,
@@ -185,7 +185,7 @@ describe('FeatureLayerMetadata', () => {
         type: 'Feature Layer',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -353,7 +353,7 @@ describe('FeatureLayerMetadata', () => {
         type: 'Feature Layer',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -513,7 +513,7 @@ describe('FeatureLayerMetadata', () => {
         type: 'Feature Layer',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -669,7 +669,7 @@ describe('FeatureLayerMetadata', () => {
         type: 'Feature Layer',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -831,7 +831,7 @@ describe('FeatureLayerMetadata', () => {
         type: 'Feature Layer',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -972,7 +972,7 @@ describe('FeatureLayerMetadata', () => {
         type: 'Feature Layer',
         displayField: 'OBJECTID',
         description:
-          'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',
         defaultVisibility: true,
@@ -1139,7 +1139,7 @@ describe('FeatureLayerMetadata', () => {
       type: 'Feature Layer',
       displayField: 'myField',
       description:
-        'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+        'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
       copyrightText:
         'Copyright information varies by provider. For more information please contact the source of this data.',
       defaultVisibility: true,
