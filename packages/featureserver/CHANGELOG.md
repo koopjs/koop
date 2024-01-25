@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 8.3.0
+
+### Minor Changes
+
+- add support for PBF output on query endpoint
+
 ## 8.2.0
 
 ### Minor Changes

@@ -1,5 +1,15 @@
 # @koopjs/koop-core
 
+## 10.2.0
+
+### Minor Changes
+
+- add support for PBF format on GeoService output plugin query enpoint
+
+### Patch Changes
+
+- @koopjs/output-geoservices@8.1.1
+
 ## 10.1.0
 
 ### Minor Changes
