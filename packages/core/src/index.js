@@ -102,7 +102,7 @@ class Koop extends Events {
   }
 
   #registerCache(Cache, options) {
-    this.cache = new Cache(options);
+    this.cache = new Cache({ logger: options?.logger || this.log, options });
     this.log.info(`registered cache: ${Cache.name} v${Cache.version}`);
   }
   
