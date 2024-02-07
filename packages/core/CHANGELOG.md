@@ -1,5 +1,11 @@
 # @koopjs/koop-core
 
+## 10.3.0
+
+### Minor Changes
+
+- pass logger into cache-plugin constructor
+
 ## 10.2.0
 
 ### Minor Changes
