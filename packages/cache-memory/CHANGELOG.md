@@ -1,5 +1,12 @@
 # @koopjs/cache-memory
 
+## 6.0.0
+
+### Major Changes
+
+- remove callbacks in favor of async/await
+- remove normalization function; no longer needed now that the spec has been simplified
+
 ## 5.0.0
 
 ### Major Changes

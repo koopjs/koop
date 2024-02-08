@@ -1,5 +1,12 @@
 # @koopjs/koop-core
 
+## 10.3.1
+
+### Patch Changes
+
+- Updated dependencies [236337e]
+  - @koopjs/cache-memory@6.0.0
+
 ## 10.3.0
 
 ### Minor Changes
