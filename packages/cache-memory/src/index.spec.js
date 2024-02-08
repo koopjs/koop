@@ -4,16 +4,13 @@ const { promisify } = require('util');
 const delay = promisify(setTimeout); 
 const Cache = require('../src');
 const cache = new Cache();
-const insert = promisify(cache.insert).bind(cache);
-const retrieve = promisify(cache.retrieve).bind(cache);
-const deleteMethod = promisify(cache.delete).bind(cache);
 
 test('Inserting and retreiving from the cache', async (t) => {
   const geojson = getFeatureCollection();
   const key = uuidv4();
-  await insert(key, geojson, { ttl: 600 });
+  await cache.insert(key, geojson, { ttl: 600 });
   try {
-    const cached = await retrieve(key, {});
+    const cached = await cache.retrieve(key, {});
     t.equal(cached.features[0].properties.fooz, 'ball', 'retrieved features');
     t.equal(cached.crs.type, 'name', 'retrieved coordinate reference system');
     t.equal(cached.metadata.name, 'Test', 'retrieved metadata');
@@ -23,21 +20,21 @@ test('Inserting and retreiving from the cache', async (t) => {
   t.end();
 });
 
-test('cache should expire entries, return undefined', async (t) => {
+test('cache should expire entries, return null', async (t) => {
   const geojson = getFeatureCollection();
   const key = uuidv4();
-  await insert(key, geojson, { ttl: 1 });
+  await cache.insert(key, geojson, { ttl: 1 });
   await delay(1500);
-  const cached = await retrieve(key, {});
-  t.equals(cached, undefined);
+  const cached = await cache.retrieve(key, {});
+  t.equals(cached, null);
   t.end();
 });
 
-test('Inserting and retreiving from the cache', async (t) => {
+test('Inserting and retreiving geojson from the cache', async (t) => {
   const geojson = getFeatureCollection();
   const key = uuidv4();
-  await insert(key, geojson, { ttl: 600 });
-  const cached = await retrieve(key, {});
+  await cache.insert(key, geojson, { ttl: 600 });
+  const cached = await cache.retrieve(key, {});
   t.equal(cached.features[0].properties.fooz, 'ball', 'retrieved features');
   t.equal(cached.crs.type, 'name', 'retrieved coordinate reference system');
   t.equal(cached.metadata.name, 'Test', 'retrieved metadata');
@@ -47,8 +44,8 @@ test('Inserting and retreiving from the cache', async (t) => {
 test('retrieve partial entry with pick option', async (t) => {
   const geojson = getFeatureCollection();
   const key = uuidv4();
-  await insert(key, geojson, { ttl: 600 });
-  const cached =  await retrieve(key, { pick: ['features'] });
+  await cache.insert(key, geojson, { ttl: 600 });
+  const cached =  await cache.retrieve(key, { pick: ['features'] });
   t.deepEqual(Object.keys(cached), ['features'], 'retrieved only features');
   t.end();
 });
@@ -56,8 +53,8 @@ test('retrieve partial entry with pick option', async (t) => {
 test('retrieve partial entry with omit option', async (t) => {
   const geojson = getFeatureCollection();
   const key = uuidv4();
-  await insert(key, geojson, { ttl: 600 });
-  const cached =  await retrieve(key, { omit: ['features'] });
+  await cache.insert(key, geojson, { ttl: 600 });
+  const cached =  await cache.retrieve(key, { omit: ['features'] });
   t.deepEqual(
     Object.keys(cached),
     ['type', 'crs', 'metadata'],
@@ -66,76 +63,29 @@ test('retrieve partial entry with omit option', async (t) => {
   t.end();
 });
 
+test('Inserting and retreiving json from the cache', async (t) => {
+  const key = uuidv4();
+  await cache.insert(key, { layers: [], tables: [], count: 0 }, { ttl: 600 });
+  const cached = await cache.retrieve(key, {});
+  t.deepEquals(cached, { layers: [], tables: [], count: 0 });
+  t.end();
+});
+
 test('Inserting and deleting from the cache', async (t) => {
   const geojson = getFeatureCollection();
   const key = uuidv4();
-  await insert(key, geojson, {});
-  await deleteMethod(key);
-  const cached = await retrieve(key, {});
-  t.equals(cached, undefined);
-  t.end();
-});
-
-test('Inserting object with additional properties', async (t) => {
-  const key = uuidv4();
-  const serverInfo = {
-    layers: [getFeatureCollection()],
-    crs: 'crs-info',
-    metadata: {
-      name: 'Test',
-      description: 'Test',
-    },
-  };
-  await insert(key, serverInfo, { ttl: 600 });
-  const cached = await retrieve(key, {});
-  t.ok(cached.layers, 'has layers');
-  t.ok(cached.layers[0].type === 'FeatureCollection', 'has layers property');
-  t.equal(cached.metadata.name, 'Test', 'retrieved metadata');
-  t.end();
-});
-
-test('Caching a feature array as feature collection', async (t) => {
-  const key = uuidv4();
-  const { features } = getFeatureCollection();
-  await insert(key, features, { ttl: 600 });
-  const cached = await retrieve(key, {});
-  t.deepEquals(cached.features, features,);
-  t.equal(cached.type, 'FeatureCollection');
-  t.deepEquals(cached.metadata, {});
-  t.end();
-});
-
-test('Caching an empty object as feature collection', async (t) => {
-  const key = uuidv4();
-  await insert(key, {}, { ttl: 600 });
-  const cached = await retrieve(key, {});
-  t.equal(cached.type, 'FeatureCollection');
-  t.deepEquals(cached.features, []);
-  t.end();
-});
-
-test('Caching a null object as feature collection', async (t) => {
-  const key = uuidv4();
-  await insert(key, null, { ttl: 600 });
-  const cached = await retrieve(key, {});
-  t.equal(cached.type, 'FeatureCollection');
-  t.end();
-});
-
-test('Caching a undefined as feature collection', async (t) => {
-  const key = uuidv4();
-  await insert(key, undefined, { ttl: 600 });
-  const cached = await retrieve(key, {});
-  t.equal(cached.type, 'FeatureCollection');
-  t.deepEquals(cached.features, []);
+  await cache.insert(key, geojson, {});
+  await cache.delete(key);
+  const cached = await cache.retrieve(key, {});
+  t.equals(cached, null);
   t.end();
 });
 
 test('Post-insert edits to geojson should not mutate cache', async (t) => {
   const geojson = getFeatureCollection();
-  await insert('key', geojson, { ttl: 600 });
+  await cache.insert('key', geojson, { ttl: 600 });
   geojson.features[0].properties.key = 'fooz';
-  const cached = await retrieve('key', {});
+  const cached = await cache.retrieve('key', {});
   t.equal(cached.features[0].properties.fooz, 'ball', 'retrieved features');
   t.equal(cached.crs.type, 'name', 'retrieved coordinate reference system');
   t.equal(cached.metadata.name, 'Test', 'retrieved metadata');
