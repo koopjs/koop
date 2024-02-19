@@ -44,7 +44,7 @@ jobs:
       run: npm run lint:ci
 
     - name: Unit tests
-      run: npm test --workspaces
+      run: npm test:quiet
     
     - name: E2E tests
       run: npm run test:e2e

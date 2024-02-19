@@ -11,6 +11,7 @@
     "commit": "cz",
     "precommit": "lint-staged && npm test --workspaces",
     "test": "npm test --workspaces",
+    "test:quiet": "npm test:quiet --workspaces",
     "test:e2e": "cross-env SUPPRESS_NO_CONFIG_WARNING=true DATA_DIR=./test/provider-data jest",
     "cov:full": "npm run cov:full --workspaces --silent && npm run cov:compile:full && npm run cov:report:full",
     "cov:unit": "npm run cov:unit --workspaces && npm run cov:compile:unit && npm run cov:report:unit",
