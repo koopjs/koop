@@ -68,11 +68,11 @@
   },
   "scripts": {
     "test": "mocha '**/*.spec.js' ",
-    "test:cov:unit": "nyc -r=json-summary mocha '**/*.spec.js' && npm run cov:badge",
-    "test:cov": "nyc -r=json-summary mocha '**/*.spec.js' && npm run cov:badge",
-    "cov:badge": "coverage-badges-cli --output ./coverage.svg",
     "test:quiet": "npm test > /dev/null",
-    "test:cov:changes": "node ../../ci/run-coverage-on-branch-changes.js",
-    "clean:cov": "node ../../ci/clean-coverage.js"
+    "cov:unit": "nyc -r=json-summary mocha '**/*.spec.js' && npm run cov:badge",
+    "cov:full": "nyc -r=json-summary mocha '**/*.spec.js' && npm run cov:badge",
+    "cov:badge": "coverage-badges-cli --output ./coverage.svg",
+    "cov:changes": "node ../../ci/run-coverage-on-branch-changes.js",
+    "cov:clean": "node ../../ci/clean-coverage.js"
   }
 }

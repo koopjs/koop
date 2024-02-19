@@ -51,7 +51,7 @@ jobs:
 
     - name: Run Coverage
       if: ${{ matrix.os == 'ubuntu-latest' }}
-      run: npm run clean:cov && npm run test:cov:changes && npm run cov:md
+      run: npm run cov:clean && mkdir .nyc_output_changes && npm run cov:changes && npm run cov:changes:2:md
 
     - name: Run Coverage
       if: ${{ matrix.os == 'ubuntu-latest' }}

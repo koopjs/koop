@@ -5,11 +5,11 @@
   "main": "src/index.js",
   "scripts": {
     "test": "jest",
-    "test:cov:unit": "jest --coverage && npm run cov:badge",
-    "test:cov": "jest --coverage && npm run cov:badge",
+    "cov:unit": "jest --coverage && npm run cov:badge",
+    "cov:full": "jest --coverage && npm run cov:badge",
     "cov:badge": "coverage-badges --output ./coverage.svg",
-    "test:cov:changes": "jest --coverage --changedSince=master --coverageDirectory=coverage_changes --silent > /dev/null",
-    "clean:cov": "node ../../ci/clean-coverage.js"
+    "cov:changes": "jest --coverage --changedSince=master --coverageDirectory=coverage_changes --silent > /dev/null",
+    "cov:clean": "node ../../ci/clean-coverage.js"
   },
   "repository": {
     "type": "git",
