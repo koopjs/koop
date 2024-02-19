@@ -12,7 +12,10 @@
     "test:cov:unit": "nyc -r=json-summary --report-dir=coverage_unit --temp-dir=.nyc_output_unit mocha 'src/**/*.spec.js' && npm run cov:badge:unit",
     "test:cov:unit:loc": "nyc -r=html --report-dir=coverage_unit --temp-dir=.nyc_output_unit mocha 'src/**/*.spec.js' && npm run cov:badge:unit",
     "cov:badge": "coverage-badges-cli --output ./coverage.svg",
-    "cov:badge:unit": "coverage-badges-cli  --source coverage_unit/coverage-summary.json --output ./coverage-unit.svg"
+    "cov:badge:unit": "coverage-badges-cli  --source coverage_unit/coverage-summary.json --output ./coverage-unit.svg",
+    "test:quiet": "npm test > /dev/null",
+    "test:cov:changes": "node ../../ci/run-coverage-on-branch-changes.js",
+    "clean:cov": "node ../../ci/clean-coverage.js"
   },
   "contributors": [
     {

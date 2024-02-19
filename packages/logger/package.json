@@ -7,7 +7,10 @@
     "test": "tape src/**/*.spec.js | tap-spec",
     "test:cov": "nyc -r=json-summary tape './src/**/*.spec.js' | tap-spec && npm run cov:badge",
     "test:cov:unit": "nyc -r=json-summary tape './src/**/*.spec.js' | tap-spec && npm run cov:badge",
-    "cov:badge": "coverage-badges-cli --output ./coverage.svg"
+    "cov:badge": "coverage-badges-cli --output ./coverage.svg",
+    "test:quiet": "npm test > /dev/null",
+    "test:cov:changes": "node ../../ci/run-coverage-on-branch-changes.js",
+    "clean:cov": "node ../../ci/clean-coverage.js"
   },
   "repository": {
     "type": "git",
