@@ -16,7 +16,8 @@ const esriExtentSchema = joi.object({
 const quantizationParametersSchema = joi.object({
   originPosition: joi.string().optional(),
   tolerance: joi.number().optional(),
-  extent: esriExtentSchema.optional()
+  extent: esriExtentSchema.optional(),
+  mode: joi.string().optional(),
 });
 
 
