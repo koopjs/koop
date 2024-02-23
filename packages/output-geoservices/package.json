@@ -4,12 +4,7 @@
   "description": "Wraps FeatureServer as a Koop output plugin",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest",
-    "cov:unit": "jest --coverage && npm run cov:badge",
-    "cov:full": "jest --coverage && npm run cov:badge",
-    "cov:badge": "coverage-badges --output ./coverage.svg",
-    "cov:changes": "jest --coverage --changedSince=master --coverageDirectory=coverage_changes --silent > /dev/null",
-    "cov:clean": "node ../../ci/clean-coverage.js"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -38,11 +33,16 @@
     "@koopjs/logger": "5.0.0"
   },
   "jest": {
+    "coverageProvider": "v8",
+
+    "coverageDirectory": ".coverage",
+
     "coverageReporters": [
-      "json-summary",
-      "json",
-      "text",
-      "lcov"
+      "json", "json-summary"
+    ],
+
+    "testMatch": [
+      "<rootDir>/src/**/*.spec.[jt]s?(x)"
     ]
   }
 }

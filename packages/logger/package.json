@@ -4,13 +4,7 @@
   "description": "A shared logger for Koop",
   "main": "src/index.js",
   "scripts": {
-    "test": "tape src/**/*.spec.js | tap-spec",
-    "test:quiet": "npm test > /dev/null",
-    "cov:full": "nyc -r=json-summary tape './src/**/*.spec.js' | tap-spec && npm run cov:badge",
-    "cov:unit": "nyc -r=json-summary tape './src/**/*.spec.js' | tap-spec && npm run cov:badge",
-    "cov:badge": "coverage-badges-cli --output ./coverage.svg",
-    "cov:changes": "node ../../ci/run-coverage-on-branch-changes.js",
-    "cov:clean": "node ../../ci/clean-coverage.js"
+    "test": "tape src/**/*.spec.js | tap-spec"
   },
   "repository": {
     "type": "git",

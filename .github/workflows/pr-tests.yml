@@ -51,11 +51,7 @@ jobs:
 
     - name: Run Coverage
       if: ${{ matrix.os == 'ubuntu-latest' }}
-      run: npm run cov:clean && mkdir .nyc_output_changes && npm run cov:changes && npm run cov:changes:2:md
-
-    - name: Run Coverage
-      if: ${{ matrix.os == 'ubuntu-latest' }}
-      run: cat coverage_changes/coverage-summary.json
+      run: npm run cov:changes:json && npm run cov:changes:2:md
 
     - name: Find previous coverage comment
       if: ${{ matrix.os == 'ubuntu-latest' }}
@@ -72,5 +68,5 @@ jobs:
       with:
         comment-id: ${{ steps.findcomment.outputs.comment-id }}
         issue-number: ${{ github.event.pull_request.number }}
-        body-path: ci/branch-coverage-changes.md
+        body-path: .branch-coverage-changes.md
         edit-mode: replace

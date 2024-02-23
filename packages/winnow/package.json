@@ -8,15 +8,9 @@
   },
   "scripts": {
     "test": "tape **/*.spec.js | tap-spec",
-    "test:quiet": "npm test > /dev/null",
-    "cov:full": "nyc -r=json-summary tape '**/*.spec.js' | tap-spec && npm run cov:badge:full && npm run test:cov:unit",
-    "cov:unit": "nyc -r=json-summary --report-dir=coverage_unit --temp-dir=.nyc_output_unit tape 'src/**/*.spec.js' | tap-spec && npm run cov:badge:unit",
-    "cov:badge:full": "coverage-badges-cli --output ./coverage.svg",
-    "cov:badge:unit": "coverage-badges-cli --source coverage_unit/coverage-summary.json --output ./coverage-unit.svg",
+    "test:unit": "tape src/**/*.spec.js | tap-spec",
     "benchmark": "node benchmark/index.js",
     "benchmark:ci": "node benchmark/index.js | tee benchmark-result.txt",
-    "cov:changes": "node ../../ci/run-coverage-on-branch-changes.js",
-    "cov:clean": "node ../../ci/clean-coverage.js"
   },
   "repository": {
     "type": "git",

@@ -8,13 +8,7 @@
   },
   "scripts": {
     "test": "mocha '**/*.spec.js' --recursive -t 5000",
-    "test:quiet": "npm test > /dev/null",
-    "cov:full": "nyc -r=json-summary mocha '**/*.spec.js' && npm run cov:badge:full && npm run cov:unit",
-    "cov:unit": "nyc -r=json-summary --report-dir=coverage_unit --temp-dir=.nyc_output_unit mocha 'src/**/*.spec.js' && npm run cov:badge:unit",
-    "cov:badge:full": "coverage-badges-cli --output ./coverage.svg",
-    "cov:badge:unit": "coverage-badges-cli  --source coverage_unit/coverage-summary.json --output ./coverage-unit.svg",
-    "cov:changes": "node ../../ci/run-coverage-on-branch-changes.js",
-    "cov:clean": "node ../../ci/clean-coverage.js"
+    "test:unit": "mocha 'src/**/*.spec.js' --recursive -t 5000"
   },
   "contributors": [
     {
