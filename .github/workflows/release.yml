@@ -44,6 +44,9 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Update coverage badges and report
+      run: npm run cov:unit:json
+
     - name: Commit version and changelog updates
       run: "git add --all && git commit -m 'chore: version and changelog' --no-verify"
 

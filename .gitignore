@@ -1,9 +1,9 @@
 node_modules
-coverage
-coverage_unit
-.nyc_output
-.nyc_output_unit
+.coverage_html
+.coverage_changes_json
+.coverage
 .vscode
 **/.DS_Store
 .env
 .npmrc
+.branch-coverage-changes.md
