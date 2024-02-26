@@ -19,6 +19,10 @@ class Cache {
     return;
   }
 
+  helloWorld () {
+    return 'hello';
+  }
+
   async retrieve(key, options) {
     const cacheEntry = this.#cache.get(key);
 

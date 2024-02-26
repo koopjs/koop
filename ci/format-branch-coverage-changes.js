@@ -1,6 +1,7 @@
 const { writeFileSync, existsSync } = require('fs');
 const json2md = require('json2md');
 const coverageSummary = require('../.coverage_json/coverage-summary.json');
+
 const markdownFilePath = '.branch-coverage-changes.md';
 
 if (!existsSync('.coverage_changes_json/coverage-summary.json')) {
@@ -16,10 +17,10 @@ const rows = Object.entries(coverageChangesSummary)
     return filePath !== 'total';
   })
   .map(([filePath, changesCoverage]) => {
-    const masterCoverage = coverageSummary[filePath];
-    const packagePath = filePath.split('packages')[1];
+    const packageFilePath = `packages${filePath.split('packages')[1]}`;
+    const masterCoverage = coverageSummary[packageFilePath];
     return [
-      `packages${packagePath}`,
+      packageFilePath,
       formatCovComparison(changesCoverage.statements.pct, masterCoverage.statements.pct),
       formatCovComparison(changesCoverage.branches.pct, masterCoverage.branches.pct),
       formatCovComparison(changesCoverage.functions.pct, masterCoverage.functions.pct),
