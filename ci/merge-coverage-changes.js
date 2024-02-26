@@ -14,15 +14,15 @@ workspaces.forEach((workspace) => {
   const coverageDir = path.join('.coverage', context);
   const packageCoverageDirectory = path.join(process.cwd(),'.coverage', context);
 
+  console.log(`Package "${package}":`);
+
   if (!fs.existsSync(packageCoverageDirectory)) {
-    console.log(`Coverage directory not found in ${workspace}; skipping`);
+    console.log(`${coverageDir} not found in ${workspace}; skipping`);
     process.chdir('../..');
     return;
   }
 
-  console.log(`Package "${package}":`);
   process.stdout.write(`  - merging ${context} test coverage results...`);
-  console.log(`\n\n${getCmd(package, coverageDir)}\n\n`);
   shell.exec(getCmd(package, coverageDir));
   process.stdout.write('completed.\n\n');
   process.chdir('../..');
