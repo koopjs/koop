@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 8.3.1
+
+### Patch Changes
+
+Fix schema for quantizationParameter
+
 ## 8.3.0
 
 ### Minor Changes
