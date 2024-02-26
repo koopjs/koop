@@ -29,22 +29,23 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    # Skip steps if actor is CI Agent, which makes automated commits for version bumping and coverage data
     - name: Install npm 7
-      if: github.triggering_actor == 'CI Agent'
+      if: github.triggering_actor != 'CI Agent'
       run: npm i -g npm@7 --registry=https://registry.npmjs.org
       
     - name: Install
-      if: github.triggering_actor == 'CI Agent'
+      if: github.triggering_actor != 'CI Agent'
       run: npm ci
 
     - name: Lint
-      if: github.triggering_actor == 'CI Agent'
+      if: github.triggering_actor != 'CI Agent'
       run: npm run lint:ci
 
     - name: Unit tests
-      if: github.triggering_actor == 'CI Agent'
+      if: github.triggering_actor != 'CI Agent'
       run: npm test --workspaces
     
     - name: E2E tests
-      if: github.triggering_actor == 'CI Agent'
+      if: github.triggering_actor != 'CI Agent'
       run: npm run test:e2e
