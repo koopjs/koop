@@ -20,7 +20,7 @@ class Cache {
   }
 
   helloWorld () {
-    return 'hello';
+    return 'hello world';
   }
 
   async retrieve(key, options) {
