@@ -4,7 +4,7 @@
   "description": "A shared logger for Koop",
   "main": "src/index.js",
   "scripts": {
-    "test": "tape src/**/*.spec.js | tap-spec"
+    "test": "tape src/**/*.spec.js | tap-min"
   },
   "repository": {
     "type": "git",
@@ -28,7 +28,7 @@
     "winston": "^3.11.0"
   },
   "devDependencies": {
-    "tap-spec": "^5.0.0",
+    "tap-min": "^3.0.0",
     "tape": "^5.7.5"
   },
   "files": [
