@@ -1,17 +1,8 @@
-name: CI tests
+name: Master CI Tests
 
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches:
-      - master
-      - beta
-    paths:
-      - "./.github/**.yml"
-      - "**/packages/**.js"
-      - "**/packages/**/package.json"
-      - "test/**/*.js"
 
 jobs:
   pr-tests:
@@ -24,7 +15,14 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout actions
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - run: |
+        git checkout -b master origin/master
+        git checkout -
+
     - uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
