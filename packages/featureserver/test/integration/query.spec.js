@@ -604,8 +604,10 @@ describe('Query operations', () => {
             { statisticType: 'stddev', onStatisticField: 'total precip', outStatisticFieldName: 'stddev_precip' }
           ]
         });
-        response.features[0].attributes.var_precip.should.equal(0.07661480700055341);
-        response.features[0].attributes.stddev_precip.should.equal(0.27646171244241985);
+        const variance = parseFloat(response.features[0].attributes.var_precip.toFixed(16));
+        variance.should.equal(0.07661480700055341);
+        const stdev = parseFloat(response.features[0].attributes.stddev_precip.toFixed(16));
+        stdev.should.equal(0.27646171244241985);
       });
 
       it('should return a correct response when there are multiple stats returned', () => {

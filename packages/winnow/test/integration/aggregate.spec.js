@@ -178,7 +178,7 @@ test('Get the variance of a field', t => {
     ]
   };
   const results = winnow.query(snowFeatures, options);
-  t.equal(results.var_total_precip, 0.02571923076923076);
+  t.equal(parseFloat(results.var_total_precip.toPrecision(16)), 0.02571923076923076);
 });
 
 test('Get an aggregate with a where clause', t => {
