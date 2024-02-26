@@ -3,13 +3,15 @@ const json2md = require('json2md');
 const coverageSummary = require('../.coverage_json/coverage-summary.json');
 const markdownFilePath = '.branch-coverage-changes.md';
 
-if (!existsSync('../.coverage_changes_json/coverage-summary.json')) {
+console.log(process.cwd())
+if (!existsSync('.coverage_changes_json/coverage-summary.json')) {
   writeFileSync(markdownFilePath, `## Coverage Report (change vs master)
   No changes.
   `, 'utf8');
   return;
 }
 
+console.log(process.cwd())
 const coverageChangesSummary = require('../.coverage_changes_json/coverage-summary.json');
 const rows = Object.entries(coverageChangesSummary)
   .filter(([filePath]) => {

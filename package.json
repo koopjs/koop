@@ -15,7 +15,7 @@
     "cov:all:html": "node ci/run-test-coverage-analysis && node ci/merge-coverage-changes && nyc report --temp-dir=.coverage/all --reporter=html --report-dir=.coverage_html",
     "cov:unit:html": "node ci/run-test-coverage-analysis --context=unit && node ci/merge-coverage-changes --context=unit && nyc report --temp-dir=.coverage/all --reporter=html --report-dir=.coverage_html",
     "cov:unit:json": "node ci/run-test-coverage-analysis --context=unit && node ci/merge-coverage-changes && nyc report --temp-dir=.coverage/all --reporter=json-summary --report-dir=.coverage_json",
-    "cov:changes:json": "npm run cov:clean && node ci/run-coverage-on-branch-changes.js && node ci/merge-coverage-changes --context=changes && node ci/run-report-on-branch-changes",
+    "cov:changes:json": "node ci/run-report-on-branch-changes",
     "cov:clean": "node ci/clean-coverage",
     "cov:changes:2:md": "node ci/format-branch-coverage-changes.js",
     "version": "changeset version",
