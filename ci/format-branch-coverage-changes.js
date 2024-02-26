@@ -3,7 +3,7 @@ const json2md = require('json2md');
 const coverageSummary = require('../.coverage_json/coverage-summary.json');
 const markdownFilePath = '.branch-coverage-changes.md';
 
-if (!existsSync('../.coverage_changes_json/coverage-summary.json')) {
+if (!existsSync('.coverage_changes_json/coverage-summary.json')) {
   writeFileSync(markdownFilePath, `## Coverage Report (change vs master)
   No changes.
   `, 'utf8');
