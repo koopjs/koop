@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 8.3.3
+
+### Patch Changes
+
+- allow + as whitespace equivalent in where param
+
 ## 8.3.2
 
 ### Patch Changes
