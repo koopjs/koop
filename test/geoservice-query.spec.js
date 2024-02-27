@@ -132,6 +132,20 @@ describe('koop', () => {
           });
         });
       });
+
+      describe('where', () => {
+        test('handle query with "+" as whitespace', async () => {
+          try {
+            const response = await request(koop.server).get('/file-geojson/rest/services/points-w-objectid/FeatureServer/0/query?WHERE=label+is+not+null');
+            expect(response.status).toBe(200);
+            const { features } = response.body;
+            expect(features.length).toBe(3);
+          } catch (error) {
+            console.error(error);
+            throw error;
+          }
+        });
+      });
     });
   });
 });
