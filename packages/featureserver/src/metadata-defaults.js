@@ -20,6 +20,7 @@ const EXTENT = {
   ymax: 90,
   spatialReference: SPATIAL_REFERENCE,
 };
+const SUPPORTED_QUERY_FORMATS = 'JSON,geojson,PBF';
 
 const defaultOverridables = {
   currentVersion: CURRENT_VERSION,
@@ -38,6 +39,7 @@ const defaultOverridables = {
     description: LAYER_DESCRIPTION,
     copyrightText: COPYRIGHT,
     extent: EXTENT,
+    supportedQueryFormats: SUPPORTED_QUERY_FORMATS
   },
 };
 
@@ -203,7 +205,7 @@ class MetadataDefaults {
       },
       preferredTimeReference: null,
       templates: [],
-      supportedQueryFormats: 'JSON,geojson,PBF',
+      supportedQueryFormats: this.#overridables.layer.supportedQueryFormats,
       supportedAppendFormats: '',
       supportedExportFormats: '',
       supportedSpatialRelationships: [
