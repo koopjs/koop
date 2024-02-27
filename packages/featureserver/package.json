@@ -1,6 +1,6 @@
 {
   "name": "@koopjs/featureserver",
-  "version": "8.3.1",
+  "version": "8.3.2",
   "description": "*An open source implementation of the GeoServices specification*",
   "main": "src/index.js",
   "directories": {
@@ -23,7 +23,7 @@
   "dependencies": {
     "@esri/proj-codes": "^3.2.0",
     "@koopjs/logger": "5.0.0",
-    "@koopjs/winnow": "4.2.1",
+    "@koopjs/winnow": "4.3.0",
     "@terraformer/spatial": "^2.1.2",
     "chroma-js": "^2.4.2",
     "esri-extent": "^1.1.3",

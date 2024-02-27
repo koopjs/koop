@@ -1,5 +1,11 @@
 # @koopjs/winnow
 
+## 4.3.0
+
+### Minor Changes
+
+- swap stringhash for murmurhash
+
 ## 4.2.1
 
 ### Patch Changes
