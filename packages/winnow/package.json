@@ -7,8 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "tape **/*.spec.js --reporter=silent | tap-min",
-    "test:unit": "tape src/**/*.spec.js | tap-min",
+    "test": "tape '**/*.spec.js' --reporter=silent | tap-min",
+    "test:unit": "tape 'src/**/*.spec.js' | tap-min",
     "benchmark": "node benchmark/index.js",
     "benchmark:ci": "node benchmark/index.js | tee benchmark-result.txt"
   },
