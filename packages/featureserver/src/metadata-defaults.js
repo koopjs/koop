@@ -73,6 +73,7 @@ const overridablesSchema = joi.object({
     description: joi.string().allow(null, ''),
     copyrightText: joi.string().allow(null, ''),
     extent: esriExtentSchema,
+    supportedQueryFormats: joi.string().allow('JSON', 'JSON,geojson')
   }),
 });
 
