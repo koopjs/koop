@@ -8,8 +8,6 @@ describe('ServerMetadata', () => {
   it('should use defaults when no overrides', () => {
     const result = ServerMetadata.create();
 
-    console.log(JSON.stringify(result));
-
     result.should.deepEqual({
       currentVersion: CURRENT_VERSION,
       serviceDescription:
