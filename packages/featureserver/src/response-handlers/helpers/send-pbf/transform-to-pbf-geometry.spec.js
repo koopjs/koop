@@ -28,7 +28,7 @@ describe('transformToPbfGeometry', () => {
         const result = transformToPbfGeometry(fixture, defaultTransform);
         should.equal(result, null);
       } catch (error) {
-        error.message.should.equal('Unknown geometry type');
+        error.message.should.equal('Unknown geometry type: {}');
       }
     });
   });

@@ -19,7 +19,7 @@ function transformToPbfGeometry(geometry, transform) {
     return transformMultipoint(geometry, transform, false, false);
   }
 
-  throw new Error('Unknown geometry type');
+  throw new Error(`Unknown geometry type: ${JSON.stringify(geometry)}`);
 }
 
 function isMultipoint(json) {

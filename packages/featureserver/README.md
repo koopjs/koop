@@ -542,7 +542,13 @@ If you are using FeatureServer as part of a Koop instance, FeatureServer is regi
 
 ```js
 const koop = new Koop({
-  geoservicesDefaults: { currentVersion: 99.0 }
+  geoservicesDefaults: { 
+    currentVersion: 99.0 // set your own version number
+    fullVersion: '99.9.9'
+    layer: {
+      supportedQueryFormats: 'JSON' // allowed values include 'JSON', 'JSON,geojson'; default is 'JSON,geojson,PBF'
+    }
+  }
 });
  
 ```
