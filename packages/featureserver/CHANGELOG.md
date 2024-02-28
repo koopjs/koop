@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 8.4.0
+
+### Minor Changes
+
+- allow supportedQueryFormats to be overridden with geoservice defaults
+
 ## 8.3.3
 
 ### Patch Changes
