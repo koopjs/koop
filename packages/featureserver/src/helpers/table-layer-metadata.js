@@ -13,7 +13,7 @@ const supportedQueryFormatsArraySchema = joi.array().items(
 const supportedQueryFormatsSchema = joi.alternatives().try(supportedQueryFormatsArraySchema, joi.string());
 
 class TableLayerMetadata {
-  static create (geojson = {}, options = {}) {
+  static create (geojson, options = {}) {
     const {
       geojson: normalizedGeojson,
       options: normalizedOptions
