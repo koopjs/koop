@@ -212,7 +212,7 @@ class TableLayerMetadata {
       validateQueryFormatsArray(supportedQueryFormats.split(',').map(val => val.trim()));
       this.supportedQueryFormats = supportedQueryFormats;
     } catch (error) {
-      logManager.logger.error(`"supportedQueryFormats" override is invalid; ${error.message}. skipping override`);
+      logManager.logger.error(error.message);
     }
   }
 }

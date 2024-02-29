@@ -13,8 +13,13 @@ const fields = {
   },
 };
 
+const loggerSpy = {
+  error: sinon.spy()
+};
+
 const TableLayerMetadata = proxyquire('./table-layer-metadata', {
   '../helpers/fields': fields,
+  '../log-manager': { logger: loggerSpy }
 });
 
 describe('TableLayerMetadata', () => {
@@ -1030,6 +1035,117 @@ describe('TableLayerMetadata', () => {
       });
     });
 
+    it('"hasStaticData" option used if a boolean value', () => {
+      const tableLayerMetadata = new TableLayerMetadata();
+      tableLayerMetadata.mixinOverrides({}, { hasStaticData: true });
+
+      tableLayerMetadata.should.deepEqual({
+        currentVersion: CURRENT_VERSION,
+        id: 0,
+        name: 'Not Set',
+        type: 'Table',
+        displayField: 'OBJECTID',
+        description:
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+        copyrightText:
+          'Copyright information varies by provider. For more information please contact the source of this data.',
+        defaultVisibility: true,
+        isDataVersioned: false,
+        hasContingentValuesDefinition: false,
+        supportsAppend: false,
+        supportsCalculate: false,
+        supportsASyncCalculate: false,
+        supportsTruncate: false,
+        supportsAttachmentsByUploadId: false,
+        supportsAttachmentsResizing: false,
+        supportsRollbackOnFailureParameter: false,
+        supportsStatistics: true,
+        supportsExceedsLimitStatistics: false,
+        supportsAdvancedQueries: true,
+        supportsValidateSql: false,
+        supportsLayerOverrides: false,
+        supportsTilesAndBasicQueriesMode: true,
+        supportsFieldDescriptionProperty: false,
+        supportsQuantizationEditMode: false,
+        supportsApplyEditsWithGlobalIds: false,
+        supportsReturningQueryGeometry: false,
+        advancedQueryCapabilities: {
+          supportsPagination: true,
+          supportsQueryAttachmentsCountOnly: false,
+          supportsPaginationOnAggregatedQueries: false,
+          supportsQueryRelatedPagination: false,
+          supportsQueryWithDistance: false,
+          supportsReturningQueryExtent: true,
+          supportsStatistics: true,
+          supportsOrderBy: true,
+          supportsDistinct: true,
+          supportsQueryWithResultType: false,
+          supportsSqlExpression: false,
+          supportsAdvancedQueryRelated: false,
+          supportsCountDistinct: false,
+          supportsPercentileStatistics: false,
+          supportedSpatialAggregationStatistics: [],
+          supportsLod: false,
+          supportsQueryWithLodSR: false,
+          supportedLodTypes: [],
+          supportsReturningGeometryCentroid: false,
+          supportsReturningGeometryEnvelope: false,
+          supportsQueryWithDatumTransformation: false,
+          supportsCurrentUserQueries: false,
+          supportsHavingClause: false,
+          supportsOutFieldSQLExpression: false,
+          supportsMaxRecordCountFactor: false,
+          supportsTopFeaturesQuery: false,
+          supportsDisjointSpatialRel: false,
+          supportsQueryWithCacheHint: false,
+          supportedOperationsWithCacheHint: [],
+          supportsQueryAnalytic: false,
+          supportsDefaultSR: false,
+          supportsFullTextSearch: false,
+          advancedQueryAnalyticCapabilities: {},
+          advancedEditingCapabilities: {},
+        },
+        useStandardizedQueries: true,
+        allowGeometryUpdates: false,
+        hasAttachments: false,
+        htmlPopupType: 'esriServerHTMLPopupTypeNone',
+        hasM: false,
+        hasZ: false,
+        objectIdField: 'OBJECTID',
+        uniqueIdField: { name: 'OBJECTID', isSystemMaintained: true },
+        globalIdField: '',
+        typeIdField: '',
+        dateFieldsTimeReference: {
+          timeZone: 'UTC',
+          respectsDaylightSaving: false,
+        },
+        preferredTimeReference: null,
+        templates: [],
+        supportedQueryFormats: 'JSON,geojson,PBF',
+        supportedAppendFormats: '',
+        supportedExportFormats: '',
+        supportedSpatialRelationships: [
+          'esriSpatialRelIntersects',
+          'esriSpatialRelContains',
+          'esriSpatialRelEnvelopeIntersects',
+          'esriSpatialRelWithin',
+        ],
+        supportedContingentValuesFormats: '',
+        hasStaticData: true,
+        maxRecordCount: 2000,
+        standardMaxRecordCount: 2000,
+        standardMaxRecordCountNoGeometry: 2000,
+        tileMaxRecordCount: 2000,
+        maxRecordCountFactor: 1,
+        fields: ['fields'],
+        relationships: [],
+        capabilities: 'Query',
+        ownershipBasedAccessControlForFeatures: { allowOthersToQuery: true },
+        types: [],
+        timeInfo: {},
+      });
+    });
+
     it('empty "capabilities" option ignored', () => {
       const tableLayerMetadata = new TableLayerMetadata();
       tableLayerMetadata.mixinOverrides({}, { capabilities: {} });
@@ -1363,117 +1479,6 @@ describe('TableLayerMetadata', () => {
         fields: ['fields'],
         relationships: [],
         capabilities: 'Query,Extract',
-        ownershipBasedAccessControlForFeatures: { allowOthersToQuery: true },
-        types: [],
-        timeInfo: {},
-      });
-    });
-
-    it('"hasStaticData" option used if a boolean value', () => {
-      const tableLayerMetadata = new TableLayerMetadata();
-      tableLayerMetadata.mixinOverrides({}, { hasStaticData: true });
-
-      tableLayerMetadata.should.deepEqual({
-        currentVersion: CURRENT_VERSION,
-        id: 0,
-        name: 'Not Set',
-        type: 'Table',
-        displayField: 'OBJECTID',
-        description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
-        copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
-        defaultVisibility: true,
-        isDataVersioned: false,
-        hasContingentValuesDefinition: false,
-        supportsAppend: false,
-        supportsCalculate: false,
-        supportsASyncCalculate: false,
-        supportsTruncate: false,
-        supportsAttachmentsByUploadId: false,
-        supportsAttachmentsResizing: false,
-        supportsRollbackOnFailureParameter: false,
-        supportsStatistics: true,
-        supportsExceedsLimitStatistics: false,
-        supportsAdvancedQueries: true,
-        supportsValidateSql: false,
-        supportsLayerOverrides: false,
-        supportsTilesAndBasicQueriesMode: true,
-        supportsFieldDescriptionProperty: false,
-        supportsQuantizationEditMode: false,
-        supportsApplyEditsWithGlobalIds: false,
-        supportsReturningQueryGeometry: false,
-        advancedQueryCapabilities: {
-          supportsPagination: true,
-          supportsQueryAttachmentsCountOnly: false,
-          supportsPaginationOnAggregatedQueries: false,
-          supportsQueryRelatedPagination: false,
-          supportsQueryWithDistance: false,
-          supportsReturningQueryExtent: true,
-          supportsStatistics: true,
-          supportsOrderBy: true,
-          supportsDistinct: true,
-          supportsQueryWithResultType: false,
-          supportsSqlExpression: false,
-          supportsAdvancedQueryRelated: false,
-          supportsCountDistinct: false,
-          supportsPercentileStatistics: false,
-          supportedSpatialAggregationStatistics: [],
-          supportsLod: false,
-          supportsQueryWithLodSR: false,
-          supportedLodTypes: [],
-          supportsReturningGeometryCentroid: false,
-          supportsReturningGeometryEnvelope: false,
-          supportsQueryWithDatumTransformation: false,
-          supportsCurrentUserQueries: false,
-          supportsHavingClause: false,
-          supportsOutFieldSQLExpression: false,
-          supportsMaxRecordCountFactor: false,
-          supportsTopFeaturesQuery: false,
-          supportsDisjointSpatialRel: false,
-          supportsQueryWithCacheHint: false,
-          supportedOperationsWithCacheHint: [],
-          supportsQueryAnalytic: false,
-          supportsDefaultSR: false,
-          supportsFullTextSearch: false,
-          advancedQueryAnalyticCapabilities: {},
-          advancedEditingCapabilities: {},
-        },
-        useStandardizedQueries: true,
-        allowGeometryUpdates: false,
-        hasAttachments: false,
-        htmlPopupType: 'esriServerHTMLPopupTypeNone',
-        hasM: false,
-        hasZ: false,
-        objectIdField: 'OBJECTID',
-        uniqueIdField: { name: 'OBJECTID', isSystemMaintained: true },
-        globalIdField: '',
-        typeIdField: '',
-        dateFieldsTimeReference: {
-          timeZone: 'UTC',
-          respectsDaylightSaving: false,
-        },
-        preferredTimeReference: null,
-        templates: [],
-        supportedQueryFormats: 'JSON,geojson,PBF',
-        supportedAppendFormats: '',
-        supportedExportFormats: '',
-        supportedSpatialRelationships: [
-          'esriSpatialRelIntersects',
-          'esriSpatialRelContains',
-          'esriSpatialRelEnvelopeIntersects',
-          'esriSpatialRelWithin',
-        ],
-        supportedContingentValuesFormats: '',
-        hasStaticData: true,
-        maxRecordCount: 2000,
-        standardMaxRecordCount: 2000,
-        standardMaxRecordCountNoGeometry: 2000,
-        tileMaxRecordCount: 2000,
-        maxRecordCountFactor: 1,
-        fields: ['fields'],
-        relationships: [],
-        capabilities: 'Query',
         ownershipBasedAccessControlForFeatures: { allowOthersToQuery: true },
         types: [],
         timeInfo: {},
@@ -2043,6 +2048,55 @@ describe('TableLayerMetadata', () => {
         ownershipBasedAccessControlForFeatures: { allowOthersToQuery: true },
         types: [],
         timeInfo: { time: 'June of 44' },
+      });
+    });
+
+    describe('supportedQueryFormats', () => {
+      it('use valid string override for supportedQueryFormats', () => {
+        const tableLayerMetadata = new TableLayerMetadata();
+        tableLayerMetadata.mixinOverrides(
+          {},
+          {
+            supportedQueryFormats: 'JSON'
+          },
+        );
+        tableLayerMetadata.supportedQueryFormats.should.equal('JSON');
+      });
+
+      it('use valid string with whitespace to override for supportedQueryFormats', () => {
+        const tableLayerMetadata = new TableLayerMetadata();
+        tableLayerMetadata.mixinOverrides(
+          {},
+          {
+            supportedQueryFormats: 'JSON, geojson'
+          },
+        );
+        tableLayerMetadata.supportedQueryFormats.should.equal('JSON, geojson');
+      });
+
+      it('use valid array override for supportedQueryFormats', () => {
+        const tableLayerMetadata = new TableLayerMetadata();
+        tableLayerMetadata.mixinOverrides(
+          {},
+          {
+            supportedQueryFormats: ['JSON']
+          },
+        );
+        tableLayerMetadata.supportedQueryFormats.should.equal('JSON');
+      });
+ 
+      it('skip override if string missing JSON', () => {
+        const tableLayerMetadata = new TableLayerMetadata();
+        tableLayerMetadata.mixinOverrides(
+          {},
+          {
+            supportedQueryFormats: ['PBF']
+          },
+        );
+        tableLayerMetadata.supportedQueryFormats.should.equal('JSON,geojson,PBF');
+        loggerSpy.error.firstCall.args.should.deepEqual([
+          '"supportedQueryFormats" override is invalid; must contain "JSON". skipping override'
+        ]);
       });
     });
   });
