@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 8.5.0
+
+### Minor Changes
+
+- allow supportedQueryFormats override from provider metadata
+
 ## 8.4.0
 
 ### Minor Changes
