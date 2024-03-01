@@ -13,7 +13,7 @@ async function execute () {
     const {files} = await git().diffSummary(['--name-only', '--relative', 'origin/master']);
 
     const srcFiles = files.filter(({ file }) => {
-      return file.endsWith('.js') && !file.endsWith('spec.js');
+      return file.endsWith('.js');
     }).map(({ file }) => {
       return `-n ${file}`;
     });
