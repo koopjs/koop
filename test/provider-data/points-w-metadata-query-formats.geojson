@@ -1,51 +1,55 @@
 {
   "type": "FeatureCollection",
   "metadata": {
-    "fields": [
-      { "name": "timestamp", "type": "Date" } 
-      ],
-     "supportedQueryFormats": "JSON" 
+    "idField": "id",
+    "supportedQueryFormats": "JSON"
     },
   "features": [
     {
       "type": "Feature",
       "properties": {
-        "OBJECTID": 1,
-        "timestamp": "2023-04-10T16:15:30.000Z"
+        "id": "aaa",
+        "timestamp": "2023-04-10T16:15:30.000Z",
+        "label": "White Leg",
+        "category": "pinto"
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -104.9476,
-          39.9448
+          -80,
+          25
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "OBJECTID": 2,
-        "timestamp": "2020-04-10T16:15:30.000Z"
+        "id": "bbb",
+        "timestamp": "2020-04-12T16:15:30.000Z",
+        "label": "Fireman",
+        "category": "pinto"
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -104.9476,
-          39.9448
+          -120,
+          45
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "OBJECTID": 3,
-        "timestamp": "2015-04-10T16:15:30.000Z"
+        "id": "ccc",
+        "timestamp": "2015-04-11T16:15:30.000Z",
+        "label": "Workhorse",
+        "category": "draft"
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -104.9476,
-          39.9448
+          -100,
+          40
         ]
       }
     }

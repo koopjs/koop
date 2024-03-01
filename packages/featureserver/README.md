@@ -85,7 +85,8 @@ e.g.
        type: String, // 'Date' || 'Double' || 'Integer' || 'String'
        alias: String, // how should clients display this field name,
      }
-    ]
+    ],
+    supportedQueryFormats: String | Array // 'JSON,geojson' || ['JSON', 'geojson']
   },
   capabilities: {
     quantization: Boolean // True if the provider supports quantization
