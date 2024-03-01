@@ -1,0 +1,72 @@
+name: PR CI
+
+on:
+  pull_request:
+    branches:
+      - master
+      - beta
+    paths:
+      - "./.github/**.yml"
+      - "**/packages/**.js"
+      - "**/packages/**/package.json"
+      - "test/**/*.js"
+
+jobs:
+  pr-tests:
+    name: Install, lint, test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [18.x]
+        os: [ubuntu-latest, windows-latest]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - name: Checkout actions
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - run: |
+        git checkout -b master origin/master
+        git checkout -
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install npm 7
+      run: npm i -g npm@7 --registry=https://registry.npmjs.org
+      
+    - name: Install
+      run: npm ci
+
+    - name: Lint
+      run: npm run lint:ci
+
+    - name: Unit tests
+      run: npm test
+    
+    - name: E2E tests
+      run: npm run test:e2e
+
+    - name: Run Coverage
+      if: ${{ matrix.os == 'ubuntu-latest' }}
+      run: npm run cov:changes:json && npm run cov:changes:2:md
+
+    - name: Find previous coverage comment
+      if: ${{ matrix.os == 'ubuntu-latest' }}
+      uses: peter-evans/find-comment@v1
+      id: findcomment
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-author: 'github-actions[bot]'
+        body-includes: Coverage Report
+
+    - name: Create or update comment
+      if: ${{ matrix.os == 'ubuntu-latest' }}
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        comment-id: ${{ steps.findcomment.outputs.comment-id }}
+        issue-number: ${{ github.event.pull_request.number }}
+        body-path: .branch-coverage-changes.md
+        edit-mode: replace

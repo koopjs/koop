@@ -5,7 +5,7 @@ module.exports = {
     mocha: true,
     jest: true,
     jasmine: true,
-    node: true
+    node: true,
   },
   extends: 'eslint:recommended',
   globals: {
@@ -20,9 +20,11 @@ module.exports = {
   },
   rules: {
     'no-unused-vars': ['error', { ignoreRestSiblings: true }],
-    indent: ['error', 2, {'SwitchCase': 1}],
+    indent: ['error', 2, { SwitchCase: 1 }],
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
+    'no-only-tests/no-only-tests': 'error',
   },
+  plugins: ['no-only-tests'],
 };

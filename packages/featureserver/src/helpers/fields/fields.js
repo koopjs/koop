@@ -5,7 +5,7 @@ const {
   FieldFromFieldDefinition,
   ObjectIdFieldFromDefinition
 } = require('./field-classes');
-const { logger } = require('../../logger');
+const logManager = require('../../log-manager');
 
 class Fields {
   static normalizeOptions (inputOptions) {
@@ -35,7 +35,7 @@ class Fields {
     } = options;
 
     if (shouldWarnAboutMissingIdFieldDefinition(idField, fieldDefinitions)) {
-      logger.debug(`provider's "idField" is set to ${idField}, but this field is not found in field-definitions`);
+      logManager.logger.debug(`provider's "idField" is set to ${idField}, but this field is not found in field-definitions`);
     }
 
     const normalizedIdField = idField || 'OBJECTID';

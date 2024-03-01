@@ -1,5 +1,47 @@
 # @koopjs/winnow
 
+## 4.3.0
+
+### Minor Changes
+
+- swap stringhash for murmurhash
+
+## 4.2.1
+
+### Patch Changes
+
+- alter log message for max safe integer range
+
+## 4.2.0
+
+### Minor Changes
+
+- allow string attributes as objectIds parameter for filtering
+
+## 4.1.4
+
+### Patch Changes
+
+- rename log-manager files
+
+## 4.1.3
+
+### Patch Changes
+
+- logger needs to be acquired at request time
+
+## 4.1.2
+
+### Patch Changes
+
+- fix filtering by objectIds option
+
+## 4.1.1
+
+### Patch Changes
+
+- need logger dep for stand alone usage
+
 ## 4.1.0
 
 ### Minor Changes

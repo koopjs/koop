@@ -19,17 +19,17 @@ test('toEsriAttributes, requires idField and properties contain it', t => {
 
 test('toEsriAttributes, requires idField, properties contain it, but logs debug message', t => {
   const toEsriAttributes = proxyquire(modulePath, {
-    '../../logger': {
+    '../../log-manager': {
       logger: {
         debug: (message) => {
-          t.equals(message, 'OBJECTIDs created from provider\'s "idField" (OBJECTID: 11111) are not integers from 0 to 2147483647');
+          t.equals(message, `Unique-identifier (\`OBJECTID\`) has a value (abc) that is not a valid integer (0 to ${Number.MAX_SAFE_INTEGER}); this may cause problems in some clients.`);
         }
       }
     }
   });
   // (properties, geometry, dateFields, requiresObjectId, idField)
-  const result = toEsriAttributes({ foo: 'bar', OBJECTID: '11111' }, { coordinates: [-118, 34] }, '', 'true', 'OBJECTID');
-  t.deepEquals(result, { foo: 'bar', OBJECTID: '11111' });
+  const result = toEsriAttributes({ foo: 'bar', OBJECTID: 'abc' }, { coordinates: [-118, 34] }, '', 'true', 'OBJECTID');
+  t.deepEquals(result, { foo: 'bar', OBJECTID: 'abc' });
   t.end();
 });
 

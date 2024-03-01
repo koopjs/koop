@@ -22,13 +22,22 @@ test('WhereBuilder.create: where param', (t) => {
   t.equals(whereClause, "properties->`color` = 'red'");
 });
 
-test('WhereBuilder.create: objectIds param', (t) => {
+test('WhereBuilder.create: objectIds param, numeric', (t) => {
   t.plan(1);
   const whereClause = WhereBuilder.create({
     objectIds: [1, 2],
     idField: 'OBJECTID'
   });
   t.equals(whereClause, "properties->`OBJECTID` IN (1, 2 )");
+});
+
+test('WhereBuilder.create: objectIds param, string', (t) => {
+  t.plan(1);
+  const whereClause = WhereBuilder.create({
+    objectIds: ['abc', 'xyz'],
+    idField: 'OBJECTID'
+  });
+  t.equals(whereClause, "properties->`OBJECTID` IN ('abc', 'xyz' )");
 });
 
 test('WhereBuilder.create: where param and objectIds param', (t) => {
@@ -68,6 +77,16 @@ test('WhereBuilder.create: transform a predicate with OBJECTID and no metadata f
   t.equals(
     whereClause,
     "hashedObjectIdComparator(properties, geometry, 1234, '=')=true", // eslint-disable-line
+  );
+});
+
+test('WhereBuilder.create: transform a predicate with OBJECTID IN (1234)', (t) => {
+  t.plan(1);
+
+  const whereClause = WhereBuilder.create({ objectIds: [1234, 4567] });
+  t.equals(
+    whereClause,
+    "hashedObjectIdComparator(properties, geometry, '1234,4567', 'IN')=true", // eslint-disable-line
   );
 });
 

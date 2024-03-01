@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { logger } = require('../logger');
+const logManager = require('../log-manager');
 const { normalizeArray } = require('./helpers');
 const normalizeSpatialReference = require('./spatial-reference');
 
@@ -16,7 +16,7 @@ function normalizeGeometryFilterSpatialReference (options = {}) {
   const spatialReference = normalizeSpatialReference(geometryEnvelopeSpatialReference || options.inSR);
 
   if (!spatialReference) {
-    logger.debug('geometry filter spatial reference unknown. Defaulting to EPSG:4326.');
+    logManager.logger.debug('geometry filter spatial reference unknown. Defaulting to EPSG:4326.');
   }
   return spatialReference || { wkid: 4326 };
 }

@@ -1,7 +1,7 @@
 const esriProjCodes = require('@esri/proj-codes');
 const Joi = require('joi');
 const wktParser = require('wkt-parser');
-const { logger } = require('../logger');
+const logManager = require('../log-manager');
 const wktLookup = new Map();
 const schema = Joi.alternatives(
   Joi.string(),
@@ -19,7 +19,7 @@ function normalizeSpatialReference (input) {
   const { error } = schema.validate(input);
 
   if (error) {
-    logger.verbose(` ${input} is not a valid spatial reference; defaulting to none, error: ${error}`);
+    logManager.logger.verbose(` ${input} is not a valid spatial reference; defaulting to none, error: ${error}`);
 
     // Todo: throw error
     return { wkid: 4326, latestWkid: 4326 };
@@ -81,13 +81,14 @@ function esriWktLookup (lookupValue) {
 
   if (!result) {
     // Todo - throw error
-    logger.verbose(`An unknown spatial reference was detected: ${lookupValue}; defaulting to none`);
+    logManager.logger.verbose(`An unknown spatial reference was detected: ${lookupValue}; defaulting to none`);
     return;
   }
 
   const { wkid, latestWkid } = result;
 
   // Add the WKT to the local lookup so we don't need to scan the Esri lookups next time
+  // TODO: move to LRU cache
   wktLookup.set(wkid, { wkid, latestWkid });
   return { latestWkid, wkid };
 }
@@ -99,7 +100,7 @@ function convertStringToSpatialReference (wkt) {
     const wkid = getWktWkid(wkt);
     return wktLookup.get(wkid) || esriWktLookup(wkid) || { wkt };
   } catch (err) {
-    logger.debug(`An un-parseable WKT spatial reference was detected: ${wkt}`);
+    logManager.logger.debug(`An un-parseable WKT spatial reference was detected: ${wkt}`);
     // Todo: throw error
   }
 }

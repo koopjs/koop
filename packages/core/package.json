@@ -1,7 +1,7 @@
 {
   "name": "@koopjs/koop-core",
   "description": "Serve, transform, and query geospatial data on the web",
-  "version": "9.2.0",
+  "version": "10.3.6",
   "contributors": [
     {
       "name": "Rich Gwozdz",
@@ -19,27 +19,28 @@
     }
   ],
   "dependencies": {
-    "@koopjs/cache-memory": "5.0.0",
+    "@koopjs/cache-memory": "6.0.0",
     "@koopjs/logger": "5.0.0",
-    "@koopjs/output-geoservices": "7.1.0",
+    "@koopjs/output-geoservices": "8.1.6",
     "@sindresorhus/fnv1a": "^2.0.1",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
-    "config": "^3.3.9",
+    "config": "^3.3.11",
     "cors": "^2.8.5",
     "easy-table": "^1.1.1",
     "ejs": "^3.1.2",
     "express": "^4.17.1",
-    "joi": "^17.6.3",
+    "joi": "^17.12.2",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "mocha": "^10.0.0",
+    "even-more-min": "^1.0.1",
+    "mocha": "^10.3.0",
     "proxyquire": "^2.1.3",
     "should": "^13.2.3",
     "should-sinon": "0.0.6",
-    "sinon": "^15.0.0",
-    "supertest": "^6.3.1"
+    "sinon": "^17.0.1",
+    "supertest": "^6.3.4"
   },
   "files": [
     "src/**/*.js",
@@ -67,8 +68,6 @@
     "url": "git://github.com/koopjs/koop.git"
   },
   "scripts": {
-    "test": "mocha '**/*.spec.js' ",
-    "test:cov": "nyc -r=json-summary mocha '**/*.spec.js' && npm run cov:badge",
-    "cov:badge": "coverage-badges-cli --output ./coverage.svg"
+    "test": "mocha '**/*.spec.js' --reporter even-more-min  --recursive -t 5000"
   }
 }

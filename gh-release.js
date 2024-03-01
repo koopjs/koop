@@ -12,7 +12,7 @@ async function execCommandLine(cmd, args) {
     const bufferedListResult = await spawn(cmd, args);
     return bufferedListResult.toString();
   } catch (e) {
-    throw new Error(e.stderr.toString())
+    throw new Error(e.stderr.toString());
   }
 }
 
@@ -26,9 +26,13 @@ async function getChangelogEntry(tag) {
     groups: { package },
   } = TAG_REGEX.exec(tag);
 
+  const packageDir = package === 'koop-core' ? 'core' : package;
+
   return new Promise((resolve, rejects) => {
     // @TODO: make this safe for packages without an existing changelog.
-    const readStream = fs.createReadStream(`packages/${package}/CHANGELOG.md`);
+    const readStream = fs.createReadStream(
+      `packages/${packageDir}/CHANGELOG.md`,
+    );
     const lineStream = byline(readStream);
     let changelogLines = [];
     let capture = false;
@@ -55,7 +59,15 @@ async function getChangelogEntry(tag) {
 }
 
 async function createRelease(tag, description) {
-  return execCommandLine('gh', ['release', 'create', tag, '--target', baseBranch, '--notes', description]);
+  return execCommandLine('gh', [
+    'release',
+    'create',
+    tag,
+    '--target',
+    baseBranch,
+    '--notes',
+    description,
+  ]);
 }
 
 async function execute() {

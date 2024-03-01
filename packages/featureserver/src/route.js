@@ -1,13 +1,13 @@
 const _ = require('lodash');
 const layerInfo = require('./layer-metadata');
 const query = require('./query');
-const { logger } = require('./logger');
+const logManager = require('./log-manager');
 const queryRelatedRecords = require('./queryRelatedRecords.js');
 const generateRenderer = require('./generate-renderer');
 const restInfo = require('./rest-info-route-handler');
 const serverInfo = require('./server-info-route-handler');
 const layersInfo = require('./layers-metadata');
-const responseHandler = require('./response-handler');
+const { generalResponseHandler, queryResponseHandler } = require('./response-handlers');
 const { validateInputs, normalizeRequestParameters } = require('./helpers');
 
 module.exports = function route(req, res, geojson = {}) {
@@ -26,38 +26,53 @@ module.exports = function route(req, res, geojson = {}) {
       _.get(geojson, 'metadata.maxRecordCount'),
     );
 
+    // TODO move to each handler, as params and data will vary a lot
     validateInputs(params, geojson);
 
     req = { ...req, query: params };
     geojson.metadata = geojson.metadata || { maxRecordCount: 2000 };
-
-    let result;
-
+    
+    if (isRestInfoRequest(route)) {
+      const result = restInfo(geojson, req);
+      return generalResponseHandler(res, result, req.query);
+    }
+    
+    if (isServerMetadataRequest(route)) {
+      const result = serverInfo(geojson, req);
+      return generalResponseHandler(res, result, req.query);
+    } 
+    
+    if (isLayersMetadataRequest(route) || isRelationshipsMetadataRequest(route)) {
+      const result = layersInfo(geojson, params);
+      return generalResponseHandler(res, result, req.query);
+    }
+    
+    if (isLayerMetadataRequest(method, route)) {
+      const result = layerInfo(geojson, req);
+      return generalResponseHandler(res, result, req.query);
+    }
+    
     if (method) {
-      result = handleMethodRequest({ method, geojson, req });
-    } else if (isRestInfoRequest(route)) {
-      result = restInfo(geojson, req);
-    } else if (isServerMetadataRequest(route)) {
-      result = serverInfo(geojson, req);
-    } else if (isLayersMetadataRequest(route) || isRelationshipsMetadataRequest(route)) {
-      result = layersInfo(geojson, params);
-    } else if (isLayerMetadataRequest(route)) {
-      result = layerInfo(geojson, req);
-    } else {
-      const error = new Error('Not Found');
-      error.code = 404;
-      throw error;
+      const operationResult = handleMethodRequest({ method, geojson, req });
+
+      if (method === 'query') {
+        return queryResponseHandler(res, operationResult, req.query);
+      }
+      
+      return generalResponseHandler(res, operationResult, req.query);
     }
 
-    return responseHandler(req, res, 200, result);
+    const error = new Error('Not Found');
+    error.code = 404;
+    throw error;
   } catch (error) {
-    logger.debug(error);
+    logManager.logger.debug(error);
     const { code = 500 , message, details = [message] } = error;
     
     // Geoservice spec wraps all errors in a 200 response (!)
-    return responseHandler(req, res, 200, {
+    return generalResponseHandler(res, {
       error: { code, message, details }
-    });
+    }, req.query );
   }
 };
 
@@ -72,10 +87,6 @@ function handleMethodRequest({ method, geojson, req }) {
 
   if (method === 'generateRenderer') {
     return generateRenderer(geojson, req.query);
-  }
-
-  if (method === 'info') {
-    return layerInfo(geojson, req);
   }
 
   const error = new Error('Method not supported');
@@ -104,8 +115,9 @@ function isRelationshipsMetadataRequest(url) {
   return /\/FeatureServer\/relationships$/i.test(url);
 }
 
-function isLayerMetadataRequest(url) {
+function isLayerMetadataRequest(method, url) {
   return (
+    method === 'info' ||
     /\/FeatureServer\/\d+$/i.test(url) ||
     /\/FeatureServer\/\d+\/info$/i.test(url) ||
     /\/FeatureServer\/\d+\/$/.test(url)

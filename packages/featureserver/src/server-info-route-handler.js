@@ -7,7 +7,7 @@ const {
   normalizeSpatialReference,
   normalizeInputData,
 } = require('./helpers');
-const { logger } = require('./logger');
+const logManager = require('./log-manager');
 const ServerMetadata = require('./helpers/server-metadata');
 
 function serverMetadataResponse(data, req = {}) {
@@ -25,7 +25,6 @@ function serverMetadataResponse(data, req = {}) {
     ...appConfig,
     ...providerMetadata,
     currentVersion: appConfig.currentVersion,
-    fullVersion: appConfig.fullVersion,
   });
 }
 
@@ -114,7 +113,7 @@ function calculateServiceExtentFromLayers(layers, spatialReference) {
       spatialReference,
     };
   } catch (error) {
-    logger.debug(`Could not calculate extent from data: ${error.message}`);
+    logManager.logger.debug(`Could not calculate extent from data: ${error.message}`);
   }
 }
 
@@ -131,7 +130,7 @@ function getExtent(extent, spatialReference) {
   try {
     return normalizeExtent(extent, spatialReference);
   } catch (error) {
-    logger.warn(`Could not normalize extent: ${ error }`);
+    logManager.logger.warn(`Could not normalize extent: ${ error }`);
   }
 }
 
@@ -149,6 +148,7 @@ function formatServerItemInfo(json, defaultId) {
   const retVal = {
     id: id || defaultId,
     name: name || defaultName,
+    type: geometryType ? 'Feature Layer' : 'Table',
     parentLayerId: -1,
     defaultVisibility: defaultVisibility !== false,
     subLayerIds: null,

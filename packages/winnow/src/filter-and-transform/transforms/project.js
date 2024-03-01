@@ -1,4 +1,4 @@
-const { logger } = require('../../logger');
+const logManager = require('../../log-manager');
 const projectCoordinates = require('../../helpers/project-coordinates');
 
 function project (geometry, sourceCoordinateSystem, targetCoordinateSystem) {
@@ -22,7 +22,7 @@ function tryProjectingGeometry ({ type, sourceCoordinates, sourceCoordinateSyste
       })
     };
   } catch (error) {
-    logger.debug(error);
+    logManager.logger.debug(error);
     // TODO: should we throw error instead of returning null?
     return null;
   }

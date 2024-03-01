@@ -1,5 +1,145 @@
 # @koopjs/koop-core
 
+## 10.3.6
+
+### Patch Changes
+
+- @koopjs/output-geoservices@8.1.6
+
+## 10.3.5
+
+### Patch Changes
+
+- @koopjs/output-geoservices@8.1.5
+
+## 10.3.4
+
+### Patch Changes
+
+- @koopjs/output-geoservices@8.1.4
+
+## 10.3.3
+
+### Patch Changes
+
+- @koopjs/output-geoservices@8.1.3
+
+## 10.3.2
+
+### Patch Changes
+
+- @koopjs/output-geoservices@8.1.2
+
+## 10.3.1
+
+### Patch Changes
+
+- Updated dependencies [236337e]
+  - @koopjs/cache-memory@6.0.0
+
+## 10.3.0
+
+### Minor Changes
+
+- pass logger into cache-plugin constructor
+
+## 10.2.0
+
+### Minor Changes
+
+- add support for PBF format on GeoService output plugin query enpoint
+
+### Patch Changes
+
+- @koopjs/output-geoservices@8.1.1
+
+## 10.1.0
+
+### Minor Changes
+
+- allow model getData, getLayer, and getCatalog methods to be used without a callback
+- allow model pull, pullLayer, and pullCatalog methods to be used without a callback
+- allow before and after functions without callback
+
+### Patch Changes
+
+- Updated dependencies [a1539aa]
+  - @koopjs/output-geoservices@8.1.0
+
+## 10.0.0
+
+### Major Changes
+
+- route change in geoservices
+- generic plugins and file-system plugins no longer supported
+- add option to skip default geoservices plugin
+
+### Patch Changes
+
+- Updated dependencies [86e2028]
+  - @koopjs/output-geoservices@8.0.0
+
+## 9.2.10
+
+### Patch Changes
+
+- @koopjs/output-geoservices@7.1.9
+
+## 9.2.9
+
+### Patch Changes
+
+- @koopjs/output-geoservices@7.1.8
+
+## 9.2.8
+
+### Patch Changes
+
+- @koopjs/output-geoservices@7.1.7
+
+## 9.2.7
+
+### Patch Changes
+
+- @koopjs/output-geoservices@7.1.6
+
+## 9.2.6
+
+### Patch Changes
+
+- @koopjs/output-geoservices@7.1.5
+
+## 9.2.5
+
+### Patch Changes
+
+- koop options and config are merged, with any collisions defaulting to config
+  - @koopjs/output-geoservices@7.1.4
+
+## 9.2.4
+
+### Patch Changes
+
+- @koopjs/output-geoservices@7.1.3
+
+## 9.2.3
+
+### Patch Changes
+
+- @koopjs/output-geoservices@7.1.2
+
+## 9.2.2
+
+### Patch Changes
+
+- ensure constructor options are optional
+
+## 9.2.1
+
+### Patch Changes
+
+- @koopjs/output-geoservices@7.1.1
+
 ## 9.2.0
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 # Koop
 [![npm version][npm-img]][npm-url]
-![coverage](./coverage.svg)
+![coverage](https://raw.githubusercontent.com/koopjs/koop/master/packages/core/coverage.svg)
 
 > Transform, query, & download geospatial data on the web.  See [koopjs.github.io](https://koopjs.github.io) for details.
 
@@ -93,6 +93,16 @@ const options = {
   cacheSize: 1000
 }
 ```
+
+#### skipGeoservicesRegistration
+By default, Koop will register the GeoServices output-plugin (a.k.a. FeatureServer).  If you do not want this plugin registered or want to register a specific version, you can skip the default registration by setting the option to `true`:
+
+```js
+const options = {
+  skipGeoservicesRegistration: true
+}
+```
+
 
 #### geoservicesDefaults
 Koop registers the Geoservices output plugin (FeatureServer) by default.  This plugin takes its own options including those to set server and layer metadata (e.g., FeatureServer version, copyrightText, maxRecordCount, etc). These are useful for overriding defaults set in the FeatureServer codebase. You can have Koop set these options at start-up by passing the `geoservicesDefaults` option.  It should be a JSON object with the specification described in the [FeatureServer documentation](packages/featureserver#featureserver.setdefaults).

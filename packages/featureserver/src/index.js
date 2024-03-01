@@ -1,4 +1,4 @@
-const { setLogger } = require('./logger');
+const { setLogger } = require('./log-manager');
 const defaults = require('./metadata-defaults');
 
 module.exports = {

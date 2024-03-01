@@ -1,0 +1,52 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "timestamp": "2023-04-10T16:15:30.000Z",
+        "label": "White Leg",
+        "category": "pinto"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80,
+          25
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "timestamp": "2020-04-12T16:15:30.000Z",
+        "label": "Fireman",
+        "category": "pinto"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -120,
+          45
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "timestamp": "2015-04-11T16:15:30.000Z",
+        "label": "Workhorse",
+        "category": "draft"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -100,
+          40
+        ]
+      }
+    }
+  ]
+}

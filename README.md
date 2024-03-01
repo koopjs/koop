@@ -69,15 +69,7 @@ Test coverages for each package are shown below. Coverage for some packages incl
 |winnow|![coverage](./packages/winnow/coverage.svg)|![coverage](./packages/winnow/coverage-unit.svg)|
 
 ## Contributing
-Pull requests are welcomed and encouraged. Please consider the following PR guidelines:
-1. Provide a clear description of what the PR is trying to solve.  Link to any existing issues
-2. Aim for clear, readable code.
-3. Use conventional commit messages. For convenience, you can add commits with `npm run commit`.
-3. Add unit tests and ensure any new code has 100% test coverage. You can do this by running `npm run test:cov` and then looking for your file in the `/coverage/index.html` output.
-4. Run `npm run lint:fix` and ensure you're not commiting lint
-5. If your new code requires a release, please run `npm run changeset:add` and commit the generated changeset file as a part of your PR.
-
-Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/Esri/contributing).
+See our [contribution](./CONTRIBUTING.md) doc.
 
 ## Issues
 Find a bug or want to request a new feature? Post it [here](https://github.com/koopjs/koop/issues).
@@ -95,4 +87,3 @@ Find a bug or want to request a new feature? Post it [here](https://github.com/k
 
 <!-- [](Esri Tags: ArcGIS Web Mapping GeoJson FeatureServices) -->
 <!-- [](Esri Language: JavaScript) -->
-

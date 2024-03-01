@@ -15,7 +15,7 @@ describe('Route module unit tests', () => {
 
     const route = proxyquire('./route', {
       './query': querySpy,
-      './response-handler': responseHandlerSpy,
+      './response-handlers': { generalResponseHandler: responseHandlerSpy, queryResponseHandler: responseHandlerSpy },
     });
 
     it('should use query handler and return 200', () => {
@@ -39,14 +39,9 @@ describe('Route module unit tests', () => {
       ]);
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([
-        {
-          params: { method: 'query' },
-          query: { resultRecordCount: 2000 },
-          url: '/FeatureServer/0/query',
-        },
         {},
-        200,
         { features: [] },
+        { resultRecordCount: 2000 }
       ]);
     });
 
@@ -57,7 +52,7 @@ describe('Route module unit tests', () => {
 
       const route = proxyquire('./route', {
         './query': querySpy,
-        './response-handler': responseHandlerSpy,
+        './response-handlers': { generalResponseHandler: responseHandlerSpy },
       });
 
       route(
@@ -72,13 +67,7 @@ describe('Route module unit tests', () => {
       querySpy.calledOnce.should.equal(true);
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([
-        {
-          params: { method: 'query' },
-          query: { resultRecordCount: 2000 },
-          url: '/FeatureServer/0/query',
-        },
         {},
-        200,
         {
           error: {
             code: 500,
@@ -86,6 +75,7 @@ describe('Route module unit tests', () => {
             details: ['Fool bar'],
           },
         },
+        { resultRecordCount: 2000 }
       ]);
     });
     afterEach(() => {
@@ -103,7 +93,7 @@ describe('Route module unit tests', () => {
 
     const route = proxyquire('./route', {
       './rest-info-route-handler': restInfoSpy,
-      './response-handler': responseHandlerSpy,
+      './response-handlers': { generalResponseHandler: responseHandlerSpy },
     });
 
     it('should use restInfo handler and return 200', () => {
@@ -130,14 +120,9 @@ describe('Route module unit tests', () => {
 
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([
-        {
-          params: {},
-          query: { resultRecordCount: 2000 },
-          url: '/rest/info',
-        },
         {},
-        200,
         { restInfo: true },
+        { resultRecordCount: 2000 }
       ]);
     });
 
@@ -147,7 +132,7 @@ describe('Route module unit tests', () => {
       });
       const route = proxyquire('./route', {
         './rest-info-route-handler': restInfoSpy,
-        './response-handler': responseHandlerSpy,
+        './response-handlers': { generalResponseHandler: responseHandlerSpy },
       });
 
       route(
@@ -173,13 +158,7 @@ describe('Route module unit tests', () => {
 
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([
-        {
-          params: {},
-          query: { resultRecordCount: 2000 },
-          url: '/rest/info',
-        },
         {},
-        200,
         {
           error: {
             code: 500,
@@ -187,6 +166,7 @@ describe('Route module unit tests', () => {
             details: ['Fool bar'],
           },
         },
+        { resultRecordCount: 2000 }
       ]);
     });
 
@@ -205,7 +185,7 @@ describe('Route module unit tests', () => {
 
     const route = proxyquire('./route', {
       './server-info-route-handler': serverInfoSpy,
-      './response-handler': responseHandlerSpy,
+      './response-handlers': { generalResponseHandler: responseHandlerSpy },
     });
 
     it('should use serverInfo handler and return 200', () => {
@@ -232,14 +212,9 @@ describe('Route module unit tests', () => {
 
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([
-        {
-          params: {},
-          query: { resultRecordCount: 2000 },
-          url: '/rest/services/test/FeatureServer',
-        },
         {},
-        200,
         { serverInfo: true },
+        { resultRecordCount: 2000 }
       ]);
     });
 
@@ -249,7 +224,7 @@ describe('Route module unit tests', () => {
       });
       const route = proxyquire('./route', {
         './server-info-route-handler': serverInfoSpy,
-        './response-handler': responseHandlerSpy,
+        './response-handlers': { generalResponseHandler: responseHandlerSpy },
       });
 
       route(
@@ -275,13 +250,7 @@ describe('Route module unit tests', () => {
 
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([
-        {
-          params: {},
-          query: { resultRecordCount: 2000 },
-          url: '/rest/services/test/FeatureServer',
-        },
         {},
-        200,
         {
           error: {
             code: 500,
@@ -289,6 +258,7 @@ describe('Route module unit tests', () => {
             details: ['Fool bar'],
           },
         },
+        { resultRecordCount: 2000 }
       ]);
     });
 
@@ -307,7 +277,7 @@ describe('Route module unit tests', () => {
 
     const route = proxyquire('./route', {
       './layers-metadata': layersInfoSpy,
-      './response-handler': responseHandlerSpy,
+      './response-handlers': { generalResponseHandler: responseHandlerSpy },
     });
 
     it('should use layersInfo handler and return 200', () => {
@@ -332,14 +302,9 @@ describe('Route module unit tests', () => {
 
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([
-        {
-          params: {},
-          query: { resultRecordCount: 2000 },
-          url: '/rest/services/test/FeatureServer/layers',
-        },
         {},
-        200,
         { layersInfo: true },
+        { resultRecordCount: 2000 }
       ]);
     });
 
@@ -349,7 +314,7 @@ describe('Route module unit tests', () => {
       });
       const route = proxyquire('./route', {
         './layers-metadata': layersInfoSpy,
-        './response-handler': responseHandlerSpy,
+        './response-handlers': { generalResponseHandler: responseHandlerSpy },
       });
 
       route(
@@ -373,13 +338,7 @@ describe('Route module unit tests', () => {
 
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([
-        {
-          params: {},
-          query: { resultRecordCount: 2000 },
-          url: '/rest/services/test/FeatureServer/layers',
-        },
         {},
-        200,
         {
           error: {
             code: 500,
@@ -387,6 +346,7 @@ describe('Route module unit tests', () => {
             details: ['Fool bar'],
           },
         },
+        { resultRecordCount: 2000 }
       ]);
     });
 
@@ -405,7 +365,7 @@ describe('Route module unit tests', () => {
 
     const route = proxyquire('./route', {
       './layer-metadata': layerInfoSpy,
-      './response-handler': responseHandlerSpy,
+      './response-handlers': { generalResponseHandler: responseHandlerSpy },
     });
 
     it('should use layerInfo handler and return 200', () => {
@@ -432,14 +392,9 @@ describe('Route module unit tests', () => {
 
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([
-        {
-          params: {},
-          query: { resultRecordCount: 2000 },
-          url: '/rest/services/test/FeatureServer/0',
-        },
         {},
-        200,
         'layer-metadata',
+        { resultRecordCount: 2000 }
       ]);
     });
 
@@ -449,7 +404,7 @@ describe('Route module unit tests', () => {
       });
       const route = proxyquire('./route', {
         './layer-metadata': layerInfoSpy,
-        './response-handler': responseHandlerSpy,
+        './response-handlers': { generalResponseHandler: responseHandlerSpy },
       });
 
       route(
@@ -475,13 +430,7 @@ describe('Route module unit tests', () => {
 
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([
-        {
-          params: {},
-          query: { resultRecordCount: 2000 },
-          url: '/rest/services/test/FeatureServer/0',
-        },
         {},
-        200,
         {
           error: {
             code: 500,
@@ -489,6 +438,55 @@ describe('Route module unit tests', () => {
             details: ['Fool bar'],
           },
         },
+        { resultRecordCount: 2000 }
+      ]);
+    });
+
+    afterEach(() => {
+      layerInfoSpy.resetHistory();
+      responseHandlerSpy.resetHistory();
+    });
+  });
+
+  describe('/FeatureServer/0/info route', () => {
+    const layerInfoSpy = sinon.spy(function () {
+      return 'layer-metadata';
+    });
+
+    const responseHandlerSpy = sinon.spy();
+
+    const route = proxyquire('./route', {
+      './layer-metadata': layerInfoSpy,
+      './response-handlers': { generalResponseHandler: responseHandlerSpy },
+    });
+
+    it('should use layerInfo handler and return 200', () => {
+      route(
+        {
+          params: {},
+          query: {},
+          url: '/rest/services/test/FeatureServer/0/info',
+        },
+        {},
+        {},
+      );
+      layerInfoSpy.calledOnce.should.equal(true);
+      layerInfoSpy.firstCall.args.should.deepEqual([
+        {
+          metadata: { maxRecordCount: 2000 },
+        },
+        {
+          params: {},
+          query: { resultRecordCount: 2000 },
+          url: '/rest/services/test/FeatureServer/0/info',
+        },
+      ]);
+
+      responseHandlerSpy.calledOnce.should.equal(true);
+      responseHandlerSpy.firstCall.args.should.deepEqual([
+        {},
+        'layer-metadata',
+        { resultRecordCount: 2000 }
       ]);
     });
 
@@ -502,7 +500,7 @@ describe('Route module unit tests', () => {
     it('should handle unknown route', () => {
       const responseHandlerSpy = sinon.spy();
       const route = proxyquire('./route', {
-        './response-handler': responseHandlerSpy,
+        './response-handlers': { generalResponseHandler: responseHandlerSpy },
       });
 
       route(
@@ -516,13 +514,7 @@ describe('Route module unit tests', () => {
       );
       responseHandlerSpy.calledOnce.should.equal(true);
       responseHandlerSpy.firstCall.args.should.deepEqual([
-        {
-          params: {},
-          query: { resultRecordCount: 2000 },
-          url: '/hello/world',
-        },
         {},
-        200,
         {
           error: {
             code: 404,
@@ -530,6 +522,7 @@ describe('Route module unit tests', () => {
             details: ['Not Found'],
           },
         },
+        { resultRecordCount: 2000 }
       ]);
     });
   });

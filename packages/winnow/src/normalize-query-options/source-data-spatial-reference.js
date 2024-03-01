@@ -1,6 +1,6 @@
 const normalizeSpatialReference = require('./spatial-reference');
 const { getCollectionCrs } = require('./helpers');
-const { logger } = require('../logger');
+const logManager = require('../log-manager');
 
 function normalizeSourceDataSpatialReference ({ inputCrs, sourceSR, collection } = {}) {
   const sourceDataSpatialReference = inputCrs || sourceSR || getCollectionCrs(collection);
@@ -9,7 +9,7 @@ function normalizeSourceDataSpatialReference ({ inputCrs, sourceSR, collection }
   const spatialReference = normalizeSpatialReference(sourceDataSpatialReference);
 
   if (!spatialReference) {
-    logger.debug(`spatial reference "${sourceDataSpatialReference}" could not be normalized. Defaulting to EPSG:4326.`);
+    logManager.logger.debug(`spatial reference "${sourceDataSpatialReference}" could not be normalized. Defaulting to EPSG:4326.`);
     // @TODO: throw error?
   }
   return spatialReference || { wkid: 4326 };

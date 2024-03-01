@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { logger } = require('../../logger');
+const logManager = require('../../log-manager');
 const { createIntegerHash } = require('../helpers');
 
 module.exports = function transformToEsriProperties (properties, geometry, delimitedDateFields, requiresObjectId, idField) {
@@ -10,10 +10,8 @@ module.exports = function transformToEsriProperties (properties, geometry, delim
 
   if (requiresObjectId && !idField) {
     properties = injectObjectId({ properties, geometry });
-  }
-
-  if (requiresObjectId && shouldLogIdFieldWarning(properties[idField])) {
-    logger.debug(`OBJECTIDs created from provider's "idField" (${idField}: ${properties[idField]}) are not integers from 0 to 2147483647`);
+  } else if (requiresObjectId && shouldLogIdFieldWarning(properties[idField])) {
+    logManager.logger.debug(`Unique-identifier (\`${idField}\`) has a value (${properties[idField]}) that is not a valid integer (0 to ${Number.MAX_SAFE_INTEGER}); this may cause problems in some clients.`);
   }
 
   return transformProperties(properties, dateFields);
@@ -29,7 +27,7 @@ function injectObjectId (feature) {
 }
 
 function shouldLogIdFieldWarning (idFieldValue) {
-  return idFieldValue && (!Number.isInteger(idFieldValue) || idFieldValue > 2147483647);
+  return idFieldValue && (!Number.isInteger(idFieldValue) || idFieldValue > Number.MAX_SAFE_INTEGER);
 }
 
 function transformProperties (properties, dateFields) {

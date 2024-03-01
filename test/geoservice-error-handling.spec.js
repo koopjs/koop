@@ -6,7 +6,7 @@ const mockLogger = {
   info: () => {},
   silly: () => {},
   warn: () => {},
-  error: () => {}
+  error: () => {},
 };
 
 describe('geoservices error handling', () => {
@@ -15,7 +15,8 @@ describe('geoservices error handling', () => {
       const koop = new Koop({ logLevel: 'error', logger: mockLogger });
       koop.register(provider, {
         dataDir: './test/provider-data',
-        before: (req, callback) => { // eslint-disable-line
+        // eslint-disable-next-line
+        before: (req, callback) => {
           throw new Error('error in the provider');
         },
       });
@@ -42,7 +43,6 @@ describe('geoservices error handling', () => {
       let auth = require('@koopjs/auth-direct-file')(
         'pass-in-your-secret',
         `${__dirname}/helpers/user-store.json`,
-        { useHttp: true },
       );
       koop.register(auth);
       koop.register(provider, {
@@ -56,8 +56,9 @@ describe('geoservices error handling', () => {
         expect(response.body).toEqual({
           error: {
             code: 499,
-            details: [],
+            details: ['Token Required'],
             message: 'Token Required',
+            messageCode: 'GWM_0003'
           },
         });
       } catch (error) {
@@ -71,7 +72,6 @@ describe('geoservices error handling', () => {
       let auth = require('@koopjs/auth-direct-file')(
         'pass-in-your-secret',
         `${__dirname}/helpers/user-store.json`,
-        { useHttp: true },
       );
       koop.register(auth);
       koop.register(provider, {
@@ -102,14 +102,13 @@ describe('geoservices error handling', () => {
       let auth = require('@koopjs/auth-direct-file')(
         'pass-in-your-secret',
         `${__dirname}/helpers/user-store.json`,
-        { useHttp: true },
       );
       koop.register(auth);
       koop.register(provider, {
         dataDir: './test/provider-data',
       });
       try {
-        const response = await request(koop.server).get('/file-geojson/tokens');
+        const response = await request(koop.server).get('/file-geojson/rest/generateToken');
         expect(response.status).toBe(200);
         expect(response.body).toEqual({
           error: {

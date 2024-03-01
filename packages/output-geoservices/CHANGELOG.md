@@ -1,5 +1,124 @@
 # @koopjs/output-geoservices
 
+## 8.1.6
+
+### Patch Changes
+
+- Updated dependencies [c61b9ad]
+  - @koopjs/featureserver@8.5.0
+
+## 8.1.5
+
+### Patch Changes
+
+- Updated dependencies [b26ec67]
+  - @koopjs/featureserver@8.4.0
+
+## 8.1.4
+
+### Patch Changes
+
+- Updated dependencies [bf48f36]
+  - @koopjs/featureserver@8.3.3
+
+## 8.1.3
+
+### Patch Changes
+
+- @koopjs/featureserver@8.3.2
+
+## 8.1.2
+
+### Patch Changes
+
+- Updated dependencies [e3e99df]
+  - @koopjs/featureserver@8.3.1
+
+## 8.1.1
+
+### Patch Changes
+
+- Updated dependencies [5d7cc53]
+  - @koopjs/featureserver@8.3.0
+
+## 8.1.0
+
+### Minor Changes
+
+- use model.pull without callback
+
+## 8.0.0
+
+### Major Changes
+
+- change generateToken route so it matches latest pattern in ArcGIS
+- add option "useHttpForTokenUrl" to use http protocol on the authInfo.tokenServicesUrl returned by rest/info route
+
+### Patch Changes
+
+- Updated dependencies [86e2028]
+  - @koopjs/featureserver@8.2.0
+
+## 7.1.9
+
+### Patch Changes
+
+- Updated dependencies [a52ea4f]
+  - @koopjs/featureserver@8.1.9
+
+## 7.1.8
+
+### Patch Changes
+
+- Updated dependencies [2e50b96]
+  - @koopjs/featureserver@8.1.8
+
+## 7.1.7
+
+### Patch Changes
+
+- @koopjs/featureserver@8.1.7
+
+## 7.1.6
+
+### Patch Changes
+
+- Updated dependencies [b8aa6f2]
+  - @koopjs/featureserver@8.1.6
+
+## 7.1.5
+
+### Patch Changes
+
+- Updated dependencies [50d8202]
+  - @koopjs/featureserver@8.1.5
+
+## 7.1.4
+
+### Patch Changes
+
+- Updated dependencies [de597a6]
+  - @koopjs/featureserver@8.1.4
+
+## 7.1.3
+
+### Patch Changes
+
+- Updated dependencies [8bdc90d]
+  - @koopjs/featureserver@8.1.3
+
+## 7.1.2
+
+### Patch Changes
+
+- @koopjs/featureserver@8.1.2
+
+## 7.1.1
+
+### Patch Changes
+
+- @koopjs/featureserver@8.1.1
+
 ## 7.1.0
 
 ### Minor Changes

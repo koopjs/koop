@@ -2,16 +2,25 @@ const should = require('should');
 should.config.checkProtoEql = false;
 const proxyquire = require('proxyquire');
 const ServerMetadata = require('./server-metadata');
+const CURRENT_VERSION = 11.2;
 
 describe('ServerMetadata', () => {
   it('should use defaults when no overrides', () => {
     const result = ServerMetadata.create();
+
     result.should.deepEqual({
-      currentVersion: 11.1,
-      fullVersion: '11.1.0',
+      currentVersion: CURRENT_VERSION,
       serviceDescription:
         'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+      hasVersionedData: false,
+      supportsDisconnectedEditing: false,
+      hasStaticData: false,
+      hasSharedDomains: false,
       maxRecordCount: 2000,
+      supportedQueryFormats: 'JSON',
+      supportsVCSProjection: false,
+      supportedExportFormats: '',
+      capabilities: 'Query',
       description:
         'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
       copyrightText:
@@ -31,17 +40,24 @@ describe('ServerMetadata', () => {
         ymax: 90,
         spatialReference: { wkid: 4326, latestWkid: 4326 },
       },
-      hasStaticData: false,
+      allowGeometryUpdates: false,
       units: 'esriDecimalDegrees',
+      supportsAppend: false,
+      supportsSharedDomains: false,
+      supportsWebHooks: false,
+      supportsTemporalLayers: false,
+      layerOverridesEnabled: false,
+      syncEnabled: false,
+      supportsApplyEditsWithGlobalIds: false,
+      supportsReturnDeleteResults: false,
+      supportsLayerOverrides: false,
+      supportsTilesAndBasicQueriesMode: true,
+      supportsQueryContingentValues: false,
+      supportedContingentValuesFormats: '',
+      supportsContingentValuesJson: null,
       tables: [],
       layers: [],
-      supportedQueryFormats: 'JSON',
-      capabilities: 'Query',
-      syncEnabled: false,
-      hasVersionedData: false,
-      supportsDisconnectedEditing: false,
       supportsRelationshipsResource: false,
-      allowGeometryUpdates: false,
     });
   });
 
@@ -58,11 +74,19 @@ describe('ServerMetadata', () => {
         spatialReference: { wkid: 4326, latestWkid: 4326 },
       },
     });
+
     result.should.deepEqual({
-      currentVersion: 11.1,
-      fullVersion: '11.1.0',
+      currentVersion: CURRENT_VERSION,
       serviceDescription: 'goodbye',
+      hasVersionedData: false,
+      supportsDisconnectedEditing: false,
+      hasStaticData: false,
+      hasSharedDomains: false,
       maxRecordCount: 2000,
+      supportedQueryFormats: 'JSON',
+      supportsVCSProjection: false,
+      supportedExportFormats: '',
+      capabilities: 'Query',
       description: 'hello world',
       copyrightText: 'override default',
       spatialReference: { wkid: 4326, latestWkid: 4326 },
@@ -80,17 +104,24 @@ describe('ServerMetadata', () => {
         ymax: 90,
         spatialReference: { wkid: 4326, latestWkid: 4326 },
       },
-      hasStaticData: false,
+      allowGeometryUpdates: false,
       units: 'esriDecimalDegrees',
+      supportsAppend: false,
+      supportsSharedDomains: false,
+      supportsWebHooks: false,
+      supportsTemporalLayers: false,
+      layerOverridesEnabled: false,
+      syncEnabled: false,
+      supportsApplyEditsWithGlobalIds: false,
+      supportsReturnDeleteResults: false,
+      supportsLayerOverrides: false,
+      supportsTilesAndBasicQueriesMode: true,
+      supportsQueryContingentValues: false,
+      supportedContingentValuesFormats: '',
+      supportsContingentValuesJson: null,
       tables: [],
       layers: [],
-      supportedQueryFormats: 'JSON',
-      capabilities: 'Query',
-      syncEnabled: false,
-      hasVersionedData: false,
-      supportsDisconnectedEditing: false,
       supportsRelationshipsResource: false,
-      allowGeometryUpdates: false,
     });
   });
 
@@ -100,11 +131,18 @@ describe('ServerMetadata', () => {
     });
 
     result.should.deepEqual({
-      currentVersion: 11.1,
-      fullVersion: '11.1.0',
+      currentVersion: CURRENT_VERSION,
       serviceDescription:
         'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+      hasVersionedData: false,
+      supportsDisconnectedEditing: false,
+      hasStaticData: false,
+      hasSharedDomains: false,
       maxRecordCount: 2000,
+      supportedQueryFormats: 'JSON',
+      supportsVCSProjection: false,
+      supportedExportFormats: '',
+      capabilities: 'Query',
       description:
         'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
       copyrightText:
@@ -124,17 +162,24 @@ describe('ServerMetadata', () => {
         ymax: 90,
         spatialReference: { wkid: 4326, latestWkid: 4326 },
       },
-      hasStaticData: false,
+      allowGeometryUpdates: false,
       units: 'esriDecimalDegrees',
+      supportsAppend: false,
+      supportsSharedDomains: false,
+      supportsWebHooks: false,
+      supportsTemporalLayers: false,
+      layerOverridesEnabled: false,
+      syncEnabled: false,
+      supportsApplyEditsWithGlobalIds: false,
+      supportsReturnDeleteResults: false,
+      supportsLayerOverrides: false,
+      supportsTilesAndBasicQueriesMode: true,
+      supportsQueryContingentValues: false,
+      supportedContingentValuesFormats: '',
+      supportsContingentValuesJson: null,
       tables: [],
       layers: [],
-      supportedQueryFormats: 'JSON',
-      capabilities: 'Query',
-      syncEnabled: false,
-      hasVersionedData: false,
-      supportsDisconnectedEditing: false,
       supportsRelationshipsResource: false,
-      allowGeometryUpdates: false,
     });
   });
 

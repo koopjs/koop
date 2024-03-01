@@ -1,17 +1,8 @@
-name: CI tests
+name: Master CI Tests
 
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches:
-      - master
-      - next
-      - beta
-    paths:
-      - "./.github/**.yml"
-      - "**/packages/**.js"
-      - "**/packages/**/package.json"
 
 jobs:
   pr-tests:
@@ -19,27 +10,35 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
+        node-version: [18.x]
         os: [ubuntu-latest, windows-latest]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout actions
+      uses: actions/checkout@v3
+
     - uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
 
+    # Skip steps if actor is CI Agent, which makes automated commits for version bumping and coverage data
     - name: Install npm 7
+      if: github.triggering_actor != 'CI Agent'
       run: npm i -g npm@7 --registry=https://registry.npmjs.org
       
     - name: Install
+      if: github.triggering_actor != 'CI Agent'
       run: npm ci
 
     - name: Lint
+      if: github.triggering_actor != 'CI Agent'
       run: npm run lint:ci
 
     - name: Unit tests
+      if: github.triggering_actor != 'CI Agent'
       run: npm test --workspaces
     
     - name: E2E tests
+      if: github.triggering_actor != 'CI Agent'
       run: npm run test:e2e

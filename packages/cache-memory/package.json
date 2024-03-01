@@ -1,12 +1,10 @@
 {
   "name": "@koopjs/cache-memory",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "description": "An in-memory cache for KOop",
   "main": "src/index.js",
   "scripts": {
-    "test": "tape src/**/*.spec.js | tap-spec",
-    "test:cov": "nyc -r=json-summary tape './src/**/*.spec.js' | tap-spec && npm run cov:badge",
-    "cov:badge": "coverage-badges-cli --output ./coverage.svg"
+    "test": "tape src/**/*.spec.js | tap-min"
   },
   "repository": {
     "type": "git",
@@ -37,12 +35,12 @@
   },
   "homepage": "https://github.com/koopjs/koop#readme",
   "devDependencies": {
-    "tap-spec": "^5.0.0",
-    "tape": "^5.0.0",
-    "uuid": "^9.0.0"
+    "tap-min": "^3.0.0",
+    "tape": "^5.7.5",
+    "uuid": "^9.0.1"
   },
   "dependencies": {
     "@alloc/quick-lru": "^5.2.0",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.21"
   }
 }

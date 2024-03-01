@@ -29,13 +29,13 @@ class FilterAndTransformParams {
   }
 
   static standardize (requestParams) {
-    const {returnDistinctValues, ...rest } = requestParams;
+    const {returnDistinctValues, where = '1=1', ...rest } = requestParams;
     
-    if (returnDistinctValues === true) {
-      rest.distinct = true;
-    }
-    
-    return rest;
+    return {
+      ...rest,
+      distinct: !!returnDistinctValues,
+      where: extractPlusPlaceHolders(where)
+    };
   }
 
   constructor (requestParams) {
@@ -64,7 +64,7 @@ class FilterAndTransformParams {
     return this;
   }
 
-  addInputCrs (data = {}) {
+  addInputCrs (data) {
     const { metadata = {} } = data;
     this.inputCrs = this.inputCrs || this.sourceSR || metadata.crs || helpers.getCollectionCrs(data) || 4326;
     delete this.sourceSR;
@@ -72,4 +72,28 @@ class FilterAndTransformParams {
   }
 }
 
+function extractPlusPlaceHolders(where) {
+  let openDouble = false;
+  let openSingle = false;
+  const whereWithReplacedSingleQuotes = where.replace(/''/g, '~~xxx~~');
+
+  const charArray = Array.from(whereWithReplacedSingleQuotes);
+  return charArray
+    .map((char) => {
+      if (char === '\'' && !openDouble) {
+        openSingle = !openSingle;
+      }
+
+      if (char === '"' && !openSingle) {
+        openDouble = !openDouble;
+      }
+
+      if (char === '+' && !openDouble && !openSingle) {
+        return ' ';
+      }
+      return char;
+    })
+    .join('')
+    .replace(/~~xxx~~/g, '\'\'');
+}
 module.exports = { filterAndTransform };

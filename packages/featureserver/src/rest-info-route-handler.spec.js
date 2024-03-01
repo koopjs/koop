@@ -1,40 +1,40 @@
-const should = require('should') // eslint-disable-line
+const should = require('should'); // eslint-disable-line
 const restInfo = require('./rest-info-route-handler');
-const CURRENT_VERSION = 11.1;
-const FULL_VERSION = '11.1.0';
+const CURRENT_VERSION = 11.2;
+const FULL_VERSION = '11.2.0';
 
 describe('rest/info handler', () => {
   it('should return default info', () => {
     const req = {
       app: {
-        locals: {}
-      }
+        locals: {},
+      },
     };
     const result = restInfo(undefined, req);
     result.should.deepEqual({
       currentVersion: CURRENT_VERSION,
-      fullVersion: FULL_VERSION
+      fullVersion: FULL_VERSION,
+      authInfo: {},
+      owningSystemUrl: undefined,
     });
   });
 
   it('should return default plus supplied info', () => {
     const data = {
-      hello: {
-        world: true
-      }
+      authInfo: { foo: 'bar' },
+      owningSystemUrl: 'helloworld',
     };
     const req = {
       app: {
-        locals: {}
-      }
+        locals: {},
+      },
     };
     const result = restInfo(data, req);
     result.should.deepEqual({
       currentVersion: CURRENT_VERSION,
       fullVersion: FULL_VERSION,
-      hello: {
-        world: true
-      }
+      authInfo: { foo: 'bar' },
+      owningSystemUrl: 'helloworld',
     });
   });
 
@@ -45,16 +45,23 @@ describe('rest/info handler', () => {
           config: {
             featureServer: {
               currentVersion: 10.81,
-              fullVersion: '10.8.1'
-            }
-          }
-        }
-      }
+              fullVersion: '10.8.1',
+            },
+          },
+        },
+      },
     };
-    const result = restInfo({}, req);
+    const result = restInfo(
+      { authInfo: { foo: 'bar' }, owningSystemUrl: 'helloworld' },
+      req,
+    );
     result.should.deepEqual({
       currentVersion: 10.81,
-      fullVersion: '10.8.1'
+      fullVersion: '10.8.1',
+      authInfo: {
+        foo: 'bar',
+      },
+      owningSystemUrl: 'helloworld',
     });
   });
 });

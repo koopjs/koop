@@ -1,5 +1,111 @@
 # @koopjs/featureserver
 
+## 8.5.0
+
+### Minor Changes
+
+- allow supportedQueryFormats override from provider metadata
+
+## 8.4.0
+
+### Minor Changes
+
+- allow supportedQueryFormats to be overridden with geoservice defaults
+
+## 8.3.3
+
+### Patch Changes
+
+- allow + as whitespace equivalent in where param
+
+## 8.3.2
+
+### Patch Changes
+
+- Updated dependencies [ff596ff]
+  - @koopjs/winnow@4.3.0
+
+## 8.3.1
+
+### Patch Changes
+
+Fix schema for quantizationParameter
+
+## 8.3.0
+
+### Minor Changes
+
+- add support for PBF output on query endpoint
+
+## 8.2.0
+
+### Minor Changes
+
+- add owningSystemUrl to restInfo response
+
+## 8.1.9
+
+### Patch Changes
+
+- handle SQL date types in field defs
+
+## 8.1.8
+
+### Patch Changes
+
+- prevent log message when OBJECTID found in data
+- Updated dependencies [2e50b96]
+  - @koopjs/winnow@4.2.1
+
+## 8.1.7
+
+### Patch Changes
+
+- Updated dependencies [f400c85]
+  - @koopjs/winnow@4.2.0
+
+## 8.1.6
+
+### Patch Changes
+
+- add type check to callback sanitization
+
+## 8.1.5
+
+### Patch Changes
+
+- allow null or empty strings as overrides for description, service description, copyrightText
+
+## 8.1.4
+
+### Patch Changes
+
+- rename log-manager files
+- Updated dependencies [de597a6]
+  - @koopjs/winnow@4.1.4
+
+## 8.1.3
+
+### Patch Changes
+
+- logger needs to be acquired at request time
+- Updated dependencies [8bdc90d]
+  - @koopjs/winnow@4.1.3
+
+## 8.1.2
+
+### Patch Changes
+
+- Updated dependencies [260c898]
+  - @koopjs/winnow@4.1.2
+
+## 8.1.1
+
+### Patch Changes
+
+- Updated dependencies [1e94ba5]
+  - @koopjs/winnow@4.1.1
+
 ## 8.1.0
 
 ### Minor Changes

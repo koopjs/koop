@@ -27,7 +27,6 @@ describe('server info', () => {
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: undefined,
-        fullVersion: undefined,
         initialExtent: undefined,
         fullExtent: undefined,
         layers: [],
@@ -46,7 +45,6 @@ describe('server info', () => {
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: 101.1,
-        fullVersion: undefined,
         initialExtent: undefined,
         fullExtent: undefined,
         layers: [],
@@ -65,7 +63,6 @@ describe('server info', () => {
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: undefined,
-        fullVersion: undefined,
         initialExtent: undefined,
         fullExtent: undefined,
         layers: [],
@@ -78,6 +75,7 @@ describe('server info', () => {
             subLayerIds: null,
             minScale: 0,
             maxScale: 0,
+            type: 'Table'
           },
         ],
         relationships: [],
@@ -104,7 +102,6 @@ describe('server info', () => {
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: undefined,
-        fullVersion: undefined,
         initialExtent: undefined,
         fullExtent: undefined,
         layers: [],
@@ -117,6 +114,7 @@ describe('server info', () => {
             subLayerIds: null,
             minScale: 0,
             maxScale: 0,
+            type: 'Table'
           },
         ],
         relationships: [],
@@ -159,7 +157,6 @@ describe('server info', () => {
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: undefined,
-        fullVersion: undefined,
         crs: {
           type: 'name',
           properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
@@ -188,6 +185,7 @@ describe('server info', () => {
             minScale: 0,
             maxScale: 0,
             geometryType: 'esriGeometryPoint',
+            type: 'Feature Layer'
           },
         ],
         tables: [],
@@ -282,7 +280,6 @@ describe('server info', () => {
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: undefined,
-        fullVersion: undefined,
         crs: {
           type: 'name',
           properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
@@ -312,6 +309,7 @@ describe('server info', () => {
             minScale: 0,
             maxScale: 0,
             geometryType: 'esriGeometryPoint',
+            type: 'Feature Layer'
           },
           {
             id: 1,
@@ -322,6 +320,7 @@ describe('server info', () => {
             minScale: 0,
             maxScale: 0,
             geometryType: 'esriGeometryPoint',
+            type: 'Feature Layer'
           },
         ],
         tables: [
@@ -333,6 +332,7 @@ describe('server info', () => {
             subLayerIds: null,
             minScale: 0,
             maxScale: 0,
+            type: 'Table'
           },
         ],
         fullExtent: {
@@ -438,7 +438,6 @@ describe('server info', () => {
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: undefined,
-        fullVersion: undefined,
         crs: {
           type: 'name',
           properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
@@ -468,6 +467,7 @@ describe('server info', () => {
             minScale: 0,
             maxScale: 0,
             geometryType: 'esriGeometryPoint',
+            type: 'Feature Layer'
           },
           {
             id: 1,
@@ -478,6 +478,7 @@ describe('server info', () => {
             minScale: 0,
             maxScale: 0,
             geometryType: 'esriGeometryPoint',
+            type: 'Feature Layer'
           },
         ],
         tables: [
@@ -489,6 +490,7 @@ describe('server info', () => {
             subLayerIds: null,
             minScale: 0,
             maxScale: 0,
+            type: 'Table'
           },
         ],
         fullExtent: {
@@ -537,7 +539,6 @@ describe('server info', () => {
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: undefined,
-        fullVersion: undefined,
         crs: {
           type: 'name',
           properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
@@ -554,6 +555,7 @@ describe('server info', () => {
             minScale: 0,
             maxScale: 0,
             geometryType: 'esriGeometryPoint',
+            type: 'Feature Layer'
           },
         ],
         tables: [],

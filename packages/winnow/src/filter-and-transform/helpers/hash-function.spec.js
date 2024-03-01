@@ -2,17 +2,17 @@ const test = require('tape');
 const proxyquire = require('proxyquire');
 const modulePath = './hash-function';
 const stub = {
-  'string-hash': () => { return 'string-hash'; },
+  'murmurhash': () => { return 'murmurhash'; },
   'farmhash': { // eslint-disable-line
     hash32: () => { return 'farmhash'; }
   }
 };
 
-test('hashFunction: ENV variable forces use of string-hash', t => {
+test('hashFunction: ENV variable forces use of murmurhash', t => {
   t.plan(1);
   process.env.OBJECTID_FEATURE_HASH = 'javascript';
   const hashFunction = proxyquire(modulePath, stub);
-  t.equals(hashFunction(), 'string-hash');
+  t.equals(hashFunction(), 'murmurhash');
   process.env.OBJECTID_FEATURE_HASH = undefined;
 });
 
@@ -22,14 +22,14 @@ test('hashFunction: default use of farmhash', t => {
   t.equals(hashFunction(), 'farmhash');
 });
 
-test('hashFunction: fallback use of string-hash', t => {
+test('hashFunction: fallback use of murmurhash', t => {
   t.plan(1);
   const stub = {
-    'string-hash': () => { return 'string-hash'; },
+    'murmurhash': () => { return 'murmurhash'; },
     'farmhash': { // eslint-disable-line
       hash32: () => { throw new Error(); }
     }
   };
   const hashFunction = proxyquire(modulePath, stub);
-  t.equals(hashFunction(), 'string-hash');
+  t.equals(hashFunction(), 'murmurhash');
 });

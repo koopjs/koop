@@ -1,4 +1,4 @@
-const { logger } = require('../logger');
+const logManager = require('../log-manager');
 
 /**
  * Normalize the limit option; defaults to undefined
@@ -9,7 +9,7 @@ function normalizeLimit(options) {
   const limit = getLimitFromOptions(options);
 
   if (limit !== undefined && !Number.isInteger(limit)) {
-    logger.debug('"limit" option is not an integer; skipping');
+    logManager.logger.debug('"limit" option is not an integer; skipping');
     return;
   }
   // If there is a limit, add 1 to it so we can later calculate a limitExceeded. The result set will be resized accordingly, post SQL

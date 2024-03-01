@@ -1,0 +1,63 @@
+name: Merge dependabot PRs for minor/patch updates
+on:
+  pull_request:
+    branches:
+      - master
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  pr-tests:
+    name: Install, lint, test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+        os: [ubuntu-latest, windows-latest]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    if: ${{ github.actor == 'dependabot[bot]' && (contains(github.event.pull_request.labels.*.name, 'minor') || contains(github.event.pull_request.labels.*.name, 'patch') ) }}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install npm 7
+      run: npm i -g npm@7 --registry=https://registry.npmjs.org
+      
+    - name: Install
+      run: npm ci
+
+    - name: Lint
+      run: npm run lint:ci
+
+    - name: Unit tests
+      run: npm test --workspaces
+    
+    - name: E2E tests
+      run: npm run test:e2e
+
+  merge-pr-to-next:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+        os: [ubuntu-latest]
+
+    if: ${{ github.actor == 'dependabot[bot]' && (contains(github.event.pull_request.labels.*.name, 'minor') || contains(github.event.pull_request.labels.*.name, 'patch') ) }}
+    steps:
+      - name: Approve dependabot PR
+        run: gh pr review --approve "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Auto-merge for Dependabot PRs
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          # The documentation incorrectly forgets `GITHUB_TOKEN` here.
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

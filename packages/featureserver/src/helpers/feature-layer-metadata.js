@@ -6,7 +6,7 @@ const {
   PolygonRenderer
 } = require('./renderers');
 const { calculateBounds } = require('@terraformer/spatial');
-const { logger } = require('../logger');
+const logManager = require('../log-manager');
 const getSpatialReference = require('./get-spatial-reference');
 const getGeometryTypeFromGeojson = require('./get-geometry-type-from-geojson');
 const normalizeExtent = require('./normalize-extent');
@@ -113,7 +113,7 @@ function calculateExtentFromFeatures (geojson, spatialReference) {
       spatialReference
     };
   } catch (error) {
-    logger.debug(`Could not calculate extent from data: ${error.message}`);
+    logManager.logger.debug(`Could not calculate extent from data: ${error.message}`);
   }
 }
 

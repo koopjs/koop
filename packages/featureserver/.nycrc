@@ -3,6 +3,6 @@
     "include": [
         "src/**/*.js"
     ],
-    "exclude": ["**/*.spec.js"],
+    "exclude": ["**/*.spec.js", "**/FeatureCollection.proto.js"],
     "includeAllSources": true
 }

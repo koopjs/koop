@@ -4,9 +4,7 @@
   "description": "A shared logger for Koop",
   "main": "src/index.js",
   "scripts": {
-    "test": "tape src/**/*.spec.js | tap-spec",
-    "test:cov": "nyc -r=json-summary tape './src/**/*.spec.js' | tap-spec && npm run cov:badge",
-    "cov:badge": "coverage-badges-cli --output ./coverage.svg"
+    "test": "tape src/**/*.spec.js | tap-min"
   },
   "repository": {
     "type": "git",
@@ -27,11 +25,11 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "winston": "^3.2.1"
+    "winston": "^3.11.0"
   },
   "devDependencies": {
-    "tap-spec": "^5.0.0",
-    "tape": "^5.0.1"
+    "tap-min": "^3.0.0",
+    "tape": "^5.7.5"
   },
   "files": [
     "src/**/*.js",

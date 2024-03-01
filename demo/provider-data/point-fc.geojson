@@ -3,7 +3,8 @@
   "metadata": {
     "fields": [
       { "name": "timestamp", "type": "Date" } 
-      ]
+      ],
+     "supportedQueryFormats": "JSON" 
     },
   "features": [
     {

@@ -12,19 +12,18 @@ class Cache {
     this.#cache = new LRUCache({ maxSize: options?.size || 500 });
   }
 
-  insert(key, geojson, options, callback) {
-    this.#cache.set();
-    this.#cache.set(key, normalizeGeojson(geojson), {
+  async insert(key, data, options) {
+    this.#cache.set(key, data, {
       maxAge: calculateMaxAge(options?.ttl),
     });
-    callback(null);
+    return;
   }
 
-  retrieve(key, options, callback) {
+  async retrieve(key, options) {
     const cacheEntry = this.#cache.get(key);
 
     if (!cacheEntry) {
-      return callback(null);
+      return null;
     }
 
     let data = cacheEntry;
@@ -35,27 +34,13 @@ class Cache {
       data = _.omit(data, options.omit);
     }
 
-    callback(null, data);
+    return data;
   }
 
-  delete(key, callback) {
+  async delete(key) {
     this.#cache.delete(key);
-    callback(null);
+    return;
   }
-}
-
-function normalizeGeojson(geojson) {
-  if (geojson === undefined || geojson === null || Array.isArray(geojson)) {
-    return {
-      type: 'FeatureCollection',
-      features: geojson || [],
-      metadata: {},
-    };
-  }
-
-  geojson.type = geojson.type || 'FeatureCollection';
-  geojson.features = geojson.features || [];
-  return _.cloneDeep(geojson);
 }
 
 function calculateMaxAge(ttl) {

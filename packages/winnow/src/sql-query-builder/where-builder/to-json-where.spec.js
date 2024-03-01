@@ -87,12 +87,20 @@ test('toJsonWhere: handle function call', (t) => {
   t.equals(whereFragment, "now() = 'test'");
 });
 
-test('toJsonWhere: handle IN list', (t) => {
+test('toJsonWhere: handle IN list of numbers', (t) => {
   t.plan(1);
 
   const whereFragment = translateSqlWhere('foo IN (1,2,3)');
   t.equals(whereFragment, 'properties->`foo` IN (1, 2, 3 )');
 });
+
+test('toJsonWhere: handle IN list of strings', (t) => {
+  t.plan(1);
+
+  const whereFragment = translateSqlWhere(`foo IN ('foo', 'bar')`);
+  t.equals(whereFragment, 'properties->`foo` IN (\'foo\', \'bar\' )');
+});
+
 
 test('toJsonWhere: handle IS NULL', (t) => {
   t.plan(1);

@@ -1,11 +1,19 @@
 const _ = require('lodash');
+const joi = require('joi');
 const defaults = require('../metadata-defaults');
+const logManager = require('../log-manager');
 const {
   LayerFields
 } = require('./fields');
 
+const supportedQueryFormatsArraySchema = joi.array().items(
+  joi.string().allow('JSON', 'geojson', 'PBF')
+).has(joi.string().valid('JSON')).message('must contain "JSON"');
+
+const supportedQueryFormatsSchema = joi.alternatives().try(supportedQueryFormatsArraySchema, joi.string());
+
 class TableLayerMetadata {
-  static create (geojson = {}, options = {}) {
+  static create (geojson, options = {}) {
     const {
       geojson: normalizedGeojson,
       options: normalizedOptions
@@ -33,13 +41,11 @@ class TableLayerMetadata {
     // TODO: deprecate req.app.locals.config usage
     const {
       currentVersion,
-      fullVersion,
       description
     } = _.get(req, 'app.locals.config.featureServer', {});
 
     const normalizedOptions = _.pickBy({
       currentVersion,
-      fullVersion,
       description,
       layerId,
       ...query,
@@ -64,13 +70,14 @@ class TableLayerMetadata {
   mixinOverrides (geojson = {}, options = {}) {
     const {
       id,
-      idField,
+      idField = 'OBJECTID',
       displayField,
       capabilities,
       layerId,
       hasStaticData,
       supportsPagination,
-      hasAttachments
+      hasAttachments,
+      supportedQueryFormats,
     } = options;
 
     this._setFields(geojson, options);
@@ -90,6 +97,8 @@ class TableLayerMetadata {
     this._setDirectOverrides(options);
 
     this._setHasAttachments(hasAttachments);
+
+    this.#setSupportedQueryFormats(supportedQueryFormats);
 
     return this;
   }
@@ -169,7 +178,6 @@ class TableLayerMetadata {
       maxRecordCount,
       defaultVisibility,
       currentVersion,
-      fullVersion,
       hasZ
     } = options;
 
@@ -184,9 +192,28 @@ class TableLayerMetadata {
       maxRecordCount,
       defaultVisibility,
       currentVersion,
-      fullVersion,
       hasZ
     });
+  }
+
+  #setSupportedQueryFormats (supportedQueryFormats) {
+    if(!supportedQueryFormats) {
+      return;
+    }
+
+    try {
+      validateQueryFormatsArray(supportedQueryFormats);
+      
+      if (Array.isArray(supportedQueryFormats)) {
+        this.supportedQueryFormats = supportedQueryFormats.join(',');
+        return;
+      }
+  
+      validateQueryFormatsArray(supportedQueryFormats.split(',').map(val => val.trim()));
+      this.supportedQueryFormats = supportedQueryFormats;
+    } catch (error) {
+      logManager.logger.error(error.message);
+    }
   }
 }
 
@@ -202,6 +229,13 @@ function normalizeCapabilities (capabilities, metadataCapabilites) {
     ...(metadataCapabilites || {}),
     ...capabilities
   };
+}
+
+function validateQueryFormatsArray(arr) {
+  const { error } = supportedQueryFormatsSchema.validate(arr);
+  if (error) {
+    throw new Error (`"supportedQueryFormats" override is invalid; ${error.message}. skipping override`);
+  }
 }
 
 module.exports = TableLayerMetadata;

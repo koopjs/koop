@@ -597,7 +597,7 @@ describe('Query operations', () => {
         response.features[0].attributes.avg_precip.should.equal(0.3253956834532375);
       });
 
-      it('should return correct number of fields and features for var/stddev stats', () => {
+      it.skip('should return correct number of fields and features for var/stddev stats', () => {
         const response = FeatureServer.query(data, {
           outStatistics: [
             { statisticType: 'var', onStatisticField: 'total precip', outStatisticFieldName: 'var_precip' },

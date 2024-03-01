@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { logger } = require('../logger');
+const logManager = require('../log-manager');
 
 const esriLookup = {
   Point: 'esriGeometryPoint',
@@ -18,7 +18,7 @@ module.exports = function getGeometryTypeFromGeojson ({ geometryType, metadata =
   const type = geometryType || metadata.geometryType || findInFeatures(features);
 
   if (!type) {
-    logger.debug(`Input JSON has unsupported geometryType: ${type}`);
+    logManager.logger.debug(`Input JSON has unsupported geometryType: ${type}`);
   }
   return esriLookup[type];
 };

@@ -1,4 +1,3 @@
-const { promisify } = require('util');
 const FeatureServer = require('@koopjs/featureserver');
 const Logger = require('@koopjs/logger');
 let logger = new Logger();
@@ -17,7 +16,8 @@ const tokenRequiredError = {
   error: {
     code: 499,
     message: 'Token Required',
-    details: [],
+    messageCode: 'GWM_0003',
+    details: ['Token Required'],
   },
 };
 
@@ -39,8 +39,9 @@ const authorizationError = {
 };
 
 class GeoServices {
-  #useHttp = false;
-  #pullData;
+  #useHttpForTokenUrl = false;
+  #authInfo;
+  #logger;
 
   static type = 'output';
   static version = require('../package.json').version;
@@ -51,12 +52,7 @@ class GeoServices {
       handler: 'restInfoHandler',
     },
     {
-      path: '$namespace/tokens/:method',
-      methods: ['get', 'post'],
-      handler: 'generateToken',
-    },
-    {
-      path: '$namespace/tokens/',
+      path: '$namespace/rest/generateToken',
       methods: ['get', 'post'],
       handler: 'generateToken',
     },
@@ -94,31 +90,48 @@ class GeoServices {
 
   constructor(model, options = {}) {
     this.model = model;
-    this.#pullData = promisify(this.model.pull).bind(this.model);
-    this.options = options;
-    this.logger = options.logger || logger;
-    this.authInfo = options.authInfo || {};
-    this.#useHttp =
-      this.model.authenticationSpecification?.useHttp === true ||
-      process.env.KOOP_AUTH_HTTP === 'true';
-    FeatureServer.setLogger({ logger: this.logger });
+    this.#logger = options.logger || logger;
+    this.#authInfo = options.authInfo || {
+      isTokenBasedSecurity: true,
+    };
+
+    this.#useHttpForTokenUrl = this.#getHttpSetting(options, model);
+
+    FeatureServer.setLogger({ logger: this.#logger });
 
     // Set overrides
     FeatureServer.setDefaults(options.defaults);
   }
 
+  #getHttpSetting(options, model) {
+    if (options.useHttpForTokenUrl || process.env.GEOSERVICES_HTTP === 'true') {
+      return (
+        options.useHttpForTokenUrl || process.env.GEOSERVICES_HTTP === 'true'
+      );
+    }
+
+    if (typeof model.authenticationSpecification === 'function') {
+      return model.authenticationSpecification()?.useHttp === true;
+    }
+
+    if (typeof process.env.KOOP_AUTH_HTTP !== 'undefined') {
+      this.#logger.warn(
+        'Use of "KOOP_AUTH_HTTP" environment variable is deprecated.  It will be removed in a future release. Use the "useHttpForTokenUrl" option or "GEOSERVICES_HTTP" environment variable.',
+      );
+      return process.env.KOOP_AUTH_HTTP === 'true';
+    }
+
+    return false;
+  }
+
   async generalHandler(req, res) {
     try {
-      if (this.#shouldAuthorize()) {
-        await this.model.authorize(req);
-      }
-
-      const data = await this.#pullData(req);
+      const data = await this.model.pull(req);
       return FeatureServer.route(req, res, data);
     } catch (error) {
-      this.logger.error(error);
+      this.#logger.error(error);
 
-      const token = this.#getToken(req);
+      const token = this.#extractTokenFromRequest(req);
       const { code, message, details = [] } = normalizeError(error);
 
       res.status(200); // ArcGIS standard is to wrap errors in 200 success
@@ -145,11 +158,7 @@ class GeoServices {
     }
   }
 
-  #shouldAuthorize() {
-    return typeof this.model.authorize === 'function';
-  }
-
-  #getToken(req) {
+  #extractTokenFromRequest(req) {
     const {
       headers: { authorization },
       query,
@@ -164,37 +173,34 @@ class GeoServices {
   }
 
   restInfoHandler(req, res) {
-    const authInfo = { ...this.authInfo };
+    const authInfo = { ...this.#authInfo };
 
-    if (this.model.authenticationSpecification) {
-      authInfo.isTokenBasedSecurity = true;
-
+    if (this.#authInfo.isTokenBasedSecurity) {
       authInfo.tokenServicesUrl = this.#buildTokensUrl(
         req.headers.host,
         req.baseUrl,
       );
     }
 
-    FeatureServer.route(req, res, { authInfo });
+    FeatureServer.route(req, res, { owningSystemUrl: this.#buildOwningSystemUrl(req.headers.host,
+      req.baseUrl), authInfo });
   }
 
   #buildTokensUrl(host, baseUrl) {
-    const protocol = this.#useHttp ? 'http' : 'https';
-    return `${protocol}://${host}${baseUrl}/${this.model.namespace}/tokens/`;
+    const protocol = this.#useHttpForTokenUrl ? 'http' : 'https';
+    return `${protocol}://${host}${baseUrl}/${this.model.namespace}/rest/generateToken`;
+  }
+
+  #buildOwningSystemUrl(host, baseUrl) {
+    const protocol = this.#useHttpForTokenUrl ? 'http' : 'https';
+    return `${protocol}://${host}${baseUrl}/${this.model.namespace}`;
   }
 
   async generateToken(req, res) {
-    if (typeof this.model.authenticate !== 'function') {
-      return res
-        .status(500)
-        .json({ error: '"authenticate" not implemented for this provider' });
-    }
-
     try {
+      //const decodedToken = await this.model.authorize(req);
       const tokenResponse = await this.model.authenticate(req);
-      res
-        .status(200)
-        .json({ ...tokenResponse, ssl: tokenResponse.ssl || false });
+      res.status(200).json(tokenResponse);
     } catch (error) {
       const { code, message, details = [] } = normalizeError(error);
 

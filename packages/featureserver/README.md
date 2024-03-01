@@ -1,6 +1,6 @@
 # FeatureServer
-[![npm][npm-image]][npm-url]
-![coverage](./coverage.svg)
+![https://www.npmjs.com/package/@koopjs/featureserver](https://img.shields.io/npm/v/@koopjs/featureserver.svg?style=flat-square)
+![coverage](https://raw.githubusercontent.com/koopjs/koop/master/packages/featureserver/coverage.svg)
 
 *An open source implementation of the GeoServices specification*
 
@@ -35,13 +35,11 @@ routes.forEach(route => {
 ## API
 * [FeatureServer.route](#featureserver.route)
 * [FeatureServer.query](#featureserver.query)
+* [FeatureServer.restInfo](#featureserver.serverInfo)
 * [FeatureServer.serverInfo](#featureserver.serverInfo)
 * [FeatureServer.layerInfo](#featureserver.layerInfo)
 * [FeatureServer.layers](#featureserver.layers)
 * [FeatureServer.generateRenderer](#featureserver.generateRenderer)
-* [FeatureServer.authenticate](#featureserver.authenticate)
-* [FeatureServer.error.authorize](#featureserver.error.authorize)
-* [FeatureServer.authenticate](#featureserver.error.authenticate)
 * [FeatureServer.queryRelatedRecords](#featureserver.queryRelatedRecords)
 * [FeatureServer.setDefaults](#featureserver.setDefaults)
 
@@ -87,7 +85,8 @@ e.g.
        type: String, // 'Date' || 'Double' || 'Integer' || 'String'
        alias: String, // how should clients display this field name,
      }
-    ]
+    ],
+    supportedQueryFormats: String | Array // 'JSON,geojson' || ['JSON', 'geojson']
   },
   capabilities: {
     quantization: Boolean // True if the provider supports quantization
@@ -157,8 +156,22 @@ const options = {
 FeatureServer.query(geojson, options)
 ```
 
+### FeatureServer.restInfo
+Pass in a `data` object and the request object and return a response object that adheres to the specification of the `rest/info` response.  The `data` object may contain the `owningSystemUrl` and the `authInfo` object:
+```js
+{
+  owningSystemUrl: 'https://domain.com/some/path'
+  authInfo: {
+    isTokenBasedSecurity: true,
+    tokenServicesUrl: 'https://url/that/will/generate/a/token'
+  }
+}
+```
+
+The response will include the above information as well as the FeatureServer version numbers.
+
 ### FeatureServer.serverInfo
-Generate version `10.51` Geoservices server info
+Generate Geoservices server info
 
 ```js
 const server = {
@@ -214,7 +227,7 @@ FeatureServer.serverInfo(server)
 ```
 
 ### FeatureServer.layerInfo
-Generate version `10.51` Geoservices information about a single layer
+Generate Geoservices information about a single layer
 ```js
 FeatureServer.layerInfo(geojson, options)
 ```
@@ -264,7 +277,7 @@ const metadata = {
 ```
 
 ### FeatureServer.layers
-Generate version `10.51` Geoservices information about one or many layers
+Generate Geoservices information about one or many layers
 
 Can pass a single geojson object or an array of geojson objects
 ```js
@@ -419,59 +432,6 @@ Output:
   ]
 ```
 
-### FeatureServer.authenticate
-Pass in an outgoing response object and an authentication success object and this function will route and return a formatted authentication success response.
-
-    FeatureServer.authenticate(res, auth, ssl = false)
-
-* `auth` is the result of a successful authentication attempt that returns a token and expiration time
-* `ssl` is a boolean flag indicating if token should always be passed back via HTTPS. Defaults to `false`
-
-e.g.,
-    
-    const auth = {
-      "token":"elS39KU4bMmZQgMXDuswgA14vavIp4mfpiqcWSr0qM6q4dFguTnnHddWqbpK5Mc3HsCN8XghlwawUUYApOOcxKNyg_9WqTofChJXxxD058_rL1HZkM5PDhUOh9YYQn1K",
-      "expires":1524508236322
-    }
-
-    FeatureServer.authenticate(res, auth)
-
-    {
-      "token":"elS39KU4bMmZQgMXDuswgA14vavIp4mfpiqcWSr0qM6q4dFguTnnHddWqbpK5Mc3HsCN8XghlwawUUYApOOcxKNyg_9WqTofChJXxxD058_rL1HZkM5PDhUOh9YYQn1K",
-      "expires":1524508236322,
-      ssl: false
-    }
-
-### FeatureServer.error.authorize
-Pass in an outgoing response object and this function will route and return a formattted authorization error.
-
-    FeatureServer.error.authorize(res)
-
-    {
-      "error": {
-        "code": 499,
-        "message": "Token Required",
-        "details": []
-      }
-    }
-
-### FeatureServer.error.authenticate
-Pass in an outgoing response object and this function will route and return a formatted authentication error.
-
-    FeatureServer.error.authenticate(res)
-    
-    {
-      "error": {
-        "code": 400,
-        "message": "Unable to generate token.",
-        "details": ["Invalid username or password."]
-      }
-    }
-
-
-[npm-image]: https://img.shields.io/npm/v/@koopjs/featureserver.svg?style=flat-square
-[npm-url]: https://www.npmjs.com/package/@koopjs/featureserver
-
 
 ### FeatureServer.queryRelatedRecords
 Pass in `geojson` and `options`, and the function will return a valid queryRelatedRecords object. Required attributes within `options` are `objectIds` and `relationshipId`.
@@ -583,7 +543,13 @@ If you are using FeatureServer as part of a Koop instance, FeatureServer is regi
 
 ```js
 const koop = new Koop({
-  geoservicesDefaults: { currentVersion: 99.0 }
+  geoservicesDefaults: { 
+    currentVersion: 99.0 // set your own version number
+    fullVersion: '99.9.9'
+    layer: {
+      supportedQueryFormats: 'JSON' // allowed values include 'JSON', 'JSON,geojson'; default is 'JSON,geojson,PBF'
+    }
+  }
 });
  
 ```

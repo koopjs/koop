@@ -1,18 +1,14 @@
 {
   "name": "@koopjs/winnow",
-  "version": "4.1.0",
+  "version": "4.3.0",
   "description": "Apply sql-like filters to GeoJSON",
   "main": "src/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "tape **/*.spec.js | tap-spec",
-    "test:cov": "nyc -r=json-summary tape '**/*.spec.js' | tap-spec && npm run cov:badge && npm run test:cov:unit",
-    "test:cov:unit": "nyc -r=json-summary --report-dir=coverage_unit --temp-dir=.nyc_output_unit tape 'src/**/*.spec.js' | tap-spec && npm run cov:badge:unit",
-    "test:cov:unit:loc": "nyc -r=html --report-dir=coverage_unit --temp-dir=.nyc_output_unit tape 'src/**/*.spec.js' | tap-spec && npm run cov:badge:unit",
-    "cov:badge": "coverage-badges-cli --output ./coverage.svg",
-    "cov:badge:unit": "coverage-badges-cli --source coverage_unit/coverage-summary.json --output ./coverage-unit.svg",
+    "test": "tape **/*.spec.js | tap-min",
+    "test:unit": "tape 'src/**/*.spec.js' | tap-min",
     "benchmark": "node benchmark/index.js",
     "benchmark:ci": "node benchmark/index.js | tee benchmark-result.txt"
   },
@@ -48,34 +44,35 @@
   },
   "homepage": "https://github.com/koopjs/koop#readme",
   "dependencies": {
-    "@esri/proj-codes": "^3.1.0",
-    "@terraformer/arcgis": "^2.1.1",
+    "@esri/proj-codes": "^3.2.0",
+    "@koopjs/logger": "5.0.0",
+    "@terraformer/arcgis": "^2.1.2",
     "@terraformer/spatial": "^2.1.2",
-    "@turf/bbox-polygon": "^6.0.1",
-    "@turf/centroid": "^6.0.0",
-    "@types/geojson": "^7946.0.7",
-    "alasql": "^4.0.0",
+    "@turf/bbox-polygon": "^6.5.0",
+    "@turf/centroid": "^6.5.0",
+    "@types/geojson": "^7946.0.14",
+    "alasql": "^4.3.0",
     "classybrew": "0.0.3",
-    "joi": "^17.6.3",
-    "js-sql-parser": "^1.4.1",
-    "lodash": "^4.17.4",
-    "moment": "^2.18.1",
+    "joi": "^17.12.2",
+    "js-sql-parser": "^1.5.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.30.1",
+    "murmurhash": "^2.0.1",
     "ngeohash": "^0.6.3",
-    "proj4": "^2.9.0",
-    "simple-statistics": "^7.0.0",
-    "string-hash": "^1.1.3",
-    "wkt-parser": "^1.2.2"
+    "proj4": "^2.10.0",
+    "simple-statistics": "^7.8.3",
+    "wkt-parser": "^1.3.3"
   },
   "devDependencies": {
     "benchmark": "^2.1.4",
-    "fs-extra": "^11.0.0",
+    "fs-extra": "^11.2.0",
     "proxyquire": "^2.1.3",
-    "sinon": "^15.0.0",
-    "tap-spec": "^5.0.0",
-    "tape": "^5.0.0"
+    "sinon": "^17.0.1",
+    "tap-min": "^3.0.0",
+    "tape": "^5.7.5"
   },
   "optionalDependencies": {
-    "farmhash": "^3.1.0"
+    "farmhash": "^3.3.0"
   },
   "types": "index.d.ts"
 }
