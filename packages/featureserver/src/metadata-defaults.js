@@ -116,6 +116,7 @@ class MetadataDefaults {
       supportsQueryContingentValues: false,
       supportedContingentValuesFormats: '',
       supportsContingentValuesJson: null,
+      supportedPbfFeatureEncodings: 'esriDefault',
       tables: [],
       layers: [],
     };

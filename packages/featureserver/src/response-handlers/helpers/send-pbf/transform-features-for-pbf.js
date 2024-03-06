@@ -16,11 +16,11 @@ function transformFeaturesForPbf(json, quantizationParameters) {
   return {
     objectIdFieldName,
     uniqueIdField,
-    geometryType,
     spatialReference,
-    fields,
+    fields: fields.map(({name, alias, type}) => ({ name, alias, fieldType: type})),
     features,
-    transform: geometryTransform
+    transform: geometryTransform,
+    geometryType: geometryType ?  geometryType.replace('esriGeometry', 'esriGeometryType') : 'esriGeometryTypeNone'
   };
 }
 

@@ -42,7 +42,8 @@ function transformMultipoint(geometry, transform) {
   const points = transformPoints(geometry.points, transform);
   return {
     lengths: [points.length],
-    coords: points.flat().map((int) => int.toString()),
+    coords: points.flat()
+    //.map((int) => int.toString()),
   };
 }
 
@@ -55,10 +56,11 @@ function transformPoint(geometry, transform) {
   const x = quantizeX(geometry.x, xScale, xTranslate);
   const y = quantizeY(geometry.y, yScale, yTranslate);
 
+  const coords = createCoordinatesArray(x, y, geometry.z, geometry.m);
   return {
-    coords: createCoordinatesArray(x, y, geometry.z, geometry.m).map((int) =>
-      int.toString(),
-    ),
+    lengths: [coords.length],
+    coords
+    //.map((int) => int.toString()),
   };
 }
 
@@ -70,7 +72,7 @@ function transformPolygon(geometry, transform, hasZ, hasM) {
     coords: rings
       .flat()
       .flat()
-      .map((int) => int.toString()),
+      //.map((int) => int.toString()),
   };
 }
 
@@ -82,7 +84,7 @@ function transformPolyline(geometry, transform) {
     coords: paths
       .flat()
       .flat()
-      .map((int) => int.toString()),
+      //.map((int) => int.toString()),
   };
 }
 

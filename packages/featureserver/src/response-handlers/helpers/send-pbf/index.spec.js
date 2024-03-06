@@ -7,6 +7,8 @@ const transformFeaturesForPbfSpy = sinon.spy(() => {
 });
 
 const protoSpy = {
+  fromObject: (obj) => (obj),
+  verify: () => {},
   encode: sinon.spy(() => {
     return protoSpy;
   }),

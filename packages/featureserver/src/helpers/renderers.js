@@ -4,9 +4,9 @@ class PointRenderer {
       type: 'simple',
       symbol: {
         color: [
-          45,
-          172,
-          128,
+          252,
+          152,
+          3,
           161
         ],
         outline: {
