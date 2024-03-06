@@ -14,9 +14,9 @@ describe('Renderers', () => {
       type: 'simple',
       symbol: {
         color: [
-          45,
-          172,
-          128,
+          247,
+          150,
+          70,
           161
         ],
         outline: {

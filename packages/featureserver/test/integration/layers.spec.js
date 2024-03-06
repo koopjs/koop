@@ -231,7 +231,7 @@ describe('Layers operations', () => {
               renderer: {
                 type: 'simple',
                 symbol: {
-                  color: [252, 152, 3, 161],
+                  color: [247, 150, 70, 161],
                   outline: {
                     color: [190, 190, 190, 105],
                     width: 0.5,
