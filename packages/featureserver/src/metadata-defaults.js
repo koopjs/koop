@@ -150,6 +150,7 @@ class MetadataDefaults {
       supportsQuantizationEditMode: false,
       supportsApplyEditsWithGlobalIds: false,
       supportsReturningQueryGeometry: false,
+      supportedPbfFeatureEncodings: 'esriDefault',
       advancedQueryCapabilities: {
         supportsPagination: true,
         supportsQueryAttachmentsCountOnly: false,

@@ -39,8 +39,9 @@ function parseQuantizationParameters(q) {
     tolerance = null
   } = q;
   const scale = tolerance !== null  ? q.tolerance: 1;
-  const [ xTranslate, yTranslate ] = q.extent != null ? [q.extent.xmin, q.extent.ymax] : [0, 0];
 
+  const [ xTranslate, yTranslate ] = q.extent != null ? [q.extent.xmin, q.extent.ymax] : [0, 0];
+  
   return {
     originPosition: normalizeOriginPosition(q.originPosition),
     scale: { xScale: scale, yScale: scale },
