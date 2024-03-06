@@ -42,15 +42,14 @@ function transformMultipoint(geometry, transform) {
   const points = transformPoints(geometry.points, transform);
   return {
     lengths: [points.length],
-    coords: points.flat()
-    //.map((int) => int.toString()),
+    coords: points.flat(),
   };
 }
 
 function transformPoint(geometry, transform) {
   const {
     scale: { xScale, yScale },
-    translate: { xTranslate, yTranslate }
+    translate: { xTranslate, yTranslate },
   } = transform;
 
   const x = quantizeX(geometry.x, xScale, xTranslate);
@@ -59,8 +58,7 @@ function transformPoint(geometry, transform) {
   const coords = createCoordinatesArray(x, y, geometry.z, geometry.m);
   return {
     lengths: [coords.length],
-    coords
-    //.map((int) => int.toString()),
+    coords,
   };
 }
 
@@ -69,10 +67,7 @@ function transformPolygon(geometry, transform, hasZ, hasM) {
 
   return {
     lengths: rings.map((ring) => ring.length),
-    coords: rings
-      .flat()
-      .flat()
-      //.map((int) => int.toString()),
+    coords: rings.flat().flat(),
   };
 }
 
@@ -81,10 +76,7 @@ function transformPolyline(geometry, transform) {
 
   return {
     lengths: paths.map((path) => path.length),
-    coords: paths
-      .flat()
-      .flat()
-      //.map((int) => int.toString()),
+    coords: paths.flat().flat(),
   };
 }
 
@@ -112,7 +104,7 @@ function quantizeY(y, scale, translate) {
 function transformCoordsArray(coordsArray, transform) {
   const {
     scale: { xScale, yScale },
-    translate: { xTranslate, yTranslate }
+    translate: { xTranslate, yTranslate },
   } = transform;
   const result = [];
   let prevX;

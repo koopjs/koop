@@ -1,6 +1,6 @@
-const { esriPBuffer: {
-  FeatureCollectionPBuffer: FeatureCollectionProto
-}} = require('./FeatureCollection.proto.js');
+const {
+  esriPBuffer: { FeatureCollectionPBuffer: FeatureCollectionProto },
+} = require('./FeatureCollection.proto.js');
 const logManager = require('../../../log-manager.js');
 const { transformFeaturesForPbf } = require('./transform-features-for-pbf.js');
 
@@ -35,13 +35,16 @@ function getPbfBuffer(resultJson, requestParameters) {
 
 function verifyPbfMessage(pbfMessage) {
   const messageSpecViolations = FeatureCollectionProto.verify(pbfMessage);
-  if(messageSpecViolations) {
-    logManager.logger.debug(`FeatureCollection PBF specification violation: ${messageSpecViolations}`);
+  if (messageSpecViolations) {
+    logManager.logger.debug(
+      `FeatureCollection PBF specification violation: ${messageSpecViolations}`,
+    );
   }
 }
 
 function convertToPbfJson(payload, requestParameters) {
-  const { returnCountOnly, returnIdsOnly, quantizationParameters } = requestParameters;
+  const { returnCountOnly, returnIdsOnly, quantizationParameters } =
+    requestParameters;
 
   if (returnCountOnly === true) {
     return {
