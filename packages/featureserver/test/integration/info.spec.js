@@ -45,7 +45,6 @@ describe('Info operations', () => {
         supportsVCSProjection: false,
         supportedExportFormats: '',
         capabilities: 'Query',
-        supportedPbfFeatureEncodings: 'esriDefault',
         description: 'MyTestDesc',
         copyrightText:
           'Copyright information varies by provider. For more information please contact the source of this data.',

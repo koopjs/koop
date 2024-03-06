@@ -71,6 +71,7 @@ function getLayersInfo(filename, idField) {
     layers: [
       {
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: `${filename}.geojson`,
         type: 'Feature Layer',
@@ -193,7 +194,7 @@ function getLayersInfo(filename, idField) {
           renderer: {
             type: 'simple',
             symbol: {
-              color: [45, 172, 128, 161],
+              color: [247, 150, 70, 161],
               outline: {
                 color: [190, 190, 190, 105],
                 width: 0.5,

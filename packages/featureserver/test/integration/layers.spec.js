@@ -15,6 +15,7 @@ describe('Layers operations', () => {
         layers: [
           {
             currentVersion: CURRENT_VERSION,
+            supportedPbfFeatureEncodings: 'esriDefault',
             id: 0,
             name: 'Snow',
             type: 'Feature Layer',

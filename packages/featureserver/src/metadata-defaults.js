@@ -116,7 +116,6 @@ class MetadataDefaults {
       supportsQueryContingentValues: false,
       supportedContingentValuesFormats: '',
       supportsContingentValuesJson: null,
-      supportedPbfFeatureEncodings: 'esriDefault',
       tables: [],
       layers: [],
     };
@@ -151,6 +150,7 @@ class MetadataDefaults {
       supportsQuantizationEditMode: false,
       supportsApplyEditsWithGlobalIds: false,
       supportsReturningQueryGeometry: false,
+      supportedPbfFeatureEncodings: 'esriDefault',
       advancedQueryCapabilities: {
         supportsPagination: true,
         supportsQueryAttachmentsCountOnly: false,
