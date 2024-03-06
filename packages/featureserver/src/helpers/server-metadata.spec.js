@@ -10,7 +10,6 @@ describe('ServerMetadata', () => {
 
     result.should.deepEqual({
       currentVersion: CURRENT_VERSION,
-      supportedPbfFeatureEncodings: 'esriDefault',
       serviceDescription:
         'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
       hasVersionedData: false,
@@ -78,7 +77,6 @@ describe('ServerMetadata', () => {
 
     result.should.deepEqual({
       currentVersion: CURRENT_VERSION,
-      supportedPbfFeatureEncodings: 'esriDefault',
       serviceDescription: 'goodbye',
       hasVersionedData: false,
       supportsDisconnectedEditing: false,
@@ -134,7 +132,6 @@ describe('ServerMetadata', () => {
 
     result.should.deepEqual({
       currentVersion: CURRENT_VERSION,
-      supportedPbfFeatureEncodings: 'esriDefault',
       serviceDescription:
         'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
       hasVersionedData: false,

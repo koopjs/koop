@@ -51,6 +51,7 @@ describe('FeatureLayerMetadata', () => {
 
     featureLayerMetadata.should.deepEqual({
       currentVersion: CURRENT_VERSION,
+      supportedPbfFeatureEncodings: 'esriDefault',
       id: 0,
       name: 'Not Set',
       type: 'Feature Layer',
@@ -180,6 +181,7 @@ describe('FeatureLayerMetadata', () => {
 
       featureLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Feature Layer',
@@ -348,6 +350,7 @@ describe('FeatureLayerMetadata', () => {
       );
       featureLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Feature Layer',
@@ -508,6 +511,7 @@ describe('FeatureLayerMetadata', () => {
 
       featureLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Feature Layer',
@@ -664,6 +668,7 @@ describe('FeatureLayerMetadata', () => {
 
       featureLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Feature Layer',
@@ -826,6 +831,7 @@ describe('FeatureLayerMetadata', () => {
 
       featureLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Feature Layer',
@@ -967,6 +973,7 @@ describe('FeatureLayerMetadata', () => {
 
       featureLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Feature Layer',
@@ -1134,6 +1141,7 @@ describe('FeatureLayerMetadata', () => {
 
     featureLayerMetadata.should.deepEqual({
       currentVersion: CURRENT_VERSION,
+      supportedPbfFeatureEncodings: 'esriDefault',
       id: 99,
       name: 'Not Set',
       type: 'Feature Layer',
