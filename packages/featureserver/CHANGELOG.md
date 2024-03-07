@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 8.5.2
+
+### Patch Changes
+
+- allow proper PBF encoding of string OID values
+
 ## 8.5.1
 
 ### Patch Changes
