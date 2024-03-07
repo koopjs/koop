@@ -7,6 +7,8 @@ const transformFeaturesForPbfSpy = sinon.spy(() => {
 });
 
 const protoSpy = {
+  fromObject: (obj) => obj,
+  verify: () => {},
   encode: sinon.spy(() => {
     return protoSpy;
   }),
@@ -18,6 +20,10 @@ const protoSpy = {
   }),
 };
 
+const loggerSpy = {
+  debug: sinon.spy(),
+};
+
 const { sendPbf } = proxyquire('./', {
   './transform-features-for-pbf.js': {
     transformFeaturesForPbf: transformFeaturesForPbfSpy,
@@ -27,6 +33,7 @@ const { sendPbf } = proxyquire('./', {
       FeatureCollectionPBuffer: protoSpy,
     },
   },
+  '../../../log-manager.js': { logger: loggerSpy },
 });
 
 const res = {
@@ -140,5 +147,44 @@ describe('sendPbf', () => {
       error.message.should.equal('Bad Request');
       error.code.should.equal(400);
     }
+  });
+
+  it('log spec violation', () => {
+    const protoSpy = {
+      fromObject: (obj) => obj,
+      verify: () => {
+        return 'something wrong here';
+      },
+      encode: sinon.spy(() => {
+        return protoSpy;
+      }),
+      finish: sinon.spy(() => {
+        return {
+          esri: 'pbf',
+          length: 99,
+        };
+      }),
+    };
+
+    const loggerSpy = {
+      debug: sinon.spy(),
+    };
+
+    const { sendPbf } = proxyquire('./', {
+      './transform-features-for-pbf.js': {
+        transformFeaturesForPbf: transformFeaturesForPbfSpy,
+      },
+      './FeatureCollection.proto.js': {
+        esriPBuffer: {
+          FeatureCollectionPBuffer: protoSpy,
+        },
+      },
+      '../../../log-manager.js': { logger: loggerSpy },
+    });
+
+    sendPbf(res, { esri: 'json' }, {});
+    loggerSpy.debug.firstCall.args.should.deepEqual([
+      'FeatureCollection PBF specification violation: something wrong here',
+    ]);
   });
 });
