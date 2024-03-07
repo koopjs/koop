@@ -17,7 +17,7 @@ function transformToPbfAttributes(attributes, fieldMap) {
       name: key,
       value,
     }))
-    .orderBy(['name'],['asc'])
+    .orderBy(['name'], ['asc'])
     .map(({ name, value }) => {
       const type = fieldMap[name];
       const pbfType = dataTypeLookup(type, value);
@@ -27,11 +27,11 @@ function transformToPbfAttributes(attributes, fieldMap) {
 }
 
 function dataTypeLookup(fieldType, value) {
-  if(fieldType === 'esriFieldTypeOID') {
+  if (fieldType === 'esriFieldTypeOID') {
     return Number.isInteger(value) ? 'uintValue' : 'stringValue';
   }
   return typeLookup[fieldType];
 }
 module.exports = {
-  transformToPbfAttributes
+  transformToPbfAttributes,
 };

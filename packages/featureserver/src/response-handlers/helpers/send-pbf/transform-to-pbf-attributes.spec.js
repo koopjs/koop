@@ -80,7 +80,7 @@ const attributes = {
 
 describe('transformToPbfAttributes', () => {
   it('should transform Esri JSON to Esri PBF JSON', () => {
-    const result = transformToPbfAttributes(attributes ,fieldMap);
+    const result = transformToPbfAttributes(attributes, fieldMap);
     result.should.deepEqual([
       {
         sint64Value: 1421798400000,
@@ -107,8 +107,10 @@ describe('transformToPbfAttributes', () => {
   });
 
   it('should properly handle OIDs that are strings', () => {
-    
-    const result = transformToPbfAttributes({ ...attributes, FID: 'foo' },fieldMap);
+    const result = transformToPbfAttributes(
+      { ...attributes, FID: 'foo' },
+      fieldMap,
+    );
     result.should.deepEqual([
       {
         sint64Value: 1421798400000,
