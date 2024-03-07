@@ -105,4 +105,32 @@ describe('transformToPbfAttributes', () => {
       },
     ]);
   });
+
+  it('should properly handle OIDs that are strings', () => {
+    
+    const result = transformToPbfAttributes({ ...attributes, FID: 'foo' },fieldMap);
+    result.should.deepEqual([
+      {
+        sint64Value: 1421798400000,
+      },
+      {
+        stringValue: '30040-085-3001-0126-000',
+      },
+      {
+        stringValue: 'foo',
+      },
+      {
+        stringValue: '9279699f-5ece-4ca6-8a3b-b559da37bc5e',
+      },
+      {
+        sintValue: 46104019,
+      },
+      {
+        doubleValue: 99,
+      },
+      {
+        sintValue: 6,
+      },
+    ]);
+  });
 });
