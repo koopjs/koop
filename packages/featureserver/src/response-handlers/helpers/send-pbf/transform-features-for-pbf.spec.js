@@ -7,7 +7,7 @@ const transformedFixture = {
     name: 'FID',
     isSystemMaintained: true,
   },
-  geometryType: 'esriGeometryPoint',
+  geometryType: 'esriGeometryTypePoint',
   spatialReference: {
     wkid: 102100,
     latestWkid: 3857,
@@ -15,62 +15,38 @@ const transformedFixture = {
   fields: [
     {
       name: 'CONDITIODT',
-      type: 'esriFieldTypeDate',
+      fieldType: 'esriFieldTypeDate',
       alias: 'CONDITIODT',
-      sqlType: 'sqlTypeTimestamp2',
-      length: 8,
-      domain: null,
-      defaultValue: null,
     },
     {
       name: 'FACILITYID',
-      type: 'esriFieldTypeString',
+      fieldType: 'esriFieldTypeString',
       alias: 'FACILITYID',
-      sqlType: 'sqlTypeNVarchar',
-      length: 30,
-      domain: null,
-      defaultValue: null,
     },
     {
       name: 'FID',
-      type: 'esriFieldTypeOID',
+      fieldType: 'esriFieldTypeOID',
       alias: 'FID',
-      sqlType: 'sqlTypeInteger',
-      domain: null,
-      defaultValue: null,
     },
     {
       name: 'GlobalID_2',
-      type: 'esriFieldTypeGlobalID',
+      fieldType: 'esriFieldTypeGlobalID',
       alias: 'GlobalID_2',
-      sqlType: 'sqlTypeOther',
-      length: 38,
-      domain: null,
-      defaultValue: 'NEWID() WITH VALUES',
     },
     {
       name: 'OBJECTID',
-      type: 'esriFieldTypeInteger',
+      fieldType: 'esriFieldTypeInteger',
       alias: 'OBJECTID',
-      sqlType: 'sqlTypeInteger',
-      domain: null,
-      defaultValue: null,
     },
     {
       name: 'TBOX_L',
-      type: 'esriFieldTypeDouble',
+      fieldType: 'esriFieldTypeDouble',
       alias: 'TBOX_L',
-      sqlType: 'sqlTypeFloat',
-      domain: null,
-      defaultValue: null,
     },
     {
       name: 'WARD',
-      type: 'esriFieldTypeSmallInteger',
+      fieldType: 'esriFieldTypeSmallInteger',
       alias: 'WARD',
-      sqlType: 'sqlTypeSmallInt',
-      domain: null,
-      defaultValue: null,
     },
   ],
   transform: {
@@ -109,16 +85,25 @@ const transformedFixture = {
         },
       ],
       geometry: {
-        coords: ['-85716573542', '-47044113943'],
+        lengths: [2],
+        coords: [-85716573542, -47044113943],
       },
     },
   ],
 };
 
 describe('transform features for PBF', () => {
-  it('convert Esri FeatureCollection to PBF-ready JSON', () => {
+  it('convert Esri Point FeatureCollection to PBF-ready JSON', () => {
     const fixture = createFixture();
     const result = transformFeaturesForPbf(fixture);
+    result.should.deepEqual(transformedFixture);
+  });
+
+  it('convert Esri Table FeatureCollection to PBF-ready JSON', () => {
+    const fixture = createFixture();
+    fixture.geometryType = undefined;
+    const result = transformFeaturesForPbf(fixture);
+    transformedFixture.geometryType = 'esriGeometryTypeNone';
     result.should.deepEqual(transformedFixture);
   });
 });

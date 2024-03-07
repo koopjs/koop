@@ -114,6 +114,7 @@ describe('Typical Geoservice Client request sequence: Dataset with no geometry',
             {
               currentVersion: CURRENT_VERSION,
               id: 0,
+              supportedPbfFeatureEncodings: 'esriDefault',
               name: 'no-geom-w-objectid.geojson',
               type: 'Table',
               description: 'GeoJSON from no-geom-w-objectid.geojson',
@@ -279,6 +280,7 @@ describe('Typical Geoservice Client request sequence: Dataset with no geometry',
         const info = response.body;
         expect(info).toEqual({
           currentVersion: CURRENT_VERSION,
+          supportedPbfFeatureEncodings: 'esriDefault',
           id: 0,
           name: 'no-geom-w-objectid.geojson',
           type: 'Table',

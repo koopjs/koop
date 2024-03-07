@@ -1,11 +1,12 @@
-const { esriPBuffer: {
-  FeatureCollectionPBuffer: FeatureCollectionProto
-}} = require('./FeatureCollection.proto.js');
+const {
+  esriPBuffer: { FeatureCollectionPBuffer: FeatureCollectionProto },
+} = require('./FeatureCollection.proto.js');
+const logManager = require('../../../log-manager.js');
 const { transformFeaturesForPbf } = require('./transform-features-for-pbf.js');
 
 const FILENAME = 'results.pbf';
 
-function sendPbf(res, payload, requestParameters) {
+function sendPbf(res, jsonResponse, requestParameters) {
   const { returnExtentOnly } = requestParameters;
 
   if (returnExtentOnly === true) {
@@ -14,8 +15,7 @@ function sendPbf(res, payload, requestParameters) {
     throw error;
   }
 
-  const pbfPayload = setPbfPayload(payload, requestParameters);
-  const buffer = FeatureCollectionProto.encode(pbfPayload).finish();
+  const buffer = getPbfBuffer(jsonResponse, requestParameters);
 
   res.writeHead(200, [
     ['content-type', 'application/x-protobuf'],
@@ -26,8 +26,25 @@ function sendPbf(res, payload, requestParameters) {
   return res.end(buffer);
 }
 
-function setPbfPayload(payload, requestParameters) {
-  const { returnCountOnly, returnIdsOnly, quantizationParameters } = requestParameters;
+function getPbfBuffer(resultJson, requestParameters) {
+  const pbfJson = convertToPbfJson(resultJson, requestParameters);
+  const pbfMessage = FeatureCollectionProto.fromObject(pbfJson);
+  verifyPbfMessage(pbfMessage);
+  return FeatureCollectionProto.encode(pbfMessage).finish();
+}
+
+function verifyPbfMessage(pbfMessage) {
+  const messageSpecViolations = FeatureCollectionProto.verify(pbfMessage);
+  if (messageSpecViolations) {
+    logManager.logger.debug(
+      `FeatureCollection PBF specification violation: ${messageSpecViolations}`,
+    );
+  }
+}
+
+function convertToPbfJson(payload, requestParameters) {
+  const { returnCountOnly, returnIdsOnly, quantizationParameters } =
+    requestParameters;
 
   if (returnCountOnly === true) {
     return {

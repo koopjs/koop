@@ -1,6 +1,6 @@
 {
   "name": "@koopjs/featureserver",
-  "version": "8.5.0",
+  "version": "8.5.1",
   "description": "*An open source implementation of the GeoServices specification*",
   "main": "src/index.js",
   "directories": {
@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "even-more-min": "^1.0.1",
-    "express": "^4.18.2",
+    "express": "^4.18.3",
     "mocha": "^10.3.0",
     "nyc": "^15.1.0",
     "proxyquire": "^2.1.3",

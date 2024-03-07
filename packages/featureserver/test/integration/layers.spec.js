@@ -15,6 +15,7 @@ describe('Layers operations', () => {
         layers: [
           {
             currentVersion: CURRENT_VERSION,
+            supportedPbfFeatureEncodings: 'esriDefault',
             id: 0,
             name: 'Snow',
             type: 'Feature Layer',
@@ -231,7 +232,7 @@ describe('Layers operations', () => {
               renderer: {
                 type: 'simple',
                 symbol: {
-                  color: [45, 172, 128, 161],
+                  color: [247, 150, 70, 161],
                   outline: {
                     color: [190, 190, 190, 105],
                     width: 0.5,
