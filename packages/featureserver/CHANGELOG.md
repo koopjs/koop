@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 8.5.1
+
+### Patch Changes
+
+- changes to JSON specification sent to PBF encoder
+
 ## 8.5.0
 
 ### Minor Changes

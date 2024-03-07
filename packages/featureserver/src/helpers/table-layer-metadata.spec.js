@@ -31,6 +31,7 @@ describe('TableLayerMetadata', () => {
     const tableLayerMetadata = new TableLayerMetadata();
     tableLayerMetadata.should.deepEqual({
       currentVersion: CURRENT_VERSION,
+      supportedPbfFeatureEncodings: 'esriDefault',
       id: 0,
       name: 'Not Set',
       type: 'Table',
@@ -151,6 +152,7 @@ describe('TableLayerMetadata', () => {
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Table',
@@ -264,6 +266,7 @@ describe('TableLayerMetadata', () => {
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 2,
         name: 'Not Set',
         type: 'Table',
@@ -375,6 +378,7 @@ describe('TableLayerMetadata', () => {
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 3,
         name: 'Not Set',
         type: 'Table',
@@ -486,6 +490,7 @@ describe('TableLayerMetadata', () => {
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Table',
@@ -597,6 +602,7 @@ describe('TableLayerMetadata', () => {
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Table',
@@ -708,6 +714,7 @@ describe('TableLayerMetadata', () => {
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Table',
@@ -819,6 +826,7 @@ describe('TableLayerMetadata', () => {
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Table',
@@ -930,6 +938,7 @@ describe('TableLayerMetadata', () => {
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Table',
@@ -1041,6 +1050,7 @@ describe('TableLayerMetadata', () => {
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Table',
@@ -1152,6 +1162,7 @@ describe('TableLayerMetadata', () => {
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Table',
@@ -1266,6 +1277,7 @@ describe('TableLayerMetadata', () => {
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Table',
@@ -1380,6 +1392,7 @@ describe('TableLayerMetadata', () => {
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Table',
@@ -1491,6 +1504,7 @@ describe('TableLayerMetadata', () => {
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Table',
@@ -1602,6 +1616,7 @@ describe('TableLayerMetadata', () => {
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Table',
@@ -1713,6 +1728,7 @@ describe('TableLayerMetadata', () => {
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Table',
@@ -1824,6 +1840,7 @@ describe('TableLayerMetadata', () => {
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Not Set',
         type: 'Table',
@@ -1948,6 +1965,7 @@ describe('TableLayerMetadata', () => {
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: 90.99,
+        supportedPbfFeatureEncodings: 'esriDefault',
         id: 0,
         name: 'Hank Williams',
         type: 'Table',
@@ -2201,6 +2219,7 @@ describe('TableLayerMetadata', () => {
 
     tableLayerMetadata.should.deepEqual({
       currentVersion: 90.99,
+      supportedPbfFeatureEncodings: 'esriDefault',
       id: 99,
       name: 'Not Set',
       type: 'Table',
@@ -2322,6 +2341,7 @@ describe('TableLayerMetadata', () => {
 
     tableLayerMetadata.should.deepEqual({
       currentVersion: 11.2,
+      supportedPbfFeatureEncodings: 'esriDefault',
       id: 0,
       name: 'Not Set',
       type: 'Table',
