@@ -1,0 +1,62 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "idField": "id",
+    "fields": [
+        { "name": "timestamp", "type": "Date" },
+        { "name": "id", "type": "String" },
+        { "name": "label", "type": "String" },
+        { "name": "category", "type": "String" }
+      ]
+    },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "aaa",
+        "timestamp": "2023-04-10T16:15:30.000Z",
+        "label": "White Leg",
+        "category": "pinto"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80,
+          25
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bbb",
+        "timestamp": "2020-04-12T16:15:30.000Z",
+        "label": "Fireman",
+        "category": "pinto"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -120,
+          45
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ccc",
+        "timestamp": "2015-04-11T16:15:30.000Z",
+        "label": "Workhorse",
+        "category": "draft"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -100,
+          40
+        ]
+      }
+    }
+  ]
+}
