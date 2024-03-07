@@ -1,6 +1,7 @@
 const shell = require('shelljs');
 const git = require('simple-git');
 const path = require('path');
+const _ = require('lodash');
 
 const { workspaces } = require('../package.json');
 
@@ -18,14 +19,22 @@ async function execute () {
       return `-n ${file}`;
     });
 
-    if (srcFiles.length === 0) {
+    const testTargetFiles = files.filter(({ file }) => {
+      return file.startsWith('src') && file.endsWith('spec.js');
+    }).map(({ file }) => {
+      return `-n ${file.replace('.spec', '')}`;
+    });
+
+    const filesForCoverageCheck = _.uniq([...srcFiles, ...testTargetFiles]);
+
+    if (filesForCoverageCheck.length === 0) {
       process.chdir('../..');
       continue;
     }
 
     console.log(`Package "${package}":`);
     process.stdout.write('  - running branch-changes test coverage...');
-    shell.exec(getCovCmd(package, srcFiles));
+    shell.exec(getCovCmd(package, filesForCoverageCheck));
     process.stdout.write('completed.\n\n');
     process.chdir('../..');
   }
