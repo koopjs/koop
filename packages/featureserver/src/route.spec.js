@@ -15,7 +15,10 @@ describe('Route module unit tests', () => {
 
     const route = proxyquire('./route', {
       './query': querySpy,
-      './response-handlers': { generalResponseHandler: responseHandlerSpy, queryResponseHandler: responseHandlerSpy },
+      './response-handlers': {
+        generalResponseHandler: responseHandlerSpy,
+        queryResponseHandler: responseHandlerSpy,
+      },
     });
 
     it('should use query handler and return 200', () => {
@@ -41,7 +44,7 @@ describe('Route module unit tests', () => {
       responseHandlerSpy.firstCall.args.should.deepEqual([
         {},
         { features: [] },
-        { resultRecordCount: 2000 }
+        { resultRecordCount: 2000 },
       ]);
     });
 
@@ -75,7 +78,7 @@ describe('Route module unit tests', () => {
             details: ['Fool bar'],
           },
         },
-        { resultRecordCount: 2000 }
+        { resultRecordCount: 2000 },
       ]);
     });
     afterEach(() => {
@@ -122,7 +125,7 @@ describe('Route module unit tests', () => {
       responseHandlerSpy.firstCall.args.should.deepEqual([
         {},
         { restInfo: true },
-        { resultRecordCount: 2000 }
+        { resultRecordCount: 2000 },
       ]);
     });
 
@@ -166,7 +169,7 @@ describe('Route module unit tests', () => {
             details: ['Fool bar'],
           },
         },
-        { resultRecordCount: 2000 }
+        { resultRecordCount: 2000 },
       ]);
     });
 
@@ -214,7 +217,7 @@ describe('Route module unit tests', () => {
       responseHandlerSpy.firstCall.args.should.deepEqual([
         {},
         { serverInfo: true },
-        { resultRecordCount: 2000 }
+        { resultRecordCount: 2000 },
       ]);
     });
 
@@ -258,7 +261,7 @@ describe('Route module unit tests', () => {
             details: ['Fool bar'],
           },
         },
-        { resultRecordCount: 2000 }
+        { resultRecordCount: 2000 },
       ]);
     });
 
@@ -304,7 +307,7 @@ describe('Route module unit tests', () => {
       responseHandlerSpy.firstCall.args.should.deepEqual([
         {},
         { layersInfo: true },
-        { resultRecordCount: 2000 }
+        { resultRecordCount: 2000 },
       ]);
     });
 
@@ -346,7 +349,7 @@ describe('Route module unit tests', () => {
             details: ['Fool bar'],
           },
         },
-        { resultRecordCount: 2000 }
+        { resultRecordCount: 2000 },
       ]);
     });
 
@@ -394,7 +397,7 @@ describe('Route module unit tests', () => {
       responseHandlerSpy.firstCall.args.should.deepEqual([
         {},
         'layer-metadata',
-        { resultRecordCount: 2000 }
+        { resultRecordCount: 2000 },
       ]);
     });
 
@@ -438,7 +441,7 @@ describe('Route module unit tests', () => {
             details: ['Fool bar'],
           },
         },
-        { resultRecordCount: 2000 }
+        { resultRecordCount: 2000 },
       ]);
     });
 
@@ -486,7 +489,7 @@ describe('Route module unit tests', () => {
       responseHandlerSpy.firstCall.args.should.deepEqual([
         {},
         'layer-metadata',
-        { resultRecordCount: 2000 }
+        { resultRecordCount: 2000 },
       ]);
     });
 
@@ -522,7 +525,7 @@ describe('Route module unit tests', () => {
             details: ['Not Found'],
           },
         },
-        { resultRecordCount: 2000 }
+        { resultRecordCount: 2000 },
       ]);
     });
   });
