@@ -1,5 +1,11 @@
 # @koopjs/winnow
 
+## 5.0.0
+
+### Major Changes
+
+- change collection.metadata.limitExceeded to collection.metadata.exceededTransferLimit
+
 ## 4.3.0
 
 ### Minor Changes

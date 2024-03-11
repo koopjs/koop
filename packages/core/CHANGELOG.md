@@ -1,5 +1,15 @@
 # @koopjs/koop-core
 
+## 10.4.0
+
+### Minor Changes
+
+allow exceededTransferLimit in GeoServices output-plugin to be set by provider metadata
+
+### Patch Changes
+
+- @koopjs/output-geoservices@8.1.9
+
 ## 10.3.8
 
 ### Patch Changes

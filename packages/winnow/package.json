@@ -1,6 +1,6 @@
 {
   "name": "@koopjs/winnow",
-  "version": "4.3.0",
+  "version": "5.0.0",
   "description": "Apply sql-like filters to GeoJSON",
   "main": "src/index.js",
   "directories": {

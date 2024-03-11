@@ -1,5 +1,13 @@
 # @koopjs/featureserver
 
+## 8.5.3
+
+### Patch Changes
+
+- allow exceededTransferLimit to be set by provider metadata
+- Updated dependencies [95160a7]
+  - @koopjs/winnow@5.0.0
+
 ## 8.5.2
 
 ### Patch Changes
