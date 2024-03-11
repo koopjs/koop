@@ -26,7 +26,7 @@ test('With a where option and a limit smaller than the filter', t => {
   };
   const result = Winnow.query(trees, options);
   const metadata = result.metadata;
-  t.ok(metadata.limitExceeded);
+  t.ok(metadata.exceededTransferLimit);
   t.end();
 });
 
@@ -37,7 +37,7 @@ test('With a where option and a limit larger than the filter', t => {
   };
   const result = Winnow.query(trees, options);
   const metadata = result.metadata;
-  t.notOk(metadata.limitExceeded);
+  t.notOk(metadata.exceededTransferLimit);
   t.end();
 });
 
@@ -49,7 +49,7 @@ test('With a where option and a limit the same as the the filter', t => {
   };
   const result = Winnow.query(trees, options);
   const metadata = result.metadata;
-  t.notOk(metadata.limitExceeded);
+  t.notOk(metadata.exceededTransferLimit);
   t.end();
 });
 

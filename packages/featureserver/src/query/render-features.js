@@ -22,7 +22,7 @@ const featureResponseTemplate = {
  * @param {object} params
  * @return {object} formatted features data
  */
-function renderFeaturesResponse(data = {}, params = {}) {
+function renderFeaturesResponse(data, params) {
   const template = _.cloneDeep(featureResponseTemplate);
 
   const {
@@ -30,14 +30,16 @@ function renderFeaturesResponse(data = {}, params = {}) {
     objectIdFieldName: objectIdFieldNameDefault,
   } = template;
 
-  const { metadata: { limitExceeded, transform, idField, hasZ } = {} } = data;
+  const {
+    metadata: { exceededTransferLimit = false, transform, idField, hasZ } = {},
+  } = data;
 
   const computedProperties = {
     geometryType: params.geometryType,
     spatialReference: getOutputSpatialReference(data, params),
     fields: QueryFields.create({ ...data, ...params }),
     features: data.features || [],
-    exceededTransferLimit: !!limitExceeded,
+    exceededTransferLimit,
     objectIdFieldName: idField || objectIdFieldNameDefault,
     uniqueIdField: {
       ...uniqueIdFieldDefault,

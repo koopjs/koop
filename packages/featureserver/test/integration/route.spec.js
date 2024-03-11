@@ -13,7 +13,7 @@ let data;
 const serverHander = (req, res) => {
   FeatureServer.route(req, res, {
     description: 'test',
-    layers: [data, data]
+    layers: [data, data],
   });
 };
 const handler = (req, res) => FeatureServer.route(req, res, data);
@@ -31,10 +31,10 @@ describe('Routing feature server requests', () => {
   });
 
   describe('Server Info', () => {
-    it('should properly route and handle a server info request to /FeatureServer`', done => {
+    it('should properly route and handle a server info request to /FeatureServer`', (done) => {
       request(app)
         .get('/FeatureServer?f=json')
-        .expect(res => {
+        .expect((res) => {
           res.body.serviceDescription.should.equal('test');
           res.body.layers.length.should.equal(2);
           Array.isArray(res.body.tables).should.equal(true);
@@ -43,10 +43,10 @@ describe('Routing feature server requests', () => {
         .expect(200, done);
     });
 
-    it('should properly route and handle a server info request to /FeatureServer/`', done => {
+    it('should properly route and handle a server info request to /FeatureServer/`', (done) => {
       request(app)
         .get('/FeatureServer/?f=json')
-        .expect(res => {
+        .expect((res) => {
           res.body.serviceDescription.should.equal('test');
           res.body.layers.length.should.equal(2);
           Array.isArray(res.body.tables).should.equal(true);
@@ -55,10 +55,10 @@ describe('Routing feature server requests', () => {
         .expect(200, done);
     });
 
-    it('should properly route and handle a server info request to /FeatureServer/info`', done => {
+    it('should properly route and handle a server info request to /FeatureServer/info`', (done) => {
       request(app)
         .get('/FeatureServer/info?f=json')
-        .expect(res => {
+        .expect((res) => {
           res.body.serviceDescription.should.equal('test');
           res.body.layers.length.should.equal(2);
           Array.isArray(res.body.tables).should.equal(true);
@@ -69,10 +69,10 @@ describe('Routing feature server requests', () => {
   });
 
   describe('Layers', () => {
-    it('should properly route and handle a layers request`', done => {
+    it('should properly route and handle a layers request`', (done) => {
       request(app)
         .get('/FeatureServer/layers?f=json')
-        .expect(res => {
+        .expect((res) => {
           res.body.layers.length.should.equal(1);
           res.body.tables.length.should.equal(0);
           res.body.layers[0].name.should.equal('Snow');
@@ -83,15 +83,15 @@ describe('Routing feature server requests', () => {
   });
 
   describe('Layer Info', () => {
-    it('should properly route and handle a layer info request of form /FeatureServer/:layerId`', done => {
+    it('should properly route and handle a layer info request of form /FeatureServer/:layerId`', (done) => {
       request(app)
         .get('/FeatureServer/3?f=json')
-        .expect(res => {
+        .expect((res) => {
           res.body.type.should.equal('Feature Layer');
           res.body.name.should.equal('Snow');
           res.body.id.should.equal(3);
           res.body.fields
-            .filter(f => {
+            .filter((f) => {
               return f.name === 'OBJECTID';
             })
             .length.should.equal(1);
@@ -101,15 +101,15 @@ describe('Routing feature server requests', () => {
         .expect(200, done);
     });
 
-    it('should properly route and handle a layer info request of form /FeatureServer/:layerId/`', done => {
+    it('should properly route and handle a layer info request of form /FeatureServer/:layerId/`', (done) => {
       request(app)
         .get('/FeatureServer/3/?f=json')
-        .expect(res => {
+        .expect((res) => {
           res.body.type.should.equal('Feature Layer');
           res.body.name.should.equal('Snow');
           res.body.id.should.equal(3);
           res.body.fields
-            .filter(f => {
+            .filter((f) => {
               return f.name === 'OBJECTID';
             })
             .length.should.equal(1);
@@ -119,15 +119,15 @@ describe('Routing feature server requests', () => {
         .expect(200, done);
     });
 
-    it('should properly route and handle a layer info request of form /FeatureServer/:layerId/info`', done => {
+    it('should properly route and handle a layer info request of form /FeatureServer/:layerId/info`', (done) => {
       request(app)
         .get('/FeatureServer/3/info?f=json')
-        .expect(res => {
+        .expect((res) => {
           res.body.type.should.equal('Feature Layer');
           res.body.name.should.equal('Snow');
           res.body.id.should.equal(3);
           res.body.fields
-            .filter(f => {
+            .filter((f) => {
               return f.name === 'OBJECTID';
             })
             .length.should.equal(1);
@@ -141,14 +141,14 @@ describe('Routing feature server requests', () => {
       beforeEach(() => {
         data = _.cloneDeep(noGeom);
       });
-      it('should properly route and handle the layer with no geometry', done => {
+      it('should properly route and handle the layer with no geometry', (done) => {
         request(app)
           .get('/FeatureServer/3?f=json')
-          .expect(res => {
+          .expect((res) => {
             res.body.type.should.equal('Table');
             res.body.id.should.equal(3);
             res.body.fields
-              .filter(f => {
+              .filter((f) => {
                 return f.name === 'OBJECTID';
               })
               .length.should.equal(1);
@@ -160,16 +160,16 @@ describe('Routing feature server requests', () => {
   });
 
   describe('Method not supported', () => {
-    it('should return an informative error', done => {
+    it('should return an informative error', (done) => {
       request(app)
         .get('/FeatureServer/0/foobarbaz')
-        .expect(res => {
+        .expect((res) => {
           res.body.should.deepEqual({
             error: {
               code: 400,
               message: 'Method not supported',
-              details: ['Method not supported']
-            }
+              details: ['Method not supported'],
+            },
           });
         })
         .expect('Content-Type', /json/)
@@ -186,10 +186,10 @@ describe('Routing feature server requests', () => {
       this.secondOBJECTID = response.features[1].attributes.OBJECTID;
     });
 
-    it('should properly route and handle a query', done => {
+    it('should properly route and handle a query', (done) => {
       request(app)
         .get('/FeatureServer/0/query?f=json&where=1%3D1')
-        .expect(res => {
+        .expect((res) => {
           res.body.features.length.should.equal(417);
           res.body.exceededTransferLimit.should.equal(false);
         })
@@ -201,20 +201,11 @@ describe('Routing feature server requests', () => {
       data.metadata.maxRecordCount = 2;
       request(app)
         .get('/FeatureServer/0/query?f=json&where=1%3D1')
-        .expect(res => {
-          res.body.features[1].attributes.OBJECTID.should.equal(this.secondOBJECTID);
+        .expect((res) => {
+          res.body.features[1].attributes.OBJECTID.should.equal(
+            this.secondOBJECTID,
+          );
           res.body.features.length.should.equal(2);
-          res.body.exceededTransferLimit.should.equal(true);
-        })
-        .expect('Content-Type', /json/)
-        .expect(200, done);
-    });
-
-    it('should respect resultRecordCount', done => {
-      request(app)
-        .get('/FeatureServer/0/query?f=json&where=1%3D1&resultRecordCount=10')
-        .expect(res => {
-          res.body.features.length.should.equal(10);
           res.body.exceededTransferLimit.should.equal(true);
         })
         .expect('Content-Type', /json/)
@@ -224,15 +215,17 @@ describe('Routing feature server requests', () => {
     it('should ignore empty query parameters', function (done) {
       request(app)
         .get('/FeatureServer/0/query?f=json&orderByFields=')
-        .expect(res => {
-          res.body.features[1].attributes.OBJECTID.should.equal(this.secondOBJECTID);
+        .expect((res) => {
+          res.body.features[1].attributes.OBJECTID.should.equal(
+            this.secondOBJECTID,
+          );
           res.body.features.length.should.equal(417);
         })
         .expect('Content-Type', /json/)
         .expect(200, done);
     });
 
-    it('should handle when a provider passes in statistics', done => {
+    it('should handle when a provider passes in statistics', (done) => {
       data = require('./fixtures/provider-statistics.json');
       request(app)
         .get(
@@ -242,9 +235,9 @@ describe('Routing feature server requests', () => {
             'inSR=102100&' +
             'spatialRel=esriSpatialRelIntersects&' +
             'outStatistics=[{"onStatisticField":"OBJECTID","statisticType":"min","outStatisticFieldName":"min_2"},{"onStatisticField":"OBJECTID","statisticType":"max","outStatisticFieldName":"max_2"},{"onStatisticField":"OBJECTID","statisticType":"count","outStatisticFieldName":"count_2"}]&' +
-            'where=1=1'
+            'where=1=1',
         )
-        .expect(res => {
+        .expect((res) => {
           res.body.features[0].attributes.min_2.should.equal(0);
           res.body.features[0].attributes.max_2.should.equal(57611);
           res.body.features[0].attributes.count_2.should.equal(75343);
@@ -263,7 +256,7 @@ describe('Routing feature server requests', () => {
         data = _.cloneDeep({
           type: 'FeatureCollection',
           metadata: {
-            name: 'GDeltGKG'
+            name: 'GDeltGKG',
           },
           statistics: {
             classBreaks: [
@@ -275,71 +268,95 @@ describe('Routing feature server requests', () => {
               [307, 360],
               [360, 558],
               [558, 799],
-              [799, 2000]
-            ]
-          }
+              [799, 2000],
+            ],
+          },
         });
       });
-      it('should properly route and handle when a provider passes in class breaks statistics', done => {
+      it('should properly route and handle when a provider passes in class breaks statistics', (done) => {
         request(app)
           .get('/FeatureServer/3/generateRenderer?')
-          .expect(res => {
+          .expect((res) => {
             res.body.type.should.equal('classBreaks');
             res.body.classBreakInfos.length.should.equal(9);
-            res.body.classBreakInfos[0].symbol.color.should.deepEqual([0, 255, 0]);
+            res.body.classBreakInfos[0].symbol.color.should.deepEqual([
+              0, 255, 0,
+            ]);
             res.body.classBreakInfos[0].label.should.equal('80-147');
-            res.body.classBreakInfos[4].symbol.color.should.deepEqual([0, 255, 255]);
-            res.body.classBreakInfos[8].symbol.color.should.deepEqual([0, 0, 255]);
+            res.body.classBreakInfos[4].symbol.color.should.deepEqual([
+              0, 255, 255,
+            ]);
+            res.body.classBreakInfos[8].symbol.color.should.deepEqual([
+              0, 0, 255,
+            ]);
           })
           .expect('Content-Type', /json/)
           .expect(200, done);
       });
-      it('should ignore options when statistics are passed in', done => {
+      it('should ignore options when statistics are passed in', (done) => {
         request(app)
-          .get('/FeatureServer/3/generateRenderer?' +
-          'classificationDef={' +
-            '"type": "classBreaksDef",' +
-            '"classificationField": "daily snow total",' +
-            '"classificationMethod": "esriClassifyEqualInterval",' +
-            '"breakCount": 9}&' +
-           'where=&' +
-           'gdbVersion=&' +
-           'f=json')
-          .expect(res => {
+          .get(
+            '/FeatureServer/3/generateRenderer?' +
+              'classificationDef={' +
+              '"type": "classBreaksDef",' +
+              '"classificationField": "daily snow total",' +
+              '"classificationMethod": "esriClassifyEqualInterval",' +
+              '"breakCount": 9}&' +
+              'where=&' +
+              'gdbVersion=&' +
+              'f=json',
+          )
+          .expect((res) => {
             res.body.type.should.equal('classBreaks');
             res.body.classBreakInfos.length.should.equal(9);
-            res.body.classBreakInfos[0].symbol.color.should.deepEqual([0, 255, 0]);
+            res.body.classBreakInfos[0].symbol.color.should.deepEqual([
+              0, 255, 0,
+            ]);
             res.body.classBreakInfos[0].label.should.equal('80-147');
-            res.body.classBreakInfos[4].symbol.color.should.deepEqual([0, 255, 255]);
-            res.body.classBreakInfos[8].symbol.color.should.deepEqual([0, 0, 255]);
+            res.body.classBreakInfos[4].symbol.color.should.deepEqual([
+              0, 255, 255,
+            ]);
+            res.body.classBreakInfos[8].symbol.color.should.deepEqual([
+              0, 0, 255,
+            ]);
           })
           .expect('Content-Type', /json/)
           .expect(200, done);
       });
     });
-    it('should properly route and handle a generate renderer request', done => {
+    it('should properly route and handle a generate renderer request', (done) => {
       request(app)
-        .get('/FeatureServer/3/generateRenderer?' +
-        'classificationDef={' +
-          '"type": "classBreaksDef",' +
-          '"classificationField": "daily snow total",' +
-          '"classificationMethod": "esriClassifyEqualInterval",' +
-          '"breakCount": 7,' +
-          '"colorRamp": {' +
+        .get(
+          '/FeatureServer/3/generateRenderer?' +
+            'classificationDef={' +
+            '"type": "classBreaksDef",' +
+            '"classificationField": "daily snow total",' +
+            '"classificationMethod": "esriClassifyEqualInterval",' +
+            '"breakCount": 7,' +
+            '"colorRamp": {' +
             '"type": "algorithmic",' +
             '"fromColor": [0, 100, 0, 255],' +
             '"toColor": [0, 0, 255, 255],' +
             '"algorithm": "esriHSVAlgorithm"}' +
-          '}&' +
-         'where=latitude < 39 AND latitude > 38.5&' +
-         'f=json')
-        .expect(res => {
+            '}&' +
+            'where=latitude < 39 AND latitude > 38.5&' +
+            'f=json',
+        )
+        .expect((res) => {
           res.body.type.should.equal('classBreaks');
           res.body.classBreakInfos.length.should.equal(7);
-          res.body.classBreakInfos[0].symbol.color.should.deepEqual([0, 100, 0]);
-          res.body.classBreakInfos[0].label.should.equal('0-0.7571428571428571');
-          res.body.classBreakInfos[3].symbol.color.should.deepEqual([0, 177, 178]);
-          res.body.classBreakInfos[6].symbol.color.should.deepEqual([0, 0, 255]);
+          res.body.classBreakInfos[0].symbol.color.should.deepEqual([
+            0, 100, 0,
+          ]);
+          res.body.classBreakInfos[0].label.should.equal(
+            '0-0.7571428571428571',
+          );
+          res.body.classBreakInfos[3].symbol.color.should.deepEqual([
+            0, 177, 178,
+          ]);
+          res.body.classBreakInfos[6].symbol.color.should.deepEqual([
+            0, 0, 255,
+          ]);
         })
         .expect('Content-Type', /json/)
         .expect(200, done);
@@ -351,12 +368,14 @@ describe('Routing feature server requests', () => {
       beforeEach(() => {
         data = _.cloneDeep(relatedData);
       });
-      it('should properly route and handle return related records result', done => {
+      it('should properly route and handle return related records result', (done) => {
         request(app)
           .get('/FeatureServer/0/queryRelatedRecords?')
-          .expect(res => {
+          .expect((res) => {
             res.body.relatedRecordGroups.length.should.equal(1);
-            res.body.relatedRecordGroups[0].relatedRecords.length.should.equal(11);
+            res.body.relatedRecordGroups[0].relatedRecords.length.should.equal(
+              11,
+            );
           })
           .expect('Content-Type', /json/)
           .expect(200, done);

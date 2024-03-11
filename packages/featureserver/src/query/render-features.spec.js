@@ -1,4 +1,4 @@
-const should = require('should') // eslint-disable-line
+const should = require('should'); // eslint-disable-line
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 
@@ -8,8 +8,8 @@ const createQueryFieldsSpy = sinon.spy(function () {
 
 const fields = {
   QueryFields: {
-    create: createQueryFieldsSpy
-  }
+    create: createQueryFieldsSpy,
+  },
 };
 
 const normalizeSpatialReferenceSpy = sinon.spy(function () {
@@ -24,8 +24,8 @@ const stub = {
   '../helpers/fields': fields,
   '../helpers': {
     getCollectionCrs: getCollectionCrsSpy,
-    normalizeSpatialReference: normalizeSpatialReferenceSpy
-  }
+    normalizeSpatialReference: normalizeSpatialReferenceSpy,
+  },
 };
 
 const { renderFeaturesResponse } = proxyquire('./render-features', stub);
@@ -43,31 +43,33 @@ describe('renderFeaturesResponse', () => {
       features: [
         {
           attributes: {
-            OBJECTID: 1138516379
+            OBJECTID: 1138516379,
           },
           geometry: {
             x: -104.9476,
-            y: 39.9448
-          }
+            y: 39.9448,
+          },
         },
         {
           attributes: {
-            OBJECTID: 1954528849
+            OBJECTID: 1954528849,
           },
           geometry: {
             x: -104.8424,
-            y: 39.9137
-          }
-        }
-      ]
+            y: 39.9137,
+          },
+        },
+      ],
     };
 
-    const result = renderFeaturesResponse(json, { geometryType: 'esriGeometryPoint' });
+    const result = renderFeaturesResponse(json, {
+      geometryType: 'esriGeometryPoint',
+    });
     result.should.deepEqual({
       objectIdFieldName: 'OBJECTID',
       uniqueIdField: {
         name: 'OBJECTID',
-        isSystemMaintained: true
+        isSystemMaintained: true,
       },
       geometryType: 'esriGeometryPoint',
       globalIdFieldName: '',
@@ -76,10 +78,45 @@ describe('renderFeaturesResponse', () => {
       spatialReference: { wkid: 1234 },
       fields: 'fields',
       features: json.features,
-      exceededTransferLimit: false
+      exceededTransferLimit: false,
     });
     createQueryFieldsSpy.callCount.should.equal(1);
-    createQueryFieldsSpy.firstCall.args.should.deepEqual([{ ...json, geometryType: 'esriGeometryPoint' }]);
+    createQueryFieldsSpy.firstCall.args.should.deepEqual([
+      { ...json, geometryType: 'esriGeometryPoint' },
+    ]);
+    getCollectionCrsSpy.callCount.should.equal(1);
+    getCollectionCrsSpy.firstCall.args.should.deepEqual([json]);
+    normalizeSpatialReferenceSpy.callCount.should.equal(1);
+    normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual(['crs']);
+  });
+
+  it('should convert json with no features', () => {
+    const json = {
+      type: 'FeatureCollection',
+    };
+
+    const result = renderFeaturesResponse(json, {
+      geometryType: 'esriGeometryPoint',
+    });
+    result.should.deepEqual({
+      objectIdFieldName: 'OBJECTID',
+      uniqueIdField: {
+        name: 'OBJECTID',
+        isSystemMaintained: true,
+      },
+      geometryType: 'esriGeometryPoint',
+      globalIdFieldName: '',
+      hasZ: false,
+      hasM: false,
+      spatialReference: { wkid: 1234 },
+      fields: 'fields',
+      features: [],
+      exceededTransferLimit: false,
+    });
+    createQueryFieldsSpy.callCount.should.equal(1);
+    createQueryFieldsSpy.firstCall.args.should.deepEqual([
+      { ...json, geometryType: 'esriGeometryPoint' },
+    ]);
     getCollectionCrsSpy.callCount.should.equal(1);
     getCollectionCrsSpy.firstCall.args.should.deepEqual([json]);
     normalizeSpatialReferenceSpy.callCount.should.equal(1);
@@ -89,40 +126,42 @@ describe('renderFeaturesResponse', () => {
   it('should convert json with metadata to Geoservices JSON', () => {
     const json = {
       metadata: {
-        limitExceeded: true,
+        exceededTransferLimit: true,
         transform: 'transform',
         idField: 'hello_world',
-        hasZ: true
+        hasZ: true,
       },
       type: 'FeatureCollection',
       features: [
         {
           attributes: {
-            hello_world: 1138516379
+            hello_world: 1138516379,
           },
           geometry: {
             x: -104.9476,
-            y: 39.9448
-          }
+            y: 39.9448,
+          },
         },
         {
           attributes: {
-            hello_world: 1954528849
+            hello_world: 1954528849,
           },
           geometry: {
             x: -104.8424,
-            y: 39.9137
-          }
-        }
-      ]
+            y: 39.9137,
+          },
+        },
+      ],
     };
 
-    const result = renderFeaturesResponse(json, { geometryType: 'esriGeometryPoint' });
+    const result = renderFeaturesResponse(json, {
+      geometryType: 'esriGeometryPoint',
+    });
     result.should.deepEqual({
       objectIdFieldName: 'hello_world',
       uniqueIdField: {
         name: 'hello_world',
-        isSystemMaintained: true
+        isSystemMaintained: true,
       },
       geometryType: 'esriGeometryPoint',
       globalIdFieldName: '',
@@ -132,10 +171,12 @@ describe('renderFeaturesResponse', () => {
       fields: 'fields',
       features: json.features,
       exceededTransferLimit: true,
-      transform: 'transform'
+      transform: 'transform',
     });
     createQueryFieldsSpy.callCount.should.equal(1);
-    createQueryFieldsSpy.firstCall.args.should.deepEqual([{ ...json, geometryType: 'esriGeometryPoint' }]);
+    createQueryFieldsSpy.firstCall.args.should.deepEqual([
+      { ...json, geometryType: 'esriGeometryPoint' },
+    ]);
     getCollectionCrsSpy.callCount.should.equal(1);
     getCollectionCrsSpy.firstCall.args.should.deepEqual([json]);
     normalizeSpatialReferenceSpy.callCount.should.equal(1);
@@ -155,8 +196,8 @@ describe('renderFeaturesResponse', () => {
       '../helpers/fields': fields,
       '../helpers': {
         getCollectionCrs: getCollectionCrsSpy,
-        normalizeSpatialReference: normalizeSpatialReferenceSpy
-      }
+        normalizeSpatialReference: normalizeSpatialReferenceSpy,
+      },
     };
 
     const { renderFeaturesResponse } = proxyquire('./render-features', stub);
@@ -166,14 +207,14 @@ describe('renderFeaturesResponse', () => {
       features: [
         {
           attributes: {
-            OBJECTID: 1138516379
+            OBJECTID: 1138516379,
           },
           geometry: {
             x: -104.9476,
-            y: 39.9448
-          }
-        }
-      ]
+            y: 39.9448,
+          },
+        },
+      ],
     };
 
     afterEach(function () {
@@ -183,35 +224,52 @@ describe('renderFeaturesResponse', () => {
     });
 
     it('should acquire from default', () => {
-      const result = renderFeaturesResponse(json, { geometryType: 'esriGeometryPoint' });
+      const getCollectionCrsSpy = sinon.spy(function () {
+        return;
+      });
+  
+      const stub = {
+        '../helpers/fields': fields,
+        '../helpers': {
+          getCollectionCrs: getCollectionCrsSpy,
+          normalizeSpatialReference: normalizeSpatialReferenceSpy,
+        },
+      };
+      const { renderFeaturesResponse } = proxyquire('./render-features', stub);
+
+      const result = renderFeaturesResponse(json, {
+        geometryType: 'esriGeometryPoint',
+      });
       result.should.deepEqual({
         objectIdFieldName: 'OBJECTID',
         uniqueIdField: {
           name: 'OBJECTID',
-          isSystemMaintained: true
+          isSystemMaintained: true,
         },
         geometryType: 'esriGeometryPoint',
         globalIdFieldName: '',
         hasZ: false,
         hasM: false,
-        spatialReference: { wkid: 'crs' },
+        spatialReference: { wkid: 4326 },
         fields: 'fields',
         features: json.features,
-        exceededTransferLimit: false
+        exceededTransferLimit: false,
       });
       getCollectionCrsSpy.callCount.should.equal(1);
       getCollectionCrsSpy.firstCall.args.should.deepEqual([json]);
       normalizeSpatialReferenceSpy.callCount.should.equal(1);
-      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual(['crs']);
+      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual([4326]);
     });
 
     it('should acquire from collection', () => {
-      const result = renderFeaturesResponse(json, { geometryType: 'esriGeometryPoint' });
+      const result = renderFeaturesResponse(json, {
+        geometryType: 'esriGeometryPoint',
+      });
       result.should.deepEqual({
         objectIdFieldName: 'OBJECTID',
         uniqueIdField: {
           name: 'OBJECTID',
-          isSystemMaintained: true
+          isSystemMaintained: true,
         },
         geometryType: 'esriGeometryPoint',
         globalIdFieldName: '',
@@ -220,7 +278,7 @@ describe('renderFeaturesResponse', () => {
         spatialReference: { wkid: 'crs' },
         fields: 'fields',
         features: json.features,
-        exceededTransferLimit: false
+        exceededTransferLimit: false,
       });
       getCollectionCrsSpy.callCount.should.equal(1);
       getCollectionCrsSpy.firstCall.args.should.deepEqual([json]);
@@ -231,13 +289,13 @@ describe('renderFeaturesResponse', () => {
     it('should acquire from sourceSR', () => {
       const result = renderFeaturesResponse(json, {
         geometryType: 'esriGeometryPoint',
-        sourceSR: 9999
+        sourceSR: 9999,
       });
       result.should.deepEqual({
         objectIdFieldName: 'OBJECTID',
         uniqueIdField: {
           name: 'OBJECTID',
-          isSystemMaintained: true
+          isSystemMaintained: true,
         },
         geometryType: 'esriGeometryPoint',
         globalIdFieldName: '',
@@ -246,7 +304,7 @@ describe('renderFeaturesResponse', () => {
         spatialReference: { wkid: 9999 },
         fields: 'fields',
         features: json.features,
-        exceededTransferLimit: false
+        exceededTransferLimit: false,
       });
       getCollectionCrsSpy.callCount.should.equal(0);
       normalizeSpatialReferenceSpy.callCount.should.equal(1);
@@ -257,13 +315,13 @@ describe('renderFeaturesResponse', () => {
       const result = renderFeaturesResponse(json, {
         geometryType: 'esriGeometryPoint',
         sourceSR: 9999,
-        inputCrs: 8888
+        inputCrs: 8888,
       });
       result.should.deepEqual({
         objectIdFieldName: 'OBJECTID',
         uniqueIdField: {
           name: 'OBJECTID',
-          isSystemMaintained: true
+          isSystemMaintained: true,
         },
         geometryType: 'esriGeometryPoint',
         globalIdFieldName: '',
@@ -272,7 +330,7 @@ describe('renderFeaturesResponse', () => {
         spatialReference: { wkid: 8888 },
         fields: 'fields',
         features: json.features,
-        exceededTransferLimit: false
+        exceededTransferLimit: false,
       });
       getCollectionCrsSpy.callCount.should.equal(0);
       normalizeSpatialReferenceSpy.callCount.should.equal(1);
@@ -284,13 +342,13 @@ describe('renderFeaturesResponse', () => {
         geometryType: 'esriGeometryPoint',
         sourceSR: 9999,
         inputCrs: 8888,
-        outSR: 7777
+        outSR: 7777,
       });
       result.should.deepEqual({
         objectIdFieldName: 'OBJECTID',
         uniqueIdField: {
           name: 'OBJECTID',
-          isSystemMaintained: true
+          isSystemMaintained: true,
         },
         geometryType: 'esriGeometryPoint',
         globalIdFieldName: '',
@@ -299,7 +357,7 @@ describe('renderFeaturesResponse', () => {
         spatialReference: { wkid: 7777 },
         fields: 'fields',
         features: json.features,
-        exceededTransferLimit: false
+        exceededTransferLimit: false,
       });
       getCollectionCrsSpy.callCount.should.equal(0);
       normalizeSpatialReferenceSpy.callCount.should.equal(1);
@@ -312,28 +370,170 @@ describe('renderFeaturesResponse', () => {
         sourceSR: 9999,
         inputCrs: 8888,
         outSR: 7777,
-        outputCrs: 3857
+        outputCrs: 3857,
       });
       result.should.deepEqual({
         objectIdFieldName: 'OBJECTID',
         uniqueIdField: {
           name: 'OBJECTID',
-          isSystemMaintained: true
+          isSystemMaintained: true,
         },
         geometryType: 'esriGeometryPoint',
         globalIdFieldName: '',
         hasZ: false,
         hasM: false,
         spatialReference: {
-          wkid: 3857
+          wkid: 3857,
         },
         fields: 'fields',
         features: json.features,
-        exceededTransferLimit: false
+        exceededTransferLimit: false,
       });
       getCollectionCrsSpy.callCount.should.equal(0);
       normalizeSpatialReferenceSpy.callCount.should.equal(1);
       normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual([3857]);
+    });
+
+    it('should use latestWkid', () => {
+      const normalizeSpatialReferenceSpy = sinon.spy(function (latestWkid) {
+        return { latestWkid };
+      });
+  
+      const getCollectionCrsSpy = sinon.spy(function () {
+        return 'crs';
+      });
+  
+      const stub = {
+        '../helpers/fields': fields,
+        '../helpers': {
+          getCollectionCrs: getCollectionCrsSpy,
+          normalizeSpatialReference: normalizeSpatialReferenceSpy,
+        },
+      };
+  
+      const { renderFeaturesResponse } = proxyquire('./render-features', stub);
+      const result = renderFeaturesResponse(json, {
+        geometryType: 'esriGeometryPoint',
+        sourceSR: 9999,
+        inputCrs: 8888,
+        outSR: 7777,
+        outputCrs: 3857,
+      });
+      result.should.deepEqual({
+        objectIdFieldName: 'OBJECTID',
+        uniqueIdField: {
+          name: 'OBJECTID',
+          isSystemMaintained: true,
+        },
+        geometryType: 'esriGeometryPoint',
+        globalIdFieldName: '',
+        hasZ: false,
+        hasM: false,
+        spatialReference: {
+          latestWkid: 3857,
+        },
+        fields: 'fields',
+        features: json.features,
+        exceededTransferLimit: false,
+      });
+      getCollectionCrsSpy.callCount.should.equal(0);
+      normalizeSpatialReferenceSpy.callCount.should.equal(1);
+      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual([3857]);
+    });
+
+    it('should use wkid and latestWkid', () => {
+      const normalizeSpatialReferenceSpy = sinon.spy(function (latestWkid) {
+        return { wkid: latestWkid, latestWkid };
+      });
+  
+      const getCollectionCrsSpy = sinon.spy(function () {
+        return 'crs';
+      });
+  
+      const stub = {
+        '../helpers/fields': fields,
+        '../helpers': {
+          getCollectionCrs: getCollectionCrsSpy,
+          normalizeSpatialReference: normalizeSpatialReferenceSpy,
+        },
+      };
+  
+      const { renderFeaturesResponse } = proxyquire('./render-features', stub);
+      const result = renderFeaturesResponse(json, {
+        geometryType: 'esriGeometryPoint',
+        sourceSR: 9999,
+        inputCrs: 8888,
+        outSR: 7777,
+        outputCrs: 3857,
+      });
+      result.should.deepEqual({
+        objectIdFieldName: 'OBJECTID',
+        uniqueIdField: {
+          name: 'OBJECTID',
+          isSystemMaintained: true,
+        },
+        geometryType: 'esriGeometryPoint',
+        globalIdFieldName: '',
+        hasZ: false,
+        hasM: false,
+        spatialReference: {
+          wkid: 3857,
+          latestWkid: 3857,
+        },
+        fields: 'fields',
+        features: json.features,
+        exceededTransferLimit: false,
+      });
+      getCollectionCrsSpy.callCount.should.equal(0);
+      normalizeSpatialReferenceSpy.callCount.should.equal(1);
+      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual([3857]);
+    });
+
+    it('should use wkt', () => {
+      const normalizeSpatialReferenceSpy = sinon.spy(function (wkt) {
+        return { wkt };
+      });
+  
+      const getCollectionCrsSpy = sinon.spy(function () {
+        return 'crs';
+      });
+  
+      const stub = {
+        '../helpers/fields': fields,
+        '../helpers': {
+          getCollectionCrs: getCollectionCrsSpy,
+          normalizeSpatialReference: normalizeSpatialReferenceSpy,
+        },
+      };
+  
+      const { renderFeaturesResponse } = proxyquire('./render-features', stub);
+      const result = renderFeaturesResponse(json, {
+        geometryType: 'esriGeometryPoint',
+        sourceSR: 9999,
+        inputCrs: 8888,
+        outSR: 7777,
+        outputCrs: 'wkt-here',
+      });
+      result.should.deepEqual({
+        objectIdFieldName: 'OBJECTID',
+        uniqueIdField: {
+          name: 'OBJECTID',
+          isSystemMaintained: true,
+        },
+        geometryType: 'esriGeometryPoint',
+        globalIdFieldName: '',
+        hasZ: false,
+        hasM: false,
+        spatialReference: {
+          wkt: 'wkt-here',
+        },
+        fields: 'fields',
+        features: json.features,
+        exceededTransferLimit: false,
+      });
+      getCollectionCrsSpy.callCount.should.equal(0);
+      normalizeSpatialReferenceSpy.callCount.should.equal(1);
+      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual(['wkt-here']);
     });
   });
 });

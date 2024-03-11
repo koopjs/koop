@@ -12,7 +12,7 @@ function normalizeLimit(options) {
     logManager.logger.debug('"limit" option is not an integer; skipping');
     return;
   }
-  // If there is a limit, add 1 to it so we can later calculate a limitExceeded. The result set will be resized accordingly, post SQL
+  // If there is a limit, add 1 to it so we can later calculate a exceededTransferLimit. The result set will be resized accordingly, post SQL
   return limit ? limit + 1 : undefined;
 }
 
