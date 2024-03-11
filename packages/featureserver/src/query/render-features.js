@@ -22,7 +22,7 @@ const featureResponseTemplate = {
  * @param {object} params
  * @return {object} formatted features data
  */
-function renderFeaturesResponse(data = {}, params = {}) {
+function renderFeaturesResponse(data, params) {
   const template = _.cloneDeep(featureResponseTemplate);
 
   const {
