@@ -10,8 +10,10 @@ module.exports = function transformToEsriProperties (properties, geometry, delim
 
   if (requiresObjectId && !idField) {
     properties = injectObjectId({ properties, geometry });
-  } else if (requiresObjectId && shouldLogIdFieldWarning(properties[idField])) {
-    logManager.logger.debug(`Unique-identifier (\`${idField}\`) has a value (${properties[idField]}) that is not a valid integer (0 to ${Number.MAX_SAFE_INTEGER}); this may cause problems in some clients.`);
+  } else if (requiresObjectId && shouldLogIdFieldDataTypeWarning(properties[idField])) {
+    logManager.logger.debug(`Unique-identifier ("${idField}") has a value (${properties[idField]}) that is not an integer-type, it is a ${typeof properties[idField]}; this may cause problems in some clients.`);
+  } else if (requiresObjectId && shouldLogIdFieldRangeWarning(properties[idField])) {
+    logManager.logger.debug(`Unique-identifier ("${idField}") has a value (${properties[idField]}) that is not a valid integer range (0 to ${Number.MAX_SAFE_INTEGER}); this may cause problems in some clients.`);
   }
 
   return transformProperties(properties, dateFields);
@@ -26,8 +28,12 @@ function injectObjectId (feature) {
   };
 }
 
-function shouldLogIdFieldWarning (idFieldValue) {
-  return idFieldValue && (!Number.isInteger(idFieldValue) || idFieldValue > Number.MAX_SAFE_INTEGER);
+function shouldLogIdFieldDataTypeWarning (idFieldValue) {
+  return idFieldValue && !Number.isInteger(idFieldValue);
+}
+
+function shouldLogIdFieldRangeWarning (idFieldValue) {
+  return idFieldValue && (idFieldValue < 0 || idFieldValue > Number.MAX_SAFE_INTEGER);
 }
 
 function transformProperties (properties, dateFields) {
