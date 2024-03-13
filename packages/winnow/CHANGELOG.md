@@ -1,5 +1,11 @@
 # @koopjs/winnow
 
+## 5.0.1
+
+### Patch Changes
+
+- debug-log idField warnings due to data-type and integer range separately
+
 ## 5.0.0
 
 ### Major Changes
