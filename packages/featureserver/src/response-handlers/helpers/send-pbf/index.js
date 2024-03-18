@@ -17,11 +17,10 @@ function sendPbf(res, jsonResponse, requestParameters) {
 
   const buffer = getPbfBuffer(jsonResponse, requestParameters);
 
-  res.writeHead(200, [
-    ['content-type', 'application/x-protobuf'],
-    ['content-length', buffer.length],
-    ['content-disposition', `inline;filename=${FILENAME}`],
-  ]);
+  res.set('content-type', 'application/x-protobuf');
+  res.set('content-length', buffer.length);
+  res.set('content-disposition', `inline;filename=${FILENAME}`);
+  res.status(200);
 
   return res.end(buffer);
 }
