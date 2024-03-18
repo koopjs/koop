@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 8.5.5
+
+### Patch Changes
+
+- change the way headers are written for pbf requests
+
 ## 8.5.4
 
 ### Patch Changes
