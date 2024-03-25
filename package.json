@@ -43,7 +43,7 @@
     "packages/core"
   ],
   "devDependencies": {
-    "@babel/eslint-parser": "^7.23.10",
+    "@babel/eslint-parser": "^7.24.1",
     "@changesets/changelog-git": "^0.2.0",
     "@changesets/cli": "^2.27.1",
     "@commitlint/config-conventional": "^19.1.0",
@@ -52,7 +52,7 @@
     "await-spawn": "^4.0.2",
     "byline": "^5.0.0",
     "commitizen": "^4.3.0",
-    "commitlint": "^19.2.0",
+    "commitlint": "^19.2.1",
     "coverage-badges-cli": "^2.0.0",
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
@@ -71,7 +71,7 @@
     "protobufjs": "^7.2.6",
     "shelljs": "^0.8.5",
     "simple-git": "^3.23.0",
-    "snyk": "^1.1285.0",
+    "snyk": "^1.1286.0",
     "supertest": "^6.3.4",
     "yargs": "^17.7.2"
   },
