@@ -4,7 +4,7 @@ const { transformToPbfAttributes } = require('./transform-to-pbf-attributes');
 const { transformToPbfGeometry } = require('./transform-to-pbf-geometry');
 
 function transformFeaturesForPbf(json, quantizationParameters) {
-  const { objectIdFieldName, uniqueIdField, geometryType, spatialReference } = json;
+  const { objectIdFieldName, uniqueIdField, geometryType, spatialReference, exceededTransferLimit } = json;
   const fields = _.orderBy(json.fields, ['name'], ['asc']);
   
   const geometryTransform = getGeometryTransform(spatialReference, quantizationParameters);
@@ -19,6 +19,7 @@ function transformFeaturesForPbf(json, quantizationParameters) {
     spatialReference,
     fields: fields.map(({name, alias, type}) => ({ name, alias, fieldType: type})),
     features,
+    exceededTransferLimit,
     transform: geometryTransform,
     geometryType: geometryType ?  geometryType.replace('esriGeometry', 'esriGeometryType') : 'esriGeometryTypeNone'
   };
