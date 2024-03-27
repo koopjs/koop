@@ -186,6 +186,68 @@ describe('koop', () => {
           }
         });
       });
+
+      describe('exceededTransferLimit', () => {
+        test('should be calculated by Koop and equal true', async () => {
+          try {
+            const response = await request(koop.server).get(
+              '/file-geojson/rest/services/points-w-objectid/FeatureServer/0/query?resultRecordCount=2',
+            );
+            expect(response.status).toBe(200);
+            const { features, exceededTransferLimit } = response.body;
+            expect(features.length).toBe(2);
+            expect(exceededTransferLimit).toBe(true);
+          } catch (error) {
+            console.error(error);
+            throw error;
+          }
+        });
+
+        test('should be calculated by Koop and equal false', async () => {
+          try {
+            const response = await request(koop.server).get(
+              '/file-geojson/rest/services/points-w-objectid/FeatureServer/0/query',
+            );
+            expect(response.status).toBe(200);
+            const { features, exceededTransferLimit } = response.body;
+            expect(features.length).toBe(3);
+            expect(exceededTransferLimit).toBe(false);
+          } catch (error) {
+            console.error(error);
+            throw error;
+          }
+        });
+
+        test('should be acquired from provider metadata', async () => {
+          try {
+            const response = await request(koop.server).get(
+              '/file-geojson/rest/services/points-w-metadata-exceeded-transfer-limit/FeatureServer/0/query?resultRecordCount=2',
+            );
+            expect(response.status).toBe(200);
+            const { features, exceededTransferLimit } = response.body;
+            expect(features.length).toBe(2);
+            expect(exceededTransferLimit).toBe(true);
+          } catch (error) {
+            console.error(error);
+            throw error;
+          }
+        });
+
+        test('should be acquired from provider metadata', async () => {
+          try {
+            const response = await request(koop.server).get(
+              '/file-geojson/rest/services/points-w-metadata-exceeded-transfer-limit/FeatureServer/0/query',
+            );
+            expect(response.status).toBe(200);
+            const { features, exceededTransferLimit } = response.body;
+            expect(features.length).toBe(3);
+            expect(exceededTransferLimit).toBe(true);
+          } catch (error) {
+            console.error(error);
+            throw error;
+          }
+        });
+      });
     });
   });
 });
