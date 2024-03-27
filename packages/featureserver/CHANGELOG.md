@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 8.5.6
+
+### Patch Changes
+
+- add exceededTransferLimit to PBF encoding
+
 ## 8.5.5
 
 ### Patch Changes
