@@ -21,7 +21,7 @@ describe('koop', () => {
         try {
           const response = await request(koop.server)
             .get(
-              '/file-geojson/rest/services/points-w-objectid/FeatureServer/0/query?f=pbf',
+              '/file-geojson/rest/services/points-w-objectid/FeatureServer/0/query?f=pbf&resultRecordCount=1',
             )
             .responseType('blob')
             .buffer();
@@ -34,10 +34,11 @@ describe('koop', () => {
           expect(response.headers['content-type']).toBe(
             'application/x-protobuf',
           );
-          expect(response.headers['content-length']).toBe('337');
+          expect(response.headers['content-length']).toBe('229');
           expect(pbfJson).toEqual({
             queryResult: {
               featureResult: {
+                exceededTransferLimit: true,
                 objectIdFieldName: 'OBJECTID',
                 uniqueIdField: { name: 'OBJECTID', isSystemMaintained: true },
                 geometryType: 0,
@@ -73,49 +74,7 @@ describe('koop', () => {
                         { low: 769803776, high: -6, unsigned: false },
                       ],
                     },
-                  },
-                  {
-                    attributes: [
-                      { uintValue: 2 },
-                      { stringValue: 'pinto' },
-                      { stringValue: 'Fireman' },
-                      {
-                        sint64Value: {
-                          low: 1865197776,
-                          high: 369,
-                          unsigned: false,
-                        },
-                      },
-                    ],
-                    geometry: {
-                      lengths: [2],
-                      coords: [
-                        { low: 259084288, high: -28, unsigned: false },
-                        { low: -2050327040, high: -11, unsigned: false },
-                      ],
-                    },
-                  },
-                  {
-                    attributes: [
-                      { uintValue: 3 },
-                      { stringValue: 'draft' },
-                      { stringValue: 'Workhorse' },
-                      {
-                        sint64Value: {
-                          low: -1455179568,
-                          high: 332,
-                          unsigned: false,
-                        },
-                      },
-                    ],
-                    geometry: {
-                      lengths: [2],
-                      coords: [
-                        { low: -1215752192, high: -24, unsigned: false },
-                        { low: -1345294336, high: -10, unsigned: false },
-                      ],
-                    },
-                  },
+                  }
                 ],
               },
             },
