@@ -50,11 +50,11 @@ jobs:
       run: npm run test:e2e
 
     - name: Run Coverage
-      if: ${{ matrix.os == 'ubuntu-latest' }}
+      if: ${{ matrix.os == 'ubuntu-latest' && github.triggering_actor != 'dependabot[bot]' }}
       run: npm run cov:changes:json && npm run cov:changes:2:md
 
-    - name: Find previous coverage comment
-      if: ${{ matrix.os == 'ubuntu-latest' }}
+    - name: Find previous coverage report comment
+      if: ${{ matrix.os == 'ubuntu-latest' && github.triggering_actor != 'dependabot[bot]' }}
       uses: peter-evans/find-comment@v1
       id: findcomment
       with:
@@ -62,8 +62,8 @@ jobs:
         comment-author: 'github-actions[bot]'
         body-includes: Coverage Report
 
-    - name: Create or update comment
-      if: ${{ matrix.os == 'ubuntu-latest' }}
+    - name: Create or update previous coverage report comment
+      if: ${{ matrix.os == 'ubuntu-latest' && github.triggering_actor != 'dependabot[bot]' }}
       uses: peter-evans/create-or-update-comment@v4
       with:
         comment-id: ${{ steps.findcomment.outputs.comment-id }}
