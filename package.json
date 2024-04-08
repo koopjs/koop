@@ -71,7 +71,7 @@
     "protobufjs": "^7.2.6",
     "shelljs": "^0.8.5",
     "simple-git": "^3.24.0",
-    "snyk": "^1.1286.2",
+    "snyk": "^1.1287.0",
     "supertest": "^6.3.4",
     "yargs": "^17.7.2"
   },
