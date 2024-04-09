@@ -264,7 +264,7 @@ describe('QueryFields', () => {
         { name: 'bar', type: 'String' },
         { name: 'hello', type: 'String' },
       ],
-      outFields: 'foo,hello',
+      outFields: 'foo, hello',
     });
     result.should.deepEqual([
       {
