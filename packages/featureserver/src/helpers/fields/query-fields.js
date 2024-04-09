@@ -20,7 +20,7 @@ class QueryFields extends Fields {
 }
 
 function filterByOutfields(outFields, fields) {
-  const outFieldNames = outFields.split(',').map(field => field.trim());
+  const outFieldNames = outFields.split(',').map((field) => field.trim());
   return fields.filter((field) => {
     return outFieldNames.includes(field.name);
   });
