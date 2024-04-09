@@ -1,4 +1,4 @@
-const should = require('should'); // eslint-disable-line
+const should = require('should');
 const { normalizeExtent } = require('.');
 
 describe('normalize-extent', function () {

@@ -1,4 +1,4 @@
-const should = require('should'); // eslint-disable-line
+const should = require('should');
 should.config.checkProtoEql = false;
 const StatisticsFields = require('./statistics-fields');
 

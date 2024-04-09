@@ -1,4 +1,4 @@
-const should = require('should'); // eslint-disable-line
+const should = require('should');
 const isTable = require('./is-geojson-table');
 
 describe('is-geojson-table', function () {

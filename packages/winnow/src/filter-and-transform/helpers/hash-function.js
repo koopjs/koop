@@ -13,8 +13,8 @@ function getHashFunction() {
     const hashFunction = require('farmhash').hash32;
     hashFunction(JSON.stringify(hashFixture));
     return hashFunction;
+    // eslint-disable-next-line
   } catch (e) {
-    // eslint-disable-line
     console.info(
       'Using murmurhash as default hasher for OBJECTID auto-generate.',
     );

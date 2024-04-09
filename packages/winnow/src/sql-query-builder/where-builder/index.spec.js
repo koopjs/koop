@@ -1,4 +1,3 @@
-/* eslint-disable quotes */
 const test = require('tape');
 const WhereBuilder = require('.');
 

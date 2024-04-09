@@ -166,7 +166,7 @@ class WhereBuilder {
     this.#where = this.#where
       .replace(
         fieldFirstObjectIdPredicateRegex,
-        `hashedObjectIdComparator($1, geometry, $3, '$2')=true`, // eslint-disable-line
+        `hashedObjectIdComparator($1, geometry, $3, '$2')=true`,
       )
       .replace(
         objectidInPredicateRegex,
@@ -218,14 +218,14 @@ function normalizeTimestamp(timestamp) {
 }
 
 function isBeginningOfValueDefinition(char, insideSingleQuotes) {
-  return insideSingleQuotes === false && char === "'"; // eslint-disable-line
+  return insideSingleQuotes === false && char === "'";
 }
 
 function isSingleQuoteEscapeChar(char, next, prev, insideSingleQuotes) {
   return (
     insideSingleQuotes === true &&
-    char === "'" && // eslint-disable-line
-    next === "'" && // eslint-disable-line
+    char === "'" &&
+    next === "'" &&
     prev !== SINGLE_QUOTE_ESCAPE
   );
 }
@@ -233,7 +233,7 @@ function isSingleQuoteEscapeChar(char, next, prev, insideSingleQuotes) {
 function isEndOfValueDefinition(char, lastTwoChars, insideSingleQuotes) {
   return (
     insideSingleQuotes === true &&
-    char === `'` && // eslint-disable-line
+    char === `'` &&
     lastTwoChars !== `${SINGLE_QUOTE_ESCAPE}'`
   );
 }

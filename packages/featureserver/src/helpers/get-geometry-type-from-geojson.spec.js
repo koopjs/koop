@@ -1,4 +1,4 @@
-const should = require('should'); // eslint-disable-line
+const should = require('should');
 const { getGeometryTypeFromGeojson } = require('.');
 
 describe('get-geometry-type-from-geojson', function () {

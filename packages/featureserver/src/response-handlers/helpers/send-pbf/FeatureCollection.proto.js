@@ -1,5 +1,4 @@
 // TODO: move this to a npm
-/* eslint-disable */
 'use strict';
 
 var $protobuf = require('protobufjs/minimal');
