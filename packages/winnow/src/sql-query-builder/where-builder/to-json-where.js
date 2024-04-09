@@ -10,7 +10,7 @@ const { InvalidWhereParameterError } = require('../../errors');
 function translateSqlWhere(where, { esri, esriFields } = {}) {
   try {
     const ast = parser.parse(`SELECT * FROM koop WHERE ${where}`);
-  
+
     // TODO: move this to options normalization
     const codedValueLookup = getCodedValueMap(esriFields);
 
@@ -22,7 +22,6 @@ function translateSqlWhere(where, { esri, esriFields } = {}) {
     throw err;
   }
 }
-
 
 /**
  * Traverse a SQL AST; modify for JSON querying and return
@@ -42,7 +41,9 @@ function traverse(node, options) {
   }
 
   if (node.type === 'String') {
-    return shouldHandleAsColumn(node) ? handleColumn(node, options) : handleValue(node, options);
+    return shouldHandleAsColumn(node)
+      ? handleColumn(node, options)
+      : handleValue(node, options);
   }
 
   if (['Number', 'Boolean'].includes(node.type)) {
@@ -68,7 +69,7 @@ function handleColumn(node, options) {
     : `properties->\`${node.value}\``;
 }
 
-function shouldHandleAsColumn (node) {
+function shouldHandleAsColumn(node) {
   return /^"([^"]*)"$/.test(node.value);
 }
 
@@ -79,7 +80,7 @@ function handleValue(node, { codedValueLookup }) {
   }
 }
 
-function trackTargetColumn (node) {
+function trackTargetColumn(node) {
   if (node?.left?.type === 'Identifier') {
     node.right.targetColumnName = node.left.value;
   }
@@ -91,7 +92,9 @@ function trackTargetColumn (node) {
   // distribute target column to any downstream nodes; required for IN
   if (node.targetColumnName) {
     if (Array.isArray(node.value)) {
-      node.value.forEach((child) => child.targetColumnName = node.targetColumnName);
+      node.value.forEach(
+        (child) => (child.targetColumnName = node.targetColumnName),
+      );
     }
 
     if (node.left) {
@@ -105,17 +108,17 @@ function trackTargetColumn (node) {
 
 function getCodedValueMap(featureLayerFieldDefintions = []) {
   return featureLayerFieldDefintions
-    .filter(fieldDefintion => fieldDefintion?.domain?.type === 'codedValue')
+    .filter((fieldDefintion) => fieldDefintion?.domain?.type === 'codedValue')
     .map(({ name, domain: { codedValues } }) => {
       return {
         name,
         codedValues: codedValues.reduce((accumulator, { code, name }) => {
           accumulator[code] = name;
           return accumulator;
-        }, {})
+        }, {}),
       };
     })
-    .reduce((accumulator, {name, codedValues}) => {
+    .reduce((accumulator, { name, codedValues }) => {
       accumulator[name] = codedValues;
       return accumulator;
     }, {});

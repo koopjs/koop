@@ -3,10 +3,10 @@ const test = require('tape');
 const winnow = require('../..');
 const fixture = require('./fixtures/trees.json');
 
-test('With a limit option', t => {
+test('With a limit option', (t) => {
   t.plan(3);
   const options = {
-    limit: 10
+    limit: 10,
   };
   const filtered = winnow.query(fixture.features, options);
   t.equal(filtered.length, 10);
@@ -14,11 +14,11 @@ test('With a limit option', t => {
   t.equal(filtered[9].properties.Common_Name, 'WINDMILL PALM');
 });
 
-test('With a limit and an offset option', t => {
+test('With a limit and an offset option', (t) => {
   t.plan(3);
   const options = {
     limit: 10,
-    offset: 11
+    offset: 11,
   };
   const filtered = winnow.query(fixture.features, options);
   t.equal(filtered.length, 10);
@@ -26,20 +26,20 @@ test('With a limit and an offset option', t => {
   t.equal(filtered[9].properties.Common_Name, 'HOLLY OAK');
 });
 
-test('With an offset option, but no limit; should return all features', t => {
+test('With an offset option, but no limit; should return all features', (t) => {
   t.plan(1);
   const options = {
-    offset: 10
+    offset: 10,
   };
   const filtered = winnow.query(fixture.features, options);
   t.equal(filtered.length, 24);
 });
 
-test('With a limit and an offset larger than returned features, should return no features', t => {
+test('With a limit and an offset larger than returned features, should return no features', (t) => {
   t.plan(1);
   const options = {
     limit: 10,
-    offset: 100000
+    offset: 100000,
   };
   const filtered = winnow.query(fixture.features, options);
   t.equal(filtered.length, 0);

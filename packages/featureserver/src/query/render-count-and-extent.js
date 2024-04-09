@@ -1,28 +1,24 @@
 const _ = require('lodash');
 const esriExtent = require('esri-extent');
 
-function renderCountAndExtentResponse (data, params) {
-  const {
-    returnCountOnly,
-    returnExtentOnly,
-    outSR
-  } = params;
+function renderCountAndExtentResponse(data, params) {
+  const { returnCountOnly, returnExtentOnly, outSR } = params;
 
   if (returnCountOnly && returnExtentOnly) {
     return {
       count: _.get(data, 'features.length', 0),
-      extent: getExtent(data, outSR)
+      extent: getExtent(data, outSR),
     };
   }
 
   if (returnCountOnly) {
     return {
-      count: _.get(data, 'features.length', 0)
+      count: _.get(data, 'features.length', 0),
     };
   }
 
   return {
-    extent: getExtent(data, outSR)
+    extent: getExtent(data, outSR),
   };
 }
 
@@ -31,7 +27,7 @@ function renderCountAndExtentResponse (data, params) {
  * @param {object} geojson
  * @param {*} outSR Esri spatial reference object, or WKID integer
  */
-function getExtent (geojson, outSR) {
+function getExtent(geojson, outSR) {
   // Calculate extent from features
   const extent = esriExtent(geojson);
 

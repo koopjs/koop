@@ -11,11 +11,16 @@ const esriLookup = {
   esriGeometryPoint: 'esriGeometryPoint',
   esriGeometryMultipoint: 'esriGeometryMultipoint',
   esriGeometryPolyline: 'esriGeometryPolyline',
-  esriGeometryPolygon: 'esriGeometryPolygon'
+  esriGeometryPolygon: 'esriGeometryPolygon',
 };
 
-module.exports = function getGeometryTypeFromGeojson ({ geometryType, metadata = {}, features = [] } = {}) {
-  const type = geometryType || metadata.geometryType || findInFeatures(features);
+module.exports = function getGeometryTypeFromGeojson({
+  geometryType,
+  metadata = {},
+  features = [],
+} = {}) {
+  const type =
+    geometryType || metadata.geometryType || findInFeatures(features);
 
   if (!type) {
     logManager.logger.debug(`Input JSON has unsupported geometryType: ${type}`);
@@ -23,8 +28,8 @@ module.exports = function getGeometryTypeFromGeojson ({ geometryType, metadata =
   return esriLookup[type];
 };
 
-function findInFeatures (features) {
-  const featureWithGeometryType = features.find(feature => {
+function findInFeatures(features) {
+  const featureWithGeometryType = features.find((feature) => {
     return _.get(feature, 'geometry.type');
   });
 

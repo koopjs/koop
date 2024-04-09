@@ -1,4 +1,4 @@
-const should = require('should') // eslint-disable-line
+const should = require('should'); // eslint-disable-line
 const sinon = require('sinon');
 require('should-sinon');
 const proxyquire = require('proxyquire');
@@ -17,13 +17,13 @@ describe('validateInputs', () => {
 
       const { validateInputs } = proxyquire('./validate-inputs', {
         'geojson-validation': {
-          valid: hintSpy
+          valid: hintSpy,
         },
         '../log-manager': {
           logger: {
-            debug: debugSpy
-          }
-        }
+            debug: debugSpy,
+          },
+        },
       });
 
       validateInputs({}, { foo: 'geojson' });
@@ -36,13 +36,13 @@ describe('validateInputs', () => {
     it('should skip geojson validation', () => {
       const { validateInputs } = proxyquire('./validate-inputs', {
         'geojson-validation': {
-          valid: hintSpy
+          valid: hintSpy,
         },
         '../log-manager': {
           logger: {
-            debug: debugSpy
-          }
-        }
+            debug: debugSpy,
+          },
+        },
       });
       validateInputs({}, { foo: 'geojson' });
       hintSpy.notCalled.should.equal(true);

@@ -3,14 +3,14 @@ const { CodedError } = require('../helpers/errors');
 
 module.exports = { createColorRamp };
 
-function createColorRamp (params = {}) {
+function createColorRamp(params = {}) {
   const {
     classification,
     colorRamps,
     type = 'algorithmic',
     fromColor = [0, 255, 0],
     toColor = [0, 0, 255],
-    algorithm = 'HSVAlgorithm'
+    algorithm = 'HSVAlgorithm',
   } = params;
 
   if (!classification || classification.length === 0) {
@@ -22,35 +22,38 @@ function createColorRamp (params = {}) {
       fromColor,
       toColor,
       algorithm,
-      classificationCount: classification.length
+      classificationCount: classification.length,
     });
   }
 
   if (type === 'multipart') {
-    return createMultipartRamp({ colorRamps, classificationCount: classification.length });
+    return createMultipartRamp({
+      colorRamps,
+      classificationCount: classification.length,
+    });
   }
 
   throw new CodedError(`Invalid color ramp type: ${type}`, 400);
 }
 
-function createMultipartRamp (options) {
+function createMultipartRamp(options) {
   const { colorRamps, classificationCount } = options;
 
   if (!colorRamps || !Array.isArray(colorRamps)) {
     throw new CodedError(
-      'Multipart color-ramps need a valid color-ramp configuration array'
+      'Multipart color-ramps need a valid color-ramp configuration array',
     );
   }
 
   return colorRamps.map((ramp) => {
     return createAlgorithmicRamp({
       ...ramp,
-      classificationCount
+      classificationCount,
     });
   });
 }
 
-function createAlgorithmicRamp (options) {
+function createAlgorithmicRamp(options) {
   const { fromColor, toColor, algorithm, classificationCount } = options;
   const colorRamp = chroma.scale([fromColor.slice(0, 3), toColor.slice(0, 3)]);
 

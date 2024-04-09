@@ -1,7 +1,7 @@
 const { encode } = require('ngeohash');
 const { default: centroid } = require('@turf/centroid');
 
-function transformToGeohash (geometry = {}, precision = 8) {
+function transformToGeohash(geometry = {}, precision = 8) {
   const { type, coordinates } = geometry;
   if (!type || !coordinates) return;
 

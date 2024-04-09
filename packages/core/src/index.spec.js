@@ -14,7 +14,7 @@ const mockApp = {
     return mockApp;
   }),
   get: sinon.spy((route, handler) => {
-    if( route === '/status') {
+    if (route === '/status') {
       handler({}, { json: () => {} });
     }
     return mockApp;
@@ -34,33 +34,33 @@ class mockDataProviderModule extends DataProvider {
 }
 
 class MockLogger {
-  warn () {}
-  log  () {}
-  error  () {}
-  info  () {}
-  silly () {}
+  warn() {}
+  log() {}
+  error() {}
+  info() {}
+  silly() {}
 }
 const Koop = proxyquire('./', {
   './data-provider': mockDataProviderModule,
   '@koopjs/logger': MockLogger,
-  'express': mockExpress
+  express: mockExpress,
 });
 
 class MockProviderPluginController {
-  getHandler (req, res) {
+  getHandler(req, res) {
     res.send('hello');
   }
-  
-  otherHandler (req, res) {
+
+  otherHandler(req, res) {
     res.send('other hello');
   }
 }
 
 class MockModel {
-  async getData () {
+  async getData() {
     return {
       type: 'FeatureCollection',
-      features: []
+      features: [],
     };
   }
 }
@@ -74,13 +74,13 @@ const mockProviderDefinition = {
     {
       path: '/mock-provider-route/:id',
       methods: ['get'],
-      handler: 'getHandler'
-    }
+      handler: 'getHandler',
+    },
   ],
-  Model: MockModel
+  Model: MockModel,
 };
 
-const should = require('should') // eslint-disable-line
+const should = require('should'); // eslint-disable-line
 
 describe('Index tests', function () {
   beforeEach(() => {
@@ -99,7 +99,7 @@ describe('Index tests', function () {
     });
 
     it('should skip geoservices registration', function () {
-      const koop = new Koop({ skipGeoservicesRegistration: true});
+      const koop = new Koop({ skipGeoservicesRegistration: true });
       koop.register(mockProviderDefinition, { routePrefix: 'watermelon' });
       koop.outputs.length.should.equal(0);
     });
@@ -118,7 +118,10 @@ describe('Index tests', function () {
         koop.register();
         throw new Error('should have thrown');
       } catch (error) {
-        error.should.have.property('message', 'Plugin registration failed: plugin undefined');
+        error.should.have.property(
+          'message',
+          'Plugin registration failed: plugin undefined',
+        );
       }
     });
 
@@ -131,7 +134,7 @@ describe('Index tests', function () {
 
     it('should register unknown plugin type as provider and add output and provider routes to router stack', function () {
       const koop = new Koop({ logLevel: 'error' });
-      const unknownPlugin =  _.cloneDeep(mockProviderDefinition);
+      const unknownPlugin = _.cloneDeep(mockProviderDefinition);
       delete unknownPlugin.type;
 
       koop.register(unknownPlugin, { routePrefix: 'watermelon' });
@@ -143,32 +146,28 @@ describe('Index tests', function () {
       const mockAuthPlugin = {
         type: 'auth',
         authenticate: function () {},
-        authorize: function () {}
+        authorize: function () {},
       };
-    
+
       const koop = new Koop({ logLevel: 'error' });
       try {
         koop.register(mockAuthPlugin);
       } catch (error) {
-        (error).should.equal(undefined);
+        error.should.equal(undefined);
       }
-  
     });
 
     it('should register cache-plugin successfully', function () {
       const mockCachePlugin = class MockCache {
         static type = 'cache';
       };
-    
+
       const koop = new Koop({ logLevel: 'error' });
       try {
         koop.register(mockCachePlugin);
       } catch (error) {
-        (error).should.equal(undefined);
+        error.should.equal(undefined);
       }
-  
     });
   });
-
 });
-

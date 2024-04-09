@@ -137,10 +137,10 @@ class WhereBuilder {
   }
 
   #addObjectIdsFilter() {
-    const inValues = this.#options.objectIds.map(val => {
+    const inValues = this.#options.objectIds.map((val) => {
       return isNaN(val) ? `'${val}'` : val;
     });
-    
+
     const objectIdFilter = `${
       this.#options.idField || 'OBJECTID'
     } IN (${inValues.join(',')})`;
@@ -218,7 +218,7 @@ function normalizeTimestamp(timestamp) {
 }
 
 function isBeginningOfValueDefinition(char, insideSingleQuotes) {
-  return insideSingleQuotes === false && char === "'";  // eslint-disable-line
+  return insideSingleQuotes === false && char === "'"; // eslint-disable-line
 }
 
 function isSingleQuoteEscapeChar(char, next, prev, insideSingleQuotes) {

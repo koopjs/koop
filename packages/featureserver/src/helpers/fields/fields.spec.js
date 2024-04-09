@@ -1,4 +1,4 @@
-const should = require('should') // eslint-disable-line
+const should = require('should'); // eslint-disable-line
 should.config.checkProtoEql = false;
 const Fields = require('./fields');
 
@@ -9,8 +9,8 @@ describe('Fields', () => {
         fieldDefinitions: 'foo',
         fields: 'bar',
         metadata: {
-          fields: 'snafu'
-        }
+          fields: 'snafu',
+        },
       });
 
       fieldDefinitions.should.equal('foo');
@@ -20,8 +20,8 @@ describe('Fields', () => {
       const { fieldDefinitions } = Fields.normalizeOptions({
         fields: 'bar',
         metadata: {
-          fields: 'snafu'
-        }
+          fields: 'snafu',
+        },
       });
 
       fieldDefinitions.should.equal('bar');
@@ -30,8 +30,8 @@ describe('Fields', () => {
     it('should use "metadata.fields" when supplied', () => {
       const { fieldDefinitions } = Fields.normalizeOptions({
         metadata: {
-          fields: 'snafu'
-        }
+          fields: 'snafu',
+        },
       });
 
       fieldDefinitions.should.equal('snafu');
@@ -41,8 +41,8 @@ describe('Fields', () => {
       const { idField } = Fields.normalizeOptions({
         idField: 'bar',
         metadata: {
-          idField: 'snafu'
-        }
+          idField: 'snafu',
+        },
       });
 
       idField.should.equal('bar');
@@ -51,8 +51,8 @@ describe('Fields', () => {
     it('should use "metadata.idField" when supplied', () => {
       const { idField } = Fields.normalizeOptions({
         metadata: {
-          idField: 'snafu'
-        }
+          idField: 'snafu',
+        },
       });
 
       idField.should.equal('snafu');
@@ -60,7 +60,7 @@ describe('Fields', () => {
 
     it('should defer to root-level "attributeSample" when supplied', () => {
       const { attributeSample } = Fields.normalizeOptions({
-        attributeSample: 'bar'
+        attributeSample: 'bar',
       });
 
       attributeSample.should.equal('bar');
@@ -70,8 +70,8 @@ describe('Fields', () => {
       const { attributeSample } = Fields.normalizeOptions({
         features: [
           { attributes: { name: 'foo' } },
-          { attributes: { name: 'bar' } }
-        ]
+          { attributes: { name: 'bar' } },
+        ],
       });
 
       attributeSample.should.deepEqual({ name: 'foo' });
@@ -81,8 +81,8 @@ describe('Fields', () => {
       const { attributeSample } = Fields.normalizeOptions({
         features: [
           { properties: { name: 'foo' } },
-          { properties: { name: 'bar' } }
-        ]
+          { properties: { name: 'bar' } },
+        ],
       });
 
       attributeSample.should.deepEqual({ name: 'foo' });
@@ -90,7 +90,7 @@ describe('Fields', () => {
 
     it('should have "attributeSample" default to empty object', () => {
       const { attributeSample } = Fields.normalizeOptions({
-        features: []
+        features: [],
       });
 
       attributeSample.should.deepEqual({});
@@ -100,28 +100,29 @@ describe('Fields', () => {
   describe('constructor', () => {
     it('should set fields from definitions, add OBJECTID', () => {
       const fields = new Fields({
-        fieldDefinitions: [
-          { name: 'foo', type: 'String' }
-        ]
+        fieldDefinitions: [{ name: 'foo', type: 'String' }],
       });
 
       fields.should.deepEqual({
-        fields: [{
-          name: 'OBJECTID',
-          type: 'esriFieldTypeOID',
-          alias: 'OBJECTID',
-          sqlType: 'sqlTypeInteger',
-          domain: null,
-          defaultValue: null
-        }, {
-          name: 'foo',
-          type: 'esriFieldTypeString',
-          alias: 'foo',
-          sqlType: 'sqlTypeOther',
-          domain: null,
-          defaultValue: null,
-          length: 128
-        }]
+        fields: [
+          {
+            name: 'OBJECTID',
+            type: 'esriFieldTypeOID',
+            alias: 'OBJECTID',
+            sqlType: 'sqlTypeInteger',
+            domain: null,
+            defaultValue: null,
+          },
+          {
+            name: 'foo',
+            type: 'esriFieldTypeString',
+            alias: 'foo',
+            sqlType: 'sqlTypeOther',
+            domain: null,
+            defaultValue: null,
+            length: 128,
+          },
+        ],
       });
     });
 
@@ -129,27 +130,30 @@ describe('Fields', () => {
       const fields = new Fields({
         fieldDefinitions: [
           { name: 'foo', type: 'String' },
-          { name: 'OBJECTID', type: 'Integer' }
-        ]
+          { name: 'OBJECTID', type: 'Integer' },
+        ],
       });
 
       fields.should.deepEqual({
-        fields: [{
-          name: 'OBJECTID',
-          type: 'esriFieldTypeOID',
-          alias: 'OBJECTID',
-          sqlType: 'sqlTypeInteger',
-          domain: null,
-          defaultValue: null
-        }, {
-          name: 'foo',
-          type: 'esriFieldTypeString',
-          alias: 'foo',
-          sqlType: 'sqlTypeOther',
-          domain: null,
-          defaultValue: null,
-          length: 128
-        }]
+        fields: [
+          {
+            name: 'OBJECTID',
+            type: 'esriFieldTypeOID',
+            alias: 'OBJECTID',
+            sqlType: 'sqlTypeInteger',
+            domain: null,
+            defaultValue: null,
+          },
+          {
+            name: 'foo',
+            type: 'esriFieldTypeString',
+            alias: 'foo',
+            sqlType: 'sqlTypeOther',
+            domain: null,
+            defaultValue: null,
+            length: 128,
+          },
+        ],
       });
     });
 
@@ -158,103 +162,115 @@ describe('Fields', () => {
         idField: 'bar',
         fieldDefinitions: [
           { name: 'foo', type: 'String' },
-          { name: 'bar', type: 'Integer' }
-        ]
+          { name: 'bar', type: 'Integer' },
+        ],
       });
 
       fields.should.deepEqual({
-        fields: [{
-          name: 'bar',
-          type: 'esriFieldTypeOID',
-          alias: 'bar',
-          sqlType: 'sqlTypeInteger',
-          domain: null,
-          defaultValue: null
-        }, {
-          name: 'foo',
-          type: 'esriFieldTypeString',
-          alias: 'foo',
-          sqlType: 'sqlTypeOther',
-          domain: null,
-          defaultValue: null,
-          length: 128
-        }]
+        fields: [
+          {
+            name: 'bar',
+            type: 'esriFieldTypeOID',
+            alias: 'bar',
+            sqlType: 'sqlTypeInteger',
+            domain: null,
+            defaultValue: null,
+          },
+          {
+            name: 'foo',
+            type: 'esriFieldTypeString',
+            alias: 'foo',
+            sqlType: 'sqlTypeOther',
+            domain: null,
+            defaultValue: null,
+            length: 128,
+          },
+        ],
       });
     });
 
     it('should set fields from attributeSample, add OBJECTID', () => {
       const fields = new Fields({
-        attributeSample: { foo: 'bar' }
+        attributeSample: { foo: 'bar' },
       });
 
       fields.should.deepEqual({
-        fields: [{
-          name: 'OBJECTID',
-          type: 'esriFieldTypeOID',
-          alias: 'OBJECTID',
-          sqlType: 'sqlTypeInteger',
-          domain: null,
-          defaultValue: null
-        }, {
-          name: 'foo',
-          type: 'esriFieldTypeString',
-          alias: 'foo',
-          sqlType: 'sqlTypeOther',
-          domain: null,
-          defaultValue: null,
-          length: 128
-        }]
+        fields: [
+          {
+            name: 'OBJECTID',
+            type: 'esriFieldTypeOID',
+            alias: 'OBJECTID',
+            sqlType: 'sqlTypeInteger',
+            domain: null,
+            defaultValue: null,
+          },
+          {
+            name: 'foo',
+            type: 'esriFieldTypeString',
+            alias: 'foo',
+            sqlType: 'sqlTypeOther',
+            domain: null,
+            defaultValue: null,
+            length: 128,
+          },
+        ],
       });
     });
 
     it('should set fields from attributeSample, use included OBJECTID', () => {
       const fields = new Fields({
-        attributeSample: { OBJECTID: 1234, foo: 'bar' }
+        attributeSample: { OBJECTID: 1234, foo: 'bar' },
       });
 
       fields.should.deepEqual({
-        fields: [{
-          name: 'OBJECTID',
-          type: 'esriFieldTypeOID',
-          alias: 'OBJECTID',
-          sqlType: 'sqlTypeInteger',
-          domain: null,
-          defaultValue: null
-        }, {
-          name: 'foo',
-          type: 'esriFieldTypeString',
-          alias: 'foo',
-          sqlType: 'sqlTypeOther',
-          domain: null,
-          defaultValue: null,
-          length: 128
-        }]
+        fields: [
+          {
+            name: 'OBJECTID',
+            type: 'esriFieldTypeOID',
+            alias: 'OBJECTID',
+            sqlType: 'sqlTypeInteger',
+            domain: null,
+            defaultValue: null,
+          },
+          {
+            name: 'foo',
+            type: 'esriFieldTypeString',
+            alias: 'foo',
+            sqlType: 'sqlTypeOther',
+            domain: null,
+            defaultValue: null,
+            length: 128,
+          },
+        ],
       });
     });
 
     it('should set fields from attributeSample, use included OBJECTID', () => {
       const fields = new Fields({
         idField: 'hello',
-        attributeSample: { hello: 1234, foo: 'bar' }
+        attributeSample: { hello: 1234, foo: 'bar' },
       });
 
       fields.should.deepEqual({
-        fields: [{
-          name: 'hello',
-          type: 'esriFieldTypeOID',
-          alias: 'hello',
-          sqlType: 'sqlTypeInteger',
-          domain: null,
-          defaultValue: null
-        }, {
-          name: 'foo',
-          type: 'esriFieldTypeString',
-          alias: 'foo',
-          sqlType: 'sqlTypeOther',
-          domain: null,
-          defaultValue: null,
-          length: 128
-        }]
+        fields: [
+          {
+            name: 'hello',
+            type: 'esriFieldTypeOID',
+            alias: 'hello',
+            sqlType: 'sqlTypeInteger',
+            domain: null,
+            defaultValue: null,
+          },
+          {
+            name: 'foo',
+            type: 'esriFieldTypeString',
+            alias: 'foo',
+            sqlType: 'sqlTypeOther',
+            domain: null,
+            defaultValue: null,
+            length: 128,
+          },
+        ],
       });
     });
   });

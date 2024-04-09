@@ -3,20 +3,20 @@ const sinon = require('sinon');
 const DataProvider = require('./');
 
 class MockProviderPluginController {
-  getHandler (req, res) {
+  getHandler(req, res) {
     res.send('hello');
   }
-  
-  otherHandler (req, res) {
+
+  otherHandler(req, res) {
     res.send('other hello');
   }
 }
 
 class MockModel {
-  async getData () {
+  async getData() {
     return {
       type: 'FeatureCollection',
-      features: []
+      features: [],
     };
   }
 }
@@ -26,13 +26,13 @@ class MockOutput {
     {
       path: '/mock-output/',
       methods: ['get', 'post'],
-      handler: 'pullData'
-    }
+      handler: 'pullData',
+    },
   ];
 
   static name = 'MockOutput';
-   
-  async pullData (req, res) {
+
+  async pullData(req, res) {
     await this.model.pull(req);
     res.status(200).json({ message: 'success' });
   }
@@ -47,16 +47,16 @@ const mockPluginDefinition = {
     {
       path: '/mock-provider-route/:id',
       methods: ['get'],
-      handler: 'getHandler'
-    }
+      handler: 'getHandler',
+    },
   ],
-  Model: MockModel
+  Model: MockModel,
 };
 
 describe('Tests for Provider', function () {
   const mockCache = {};
   const mockLogger = {
-    info: () => {}
+    info: () => {},
   };
 
   it('should create instance of DataProvider', function () {
@@ -70,11 +70,22 @@ describe('Tests for Provider', function () {
     providerRegistration.should.have.property('namespace', 'test-provider');
     providerRegistration.should.have.property('version', '99.0.0');
     providerRegistration.should.have.property('providerRoutes').length(1);
-    providerRegistration.providerRoutes[0].should.have.property('path', '/mock-provider-route/:id');
+    providerRegistration.providerRoutes[0].should.have.property(
+      'path',
+      '/mock-provider-route/:id',
+    );
     providerRegistration.should.have.property('outputPluginRoutes').length(1);
-    providerRegistration.outputPluginRoutes[0].should.have.property('namespace', 'MockOutput');
-    providerRegistration.outputPluginRoutes[0].should.have.property('routes').length(1);
-    providerRegistration.outputPluginRoutes[0].routes[0].should.have.property('path', '/test-provider/:id/mock-output');
+    providerRegistration.outputPluginRoutes[0].should.have.property(
+      'namespace',
+      'MockOutput',
+    );
+    providerRegistration.outputPluginRoutes[0].should.have
+      .property('routes')
+      .length(1);
+    providerRegistration.outputPluginRoutes[0].routes[0].should.have.property(
+      'path',
+      '/test-provider/:id/mock-output',
+    );
   });
 
   it('should create instance of DataProvider with unknown version number', function () {
@@ -117,14 +128,18 @@ describe('Tests for Provider', function () {
 
     const mockServer = {
       get: sinon.spy(),
-      post: sinon.spy()
+      post: sinon.spy(),
     };
     providerRegistration.addRoutesToServer(mockServer);
     mockServer.get.callCount.should.equal(2);
     mockServer.get.firstCall.args[0].should.equal('/mock-provider-route/:id');
-    mockServer.get.secondCall.args[0].should.equal('/test-provider/:id/mock-output');
+    mockServer.get.secondCall.args[0].should.equal(
+      '/test-provider/:id/mock-output',
+    );
     mockServer.post.callCount.should.equal(1);
-    mockServer.post.firstCall.args[0].should.equal('/test-provider/:id/mock-output');
+    mockServer.post.firstCall.args[0].should.equal(
+      '/test-provider/:id/mock-output',
+    );
   });
 
   it('should add routes to server, provider routes last', function () {
@@ -133,19 +148,23 @@ describe('Tests for Provider', function () {
       cache: mockCache,
       outputPlugins: [{ outputClass: MockOutput }],
       pluginDefinition: { ...mockPluginDefinition },
-      options: { defaultToOutputRoutes: true }
+      options: { defaultToOutputRoutes: true },
     });
 
     const mockServer = {
       get: sinon.spy(),
-      post: sinon.spy()
+      post: sinon.spy(),
     };
     providerRegistration.addRoutesToServer(mockServer);
     mockServer.get.callCount.should.equal(2);
-    mockServer.get.firstCall.args[0].should.equal('/test-provider/:id/mock-output');
+    mockServer.get.firstCall.args[0].should.equal(
+      '/test-provider/:id/mock-output',
+    );
     mockServer.get.secondCall.args[0].should.equal('/mock-provider-route/:id');
     mockServer.post.callCount.should.equal(1);
-    mockServer.post.firstCall.args[0].should.equal('/test-provider/:id/mock-output');
+    mockServer.post.firstCall.args[0].should.equal(
+      '/test-provider/:id/mock-output',
+    );
   });
 
   it('should add routes to server, no provider-defined routes', function () {
@@ -154,18 +173,22 @@ describe('Tests for Provider', function () {
       cache: mockCache,
       outputPlugins: [{ outputClass: MockOutput }],
       pluginDefinition: { ...mockPluginDefinition, routes: undefined },
-      options: { defaultToOutputRoutes: true }
+      options: { defaultToOutputRoutes: true },
     });
 
     const mockServer = {
       get: sinon.spy(),
-      post: sinon.spy()
+      post: sinon.spy(),
     };
     providerRegistration.addRoutesToServer(mockServer);
     mockServer.get.callCount.should.equal(1);
-    mockServer.get.firstCall.args[0].should.equal('/test-provider/:id/mock-output');
+    mockServer.get.firstCall.args[0].should.equal(
+      '/test-provider/:id/mock-output',
+    );
     mockServer.post.callCount.should.equal(1);
-    mockServer.post.firstCall.args[0].should.equal('/test-provider/:id/mock-output');
+    mockServer.post.firstCall.args[0].should.equal(
+      '/test-provider/:id/mock-output',
+    );
   });
 
   it('should throw error on bad provider option', () => {
@@ -175,10 +198,12 @@ describe('Tests for Provider', function () {
         cache: mockCache,
         outputPlugins: [{ outputClass: MockOutput }],
         pluginDefinition: { ...mockPluginDefinition },
-        options: { routePrefix: 99 }
+        options: { routePrefix: 99 },
       });
     } catch (error) {
-      error.message.should.equal('Provider "test-provider" has invalid option: "routePrefix" must be a string');
+      error.message.should.equal(
+        'Provider "test-provider" has invalid option: "routePrefix" must be a string',
+      );
     }
   });
 });

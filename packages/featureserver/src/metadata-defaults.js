@@ -39,7 +39,7 @@ const defaultOverridables = {
     description: LAYER_DESCRIPTION,
     copyrightText: COPYRIGHT,
     extent: EXTENT,
-    supportedQueryFormats: SUPPORTED_QUERY_FORMATS
+    supportedQueryFormats: SUPPORTED_QUERY_FORMATS,
   },
 };
 
@@ -73,7 +73,7 @@ const overridablesSchema = joi.object({
     description: joi.string().allow(null, ''),
     copyrightText: joi.string().allow(null, ''),
     extent: esriExtentSchema,
-    supportedQueryFormats: joi.string().allow('JSON', 'JSON,geojson')
+    supportedQueryFormats: joi.string().allow('JSON', 'JSON,geojson'),
   }),
 });
 

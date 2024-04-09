@@ -4,7 +4,7 @@ const { normalizeArray } = require('./helpers');
  * Normalize the fields option
  * @param {Object} options
  */
-function normalizeFields (options) {
+function normalizeFields(options) {
   const { returnIdsOnly, outFields, collection } = options;
   const idField = _.get(collection, 'metadata.idField');
   // returnIdsOnly overrules all other fields options values

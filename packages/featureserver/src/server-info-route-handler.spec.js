@@ -36,9 +36,15 @@ describe('server info', () => {
     ]);
   });
 
-
   it('should construct options from empty geojson and app config', () => {
-    const serverInfo = serverInfoHandler({}, { app: { locals: { config: { featureServer: { currentVersion: 101.1 } } } }});
+    const serverInfo = serverInfoHandler(
+      {},
+      {
+        app: {
+          locals: { config: { featureServer: { currentVersion: 101.1 } } },
+        },
+      },
+    );
 
     serverInfo.should.deepEqual({ server: 'metadata' });
 
@@ -75,7 +81,7 @@ describe('server info', () => {
             subLayerIds: null,
             minScale: 0,
             maxScale: 0,
-            type: 'Table'
+            type: 'Table',
           },
         ],
         relationships: [],
@@ -114,7 +120,7 @@ describe('server info', () => {
             subLayerIds: null,
             minScale: 0,
             maxScale: 0,
-            type: 'Table'
+            type: 'Table',
           },
         ],
         relationships: [],
@@ -185,7 +191,7 @@ describe('server info', () => {
             minScale: 0,
             maxScale: 0,
             geometryType: 'esriGeometryPoint',
-            type: 'Feature Layer'
+            type: 'Feature Layer',
           },
         ],
         tables: [],
@@ -309,7 +315,7 @@ describe('server info', () => {
             minScale: 0,
             maxScale: 0,
             geometryType: 'esriGeometryPoint',
-            type: 'Feature Layer'
+            type: 'Feature Layer',
           },
           {
             id: 1,
@@ -320,7 +326,7 @@ describe('server info', () => {
             minScale: 0,
             maxScale: 0,
             geometryType: 'esriGeometryPoint',
-            type: 'Feature Layer'
+            type: 'Feature Layer',
           },
         ],
         tables: [
@@ -332,7 +338,7 @@ describe('server info', () => {
             subLayerIds: null,
             minScale: 0,
             maxScale: 0,
-            type: 'Table'
+            type: 'Table',
           },
         ],
         fullExtent: {
@@ -410,10 +416,7 @@ describe('server info', () => {
         ],
       },
     ];
-    const relationships = [
-      { id: 0, name: 'Relationship_0' },
-      { id: 1 },
-    ];
+    const relationships = [{ id: 0, name: 'Relationship_0' }, { id: 1 }];
     const input = {
       maxRecordCount: 5000,
       hasStaticData: true,
@@ -467,7 +470,7 @@ describe('server info', () => {
             minScale: 0,
             maxScale: 0,
             geometryType: 'esriGeometryPoint',
-            type: 'Feature Layer'
+            type: 'Feature Layer',
           },
           {
             id: 1,
@@ -478,7 +481,7 @@ describe('server info', () => {
             minScale: 0,
             maxScale: 0,
             geometryType: 'esriGeometryPoint',
-            type: 'Feature Layer'
+            type: 'Feature Layer',
           },
         ],
         tables: [
@@ -490,7 +493,7 @@ describe('server info', () => {
             subLayerIds: null,
             minScale: 0,
             maxScale: 0,
-            type: 'Table'
+            type: 'Table',
           },
         ],
         fullExtent: {
@@ -555,7 +558,7 @@ describe('server info', () => {
             minScale: 0,
             maxScale: 0,
             geometryType: 'esriGeometryPoint',
-            type: 'Feature Layer'
+            type: 'Feature Layer',
           },
         ],
         tables: [],

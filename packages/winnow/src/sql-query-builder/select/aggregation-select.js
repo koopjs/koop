@@ -1,4 +1,4 @@
-function createAggregationSelect (aggregates, groupBy, esri) {
+function createAggregationSelect(aggregates, groupBy, esri) {
   const selector = esri ? 'attributes' : 'properties';
   const select = aggregates.reduce((sql, agg) => {
     let func;
@@ -13,10 +13,12 @@ function createAggregationSelect (aggregates, groupBy, esri) {
   else return `${select.slice(0, -1)} FROM ?`;
 }
 
-function addGroupBy (select, groupBy, selector) {
-  const fields = groupBy.reduce((fragment, group) => {
-    return `${fragment} ${selector}->\`${group}\` as \`${group}\`,`;
-  }, '').slice(0, -1);
+function addGroupBy(select, groupBy, selector) {
+  const fields = groupBy
+    .reduce((fragment, group) => {
+      return `${fragment} ${selector}->\`${group}\` as \`${group}\`,`;
+    }, '')
+    .slice(0, -1);
 
   return `${select.slice(0, -1)}, ${fields} FROM ? `;
 }

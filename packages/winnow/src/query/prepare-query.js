@@ -2,7 +2,7 @@ const _ = require('lodash');
 const { filterAndTransform } = require('../filter-and-transform');
 const {
   create: createSqlStatement,
-  params: createSqlParams
+  params: createSqlParams,
 } = require('../sql-query-builder');
 const normalizeQueryOptions = require('../normalize-query-options');
 const normalizeQueryInput = require('./normalize-query-input');
@@ -25,12 +25,12 @@ module.exports = function (options) {
   };
 };
 
-function prepareParamsSplicer (options) {
+function prepareParamsSplicer(options) {
   const params = createSqlParams('$features$', options);
-  const featuresIndex = params.findIndex(param => {
+  const featuresIndex = params.findIndex((param) => {
     return Array.isArray(param) && param[0] === '$features$';
   });
-  return function setFeatures (features) {
+  return function setFeatures(features) {
     params[featuresIndex] = features;
     return params;
   };

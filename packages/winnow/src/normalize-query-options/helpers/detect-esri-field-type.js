@@ -1,7 +1,7 @@
 const moment = require('moment');
 const DATE_FORMATS = [moment.ISO_8601];
 
-function detectEsriFieldType (value) {
+function detectEsriFieldType(value) {
   var type = typeof value;
 
   if (Number.isInteger(value)) {

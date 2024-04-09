@@ -17,7 +17,7 @@ const responseHandler = proxyquire('./query-response-handler', {
   './helpers': {
     sendPrettyJson: sendPrettyJsonSpy,
     sendCallbackResponse: sendCallbackResponseSpy,
-    sendPbf: sendPbfSpy
+    sendPbf: sendPbfSpy,
   },
 });
 
@@ -77,10 +77,7 @@ describe('query response handler', () => {
       },
     );
 
-    sendPrettyJsonSpy.firstCall.args.should.deepEqual([
-      res,
-      { test: true }
-    ]);
+    sendPrettyJsonSpy.firstCall.args.should.deepEqual([res, { test: true }]);
   });
 
   it('send as pbf', () => {

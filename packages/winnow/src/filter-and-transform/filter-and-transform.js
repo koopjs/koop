@@ -1,4 +1,10 @@
-const { within, contains, intersects, envelopeIntersects, hashedObjectIdComparator } = require('./filters');
+const {
+  within,
+  contains,
+  intersects,
+  envelopeIntersects,
+  hashedObjectIdComparator,
+} = require('./filters');
 const sql = require('alasql');
 const {
   project,
@@ -8,7 +14,7 @@ const {
   toEsriAttributes,
   toHash,
   toEsriGeometry,
-  reducePrecision
+  reducePrecision,
 } = require('./transforms');
 
 sql.MAXSQLCACHESIZE = 0;

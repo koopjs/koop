@@ -11,5 +11,5 @@ module.exports = {
   prepareQuery,
   querySql: filterAndTransform,
   prepareSql: prepareFilterAndTransform,
-  setLogger
+  setLogger,
 };

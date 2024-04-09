@@ -12,10 +12,10 @@ describe('validate-query-request-parameters', () => {
         });
       } catch (error) {
         error.message.should.deepEqual(
-          '\'quantizationParameters\' parameter is invalid',
+          "'quantizationParameters' parameter is invalid",
         );
         error.details.should.deepEqual([
-          '"quantizationParameters.extent.xmin" is required'
+          '"quantizationParameters.extent.xmin" is required',
         ]);
         error.code.should.equal(400);
       }

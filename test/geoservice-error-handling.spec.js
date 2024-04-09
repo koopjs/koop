@@ -58,7 +58,7 @@ describe('geoservices error handling', () => {
             code: 499,
             details: ['Token Required'],
             message: 'Token Required',
-            messageCode: 'GWM_0003'
+            messageCode: 'GWM_0003',
           },
         });
       } catch (error) {
@@ -108,7 +108,9 @@ describe('geoservices error handling', () => {
         dataDir: './test/provider-data',
       });
       try {
-        const response = await request(koop.server).get('/file-geojson/rest/generateToken');
+        const response = await request(koop.server).get(
+          '/file-geojson/rest/generateToken',
+        );
         expect(response.status).toBe(200);
         expect(response.body).toEqual({
           error: {

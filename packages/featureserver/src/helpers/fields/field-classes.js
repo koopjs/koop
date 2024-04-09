@@ -1,6 +1,6 @@
 const {
   getEsriTypeFromDefinition,
-  getEsriTypeFromValue
+  getEsriTypeFromValue,
 } = require('./esri-type-utils');
 const {
   ESRI_FIELD_TYPE_OID,
@@ -10,21 +10,21 @@ const {
   SQL_TYPE_INTEGER,
   SQL_TYPE_OTHER,
   SQL_TYPE_FLOAT,
-  OBJECTID_DEFAULT_KEY
+  OBJECTID_DEFAULT_KEY,
 } = require('./constants');
 
 class Field {
-  setEditable (value = false) {
+  setEditable(value = false) {
     this.editable = value;
     return this;
   }
 
-  setNullable (value = false) {
+  setNullable(value = false) {
     this.nullable = value;
     return this;
   }
 
-  setLength () {
+  setLength() {
     if (this.type === ESRI_FIELD_TYPE_STRING) {
       this.length = 128;
     } else if (this.type === ESRI_FIELD_TYPE_DATE) {
@@ -34,7 +34,7 @@ class Field {
 }
 
 class ObjectIdField extends Field {
-  constructor (key = OBJECTID_DEFAULT_KEY) {
+  constructor(key = OBJECTID_DEFAULT_KEY) {
     super();
     this.name = key;
     this.type = ESRI_FIELD_TYPE_OID;
@@ -46,7 +46,7 @@ class ObjectIdField extends Field {
 }
 
 class FieldFromKeyValue extends Field {
-  constructor (key, value) {
+  constructor(key, value) {
     super();
     this.name = key;
     this.type = getEsriTypeFromValue(value);
@@ -59,7 +59,7 @@ class FieldFromKeyValue extends Field {
 }
 
 class StatisticField extends Field {
-  constructor (key) {
+  constructor(key) {
     super();
     this.name = key;
     this.type = ESRI_FIELD_TYPE_DOUBLE;
@@ -71,7 +71,7 @@ class StatisticField extends Field {
 }
 
 class StatisticDateField extends StatisticField {
-  constructor (key) {
+  constructor(key) {
     super(key);
     this.type = ESRI_FIELD_TYPE_DATE;
     this.sqlType = SQL_TYPE_OTHER;
@@ -79,17 +79,10 @@ class StatisticDateField extends StatisticField {
 }
 
 class FieldFromFieldDefinition extends Field {
-  constructor (fieldDefinition) {
+  constructor(fieldDefinition) {
     super();
-    const {
-      name,
-      type,
-      alias,
-      domain,
-      sqlType,
-      length,
-      defaultValue
-    } = fieldDefinition;
+    const { name, type, alias, domain, sqlType, length, defaultValue } =
+      fieldDefinition;
 
     this.name = name;
     this.type = getEsriTypeFromDefinition(type);
@@ -106,7 +99,7 @@ class FieldFromFieldDefinition extends Field {
 }
 
 class ObjectIdFieldFromDefinition extends FieldFromFieldDefinition {
-  constructor (definition = {}) {
+  constructor(definition = {}) {
     super(definition);
     this.type = ESRI_FIELD_TYPE_OID;
     this.sqlType = SQL_TYPE_INTEGER;
@@ -120,5 +113,5 @@ module.exports = {
   FieldFromKeyValue,
   FieldFromFieldDefinition,
   StatisticField,
-  StatisticDateField
+  StatisticDateField,
 };

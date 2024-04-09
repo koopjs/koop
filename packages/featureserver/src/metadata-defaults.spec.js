@@ -12,19 +12,20 @@ describe('server config options', () => {
     settings.currentVersion.should.equal(99.1);
   });
 
-
   it('should not be able to set invalid values', () => {
     try {
       const result = defaults.setDefaults({ server: { spatialReference: {} } });
       result.should.be.undefined();
     } catch (error) {
-      error.message.should.equal('FeatureServer default settings are invalid: "server.spatialReference.wkid" is required.');
-    }  
+      error.message.should.equal(
+        'FeatureServer default settings are invalid: "server.spatialReference.wkid" is required.',
+      );
+    }
   });
 
   it('should ignore unknown keys', () => {
     defaults.setDefaults({ foo: 'bar' });
     const settings = defaults.serverDefaults();
-    settings.foo?.should.be.undefined();  
+    settings.foo?.should.be.undefined();
   });
 });

@@ -1,5 +1,5 @@
 class CodedError extends Error {
-  constructor (message, code) {
+  constructor(message, code) {
     super(message);
     this.name = 'CodedError';
     this.code = code || 500;
@@ -7,5 +7,5 @@ class CodedError extends Error {
 }
 
 module.exports = {
-  CodedError
+  CodedError,
 };

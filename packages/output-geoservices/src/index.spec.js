@@ -168,7 +168,7 @@ describe('Output Geoservices', () => {
         pull: jest.fn(async () => {
           const err = new Error('no token');
           err.code = 401;
-          throw(err);
+          throw err;
         }),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });

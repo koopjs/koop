@@ -6,7 +6,7 @@ class Model {
         {
           type: 'Feature',
           properties: {
-            OBJECTID: 1
+            OBJECTID: 1,
           },
           geometry: {
             type: 'Point',

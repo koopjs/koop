@@ -23,10 +23,7 @@ test('toEsriGeometry: point', (t) => {
   t.plan(1);
   const transformed = toEsriGeometry({
     type: 'Point',
-    coordinates: [
-      100,
-      0
-    ]
+    coordinates: [100, 0],
   });
   t.deepEquals(transformed, { x: 100, y: 0 });
 });

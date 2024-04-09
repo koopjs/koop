@@ -1,5 +1,5 @@
 const { routeJoiner } = require('./');
-const should = require('should') // eslint-disable-line
+const should = require('should'); // eslint-disable-line
 
 describe('Tests for routeJoiner', function () {
   it('create route with simple fragments', function () {

@@ -1,4 +1,5 @@
 const noOnlyTests = require('eslint-plugin-no-only-tests');
+const prettier = require('eslint-plugin-prettier');
 
 module.exports = {
   languageOptions: {
@@ -26,9 +27,11 @@ module.exports = {
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
+    "prettier/prettier": ["error"],
     'no-only-tests/no-only-tests': 'error',
   },
   plugins: {
-    'no-only-tests': noOnlyTests
+    'no-only-tests': noOnlyTests,
+    'prettier':  prettier
   },
 };

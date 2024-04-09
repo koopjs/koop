@@ -3,22 +3,32 @@ const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 const modulePath = './prepare-query';
 
-test('Should return prepared query', t => {
+test('Should return prepared query', (t) => {
   const compiledQuerySpy = sinon.spy(() => {
     return 'results';
   });
-  const normalizeQueryInput = sinon.spy(function () { return ['features']; });
-  const normalizeQueryOptions = sinon.spy(function (options) { return options; });
-  const sqlQueryHelpers = sinon.spy({
-    create: function () { return 'sql statement'; },
-    params: function (features) { return [features]; }
+  const normalizeQueryInput = sinon.spy(function () {
+    return ['features'];
   });
-  const packageFeatures = sinon.spy(function () { return 'return finished query result'; });
+  const normalizeQueryOptions = sinon.spy(function (options) {
+    return options;
+  });
+  const sqlQueryHelpers = sinon.spy({
+    create: function () {
+      return 'sql statement';
+    },
+    params: function (features) {
+      return [features];
+    },
+  });
+  const packageFeatures = sinon.spy(function () {
+    return 'return finished query result';
+  });
 
   const filterAndTransform = sinon.spy({
     compile: function () {
       return compiledQuerySpy;
-    }
+    },
   });
 
   const query = proxyquire(modulePath, {
@@ -27,8 +37,8 @@ test('Should return prepared query', t => {
     '../sql-query-builder': sqlQueryHelpers,
     './package-features': packageFeatures,
     '../filter-and-transform': {
-      filterAndTransform
-    }
+      filterAndTransform,
+    },
   });
 
   // Get a prepared query function
@@ -38,15 +48,26 @@ test('Should return prepared query', t => {
   t.ok(sqlQueryHelpers.create.calledOnce);
   t.deepEquals(sqlQueryHelpers.create.firstCall.args, [{ hello: 'world' }]);
   t.ok(sqlQueryHelpers.params.calledOnce);
-  t.deepEquals(sqlQueryHelpers.params.firstCall.args, ['$features$', { hello: 'world' }]);
+  t.deepEquals(sqlQueryHelpers.params.firstCall.args, [
+    '$features$',
+    { hello: 'world' },
+  ]);
   t.equals(typeof preparedQuery, 'function');
 
   // Execute prepared query
-  const result = preparedQuery({ metadata: { foo: 'bar' }, features: ['features'] });
+  const result = preparedQuery({
+    metadata: { foo: 'bar' },
+    features: ['features'],
+  });
   t.ok(normalizeQueryInput.calledOnce);
-  t.deepEquals(normalizeQueryInput.firstCall.args, [{ metadata: { foo: 'bar' }, features: ['features'] }]);
+  t.deepEquals(normalizeQueryInput.firstCall.args, [
+    { metadata: { foo: 'bar' }, features: ['features'] },
+  ]);
   t.ok(packageFeatures.calledOnce);
-  t.deepEquals(packageFeatures.firstCall.args, ['results', { hello: 'world', collection: { metadata: { foo: 'bar' } } }]);
+  t.deepEquals(packageFeatures.firstCall.args, [
+    'results',
+    { hello: 'world', collection: { metadata: { foo: 'bar' } } },
+  ]);
   t.equals(result, 'return finished query result');
   t.ok(compiledQuerySpy.calledOnce);
   t.deepEquals(compiledQuerySpy.firstCall.args[0][0], '$features$');

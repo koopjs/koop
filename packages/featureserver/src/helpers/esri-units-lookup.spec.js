@@ -16,7 +16,7 @@ describe('esriUnitsLookup', () => {
     const result = esriUnitsLookup('yard');
     result.should.equal('esriYards');
   });
-  
+
   it('mile', () => {
     const result = esriUnitsLookup('mile');
     result.should.equal('esriMiles');

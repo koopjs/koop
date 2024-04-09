@@ -9,14 +9,18 @@ module.exports = function (geometry, precision) {
 
   return {
     type,
-    coordinates: reducePrecision(coordinates, precision)
+    coordinates: reducePrecision(coordinates, precision),
   };
 };
 
-function reducePrecision (coordinates, precision) {
-  return transformCoordinates(coordinates, { precision }, (coordinates, { precision }) => {
-    return coordinates.map(position => {
-      return parseFloat(position.toFixed(precision));
-    });
-  });
+function reducePrecision(coordinates, precision) {
+  return transformCoordinates(
+    coordinates,
+    { precision },
+    (coordinates, { precision }) => {
+      return coordinates.map((position) => {
+        return parseFloat(position.toFixed(precision));
+      });
+    },
+  );
 }

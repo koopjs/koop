@@ -1,7 +1,7 @@
 const test = require('tape');
 const { v4: uuidv4 } = require('uuid');
 const { promisify } = require('util');
-const delay = promisify(setTimeout); 
+const delay = promisify(setTimeout);
 const Cache = require('../src');
 const cache = new Cache();
 
@@ -45,7 +45,7 @@ test('retrieve partial entry with pick option', async (t) => {
   const geojson = getFeatureCollection();
   const key = uuidv4();
   await cache.insert(key, geojson, { ttl: 600 });
-  const cached =  await cache.retrieve(key, { pick: ['features'] });
+  const cached = await cache.retrieve(key, { pick: ['features'] });
   t.deepEqual(Object.keys(cached), ['features'], 'retrieved only features');
   t.end();
 });
@@ -54,7 +54,7 @@ test('retrieve partial entry with omit option', async (t) => {
   const geojson = getFeatureCollection();
   const key = uuidv4();
   await cache.insert(key, geojson, { ttl: 600 });
-  const cached =  await cache.retrieve(key, { omit: ['features'] });
+  const cached = await cache.retrieve(key, { omit: ['features'] });
   t.deepEqual(
     Object.keys(cached),
     ['type', 'crs', 'metadata'],

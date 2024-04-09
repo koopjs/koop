@@ -182,8 +182,13 @@ class GeoServices {
       );
     }
 
-    FeatureServer.route(req, res, { owningSystemUrl: this.#buildOwningSystemUrl(req.headers.host,
-      req.baseUrl), authInfo });
+    FeatureServer.route(req, res, {
+      owningSystemUrl: this.#buildOwningSystemUrl(
+        req.headers.host,
+        req.baseUrl,
+      ),
+      authInfo,
+    });
   }
 
   #buildTokensUrl(host, baseUrl) {

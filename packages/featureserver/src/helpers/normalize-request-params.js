@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const defaults = require('../metadata-defaults');
 
-function normalizeRequestParameters (
+function normalizeRequestParameters(
   query,
   body,
   maxRecordCount = defaults.maxRecordCount(),
@@ -16,8 +16,10 @@ function normalizeRequestParameters (
     .mapValues(coerceStrings)
     .value();
 
-  const { resultRecordCount, ...params } = { ...definedQueryParams, ...definedBodyParams };
-
+  const { resultRecordCount, ...params } = {
+    ...definedQueryParams,
+    ...definedBodyParams,
+  };
 
   return {
     ...params,
@@ -44,7 +46,8 @@ function coerceStrings(val) {
 function tryParse(value) {
   try {
     return JSON.parse(value);
-  } catch (e) { // eslint-disable-line
+  } catch (e) {
+    // eslint-disable-line
     return value;
   }
 }

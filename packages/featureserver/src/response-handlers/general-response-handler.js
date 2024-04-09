@@ -1,6 +1,10 @@
 const { sendCallbackResponse, sendPrettyJson } = require('./helpers');
 
-module.exports = function generalResponseHandler(res, payload, requestParameters) {
+module.exports = function generalResponseHandler(
+  res,
+  payload,
+  requestParameters,
+) {
   const { f, callback } = requestParameters;
 
   if (typeof callback === 'string') {

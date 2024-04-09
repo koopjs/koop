@@ -8,8 +8,8 @@ module.exports = {
   getSpatialReference: require('./get-spatial-reference'),
   TableLayerMetadata: require('./table-layer-metadata'),
   FeatureLayerMetadata: require('./feature-layer-metadata'),
-  ...(require('./data-type-utils')),
-  ...(require('./renderers')),
-  ...(require('./validate-inputs')),
-  ...(require('./normalize-request-params'))
+  ...require('./data-type-utils'),
+  ...require('./renderers'),
+  ...require('./validate-inputs'),
+  ...require('./normalize-request-params'),
 };

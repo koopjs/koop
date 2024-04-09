@@ -1,4 +1,4 @@
-const should = require('should') // eslint-disable-line
+const should = require('should'); // eslint-disable-line
 const { getGeometryTypeFromGeojson } = require('.');
 
 describe('get-geometry-type-from-geojson', function () {
@@ -18,27 +18,38 @@ describe('get-geometry-type-from-geojson', function () {
   });
 
   it('defers to root-level geometryType', () => {
-    const result = getGeometryTypeFromGeojson({ geometryType: 'Point', metadata: { geometryType: 'foo' } });
+    const result = getGeometryTypeFromGeojson({
+      geometryType: 'Point',
+      metadata: { geometryType: 'foo' },
+    });
     result.should.equal('esriGeometryPoint');
   });
 
   it('uses metadata.geometryType when no root-level geometryType', () => {
-    const result = getGeometryTypeFromGeojson({ metadata: { geometryType: 'Point' } });
+    const result = getGeometryTypeFromGeojson({
+      metadata: { geometryType: 'Point' },
+    });
     result.should.equal('esriGeometryPoint');
   });
 
   it('uses feature geometry-type if no other source', () => {
-    const result = getGeometryTypeFromGeojson({ features: [{ geometry: { type: 'Point' } }] });
+    const result = getGeometryTypeFromGeojson({
+      features: [{ geometry: { type: 'Point' } }],
+    });
     result.should.equal('esriGeometryPoint');
   });
 
   it('Searches for first feature geometry-type if no other source', () => {
-    const result = getGeometryTypeFromGeojson({ features: [{ geometry: null }, { geometry: { type: 'Point' } }] });
+    const result = getGeometryTypeFromGeojson({
+      features: [{ geometry: null }, { geometry: { type: 'Point' } }],
+    });
     result.should.equal('esriGeometryPoint');
   });
 
   it('returns undefined feature geometry-type not defined', () => {
-    const result = getGeometryTypeFromGeojson({ features: [{ geometry: null }] });
+    const result = getGeometryTypeFromGeojson({
+      features: [{ geometry: null }],
+    });
     should(result).equal();
   });
 
@@ -49,7 +60,7 @@ describe('get-geometry-type-from-geojson', function () {
       LineString: 'esriGeometryPolyline',
       MultiLineString: 'esriGeometryPolyline',
       Polygon: 'esriGeometryPolygon',
-      MultiPolygon: 'esriGeometryPolygon'
+      MultiPolygon: 'esriGeometryPolygon',
     };
     Object.entries(types).forEach(([key, value]) => {
       const result = getGeometryTypeFromGeojson({ geometryType: key });

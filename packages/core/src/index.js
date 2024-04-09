@@ -34,8 +34,8 @@ class Koop extends Events {
       this.register(geoservices, {
         logger: this.log,
         authInfo: this.config.authInfo,
-        defaults: geoservicesDefaults
-      });  
+        defaults: geoservicesDefaults,
+      });
     }
 
     this.server
@@ -44,9 +44,11 @@ class Koop extends Events {
           `Koop ${this.version} mounted at ${this.server.mountpath}`,
         );
       })
-      .get('/status', (req, res) => res.json({
-        success: true
-      }));
+      .get('/status', (req, res) =>
+        res.json({
+          success: true,
+        }),
+      );
   }
 
   register(plugin, options) {
@@ -105,8 +107,8 @@ class Koop extends Events {
     this.cache = new Cache({ logger: options?.logger || this.log, options });
     this.log.info(`registered cache: ${Cache.name} v${Cache.version}`);
   }
-  
-  #registerAuth (auth) {
+
+  #registerAuth(auth) {
     this.#authModule = auth;
     this.log.info(`registered auth module: ${auth.name} v${auth.version}`);
   }

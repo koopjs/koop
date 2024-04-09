@@ -74,7 +74,7 @@ describe('koop', () => {
                         { low: 769803776, high: -6, unsigned: false },
                       ],
                     },
-                  }
+                  },
                 ],
               },
             },

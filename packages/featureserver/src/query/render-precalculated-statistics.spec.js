@@ -1,4 +1,4 @@
-const should = require('should') // eslint-disable-line
+const should = require('should'); // eslint-disable-line
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 
@@ -8,15 +8,18 @@ const createStatisticsFieldsSpy = sinon.spy(function () {
 
 const fields = {
   StatisticsFields: {
-    create: createStatisticsFieldsSpy
-  }
+    create: createStatisticsFieldsSpy,
+  },
 };
 
 const stub = {
-  '../helpers/fields': fields
+  '../helpers/fields': fields,
 };
 
-const { renderPrecalculatedStatisticsResponse } = proxyquire('./render-precalculated-statistics', stub);
+const { renderPrecalculatedStatisticsResponse } = proxyquire(
+  './render-precalculated-statistics',
+  stub,
+);
 
 describe('renderPrecalculatedStatisticsResponse', () => {
   afterEach(function () {
@@ -30,15 +33,15 @@ describe('renderPrecalculatedStatisticsResponse', () => {
         TOTAL_STUD_SUM: 5421,
         ZIP_CODE_COUNT: 18,
         SOME_DATE_STRING: '2020-12-01',
-        SOME_ISO_DATE_STRING: '2020-12-01T17:00:14.000Z'
+        SOME_ISO_DATE_STRING: '2020-12-01T17:00:14.000Z',
       },
       {
         FACUSE: 'Elementary School',
         TOTAL_STUD_SUM: 23802,
         ZIP_CODE_COUNT: 72,
         SOME_DATE_STRING: '2020-12-01',
-        SOME_ISO_DATE_STRING: '2020-12-01T17:00:14.000Z'
-      }
+        SOME_ISO_DATE_STRING: '2020-12-01T17:00:14.000Z',
+      },
     ];
     const result = renderPrecalculatedStatisticsResponse({ statistics });
     result.should.deepEqual({
@@ -50,8 +53,8 @@ describe('renderPrecalculatedStatisticsResponse', () => {
             TOTAL_STUD_SUM: 5421,
             ZIP_CODE_COUNT: 18,
             SOME_DATE_STRING: 1606780800000,
-            SOME_ISO_DATE_STRING: 1606842014000
-          }
+            SOME_ISO_DATE_STRING: 1606842014000,
+          },
         },
         {
           attributes: {
@@ -59,10 +62,10 @@ describe('renderPrecalculatedStatisticsResponse', () => {
             TOTAL_STUD_SUM: 23802,
             ZIP_CODE_COUNT: 72,
             SOME_DATE_STRING: 1606780800000,
-            SOME_ISO_DATE_STRING: 1606842014000
-          }
-        }
-      ]
+            SOME_ISO_DATE_STRING: 1606842014000,
+          },
+        },
+      ],
     });
     createStatisticsFieldsSpy.callCount.should.equal(1);
   });
@@ -71,7 +74,7 @@ describe('renderPrecalculatedStatisticsResponse', () => {
     const statistics = {
       FACUSE: 'Middle School',
       TOTAL_STUD_SUM: 5421,
-      ZIP_CODE_COUNT: 18
+      ZIP_CODE_COUNT: 18,
     };
     const result = renderPrecalculatedStatisticsResponse({ statistics });
     result.should.deepEqual({
@@ -81,10 +84,10 @@ describe('renderPrecalculatedStatisticsResponse', () => {
           attributes: {
             FACUSE: 'Middle School',
             TOTAL_STUD_SUM: 5421,
-            ZIP_CODE_COUNT: 18
-          }
-        }
-      ]
+            ZIP_CODE_COUNT: 18,
+          },
+        },
+      ],
     });
     createStatisticsFieldsSpy.callCount.should.equal(1);
   });

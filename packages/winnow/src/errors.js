@@ -1,5 +1,5 @@
 class InvalidParameterError extends Error {
-  constructor (message) {
+  constructor(message) {
     super(message);
     this.code = 400;
     Error.captureStackTrace(this, InvalidParameterError);
@@ -7,7 +7,7 @@ class InvalidParameterError extends Error {
 }
 
 class InvalidWhereParameterError extends Error {
-  constructor (message) {
+  constructor(message) {
     super(`Invalid "where" parameter: ${message}`);
     this.code = 400;
 

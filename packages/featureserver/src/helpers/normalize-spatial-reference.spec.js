@@ -1,4 +1,4 @@
-const should = require('should') // eslint-disable-line
+const should = require('should'); // eslint-disable-line
 const { normalizeSpatialReference } = require('.');
 
 describe('normalize-spatial-reference', function () {
@@ -6,7 +6,7 @@ describe('normalize-spatial-reference', function () {
     const spatialRef = normalizeSpatialReference();
     spatialRef.should.deepEqual({
       latestWkid: 4326,
-      wkid: 4326
+      wkid: 4326,
     });
   });
 
@@ -14,7 +14,7 @@ describe('normalize-spatial-reference', function () {
     const spatialRef = normalizeSpatialReference({ test: 'foo' });
     spatialRef.should.deepEqual({
       latestWkid: 4326,
-      wkid: 4326
+      wkid: 4326,
     });
   });
 
@@ -22,7 +22,7 @@ describe('normalize-spatial-reference', function () {
     const spatialRef = normalizeSpatialReference(99999);
     spatialRef.should.deepEqual({
       latestWkid: 4326,
-      wkid: 4326
+      wkid: 4326,
     });
   });
 
@@ -30,16 +30,17 @@ describe('normalize-spatial-reference', function () {
     const spatialRef = normalizeSpatialReference('foodbar');
     spatialRef.should.deepEqual({
       latestWkid: 4326,
-      wkid: 4326
+      wkid: 4326,
     });
   });
 
   it('object with wkt that is Web Mercator string', () => {
-    const inputWkt = 'PROJCS["WGS_1984_Web_Mercator_Auxiliary_Sphere",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Mercator_Auxiliary_Sphere"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-6.828007551173374],PARAMETER["Standard_Parallel_1",0.0],PARAMETER["Auxiliary_Sphere_Type",0.0],UNIT["Meter",1.0]]';
+    const inputWkt =
+      'PROJCS["WGS_1984_Web_Mercator_Auxiliary_Sphere",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Mercator_Auxiliary_Sphere"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-6.828007551173374],PARAMETER["Standard_Parallel_1",0.0],PARAMETER["Auxiliary_Sphere_Type",0.0],UNIT["Meter",1.0]]';
     const spatialRef = normalizeSpatialReference({ wkt: inputWkt });
     spatialRef.should.deepEqual({
       latestWkid: 3857,
-      wkid: 102100
+      wkid: 102100,
     });
   });
 
@@ -62,16 +63,17 @@ describe('normalize-spatial-reference', function () {
     const spatialRef = normalizeSpatialReference({ wkt: inputWkt });
     spatialRef.should.deepEqual({
       latestWkid: 2229,
-      wkid: 102645
+      wkid: 102645,
     });
   });
 
   it('Web Mercator wkt string', () => {
-    const inputWkt = 'PROJCS["WGS_1984_Web_Mercator_Auxiliary_Sphere",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Mercator_Auxiliary_Sphere"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-6.828007551173374],PARAMETER["Standard_Parallel_1",0.0],PARAMETER["Auxiliary_Sphere_Type",0.0],UNIT["Meter",1.0]]';
+    const inputWkt =
+      'PROJCS["WGS_1984_Web_Mercator_Auxiliary_Sphere",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Mercator_Auxiliary_Sphere"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-6.828007551173374],PARAMETER["Standard_Parallel_1",0.0],PARAMETER["Auxiliary_Sphere_Type",0.0],UNIT["Meter",1.0]]';
     const spatialRef = normalizeSpatialReference(inputWkt);
     spatialRef.should.deepEqual({
       latestWkid: 3857,
-      wkid: 102100
+      wkid: 102100,
     });
   });
 
@@ -79,7 +81,7 @@ describe('normalize-spatial-reference', function () {
     const spatialRef = normalizeSpatialReference('EPSG:3857');
     spatialRef.should.deepEqual({
       latestWkid: 3857,
-      wkid: 3857
+      wkid: 3857,
     });
   });
 
@@ -87,7 +89,7 @@ describe('normalize-spatial-reference', function () {
     const spatialRef = normalizeSpatialReference(3857);
     spatialRef.should.deepEqual({
       latestWkid: 3857,
-      wkid: 3857
+      wkid: 3857,
     });
   });
 
@@ -95,7 +97,7 @@ describe('normalize-spatial-reference', function () {
     const spatialRef = normalizeSpatialReference(102100);
     spatialRef.should.deepEqual({
       latestWkid: 3857,
-      wkid: 102100
+      wkid: 102100,
     });
   });
   it('wkid 102100 extra properties', () => {
@@ -111,11 +113,11 @@ describe('normalize-spatial-reference', function () {
       falseZ: -100000,
       zUnits: 10000,
       falseM: -100000,
-      mUnits: 10000
+      mUnits: 10000,
     });
     spatialRef.should.deepEqual({
       latestWkid: 3857,
-      wkid: 102100
+      wkid: 102100,
     });
   });
   it('wkid 7853 extra properties', () => {
@@ -131,11 +133,11 @@ describe('normalize-spatial-reference', function () {
       falseZ: -100000,
       zUnits: 10000,
       falseM: -100000,
-      mUnits: 10000
+      mUnits: 10000,
     });
     spatialRef.should.deepEqual({
       latestWkid: 7853,
-      wkid: 7853
+      wkid: 7853,
     });
   });
 });

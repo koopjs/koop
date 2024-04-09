@@ -1,6 +1,6 @@
 const { normalizeArray } = require('./helpers');
 
-function normalizeGroupBy (options) {
+function normalizeGroupBy(options) {
   const groupBy = options.groupBy || options.groupByFieldsForStatistics;
   return normalizeArray(groupBy);
 }

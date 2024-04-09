@@ -1,4 +1,4 @@
-const should = require('should') // eslint-disable-line
+const should = require('should'); // eslint-disable-line
 const FeatureServer = require('../..');
 const relatedData = require('./fixtures/relatedData.json');
 const relatedDataCount = require('./fixtures/relatedDataCountProperty.json');
@@ -16,7 +16,9 @@ describe('QueryRelatedRecords operations', () => {
   });
 
   it('should return count of features when returnCountOnly true in options', () => {
-    const response = FeatureServer.queryRelatedRecords(relatedData, { returnCountOnly: true });
+    const response = FeatureServer.queryRelatedRecords(relatedData, {
+      returnCountOnly: true,
+    });
     response.should.not.have.property('fields');
     response.should.have.property('relatedRecordGroups');
     response.relatedRecordGroups.should.have.length(1);
@@ -26,7 +28,9 @@ describe('QueryRelatedRecords operations', () => {
   });
 
   it('should return count when specified in properties and returnCountOnly true in options', () => {
-    const response = FeatureServer.queryRelatedRecords(relatedDataCount, { returnCountOnly: true });
+    const response = FeatureServer.queryRelatedRecords(relatedDataCount, {
+      returnCountOnly: true,
+    });
     response.should.not.have.property('fields');
     response.should.have.property('relatedRecordGroups');
     response.relatedRecordGroups.should.have.length(1);

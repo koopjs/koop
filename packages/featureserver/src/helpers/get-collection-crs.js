@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const OGC_WGS84 = 'ogc:1.3:crs84';
 
-function getCollectionCrs (collection) {
+function getCollectionCrs(collection) {
   const collectionCrs = _.get(collection, 'crs.properties.name');
   if (!collectionCrs) return;
 
@@ -15,7 +15,9 @@ function getCollectionCrs (collection) {
   if (!result) {
     return;
   }
-  const { groups: { srid } } = result;
+  const {
+    groups: { srid },
+  } = result;
   return srid;
 }
 

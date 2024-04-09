@@ -6,13 +6,16 @@ const { createSymbol } = require('./create-symbol');
 
 module.exports = generateRenderer;
 
-function generateRenderer (data = {}, options = {}) {
+function generateRenderer(data = {}, options = {}) {
   const { statistics = {}, features } = data;
   const geometryType = getGeometryTypeFromGeojson(data);
   const { classificationDef = {} } = options;
 
   if (statistics.classBreaks) {
-    return generateRendererFromPrecalculatedStatistics(statistics, { classificationDef, geometryType });
+    return generateRendererFromPrecalculatedStatistics(statistics, {
+      classificationDef,
+      geometryType,
+    });
   }
 
   if (features) {
@@ -22,12 +25,16 @@ function generateRenderer (data = {}, options = {}) {
   return {};
 }
 
-function generateRendererFromPrecalculatedStatistics (statistics, options) {
+function generateRendererFromPrecalculatedStatistics(statistics, options) {
   const { classificationDef, geometryType = 'esriGeometryPoint' } = options;
   const { colorRamp: colorRampConfig = {}, baseSymbol } = classificationDef;
   const classification = statistics.classBreaks.sort((a, b) => a[0] - b[0]);
 
-  validateClassificationDefinition(classificationDef, geometryType, classification);
+  validateClassificationDefinition(
+    classificationDef,
+    geometryType,
+    classification,
+  );
 
   const colorRamp = createColorRamp({ classification, ...colorRampConfig });
   const symbolCollection = colorRamp.map((color) => {
@@ -36,13 +43,17 @@ function generateRendererFromPrecalculatedStatistics (statistics, options) {
   return renderClassBreaks(classification, classificationDef, symbolCollection);
 }
 
-function generateRendererFromFeatures (data, params) {
+function generateRendererFromFeatures(data, params) {
   const { classificationDef, geometryType } = params;
 
   // TODO: this seems weird; the winnow method is "query" but it's really a very specialized transform (aggregation)
   // consider changes to winnow - this should maybe be a different method
   const classification = Winnow.query(data, params);
-  validateClassificationDefinition(classificationDef, geometryType, classification);
+  validateClassificationDefinition(
+    classificationDef,
+    geometryType,
+    classification,
+  );
 
   const { colorRamp: colorRampConfig = {}, baseSymbol } = classificationDef;
 
@@ -52,36 +63,44 @@ function generateRendererFromFeatures (data, params) {
   });
 
   if (classificationDef.type === 'classBreaksDef') {
-    return renderClassBreaks(classification, classificationDef, symbolCollection);
+    return renderClassBreaks(
+      classification,
+      classificationDef,
+      symbolCollection,
+    );
   }
 
   // if not 'classBreaksDef', then its unique-values
   return renderUniqueValue(classification, classificationDef, symbolCollection);
 }
 
-function renderClassBreaks (breaks, classificationDef, symbolCollection) {
+function renderClassBreaks(breaks, classificationDef, symbolCollection) {
   return {
     type: 'classBreaks',
     field: classificationDef.classificationField || '',
     classificationMethod: classificationDef.classificationMethod || '',
     minValue: breaks[0][0],
-    classBreakInfos: createClassBreakInfos(breaks, symbolCollection)
+    classBreakInfos: createClassBreakInfos(breaks, symbolCollection),
   };
 }
 
-function createClassBreakInfos (breaks, symbolCollection) {
+function createClassBreakInfos(breaks, symbolCollection) {
   return breaks.map((classBreak, index) => {
     return {
       classMinValue: classBreak[0],
       classMaxValue: classBreak[1],
       label: `${classBreak[0]}-${classBreak[1]}`,
       description: '',
-      symbol: symbolCollection[index]
+      symbol: symbolCollection[index],
     };
   });
 }
 
-function renderUniqueValue (classification, classificationDef, symbolCollection) {
+function renderUniqueValue(
+  classification,
+  classificationDef,
+  symbolCollection,
+) {
   const { uniqueValueFields, fieldDelimiter } = classificationDef;
   return {
     type: 'uniqueValue',
@@ -94,15 +113,15 @@ function renderUniqueValue (classification, classificationDef, symbolCollection)
     uniqueValueInfos: createUniqueValueInfos(
       classification,
       fieldDelimiter,
-      symbolCollection
-    )
+      symbolCollection,
+    ),
   };
 }
 
-function createUniqueValueInfos (
+function createUniqueValueInfos(
   uniqueValueEntries,
   fieldDelimiter,
-  symbolCollection
+  symbolCollection,
 ) {
   return uniqueValueEntries.map((uniqueValue, index) => {
     const value = serializeUniqueValues(uniqueValue, fieldDelimiter);
@@ -112,12 +131,12 @@ function createUniqueValueInfos (
       count: uniqueValue.count,
       label: value,
       description: '',
-      symbol: symbolCollection[index]
+      symbol: symbolCollection[index],
     };
   });
 }
 
-function serializeUniqueValues (uniqueValue, delimiter) {
+function serializeUniqueValues(uniqueValue, delimiter) {
   const { count, ...rest } = uniqueValue;
   return Object.values(rest).join(delimiter);
 }

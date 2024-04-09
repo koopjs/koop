@@ -26,16 +26,16 @@ test('WhereBuilder.create: objectIds param, numeric', (t) => {
   t.plan(1);
   const whereClause = WhereBuilder.create({
     objectIds: [1, 2],
-    idField: 'OBJECTID'
+    idField: 'OBJECTID',
   });
-  t.equals(whereClause, "properties->`OBJECTID` IN (1, 2 )");
+  t.equals(whereClause, 'properties->`OBJECTID` IN (1, 2 )');
 });
 
 test('WhereBuilder.create: objectIds param, string', (t) => {
   t.plan(1);
   const whereClause = WhereBuilder.create({
     objectIds: ['abc', 'xyz'],
-    idField: 'OBJECTID'
+    idField: 'OBJECTID',
   });
   t.equals(whereClause, "properties->`OBJECTID` IN ('abc', 'xyz' )");
 });
@@ -45,9 +45,12 @@ test('WhereBuilder.create: where param and objectIds param', (t) => {
   const whereClause = WhereBuilder.create({
     where: "color='red'",
     objectIds: [1, 2],
-    idField: 'OBJECTID'
+    idField: 'OBJECTID',
   });
-  t.equals(whereClause, "properties->`color` = 'red' AND properties->`OBJECTID` IN (1, 2 )");
+  t.equals(
+    whereClause,
+    "properties->`color` = 'red' AND properties->`OBJECTID` IN (1, 2 )",
+  );
 });
 
 test('WhereBuilder.create: returns where clause with geometry predicate', (t) => {

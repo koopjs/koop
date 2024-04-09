@@ -1,8 +1,5 @@
-const should = require('should') // eslint-disable-line
-const {
-  getDataTypeFromValue,
-  isDate
-} = require('./data-type-utils');
+const should = require('should'); // eslint-disable-line
+const { getDataTypeFromValue, isDate } = require('./data-type-utils');
 
 describe('getDataTypeFromValue', () => {
   it('should return integer', () => {
@@ -10,7 +7,7 @@ describe('getDataTypeFromValue', () => {
   });
 
   it('should return double', () => {
-    getDataTypeFromValue(10.10).should.equal('Double');
+    getDataTypeFromValue(10.1).should.equal('Double');
   });
 
   it('should return string', () => {
