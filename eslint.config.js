@@ -23,11 +23,10 @@ module.exports = {
   
   rules: {
     'no-unused-vars': ['error', { ignoreRestSiblings: true }],
-    //indent: ['error', 2, { SwitchCase: 1 }],
-    'linebreak-style': ['error', 'unix'],
-    semi: ['error', 'always'],
-    "prettier/prettier": ["error"],
+    'semi': ['error', 'always'],
+    'prettier/prettier': ["error"],
     'no-only-tests/no-only-tests': 'error',
+    'linebreak-style': ['error', 'unix'],
   },
   plugins: {
     'no-only-tests': noOnlyTests,
