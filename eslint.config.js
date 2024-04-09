@@ -24,9 +24,9 @@ module.exports = {
   rules: {
     'no-unused-vars': ['error', { ignoreRestSiblings: true }],
     'semi': ['error', 'always'],
-    'prettier/prettier': ["error"],
+    'prettier/prettier': ['error', {endOfLine: 'auto'}],
     'no-only-tests/no-only-tests': 'error',
-    'linebreak-style': ['error', 'unix'],
+    //'linebreak-style': ['error', 'unix'],
   },
   plugins: {
     'no-only-tests': noOnlyTests,
