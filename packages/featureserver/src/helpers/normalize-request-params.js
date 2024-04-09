@@ -44,7 +44,7 @@ function coerceStrings(val) {
 function tryParse(value) {
   try {
     return JSON.parse(value);
-  } catch (e) {
+  } catch (e) { // eslint-disable-line
     return value;
   }
 }

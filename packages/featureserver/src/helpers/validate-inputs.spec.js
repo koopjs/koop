@@ -61,7 +61,7 @@ describe('validateInputs', () => {
       try {
         validateInputs({}, { metadata: { maxRecordCount: 1 } });
       } catch (error) {
-        throw new Error('should not have thrown');
+        throw new Error(`should not have thrown; ${error}`);
       }
     });
 
@@ -80,7 +80,7 @@ describe('validateInputs', () => {
       try {
         validateInputs({ foo: 'bar', resultRecordCount: 1 }, {});
       } catch (error) {
-        throw new Error('should not have thrown');
+        throw new Error(`should not have thrown; ${error}`);
       }
     });
 

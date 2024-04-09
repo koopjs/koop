@@ -106,7 +106,7 @@ test('adding an object id', t => {
     // If requiring farmhash is successful we use that hash
     hasher = require('farmhash').hash32;
 
-  } catch (e) {
+  } catch (e) { // eslint-disable-line
     // Else use the string-hash number
     hasher = require('string-hash');
 

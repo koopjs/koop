@@ -114,7 +114,7 @@ function convertStringToSpatialReference (wkt) {
       wkid: wkid ? Number(wkid) : undefined
     };
   } catch (err) {
-    logManager.logger.debug(`An un-parseable WKT spatial reference was detected: ${wkt}`);
+    logManager.logger.debug(`An un-parseable WKT spatial reference was detected: ${wkt}; ${err.message}`);
     // Todo: throw error
   }
 }

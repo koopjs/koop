@@ -32,7 +32,7 @@ test('toGeohash, point input, returns geohash', t => {
   const geohashSpy = sinon.spy(function () { return 'geohash-result'; });
   const centroidSpy = sinon.spy(function () { return { coordinates: [11, 19] }; });
   const toGeohash = proxyquire(modulePath, {
-    'ngeohash': { // eslint-disable-line
+    'ngeohash': {
       encode: geohashSpy
     },
     '@turf/centroid': {
@@ -51,7 +51,7 @@ test('toGeohash, non-point input, returns geohash', t => {
   const geohashSpy = sinon.spy(function () { return 'geohash-result'; });
   const centroidSpy = sinon.spy(function () { return { coordinates: [11, 19] }; });
   const toGeohash = proxyquire(modulePath, {
-    'ngeohash': { // eslint-disable-line
+    'ngeohash': {
       encode: geohashSpy
     },
     '@turf/centroid': {
@@ -71,7 +71,7 @@ test('toGeohash, point input, precision input, returns geohash', t => {
   const geohashSpy = sinon.spy(function () { return 'geohash-result'; });
   const centroidSpy = sinon.spy(function () { return { coordinates: [11, 19] }; });
   const toGeohash = proxyquire(modulePath, {
-    'ngeohash': { // eslint-disable-line
+    'ngeohash': {
       encode: geohashSpy
     },
     '@turf/centroid': {

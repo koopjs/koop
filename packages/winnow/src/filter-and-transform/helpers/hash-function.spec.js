@@ -3,7 +3,7 @@ const proxyquire = require('proxyquire');
 const modulePath = './hash-function';
 const stub = {
   'murmurhash': () => { return 'murmurhash'; },
-  'farmhash': { // eslint-disable-line
+  'farmhash': { 
     hash32: () => { return 'farmhash'; }
   }
 };
@@ -26,7 +26,7 @@ test('hashFunction: fallback use of murmurhash', t => {
   t.plan(1);
   const stub = {
     'murmurhash': () => { return 'murmurhash'; },
-    'farmhash': { // eslint-disable-line
+    'farmhash': {
       hash32: () => { throw new Error(); }
     }
   };

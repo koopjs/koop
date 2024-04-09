@@ -76,7 +76,7 @@ test('WhereBuilder.create: transform a predicate with OBJECTID and no metadata f
   const whereClause = WhereBuilder.create({ where: 'OBJECTID=1234' });
   t.equals(
     whereClause,
-    "hashedObjectIdComparator(properties, geometry, 1234, '=')=true", // eslint-disable-line
+    "hashedObjectIdComparator(properties, geometry, 1234, '=')=true",
   );
 });
 
@@ -86,7 +86,7 @@ test('WhereBuilder.create: transform a predicate with OBJECTID IN (1234)', (t) =
   const whereClause = WhereBuilder.create({ objectIds: [1234, 4567] });
   t.equals(
     whereClause,
-    "hashedObjectIdComparator(properties, geometry, '1234,4567', 'IN')=true", // eslint-disable-line
+    "hashedObjectIdComparator(properties, geometry, '1234,4567', 'IN')=true",
   );
 });
 
@@ -100,7 +100,7 @@ test('WhereBuilder.create: transform a predicate with OBJECTID and no metadata f
   const whereClause = WhereBuilder.create(options);
   t.equals(
     whereClause,
-    "hashedObjectIdComparator(attributes, geometry, 1234, '=')=true", // eslint-disable-line
+    "hashedObjectIdComparator(attributes, geometry, 1234, '=')=true",
   );
 });
 
@@ -114,7 +114,7 @@ test('WhereBuilder.create: transform an inverse predicate with OBJECTID and no m
   const whereClause = WhereBuilder.create(options);
   t.equals(
     whereClause,
-    "hashedObjectIdComparator(attributes, geometry, 1234, '<=')=true", // eslint-disable-line
+    "hashedObjectIdComparator(attributes, geometry, 1234, '<=')=true",
   );
 });
 
@@ -143,7 +143,7 @@ test('WhereBuilder.create: handle escaped single quotes', (t) => {
   const whereClause = WhereBuilder.create({
     where: "Street_Name = 'GRAND''S STREET''S'",
   });
-  t.equals(whereClause, "properties->`Street_Name` = 'GRAND\\'S STREET\\'S'"); // eslint-disable-line
+  t.equals(whereClause, "properties->`Street_Name` = 'GRAND\\'S STREET\\'S'");
 });
 
 test('WhereBuilder.create: handle TIMESTAMP cast', (t) => {

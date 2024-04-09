@@ -1,14 +1,14 @@
+const noOnlyTests = require('eslint-plugin-no-only-tests');
+
 module.exports = {
-  env: {
+  languageOptions: {
+    globals: {
     commonjs: true,
     es6: true,
     mocha: true,
     jest: true,
     jasmine: true,
     node: true,
-  },
-  extends: 'eslint:recommended',
-  globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
     process: 'readonly',
@@ -18,6 +18,8 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2022,
   },
+},
+  
   rules: {
     'no-unused-vars': ['error', { ignoreRestSiblings: true }],
     indent: ['error', 2, { SwitchCase: 1 }],
@@ -26,5 +28,7 @@ module.exports = {
     semi: ['error', 'always'],
     'no-only-tests/no-only-tests': 'error',
   },
-  plugins: ['no-only-tests'],
+  plugins: {
+    'no-only-tests': noOnlyTests
+  },
 };

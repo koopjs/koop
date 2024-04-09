@@ -1,7 +1,7 @@
 const { InvalidWhereParameterError } = require('../../errors');
 const convertSqlWhereToJsonWhere = require('./to-json-where');
 
-const timestampCastRegex = /(TIMESTAMP|DATE) '([^']*)'/gi; // eslint-disable-line
+const timestampCastRegex = /(TIMESTAMP|DATE) '([^']*)'/gi;
 const timestampWithoutZoneRegex =
   /^\d{4}-\d{2}-\d{2} {0,1}\d{0,2}:{0,1}\d{0,2}:{0,1}\d{0,2}$/;
 
