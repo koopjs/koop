@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 8.5.7
+
+### Patch Changes
+
+- remove regex and replace with trim
+
 ## 8.5.6
 
 ### Patch Changes
