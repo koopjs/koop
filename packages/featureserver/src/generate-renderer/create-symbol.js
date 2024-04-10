@@ -1,24 +1,23 @@
-const {
-  PointRenderer,
-  LineRenderer,
-  PolygonRenderer
-} = require('../helpers');
+const { PointRenderer, LineRenderer, PolygonRenderer } = require('../helpers');
 const { CodedError } = require('../helpers/errors');
 
 module.exports = { createSymbol };
 
-function createSymbol (baseSymbol, color, geomType) {
+function createSymbol(baseSymbol, color, geomType) {
   const symbol = baseSymbol || getDefaultSymbol(geomType);
   return { ...symbol, color };
 }
 
-function getDefaultSymbol (geomType) {
+function getDefaultSymbol(geomType) {
   const { symbol } = getSymbolRenderer(geomType);
   return symbol;
 }
 
-function getSymbolRenderer (geomType) {
-  if (geomType === 'esriGeometryPoint' || geomType === 'esriGeometryMultiPoint') {
+function getSymbolRenderer(geomType) {
+  if (
+    geomType === 'esriGeometryPoint' ||
+    geomType === 'esriGeometryMultiPoint'
+  ) {
     return new PointRenderer();
   }
 
@@ -30,5 +29,8 @@ function getSymbolRenderer (geomType) {
     return new PolygonRenderer();
   }
 
-  throw new CodedError('Dataset geometry type is not supported for renderers.', 400);
+  throw new CodedError(
+    'Dataset geometry type is not supported for renderers.',
+    400,
+  );
 }

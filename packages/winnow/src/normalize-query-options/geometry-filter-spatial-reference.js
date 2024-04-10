@@ -9,19 +9,24 @@ const normalizeSpatialReference = require('./spatial-reference');
  * @param {object} options options object that may or may not have "geometry" and "inSR" properties
  * @returns {string} EPSG:<wkid> or srs WKT; defaults to EPSG:4326
  */
-function normalizeGeometryFilterSpatialReference (options = {}) {
+function normalizeGeometryFilterSpatialReference(options = {}) {
   const geometry = options.geometry || options.bbox;
-  const geometryEnvelopeSpatialReference = extractGeometryFilterSpatialReference(geometry);
+  const geometryEnvelopeSpatialReference =
+    extractGeometryFilterSpatialReference(geometry);
 
-  const spatialReference = normalizeSpatialReference(geometryEnvelopeSpatialReference || options.inSR);
+  const spatialReference = normalizeSpatialReference(
+    geometryEnvelopeSpatialReference || options.inSR,
+  );
 
   if (!spatialReference) {
-    logManager.logger.debug('geometry filter spatial reference unknown. Defaulting to EPSG:4326.');
+    logManager.logger.debug(
+      'geometry filter spatial reference unknown. Defaulting to EPSG:4326.',
+    );
   }
   return spatialReference || { wkid: 4326 };
 }
 
-function extractGeometryFilterSpatialReference (geometry) {
+function extractGeometryFilterSpatialReference(geometry) {
   if (!geometry) return;
 
   if (_.isString(geometry) || _.isArray(geometry)) {

@@ -5,17 +5,17 @@ const featuresTemplateSchema = Joi.object().keys({
   globalIdFieldName: Joi.string().valid(''),
   uniqueIdField: {
     name: 'OBJECTID',
-    isSystemMaintained: true
+    isSystemMaintained: true,
   },
   hasZ: Joi.boolean().valid(false),
   hasM: Joi.boolean().valid(false),
   spatialReference: Joi.object().keys({
     latestWkid: Joi.number().valid(4326),
-    wkid: Joi.number().valid(4326)
+    wkid: Joi.number().valid(4326),
   }),
   fields: Joi.array(),
   features: Joi.array(),
-  exceededTransferLimit: Joi.boolean().valid(false)
+  exceededTransferLimit: Joi.boolean().valid(false),
 });
 
 const fieldsTemplateSchema = Joi.object().keys({
@@ -24,7 +24,7 @@ const fieldsTemplateSchema = Joi.object().keys({
   alias: Joi.string(),
   sqlType: Joi.string().valid('sqlTypeOther'),
   domain: Joi.valid(null),
-  defaultValue: Joi.valid(null)
+  defaultValue: Joi.valid(null),
 });
 
 const layerTemplateSchema = Joi.object().keys({
@@ -47,8 +47,8 @@ const layerTemplateSchema = Joi.object().keys({
     ymax: Joi.number().valid(90),
     spatialReference: Joi.object().keys({
       wkid: Joi.number().valid(4326),
-      latestWkid: Joi.number().valid(4326)
-    })
+      latestWkid: Joi.number().valid(4326),
+    }),
   }),
   hasAttachments: Joi.boolean().valid(false),
   htmlPopupType: Joi.string().allow('esriServerHTMLPopupTypeNone'),
@@ -64,7 +64,7 @@ const layerTemplateSchema = Joi.object().keys({
   supportsAdvancedQueries: Joi.boolean().valid(true),
   supportedQueryFormats: Joi.string().allow('JSON'),
   ownershipBasedAccessControlForFeatures: Joi.object().keys({
-    allowOthersToQuery: Joi.boolean().valid(true)
+    allowOthersToQuery: Joi.boolean().valid(true),
   }),
   supportsCoordinatesQuantization: Joi.boolean().valid(false),
   useStandardizedQueries: Joi.boolean().valid(true),
@@ -76,7 +76,7 @@ const layerTemplateSchema = Joi.object().keys({
     supportsPagination: Joi.boolean().valid(true),
     supportsTrueCurve: Joi.boolean().valid(false),
     supportsReturningQueryExtent: Joi.boolean().valid(true),
-    supportsQueryWithDistance: Joi.boolean().valid(true)
+    supportsQueryWithDistance: Joi.boolean().valid(true),
   }),
   dateFieldsTimeReference: null,
   isDataVersioned: Joi.boolean().valid(false),
@@ -92,26 +92,40 @@ const layerTemplateSchema = Joi.object().keys({
   timeInfo: Joi.object().keys({}),
   uniqueIdField: Joi.object().keys({
     name: Joi.string().valid('OBJECTID'),
-    isSystemMaintained: Joi.boolean().valid(true)
+    isSystemMaintained: Joi.boolean().valid(true),
   }),
-  fields: Joi.array().items(Joi.object().keys({
-    name: Joi.string(),
-    type: Joi.string().allow('esriFieldTypeOID', 'esriFieldTypeInteger', 'esriFieldTypeDouble', 'esriFieldTypeString', 'esriFieldTypeDate'),
-    alias: Joi.string(),
-    length: Joi.optional().when('type', {
-      is: Joi.string().allow('esriFieldTypeString', 'esriFieldTypeDate'),
-      then: Joi.number().integer().min(0)
-    }),
-    defaultValue: Joi.any().valid(null),
-    domain: Joi.any().valid(null),
-    editable: Joi.boolean().valid(false, true),
-    nullable: Joi.boolean().valid(false),
-    sqlType: Joi.string().valid('sqlTypeOther', 'sqlTypeDouble', 'sqlTypeInteger')
-  })).min(0),
+  fields: Joi.array()
+    .items(
+      Joi.object().keys({
+        name: Joi.string(),
+        type: Joi.string().allow(
+          'esriFieldTypeOID',
+          'esriFieldTypeInteger',
+          'esriFieldTypeDouble',
+          'esriFieldTypeString',
+          'esriFieldTypeDate',
+        ),
+        alias: Joi.string(),
+        length: Joi.optional().when('type', {
+          is: Joi.string().allow('esriFieldTypeString', 'esriFieldTypeDate'),
+          then: Joi.number().integer().min(0),
+        }),
+        defaultValue: Joi.any().valid(null),
+        domain: Joi.any().valid(null),
+        editable: Joi.boolean().valid(false, true),
+        nullable: Joi.boolean().valid(false),
+        sqlType: Joi.string().valid(
+          'sqlTypeOther',
+          'sqlTypeDouble',
+          'sqlTypeInteger',
+        ),
+      }),
+    )
+    .min(0),
   drawingInfo: Joi.object().keys({
     renderer: Joi.object().keys({}),
-    labelingInfo: Joi.valid(null)
-  })
+    labelingInfo: Joi.valid(null),
+  }),
 });
 
 const oidTemplateSchema = Joi.object().keys({
@@ -120,7 +134,7 @@ const oidTemplateSchema = Joi.object().keys({
   alias: Joi.string().valid('OBJECTID'),
   sqlType: Joi.string().valid('sqlTypeInteger'),
   domain: Joi.valid(null),
-  defaultValue: Joi.valid(null)
+  defaultValue: Joi.valid(null),
 });
 
 const serverTemplateSchema = Joi.object().keys({
@@ -137,7 +151,7 @@ const serverTemplateSchema = Joi.object().keys({
   copyrightText: Joi.string().allow(''),
   spatialReference: Joi.object().keys({
     wkid: Joi.number().valid(4326),
-    latestWkid: Joi.number().valid(4326)
+    latestWkid: Joi.number().valid(4326),
   }),
   initialExtent: Joi.object().keys({
     xmin: Joi.number().valid(-180),
@@ -146,8 +160,8 @@ const serverTemplateSchema = Joi.object().keys({
     ymax: Joi.number().valid(90),
     spatialReference: Joi.object().keys({
       wkid: Joi.number().valid(4326),
-      latestWkid: Joi.number().valid(4326)
-    })
+      latestWkid: Joi.number().valid(4326),
+    }),
   }),
   fullExtent: Joi.object().keys({
     xmin: Joi.number().valid(-180),
@@ -156,8 +170,8 @@ const serverTemplateSchema = Joi.object().keys({
     ymax: Joi.number().valid(90),
     spatialReference: Joi.object().keys({
       wkid: Joi.number().valid(4326),
-      latestWkid: Joi.number().valid(4326)
-    })
+      latestWkid: Joi.number().valid(4326),
+    }),
   }),
   relationships: Joi.array(),
   allowGeometryUpdates: Joi.boolean().valid(false),
@@ -165,7 +179,13 @@ const serverTemplateSchema = Joi.object().keys({
   syncEnabled: Joi.boolean().valid(false),
   layers: Joi.array().min(0),
   tables: Joi.array().min(0),
-  supportsRelationshipsResource: Joi.boolean()
+  supportsRelationshipsResource: Joi.boolean(),
 });
 
-module.exports = { featuresTemplateSchema, fieldsTemplateSchema, layerTemplateSchema, oidTemplateSchema, serverTemplateSchema };
+module.exports = {
+  featuresTemplateSchema,
+  fieldsTemplateSchema,
+  layerTemplateSchema,
+  oidTemplateSchema,
+  serverTemplateSchema,
+};

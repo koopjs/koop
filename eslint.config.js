@@ -1,14 +1,15 @@
+const noOnlyTests = require('eslint-plugin-no-only-tests');
+const prettier = require('eslint-plugin-prettier');
+
 module.exports = {
-  env: {
+  languageOptions: {
+    globals: {
     commonjs: true,
     es6: true,
     mocha: true,
     jest: true,
     jasmine: true,
     node: true,
-  },
-  extends: 'eslint:recommended',
-  globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
     process: 'readonly',
@@ -18,13 +19,17 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2022,
   },
+},
+  
   rules: {
     'no-unused-vars': ['error', { ignoreRestSiblings: true }],
-    indent: ['error', 2, { SwitchCase: 1 }],
-    'linebreak-style': ['error', 'unix'],
-    quotes: ['error', 'single'],
-    semi: ['error', 'always'],
+    'semi': ['error', 'always'],
+    'prettier/prettier': ['error', {endOfLine: 'auto'}],
     'no-only-tests/no-only-tests': 'error',
+    //'linebreak-style': ['error', 'unix'],
   },
-  plugins: ['no-only-tests'],
+  plugins: {
+    'no-only-tests': noOnlyTests,
+    'prettier':  prettier
+  },
 };

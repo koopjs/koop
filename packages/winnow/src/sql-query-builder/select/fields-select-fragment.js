@@ -1,4 +1,4 @@
-function createFieldsSelectFragment (options = {}) {
+function createFieldsSelectFragment(options = {}) {
   const { fields, toEsri } = options;
 
   if (toEsri) {
@@ -8,7 +8,7 @@ function createFieldsSelectFragment (options = {}) {
   return selectFieldsAsGeoJson(fields);
 }
 
-function selectFieldsAsEsriJson (options) {
+function selectFieldsAsEsriJson(options) {
   const { fields, dateFields = [], returnIdsOnly, idField = null } = options;
   const delimitedDateFields = dateFields.join(',');
   const includeIdField = shouldIncludeIdField({ returnIdsOnly, fields });
@@ -18,12 +18,12 @@ function selectFieldsAsEsriJson (options) {
   return `toEsriAttributes(properties, geometry, "${delimitedDateFields}", "${includeIdField}", "${idField}") as attributes`;
 }
 
-function shouldIncludeIdField ({ returnIdsOnly, fields }) {
+function shouldIncludeIdField({ returnIdsOnly, fields }) {
   if (returnIdsOnly || !fields || fields.includes('OBJECTID')) return true;
   return false;
 }
 
-function selectFieldsAsGeoJson (fields) {
+function selectFieldsAsGeoJson(fields) {
   if (fields) {
     return `selectFields(properties, "${fields.join(',')}") as properties`;
   }

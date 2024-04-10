@@ -3,18 +3,20 @@ const fs = require('fs-extra');
 const path = require('path');
 const winnow = require('../src/index.js');
 
-const features = fs.readJSONSync(path.join(__dirname, './fixtures.geojson')).features;
+const features = fs.readJSONSync(
+  path.join(__dirname, './fixtures.geojson'),
+).features;
 const suite = new Benchmark.Suite();
 
 suite
   .add('query all', function () {
     winnow.query(features, {
-      where: '1=1'
+      where: '1=1',
     });
   })
   .add('query with filter', function () {
     winnow.query(features, {
-      where: 'OBJECTID = \'east\''
+      where: "OBJECTID = 'east'",
     });
   })
   .add('query with geo filter', function () {
@@ -25,10 +27,10 @@ suite
         xmax: 80,
         ymax: 80,
         spatialReference: {
-          wkid: '4326'
-        }
+          wkid: '4326',
+        },
       },
-      spatialPredicate: 'ST_Within'
+      spatialPredicate: 'ST_Within',
     });
   })
   .on('cycle', function (event) {

@@ -1,4 +1,4 @@
-const should = require('should') // eslint-disable-line
+const should = require('should'); // eslint-disable-line
 const {
   ESRI_FIELD_TYPE_OID,
   ESRI_FIELD_TYPE_STRING,
@@ -7,7 +7,7 @@ const {
   SQL_TYPE_INTEGER,
   SQL_TYPE_OTHER,
   SQL_TYPE_FLOAT,
-  OBJECTID_DEFAULT_KEY
+  OBJECTID_DEFAULT_KEY,
 } = require('./constants');
 
 describe('field constants', () => {

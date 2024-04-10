@@ -1,13 +1,16 @@
 const isDifferentCrs = require('./is-different-crs');
 
-function params (features, {
-  returnGeometry,
-  inputCrs,
-  outputCrs,
-  aggregates,
-  geometry,
-  geometryPrecision
-} = {}) {
+function params(
+  features,
+  {
+    returnGeometry,
+    inputCrs,
+    outputCrs,
+    aggregates,
+    geometry,
+    geometryPrecision,
+  } = {},
+) {
   const params = [];
   // NOTE: order matters here
   // select fragment: transform function parameters here
@@ -29,16 +32,20 @@ function params (features, {
   return params;
 }
 
-function shouldAddCrsParams ({
+function shouldAddCrsParams({
   aggregates,
   returnGeometry,
   inputCrs,
-  outputCrs
+  outputCrs,
 } = {}) {
-  return !aggregates && returnGeometry !== false && isDifferentCrs(inputCrs, outputCrs);
+  return (
+    !aggregates &&
+    returnGeometry !== false &&
+    isDifferentCrs(inputCrs, outputCrs)
+  );
 }
 
-function getCrsString ({ wkt, wkid } = {}) {
+function getCrsString({ wkt, wkid } = {}) {
   return wkt || `EPSG:${wkid}`;
 }
 

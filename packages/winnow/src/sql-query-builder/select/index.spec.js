@@ -4,7 +4,7 @@ const proxyquire = require('proxyquire');
 const createSelectSql = proxyquire('./', {
   './aggregation-select': sinon.stub().returns('aggregation SELECT'),
   './geometry-select-fragment': sinon.stub().returns('geometry fragment'),
-  './fields-select-fragment': sinon.stub().returns('fields fragment')
+  './fields-select-fragment': sinon.stub().returns('fields fragment'),
 });
 
 test('createSelectSql: no options', async (spec) => {

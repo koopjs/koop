@@ -1,4 +1,4 @@
-const should = require('should') // eslint-disable-line
+const should = require('should');
 should.config.checkProtoEql = false;
 const {
   FieldFromKeyValue,
@@ -6,7 +6,7 @@ const {
   FieldFromFieldDefinition,
   ObjectIdFieldFromDefinition,
   StatisticField,
-  StatisticDateField
+  StatisticDateField,
 } = require('./field-classes');
 
 describe('FieldFromKeyValue', () => {
@@ -19,7 +19,7 @@ describe('FieldFromKeyValue', () => {
       sqlType: 'sqlTypeOther',
       length: 128,
       domain: null,
-      defaultValue: null
+      defaultValue: null,
     });
 
     result.setEditable().setNullable();
@@ -32,7 +32,7 @@ describe('FieldFromKeyValue', () => {
       domain: null,
       defaultValue: null,
       editable: false,
-      nullable: false
+      nullable: false,
     });
 
     result.setEditable(true).setNullable(true);
@@ -45,7 +45,7 @@ describe('FieldFromKeyValue', () => {
       domain: null,
       defaultValue: null,
       editable: true,
-      nullable: true
+      nullable: true,
     });
   });
 });
@@ -59,7 +59,7 @@ describe('ObjectIdField', () => {
       type: 'esriFieldTypeOID',
       sqlType: 'sqlTypeInteger',
       domain: null,
-      defaultValue: null
+      defaultValue: null,
     });
 
     result.setEditable().setNullable();
@@ -71,7 +71,7 @@ describe('ObjectIdField', () => {
       domain: null,
       defaultValue: null,
       editable: false,
-      nullable: false
+      nullable: false,
     });
 
     result.setEditable(true).setNullable(true);
@@ -83,7 +83,7 @@ describe('ObjectIdField', () => {
       domain: null,
       defaultValue: null,
       editable: true,
-      nullable: true
+      nullable: true,
     });
   });
 });
@@ -92,7 +92,7 @@ describe('FieldFromFieldDefinition', () => {
   it('should produce expected instance from name, type definitions', () => {
     const result = new FieldFromFieldDefinition({
       name: 'foo',
-      type: 'String'
+      type: 'String',
     });
     result.should.deepEqual({
       name: 'foo',
@@ -101,7 +101,7 @@ describe('FieldFromFieldDefinition', () => {
       sqlType: 'sqlTypeOther',
       length: 128,
       domain: null,
-      defaultValue: null
+      defaultValue: null,
     });
 
     result.setEditable().setNullable();
@@ -114,7 +114,7 @@ describe('FieldFromFieldDefinition', () => {
       domain: null,
       defaultValue: null,
       editable: false,
-      nullable: false
+      nullable: false,
     });
 
     result.setEditable(true).setNullable(true);
@@ -127,7 +127,7 @@ describe('FieldFromFieldDefinition', () => {
       domain: null,
       defaultValue: null,
       editable: true,
-      nullable: true
+      nullable: true,
     });
   });
 
@@ -138,7 +138,7 @@ describe('FieldFromFieldDefinition', () => {
       alias: 'foolish',
       domain: 'domain-value',
       defaultValue: 'default-value',
-      length: 256
+      length: 256,
     });
     result.should.deepEqual({
       name: 'foo',
@@ -147,7 +147,7 @@ describe('FieldFromFieldDefinition', () => {
       sqlType: 'sqlTypeOther',
       domain: 'domain-value',
       defaultValue: 'default-value',
-      length: 256
+      length: 256,
     });
   });
 });
@@ -158,7 +158,7 @@ describe('ObjectIdFieldFromFieldDefinition', () => {
       name: 'foo',
       type: 'String',
       editable: true,
-      nullable: true
+      nullable: true,
     });
     result.should.deepEqual({
       name: 'foo',
@@ -166,7 +166,7 @@ describe('ObjectIdFieldFromFieldDefinition', () => {
       type: 'esriFieldTypeOID',
       sqlType: 'sqlTypeInteger',
       domain: null,
-      defaultValue: null
+      defaultValue: null,
     });
 
     result.setEditable().setNullable();
@@ -178,7 +178,7 @@ describe('ObjectIdFieldFromFieldDefinition', () => {
       domain: null,
       defaultValue: null,
       editable: false,
-      nullable: false
+      nullable: false,
     });
 
     result.setEditable(true).setNullable(true);
@@ -190,7 +190,7 @@ describe('ObjectIdFieldFromFieldDefinition', () => {
       domain: null,
       defaultValue: null,
       editable: true,
-      nullable: true
+      nullable: true,
     });
   });
 });
@@ -204,7 +204,7 @@ describe('StatisticsField', () => {
       type: 'esriFieldTypeDouble',
       sqlType: 'sqlTypeFloat',
       domain: null,
-      defaultValue: null
+      defaultValue: null,
     });
   });
 });
@@ -218,7 +218,7 @@ describe('StatisticsDateField', () => {
       type: 'esriFieldTypeDate',
       sqlType: 'sqlTypeOther',
       domain: null,
-      defaultValue: null
+      defaultValue: null,
     });
   });
 });

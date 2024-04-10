@@ -1,15 +1,15 @@
-const should = require('should'); // eslint-disable-line
+const should = require('should');
 const { transformToPbfGeometry } = require('./transform-to-pbf-geometry');
 
 const defaultTransform = {
   scale: {
     xScale: 0.0001,
-    yScale: 0.0001
-  },//[0.0001, 0.0001],
+    yScale: 0.0001,
+  }, //[0.0001, 0.0001],
   translate: {
     xTranslate: -20037700,
-    yTranslate: -30241100
-  } // [-20037700, -30241100],
+    yTranslate: -30241100,
+  }, // [-20037700, -30241100],
 };
 
 describe('transformToPbfGeometry', () => {
@@ -51,7 +51,7 @@ describe('transformToPbfGeometry', () => {
         x: -8571657.3541762847,
         y: 4704411.394312229,
         z: 100,
-        m: 25.3
+        m: 25.3,
       };
       const result = transformToPbfGeometry(fixture, defaultTransform);
       result.should.deepEqual({
@@ -59,7 +59,6 @@ describe('transformToPbfGeometry', () => {
         coords: [114660426458, -349455113943, 100, 25.3],
       });
     });
-
   });
 
   describe('line geometry', () => {
@@ -78,12 +77,7 @@ describe('transformToPbfGeometry', () => {
       result.should.deepEqual({
         lengths: [3],
         coords: [
-          64567221232,
-          -357065421833,
-          3339584724,
-          0,
-          2226389816,
-          1534703364,
+          64567221232, -357065421833, 3339584724, 0, 2226389816, 1534703364,
         ],
       });
     });
@@ -102,11 +96,7 @@ describe('transformToPbfGeometry', () => {
       result.should.deepEqual({
         lengths: [3],
         coords: [
-          65737760897,
-          -361640524478,
-          -587036377,
-          -1064003433,
-          464737132,
+          65737760897, -361640524478, -587036377, -1064003433, 464737132,
           -183448868,
         ],
       });
@@ -130,16 +120,8 @@ describe('transformToPbfGeometry', () => {
       result.should.deepEqual({
         lengths: [5],
         coords: [
-          65680416140,
-          -363479548349,
-          0,
-          1647807625,
-          -1113194908,
-          0,
-          0,
-          -1647807625,
-          1113194908,
-          0,
+          65680416140, -363479548349, 0, 1647807625, -1113194908, 0, 0,
+          -1647807625, 1113194908, 0,
         ],
       });
     });
@@ -180,16 +162,8 @@ describe('transformToPbfGeometry', () => {
       result.should.deepEqual({
         lengths: [3, 2],
         coords: [
-          62340831416,
-          -358626214862,
-          4452779632,
-          0,
-          0,
-          -3205525862,
-          62340831416,
-          -354020794440,
-          4452779632,
-          0,
+          62340831416, -358626214862, 4452779632, 0, 0, -3205525862,
+          62340831416, -354020794440, 4452779632, 0,
         ],
       });
     });
@@ -219,26 +193,9 @@ describe('transformToPbfGeometry', () => {
       result.should.deepEqual({
         lengths: [5, 5],
         coords: [
-          87944314299,
-          -346802067873,
-          0,
-          -1403190256,
-          2226389816,
-          0,
-          0,
-          1403190256,
-          -2226389816,
-          0,
-          92397093931,
-          -344049811441,
-          0,
-          -1367402279,
-          2226389815,
-          0,
-          0,
-          1367402279,
-          -2226389815,
-          0,
+          87944314299, -346802067873, 0, -1403190256, 2226389816, 0, 0,
+          1403190256, -2226389816, 0, 92397093931, -344049811441, 0,
+          -1367402279, 2226389815, 0, 0, 1367402279, -2226389815, 0,
         ],
       });
     });

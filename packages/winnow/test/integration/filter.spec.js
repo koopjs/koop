@@ -4,7 +4,7 @@ const winnow = require('../..');
 
 test('With a where option', (t) => {
   const options = {
-    where: 'Genus like \'%Quercus%\'',
+    where: "Genus like '%Quercus%'",
   };
   run('trees', options, 8, t);
 });
@@ -19,7 +19,7 @@ test('With a where options 1=1', (t) => {
 test('With a where option with multiple statements', (t) => {
   const options = {
     where:
-      'Genus like \'%Quercus%\' AND Street_Name = \'CLAREMONT\' AND House_Number < 600 AND Trunk_Diameter = 9',
+      "Genus like '%Quercus%' AND Street_Name = 'CLAREMONT' AND House_Number < 600 AND Trunk_Diameter = 9",
   };
   run('trees', options, 1, t);
 });
@@ -27,14 +27,14 @@ test('With a where option with multiple statements', (t) => {
 test('With a where option with multiple statements with appended 1=1', (t) => {
   const options = {
     where:
-      'Genus like \'%Quercus%\' AND Street_Name = \'CLAREMONT\' AND House_Number < 600 AND Trunk_Diameter = 9 AND 1=1',
+      "Genus like '%Quercus%' AND Street_Name = 'CLAREMONT' AND House_Number < 600 AND Trunk_Diameter = 9 AND 1=1",
   };
   run('trees', options, 1, t);
 });
 
 test('With a field that has been uppercased', (t) => {
   const options = {
-    where: 'UPPER(Genus) like \'%Quercus%\'',
+    where: "UPPER(Genus) like '%Quercus%'",
   };
   t.plan(1);
   const fixtures = _.cloneDeep(require('./fixtures/trees.json'));
@@ -46,7 +46,7 @@ test('With a field that has been uppercased', (t) => {
 test('With the toEsri option', (t) => {
   const options = {
     toEsri: true,
-    where: 'Genus like \'%Quercus%\'',
+    where: "Genus like '%Quercus%'",
   };
   run('trees', options, 8, t);
 });
@@ -71,7 +71,7 @@ test('With a field with a space', (t) => {
 
 test('With esri json', (t) => {
   const options = {
-    where: 'Genus like \'%Quercus%\'',
+    where: "Genus like '%Quercus%'",
     esri: true,
   };
   run('esri', options, 8, t);
@@ -80,14 +80,14 @@ test('With esri json', (t) => {
 test('With multiple like clauses', (t) => {
   const options = {
     where:
-      'Genus like \'%Quercus%\' AND Common_Name like \'%Live Oak%\' AND Street_Type like \'%ST%\'',
+      "Genus like '%Quercus%' AND Common_Name like '%Live Oak%' AND Street_Type like '%ST%'",
   };
   run('trees', options, 5, t);
 });
 
 test('With an in parameter', (t) => {
   const options = {
-    where: 'Genus IN (\'QUERCUS\', \'EUGENIA\')',
+    where: "Genus IN ('QUERCUS', 'EUGENIA')",
   };
   run('trees', options, 8, t);
 });
@@ -122,7 +122,7 @@ test('With an >= parameter', (t) => {
 
 test('With an IN parameter and a numeric test', (t) => {
   const options = {
-    where: 'Genus IN (\'QUERCUS\', \'JACARANDA\') AND Trunk_Diameter>=13',
+    where: "Genus IN ('QUERCUS', 'JACARANDA') AND Trunk_Diameter>=13",
   };
   run('trees', options, 6, t);
 });
@@ -130,14 +130,14 @@ test('With an IN parameter and a numeric test', (t) => {
 test('With an AND and an OR', (t) => {
   const options = {
     where:
-      '(Genus like \'%Quercus%\' AND Common_Name like \'%Live Oak%\') OR Street_Type like \'%AVE%\'',
+      "(Genus like '%Quercus%' AND Common_Name like '%Live Oak%') OR Street_Type like '%AVE%'",
   };
   run('trees', options, 13, t);
 });
 
 test('With an equality parameter', (t) => {
   const options = {
-    where: 'Common_Name = \'LIVE OAK\'',
+    where: "Common_Name = 'LIVE OAK'",
   };
   run('trees', options, 6, t);
 });
@@ -381,7 +381,7 @@ test('With a ST_Intersects geometry predicate', (t) => {
 
 test('With a where and a geometry option', (t) => {
   const options = {
-    where: 'Genus like \'%Quercus%\'',
+    where: "Genus like '%Quercus%'",
     geometry: {
       type: 'Polygon',
       coordinates: [
@@ -402,7 +402,7 @@ test('With a where, geometry, limit and offset option', (t) => {
   t.plan(5);
   const data = 'trees';
   const options = {
-    where: 'Genus like \'%Quercus%\'',
+    where: "Genus like '%Quercus%'",
     geometry: {
       type: 'Polygon',
       coordinates: [
@@ -478,7 +478,7 @@ test('With a multi-ring geometry and an inSR', (t) => {
 
 test('with a coded value domain', (t) => {
   const options = {
-    where: 'State = \'1\'',
+    where: "State = '1'",
     esriFields: [
       {
         name: 'State',
@@ -544,7 +544,7 @@ test('with a numeric coded value domain', (t) => {
 
 test('with a coded value domain', (t) => {
   const options = {
-    where: 'ZONING_S = \'INST\'',
+    where: "ZONING_S = 'INST'",
     esriFields: require('./fixtures/esriFields.json'),
   };
 
@@ -565,14 +565,14 @@ test('with a date query', (t) => {
 test('with an esri-style date query', (t) => {
   const options = {
     where:
-      'survey_date >= \'2017-02-05T00:00:00.000Z\' AND survey_date <= \'2017-03-06T23:59:59.000Z\'',
+      "survey_date >= '2017-02-05T00:00:00.000Z' AND survey_date <= '2017-03-06T23:59:59.000Z'",
   };
   run('trees', options, 4, t);
 });
 
 test('with a timestamp query', (t) => {
   const options = {
-    where: 'survey_date >= timestamp \'2017-02-05\'',
+    where: "survey_date >= timestamp '2017-02-05'",
   };
   run('trees', options, 4, t);
 });
@@ -580,14 +580,14 @@ test('with a timestamp query', (t) => {
 test('with a between query', (t) => {
   const options = {
     where:
-      'survey_date between timestamp \'2017-01-06T00:00:00.000Z\' AND timestamp \'2017-02-06T23:59:59.000Z\'',
+      "survey_date between timestamp '2017-01-06T00:00:00.000Z' AND timestamp '2017-02-06T23:59:59.000Z'",
   };
   run('trees', options, 2, t);
 });
 
 test('with escaped single quote in query', (t) => {
   const options = {
-    where: 'Street_Name = \'GRAND\'\'S STREET\'\'S\'',
+    where: "Street_Name = 'GRAND''S STREET''S'",
   };
   run('trees', options, 1, t);
 });
@@ -596,7 +596,7 @@ test('with a OBJECTID query on data that requires dynamic OBJECTID generation', 
   t.plan(1);
   const options = {
     toEsri: true,
-    limit: 1
+    limit: 1,
   };
   const fixtures = {
     type: 'FeatureCollection',
@@ -619,7 +619,7 @@ test('with a OBJECTID query on data that requires dynamic OBJECTID generation', 
   const objectId = queryResult.features[0].attributes.OBJECTID;
   const filteredResult = winnow.query(fixtures, {
     toEsri: true,
-    where: `OBJECTID = ${objectId}`
+    where: `OBJECTID = ${objectId}`,
   });
   t.equal(filteredResult.features.length, 1);
 });
@@ -631,7 +631,7 @@ test('with null dates in data source', (t) => {
   // * the geojson is passed to winnow.query with the metadata.fields populated
   const options = {
     where:
-      'Date1 >= timestamp \'2020-01-05 00:00:00\' AND Date1 <= timestamp \'2020-02-08 23:59:59\'',
+      "Date1 >= timestamp '2020-01-05 00:00:00' AND Date1 <= timestamp '2020-02-08 23:59:59'",
     toEsri: true,
   };
   t.plan(4);

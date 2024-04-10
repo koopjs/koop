@@ -9,8 +9,8 @@ function getGeometryTransform(spatialReference, quantizationParameters) {
   let scale = getSpatialReferenceScaleFactor(spatialReference);
 
   return {
-    scale: {xScale: scale, yScale: scale},
-    translate: { xTranslate: 0, yTranslate: 0 } // [-20037700, -30241100],
+    scale: { xScale: scale, yScale: scale },
+    translate: { xTranslate: 0, yTranslate: 0 }, // [-20037700, -30241100],
   };
 }
 
@@ -26,7 +26,7 @@ function getSpatialReferenceScaleFactor({ wkt, wkid }) {
   if (wktInfo?.UNIT?.name === 'degree') {
     return 1e-9;
   }
-  
+
   if (wktInfo?.UNIT?.convert) {
     return 1 / wktInfo.UNIT.convert / 10000;
   }
@@ -35,17 +35,16 @@ function getSpatialReferenceScaleFactor({ wkt, wkid }) {
 }
 
 function parseQuantizationParameters(q) {
-  const {
-    tolerance = null
-  } = q;
-  const scale = tolerance !== null  ? q.tolerance: 1;
+  const { tolerance = null } = q;
+  const scale = tolerance !== null ? q.tolerance : 1;
 
-  const [ xTranslate, yTranslate ] = q.extent != null ? [q.extent.xmin, q.extent.ymax] : [0, 0];
-  
+  const [xTranslate, yTranslate] =
+    q.extent != null ? [q.extent.xmin, q.extent.ymax] : [0, 0];
+
   return {
     originPosition: normalizeOriginPosition(q.originPosition),
     scale: { xScale: scale, yScale: scale },
-    translate: { xTranslate, yTranslate }
+    translate: { xTranslate, yTranslate },
   };
 }
 
@@ -62,5 +61,5 @@ function normalizeOriginPosition(originPosition) {
 }
 
 module.exports = {
-  getGeometryTransform
+  getGeometryTransform,
 };

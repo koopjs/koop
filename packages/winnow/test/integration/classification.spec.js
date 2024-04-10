@@ -9,7 +9,7 @@ const geoServicesClassBreaks = require('./fixtures/classification/geoServicesCla
 const geoServicesUniqueValue = require('./fixtures/classification/geoServicesUniqueValue.json');
 
 /* class breaks */
-test('create class breaks', t => {
+test('create class breaks', (t) => {
   t.plan(5);
   const options = _.cloneDeep(classBreaks);
   const results = winnow.query(treesSubset, options);
@@ -21,7 +21,7 @@ test('create class breaks', t => {
   t.end();
 });
 
-test('create class breaks without where clause', t => {
+test('create class breaks without where clause', (t) => {
   t.plan(5);
   const options = _.cloneDeep(classBreaks);
   delete options.where;
@@ -34,7 +34,7 @@ test('create class breaks without where clause', t => {
   t.end();
 });
 
-test('change class break count', t => {
+test('change class break count', (t) => {
   t.plan(5);
   const options = _.cloneDeep(classBreaks);
   options.classification.breakCount = 9;
@@ -47,7 +47,7 @@ test('change class break count', t => {
   t.end();
 });
 
-test('change classification field', t => {
+test('change classification field', (t) => {
   t.plan(5);
   const options = _.cloneDeep(classBreaks);
   options.classification.field = 'House_Number';
@@ -60,7 +60,7 @@ test('change classification field', t => {
   t.end();
 });
 
-test('classify using natural breaks', t => {
+test('classify using natural breaks', (t) => {
   t.plan(5);
   const options = _.cloneDeep(classBreaks);
   options.classification.method = 'naturalBreaks';
@@ -72,7 +72,7 @@ test('classify using natural breaks', t => {
   t.deepEqual(results[6], [13, 13]);
 });
 
-test('classify using quantile', t => {
+test('classify using quantile', (t) => {
   t.plan(5);
   const options = _.cloneDeep(classBreaks);
   options.classification.method = 'quantile';
@@ -84,7 +84,7 @@ test('classify using quantile', t => {
   t.deepEqual(results[6], [13, 13]);
 });
 
-test('classify using standard deviation', t => {
+test('classify using standard deviation', (t) => {
   t.plan(6);
   const options = _.cloneDeep(classBreaks);
   options.classification.method = 'stddev';
@@ -99,7 +99,7 @@ test('classify using standard deviation', t => {
   t.deepEqual(results[14], [35.773262, 40.257608]);
 });
 
-test('normalize by field', t => {
+test('normalize by field', (t) => {
   t.plan(5);
   const options = _.cloneDeep(classBreaks);
   options.classification.field = 'House_Number';
@@ -113,7 +113,7 @@ test('normalize by field', t => {
   t.deepEqual(results[6], [628.4065934065934, 726.6666666666666]);
 });
 
-test('normalize by log', t => {
+test('normalize by log', (t) => {
   t.plan(5);
   const options = _.cloneDeep(classBreaks);
   options.classification.normType = 'log';
@@ -125,7 +125,7 @@ test('normalize by log', t => {
   t.deepEqual(results[6], [0.9548085876915742, 1.1139433523068367]);
 });
 
-test('normalize by total', t => {
+test('normalize by total', (t) => {
   t.plan(5);
   const options = _.cloneDeep(classBreaks);
   options.classification.normType = 'percent';
@@ -137,37 +137,45 @@ test('normalize by total', t => {
   t.deepEqual(results[6], [10.51212938005391, 12.264150943396226]);
 });
 
-test('unrecognized classification field', t => {
+test('unrecognized classification field', (t) => {
   t.plan(1);
   const options = _.cloneDeep(classBreaks);
   options.classification.field = 'UNRECOGNIZED_FIELD';
-  t.throws(function () { winnow.query(treesSubset, options); });
+  t.throws(function () {
+    winnow.query(treesSubset, options);
+  });
 });
 
-test('unacceptable classification field', t => {
+test('unacceptable classification field', (t) => {
   t.plan(1);
   const options = _.cloneDeep(classBreaks);
   options.classification.field = 'Common_Name';
-  t.throws(function () { winnow.query(treesSubset, options); });
+  t.throws(function () {
+    winnow.query(treesSubset, options);
+  });
 });
 
-test('unacceptable classification method', t => {
+test('unacceptable classification method', (t) => {
   t.plan(1);
   const options = _.cloneDeep(classBreaks);
   options.classification.method = 'invalidMethod';
-  t.throws(function () { winnow.query(treesSubset, options); });
+  t.throws(function () {
+    winnow.query(treesSubset, options);
+  });
 });
 
-test('handle unacceptable field with different value types', t => {
+test('handle unacceptable field with different value types', (t) => {
   t.plan(1);
   const options = _.cloneDeep(classBreaks);
   options.where = 'House_Number>200';
   const data = _.cloneDeep(treesSubset);
   data.features[2].properties.Trunk_Diameter = 'Invalid Value';
-  t.throws(function () { winnow.query(data, options); });
+  t.throws(function () {
+    winnow.query(data, options);
+  });
 });
 
-test('remove null values during classification', t => {
+test('remove null values during classification', (t) => {
   t.plan(5);
   const options = _.cloneDeep(classBreaks);
   const data = _.cloneDeep(treesSubset);
@@ -185,7 +193,7 @@ test('remove null values during classification', t => {
 });
 
 /* unique values */
-test('create unique values', t => {
+test('create unique values', (t) => {
   t.plan(5);
   const options = _.cloneDeep(uniqueValue);
   const results = winnow.query(treesSubset, options);
@@ -197,27 +205,30 @@ test('create unique values', t => {
   t.end();
 });
 
-test('add unique values', t => {
+test('add unique values', (t) => {
   t.plan(6);
   const options = _.cloneDeep(uniqueValue);
   const ammendedtrees = _.cloneDeep(treesSubset);
-  ammendedtrees.features.push({
-    type: 'Feature',
-    properties: {
-      OBJECTID: 99998,
-      Common_Name: 'SOUTHERN MAGNOLIA',
-      Genus: 'MAGNOLIA',
-      Trunk_Diameter: 10
-    }
-  }, {
-    type: 'Feature',
-    properties: {
-      OBJECTID: 99999,
-      Common_Name: 'SOUTHERN NEW_GENUS',
-      Genus: 'NEW_GENUS',
-      Trunk_Diameter: 11
-    }
-  });
+  ammendedtrees.features.push(
+    {
+      type: 'Feature',
+      properties: {
+        OBJECTID: 99998,
+        Common_Name: 'SOUTHERN MAGNOLIA',
+        Genus: 'MAGNOLIA',
+        Trunk_Diameter: 10,
+      },
+    },
+    {
+      type: 'Feature',
+      properties: {
+        OBJECTID: 99999,
+        Common_Name: 'SOUTHERN NEW_GENUS',
+        Genus: 'NEW_GENUS',
+        Trunk_Diameter: 11,
+      },
+    },
+  );
   const results = winnow.query(ammendedtrees, options);
   t.equal(Array.isArray(results), true);
   t.equal(typeof results === 'object', true);
@@ -228,7 +239,7 @@ test('add unique values', t => {
   t.end();
 });
 
-test('change unique value field', t => {
+test('change unique value field', (t) => {
   t.plan(5);
   const options = _.cloneDeep(uniqueValue);
   options.classification.fields[0] = 'Common_Name';
@@ -241,50 +252,62 @@ test('change unique value field', t => {
   t.end();
 });
 
-test('create unique values with multiple unique fields', t => {
+test('create unique values with multiple unique fields', (t) => {
   t.plan(6);
   const options = {
     classification: {
       type: 'unique',
       fields: ['EmployeeID', 'ShipperID'],
-      fieldDelimiter: ', '
+      fieldDelimiter: ', ',
     },
     where: 'OBJECTID<11310',
-    f: 'pjson'
+    f: 'pjson',
   };
   const results = winnow.query(multipleUnique, options);
   t.equal(Array.isArray(results), true);
   t.equal(typeof results === 'object', true);
   t.equal(results.length, 6);
   t.deepEqual(results[0], { count: 1, EmployeeID: 'John', ShipperID: 'Marc' });
-  t.deepEqual(results[3], { count: 2, EmployeeID: 'Leeroy', ShipperID: 'Marc' });
-  t.deepEqual(results[5], { count: 1, EmployeeID: 'Leeroy', ShipperID: 'Eric' });
+  t.deepEqual(results[3], {
+    count: 2,
+    EmployeeID: 'Leeroy',
+    ShipperID: 'Marc',
+  });
+  t.deepEqual(results[5], {
+    count: 1,
+    EmployeeID: 'Leeroy',
+    ShipperID: 'Eric',
+  });
   t.end();
 });
 
-test('cannot create unique values with more than three fields', t => {
+test('cannot create unique values with more than three fields', (t) => {
   t.plan(1);
   const options = {
     classification: {
       type: 'unique',
       fields: ['EmployeeID', 'ShipperID', 'Department', 'Date'],
-      fieldDelimiter: ', '
+      fieldDelimiter: ', ',
     },
     where: 'OBJECTID<11310',
-    f: 'pjson'
+    f: 'pjson',
   };
-  t.throws(function () { winnow.query(treesSubset, options); });
+  t.throws(function () {
+    winnow.query(treesSubset, options);
+  });
 });
 
-test('unacceptable classification field', t => {
+test('unacceptable classification field', (t) => {
   t.plan(1);
   const options = _.cloneDeep(uniqueValue);
   options.classification.fields[0] = 'Unacceptable Field';
-  t.throws(function () { winnow.query(multipleUnique, options); });
+  t.throws(function () {
+    winnow.query(multipleUnique, options);
+  });
 });
 
 /* geoservices fixtures */
-test('create class breaks using geoservices fixture', t => {
+test('create class breaks using geoservices fixture', (t) => {
   t.plan(5);
   const options = _.cloneDeep(geoServicesClassBreaks);
   const results = winnow.query(treesSubset, options);
@@ -296,7 +319,7 @@ test('create class breaks using geoservices fixture', t => {
   t.end();
 });
 
-test('modify class breaks using geoservices fixture', t => {
+test('modify class breaks using geoservices fixture', (t) => {
   const options = _.cloneDeep(geoServicesClassBreaks);
   options.classificationDef.classificationMethod = 'esriClassifyNaturalBreaks';
   options.classificationDef.breakCount = 9;
@@ -311,7 +334,7 @@ test('modify class breaks using geoservices fixture', t => {
   t.end();
 });
 
-test('create unique values using geoservices fixture', t => {
+test('create unique values using geoservices fixture', (t) => {
   t.plan(5);
   const options = _.cloneDeep(geoServicesUniqueValue);
   const results = winnow.query(treesSubset, options);
@@ -323,7 +346,7 @@ test('create unique values using geoservices fixture', t => {
   t.end();
 });
 
-test('modify unique values using geoservices fixture', t => {
+test('modify unique values using geoservices fixture', (t) => {
   t.plan(5);
   const options = _.cloneDeep(geoServicesUniqueValue);
   options.classificationDef.uniqueValueFields[0] = 'Common_Name';

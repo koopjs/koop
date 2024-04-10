@@ -3,10 +3,13 @@ const Joi = require('joi');
 const featureSchema = Joi.object({
   geometry: Joi.object().allow(null).optional(),
   attributes: Joi.object().optional(),
-  properties: Joi.object().optional()
-}).or('attributes', 'properties').required().unknown();
+  properties: Joi.object().optional(),
+})
+  .or('attributes', 'properties')
+  .required()
+  .unknown();
 
-function normalizeQueryInput (input) {
+function normalizeQueryInput(input) {
   if (isFeatureCollection(input)) {
     return input.features;
   }
@@ -22,9 +25,9 @@ function normalizeQueryInput (input) {
   throw new Error('Could not normalize query input to feature array');
 }
 
-function isFeatureCollection (input = {}) {
+function isFeatureCollection(input = {}) {
   const featureCollectionSchema = Joi.object({
-    features: Joi.array().required()
+    features: Joi.array().required(),
   }).unknown();
 
   const { error } = featureCollectionSchema.validate(input);
@@ -32,7 +35,7 @@ function isFeatureCollection (input = {}) {
   if (!error && isFeatureArray(input.features)) return true;
 }
 
-function isFeatureArray (input) {
+function isFeatureArray(input) {
   if (Array.isArray(input) && input.length === 0) return true;
 
   const featureArraySchema = Joi.array().items(featureSchema).required();
@@ -41,7 +44,7 @@ function isFeatureArray (input) {
   if (!error) return true;
 }
 
-function isFeature (input) {
+function isFeature(input) {
   const { error } = featureSchema.validate(input);
   if (!error) return true;
 }

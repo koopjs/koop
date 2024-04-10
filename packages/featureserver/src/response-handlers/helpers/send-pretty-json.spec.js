@@ -19,7 +19,9 @@ describe('sendPrettyJson', () => {
       'Content-Type',
       'application/json; charset=utf-8',
     ]);
-    res.send.firstCall.args[0].should.deepEqual(JSON.stringify({ hello: 'world' }, null, 2));
+    res.send.firstCall.args[0].should.deepEqual(
+      JSON.stringify({ hello: 'world' }, null, 2),
+    );
     res.status.firstCall.args[0].should.be.exactly(200);
   });
 });

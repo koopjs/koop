@@ -1,9 +1,11 @@
 const joi = require('joi');
 
-const spatialReferenceSchema = joi.object({
-  wkid: joi.number().integer().required(),
-  latestWkid: joi.number().integer(),
-}).unknown();
+const spatialReferenceSchema = joi
+  .object({
+    wkid: joi.number().integer().required(),
+    latestWkid: joi.number().integer(),
+  })
+  .unknown();
 
 const esriExtentSchema = joi.object({
   xmin: joi.number().required(),
@@ -20,10 +22,11 @@ const quantizationParametersSchema = joi.object({
   mode: joi.string().optional(),
 });
 
-
-const queryRequestSchema = joi.object({
-  quantizationParameters: quantizationParametersSchema
-}).unknown();
+const queryRequestSchema = joi
+  .object({
+    quantizationParameters: quantizationParametersSchema,
+  })
+  .unknown();
 
 function validate(queryRequestParams) {
   const { error } = queryRequestSchema.validate(queryRequestParams);
@@ -37,7 +40,7 @@ function handleError(error) {
   // TODO: right now the only possible error is for quantizationParams
   // const [param] = error.details[0].path;
   // if (param === 'quantizationParameters') {
-  const err = new Error('\'quantizationParameters\' parameter is invalid');
+  const err = new Error("'quantizationParameters' parameter is invalid");
   err.code = 400;
   err.details = [error.details[0].message];
   throw err;
@@ -45,5 +48,5 @@ function handleError(error) {
   // throw error;
 }
 module.exports = {
-  validate
+  validate,
 };

@@ -2,12 +2,12 @@ const test = require('tape');
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 const modulePath = './create-integer-hash';
-test('numeric hash 32 function', t => {
+test('numeric hash 32 function', (t) => {
   const hashFunctionSpy = sinon.spy(function () {
     return 4294967295;
   });
   const createIntegerHash = proxyquire(modulePath, {
-    './hash-function': hashFunctionSpy
+    './hash-function': hashFunctionSpy,
   });
 
   const result = createIntegerHash('my-string');

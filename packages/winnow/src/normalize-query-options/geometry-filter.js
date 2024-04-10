@@ -6,12 +6,13 @@ const projectCoordinates = require('../helpers/project-coordinates');
 const normalizeGeometryFilterSpatialReference = require('./geometry-filter-spatial-reference');
 const normalizeSourceSR = require('./source-data-spatial-reference');
 
-function normalizeGeometryFilter (options = {}) {
+function normalizeGeometryFilter(options = {}) {
   const geometry = options.geometry || options.bbox;
 
   if (!geometry) return;
 
-  const geometryFilterSpatialReference = normalizeGeometryFilterSpatialReference(options);
+  const geometryFilterSpatialReference =
+    normalizeGeometryFilterSpatialReference(options);
   const fromSR = getCrsString(geometryFilterSpatialReference);
 
   const geometryFilter = transformGeometryToGeojson(geometry);
@@ -27,20 +28,20 @@ function normalizeGeometryFilter (options = {}) {
   geometryFilter.coordinates = projectCoordinates({
     coordinates: geometryFilter.coordinates,
     fromSR,
-    toSR
+    toSR,
   });
 
   return geometryFilter;
 }
 
-function transformGeometryToGeojson (geometry) {
+function transformGeometryToGeojson(geometry) {
   if (_.isString(geometry) || Array.isArray(geometry)) {
     const coordinates = normalizeArray(geometry);
 
     if (coordinates.length === 2) {
       return {
         type: 'Point',
-        coordinates: coordinates.map(Number)
+        coordinates: coordinates.map(Number),
       };
     }
 
@@ -58,20 +59,22 @@ function transformGeometryToGeojson (geometry) {
   return geometry;
 }
 
-function transformEsriEnvelopeToPolygon ({ xmin, ymin, xmax, ymax }) {
+function transformEsriEnvelopeToPolygon({ xmin, ymin, xmax, ymax }) {
   return {
     type: 'Polygon',
-    coordinates: [[
-      [xmin, ymin],
-      [xmax, ymin],
-      [xmax, ymax],
-      [xmin, ymax],
-      [xmin, ymin]
-    ]]
+    coordinates: [
+      [
+        [xmin, ymin],
+        [xmax, ymin],
+        [xmax, ymax],
+        [xmin, ymax],
+        [xmin, ymin],
+      ],
+    ],
   };
 }
 
-function getCrsString ({ wkt, wkid } = {}) {
+function getCrsString({ wkt, wkid } = {}) {
   return wkt || `EPSG:${wkid}`;
 }
 

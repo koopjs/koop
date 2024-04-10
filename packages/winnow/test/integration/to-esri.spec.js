@@ -7,7 +7,7 @@ const emptyCollection = require('./fixtures/emptyCollection.json');
 const Winnow = require('../..');
 const _ = require('lodash');
 
-test('detecting fields', t => {
+test('detecting fields', (t) => {
   const options = {};
   const result = Winnow.query(geojson, options);
   const metadata = result.metadata;
@@ -18,11 +18,11 @@ test('detecting fields', t => {
   t.end();
 });
 
-test('With a where option and a limit smaller than the filter', t => {
+test('With a where option and a limit smaller than the filter', (t) => {
   const options = {
-    where: 'Genus like \'%Quercus%\'',
+    where: "Genus like '%Quercus%'",
     limit: 1,
-    toEsri: true
+    toEsri: true,
   };
   const result = Winnow.query(trees, options);
   const metadata = result.metadata;
@@ -30,22 +30,10 @@ test('With a where option and a limit smaller than the filter', t => {
   t.end();
 });
 
-test('With a where option and a limit larger than the filter', t => {
+test('With a where option and a limit larger than the filter', (t) => {
   const options = {
-    where: 'Genus like \'%Quercus%\'',
-    toEsri: true
-  };
-  const result = Winnow.query(trees, options);
-  const metadata = result.metadata;
-  t.notOk(metadata.exceededTransferLimit);
-  t.end();
-});
-
-test('With a where option and a limit the same as the the filter', t => {
-  const options = {
-    where: 'Genus like \'%Quercus%\'',
+    where: "Genus like '%Quercus%'",
     toEsri: true,
-    limit: 12105
   };
   const result = Winnow.query(trees, options);
   const metadata = result.metadata;
@@ -53,9 +41,21 @@ test('With a where option and a limit the same as the the filter', t => {
   t.end();
 });
 
-test('handling errors when feature collection is empty', t => {
+test('With a where option and a limit the same as the the filter', (t) => {
   const options = {
-    toEsri: true
+    where: "Genus like '%Quercus%'",
+    toEsri: true,
+    limit: 12105,
+  };
+  const result = Winnow.query(trees, options);
+  const metadata = result.metadata;
+  t.notOk(metadata.exceededTransferLimit);
+  t.end();
+});
+
+test('handling errors when feature collection is empty', (t) => {
+  const options = {
+    toEsri: true,
   };
   const fixture = _.cloneDeep(emptyCollection);
   const result = Winnow.query(fixture, options);
@@ -64,9 +64,9 @@ test('handling errors when feature collection is empty', t => {
   t.end();
 });
 
-test('checking if an object id exists', t => {
+test('checking if an object id exists', (t) => {
   const options = {
-    toEsri: true
+    toEsri: true,
   };
   const fixture = _.cloneDeep(oidFeature);
   const result = Winnow.query(fixture, options);
@@ -75,14 +75,14 @@ test('checking if an object id exists', t => {
   t.end();
 });
 
-test('use idField not name OBJECTID', t => {
+test('use idField not name OBJECTID', (t) => {
   const options = {
     toEsri: true,
-    fields: 'featureId'
+    fields: 'featureId',
   };
   const fixture = _.cloneDeep(treesFeatureId);
   fixture.metadata = {
-    idField: 'featureId'
+    idField: 'featureId',
   };
   const result = Winnow.query(fixture, options);
   t.ok(_.has(result, 'features[0].attributes.featureId'));
@@ -91,9 +91,9 @@ test('use idField not name OBJECTID', t => {
   t.end();
 });
 
-test('adding an object id', t => {
+test('adding an object id', (t) => {
   const options = {
-    toEsri: true
+    toEsri: true,
   };
   const fixture = _.cloneDeep(geojson);
 
@@ -105,23 +105,22 @@ test('adding an object id', t => {
   try {
     // If requiring farmhash is successful we use that hash
     hasher = require('farmhash').hash32;
-
+    // eslint-disable-next-line
   } catch (e) {
     // Else use the string-hash number
     hasher = require('string-hash');
-
   }
 
-  const hash = hasher(JSON.stringify({ properties, geometry}));
-  const objectId = Math.round((hash / 4294967295) * (2147483647));
+  const hash = hasher(JSON.stringify({ properties, geometry }));
+  const objectId = Math.round((hash / 4294967295) * 2147483647);
   const result = Winnow.query(fixture, options);
   t.equal(result.features[0].attributes.OBJECTID, objectId);
   t.end();
 });
 
-test('do not overwrite the object id', t => {
+test('do not overwrite the object id', (t) => {
   const options = {
-    toEsri: true
+    toEsri: true,
   };
 
   const fixture = _.cloneDeep(geojson);
@@ -133,9 +132,9 @@ test('do not overwrite the object id', t => {
   t.end();
 });
 
-test('do not include Type', t => {
+test('do not include Type', (t) => {
   const options = {
-    toEsri: true
+    toEsri: true,
   };
 
   const fixture = _.cloneDeep(geojson);
@@ -147,9 +146,9 @@ test('do not include Type', t => {
   t.end();
 });
 
-test('converting date fields', t => {
+test('converting date fields', (t) => {
   const options = {
-    toEsri: true
+    toEsri: true,
   };
   const fixture = _.cloneDeep(geojson);
   const result = Winnow.query(fixture, options);
@@ -158,31 +157,31 @@ test('converting date fields', t => {
   t.end();
 });
 
-test('converting date with passed in fields metadata', t => {
+test('converting date with passed in fields metadata', (t) => {
   const options = {
-    toEsri: true
+    toEsri: true,
   };
   const fixture = Object.assign({}, _.cloneDeep(geojson), {
     metdata: {
       fields: [
         {
           name: 'double',
-          type: 'Double'
+          type: 'Double',
         },
         {
           name: 'integer',
-          type: 'Integer'
+          type: 'Integer',
         },
         {
           name: 'string',
-          type: 'String'
+          type: 'String',
         },
         {
           name: 'date',
-          type: 'Date'
-        }
-      ]
-    }
+          type: 'Date',
+        },
+      ],
+    },
   });
   const result = Winnow.query(fixture, options);
   t.equal(result.features[0].attributes.date, 1331769600000);
@@ -190,10 +189,10 @@ test('converting date with passed in fields metadata', t => {
   t.end();
 });
 
-test('exclude objectid addition when not part of outfields', t => {
+test('exclude objectid addition when not part of outfields', (t) => {
   const options = {
     toEsri: true,
-    outFields: ['string']
+    outFields: ['string'],
   };
   const fixture = _.cloneDeep(geojson);
   const result = Winnow.query(fixture, options);
@@ -202,11 +201,11 @@ test('exclude objectid addition when not part of outfields', t => {
   t.end();
 });
 
-test('do not exclude objectid when returnIdsOnly = true', t => {
+test('do not exclude objectid when returnIdsOnly = true', (t) => {
   const options = {
     toEsri: true,
     outFields: ['string'],
-    returnIdsOnly: true
+    returnIdsOnly: true,
   };
   const fixture = _.cloneDeep(geojson);
   const result = Winnow.query(fixture, options);

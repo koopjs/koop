@@ -1,4 +1,4 @@
-const should = require('should') // eslint-disable-line
+const should = require('should');
 const { normalizeExtent } = require('.');
 
 describe('normalize-extent', function () {
@@ -39,7 +39,9 @@ describe('normalize-extent', function () {
       normalizeExtent([-180, -90, 180, 'foo'], { wkid: 4326 });
       should.fail();
     } catch (error) {
-      error.message.should.equal('Received invalid extent: [-180,-90,180,"foo"]');
+      error.message.should.equal(
+        'Received invalid extent: [-180,-90,180,"foo"]',
+      );
     }
   });
 
@@ -50,7 +52,7 @@ describe('normalize-extent', function () {
       ymin: -90,
       xmax: 180,
       ymax: 90,
-      spatialReference: { wkid: 4326 }
+      spatialReference: { wkid: 4326 },
     });
   });
 
@@ -61,7 +63,7 @@ describe('normalize-extent', function () {
       ymin: -90,
       xmax: 180,
       ymax: 90,
-      spatialReference: { wkid: 4326 }
+      spatialReference: { wkid: 4326 },
     });
   });
 
@@ -85,7 +87,13 @@ describe('normalize-extent', function () {
 
   it('corner array with NaNs should throw error', () => {
     try {
-      normalizeExtent([[3, 'food'], [4, 5]], { wkid: 4326 });
+      normalizeExtent(
+        [
+          [3, 'food'],
+          [4, 5],
+        ],
+        { wkid: 4326 },
+      );
       should.fail();
     } catch (error) {
       error.message.should.equal('Received invalid extent: [[3,"food"],[4,5]]');
@@ -94,7 +102,13 @@ describe('normalize-extent', function () {
 
   it('corner array with too many coordinates should throw error', () => {
     try {
-      normalizeExtent([[3, 5, 7], [4, 5]], { wkid: 4326 });
+      normalizeExtent(
+        [
+          [3, 5, 7],
+          [4, 5],
+        ],
+        { wkid: 4326 },
+      );
       should.fail();
     } catch (error) {
       error.message.should.equal('Received invalid extent: [[3,5,7],[4,5]]');
@@ -102,52 +116,64 @@ describe('normalize-extent', function () {
   });
 
   it('corner extent array should return Esri Extent', () => {
-    const result = normalizeExtent([[-180, -90], [180, 90]], { wkid: 4326 });
+    const result = normalizeExtent(
+      [
+        [-180, -90],
+        [180, 90],
+      ],
+      { wkid: 4326 },
+    );
     result.should.deepEqual({
       xmin: -180,
       ymin: -90,
       xmax: 180,
       ymax: 90,
-      spatialReference: { wkid: 4326 }
+      spatialReference: { wkid: 4326 },
     });
   });
 
   it('Complete Esri extent passed in should get returned', () => {
-    const result = normalizeExtent({
-      xmin: 40,
-      ymin: 10,
-      xmax: 55,
-      ymax: 25,
-      spatialReference: {
-        wkid: 4326
-      }
-    }, {
-      wkid: 3857
-    });
+    const result = normalizeExtent(
+      {
+        xmin: 40,
+        ymin: 10,
+        xmax: 55,
+        ymax: 25,
+        spatialReference: {
+          wkid: 4326,
+        },
+      },
+      {
+        wkid: 3857,
+      },
+    );
     result.should.deepEqual({
       xmin: 40,
       ymin: 10,
       xmax: 55,
       ymax: 25,
-      spatialReference: { wkid: 4326 }
+      spatialReference: { wkid: 4326 },
     });
   });
 
   it('Esri extent without spatial ref, should get spatial ref added', () => {
-    const result = normalizeExtent({
-      xmin: 40,
-      ymin: 10,
-      xmax: 55,
-      ymax: 25
-    }, {
-      wkid: 4326
-    });
+    const result = normalizeExtent(
+      {
+        xmin: 40,
+        ymin: 10,
+        xmax: 55,
+        ymax: 25,
+      },
+      {
+        wkid: 4326,
+      },
+    );
     result.should.deepEqual({
       xmin: 40,
       ymin: 10,
       xmax: 55,
       ymax: 25,
-      spatialReference: { wkid: 4326 }
+      spatialReference: { wkid: 4326 },
     });
   });
 });

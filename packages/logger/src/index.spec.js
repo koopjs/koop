@@ -1,7 +1,7 @@
 const test = require('tape');
 const koopLogger = require('.');
 
-test('koop-logger', spec => {
+test('koop-logger', (spec) => {
   try {
     const log = new koopLogger();
     spec.ok(log);

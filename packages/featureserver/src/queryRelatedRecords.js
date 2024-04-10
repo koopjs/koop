@@ -1,17 +1,16 @@
 const _ = require('lodash');
 const { getCollectionCrs, getGeometryTypeFromGeojson } = require('./helpers');
-const {
-  QueryFields
-} = require('./helpers/fields');
+const { QueryFields } = require('./helpers/fields');
 
 module.exports = queryRelatedRecords;
 
-function queryRelatedRecords (data, params = {}) {
+function queryRelatedRecords(data, params = {}) {
   const response = {
-    relatedRecordGroups: []
+    relatedRecordGroups: [],
   };
 
-  if (!params.returnCountOnly) response.fields = QueryFields.create({ ...data, ...params });
+  if (!params.returnCountOnly)
+    response.fields = QueryFields.create({ ...data, ...params });
 
   const geomType = getGeometryTypeFromGeojson(data);
   if (geomType) {
@@ -22,17 +21,23 @@ function queryRelatedRecords (data, params = {}) {
   }
 
   if (data.features) {
-    response.relatedRecordGroups = data.features.map(featureCollection => {
-      return convertFeaturesToRelatedRecordGroups(featureCollection, params.returnCountOnly);
+    response.relatedRecordGroups = data.features.map((featureCollection) => {
+      return convertFeaturesToRelatedRecordGroups(
+        featureCollection,
+        params.returnCountOnly,
+      );
     });
   }
 
   return response;
 }
 
-function convertFeaturesToRelatedRecordGroups ({ features, properties }, returnCountOnly = false) {
+function convertFeaturesToRelatedRecordGroups(
+  { features, properties },
+  returnCountOnly = false,
+) {
   const recordGroup = {
-    objectId: properties.objectid
+    objectId: properties.objectid,
   };
 
   if (returnCountOnly) {
@@ -50,7 +55,7 @@ function convertFeaturesToRelatedRecordGroups ({ features, properties }, returnC
     recordGroup.relatedRecords = features.map(({ geometry, properties }) => {
       return {
         attributes: properties,
-        geometry: geometry
+        geometry: geometry,
       };
     });
   }

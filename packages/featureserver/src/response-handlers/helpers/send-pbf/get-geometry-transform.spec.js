@@ -17,7 +17,10 @@ describe('getGeometryTransform', () => {
           spatialReference: { wkid: 102100, latestWkid: 3857 },
         },
       };
-      const result = getGeometryTransform({ wkid: 4326 }, quantizationParameters);
+      const result = getGeometryTransform(
+        { wkid: 4326 },
+        quantizationParameters,
+      );
       result.should.deepEqual({
         originPosition: 'upperLeft',
         scale: {
@@ -45,7 +48,10 @@ describe('getGeometryTransform', () => {
           spatialReference: { wkid: 102100, latestWkid: 3857 },
         },
       };
-      const result = getGeometryTransform({ wkid: 4326 }, quantizationParameters);
+      const result = getGeometryTransform(
+        { wkid: 4326 },
+        quantizationParameters,
+      );
       result.should.deepEqual({
         originPosition: 'upperLeft',
         scale: {
@@ -73,7 +79,10 @@ describe('getGeometryTransform', () => {
           spatialReference: { wkid: 102100, latestWkid: 3857 },
         },
       };
-      const result = getGeometryTransform({ wkid: 4326 }, quantizationParameters);
+      const result = getGeometryTransform(
+        { wkid: 4326 },
+        quantizationParameters,
+      );
       result.should.deepEqual({
         originPosition: 'lowerLeft',
         scale: {
@@ -100,7 +109,10 @@ describe('getGeometryTransform', () => {
           spatialReference: { wkid: 102100, latestWkid: 3857 },
         },
       };
-      const result = getGeometryTransform({ wkid: 4326 }, quantizationParameters);
+      const result = getGeometryTransform(
+        { wkid: 4326 },
+        quantizationParameters,
+      );
       result.should.deepEqual({
         originPosition: 'upperLeft',
         scale: {
@@ -119,7 +131,10 @@ describe('getGeometryTransform', () => {
         originPosition: 'upperLeft',
         tolerance: 1.0583354500042335,
       };
-      const result = getGeometryTransform({ wkid: 4326 }, quantizationParameters);
+      const result = getGeometryTransform(
+        { wkid: 4326 },
+        quantizationParameters,
+      );
       result.should.deepEqual({
         originPosition: 'upperLeft',
         scale: {

@@ -1,7 +1,5 @@
-const should = require('should'); // eslint-disable-line
-const {
-  createSymbol
-} = require('./create-symbol');
+const should = require('should');
+const { createSymbol } = require('./create-symbol');
 
 describe('when creating a symbol', () => {
   it('uses passed in base symbol and color', () => {
@@ -14,7 +12,9 @@ describe('when creating a symbol', () => {
       createSymbol(undefined, 'red');
       should.fail('should have thrown error');
     } catch (error) {
-      error.message.should.equal('Dataset geometry type is not supported for renderers.');
+      error.message.should.equal(
+        'Dataset geometry type is not supported for renderers.',
+      );
       error.code.should.equal(400);
     }
   });
@@ -24,19 +24,14 @@ describe('when creating a symbol', () => {
     result.should.deepEqual({
       color: 'red',
       outline: {
-        color: [
-          190,
-          190,
-          190,
-          105
-        ],
+        color: [190, 190, 190, 105],
         width: 0.5,
         type: 'esriSLS',
-        style: 'esriSLSSolid'
+        style: 'esriSLSSolid',
       },
       size: 7.5,
       type: 'esriSMS',
-      style: 'esriSMSCircle'
+      style: 'esriSMSCircle',
     });
   });
 
@@ -45,19 +40,14 @@ describe('when creating a symbol', () => {
     result.should.deepEqual({
       color: 'red',
       outline: {
-        color: [
-          190,
-          190,
-          190,
-          105
-        ],
+        color: [190, 190, 190, 105],
         width: 0.5,
         type: 'esriSLS',
-        style: 'esriSLSSolid'
+        style: 'esriSLSSolid',
       },
       size: 7.5,
       type: 'esriSMS',
-      style: 'esriSMSCircle'
+      style: 'esriSMSCircle',
     });
   });
 
@@ -67,7 +57,7 @@ describe('when creating a symbol', () => {
       color: 'red',
       width: 6.999999999999999,
       type: 'esriSLS',
-      style: 'esriSLSSolid'
+      style: 'esriSLSSolid',
     });
   });
 
@@ -76,18 +66,13 @@ describe('when creating a symbol', () => {
     result.should.deepEqual({
       color: 'red',
       outline: {
-        color: [
-          150,
-          150,
-          150,
-          155
-        ],
+        color: [150, 150, 150, 155],
         width: 0.5,
         type: 'esriSLS',
-        style: 'esriSLSSolid'
+        style: 'esriSLSSolid',
       },
       type: 'esriSFS',
-      style: 'esriSFSSolid'
+      style: 'esriSFSSolid',
     });
   });
 });

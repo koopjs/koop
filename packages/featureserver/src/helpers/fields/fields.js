@@ -3,18 +3,15 @@ const {
   ObjectIdField,
   FieldFromKeyValue,
   FieldFromFieldDefinition,
-  ObjectIdFieldFromDefinition
+  ObjectIdFieldFromDefinition,
 } = require('./field-classes');
 const logManager = require('../../log-manager');
 
 class Fields {
-  static normalizeOptions (inputOptions) {
+  static normalizeOptions(inputOptions) {
     const {
       features,
-      metadata: {
-        fields,
-        idField
-      } = {},
+      metadata: { fields, idField } = {},
       attributeSample,
       ...options
     } = inputOptions;
@@ -22,20 +19,19 @@ class Fields {
     return {
       idField: options.idField || idField,
       fieldDefinitions: options.fieldDefinitions || options.fields || fields,
-      attributeSample: attributeSample || getAttributeSample(features, attributeSample),
-      ...options
+      attributeSample:
+        attributeSample || getAttributeSample(features, attributeSample),
+      ...options,
     };
   }
 
-  constructor (options = {}) {
-    const {
-      fieldDefinitions,
-      idField,
-      attributeSample = {}
-    } = options;
+  constructor(options = {}) {
+    const { fieldDefinitions, idField, attributeSample = {} } = options;
 
     if (shouldWarnAboutMissingIdFieldDefinition(idField, fieldDefinitions)) {
-      logManager.logger.debug(`provider's "idField" is set to ${idField}, but this field is not found in field-definitions`);
+      logManager.logger.debug(
+        `provider's "idField" is set to ${idField}, but this field is not found in field-definitions`,
+      );
     }
 
     const normalizedIdField = idField || 'OBJECTID';
@@ -46,24 +42,26 @@ class Fields {
   }
 }
 
-function getAttributeSample (features) {
-  return _.get(features, '[0].properties') || _.get(features, '[0].attributes', {});
+function getAttributeSample(features) {
+  return (
+    _.get(features, '[0].properties') || _.get(features, '[0].attributes', {})
+  );
 }
 
-function shouldWarnAboutMissingIdFieldDefinition (idField, fieldDefinitions) {
+function shouldWarnAboutMissingIdFieldDefinition(idField, fieldDefinitions) {
   if (!idField || !fieldDefinitions) {
     return;
   }
 
-  const fieldNames = fieldDefinitions.map(field => field.name);
+  const fieldNames = fieldDefinitions.map((field) => field.name);
 
   return !fieldNames.includes(idField);
 }
 
-function setFieldsFromDefinitions (fieldDefinitions, idField) {
+function setFieldsFromDefinitions(fieldDefinitions, idField) {
   const fields = fieldDefinitions
-    .filter(fieldDefinition => fieldDefinition.name !== idField)
-    .map(fieldDefinition => {
+    .filter((fieldDefinition) => fieldDefinition.name !== idField)
+    .map((fieldDefinition) => {
       return new FieldFromFieldDefinition(fieldDefinition);
     });
 
@@ -72,9 +70,9 @@ function setFieldsFromDefinitions (fieldDefinitions, idField) {
   return fields;
 }
 
-function setFieldsFromProperties (propertiesSample, idField) {
+function setFieldsFromProperties(propertiesSample, idField) {
   const fieldNames = Object.keys(propertiesSample);
-  const simpleFieldNames = fieldNames.filter(name => name !== idField);
+  const simpleFieldNames = fieldNames.filter((name) => name !== idField);
 
   const fields = simpleFieldNames.map((key) => {
     return new FieldFromKeyValue(key, propertiesSample[key]);
@@ -85,8 +83,8 @@ function setFieldsFromProperties (propertiesSample, idField) {
   return fields;
 }
 
-function getIdFieldDefinition (fieldDefinitions, idField) {
-  const idFieldDefinition = fieldDefinitions.find(definition => {
+function getIdFieldDefinition(fieldDefinitions, idField) {
+  const idFieldDefinition = fieldDefinitions.find((definition) => {
     return definition.name === idField;
   });
 

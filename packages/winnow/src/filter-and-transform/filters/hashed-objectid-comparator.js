@@ -14,8 +14,10 @@ const logManager = require('../../log-manager');
  * @param {*} operator the predicate operator
  */
 module.exports = function (properties, geometry, value, operator) {
-  const hashedFeature = createIntegerHash(JSON.stringify({ properties, geometry }));
-  
+  const hashedFeature = createIntegerHash(
+    JSON.stringify({ properties, geometry }),
+  );
+
   if (operator === '=' && hashedFeature === value) {
     return true;
   }
@@ -39,12 +41,12 @@ module.exports = function (properties, geometry, value, operator) {
   if (operator === '<=' && hashedFeature <= value) {
     return true;
   }
-  
+
   if (operator === 'IN') {
     const objectIdValues = value.split(',').map(Number);
     return objectIdValues.includes(hashedFeature);
   }
-  
+
   logManager.logger.debug(`unsupported operator "${operator}"; ignoring`);
   return false;
 };

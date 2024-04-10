@@ -5,5 +5,5 @@ const LayerFields = require('./layer-fields');
 module.exports = {
   QueryFields,
   StatisticsFields,
-  LayerFields
+  LayerFields,
 };

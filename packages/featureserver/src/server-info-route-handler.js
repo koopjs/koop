@@ -86,9 +86,11 @@ function calculateServiceExtentFromLayers(layers, spatialReference) {
       })
       .map((layer) => {
         const bounds = calculateBounds(layer);
-        bounds.forEach(coordinate => {
+        bounds.forEach((coordinate) => {
           if (isNaN(coordinate)) {
-            throw new Error(`Geometry coordinate is not a number: ${coordinate}`);
+            throw new Error(
+              `Geometry coordinate is not a number: ${coordinate}`,
+            );
           }
         });
         return bounds;
@@ -113,7 +115,9 @@ function calculateServiceExtentFromLayers(layers, spatialReference) {
       spatialReference,
     };
   } catch (error) {
-    logManager.logger.debug(`Could not calculate extent from data: ${error.message}`);
+    logManager.logger.debug(
+      `Could not calculate extent from data: ${error.message}`,
+    );
   }
 }
 
@@ -130,7 +134,7 @@ function getExtent(extent, spatialReference) {
   try {
     return normalizeExtent(extent, spatialReference);
   } catch (error) {
-    logManager.logger.warn(`Could not normalize extent: ${ error }`);
+    logManager.logger.warn(`Could not normalize extent: ${error}`);
   }
 }
 

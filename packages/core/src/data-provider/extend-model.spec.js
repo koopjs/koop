@@ -110,20 +110,20 @@ describe('Tests for extend-model', function () {
           }),
           insert: sinon.spy(() => {}),
         };
-  
+
         const getDataSpy = sinon.spy(async function () {
           return { metadata: {} };
         });
-  
+
         class Model extends MockModel {}
         Model.prototype.getData = getDataSpy;
-  
+
         const model = extendModel({
           ProviderModel: Model,
           logger: mockLogger,
           cache: mockCache,
         });
-  
+
         const data = await model.pull({
           url: 'domain/test-provider',
           params: {},
@@ -134,7 +134,7 @@ describe('Tests for extend-model', function () {
         getDataSpy.called.should.equal(true);
         mockCache.insert.notCalled.should.equal(true);
       });
-  
+
       it('should not find in cache, should add to cache due to data ttl', async () => {
         const mockCache = {
           retrieve: sinon.spy((key, query, callback) => {
@@ -142,7 +142,7 @@ describe('Tests for extend-model', function () {
           }),
           insert: sinon.spy(() => {}),
         };
-  
+
         const getDataSpy = sinon.spy(async function () {
           return { metadata: {}, ttl: 5 };
         });
@@ -164,7 +164,7 @@ describe('Tests for extend-model', function () {
         getDataSpy.calledOnce.should.equal(true);
         mockCache.insert.calledOnce.should.equal(true);
       });
-  
+
       it('should not find in cache, should add to cache due to provider ttl', async () => {
         const mockCache = {
           retrieve: sinon.spy((key, query, callback) => {
@@ -172,11 +172,11 @@ describe('Tests for extend-model', function () {
           }),
           insert: sinon.spy(() => {}),
         };
-  
+
         const getDataSpy = sinon.spy(async function () {
           return { metadata: {} };
         });
-  
+
         class Model extends MockModel {}
         Model.prototype.getData = getDataSpy;
         const model = extendModel(
@@ -196,7 +196,7 @@ describe('Tests for extend-model', function () {
         getDataSpy.calledOnce.should.equal(true);
         mockCache.insert.calledOnce.should.equal(true);
       });
-  
+
       it('should pull from cache', async () => {
         const mockCache = {
           retrieve: sinon.spy((key, query, callback) => {
@@ -204,11 +204,11 @@ describe('Tests for extend-model', function () {
           }),
           insert: sinon.spy(() => {}),
         };
-  
+
         const getDataSpy = sinon.spy(async function () {
           return;
         });
-  
+
         class Model extends MockModel {}
         Model.prototype.getData = getDataSpy;
         const model = extendModel({
@@ -229,7 +229,7 @@ describe('Tests for extend-model', function () {
         getDataSpy.notCalled.should.equal(true);
         mockCache.insert.notCalled.should.equal(true);
       });
-  
+
       it('should pull from cache and use deprecated _cache info', async () => {
         const now = Date.now();
         const mockCache = {
@@ -244,11 +244,11 @@ describe('Tests for extend-model', function () {
           }),
           insert: sinon.spy(() => {}),
         };
-  
+
         const getDataSpy = sinon.spy(async function () {
           return;
         });
-  
+
         class Model extends MockModel {}
         Model.prototype.getData = getDataSpy;
         const model = extendModel({
@@ -256,7 +256,7 @@ describe('Tests for extend-model', function () {
           logger: mockLogger,
           cache: mockCache,
         });
-   
+
         const data = await model.pull({
           url: 'domain/test-provider',
           params: {},
@@ -273,7 +273,7 @@ describe('Tests for extend-model', function () {
         getDataSpy.notCalled.should.equal(true);
         mockCache.insert.notCalled.should.equal(true);
       });
-  
+
       it('should pull from cache and use deprecated metadata info check', async () => {
         const now = Date.now();
         const mockCache = {
@@ -288,11 +288,11 @@ describe('Tests for extend-model', function () {
           }),
           insert: sinon.spy(() => {}),
         };
-  
+
         const getDataSpy = sinon.spy(async function () {
           return;
         });
-  
+
         class Model extends MockModel {}
         Model.prototype.getData = getDataSpy;
         const model = extendModel({
@@ -300,7 +300,7 @@ describe('Tests for extend-model', function () {
           logger: mockLogger,
           cache: mockCache,
         });
-  
+
         const data = await model.pull({
           url: 'domain/test-provider',
           params: {},
@@ -317,7 +317,7 @@ describe('Tests for extend-model', function () {
         getDataSpy.notCalled.should.equal(true);
         mockCache.insert.notCalled.should.equal(true);
       });
-  
+
       it('should pass authorization error in callback', async () => {
         const mockCache = {
           retrieve: sinon.spy((key, query, callback) => {
@@ -325,12 +325,12 @@ describe('Tests for extend-model', function () {
           }),
           insert: sinon.spy(() => {}),
         };
-  
+
         class Model extends MockModel {}
         Model.prototype.authorize = async () => {
           throw new Error('unauthorized');
         };
-  
+
         const model = extendModel({
           ProviderModel: Model,
           logger: mockLogger,
@@ -338,13 +338,17 @@ describe('Tests for extend-model', function () {
         });
 
         try {
-          await model.pull({ url: 'domain/test-provider', params: {}, query: {} });
+          await model.pull({
+            url: 'domain/test-provider',
+            params: {},
+            query: {},
+          });
           should.fail();
         } catch (err) {
           err.message.should.equal('unauthorized');
         }
       });
-  
+
       it('should send error in callback', async () => {
         const mockCache = {
           retrieve: sinon.spy((key, query, callback) => {
@@ -352,11 +356,11 @@ describe('Tests for extend-model', function () {
           }),
           insert: sinon.spy(() => {}),
         };
-  
+
         const getDataSpy = sinon.spy(async function () {
           throw new Error('err in getData');
         });
-  
+
         class Model extends MockModel {}
         Model.prototype.getData = getDataSpy;
         const model = extendModel({
@@ -366,7 +370,11 @@ describe('Tests for extend-model', function () {
         });
 
         try {
-          await model.pull({ url: 'domain/test-provider', params: {}, query: {} });
+          await model.pull({
+            url: 'domain/test-provider',
+            params: {},
+            query: {},
+          });
           should.fail();
         } catch (err) {
           err.message.should.equal('err in getData');
@@ -382,22 +390,22 @@ describe('Tests for extend-model', function () {
           }),
           insert: sinon.spy(() => {}),
         };
-  
+
         const getDataSpy = sinon.spy(function (req, callback) {
           callback(null, { metadata: {} });
         });
-  
+
         class Model extends MockModel {}
         Model.prototype.getData = getDataSpy;
-  
+
         const model = extendModel({
           ProviderModel: Model,
           logger: mockLogger,
           cache: mockCache,
         });
-  
+
         const pullData = promisify(model.pull).bind(model);
-  
+
         const data = await pullData({
           url: 'domain/test-provider',
           params: {},
@@ -461,8 +469,7 @@ describe('Tests for extend-model', function () {
           },
           authenticationSpecification: () => {
             return 'from auth-module';
-          }
-
+          },
         },
       });
       const authenticateResult = await model.authenticate();
@@ -475,11 +482,11 @@ describe('Tests for extend-model', function () {
 
     it('should use provider auth methods if defined', async () => {
       class Model extends MockModel {}
-      Model.prototype.authenticate = async() => {
+      Model.prototype.authenticate = async () => {
         return 'from provider';
       };
 
-      Model.prototype.authorize = async() => {
+      Model.prototype.authorize = async () => {
         return 'from provider';
       };
 
@@ -494,7 +501,7 @@ describe('Tests for extend-model', function () {
           },
           authorize: () => {
             return 'from auth-module';
-          }
+          },
         },
       });
       const authenticateResult = await model.authenticate();
@@ -515,7 +522,6 @@ describe('Tests for extend-model', function () {
       const authorizeResult = await model.authorize();
       should(authorizeResult).deepEqual(undefined);
     });
-
   });
 
   describe('transformation functions', function () {
@@ -1065,7 +1071,11 @@ describe('Tests for extend-model', function () {
       const pullCatalog = promisify(model.pullCatalog).bind(model);
 
       try {
-        await pullCatalog({ url: 'domain/test-provider', params: {}, query: {} });
+        await pullCatalog({
+          url: 'domain/test-provider',
+          params: {},
+          query: {},
+        });
         should.fail();
       } catch (err) {
         err.message.should.equal('unauthorized');

@@ -10,18 +10,21 @@ const schema = Joi.alternatives(
   Joi.object({
     wkid: Joi.number().integer().optional(),
     latestWkid: Joi.number().integer().optional(),
-    wkt: Joi.string().optional()
-  }).or('wkid', 'latestWkid', 'wkt')
-    .unknown()
+    wkt: Joi.string().optional(),
+  })
+    .or('wkid', 'latestWkid', 'wkt')
+    .unknown(),
 );
 
-function normalizeSpatialReference (input) {
+function normalizeSpatialReference(input) {
   if (!input) return;
 
   const { error } = schema.validate(input);
 
   if (error) {
-    logManager.logger.debug(`${input} is not a valid spatial reference; defaulting to none`);
+    logManager.logger.debug(
+      `${input} is not a valid spatial reference; defaulting to none`,
+    );
     // Todo: throw error
     return;
   }
@@ -35,49 +38,54 @@ function normalizeSpatialReference (input) {
   return convertStringToSpatialReference(value);
 }
 
-function parseSpatialReferenceInput (spatialReference) {
+function parseSpatialReferenceInput(spatialReference) {
   // Search input for a wkid
   if (isNumericSpatialReferenceId(spatialReference)) {
     return {
       type: 'wkid',
-      value: Number(spatialReference)
+      value: Number(spatialReference),
     };
   }
 
   if (isPrefixedSpatialReferenceId(spatialReference)) {
     return {
       type: 'wkid',
-      value: extractPrefixedSpatialReferenceId(spatialReference)
+      value: extractPrefixedSpatialReferenceId(spatialReference),
     };
   }
 
   if (spatialReference.wkid || spatialReference.latestWkid) {
     return {
       type: 'wkid',
-      value: spatialReference.latestWkid || spatialReference.wkid
+      value: spatialReference.latestWkid || spatialReference.wkid,
     };
   }
 
   return {
     type: 'wkt',
-    value: spatialReference.wkt || spatialReference
+    value: spatialReference.wkt || spatialReference,
   };
 }
 
-function isNumericSpatialReferenceId (spatialReference) {
-  return Number.isInteger(spatialReference) || Number.isInteger(Number(spatialReference));
+function isNumericSpatialReferenceId(spatialReference) {
+  return (
+    Number.isInteger(spatialReference) ||
+    Number.isInteger(Number(spatialReference))
+  );
 }
 
-function isPrefixedSpatialReferenceId (spatialReference) {
+function isPrefixedSpatialReferenceId(spatialReference) {
   return /^(EPSG|ESRI|SR-ORG|IAU2000):[0-9]+/.test(spatialReference);
 }
 
-function extractPrefixedSpatialReferenceId (prefixedId) {
-  const spatialRefId = prefixedId.match(/^(EPSG|ESRI|SR-ORG|IAU2000):([0-9]+)/)[2];
+function extractPrefixedSpatialReferenceId(prefixedId) {
+  const spatialRefId = prefixedId.match(
+    /^(EPSG|ESRI|SR-ORG|IAU2000):([0-9]+)/,
+  )[2];
   return Number(spatialRefId);
 }
 
-function convertWkidToSpatialReference (wkid) {
+function convertWkidToSpatialReference(wkid) {
   // 102100 is the old Esri code for 3857 but not recognized for proj4
   if (wkid === 102100) return { wkid: 3857 };
 
@@ -88,12 +96,14 @@ function convertWkidToSpatialReference (wkid) {
   return wktLookup.get(wkid) || esriWktLookup(wkid);
 }
 
-function esriWktLookup (wkid) {
+function esriWktLookup(wkid) {
   const result = esriProjCodes.lookup(wkid);
 
   if (!result) {
     // Todo - throw error
-    logManager.logger.debug(`An unknown spatial reference was detected: ${wkid}; defaulting to none`);
+    logManager.logger.debug(
+      `An unknown spatial reference was detected: ${wkid}; defaulting to none`,
+    );
     return;
   }
 
@@ -104,22 +114,24 @@ function esriWktLookup (wkid) {
   return { wkid, wkt };
 }
 
-function convertStringToSpatialReference (wkt) {
+function convertStringToSpatialReference(wkt) {
   if (/WGS_1984_Web_Mercator_Auxiliary_Sphere/.test(wkt)) return { wkid: 3857 };
 
   try {
     const wkid = getWktWkid(wkt);
     return {
       wkt,
-      wkid: wkid ? Number(wkid) : undefined
+      wkid: wkid ? Number(wkid) : undefined,
     };
   } catch (err) {
-    logManager.logger.debug(`An un-parseable WKT spatial reference was detected: ${wkt}`);
+    logManager.logger.debug(
+      `An un-parseable WKT spatial reference was detected: ${wkt}; ${err.message}`,
+    );
     // Todo: throw error
   }
 }
 
-function getWktWkid (wkt) {
+function getWktWkid(wkt) {
   const { AUTHORITY: authority } = wktParser(wkt);
   if (!authority) return;
   const [, wkid] = Object.entries(authority)[0];

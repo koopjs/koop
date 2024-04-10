@@ -1,19 +1,21 @@
 const test = require('tape');
 const normalizeClassification = require('./classification');
 
-test('normalize-options, classification: undefined', t => {
+test('normalize-options, classification: undefined', (t) => {
   t.plan(1);
-  const normalized = normalizeClassification({ });
+  const normalized = normalizeClassification({});
   t.equal(normalized, undefined);
 });
 
-test('normalize-options, classification: return classification', t => {
+test('normalize-options, classification: return classification', (t) => {
   t.plan(1);
-  const normalized = normalizeClassification({ classification: 'some classification' });
+  const normalized = normalizeClassification({
+    classification: 'some classification',
+  });
   t.equal(normalized, 'some classification');
 });
 
-test('normalize-options, classification: classificationDef without type should throw error', t => {
+test('normalize-options, classification: classificationDef without type should throw error', (t) => {
   t.plan(1);
   try {
     normalizeClassification({ classificationDef: {} });
@@ -22,7 +24,7 @@ test('normalize-options, classification: classificationDef without type should t
   }
 });
 
-test('normalize-options, classification: classificationDef of type "classBreaksDef"', t => {
+test('normalize-options, classification: classificationDef of type "classBreaksDef"', (t) => {
   t.plan(1);
   const normalized = normalizeClassification({
     classificationDef: {
@@ -32,8 +34,8 @@ test('normalize-options, classification: classificationDef of type "classBreaksD
       standardDeviationInterval: 10,
       breakCount: 99,
       normalizationType: 'esriNormalizeByField',
-      normalizationField: 'def'
-    }
+      normalizationField: 'def',
+    },
   });
   t.deepEquals(normalized, {
     type: 'classes',
@@ -42,11 +44,11 @@ test('normalize-options, classification: classificationDef of type "classBreaksD
     stddev_intv: 10,
     breakCount: 99,
     normType: 'field',
-    normField: 'def'
+    normField: 'def',
   });
 });
 
-test('normalize-options, classification: classificationMethod "esriClassifyNaturalBreaks"', t => {
+test('normalize-options, classification: classificationMethod "esriClassifyNaturalBreaks"', (t) => {
   t.plan(1);
   const normalized = normalizeClassification({
     classificationDef: {
@@ -56,8 +58,8 @@ test('normalize-options, classification: classificationMethod "esriClassifyNatur
       standardDeviationInterval: 10,
       breakCount: 99,
       normalizationType: 'esriNormalizeByField',
-      normalizationField: 'def'
-    }
+      normalizationField: 'def',
+    },
   });
   t.deepEquals(normalized, {
     type: 'classes',
@@ -66,11 +68,11 @@ test('normalize-options, classification: classificationMethod "esriClassifyNatur
     stddev_intv: 10,
     breakCount: 99,
     normType: 'field',
-    normField: 'def'
+    normField: 'def',
   });
 });
 
-test('normalize-options, classification: classificationMethod "esriClassifyQuantile"', t => {
+test('normalize-options, classification: classificationMethod "esriClassifyQuantile"', (t) => {
   t.plan(1);
   const normalized = normalizeClassification({
     classificationDef: {
@@ -80,8 +82,8 @@ test('normalize-options, classification: classificationMethod "esriClassifyQuant
       standardDeviationInterval: 10,
       breakCount: 99,
       normalizationType: 'esriNormalizeByField',
-      normalizationField: 'def'
-    }
+      normalizationField: 'def',
+    },
   });
   t.deepEquals(normalized, {
     type: 'classes',
@@ -90,11 +92,11 @@ test('normalize-options, classification: classificationMethod "esriClassifyQuant
     stddev_intv: 10,
     breakCount: 99,
     normType: 'field',
-    normField: 'def'
+    normField: 'def',
   });
 });
 
-test('normalize-options, classification: classificationMethod "esriClassifyGeometricalInterval"', t => {
+test('normalize-options, classification: classificationMethod "esriClassifyGeometricalInterval"', (t) => {
   t.plan(1);
   const normalized = normalizeClassification({
     classificationDef: {
@@ -104,8 +106,8 @@ test('normalize-options, classification: classificationMethod "esriClassifyGeome
       standardDeviationInterval: 10,
       breakCount: 99,
       normalizationType: 'esriNormalizeByField',
-      normalizationField: 'def'
-    }
+      normalizationField: 'def',
+    },
   });
   t.deepEquals(normalized, {
     type: 'classes',
@@ -114,11 +116,11 @@ test('normalize-options, classification: classificationMethod "esriClassifyGeome
     stddev_intv: 10,
     breakCount: 99,
     normType: 'field',
-    normField: 'def'
+    normField: 'def',
   });
 });
 
-test('normalize-options, classification: classificationMethod "esriClassifyStandardDeviation"', t => {
+test('normalize-options, classification: classificationMethod "esriClassifyStandardDeviation"', (t) => {
   t.plan(1);
   const normalized = normalizeClassification({
     classificationDef: {
@@ -128,8 +130,8 @@ test('normalize-options, classification: classificationMethod "esriClassifyStand
       standardDeviationInterval: 10,
       breakCount: 99,
       normalizationType: 'esriNormalizeByField',
-      normalizationField: 'def'
-    }
+      normalizationField: 'def',
+    },
   });
   t.deepEquals(normalized, {
     type: 'classes',
@@ -138,11 +140,11 @@ test('normalize-options, classification: classificationMethod "esriClassifyStand
     stddev_intv: 10,
     breakCount: 99,
     normType: 'field',
-    normField: 'def'
+    normField: 'def',
   });
 });
 
-test('normalize-options, classification: transformationMethod "esriNormalizeByLog"', t => {
+test('normalize-options, classification: transformationMethod "esriNormalizeByLog"', (t) => {
   t.plan(1);
   const normalized = normalizeClassification({
     classificationDef: {
@@ -152,8 +154,8 @@ test('normalize-options, classification: transformationMethod "esriNormalizeByLo
       standardDeviationInterval: 10,
       breakCount: 99,
       normalizationType: 'esriNormalizeByLog',
-      normalizationField: 'def'
-    }
+      normalizationField: 'def',
+    },
   });
   t.deepEquals(normalized, {
     type: 'classes',
@@ -162,11 +164,11 @@ test('normalize-options, classification: transformationMethod "esriNormalizeByLo
     stddev_intv: 10,
     breakCount: 99,
     normType: 'log',
-    normField: 'def'
+    normField: 'def',
   });
 });
 
-test('normalize-options, classification: transformationMethod "esriNormalizeByPercentOfTotal"', t => {
+test('normalize-options, classification: transformationMethod "esriNormalizeByPercentOfTotal"', (t) => {
   t.plan(1);
   const normalized = normalizeClassification({
     classificationDef: {
@@ -176,8 +178,8 @@ test('normalize-options, classification: transformationMethod "esriNormalizeByPe
       standardDeviationInterval: 10,
       breakCount: 99,
       normalizationType: 'esriNormalizeByPercentOfTotal',
-      normalizationField: 'def'
-    }
+      normalizationField: 'def',
+    },
   });
   t.deepEquals(normalized, {
     type: 'classes',
@@ -186,20 +188,20 @@ test('normalize-options, classification: transformationMethod "esriNormalizeByPe
     stddev_intv: 10,
     breakCount: 99,
     normType: 'percent',
-    normField: 'def'
+    normField: 'def',
   });
 });
 
-test('normalize-options, classification: classificationDef of type "uniqueValueDev"', t => {
+test('normalize-options, classification: classificationDef of type "uniqueValueDev"', (t) => {
   t.plan(1);
   const normalized = normalizeClassification({
     classificationDef: {
       type: 'uniqueValueDef',
-      uniqueValueFields: ['abc', 'def']
-    }
+      uniqueValueFields: ['abc', 'def'],
+    },
   });
   t.deepEquals(normalized, {
     type: 'unique',
-    fields: ['abc', 'def']
+    fields: ['abc', 'def'],
   });
 });

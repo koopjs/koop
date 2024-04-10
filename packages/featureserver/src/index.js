@@ -11,5 +11,5 @@ module.exports = {
   queryRelatedRecords: require('./queryRelatedRecords.js'),
   generateRenderer: require('./generate-renderer'),
   setLogger,
-  setDefaults: defaults.setDefaults.bind(defaults)
+  setDefaults: defaults.setDefaults.bind(defaults),
 };

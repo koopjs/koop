@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const { detectEsriFieldType } = require('./helpers');
 
-function normalizeCollection (collection, features) {
+function normalizeCollection(collection, features) {
   if (!collection) return;
 
   const clonedCollection = _.cloneDeep(collection);
@@ -18,14 +18,14 @@ function normalizeCollection (collection, features) {
   return clonedCollection;
 }
 
-function getFieldsFromFeature (feature) {
+function getFieldsFromFeature(feature) {
   if (!feature) return;
   const { properties = {} } = feature;
 
-  return Object.keys(properties).map(key => {
+  return Object.keys(properties).map((key) => {
     return {
       name: key,
-      type: detectEsriFieldType(properties[key])
+      type: detectEsriFieldType(properties[key]),
     };
   });
 }

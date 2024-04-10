@@ -1,9 +1,9 @@
-const Logger = require('@koopjs/logger'); 
+const Logger = require('@koopjs/logger');
 let logger = new Logger();
 const winnow = require('@koopjs/winnow');
 
 module.exports = {
-  get logger () {
+  get logger() {
     return logger;
   },
 
@@ -14,9 +14,9 @@ module.exports = {
       winnow.setLogger({ logger });
       return;
     }
-  
+
     if (logLevel) {
       logger = new Logger({ logLevel });
     }
-  }
+  },
 };

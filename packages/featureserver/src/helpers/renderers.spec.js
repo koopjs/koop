@@ -1,11 +1,7 @@
 const should = require('should');
 should.config.checkProtoEql = false;
 
-const {
-  PointRenderer,
-  PolygonRenderer,
-  LineRenderer
-} = require('./renderers');
+const { PointRenderer, PolygonRenderer, LineRenderer } = require('./renderers');
 
 describe('Renderers', () => {
   it('should produce default PointRenderer instance', () => {
@@ -13,27 +9,17 @@ describe('Renderers', () => {
     renderer.should.deepEqual({
       type: 'simple',
       symbol: {
-        color: [
-          247,
-          150,
-          70,
-          161
-        ],
+        color: [247, 150, 70, 161],
         outline: {
-          color: [
-            190,
-            190,
-            190,
-            105
-          ],
+          color: [190, 190, 190, 105],
           width: 0.5,
           type: 'esriSLS',
-          style: 'esriSLSSolid'
+          style: 'esriSLSSolid',
         },
         size: 7.5,
         type: 'esriSMS',
-        style: 'esriSMSCircle'
-      }
+        style: 'esriSMSCircle',
+      },
     });
   });
 
@@ -42,16 +28,11 @@ describe('Renderers', () => {
     renderer.should.deepEqual({
       type: 'simple',
       symbol: {
-        color: [
-          247,
-          150,
-          70,
-          204
-        ],
+        color: [247, 150, 70, 204],
         width: 6.999999999999999,
         type: 'esriSLS',
-        style: 'esriSLSSolid'
-      }
+        style: 'esriSLSSolid',
+      },
     });
   });
 
@@ -60,26 +41,16 @@ describe('Renderers', () => {
     renderer.should.deepEqual({
       type: 'simple',
       symbol: {
-        color: [
-          75,
-          172,
-          198,
-          161
-        ],
+        color: [75, 172, 198, 161],
         outline: {
-          color: [
-            150,
-            150,
-            150,
-            155
-          ],
+          color: [150, 150, 150, 155],
           width: 0.5,
           type: 'esriSLS',
-          style: 'esriSLSSolid'
+          style: 'esriSLSSolid',
         },
         type: 'esriSFS',
-        style: 'esriSFSSolid'
-      }
+        style: 'esriSFSSolid',
+      },
     });
   });
 });

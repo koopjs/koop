@@ -6,5 +6,5 @@ module.exports = {
   SQL_TYPE_INTEGER: 'sqlTypeInteger',
   SQL_TYPE_OTHER: 'sqlTypeOther',
   SQL_TYPE_FLOAT: 'sqlTypeFloat',
-  OBJECTID_DEFAULT_KEY: 'OBJECTID'
+  OBJECTID_DEFAULT_KEY: 'OBJECTID',
 };

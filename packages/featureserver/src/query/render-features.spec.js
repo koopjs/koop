@@ -227,7 +227,7 @@ describe('renderFeaturesResponse', () => {
       const getCollectionCrsSpy = sinon.spy(function () {
         return;
       });
-  
+
       const stub = {
         '../helpers/fields': fields,
         '../helpers': {
@@ -398,11 +398,11 @@ describe('renderFeaturesResponse', () => {
       const normalizeSpatialReferenceSpy = sinon.spy(function (latestWkid) {
         return { latestWkid };
       });
-  
+
       const getCollectionCrsSpy = sinon.spy(function () {
         return 'crs';
       });
-  
+
       const stub = {
         '../helpers/fields': fields,
         '../helpers': {
@@ -410,7 +410,7 @@ describe('renderFeaturesResponse', () => {
           normalizeSpatialReference: normalizeSpatialReferenceSpy,
         },
       };
-  
+
       const { renderFeaturesResponse } = proxyquire('./render-features', stub);
       const result = renderFeaturesResponse(json, {
         geometryType: 'esriGeometryPoint',
@@ -445,11 +445,11 @@ describe('renderFeaturesResponse', () => {
       const normalizeSpatialReferenceSpy = sinon.spy(function (latestWkid) {
         return { wkid: latestWkid, latestWkid };
       });
-  
+
       const getCollectionCrsSpy = sinon.spy(function () {
         return 'crs';
       });
-  
+
       const stub = {
         '../helpers/fields': fields,
         '../helpers': {
@@ -457,7 +457,7 @@ describe('renderFeaturesResponse', () => {
           normalizeSpatialReference: normalizeSpatialReferenceSpy,
         },
       };
-  
+
       const { renderFeaturesResponse } = proxyquire('./render-features', stub);
       const result = renderFeaturesResponse(json, {
         geometryType: 'esriGeometryPoint',
@@ -493,11 +493,11 @@ describe('renderFeaturesResponse', () => {
       const normalizeSpatialReferenceSpy = sinon.spy(function (wkt) {
         return { wkt };
       });
-  
+
       const getCollectionCrsSpy = sinon.spy(function () {
         return 'crs';
       });
-  
+
       const stub = {
         '../helpers/fields': fields,
         '../helpers': {
@@ -505,7 +505,7 @@ describe('renderFeaturesResponse', () => {
           normalizeSpatialReference: normalizeSpatialReferenceSpy,
         },
       };
-  
+
       const { renderFeaturesResponse } = proxyquire('./render-features', stub);
       const result = renderFeaturesResponse(json, {
         geometryType: 'esriGeometryPoint',
@@ -533,7 +533,9 @@ describe('renderFeaturesResponse', () => {
       });
       getCollectionCrsSpy.callCount.should.equal(0);
       normalizeSpatialReferenceSpy.callCount.should.equal(1);
-      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual(['wkt-here']);
+      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual([
+        'wkt-here',
+      ]);
     });
   });
 });

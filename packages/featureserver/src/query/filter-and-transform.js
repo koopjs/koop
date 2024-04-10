@@ -1,7 +1,7 @@
 const { query } = require('@koopjs/winnow');
 const helpers = require('../helpers');
 
-function filterAndTransform (json, requestParams) {
+function filterAndTransform(json, requestParams) {
   const { features, type, ...restJson } = json;
   const params = FilterAndTransformParams.create(requestParams)
     .removeParamsAlreadyApplied(json.filtersApplied)
@@ -15,35 +15,34 @@ function filterAndTransform (json, requestParams) {
   if (outStatistics) {
     return {
       statistics: result,
-      ...restJson
+      ...restJson,
     };
   }
-
 
   return result;
 }
 
 class FilterAndTransformParams {
-  static create (requestParams) {
+  static create(requestParams) {
     return new FilterAndTransformParams(requestParams);
   }
 
-  static standardize (requestParams) {
-    const {returnDistinctValues, where = '1=1', ...rest } = requestParams;
-    
+  static standardize(requestParams) {
+    const { returnDistinctValues, where = '1=1', ...rest } = requestParams;
+
     return {
       ...rest,
       distinct: !!returnDistinctValues,
-      where: extractPlusPlaceHolders(where)
+      where: extractPlusPlaceHolders(where),
     };
   }
 
-  constructor (requestParams) {
+  constructor(requestParams) {
     const params = FilterAndTransformParams.standardize(requestParams);
     Object.assign(this, params);
   }
 
-  removeParamsAlreadyApplied (alreadyApplied) {
+  removeParamsAlreadyApplied(alreadyApplied) {
     for (const key in alreadyApplied) {
       if (key === 'projection') {
         delete this.outSR;
@@ -59,14 +58,19 @@ class FilterAndTransformParams {
     return this;
   }
 
-  addToEsri () {
+  addToEsri() {
     this.toEsri = this.f !== 'geojson' && !this.returnExtentOnly;
     return this;
   }
 
-  addInputCrs (data) {
+  addInputCrs(data) {
     const { metadata = {} } = data;
-    this.inputCrs = this.inputCrs || this.sourceSR || metadata.crs || helpers.getCollectionCrs(data) || 4326;
+    this.inputCrs =
+      this.inputCrs ||
+      this.sourceSR ||
+      metadata.crs ||
+      helpers.getCollectionCrs(data) ||
+      4326;
     delete this.sourceSR;
     return this;
   }
@@ -80,7 +84,7 @@ function extractPlusPlaceHolders(where) {
   const charArray = Array.from(whereWithReplacedSingleQuotes);
   return charArray
     .map((char) => {
-      if (char === '\'' && !openDouble) {
+      if (char === "'" && !openDouble) {
         openSingle = !openSingle;
       }
 
@@ -94,6 +98,6 @@ function extractPlusPlaceHolders(where) {
       return char;
     })
     .join('')
-    .replace(/~~xxx~~/g, '\'\'');
+    .replace(/~~xxx~~/g, "''");
 }
 module.exports = { filterAndTransform };

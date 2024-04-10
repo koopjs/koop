@@ -90,7 +90,7 @@ const transformedFixture = {
       },
     },
   ],
-  exceededTransferLimit: true
+  exceededTransferLimit: true,
 };
 
 describe('transform features for PBF', () => {

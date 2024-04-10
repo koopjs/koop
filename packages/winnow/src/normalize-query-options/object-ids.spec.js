@@ -1,49 +1,49 @@
 const test = require('tape');
 const normalizeObjectIds = require('./object-ids');
 
-test('normalize objectIds: undefined objectIds', t => {
+test('normalize objectIds: undefined objectIds', (t) => {
   t.plan(1);
 
   const normalized = normalizeObjectIds();
   t.equal(normalized, undefined);
 });
 
-test('normalize objectIds: numeric string', t => {
+test('normalize objectIds: numeric string', (t) => {
   t.plan(1);
 
   const normalized = normalizeObjectIds('1');
   t.deepEqual(normalized, [1]);
 });
 
-test('normalize objectIds: delimited numeric string', t => {
+test('normalize objectIds: delimited numeric string', (t) => {
   t.plan(1);
 
   const normalized = normalizeObjectIds('1,2');
   t.deepEqual(normalized, [1, 2]);
 });
 
-test('normalize objectIds: delimited strings', t => {
+test('normalize objectIds: delimited strings', (t) => {
   t.plan(1);
 
   const normalized = normalizeObjectIds('abc3ef,xyz123');
-  t.deepEqual(normalized, ['abc3ef','xyz123']);
+  t.deepEqual(normalized, ['abc3ef', 'xyz123']);
 });
 
-test('normalize objectIds: integer', t => {
+test('normalize objectIds: integer', (t) => {
   t.plan(1);
 
   const normalized = normalizeObjectIds(1);
   t.deepEqual(normalized, [1]);
 });
 
-test('normalize objectIds: numeric array', t => {
+test('normalize objectIds: numeric array', (t) => {
   t.plan(1);
 
   const normalized = normalizeObjectIds([1]);
   t.deepEqual(normalized, [1]);
 });
 
-test('normalize objectIds: throw on unsupported data type', t => {
+test('normalize objectIds: throw on unsupported data type', (t) => {
   t.plan(2);
 
   try {

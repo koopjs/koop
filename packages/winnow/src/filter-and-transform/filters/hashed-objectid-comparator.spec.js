@@ -6,49 +6,64 @@ const properties = { foo: 'bar' };
 const geometry = { type: 'Point', coordinates: [44, -84.5] };
 const objectId = createIntegerHash(JSON.stringify({ properties, geometry }));
 
-test('hashedObjectIdComparator: =, should return true', t => {
+test('hashedObjectIdComparator: =, should return true', (t) => {
   const result = hashedObjectIdComparator(properties, geometry, objectId, '=');
   t.equals(result, true);
   t.end();
 });
 
-test('hashedObjectIdComparator: !=, should return true', t => {
+test('hashedObjectIdComparator: !=, should return true', (t) => {
   const result = hashedObjectIdComparator(properties, geometry, -9999, '!=');
   t.equals(result, true);
   t.end();
 });
 
-test('hashedObjectIdComparator: >, should return true', t => {
+test('hashedObjectIdComparator: >, should return true', (t) => {
   const result = hashedObjectIdComparator(properties, geometry, 0, '>');
   t.equals(result, true);
   t.end();
 });
 
-test('hashedObjectIdComparator: >=, should return true', t => {
+test('hashedObjectIdComparator: >=, should return true', (t) => {
   const result = hashedObjectIdComparator(properties, geometry, 0, '>=');
   t.equals(result, true);
   t.end();
 });
 
-test('hashedObjectIdComparator: >, should return true', t => {
-  const result = hashedObjectIdComparator(properties, geometry, 9999999999, '<');
+test('hashedObjectIdComparator: >, should return true', (t) => {
+  const result = hashedObjectIdComparator(
+    properties,
+    geometry,
+    9999999999,
+    '<',
+  );
   t.equals(result, true);
   t.end();
 });
 
-test('hashedObjectIdComparator: >=, should return true', t => {
-  const result = hashedObjectIdComparator(properties, geometry, 9999999999, '<=');
+test('hashedObjectIdComparator: >=, should return true', (t) => {
+  const result = hashedObjectIdComparator(
+    properties,
+    geometry,
+    9999999999,
+    '<=',
+  );
   t.equals(result, true);
   t.end();
 });
 
-test('hashedObjectIdComparator: IN, should return true', t => {
-  const result = hashedObjectIdComparator(properties, geometry, `${objectId},0000`, 'IN');
+test('hashedObjectIdComparator: IN, should return true', (t) => {
+  const result = hashedObjectIdComparator(
+    properties,
+    geometry,
+    `${objectId},0000`,
+    'IN',
+  );
   t.equals(result, true);
   t.end();
 });
 
-test('hashedObjectIdComparator: unsupported operator', t => {
+test('hashedObjectIdComparator: unsupported operator', (t) => {
   const result = hashedObjectIdComparator(properties, geometry, 0, '***');
   t.equals(result, false);
   t.end();

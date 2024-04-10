@@ -14,12 +14,12 @@ const fields = {
 };
 
 const loggerSpy = {
-  error: sinon.spy()
+  error: sinon.spy(),
 };
 
 const TableLayerMetadata = proxyquire('./table-layer-metadata', {
   '../helpers/fields': fields,
-  '../log-manager': { logger: loggerSpy }
+  '../log-manager': { logger: loggerSpy },
 });
 
 describe('TableLayerMetadata', () => {
@@ -2075,7 +2075,7 @@ describe('TableLayerMetadata', () => {
         tableLayerMetadata.mixinOverrides(
           {},
           {
-            supportedQueryFormats: 'JSON'
+            supportedQueryFormats: 'JSON',
           },
         );
         tableLayerMetadata.supportedQueryFormats.should.equal('JSON');
@@ -2086,7 +2086,7 @@ describe('TableLayerMetadata', () => {
         tableLayerMetadata.mixinOverrides(
           {},
           {
-            supportedQueryFormats: 'JSON, geojson'
+            supportedQueryFormats: 'JSON, geojson',
           },
         );
         tableLayerMetadata.supportedQueryFormats.should.equal('JSON, geojson');
@@ -2097,23 +2097,25 @@ describe('TableLayerMetadata', () => {
         tableLayerMetadata.mixinOverrides(
           {},
           {
-            supportedQueryFormats: ['JSON']
+            supportedQueryFormats: ['JSON'],
           },
         );
         tableLayerMetadata.supportedQueryFormats.should.equal('JSON');
       });
- 
+
       it('skip override if string missing JSON', () => {
         const tableLayerMetadata = new TableLayerMetadata();
         tableLayerMetadata.mixinOverrides(
           {},
           {
-            supportedQueryFormats: ['PBF']
+            supportedQueryFormats: ['PBF'],
           },
         );
-        tableLayerMetadata.supportedQueryFormats.should.equal('JSON,geojson,PBF');
+        tableLayerMetadata.supportedQueryFormats.should.equal(
+          'JSON,geojson,PBF',
+        );
         loggerSpy.error.firstCall.args.should.deepEqual([
-          '"supportedQueryFormats" override is invalid; must contain "JSON". skipping override'
+          '"supportedQueryFormats" override is invalid; must contain "JSON". skipping override',
         ]);
       });
     });
@@ -2325,19 +2327,17 @@ describe('TableLayerMetadata', () => {
   });
 
   it('static method "create" should handle missing options', () => {
-    const tableLayerMetadata = TableLayerMetadata.create(
-      {
-        features: ['feature'],
-        metadata: {
-          foo: 'bar',
-          displayField: 'myField',
-          capabilities: 'list,of,stuff',
-        },
-        capabilities: {
-          world: 'hellow',
-        },
-      }
-    );
+    const tableLayerMetadata = TableLayerMetadata.create({
+      features: ['feature'],
+      metadata: {
+        foo: 'bar',
+        displayField: 'myField',
+        capabilities: 'list,of,stuff',
+      },
+      capabilities: {
+        world: 'hellow',
+      },
+    });
 
     tableLayerMetadata.should.deepEqual({
       currentVersion: 11.2,
@@ -2346,7 +2346,8 @@ describe('TableLayerMetadata', () => {
       name: 'Not Set',
       type: 'Table',
       displayField: 'myField',
-      description: 'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+      description:
+        'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
       copyrightText:
         'Copyright information varies by provider. For more information please contact the source of this data.',
       defaultVisibility: true,

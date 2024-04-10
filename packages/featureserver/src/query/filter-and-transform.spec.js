@@ -44,10 +44,7 @@ describe('filterAndTransform', () => {
       });
 
       it('should set a default 1=1 for an undefined where', () => {
-        const result = filterAndTransform(
-          { features: [{}] },
-          { },
-        );
+        const result = filterAndTransform({ features: [{}] }, {});
         result.should.deepEqual({
           features: 'expected-result',
         });
@@ -69,14 +66,19 @@ describe('filterAndTransform', () => {
         filterAndTransformSpy.callCount.should.equal(1);
         filterAndTransformSpy.firstCall.args.should.deepEqual([
           { features: [{}] },
-          { inputCrs: 4326, toEsri: true, distinct: false, where: 'FOO IS NOT NULL' },
+          {
+            inputCrs: 4326,
+            toEsri: true,
+            distinct: false,
+            where: 'FOO IS NOT NULL',
+          },
         ]);
       });
 
       it('should not remove "+" from where if wrapped in single quotes', () => {
         const result = filterAndTransform(
           { features: [{}] },
-          { where: '\'FOO+\'+IS+NOT+NULL' },
+          { where: "'FOO+'+IS+NOT+NULL" },
         );
         result.should.deepEqual({
           features: 'expected-result',
@@ -84,7 +86,12 @@ describe('filterAndTransform', () => {
         filterAndTransformSpy.callCount.should.equal(1);
         filterAndTransformSpy.firstCall.args.should.deepEqual([
           { features: [{}] },
-          { inputCrs: 4326, toEsri: true, distinct: false, where: '\'FOO+\' IS NOT NULL' },
+          {
+            inputCrs: 4326,
+            toEsri: true,
+            distinct: false,
+            where: "'FOO+' IS NOT NULL",
+          },
         ]);
       });
 
@@ -99,7 +106,12 @@ describe('filterAndTransform', () => {
         filterAndTransformSpy.callCount.should.equal(1);
         filterAndTransformSpy.firstCall.args.should.deepEqual([
           { features: [{}] },
-          { inputCrs: 4326, toEsri: true, distinct: false, where: '"FOO+" IS NOT NULL' },
+          {
+            inputCrs: 4326,
+            toEsri: true,
+            distinct: false,
+            where: '"FOO+" IS NOT NULL',
+          },
         ]);
       });
     });

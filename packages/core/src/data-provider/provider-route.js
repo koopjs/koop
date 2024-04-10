@@ -7,7 +7,6 @@ const METHODS_SCHEMA = Joi.array().items(
 );
 
 class ProviderRoute {
-
   constructor(params) {
     const { handler, path, controller, methods } = params;
     this.#validateHttpMethods(methods, path);
@@ -19,7 +18,7 @@ class ProviderRoute {
     this.path = composeRoutePath(params);
   }
 
-  #validateController (controller, handler, path) {
+  #validateController(controller, handler, path) {
     if (!controller[handler]) {
       throw new Error(
         `defines route "${path}" with unknown handler: ${handler}`,
@@ -27,7 +26,7 @@ class ProviderRoute {
     }
   }
 
-  #validateHttpMethods (methods, path) {
+  #validateHttpMethods(methods, path) {
     const result = METHODS_SCHEMA.validate(methods);
     if (result.error) {
       throw new Error(

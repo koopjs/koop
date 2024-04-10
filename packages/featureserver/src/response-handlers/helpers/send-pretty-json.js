@@ -1,4 +1,3 @@
-
 function sendPrettyJson(res, payload) {
   res.set('Content-Type', 'application/json; charset=utf-8');
   res.status(200);
@@ -6,5 +5,5 @@ function sendPrettyJson(res, payload) {
 }
 
 module.exports = {
-  sendPrettyJson
+  sendPrettyJson,
 };

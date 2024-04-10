@@ -1,20 +1,22 @@
-const should = require('should') // eslint-disable-line
+const should = require('should'); // eslint-disable-line
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 const createStatisticsFieldsSpy = sinon.spy(function () {
-  return [{
-    foo: 'bar'
-  }];
+  return [
+    {
+      foo: 'bar',
+    },
+  ];
 });
 
 const fields = {
   StatisticsFields: {
-    create: createStatisticsFieldsSpy
-  }
+    create: createStatisticsFieldsSpy,
+  },
 };
 
 const stub = {
-  '../helpers/fields': fields
+  '../helpers/fields': fields,
 };
 
 const { renderStatisticsResponse } = proxyquire('./render-statistics', stub);
@@ -25,70 +27,88 @@ describe('renderStatisticsResponse', () => {
   });
 
   it('should convert statistics array to Geoservices JSON', () => {
-    const result = renderStatisticsResponse({ statistics: [{ min_precip: 0 }] }, {
-      outStatistics: [{
-        statisticType: 'MIN',
-        onStatisticField: 'total precip',
-        outStatisticFieldName: 'min_precip'
-      }]
-    });
+    const result = renderStatisticsResponse(
+      { statistics: [{ min_precip: 0 }] },
+      {
+        outStatistics: [
+          {
+            statisticType: 'MIN',
+            onStatisticField: 'total precip',
+            outStatisticFieldName: 'min_precip',
+          },
+        ],
+      },
+    );
     result.should.deepEqual({
       displayFieldName: '',
-      fields: [{
-        foo: 'bar'
-      }],
+      fields: [
+        {
+          foo: 'bar',
+        },
+      ],
       features: [
         {
           attributes: {
-            min_precip: 0
-          }
-        }
-      ]
+            min_precip: 0,
+          },
+        },
+      ],
     });
     createStatisticsFieldsSpy.callCount.should.equal(1);
     createStatisticsFieldsSpy.firstCall.args.should.deepEqual([
       {
         statistics: [{ min_precip: 0 }],
-        outStatistics: [{
-          statisticType: 'MIN',
-          onStatisticField: 'total precip',
-          outStatisticFieldName: 'min_precip'
-        }]
-      }
+        outStatistics: [
+          {
+            statisticType: 'MIN',
+            onStatisticField: 'total precip',
+            outStatisticFieldName: 'min_precip',
+          },
+        ],
+      },
     ]);
   });
 
   it('should convert statistics object to Geoservices JSON', () => {
-    const result = renderStatisticsResponse({ statistics: { min_precip: 0 } }, {
-      outStatistics: [{
-        statisticType: 'MIN',
-        onStatisticField: 'total precip',
-        outStatisticFieldName: 'min_precip'
-      }]
-    });
+    const result = renderStatisticsResponse(
+      { statistics: { min_precip: 0 } },
+      {
+        outStatistics: [
+          {
+            statisticType: 'MIN',
+            onStatisticField: 'total precip',
+            outStatisticFieldName: 'min_precip',
+          },
+        ],
+      },
+    );
     result.should.deepEqual({
       displayFieldName: '',
-      fields: [{
-        foo: 'bar'
-      }],
+      fields: [
+        {
+          foo: 'bar',
+        },
+      ],
       features: [
         {
           attributes: {
-            min_precip: 0
-          }
-        }
-      ]
+            min_precip: 0,
+          },
+        },
+      ],
     });
     createStatisticsFieldsSpy.callCount.should.equal(1);
     createStatisticsFieldsSpy.firstCall.args.should.deepEqual([
       {
         statistics: { min_precip: 0 },
-        outStatistics: [{
-          statisticType: 'MIN',
-          onStatisticField: 'total precip',
-          outStatisticFieldName: 'min_precip'
-        }]
-      }
+        outStatistics: [
+          {
+            statisticType: 'MIN',
+            onStatisticField: 'total precip',
+            outStatisticFieldName: 'min_precip',
+          },
+        ],
+      },
     ]);
   });
 });

@@ -1,10 +1,10 @@
-const should = require('should') // eslint-disable-line
+const should = require('should'); // eslint-disable-line
 
 const extendController = require('./extend-controller');
 
 describe('Tests for create-controller', function () {
   it('should extend a controller authored with function syntax', () => {
-    const OutputController = function OutputController () {
+    const OutputController = function OutputController() {
       this.foo = 'bar';
     };
     OutputController.routes = ['route-test'];
@@ -18,7 +18,7 @@ describe('Tests for create-controller', function () {
 
   it('should extend a controller authored with class syntax', () => {
     class OutputController {
-      constructor () {
+      constructor() {
         this.foo = 'bar';
       }
     }
@@ -42,6 +42,9 @@ describe('Tests for create-controller', function () {
   it('should use a default namespace when unnamed constructor functions are used', () => {
     const mockModel = 'model-test';
     const extendedController = extendController(mockModel, function () {});
-    extendedController.should.have.property('namespace', 'UndefinedControllerNamespace');
+    extendedController.should.have.property(
+      'namespace',
+      'UndefinedControllerNamespace',
+    );
   });
 });

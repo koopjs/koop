@@ -16,11 +16,8 @@ const normalizeLimit = require('./limit');
 const normalizeOffset = require('./offset');
 const normalizeObjectIds = require('./object-ids');
 
-function normalizeQueryOptions (options, features) {
-  const {
-    where,
-    collection
-  } = options;
+function normalizeQueryOptions(options, features) {
+  const { where, collection } = options;
 
   const normalizedOptions = _.merge({}, options, {
     collection: normalizeCollection(collection, features),
@@ -36,10 +33,13 @@ function normalizeQueryOptions (options, features) {
     outputCrs: normalizeOutputDataSpatialReference(options),
     inputCrs: normalizeSourceDataSpatialReference(options),
     classification: normalizeClassification(options),
-    objectIds: normalizeObjectIds(options.objectIds)
+    objectIds: normalizeObjectIds(options.objectIds),
   });
   normalizedOptions.offset = normalizeOffset(normalizedOptions);
-  normalizedOptions.dateFields = deriveDateFields(normalizedOptions.collection, normalizedOptions.fields);
+  normalizedOptions.dateFields = deriveDateFields(
+    normalizedOptions.collection,
+    normalizedOptions.fields,
+  );
 
   return normalizedOptions;
 }

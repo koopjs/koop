@@ -73,9 +73,6 @@ describe('general response handler', () => {
       },
     );
 
-    sendPrettyJsonSpy.firstCall.args.should.deepEqual([
-      res,
-      { test: true }
-    ]);
+    sendPrettyJsonSpy.firstCall.args.should.deepEqual([res, { test: true }]);
   });
 });

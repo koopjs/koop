@@ -1,7 +1,5 @@
 const should = require('should'); // eslint-disable-line
-const {
-  createColorRamp
-} = require('./color-ramp');
+const { createColorRamp } = require('./color-ramp');
 
 const classification = [
   [80, 147],
@@ -12,7 +10,7 @@ const classification = [
   [307, 360],
   [360, 558],
   [558, 799],
-  [799, 2000]
+  [799, 2000],
 ];
 
 describe('when creating a color ramp that', () => {
@@ -22,11 +20,15 @@ describe('when creating a color ramp that', () => {
     });
 
     it('should throw an error on invalid type option', () => {
-      createColorRamp.bind(null, { classification, type: 'foo' }).should.throw();
+      createColorRamp
+        .bind(null, { classification, type: 'foo' })
+        .should.throw();
     });
 
     it('should throw an error on multipart type with color-ramps', () => {
-      createColorRamp.bind(null, { classification, type: 'multipart' }).should.throw();
+      createColorRamp
+        .bind(null, { classification, type: 'multipart' })
+        .should.throw();
     });
 
     it('should return correct hsv color ramp', () => {
@@ -35,7 +37,7 @@ describe('when creating a color ramp that', () => {
         type: 'algorithmic',
         fromColor: [0, 255, 0],
         toColor: [0, 0, 255],
-        algorithm: 'esriHSVAlgorithm'
+        algorithm: 'esriHSVAlgorithm',
       });
       response.should.deepEqual([
         [0, 255, 0],
@@ -46,7 +48,7 @@ describe('when creating a color ramp that', () => {
         [0, 191, 255],
         [0, 127, 255],
         [0, 64, 255],
-        [0, 0, 255]
+        [0, 0, 255],
       ]);
     });
 
@@ -56,7 +58,7 @@ describe('when creating a color ramp that', () => {
         type: 'algorithmic',
         fromColor: [0, 255, 0],
         toColor: [0, 0, 255],
-        algorithm: 'esriCIELabAlgorithm'
+        algorithm: 'esriCIELabAlgorithm',
       });
       response.should.deepEqual([
         [0, 255, 0],
@@ -67,7 +69,7 @@ describe('when creating a color ramp that', () => {
         [121, 120, 189],
         [108, 91, 211],
         [83, 58, 233],
-        [0, 0, 255]
+        [0, 0, 255],
       ]);
     });
 
@@ -77,7 +79,7 @@ describe('when creating a color ramp that', () => {
         type: 'algorithmic',
         fromColor: [0, 255, 0],
         toColor: [0, 0, 255],
-        algorithm: 'esriLabLChAlgorithm'
+        algorithm: 'esriLabLChAlgorithm',
       });
       response.should.deepEqual([
         [0, 255, 0],
@@ -88,7 +90,7 @@ describe('when creating a color ramp that', () => {
         [0, 163, 255],
         [0, 135, 255],
         [0, 96, 255],
-        [0, 0, 255]
+        [0, 0, 255],
       ]);
     });
 
@@ -100,21 +102,21 @@ describe('when creating a color ramp that', () => {
             type: 'algorithmic',
             fromColor: [0, 255, 0],
             toColor: [0, 0, 255],
-            algorithm: 'esriHSVAlgorithm'
+            algorithm: 'esriHSVAlgorithm',
           },
           {
             type: 'algorithmic',
             fromColor: [0, 255, 0],
             toColor: [0, 0, 255],
-            algorithm: 'esriCIELabAlgorithm'
+            algorithm: 'esriCIELabAlgorithm',
           },
           {
             type: 'algorithmic',
             fromColor: [0, 255, 0],
             toColor: [0, 0, 255],
-            algorithm: 'esriLabLChAlgorithm'
-          }
-        ]
+            algorithm: 'esriLabLChAlgorithm',
+          },
+        ],
       };
       const response = createColorRamp({ classification, ...multipartRamp });
       response.should.deepEqual([
@@ -127,7 +129,7 @@ describe('when creating a color ramp that', () => {
           [0, 191, 255],
           [0, 127, 255],
           [0, 64, 255],
-          [0, 0, 255]
+          [0, 0, 255],
         ],
         [
           [0, 255, 0],
@@ -138,7 +140,7 @@ describe('when creating a color ramp that', () => {
           [121, 120, 189],
           [108, 91, 211],
           [83, 58, 233],
-          [0, 0, 255]
+          [0, 0, 255],
         ],
         [
           [0, 255, 0],
@@ -149,8 +151,8 @@ describe('when creating a color ramp that', () => {
           [0, 163, 255],
           [0, 135, 255],
           [0, 96, 255],
-          [0, 0, 255]
-        ]
+          [0, 0, 255],
+        ],
       ]);
     });
   });

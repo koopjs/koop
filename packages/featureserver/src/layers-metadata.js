@@ -1,10 +1,10 @@
 const {
   normalizeInputData,
   TableLayerMetadata,
-  FeatureLayerMetadata
+  FeatureLayerMetadata,
 } = require('./helpers');
 
-module.exports = function layersMetadata (data, options = {}) {
+module.exports = function layersMetadata(data, options = {}) {
   const { layers: layersInput, tables: tablesInput } = normalizeInputData(data);
 
   const layers = layersInput.map((layer, i) => {
@@ -12,7 +12,10 @@ module.exports = function layersMetadata (data, options = {}) {
   });
 
   const tables = tablesInput.map((table, i) => {
-    return TableLayerMetadata.create(table, { layerId: layers.length + i, ...options });
+    return TableLayerMetadata.create(table, {
+      layerId: layers.length + i,
+      ...options,
+    });
   });
 
   return { layers, tables };

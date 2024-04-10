@@ -9,7 +9,10 @@ describe('normailizeRequestParameters', () => {
   });
 
   it('should remove empty strings from query params', () => {
-    const result = normalizeRequestParameters({ test: '', foo: 'barb', boo: 400 }, {});
+    const result = normalizeRequestParameters(
+      { test: '', foo: 'barb', boo: 400 },
+      {},
+    );
     result.should.deepEqual({ foo: 'barb', boo: 400, resultRecordCount: 2000 });
   });
 
@@ -31,20 +34,29 @@ describe('normailizeRequestParameters', () => {
       {},
     );
     result.should.deepEqual({
-      test: { foo: 'bard'},
+      test: { foo: 'bard' },
       resultRecordCount: 2000,
     });
   });
 
   it('should merge body and query', () => {
-    const result = normalizeRequestParameters({ resultRecordCount: '99' }, { foo: 'bart' });
+    const result = normalizeRequestParameters(
+      { resultRecordCount: '99' },
+      { foo: 'bart' },
+    );
     result.should.deepEqual({ resultRecordCount: 99, foo: 'bart' });
   });
 
   it('should coerce body string parameters', () => {
     const result = normalizeRequestParameters(
       {},
-      { boolTrue: 'true', boolFalse: 'false', numberInt: '1', numberDecimal: '1.1', emptyParam: '' },
+      {
+        boolTrue: 'true',
+        boolFalse: 'false',
+        numberInt: '1',
+        numberDecimal: '1.1',
+        emptyParam: '',
+      },
     );
     result.should.deepEqual({
       boolTrue: true,

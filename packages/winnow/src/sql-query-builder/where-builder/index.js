@@ -1,7 +1,7 @@
 const { InvalidWhereParameterError } = require('../../errors');
 const convertSqlWhereToJsonWhere = require('./to-json-where');
 
-const timestampCastRegex = /(TIMESTAMP|DATE) '([^']*)'/gi; // eslint-disable-line
+const timestampCastRegex = /(TIMESTAMP|DATE) '([^']*)'/gi;
 const timestampWithoutZoneRegex =
   /^\d{4}-\d{2}-\d{2} {0,1}\d{0,2}:{0,1}\d{0,2}:{0,1}\d{0,2}$/;
 
@@ -137,10 +137,10 @@ class WhereBuilder {
   }
 
   #addObjectIdsFilter() {
-    const inValues = this.#options.objectIds.map(val => {
+    const inValues = this.#options.objectIds.map((val) => {
       return isNaN(val) ? `'${val}'` : val;
     });
-    
+
     const objectIdFilter = `${
       this.#options.idField || 'OBJECTID'
     } IN (${inValues.join(',')})`;
@@ -166,7 +166,7 @@ class WhereBuilder {
     this.#where = this.#where
       .replace(
         fieldFirstObjectIdPredicateRegex,
-        `hashedObjectIdComparator($1, geometry, $3, '$2')=true`, // eslint-disable-line
+        `hashedObjectIdComparator($1, geometry, $3, '$2')=true`,
       )
       .replace(
         objectidInPredicateRegex,
@@ -218,14 +218,14 @@ function normalizeTimestamp(timestamp) {
 }
 
 function isBeginningOfValueDefinition(char, insideSingleQuotes) {
-  return insideSingleQuotes === false && char === "'";  // eslint-disable-line
+  return insideSingleQuotes === false && char === "'";
 }
 
 function isSingleQuoteEscapeChar(char, next, prev, insideSingleQuotes) {
   return (
     insideSingleQuotes === true &&
-    char === "'" && // eslint-disable-line
-    next === "'" && // eslint-disable-line
+    char === "'" &&
+    next === "'" &&
     prev !== SINGLE_QUOTE_ESCAPE
   );
 }
@@ -233,7 +233,7 @@ function isSingleQuoteEscapeChar(char, next, prev, insideSingleQuotes) {
 function isEndOfValueDefinition(char, lastTwoChars, insideSingleQuotes) {
   return (
     insideSingleQuotes === true &&
-    char === `'` && // eslint-disable-line
+    char === `'` &&
     lastTwoChars !== `${SINGLE_QUOTE_ESCAPE}'`
   );
 }

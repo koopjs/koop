@@ -18,19 +18,22 @@ PARAMETER["Latitude_Of_Origin",33.5],
 UNIT["Foot_US",0.30480060960121924],
 AUTHORITY["EPSG","102645"]]`;
 
-test('compiling a complex query', t => {
+test('compiling a complex query', (t) => {
   try {
-    t.ok(Winnow.prepareQuery({
-      geometry: {
-        xmin: -37237674.195623085,
-        ymin: 676003.5082798181,
-        xmax: 37237674.195623085,
-        ymax: 12416731.052879848,
-        spatialReference: {
-          wkt: 'PROJCS["WGS_1984_Web_Mercator_Auxiliary_Sphere",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Mercator_Auxiliary_Sphere"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-6.828007551173374],PARAMETER["Standard_Parallel_1",0.0],PARAMETER["Auxiliary_Sphere_Type",0.0],UNIT["Meter",1.0]]'
-        }
-      }
-    }), 'query compiled');
+    t.ok(
+      Winnow.prepareQuery({
+        geometry: {
+          xmin: -37237674.195623085,
+          ymin: 676003.5082798181,
+          xmax: 37237674.195623085,
+          ymax: 12416731.052879848,
+          spatialReference: {
+            wkt: 'PROJCS["WGS_1984_Web_Mercator_Auxiliary_Sphere",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Mercator_Auxiliary_Sphere"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-6.828007551173374],PARAMETER["Standard_Parallel_1",0.0],PARAMETER["Auxiliary_Sphere_Type",0.0],UNIT["Meter",1.0]]',
+          },
+        },
+      }),
+      'query compiled',
+    );
     t.end();
   } catch (e) {
     t.fail(e);
@@ -38,9 +41,14 @@ test('compiling a complex query', t => {
   }
 });
 
-test('compiling with several and statements', t => {
+test('compiling with several and statements', (t) => {
   try {
-    t.ok(Winnow.prepareQuery({ where: 'ELEVATION >= 1165 AND ELEVATION <= 4365 AND POP1990 >= 8247 AND POP1990 <= 5700236' }));
+    t.ok(
+      Winnow.prepareQuery({
+        where:
+          'ELEVATION >= 1165 AND ELEVATION <= 4365 AND POP1990 >= 8247 AND POP1990 <= 5700236',
+      }),
+    );
     t.end();
   } catch (e) {
     t.fail(e);
@@ -51,7 +59,7 @@ test('compiling with several and statements', t => {
 test('prepare query with where, then execute filter', (t) => {
   t.plan(1);
   const options = {
-    where: 'Common_Name=\'SOUTHERN MAGNOLIA\''
+    where: "Common_Name='SOUTHERN MAGNOLIA'",
   };
   const query = Winnow.prepareQuery(options);
   const filtered = query(trees);
@@ -67,9 +75,9 @@ test('prepare query with geometry filter, then execute filter', (t) => {
       xmax: -118.1348,
       ymax: 34.1685,
       spatialReference: {
-        wkid: 4326
-      }
-    }
+        wkid: 4326,
+      },
+    },
   };
   const query = Winnow.prepareQuery(options);
   const filtered = query(trees);
@@ -85,10 +93,10 @@ test('prepare query with geometry filter and projection, then execute filter', (
       xmax: -118.1348,
       ymax: 34.1685,
       spatialReference: {
-        wkid: 4326
-      }
+        wkid: 4326,
+      },
     },
-    projection: 3857
+    projection: 3857,
   };
   const query = Winnow.prepareQuery(options);
   const filtered = query(trees);
@@ -106,10 +114,10 @@ test('prepare query with geometry filter and sourceSR, then execute filter on no
       xmax: -118.15718114376067,
       ymax: 34.18019950919287,
       spatialReference: {
-        wkid: 4326
-      }
+        wkid: 4326,
+      },
     },
-    sourceSR: caStatePlaneWKT
+    sourceSR: caStatePlaneWKT,
   };
   const query = Winnow.prepareQuery(options);
   const filtered = query(trees102645);

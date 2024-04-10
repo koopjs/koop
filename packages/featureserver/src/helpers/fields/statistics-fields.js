@@ -5,94 +5,92 @@ const {
   StatisticField,
   StatisticDateField,
   FieldFromFieldDefinition,
-  FieldFromKeyValue
+  FieldFromKeyValue,
 } = require('./field-classes');
 
 class StatisticsFields {
-  static normalizeOptions (inputOptions = {}) {
+  static normalizeOptions(inputOptions = {}) {
     const {
       statistics,
-      metadata: {
-        fields
-      } = {},
+      metadata: { fields } = {},
       groupByFieldsForStatistics = [],
       attributeSample,
       ...options
     } = inputOptions;
 
-
     return {
       statisticsSample: Array.isArray(statistics) ? statistics[0] : statistics,
       fieldDefinitions: options.fieldDefinitions || options.fields || fields,
       groupByFieldsForStatistics: getGroupByFields(groupByFieldsForStatistics),
-      ...options
+      ...options,
     };
   }
 
-  static create (inputOptions) {
+  static create(inputOptions) {
     const options = StatisticsFields.normalizeOptions(inputOptions);
     return new StatisticsFields(options);
   }
 
-  constructor (options = {}) {
+  constructor(options = {}) {
     const {
       statisticsSample,
       groupByFieldsForStatistics = [],
       fieldDefinitions = [],
-      outStatistics
+      outStatistics,
     } = options;
     const dateFieldRegexs = getDateFieldRegexs(fieldDefinitions, outStatistics);
 
-    this.fields = Object
-      .entries(statisticsSample)
-      .map(([key, value]) => {
-        if (groupByFieldsForStatistics.includes(key)) {
-          const fieldDefinition = fieldDefinitions.find(({ name }) => name === key);
+    this.fields = Object.entries(statisticsSample).map(([key, value]) => {
+      if (groupByFieldsForStatistics.includes(key)) {
+        const fieldDefinition = fieldDefinitions.find(
+          ({ name }) => name === key,
+        );
 
-          if (fieldDefinition) {
-            return new FieldFromFieldDefinition(fieldDefinition);
-          }
-
-          return new FieldFromKeyValue(key, value);
+        if (fieldDefinition) {
+          return new FieldFromFieldDefinition(fieldDefinition);
         }
 
-        if (isDateField(dateFieldRegexs, key, value)) {
-          return new StatisticDateField(key);
-        }
+        return new FieldFromKeyValue(key, value);
+      }
 
-        return new StatisticField(key);
-      });
+      if (isDateField(dateFieldRegexs, key, value)) {
+        return new StatisticDateField(key);
+      }
+
+      return new StatisticField(key);
+    });
 
     return this.fields;
   }
 }
 
-function getGroupByFields (inputVal) {
+function getGroupByFields(inputVal) {
   if (Array.isArray(inputVal)) {
     return inputVal;
   }
 
-  return inputVal.split(',').map(str => str.trim());
+  return inputVal.split(',').map((str) => str.trim());
 }
 
-function isDateField (regexs, fieldName, value) {
-  return regexs.some(regex => {
-    return regex.test(fieldName);
-  }) || isDate(value);
+function isDateField(regexs, fieldName, value) {
+  return (
+    regexs.some((regex) => {
+      return regex.test(fieldName);
+    }) || isDate(value)
+  );
 }
 
-function getDateFieldRegexs (fieldDefinitions = [], outStatistics = []) {
-  const dateFields = fieldDefinitions.filter(({ type }) => {
-    return getEsriTypeFromDefinition(type) === ESRI_FIELD_TYPE_DATE;
-  }).map(({ name }) => name);
+function getDateFieldRegexs(fieldDefinitions = [], outStatistics = []) {
+  const dateFields = fieldDefinitions
+    .filter(({ type }) => {
+      return getEsriTypeFromDefinition(type) === ESRI_FIELD_TYPE_DATE;
+    })
+    .map(({ name }) => name);
 
   return outStatistics
     .filter(({ onStatisticField }) => dateFields.includes(onStatisticField))
     .map((statistic) => {
-      const {
-        onStatisticField,
-        outStatisticFieldName
-      } = statistic;
+      const { onStatisticField, outStatisticFieldName } = statistic;
 
       const name = outStatisticFieldName || onStatisticField;
       const spaceEscapedName = name.replace(/\s/g, '_');

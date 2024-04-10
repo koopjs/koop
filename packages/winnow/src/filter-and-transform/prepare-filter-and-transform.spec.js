@@ -3,7 +3,7 @@ const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 const modulePath = './prepare-filter-and-transform';
 
-test('Should return prepared filter and transform query', t => {
+test('Should return prepared filter and transform query', (t) => {
   const compiledQuerySpy = sinon.spy(() => {
     return 'results';
   });
@@ -11,15 +11,16 @@ test('Should return prepared filter and transform query', t => {
   const filterAndTransform = sinon.spy({
     compile: function () {
       return compiledQuerySpy;
-    }
+    },
   });
 
   const prepareFilterAndTransform = proxyquire(modulePath, {
-    './filter-and-transform': filterAndTransform
+    './filter-and-transform': filterAndTransform,
   });
 
   // Get a prepared filter and transform query
-  const preparedFilterAndTransform = prepareFilterAndTransform('SELECT foo FROM ?');
+  const preparedFilterAndTransform =
+    prepareFilterAndTransform('SELECT foo FROM ?');
   t.equals(typeof preparedFilterAndTransform, 'function');
 
   // Execute with single GeoJSON feature

@@ -1,4 +1,4 @@
-const should = require('should') // eslint-disable-line
+const should = require('should'); // eslint-disable-line
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 
@@ -29,26 +29,27 @@ const renderCountAndExtentResponseSpy = sinon.spy(function () {
 
 const stub = {
   './filter-and-transform': {
-    filterAndTransform: filterAndTransformSpy
+    filterAndTransform: filterAndTransformSpy,
   },
   './log-provider-data-warnings': {
-    logProviderDataWarnings: logWarningsSpy
+    logProviderDataWarnings: logWarningsSpy,
   },
   './render-features': {
-    renderFeaturesResponse: renderFeaturesResponseSpy
+    renderFeaturesResponse: renderFeaturesResponseSpy,
   },
   './render-statistics': {
-    renderStatisticsResponse: renderStatisticsResponseSpy
+    renderStatisticsResponse: renderStatisticsResponseSpy,
   },
   './render-precalculated-statistics': {
-    renderPrecalculatedStatisticsResponse: renderPrecalculatedStatisticsResponseSpy
+    renderPrecalculatedStatisticsResponse:
+      renderPrecalculatedStatisticsResponseSpy,
   },
   './render-count-and-extent': {
-    renderCountAndExtentResponse: renderCountAndExtentResponseSpy
+    renderCountAndExtentResponse: renderCountAndExtentResponseSpy,
   },
   '../helpers': {
-    getGeometryTypeFromGeojson: getGeometryTypeFromGeojsonSpy
-  }
+    getGeometryTypeFromGeojson: getGeometryTypeFromGeojsonSpy,
+  },
 };
 
 const queryHandler = proxyquire('./', stub);
@@ -68,33 +69,36 @@ describe('query', () => {
     it('should render precalculated statistics', () => {
       const json = {
         statistics: 'statistics',
-        metadata: 'metadata'
+        metadata: 'metadata',
       };
 
       const result = queryHandler(json, { outStatistics: ['stats'] });
       result.should.equal('precalculated-statistics');
       renderPrecalculatedStatisticsResponseSpy.callCount.should.equal(1);
-      renderPrecalculatedStatisticsResponseSpy.firstCall.args.should.deepEqual([json, {
-        outStatistics: ['stats'],
-        groupByFieldsForStatistics: undefined
-      }]);
+      renderPrecalculatedStatisticsResponseSpy.firstCall.args.should.deepEqual([
+        json,
+        {
+          outStatistics: ['stats'],
+          groupByFieldsForStatistics: undefined,
+        },
+      ]);
     });
 
     it('should render extent and count', () => {
       const json = {
         extent: 'extent',
-        count: 'count'
+        count: 'count',
       };
 
       const params = {
         returnExtentOnly: true,
-        returnCountOnly: true
+        returnCountOnly: true,
       };
 
       const result = queryHandler(json, params);
       result.should.deepEqual({
         extent: 'extent',
-        count: 'count'
+        count: 'count',
       });
       renderPrecalculatedStatisticsResponseSpy.callCount.should.equal(0);
     });
@@ -102,16 +106,16 @@ describe('query', () => {
     it('should render extent', () => {
       const json = {
         extent: 'extent',
-        count: 'count'
+        count: 'count',
       };
 
       const params = {
-        returnExtentOnly: true
+        returnExtentOnly: true,
       };
 
       const result = queryHandler(json, params);
       result.should.deepEqual({
-        extent: 'extent'
+        extent: 'extent',
       });
       renderPrecalculatedStatisticsResponseSpy.callCount.should.equal(0);
     });
@@ -119,16 +123,16 @@ describe('query', () => {
     it('should render count', () => {
       const json = {
         extent: 'extent',
-        count: 'count'
+        count: 'count',
       };
 
       const params = {
-        returnCountOnly: true
+        returnCountOnly: true,
       };
 
       const result = queryHandler(json, params);
       result.should.deepEqual({
-        count: 'count'
+        count: 'count',
       });
       renderPrecalculatedStatisticsResponseSpy.callCount.should.equal(0);
     });
@@ -141,29 +145,23 @@ describe('query', () => {
         features: [
           {
             properties: {
-              OBJECTID: 1138516379
+              OBJECTID: 1138516379,
             },
             geometry: {
               type: 'Point',
-              coordinates: [
-                -104,
-                40
-              ]
-            }
+              coordinates: [-104, 40],
+            },
           },
           {
             properties: {
-              OBJECTID: 1954528849
+              OBJECTID: 1954528849,
             },
             geometry: {
               type: 'Point',
-              coordinates: [
-                -106,
-                41
-              ]
-            }
-          }
-        ]
+              coordinates: [-106, 41],
+            },
+          },
+        ],
       };
 
       const params = { f: 'geojson' };
@@ -171,7 +169,7 @@ describe('query', () => {
       const result = queryHandler(json, params);
       result.should.deepEqual({
         type: 'FeatureCollection',
-        features: ['filtered-feature']
+        features: ['filtered-feature'],
       });
       filterAndTransformSpy.callCount.should.equal(1);
       filterAndTransformSpy.firstCall.args.should.deepEqual([json, params]);
@@ -184,29 +182,23 @@ describe('query', () => {
         features: [
           {
             properties: {
-              OBJECTID: 1138516379
+              OBJECTID: 1138516379,
             },
             geometry: {
               type: 'Point',
-              coordinates: [
-                -104,
-                40
-              ]
-            }
+              coordinates: [-104, 40],
+            },
           },
           {
             properties: {
-              OBJECTID: 1954528849
+              OBJECTID: 1954528849,
             },
             geometry: {
               type: 'Point',
-              coordinates: [
-                -106,
-                41
-              ]
-            }
-          }
-        ]
+              coordinates: [-106, 41],
+            },
+          },
+        ],
       };
 
       const params = { f: 'geojson' };
@@ -214,7 +206,7 @@ describe('query', () => {
       const result = queryHandler(json, params);
       result.should.deepEqual({
         type: 'FeatureCollection',
-        features: json.features
+        features: json.features,
       });
       filterAndTransformSpy.callCount.should.equal(0);
     });
@@ -223,7 +215,7 @@ describe('query', () => {
       const json = {
         filtersApplied: { all: true },
         type: 'FeatureCollection',
-        features: []
+        features: [],
       };
 
       const params = { f: 'geojson' };
@@ -231,7 +223,7 @@ describe('query', () => {
       const result = queryHandler(json, params);
       result.should.deepEqual({
         type: 'FeatureCollection',
-        features: json.features
+        features: json.features,
       });
       filterAndTransformSpy.callCount.should.equal(0);
     });
@@ -244,17 +236,14 @@ describe('query', () => {
         features: [
           {
             properties: {
-              OBJECTID: 1138516379
+              OBJECTID: 1138516379,
             },
             geometry: {
               type: 'Point',
-              coordinates: [
-                -104,
-                40
-              ]
-            }
-          }
-        ]
+              coordinates: [-104, 40],
+            },
+          },
+        ],
       };
 
       const params = { f: 'geojson' };
@@ -262,7 +251,7 @@ describe('query', () => {
       const result = queryHandler(json, params);
       result.should.deepEqual({
         type: 'FeatureCollection',
-        features: ['filtered-feature']
+        features: ['filtered-feature'],
       });
       logWarningsSpy.callCount.should.equal(1);
     });
@@ -275,17 +264,14 @@ describe('query', () => {
       features: [
         {
           properties: {
-            OBJECTID: 1138516379
+            OBJECTID: 1138516379,
           },
           geometry: {
             type: 'Point',
-            coordinates: [
-              -104,
-              40
-            ]
-          }
-        }
-      ]
+            coordinates: [-104, 40],
+          },
+        },
+      ],
     };
 
     const params = { returnCountOnly: true };
@@ -302,17 +288,14 @@ describe('query', () => {
       features: [
         {
           properties: {
-            OBJECTID: 1138516379
+            OBJECTID: 1138516379,
           },
           geometry: {
             type: 'Point',
-            coordinates: [
-              -104,
-              40
-            ]
-          }
-        }
-      ]
+            coordinates: [-104, 40],
+          },
+        },
+      ],
     };
 
     const params = { returnCountOnly: true };
@@ -320,13 +303,16 @@ describe('query', () => {
     const result = queryHandler(json, params);
     result.should.deepEqual('count-or-extent');
     renderCountAndExtentResponseSpy.callCount.should.equal(1);
-    renderCountAndExtentResponseSpy.firstCall.args.should.deepEqual([{
-      features: ['filtered-feature']
-    }, {
-      ...params,
-      outSR: undefined,
-      returnExtentOnly: undefined
-    }]);
+    renderCountAndExtentResponseSpy.firstCall.args.should.deepEqual([
+      {
+        features: ['filtered-feature'],
+      },
+      {
+        ...params,
+        outSR: undefined,
+        returnExtentOnly: undefined,
+      },
+    ]);
   });
 
   it('should return extent', () => {
@@ -335,17 +321,14 @@ describe('query', () => {
       features: [
         {
           properties: {
-            OBJECTID: 1138516379
+            OBJECTID: 1138516379,
           },
           geometry: {
             type: 'Point',
-            coordinates: [
-              -104,
-              40
-            ]
-          }
-        }
-      ]
+            coordinates: [-104, 40],
+          },
+        },
+      ],
     };
 
     const params = { returnExtentOnly: true };
@@ -353,13 +336,16 @@ describe('query', () => {
     const result = queryHandler(json, params);
     result.should.deepEqual('count-or-extent');
     renderCountAndExtentResponseSpy.callCount.should.equal(1);
-    renderCountAndExtentResponseSpy.firstCall.args.should.deepEqual([{
-      features: ['filtered-feature']
-    }, {
-      ...params,
-      outSR: undefined,
-      returnCountOnly: undefined
-    }]);
+    renderCountAndExtentResponseSpy.firstCall.args.should.deepEqual([
+      {
+        features: ['filtered-feature'],
+      },
+      {
+        ...params,
+        outSR: undefined,
+        returnCountOnly: undefined,
+      },
+    ]);
   });
 
   it('should return extent and count', () => {
@@ -368,17 +354,14 @@ describe('query', () => {
       features: [
         {
           properties: {
-            OBJECTID: 1138516379
+            OBJECTID: 1138516379,
           },
           geometry: {
             type: 'Point',
-            coordinates: [
-              -104,
-              40
-            ]
-          }
-        }
-      ]
+            coordinates: [-104, 40],
+          },
+        },
+      ],
     };
 
     const params = { returnExtentOnly: true, returnCountOnly: true };
@@ -386,12 +369,15 @@ describe('query', () => {
     const result = queryHandler(json, params);
     result.should.deepEqual('count-or-extent');
     renderCountAndExtentResponseSpy.callCount.should.equal(1);
-    renderCountAndExtentResponseSpy.firstCall.args.should.deepEqual([{
-      features: ['filtered-feature']
-    }, {
-      ...params,
-      outSR: undefined
-    }]);
+    renderCountAndExtentResponseSpy.firstCall.args.should.deepEqual([
+      {
+        features: ['filtered-feature'],
+      },
+      {
+        ...params,
+        outSR: undefined,
+      },
+    ]);
   });
 
   describe('should return ids only', () => {
@@ -402,25 +388,22 @@ describe('query', () => {
       const queryHandler = proxyquire('./', {
         ...stub,
         './filter-and-transform': {
-          filterAndTransform: filterAndTransformSpy
-        }
+          filterAndTransform: filterAndTransformSpy,
+        },
       });
       const json = {
         type: 'FeatureCollection',
         features: [
           {
             properties: {
-              OBJECTID: 1138516379
+              OBJECTID: 1138516379,
             },
             geometry: {
               type: 'Point',
-              coordinates: [
-                -104,
-                40
-              ]
-            }
-          }
-        ]
+              coordinates: [-104, 40],
+            },
+          },
+        ],
       };
 
       const params = { returnIdsOnly: true };
@@ -428,19 +411,22 @@ describe('query', () => {
       const result = queryHandler(json, params);
       result.should.deepEqual({
         objectIdFieldName: 'OBJECTID',
-        objectIds: [1138516379]
+        objectIds: [1138516379],
       });
     });
 
     it('should return ids with idField', () => {
       const filterAndTransformSpy = sinon.spy(function ({ metadata }) {
-        return { metadata, features: [{ attributes: { anIdProp: 1138516379 } }] };
+        return {
+          metadata,
+          features: [{ attributes: { anIdProp: 1138516379 } }],
+        };
       });
       const queryHandler = proxyquire('./', {
         ...stub,
         './filter-and-transform': {
-          filterAndTransform: filterAndTransformSpy
-        }
+          filterAndTransform: filterAndTransformSpy,
+        },
       });
       const json = {
         type: 'FeatureCollection',
@@ -448,17 +434,14 @@ describe('query', () => {
         features: [
           {
             properties: {
-              anIdProp: 1138516379
+              anIdProp: 1138516379,
             },
             geometry: {
               type: 'Point',
-              coordinates: [
-                -104,
-                40
-              ]
-            }
-          }
-        ]
+              coordinates: [-104, 40],
+            },
+          },
+        ],
       };
 
       const params = { returnIdsOnly: true };
@@ -466,7 +449,7 @@ describe('query', () => {
       const result = queryHandler(json, params);
       result.should.deepEqual({
         objectIdFieldName: 'anIdProp',
-        objectIds: [1138516379]
+        objectIds: [1138516379],
       });
     });
   });
@@ -477,39 +460,41 @@ describe('query', () => {
       features: [
         {
           properties: {
-            OBJECTID: 1138516379
+            OBJECTID: 1138516379,
           },
           geometry: {
             type: 'Point',
-            coordinates: [
-              -104,
-              40
-            ]
-          }
-        }
-      ]
+            coordinates: [-104, 40],
+          },
+        },
+      ],
     };
 
     const params = {
-      outStatistics: [{
-        statisticType: 'MIN',
-        onStatisticField: 'total precip',
-        outStatisticFieldName: 'min_precip'
-      }]
+      outStatistics: [
+        {
+          statisticType: 'MIN',
+          onStatisticField: 'total precip',
+          outStatisticFieldName: 'min_precip',
+        },
+      ],
     };
 
     const result = queryHandler(json, params);
     result.should.deepEqual('out-statistics');
     renderStatisticsResponseSpy.callCount.should.equal(1);
-    renderStatisticsResponseSpy.firstCall.args.should.deepEqual([{
-      statistics: [{ fooStatistic: 1.234 }]
-    }, {
-      ...params,
-      geometryType: 'geometry-type',
-      attributeSample: {
-        OBJECTID: 1138516379
-      }
-    }]);
+    renderStatisticsResponseSpy.firstCall.args.should.deepEqual([
+      {
+        statistics: [{ fooStatistic: 1.234 }],
+      },
+      {
+        ...params,
+        geometryType: 'geometry-type',
+        attributeSample: {
+          OBJECTID: 1138516379,
+        },
+      },
+    ]);
   });
 
   it('should return feature response', () => {
@@ -518,29 +503,29 @@ describe('query', () => {
       features: [
         {
           properties: {
-            OBJECTID: 1138516379
+            OBJECTID: 1138516379,
           },
           geometry: {
             type: 'Point',
-            coordinates: [
-              -104,
-              40
-            ]
-          }
-        }
-      ]
+            coordinates: [-104, 40],
+          },
+        },
+      ],
     };
 
     const result = queryHandler(json);
     result.should.deepEqual('features');
     renderFeaturesResponseSpy.callCount.should.equal(1);
-    renderFeaturesResponseSpy.firstCall.args.should.deepEqual([{
-      features: ['filtered-feature']
-    }, {
-      geometryType: 'geometry-type',
-      attributeSample: {
-        OBJECTID: 1138516379
-      }
-    }]);
+    renderFeaturesResponseSpy.firstCall.args.should.deepEqual([
+      {
+        features: ['filtered-feature'],
+      },
+      {
+        geometryType: 'geometry-type',
+        attributeSample: {
+          OBJECTID: 1138516379,
+        },
+      },
+    ]);
   });
 });

@@ -1,6 +1,9 @@
 const _ = require('lodash');
 
-function packageFeatures (features = [], { groupBy, aggregates, collection, outputCrs } = {}) {
+function packageFeatures(
+  features = [],
+  { groupBy, aggregates, collection, outputCrs } = {},
+) {
   if (groupBy || (!aggregates && !collection)) {
     return features;
   }
@@ -14,8 +17,14 @@ function packageFeatures (features = [], { groupBy, aggregates, collection, outp
   }
 }
 
-function packageCollection ({ features, collection, outputCrs: { wkid, wkt } = {} }) {
-  const outputCollection = _.chain(collection).cloneDeep().set('features', features);
+function packageCollection({
+  features,
+  collection,
+  outputCrs: { wkid, wkt } = {},
+}) {
+  const outputCollection = _.chain(collection)
+    .cloneDeep()
+    .set('features', features);
   if (!wkid && !wkt) {
     return outputCollection.value();
   }

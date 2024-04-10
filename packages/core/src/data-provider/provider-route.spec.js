@@ -1,14 +1,14 @@
-const should = require('should') // eslint-disable-line
+const should = require('should'); // eslint-disable-line
 const proxyquire = require('proxyquire');
 const ProviderRoute = proxyquire('./provider-route', {
   './helpers/compose-route-path': () => {
     return 'the/path/for/route';
-  }
+  },
 });
 
 describe('ProviderRoute', function () {
   it('should create instance of ProviderRoute', function () {
-    const controller =  { someHandler: () => {} };
+    const controller = { someHandler: () => {} };
     const providerRoute = new ProviderRoute({
       controller,
       handler: 'someHandler',
@@ -25,7 +25,7 @@ describe('ProviderRoute', function () {
   });
 
   it('should fail HTTP method validation', function () {
-    const controller =  { someHandler: () => {} };
+    const controller = { someHandler: () => {} };
     try {
       new ProviderRoute({
         controller,
@@ -36,12 +36,14 @@ describe('ProviderRoute', function () {
         routePrefix: 'cantaloupe',
       });
     } catch (error) {
-      error.message.should.equal('defines route "some-route/:id" with unsupported HTTP method: poszt');
-    }    
+      error.message.should.equal(
+        'defines route "some-route/:id" with unsupported HTTP method: poszt',
+      );
+    }
   });
 
   it('should fail controller validation', function () {
-    const controller =  { someHandler: () => {} };
+    const controller = { someHandler: () => {} };
     try {
       new ProviderRoute({
         controller,
@@ -52,7 +54,9 @@ describe('ProviderRoute', function () {
         routePrefix: 'cantaloupe',
       });
     } catch (error) {
-      error.message.should.equal('defines route "some-route/:id" with unknown handler: someOtherHandler');
-    }    
+      error.message.should.equal(
+        'defines route "some-route/:id" with unknown handler: someOtherHandler',
+      );
+    }
   });
 });

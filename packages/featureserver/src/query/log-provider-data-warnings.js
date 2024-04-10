@@ -3,8 +3,14 @@ const { getDataTypeFromValue } = require('../helpers');
 const logManager = require('../log-manager');
 
 function logProviderDataWarnings(geojson, requestParams) {
-  const { f, outFields = '*', returnCountOnly, returnExtentOnly, returnIdsOnly } = requestParams;
-  
+  const {
+    f,
+    outFields = '*',
+    returnCountOnly,
+    returnExtentOnly,
+    returnIdsOnly,
+  } = requestParams;
+
   if (f === 'geojson' || returnCountOnly || returnExtentOnly || returnIdsOnly) {
     return;
   }
@@ -27,9 +33,9 @@ function logProviderDataWarnings(geojson, requestParams) {
 
   if (metadata.fields && properties) {
     const fields = getFieldsDefinitionsForResponse(metadata.fields, outFields);
-    
+
     compareFieldDefintionsToFeature(fields, properties);
-  
+
     compareFeatureToFieldDefinitions(properties, fields);
   }
 }
@@ -39,13 +45,16 @@ function hasMixedCaseObjectIdKey(idField = '') {
 }
 
 function getFieldsDefinitionsForResponse(fields, outFields) {
-  const outFieldsSet = (outFields === '*' || outFields === '') ? null : outFields.split(',');
+  const outFieldsSet =
+    outFields === '*' || outFields === '' ? null : outFields.split(',');
   if (!outFieldsSet) {
     return fields;
   }
 
-  return fields.filter(field => {
-    return outFieldsSet.includes(field.alias) || outFieldsSet.includes(field.name);
+  return fields.filter((field) => {
+    return (
+      outFieldsSet.includes(field.alias) || outFieldsSet.includes(field.name)
+    );
   });
 }
 
@@ -63,8 +72,10 @@ function compareFieldDefintionsToFeature(fieldDefinitions, featureProperties) {
 }
 
 function compareFeatureToFieldDefinitions(featureProperties, fieldDefinitions) {
-  Object.keys(featureProperties).forEach(key => {
-    const definition = _.find(fieldDefinitions, ['name', key]) || _.find(fieldDefinitions, ['name', key]);
+  Object.keys(featureProperties).forEach((key) => {
+    const definition =
+      _.find(fieldDefinitions, ['name', key]) ||
+      _.find(fieldDefinitions, ['name', key]);
 
     if (!definition && key !== 'OBJECTID') {
       logManager.logger.debug(
@@ -78,14 +89,16 @@ function findFeatureProperty(properties, name, alias) {
   return properties[name] || properties[alias];
 }
 
-function hasTypeMismatch (definitionType, value) {
+function hasTypeMismatch(definitionType, value) {
   const propertyType = getDataTypeFromValue(value);
 
-  return definitionType !== propertyType &&
-      !isEsriTypeMatchException(definitionType, propertyType);
+  return (
+    definitionType !== propertyType &&
+    !isEsriTypeMatchException(definitionType, propertyType)
+  );
 }
 
-function isEsriTypeMatchException (definitionType, propertyType) {
+function isEsriTypeMatchException(definitionType, propertyType) {
   if (definitionType === 'Date' || definitionType === 'Double') {
     return propertyType === 'Integer';
   }

@@ -1,4 +1,3 @@
-/* eslint-disable quotes */
 const test = require('tape');
 const translateSqlWhere = require('./to-json-where');
 
@@ -98,9 +97,8 @@ test('toJsonWhere: handle IN list of strings', (t) => {
   t.plan(1);
 
   const whereFragment = translateSqlWhere(`foo IN ('foo', 'bar')`);
-  t.equals(whereFragment, 'properties->`foo` IN (\'foo\', \'bar\' )');
+  t.equals(whereFragment, "properties->`foo` IN ('foo', 'bar' )");
 });
-
 
 test('toJsonWhere: handle IS NULL', (t) => {
   t.plan(1);

@@ -2,7 +2,7 @@ const Logger = require('@koopjs/logger');
 let logger = new Logger();
 
 module.exports = {
-  get logger () {
+  get logger() {
     return logger;
   },
   setLogger: ({ logger: _logger, logLevel }) => {
@@ -11,9 +11,9 @@ module.exports = {
       logger.silly('Winnow no longer using default logger.');
       return;
     }
-  
+
     if (logLevel) {
       logger = new Logger({ logLevel });
     }
-  }
+  },
 };
