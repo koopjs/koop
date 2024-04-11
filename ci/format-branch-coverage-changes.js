@@ -77,20 +77,20 @@ function formatCovPct(pct) {
   }
 
   if (pct === 100) {
-    return `${pct} ![green][g-img]`;
+    return `${pct.toFixed(1)} ![green][g-img]`;
   }
 
   if (pct > 90) {
-    return `${pct} ![yellowGreen][yg-img]`;
+    return `${pct.toFixed(1)} ![yellowGreen][yg-img]`;
   }
 
   if (pct > 80) {
-    return `${pct} ![yellow][y-img]`;
+    return `${pct.toFixed(1)} ![yellow][y-img]`;
   }
 
   if (pct > 70) {
-    return `${pct} ![orange][o-img]`;
+    return `${pct.toFixed(1)} ![orange][o-img]`;
   }
 
-  return `${pct} ![red][r-img]`;
+  return `${pct.toFixed(1)} ![red][r-img]`;
 }
