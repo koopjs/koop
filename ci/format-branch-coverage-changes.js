@@ -69,7 +69,7 @@ ${alignedTable}`;
 writeFileSync(markdownFilePath, markdown, 'utf8');
 
 function formatCovComparison(changePct, mainPct) {
-  return `${formatCovPct(changePct)} vs ${formatCovPct(mainPct)}`;
+  return `${formatCovPct(changePct)}<br>vs<br>${formatCovPct(mainPct)}`;
 }
 
 function formatCovPct(pct) {
