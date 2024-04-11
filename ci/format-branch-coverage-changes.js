@@ -28,19 +28,19 @@ const rows = Object.entries(coverageChangesSummary)
       packageFilePath,
       formatCovComparison(
         changesCoverage.statements.pct,
-        masterCoverage?.statements?.pct || 'NA',
+        masterCoverage?.statements?.pct || null,
       ),
       formatCovComparison(
         changesCoverage.branches.pct,
-        masterCoverage?.branches?.pct || 'NA',
+        masterCoverage?.branches?.pct || null,
       ),
       formatCovComparison(
         changesCoverage.functions.pct,
-        masterCoverage?.functions?.pct || 'NA',
+        masterCoverage?.functions?.pct || null,
       ),
       formatCovComparison(
         changesCoverage.lines.pct,
-        masterCoverage?.lines?.pct || 'NA',
+        masterCoverage?.lines?.pct || null,
       ),
     ];
   });
@@ -72,6 +72,10 @@ function formatCovComparison(changePct, mainPct) {
 }
 
 function formatCovPct(pct) {
+  if (!pct) {
+    return '(NA)';
+  }
+
   if (pct === 100) {
     return `${pct} ![green][g-img]`;
   }
