@@ -45,7 +45,7 @@ const rows = Object.entries(coverageChangesSummary)
     ];
   });
 
-const headers = ['File Path', 'Statements', 'Branches', 'Functions', 'Lines'];
+const headers = ['File Path', 'Statements', 'Branches', 'Functions', ' Lines '];
 
 const table = json2md([
   { h2: 'Coverage Report (change vs master)' },
@@ -53,8 +53,8 @@ const table = json2md([
 ]);
 
 const alignedTable = table.replace(
-  '| --------- | ---------- | -------- | --------- | --------- |',
-  '| :--------- | ----------: | --------: | ---------: | ---------: |',
+  '| --------- | --------- | -------- | --------- | --------- |',
+  '| :--------- | ---------: | --------: | ---------: | ---------: |',
 );
 
 const markdown = `[g-img]: https://github.com/koopjs/koop/assets/4369192/fd82d4b7-7f6e-448c-a56c-82ac6781a629
