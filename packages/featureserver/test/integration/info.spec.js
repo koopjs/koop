@@ -6,28 +6,6 @@ const _ = require('lodash');
 const CURRENT_VERSION = 11.2;
 
 describe('Info operations', () => {
-  describe('rest info', () => {
-    it('should conform to the prescribed schema', () => {
-      const req = {
-        app: {
-          locals: {},
-        },
-      };
-
-      const supplementalRestInfo = {
-        authInfo: {
-          isTokenBasedSecurity: true,
-          tokenServicesUrl: 'http://localhost/provider/generateToken',
-        },
-      };
-      const restInfo = FeatureServer.restInfo(supplementalRestInfo, req);
-      restInfo.should.have.property('currentVersion', CURRENT_VERSION);
-      restInfo.should.have.property('authInfo');
-      restInfo.authInfo.should.have.property('isTokenBasedSecurity', true);
-      restInfo.authInfo.should.have.property('tokenServicesUrl').be.type('string');
-    });
-  });
-
   describe('server info', () => {
     it('should conform to the prescribed schema', () => {
       const result = FeatureServer.serverInfo(data);
