@@ -5,7 +5,7 @@ jest.mock('@koopjs/featureserver', () => ({
   setLogger: jest.fn(),
   route: jest.fn(),
   setDefaults: jest.fn(),
-  restInfo: jest.fn()
+  restInfo: jest.fn(),
 }));
 
 const loggerMock = {
