@@ -5,26 +5,41 @@ const coverageSummary = require('../.coverage_json/coverage-summary.json');
 const markdownFilePath = '.branch-coverage-changes.md';
 
 if (!existsSync('.coverage_changes_json/coverage-summary.json')) {
-  writeFileSync(markdownFilePath, `## Coverage Report (change vs master)
+  writeFileSync(
+    markdownFilePath,
+    `## Coverage Report (change vs master)
   No changes.
-  `, 'utf8');
-  return;
+  `,
+    'utf8',
+  );
+  process.exit();
 }
 
 const coverageChangesSummary = require('../.coverage_changes_json/coverage-summary.json');
+
 const rows = Object.entries(coverageChangesSummary)
   .filter(([filePath]) => {
     return filePath !== 'total';
   })
   .map(([filePath, changesCoverage]) => {
     const packageFilePath = `packages${filePath.split('packages')[1]}`;
+    console.log('pack path: ', packageFilePath);
     const masterCoverage = coverageSummary[packageFilePath];
     return [
       packageFilePath,
-      formatCovComparison(changesCoverage.statements.pct, masterCoverage.statements.pct),
-      formatCovComparison(changesCoverage.branches.pct, masterCoverage.branches.pct),
-      formatCovComparison(changesCoverage.functions.pct, masterCoverage.functions.pct),
-      formatCovComparison(changesCoverage.lines.pct, masterCoverage.lines.pct)
+      formatCovComparison(
+        changesCoverage.statements.pct,
+        masterCoverage.statements.pct,
+      ),
+      formatCovComparison(
+        changesCoverage.branches.pct,
+        masterCoverage.branches.pct,
+      ),
+      formatCovComparison(
+        changesCoverage.functions.pct,
+        masterCoverage.functions.pct,
+      ),
+      formatCovComparison(changesCoverage.lines.pct, masterCoverage.lines.pct),
     ];
   });
 
