@@ -1,4 +1,11 @@
 const FeatureServer = require('@koopjs/featureserver');
+const {
+  restInfo,
+  // serverInfo,
+  // layerInfo,
+  // layersInfo,
+  // query,
+} = require('@koopjs/featureserver');
 const Logger = require('@koopjs/logger');
 let logger = new Logger();
 const ARCGIS_UNAUTHORIZED_MESSAGE = 'Item does not exist or is inaccessible.';
@@ -180,12 +187,20 @@ class GeoServices {
     }
 
     const data = { authInfo };
-
     if (this.#includeOwningSystemUrl) {
       data.owningSystemUrl = this.#buildOwningSystemUrl(req.headers.host, req.baseUrl);
     }
-
-    FeatureServer.route(req, res, data);
+    /*
+    const result = restInfo(geojson, req);
+      return generalResponseHandler(res, result, req.query);
+      */
+    restInfo(req, res, {
+      owningSystemUrl: this.#buildOwningSystemUrl(
+        req.headers.host,
+        req.baseUrl,
+      ),
+      authInfo,
+    });
   }
 
   #buildTokensUrl(host, baseUrl) {

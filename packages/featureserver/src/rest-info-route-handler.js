@@ -1,27 +1,60 @@
 const _ = require('lodash');
-const defaults = require('./metadata-defaults');
+const joi = require('joi');
+const metadataDefaults = require('./metadata-defaults');
+const { generalResponseHandler } = require('./response-handlers');
+const { combineBodyQueryParameters } = require('./helpers');
 
-function restInfo(data = {}, req) {
-  const versionDefaults = defaults.restInfoDefaults();
+const parameterSchema = joi
+  .object({
+    f: joi.string().valid('json', 'pjson').default('json'),
+  })
+  .unknown();
+
+function restInfo(req, res, data = {}) {
+  const { currentVersion, fullVersion } = getVersions(req.app.locals);
+
+  const requestParams = combineBodyQueryParameters(req.body, req.query);
+
+  validate(requestParams);
+
+  return generalResponseHandler(
+    res,
+    {
+      currentVersion,
+      fullVersion,
+      owningSystemUrl: data.owningSystemUrl,
+      authInfo: {
+        ...data.authInfo,
+      },
+    },
+    requestParams,
+  );
+}
+
+function getVersions(locals) {
+  const versionDefaults = metadataDefaults.restInfoDefaults();
   const currentVersion = _.get(
-    req,
-    'app.locals.config.featureServer.currentVersion',
+    locals,
+    'config.featureServer.currentVersion',
     versionDefaults.currentVersion,
   );
+
   const fullVersion = _.get(
-    req,
-    'app.locals.config.featureServer.fullVersion',
+    locals,
+    'config.featureServer.fullVersion',
     versionDefaults.fullVersion,
   );
+  return { currentVersion, fullVersion };
+}
 
-  return {
-    currentVersion,
-    fullVersion,
-    owningSystemUrl: data.owningSystemUrl,
-    authInfo: {
-      ...data.authInfo,
-    },
-  };
+function validate(parameters) {
+  const { error } = parameterSchema.validate(parameters);
+
+  if (error) {
+    const err = new Error('Invalid format');
+    err.code = 400;
+    throw err;
+  }
 }
 
 module.exports = restInfo;

@@ -1,7 +1,6 @@
 const { writeFileSync, existsSync } = require('fs');
 const json2md = require('json2md');
 const coverageSummary = require('../.coverage_json/coverage-summary.json');
-
 const markdownFilePath = '.branch-coverage-changes.md';
 
 if (!existsSync('.coverage_changes_json/coverage-summary.json')) {
@@ -16,6 +15,7 @@ if (!existsSync('.coverage_changes_json/coverage-summary.json')) {
 }
 
 const coverageChangesSummary = require('../.coverage_changes_json/coverage-summary.json');
+
 const rows = Object.entries(coverageChangesSummary)
   .filter(([filePath]) => {
     return filePath !== 'total';
@@ -23,22 +23,35 @@ const rows = Object.entries(coverageChangesSummary)
   .map(([filePath, changesCoverage]) => {
     const packageFilePath = `packages${filePath.split('packages')[1]}`;
     const masterCoverage = coverageSummary[packageFilePath];
+
     return [
       packageFilePath,
-      formatCovComparison(changesCoverage.statements.pct, masterCoverage?.statements?.pct || 0),
-      formatCovComparison(changesCoverage.branches.pct, masterCoverage?.branches?.pct || 0),
-      formatCovComparison(changesCoverage.functions.pct, masterCoverage?.functions?.pct || 0),
-      formatCovComparison(changesCoverage.lines.pct, masterCoverage?.lines?.pct || 0),
+      formatCovComparison(
+        changesCoverage.statements.pct,
+        masterCoverage?.statements?.pct || null,
+      ),
+      formatCovComparison(
+        changesCoverage.branches.pct,
+        masterCoverage?.branches?.pct || null,
+      ),
+      formatCovComparison(
+        changesCoverage.functions.pct,
+        masterCoverage?.functions?.pct || null,
+      ),
+      formatCovComparison(
+        changesCoverage.lines.pct,
+        masterCoverage?.lines?.pct || null,
+      ),
     ];
   });
 
-const headers = ['File Path', 'Statements', 'Branches', 'Functions', 'Lines'];
+const headers = ['File Path', 'Statements', 'Branches', 'Functions', ' Lines '];
 
 const table = json2md([{ h2: 'Coverage Report (change vs master)' }, { table: { headers, rows } }]);
 
 const alignedTable = table.replace(
-  '| --------- | ---------- | -------- | --------- | ----- |',
-  '| :--------- | ----------: | --------: | ---------: | -----: |',
+  '| --------- | --------- | -------- | --------- | --------- |',
+  '| :--------- | ---------: | --------: | ---------: | ---------: |',
 );
 
 const markdown = `[g-img]: https://github.com/koopjs/koop/assets/4369192/fd82d4b7-7f6e-448c-a56c-82ac6781a629
@@ -52,25 +65,29 @@ ${alignedTable}`;
 writeFileSync(markdownFilePath, markdown, 'utf8');
 
 function formatCovComparison(changePct, mainPct) {
-  return `${formatCovPct(changePct)} vs ${formatCovPct(mainPct)}`;
+  return `${formatCovPct(changePct)}<br>vs<br>${formatCovPct(mainPct)}`;
 }
 
 function formatCovPct(pct) {
+  if (!pct) {
+    return '(NA)';
+  }
+
   if (pct === 100) {
-    return `${pct} ![green][g-img]`;
+    return `${pct.toFixed(1)} ![green][g-img]`;
   }
 
   if (pct > 90) {
-    return `${pct} ![yellowGreen][yg-img]`;
+    return `${pct.toFixed(1)} ![yellowGreen][yg-img]`;
   }
 
   if (pct > 80) {
-    return `${pct} ![yellow][y-img]`;
+    return `${pct.toFixed(1)} ![yellow][y-img]`;
   }
 
   if (pct > 70) {
-    return `${pct} ![orange][o-img]`;
+    return `${pct.toFixed(1)} ![orange][o-img]`;
   }
 
-  return `${pct} ![red][r-img]`;
+  return `${pct.toFixed(1)} ![red][r-img]`;
 }

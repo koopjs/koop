@@ -5,11 +5,13 @@ on:
     branches:
       - master
       - beta
+      - next
     paths:
       - "./.github/**.yml"
       - "**/packages/**.js"
       - "**/packages/**/package.json"
       - "test/**/*.js"
+      - "ci/**/*.js"
 
 jobs:
   pr-tests:
