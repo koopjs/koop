@@ -28,19 +28,19 @@ const rows = Object.entries(coverageChangesSummary)
       packageFilePath,
       formatCovComparison(
         changesCoverage.statements.pct,
-        masterCoverage?.statements?.pct || 0,
+        masterCoverage?.statements?.pct || NA,
       ),
       formatCovComparison(
         changesCoverage.branches.pct,
-        masterCoverage?.branches?.pct || 0,
+        masterCoverage?.branches?.pct || NA,
       ),
       formatCovComparison(
         changesCoverage.functions.pct,
-        masterCoverage?.functions?.pct || 0,
+        masterCoverage?.functions?.pct || NA,
       ),
       formatCovComparison(
         changesCoverage.lines.pct,
-        masterCoverage?.lines?.pct || 0,
+        masterCoverage?.lines?.pct || NA,
       ),
     ];
   });

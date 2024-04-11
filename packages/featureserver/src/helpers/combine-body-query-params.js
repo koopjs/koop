@@ -5,8 +5,8 @@ function combineBodyQueryParameters(body, query) {
   const definedBodyParams = _.pickBy(body, isNotEmptyString);
 
   return {
-    ...definedQueryParams,
     ...definedBodyParams,
+    ...definedQueryParams,
   };
 }
 
