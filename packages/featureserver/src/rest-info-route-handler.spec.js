@@ -39,6 +39,23 @@ describe('rest/info handler', () => {
     ]);
   });
 
+  it('should throw error on invalid format', () => {
+    const req = {
+      app: {
+        locals: {},
+      },
+      query: { f: 'baz' },
+      body: {},
+    };
+
+    try {
+      restInfo(req, {});
+    } catch (error) {
+      error.message.should.equal('Invalid format');
+      error.code.should.equal(400);
+    }
+  });
+
   it('should return default plus supplied info', () => {
     const data = {
       authInfo: { foo: 'bar' },
