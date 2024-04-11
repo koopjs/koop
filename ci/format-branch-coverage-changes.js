@@ -23,23 +23,26 @@ const rows = Object.entries(coverageChangesSummary)
   })
   .map(([filePath, changesCoverage]) => {
     const packageFilePath = `packages${filePath.split('packages')[1]}`;
-    console.log('pack path: ', packageFilePath);
     const masterCoverage = coverageSummary[packageFilePath];
+
     return [
       packageFilePath,
       formatCovComparison(
         changesCoverage.statements.pct,
-        masterCoverage.statements.pct,
+        masterCoverage?.statements?.pct || 0,
       ),
       formatCovComparison(
         changesCoverage.branches.pct,
-        masterCoverage.branches.pct,
+        masterCoverage?.branches?.pct || 0,
       ),
       formatCovComparison(
         changesCoverage.functions.pct,
-        masterCoverage.functions.pct,
+        masterCoverage?.functions?.pct || 0,
       ),
-      formatCovComparison(changesCoverage.lines.pct, masterCoverage.lines.pct),
+      formatCovComparison(
+        changesCoverage.lines.pct,
+        masterCoverage?.lines?.pct || 0,
+      ),
     ];
   });
 
