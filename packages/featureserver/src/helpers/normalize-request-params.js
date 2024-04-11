@@ -1,34 +1,23 @@
 const _ = require('lodash');
 const defaults = require('../metadata-defaults');
+const { combineBodyQueryParameters } = require('./combine-body-query-params');
 
 function normalizeRequestParameters(
   query,
   body,
   maxRecordCount = defaults.maxRecordCount(),
 ) {
-  const definedQueryParams = _.chain(query)
-    .pickBy(isNotEmptyString)
-    .mapValues(coerceStrings)
-    .value();
+  const requestParams = combineBodyQueryParameters(body, query);
 
-  const definedBodyParams = _.chain(body)
-    .pickBy(isNotEmptyString)
-    .mapValues(coerceStrings)
-    .value();
-
-  const { resultRecordCount, ...params } = {
-    ...definedQueryParams,
-    ...definedBodyParams,
-  };
+  const { resultRecordCount, ...params } = _.mapValues(
+    requestParams,
+    coerceStrings,
+  );
 
   return {
     ...params,
     resultRecordCount: resultRecordCount || maxRecordCount,
   };
-}
-
-function isNotEmptyString(str) {
-  return !_.isString(str) || !_.isEmpty(str);
 }
 
 function coerceStrings(val) {

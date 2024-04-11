@@ -5,6 +5,7 @@ jest.mock('@koopjs/featureserver', () => ({
   setLogger: jest.fn(),
   route: jest.fn(),
   setDefaults: jest.fn(),
+  restInfo: jest.fn()
 }));
 
 const loggerMock = {
@@ -272,8 +273,8 @@ describe('Output Geoservices', () => {
         authInfo: { food: 'baz' },
       });
       await output.restInfoHandler(reqMock, resMock);
-      expect(FeatureServer.route.mock.calls.length).toBe(1);
-      expect(FeatureServer.route.mock.calls[0]).toEqual([
+      expect(FeatureServer.restInfo.mock.calls.length).toBe(1);
+      expect(FeatureServer.restInfo.mock.calls[0]).toEqual([
         reqMock,
         resMock,
         {
@@ -290,8 +291,8 @@ describe('Output Geoservices', () => {
       };
       const output = new OutputGeoServices(modelMock);
       await output.restInfoHandler(reqMock, resMock);
-      expect(FeatureServer.route.mock.calls.length).toBe(1);
-      expect(FeatureServer.route.mock.calls[0]).toEqual([
+      expect(FeatureServer.restInfo.mock.calls.length).toBe(1);
+      expect(FeatureServer.restInfo.mock.calls[0]).toEqual([
         reqMock,
         resMock,
         {
@@ -314,8 +315,8 @@ describe('Output Geoservices', () => {
         useHttpForTokenUrl: true,
       });
       await output.restInfoHandler(reqMock, resMock);
-      expect(FeatureServer.route.mock.calls.length).toBe(1);
-      expect(FeatureServer.route.mock.calls[0]).toEqual([
+      expect(FeatureServer.restInfo.mock.calls.length).toBe(1);
+      expect(FeatureServer.restInfo.mock.calls[0]).toEqual([
         reqMock,
         resMock,
         {
@@ -338,8 +339,8 @@ describe('Output Geoservices', () => {
         process.env.GEOSERVICES_HTTP = 'true';
         const output = new OutputGeoServices(modelMock);
         await output.restInfoHandler(reqMock, resMock);
-        expect(FeatureServer.route.mock.calls.length).toBe(1);
-        expect(FeatureServer.route.mock.calls[0]).toEqual([
+        expect(FeatureServer.restInfo.mock.calls.length).toBe(1);
+        expect(FeatureServer.restInfo.mock.calls[0]).toEqual([
           reqMock,
           resMock,
           {
@@ -367,8 +368,8 @@ describe('Output Geoservices', () => {
         process.env.KOOP_AUTH_HTTP = 'true';
         const output = new OutputGeoServices(modelMock);
         await output.restInfoHandler(reqMock, resMock);
-        expect(FeatureServer.route.mock.calls.length).toBe(1);
-        expect(FeatureServer.route.mock.calls[0]).toEqual([
+        expect(FeatureServer.restInfo.mock.calls.length).toBe(1);
+        expect(FeatureServer.restInfo.mock.calls[0]).toEqual([
           reqMock,
           resMock,
           {
@@ -398,8 +399,8 @@ describe('Output Geoservices', () => {
 
       const output = new OutputGeoServices(modelMock);
       await output.restInfoHandler(reqMock, resMock);
-      expect(FeatureServer.route.mock.calls.length).toBe(1);
-      expect(FeatureServer.route.mock.calls[0]).toEqual([
+      expect(FeatureServer.restInfo.mock.calls.length).toBe(1);
+      expect(FeatureServer.restInfo.mock.calls[0]).toEqual([
         reqMock,
         resMock,
         {

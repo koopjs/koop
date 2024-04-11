@@ -36,8 +36,7 @@ module.exports = function route(req, res, geojson = {}) {
     geojson.metadata = geojson.metadata || { maxRecordCount: 2000 };
 
     if (isRestInfoRequest(route)) {
-      const result = restInfo(geojson, req);
-      return generalResponseHandler(res, result, req.query);
+      return restInfo(req, res, geojson);
     }
 
     if (isServerMetadataRequest(route)) {
