@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const filterAndValidateClassificationFeatures = require('./filter-and-validate-classification-features');
+const filterAndValidateClassificationFeatures = require('./filter-and-validate-classification-features');  // eslint-disable-line
 
 function normalizeClassBreaks(features, classification) {
   const { normType: type } = classification;
@@ -19,10 +19,7 @@ function normalizeClassBreaks(features, classification) {
   throw new Error(`Normalization not supported: ${type}`);
 }
 
-function normalizeByField(
-  features,
-  { field: classificationField, normField: normalizationField },
-) {
+function normalizeByField(features, { field: classificationField, normField: normalizationField }) {
   if (!normalizationField) {
     throw new Error('Normalization field is undefined');
   }
@@ -50,9 +47,7 @@ function normalizeByField(
       });
 
       const valueToNormalizeBy =
-        feature.properties[normalizationField] > 0
-          ? feature.properties[normalizationField]
-          : 1;
+        feature.properties[normalizationField] > 0 ? feature.properties[normalizationField] : 1;
 
       return feature.properties[classificationField] / valueToNormalizeBy;
     })
@@ -62,37 +57,31 @@ function normalizeByField(
 
   if (!values || values.length === 0) {
     throw new Error(
-      `Classification field "${classificationField}" and normalization field "${normalizationField}" were not found on any feature.`,
+      `Classification field "${classificationField}" and normalization field "${normalizationField}" were not found on any feature.`, // eslint-disable-line
     );
   }
   return values;
 }
 
 function normalizeByLog(features, { field: classificationField }) {
-  const values = filterAndValidateClassificationFeatures(
-    features,
-    classificationField,
-  ).map((value) => {
-    if (value <= 0) {
-      return 0;
-    }
-    const logValue = Math.log10(value);
-    return logValue < 0 ? 0 : logValue;
-  });
+  const values = filterAndValidateClassificationFeatures(features, classificationField).map(
+    (value) => {
+      if (value <= 0) {
+        return 0;
+      }
+      const logValue = Math.log10(value);
+      return logValue < 0 ? 0 : logValue;
+    },
+  );
 
   if (!values || values.length === 0) {
-    throw new Error(
-      `Classification field "${classificationField}" was not found on any feature.`,
-    );
+    throw new Error(`Classification field "${classificationField}" was not found on any feature.`);
   }
   return values;
 }
 
 function normalizeByPercent(features, { field: classificationField }) {
-  const values = filterAndValidateClassificationFeatures(
-    features,
-    classificationField,
-  );
+  const values = filterAndValidateClassificationFeatures(features, classificationField);
 
   const valueTotal = values.reduce((sum, value) => {
     return sum + value;

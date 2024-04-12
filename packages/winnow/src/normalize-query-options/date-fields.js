@@ -9,8 +9,7 @@ function deriveDateFields(collection, requestedFields) {
   return collection.metadata.fields
     .filter(({ type, name }) => {
       return (
-        type === 'Date' &&
-        (requestedFields === undefined || requestedFields.indexOf(name) > -1)
+        type === 'Date' && (requestedFields === undefined || requestedFields.indexOf(name) > -1)
       );
     })
     .map(({ name }) => {

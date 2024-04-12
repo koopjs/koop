@@ -2,26 +2,20 @@ const Classifier = require('classybrew');
 const normalizeClassificationValues = require('./normalize-classification-values');
 const calculateStdDevIntervals = require('./calculate-std-dev-intervals');
 const transformClassBreaksToRanges = require('./transform-class-breaks-to-ranges');
-const filterAndValidateClassificationFeatures = require('./filter-and-validate-classification-features');
+const filterAndValidateClassificationFeatures = require('./filter-and-validate-classification-features'); // eslint-disable-line
 
 function calculateClassBreaks(features, classification) {
-  if (!classification.method)
-    throw new Error('must supply classification.method');
-  if (!classification.breakCount)
-    throw new Error('must supply classification.breakCount');
+  if (!classification.method) throw new Error('must supply classification.method');
+  if (!classification.breakCount) throw new Error('must supply classification.breakCount');
 
   const values = classification.normType
     ? normalizeClassificationValues(features, classification)
     : getFieldValues(features, classification.field);
   // limit break count to num values
-  if (classification.breakCount > values.length)
-    classification.breakCount = values.length;
+  if (classification.breakCount > values.length) classification.breakCount = values.length;
 
   // calculate break ranges [ [a-b], [b-c], ...] from input values
-  const classBreakArray = transformValuesToClassBreaksArray(
-    values,
-    classification,
-  );
+  const classBreakArray = transformValuesToClassBreaksArray(values, classification);
   return transformClassBreaksToRanges(classBreakArray, classification);
 }
 
@@ -48,12 +42,11 @@ function transformValuesToClassBreaksArray(values, classification) {
 }
 
 function getFieldValues(features, classificationField) {
-  const values = filterAndValidateClassificationFeatures(
-    features,
-    classificationField,
-  ).map((value) => {
-    return value <= 0 ? 0 : value;
-  });
+  const values = filterAndValidateClassificationFeatures(features, classificationField).map(
+    (value) => {
+      return value <= 0 ? 0 : value;
+    },
+  );
 
   if (!values || values.length === 0) {
     throw new Error(`"${classificationField}" was not found on any feature.`);

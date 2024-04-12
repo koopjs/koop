@@ -10,8 +10,7 @@ function classificationQuery(features, sqlstatement, options) {
   const { breakCount, type } = classification;
 
   if (type === 'classes') {
-    if (breakCount <= 0)
-      throw new Error('breakCount must be positive: ' + breakCount);
+    if (breakCount <= 0) throw new Error('breakCount must be positive: ' + breakCount);
     return calculateClassBreaks(filtered, classification);
   }
 
@@ -27,9 +26,7 @@ function validateQueryResult(features) {
     throw new Error('query results include undefined features');
   }
   if (features.length === 0) {
-    throw new Error(
-      'query results in zero features; features needed in order to classify',
-    );
+    throw new Error('query results in zero features; features needed in order to classify');
   }
 }
 

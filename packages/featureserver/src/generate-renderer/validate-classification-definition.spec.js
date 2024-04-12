@@ -30,9 +30,7 @@ describe('when creating a symbol', () => {
       });
       should.fail('should have thrown error');
     } catch (error) {
-      error.message.should.equal(
-        'baseSymbol requires a valid type: esriSMS, esriSLS, esriSFS',
-      );
+      error.message.should.equal('baseSymbol requires a valid type: esriSMS, esriSLS, esriSFS');
       error.code.should.equal(400);
     }
   });
@@ -45,9 +43,7 @@ describe('when creating a symbol', () => {
       });
       should.fail('should have thrown error');
     } catch (error) {
-      error.message.should.equal(
-        'baseSymbol requires a valid type: esriSMS, esriSLS, esriSFS',
-      );
+      error.message.should.equal('baseSymbol requires a valid type: esriSMS, esriSLS, esriSFS');
       error.code.should.equal(400);
     }
   });
@@ -61,7 +57,7 @@ describe('when creating a symbol', () => {
       should.fail('should have thrown error');
     } catch (error) {
       error.message.should.equal(
-        'Classification defintion uses a base symbol type that is incompatiable with dataset geometry',
+        'Classification defintion uses a base symbol type that is incompatiable with dataset geometry', // eslint-disable-line
       );
       error.code.should.equal(400);
     }
@@ -76,7 +72,7 @@ describe('when creating a symbol', () => {
       should.fail('should have thrown error');
     } catch (error) {
       error.message.should.equal(
-        'Classification defintion uses a base symbol type that is incompatiable with dataset geometry',
+        'Classification defintion uses a base symbol type that is incompatiable with dataset geometry', // eslint-disable-line
       );
       error.code.should.equal(400);
     }
@@ -91,7 +87,7 @@ describe('when creating a symbol', () => {
       should.fail('should have thrown error');
     } catch (error) {
       error.message.should.equal(
-        'Classification defintion uses a base symbol type that is incompatiable with dataset geometry',
+        'Classification defintion uses a base symbol type that is incompatiable with dataset geometry', // eslint-disable-line
       );
       error.code.should.equal(400);
     }
@@ -106,7 +102,7 @@ describe('when creating a symbol', () => {
       should.fail('should have thrown error');
     } catch (error) {
       error.message.should.equal(
-        'Classification defintion uses a base symbol type that is incompatiable with dataset geometry',
+        'Classification defintion uses a base symbol type that is incompatiable with dataset geometry', // eslint-disable-line
       );
       error.code.should.equal(400);
     }
@@ -133,11 +129,9 @@ describe('when creating a symbol', () => {
 
   it('throws error when unique-value-fields definition is missing uniqueValueFields array', () => {
     try {
-      validateClassificationDefinition(
-        { type: 'uniqueValueDef' },
-        'esriGeometryPoint',
-        [{ fooz: 'bar' }],
-      );
+      validateClassificationDefinition({ type: 'uniqueValueDef' }, 'esriGeometryPoint', [
+        { fooz: 'bar' },
+      ]);
       should.fail('should have thrown error');
     } catch (error) {
       error.message.should.equal(

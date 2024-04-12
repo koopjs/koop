@@ -108,7 +108,7 @@ describe('is-geojson-table', function () {
     should(result).be.exactly(true);
   });
 
-  it('GeoJSON collection input with metadata geometryType but no features should return false', () => {
+  it('GeoJSON collection input with metadata geometryType but no features', () => {
     const collection = {
       metadata: { geometryType: 'Point' },
       type: 'FeatureCollection',

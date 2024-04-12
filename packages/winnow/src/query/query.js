@@ -5,16 +5,12 @@ const classificationQuery = require('./classification-query');
 const standardQuery = require('./standard-query');
 
 module.exports = function (input, options = {}) {
-  const { options: normalizedOptions, features } = normalizeFeaturesAndOptions(
-    input,
-    options,
-  );
+  const { options: normalizedOptions, features } = normalizeFeaturesAndOptions(input, options);
   const { aggregates, classification } = normalizedOptions;
 
   const sqlStatement = createSqlStatement(normalizedOptions);
 
-  if (classification)
-    return classificationQuery(features, sqlStatement, normalizedOptions);
+  if (classification) return classificationQuery(features, sqlStatement, normalizedOptions);
 
   return standardQuery(features, sqlStatement, {
     skipLimitHandling: !!aggregates,

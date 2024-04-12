@@ -51,10 +51,7 @@ describe('rest/info handler', () => {
         },
       },
     };
-    const result = restInfo(
-      { authInfo: { foo: 'bar' }, owningSystemUrl: 'helloworld' },
-      req,
-    );
+    const result = restInfo({ authInfo: { foo: 'bar' }, owningSystemUrl: 'helloworld' }, req);
     result.should.deepEqual({
       currentVersion: 10.81,
       fullVersion: '10.8.1',

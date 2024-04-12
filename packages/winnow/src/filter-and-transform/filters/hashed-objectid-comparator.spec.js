@@ -31,34 +31,19 @@ test('hashedObjectIdComparator: >=, should return true', (t) => {
 });
 
 test('hashedObjectIdComparator: >, should return true', (t) => {
-  const result = hashedObjectIdComparator(
-    properties,
-    geometry,
-    9999999999,
-    '<',
-  );
+  const result = hashedObjectIdComparator(properties, geometry, 9999999999, '<');
   t.equals(result, true);
   t.end();
 });
 
 test('hashedObjectIdComparator: >=, should return true', (t) => {
-  const result = hashedObjectIdComparator(
-    properties,
-    geometry,
-    9999999999,
-    '<=',
-  );
+  const result = hashedObjectIdComparator(properties, geometry, 9999999999, '<=');
   t.equals(result, true);
   t.end();
 });
 
 test('hashedObjectIdComparator: IN, should return true', (t) => {
-  const result = hashedObjectIdComparator(
-    properties,
-    geometry,
-    `${objectId},0000`,
-    'IN',
-  );
+  const result = hashedObjectIdComparator(properties, geometry, `${objectId},0000`, 'IN');
   t.equals(result, true);
   t.end();
 });

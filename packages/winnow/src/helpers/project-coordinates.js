@@ -7,14 +7,10 @@ module.exports = function projectCoordinates(params) {
 
   if (!toSR || fromSR === toSR) return coordinates;
 
-  return transformCoordinates(
-    coordinates,
-    { fromSR, toSR },
-    (coordinates, options) => {
-      if (_.isNumber(coordinates[0]) && _.isNumber(coordinates[1])) {
-        return proj4(options.fromSR, options.toSR, coordinates);
-      }
-      return coordinates;
-    },
-  );
+  return transformCoordinates(coordinates, { fromSR, toSR }, (coordinates, options) => {
+    if (_.isNumber(coordinates[0]) && _.isNumber(coordinates[1])) {
+      return proj4(options.fromSR, options.toSR, coordinates);
+    }
+    return coordinates;
+  });
 };

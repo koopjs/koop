@@ -34,9 +34,7 @@ function shouldValidateGeojson() {
 function validateGeojson(geojson) {
   const geojsonErrors = geojsonhint.valid(geojson, true);
   if (geojsonErrors.length > 0) {
-    logManager.logger.debug(
-      `source data for contains invalid GeoJSON; ${geojsonErrors[0]}`,
-    );
+    logManager.logger.debug(`source data for contains invalid GeoJSON; ${geojsonErrors[0]}`);
   }
 }
 

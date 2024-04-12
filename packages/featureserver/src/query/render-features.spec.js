@@ -533,9 +533,7 @@ describe('renderFeaturesResponse', () => {
       });
       getCollectionCrsSpy.callCount.should.equal(0);
       normalizeSpatialReferenceSpy.callCount.should.equal(1);
-      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual([
-        'wkt-here',
-      ]);
+      normalizeSpatialReferenceSpy.firstCall.args.should.deepEqual(['wkt-here']);
     });
   });
 });

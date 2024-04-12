@@ -13,9 +13,9 @@ function selectFieldsAsEsriJson(options) {
   const delimitedDateFields = dateFields.join(',');
   const includeIdField = shouldIncludeIdField({ returnIdsOnly, fields });
   if (fields) {
-    return `selectFieldsToEsriAttributes(properties, geometry, "${fields.join(',')}", "${delimitedDateFields}", "${includeIdField}", "${idField}") as attributes`;
+    return `selectFieldsToEsriAttributes(properties, geometry, "${fields.join(',')}", "${delimitedDateFields}", "${includeIdField}", "${idField}") as attributes`;  // eslint-disable-line
   }
-  return `toEsriAttributes(properties, geometry, "${delimitedDateFields}", "${includeIdField}", "${idField}") as attributes`;
+  return `toEsriAttributes(properties, geometry, "${delimitedDateFields}", "${includeIdField}", "${idField}") as attributes`;   // eslint-disable-line
 }
 
 function shouldIncludeIdField({ returnIdsOnly, fields }) {

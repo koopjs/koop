@@ -2,15 +2,13 @@ const { InvalidWhereParameterError } = require('../../errors');
 const convertSqlWhereToJsonWhere = require('./to-json-where');
 
 const timestampCastRegex = /(TIMESTAMP|DATE) '([^']*)'/gi;
-const timestampWithoutZoneRegex =
-  /^\d{4}-\d{2}-\d{2} {0,1}\d{0,2}:{0,1}\d{0,2}:{0,1}\d{0,2}$/;
+const timestampWithoutZoneRegex = /^\d{4}-\d{2}-\d{2} {0,1}\d{0,2}:{0,1}\d{0,2}:{0,1}\d{0,2}$/;
 
 // RegExp for name-first predicate, e.g "properties->`OBJECTID` = 1234"
 const fieldFirstObjectIdPredicateRegex =
   /(properties|attributes)->`OBJECTID` (=|<|>|<=|>=) ([0-9]+)/g;
 
-const objectidInPredicateRegex =
-  /(properties|attributes)->`OBJECTID` (IN) \((.+)\)/g;
+const objectidInPredicateRegex = /(properties|attributes)->`OBJECTID` (IN) \((.+)\)/g;
 
 // RegExp for value-first predicate, e.g "1234 = properties->`OBJECTID`""
 const valueFirstObjectIdPredicateRegex =
@@ -73,12 +71,9 @@ class WhereBuilder {
       return this;
     }
 
-    this.#where = this.#where.replace(
-      timestampCastRegex,
-      function (match, cast, timestamp) {
-        return `'${normalizeTimestamp(timestamp)}'`;
-      },
-    );
+    this.#where = this.#where.replace(timestampCastRegex, function (match, cast, timestamp) {
+      return `'${normalizeTimestamp(timestamp)}'`;
+    });
 
     return this;
   }
@@ -92,7 +87,7 @@ class WhereBuilder {
 
     const charArr = this.#where.split('');
 
-    // loop thru each character of the WHERE string and replace any single-quote escape sequence ('') with \'
+    // loop thru each character of WHERE string, replace single-quote escape sequence ('') with \'
     charArr.forEach((currentChar, i) => {
       const nextChar = charArr[i + 1];
       const prevChar = charArr[i - 1];
@@ -102,19 +97,10 @@ class WhereBuilder {
         // Encountered a ' that begins a value definition (e.g the 7th char of "foo = 'bar'"").
         // Flag that we are now inside the value definition
         insideValueDefinition = true;
-      } else if (
-        isSingleQuoteEscapeChar(
-          currentChar,
-          nextChar,
-          prevChar,
-          insideValueDefinition,
-        )
-      ) {
+      } else if (isSingleQuoteEscapeChar(currentChar, nextChar, prevChar, insideValueDefinition)) {
         // The current char is a ' used to escape a subsequent ' (e.g 'bar''s')
         charArr[i] = SINGLE_QUOTE_ESCAPE;
-      } else if (
-        isEndOfValueDefinition(currentChar, lastTwoChars, insideValueDefinition)
-      ) {
+      } else if (isEndOfValueDefinition(currentChar, lastTwoChars, insideValueDefinition)) {
         insideValueDefinition = false;
       }
     });
@@ -141,9 +127,7 @@ class WhereBuilder {
       return isNaN(val) ? `'${val}'` : val;
     });
 
-    const objectIdFilter = `${
-      this.#options.idField || 'OBJECTID'
-    } IN (${inValues.join(',')})`;
+    const objectIdFilter = `${this.#options.idField || 'OBJECTID'} IN (${inValues.join(',')})`;
 
     if (this.#where) {
       this.#where = `${this.#where} AND ${objectIdFilter}`;
@@ -168,19 +152,13 @@ class WhereBuilder {
         fieldFirstObjectIdPredicateRegex,
         `hashedObjectIdComparator($1, geometry, $3, '$2')=true`,
       )
-      .replace(
-        objectidInPredicateRegex,
-        (match, parentProperty, operator, value) => {
-          const inValue = value.replace(/\s/g, '');
-          return `hashedObjectIdComparator(${parentProperty}, geometry, '${inValue}', 'IN')=true`;
-        },
-      )
-      .replace(
-        valueFirstObjectIdPredicateRegex,
-        (match, value, operator, parentProperty) => {
-          return `hashedObjectIdComparator(${parentProperty}, geometry, ${value}, '${operatorInversions[operator]}')=true`;
-        },
-      );
+      .replace(objectidInPredicateRegex, (match, parentProperty, operator, value) => {
+        const inValue = value.replace(/\s/g, '');
+        return `hashedObjectIdComparator(${parentProperty}, geometry, '${inValue}', 'IN')=true`;
+      })
+      .replace(valueFirstObjectIdPredicateRegex, (match, value, operator, parentProperty) => {
+        return `hashedObjectIdComparator(${parentProperty}, geometry, ${value}, '${operatorInversions[operator]}')=true`; // eslint-disable-line
+      });
 
     return this;
   }
@@ -211,9 +189,7 @@ function normalizeTimestamp(timestamp) {
   try {
     return new Date(normalizedTimestamp).toISOString();
   } catch (error) {
-    throw new InvalidWhereParameterError(
-      `${error.message} for timestamp "${timestamp}"`,
-    );
+    throw new InvalidWhereParameterError(`${error.message} for timestamp "${timestamp}"`);
   }
 }
 
@@ -223,18 +199,11 @@ function isBeginningOfValueDefinition(char, insideSingleQuotes) {
 
 function isSingleQuoteEscapeChar(char, next, prev, insideSingleQuotes) {
   return (
-    insideSingleQuotes === true &&
-    char === "'" &&
-    next === "'" &&
-    prev !== SINGLE_QUOTE_ESCAPE
+    insideSingleQuotes === true && char === "'" && next === "'" && prev !== SINGLE_QUOTE_ESCAPE
   );
 }
 
 function isEndOfValueDefinition(char, lastTwoChars, insideSingleQuotes) {
-  return (
-    insideSingleQuotes === true &&
-    char === `'` &&
-    lastTwoChars !== `${SINGLE_QUOTE_ESCAPE}'`
-  );
+  return insideSingleQuotes === true && char === `'` && lastTwoChars !== `${SINGLE_QUOTE_ESCAPE}'`;
 }
 module.exports = WhereBuilder;

@@ -3,9 +3,7 @@ const { filterAndTransform } = require('./filter-and-transform');
 const { logProviderDataWarnings } = require('./log-provider-data-warnings');
 const { renderFeaturesResponse } = require('./render-features');
 const { renderStatisticsResponse } = require('./render-statistics');
-const {
-  renderPrecalculatedStatisticsResponse,
-} = require('./render-precalculated-statistics');
+const { renderPrecalculatedStatisticsResponse } = require('./render-precalculated-statistics');
 const { renderCountAndExtentResponse } = require('./render-count-and-extent');
 const { getGeometryTypeFromGeojson } = require('../helpers');
 const { validate } = require('./validate-query-request-parameters');
@@ -22,8 +20,7 @@ function query(json, requestParams = {}) {
 
   logProviderDataWarnings(json, requestParams);
 
-  const data =
-    skipFiltering || !features ? json : filterAndTransform(json, requestParams);
+  const data = skipFiltering || !features ? json : filterAndTransform(json, requestParams);
 
   // TODO: Bug when count or extent requested.
   // QUESTION: Is this problematic if its an aggregation with stats?
@@ -54,12 +51,7 @@ function shouldRenderPrecalculatedData(json, requestParameters) {
 
 function renderPrecalculatedData(
   data,
-  {
-    returnCountOnly,
-    returnExtentOnly,
-    outStatistics,
-    groupByFieldsForStatistics,
-  },
+  { returnCountOnly, returnExtentOnly, outStatistics, groupByFieldsForStatistics },
 ) {
   const { statistics, count, extent } = data;
 

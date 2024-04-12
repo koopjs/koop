@@ -1,13 +1,13 @@
 const test = require('tape');
 const normalizeGeometryFilter = require('./geometry-filter');
 
-test('normalize-query-options, geometry-filter: undefined options input', (t) => {
+test('undefined options input', (t) => {
   t.plan(1);
   const geometryFilter = normalizeGeometryFilter();
   t.equal(geometryFilter, undefined);
 });
 
-test('normalize-query-options, geometry-filter: defer to geometry options', (t) => {
+test('defer to geometry options', (t) => {
   t.plan(1);
   const geometryFilter = normalizeGeometryFilter({
     geometry: [10, 15, 20, 25],
@@ -27,7 +27,7 @@ test('normalize-query-options, geometry-filter: defer to geometry options', (t) 
   });
 });
 
-test('normalize-query-options, geometry-filter: use bbox if geometry is undefined', (t) => {
+test('use bbox if geometry is undefined', (t) => {
   t.plan(1);
   const geometryFilter = normalizeGeometryFilter({ bbox: [0, 45, 50, 90] });
   t.deepEquals(geometryFilter, {
@@ -44,7 +44,7 @@ test('normalize-query-options, geometry-filter: use bbox if geometry is undefine
   });
 });
 
-test('normalize-query-options, geometry-filter: filter spatial reference of 4326 does not trigger reproject', (t) => {
+test('filter spatial reference of 4326 does not trigger reproject', (t) => {
   t.plan(1);
   const geometryFilter = normalizeGeometryFilter({
     geometry: [0, 45, 50, 90],
@@ -64,7 +64,7 @@ test('normalize-query-options, geometry-filter: filter spatial reference of 4326
   });
 });
 
-test('normalize-query-options, geometry-filter: filter spatial reference of 3857 does trigger reproject', (t) => {
+test('filter spatial reference of 3857 does trigger reproject', (t) => {
   t.plan(1);
   const geometryFilter = normalizeGeometryFilter({
     geometry: {
@@ -91,7 +91,7 @@ test('normalize-query-options, geometry-filter: filter spatial reference of 3857
   });
 });
 
-test('normalize-query-options, geometry-filter: data spatial reference of 3857 triggers reproject of filter', (t) => {
+test('data spatial reference of 3857 triggers reproject of filter', (t) => {
   t.plan(1);
   const geometryFilter = normalizeGeometryFilter({
     geometry: {
@@ -119,7 +119,7 @@ test('normalize-query-options, geometry-filter: data spatial reference of 3857 t
   });
 });
 
-test('normalize-query-options, geometry-filter: same data/filter spatial reference skips filter reprojection', (t) => {
+test('same data/filter spatial reference skips filter reprojection', (t) => {
   t.plan(1);
   const geometryFilter = normalizeGeometryFilter({
     geometry: {
@@ -147,7 +147,7 @@ test('normalize-query-options, geometry-filter: same data/filter spatial referen
   });
 });
 
-test('normalize-query-options, geometry-filter: geometry as coordinate string polygon', (t) => {
+test('geometry as coordinate string polygon', (t) => {
   t.plan(1);
   const geometryFilter = normalizeGeometryFilter({ geometry: '10,15,20,25' });
   t.deepEquals(geometryFilter, {
@@ -164,7 +164,7 @@ test('normalize-query-options, geometry-filter: geometry as coordinate string po
   });
 });
 
-test('normalize-query-options, geometry-filter: geometry as coordinate string point', (t) => {
+test('geometry as coordinate string point', (t) => {
   t.plan(1);
   const geometryFilter = normalizeGeometryFilter({ geometry: '-10,10' });
   t.deepEquals(geometryFilter, {
@@ -173,7 +173,7 @@ test('normalize-query-options, geometry-filter: geometry as coordinate string po
   });
 });
 
-test('normalize-query-options, geometry-filter: geometry as coordinate array polygon', (t) => {
+test('geometry as coordinate array polygon', (t) => {
   t.plan(1);
   const geometryFilter = normalizeGeometryFilter({
     geometry: [10, 15, 20, 25],
@@ -192,7 +192,7 @@ test('normalize-query-options, geometry-filter: geometry as coordinate array pol
   });
 });
 
-test('normalize-query-options, geometry-filter: geometry as coordinate array point', (t) => {
+test('geometry as coordinate array point', (t) => {
   t.plan(1);
   const geometryFilter = normalizeGeometryFilter({ geometry: [-10, 10] });
   t.deepEquals(geometryFilter, {
@@ -201,7 +201,7 @@ test('normalize-query-options, geometry-filter: geometry as coordinate array poi
   });
 });
 
-test('normalize-query-options, geometry-filter: geometry as Esri envelope', (t) => {
+test('geometry as Esri envelope', (t) => {
   t.plan(1);
   const geometryFilter = normalizeGeometryFilter({
     geometry: {

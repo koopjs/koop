@@ -9,8 +9,7 @@ function queryRelatedRecords(data, params = {}) {
     relatedRecordGroups: [],
   };
 
-  if (!params.returnCountOnly)
-    response.fields = QueryFields.create({ ...data, ...params });
+  if (!params.returnCountOnly) response.fields = QueryFields.create({ ...data, ...params });
 
   const geomType = getGeometryTypeFromGeojson(data);
   if (geomType) {
@@ -22,20 +21,14 @@ function queryRelatedRecords(data, params = {}) {
 
   if (data.features) {
     response.relatedRecordGroups = data.features.map((featureCollection) => {
-      return convertFeaturesToRelatedRecordGroups(
-        featureCollection,
-        params.returnCountOnly,
-      );
+      return convertFeaturesToRelatedRecordGroups(featureCollection, params.returnCountOnly);
     });
   }
 
   return response;
 }
 
-function convertFeaturesToRelatedRecordGroups(
-  { features, properties },
-  returnCountOnly = false,
-) {
+function convertFeaturesToRelatedRecordGroups({ features, properties }, returnCountOnly = false) {
   const recordGroup = {
     objectId: properties.objectid,
   };

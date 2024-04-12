@@ -15,10 +15,7 @@ const res = {
 describe('sendCallbackResponse', () => {
   it('should respond with callback string', () => {
     sendCallbackResponse(res, { hello: 'world' }, 'what');
-    res.set.firstCall.args.should.deepEqual([
-      'Content-Type',
-      'application/javascript',
-    ]);
+    res.set.firstCall.args.should.deepEqual(['Content-Type', 'application/javascript']);
     res.send.firstCall.args[0].should.equal('what({"hello":"world"})');
     res.status.firstCall.args[0].should.be.exactly(200);
   });

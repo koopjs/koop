@@ -33,15 +33,10 @@ function normalizeSpatialReference(input) {
   const { type, value } = parseSpatialReferenceInput(input);
 
   if (type === 'wkid') {
-    return (
-      wktLookup.get(value) ||
-      esriWktLookup(value) || { wkid: 4326, latestWkid: 4326 }
-    );
+    return wktLookup.get(value) || esriWktLookup(value) || { wkid: 4326, latestWkid: 4326 };
   }
 
-  return (
-    convertStringToSpatialReference(value) || { wkid: 4326, latestWkid: 4326 }
-  );
+  return convertStringToSpatialReference(value) || { wkid: 4326, latestWkid: 4326 };
 }
 
 function parseSpatialReferenceInput(spatialReference) {
@@ -74,10 +69,7 @@ function parseSpatialReferenceInput(spatialReference) {
 }
 
 function isNumericSpatialReferenceId(spatialReference) {
-  return (
-    Number.isInteger(spatialReference) ||
-    Number.isInteger(Number(spatialReference))
-  );
+  return Number.isInteger(spatialReference) || Number.isInteger(Number(spatialReference));
 }
 
 function isPrefixedSpatialReferenceId(spatialReference) {
@@ -109,8 +101,7 @@ function esriWktLookup(lookupValue) {
 }
 
 function convertStringToSpatialReference(wkt) {
-  if (/WGS_1984_Web_Mercator_Auxiliary_Sphere/.test(wkt))
-    return { wkid: 102100, latestWkid: 3857 };
+  if (/WGS_1984_Web_Mercator_Auxiliary_Sphere/.test(wkt)) return { wkid: 102100, latestWkid: 3857 };
 
   try {
     const wkid = getWktWkid(wkt);

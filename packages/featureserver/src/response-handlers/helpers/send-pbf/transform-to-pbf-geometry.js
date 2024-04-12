@@ -120,9 +120,7 @@ function transformCoordsArray(coordsArray, transform) {
       y = quantizeY(coords[1], yScale, yTranslate);
 
       if (x !== prevX || y !== prevY) {
-        result.push(
-          createCoordinatesArray(x - prevX, y - prevY, coords[2], coords[3]),
-        );
+        result.push(createCoordinatesArray(x - prevX, y - prevY, coords[2], coords[3]));
         prevX = x;
         prevY = y;
       }

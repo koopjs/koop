@@ -61,11 +61,7 @@ describe('query response handler', () => {
       },
     );
 
-    sendCallbackResponseSpy.firstCall.args.should.deepEqual([
-      res,
-      { test: true },
-      'test-callback',
-    ]);
+    sendCallbackResponseSpy.firstCall.args.should.deepEqual([res, { test: true }, 'test-callback']);
   });
 
   it('send as pretty json', () => {

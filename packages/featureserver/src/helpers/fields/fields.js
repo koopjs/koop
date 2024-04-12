@@ -19,8 +19,7 @@ class Fields {
     return {
       idField: options.idField || idField,
       fieldDefinitions: options.fieldDefinitions || options.fields || fields,
-      attributeSample:
-        attributeSample || getAttributeSample(features, attributeSample),
+      attributeSample: attributeSample || getAttributeSample(features, attributeSample),
       ...options,
     };
   }
@@ -30,7 +29,7 @@ class Fields {
 
     if (shouldWarnAboutMissingIdFieldDefinition(idField, fieldDefinitions)) {
       logManager.logger.debug(
-        `provider's "idField" is set to ${idField}, but this field is not found in field-definitions`,
+        `provider's "idField" is set to ${idField}, but this field is not found in field-definitions`, // eslint-disable-line
       );
     }
 
@@ -43,9 +42,7 @@ class Fields {
 }
 
 function getAttributeSample(features) {
-  return (
-    _.get(features, '[0].properties') || _.get(features, '[0].attributes', {})
-  );
+  return _.get(features, '[0].properties') || _.get(features, '[0].attributes', {});
 }
 
 function shouldWarnAboutMissingIdFieldDefinition(idField, fieldDefinitions) {

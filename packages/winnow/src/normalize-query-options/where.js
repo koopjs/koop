@@ -20,10 +20,7 @@ function normalizeWhere(where = '') {
 function convertToISODates(where) {
   const matches = where.match(/(?!date )('?\d\d\d\d-\d\d-\d\d'?)/g);
   matches.forEach((match) => {
-    where = where.replace(
-      `date ${match}`,
-      `'${new Date(match.toString()).toISOString()}'`,
-    );
+    where = where.replace(`date ${match}`, `'${new Date(match.toString()).toISOString()}'`);
   });
   return where;
 }

@@ -25,14 +25,10 @@ const featureResponseTemplate = {
 function renderFeaturesResponse(data, params) {
   const template = _.cloneDeep(featureResponseTemplate);
 
-  const {
-    uniqueIdField: uniqueIdFieldDefault,
-    objectIdFieldName: objectIdFieldNameDefault,
-  } = template;
+  const { uniqueIdField: uniqueIdFieldDefault, objectIdFieldName: objectIdFieldNameDefault } =
+    template;
 
-  const {
-    metadata: { exceededTransferLimit = false, transform, idField, hasZ } = {},
-  } = data;
+  const { metadata: { exceededTransferLimit = false, transform, idField, hasZ } = {} } = data;
 
   const computedProperties = {
     geometryType: params.geometryType,
@@ -55,17 +51,9 @@ function renderFeaturesResponse(data, params) {
   return { ...template, ...computedProperties };
 }
 
-function getOutputSpatialReference(
-  collection,
-  { outSR, outputCrs, inputCrs, sourceSR },
-) {
+function getOutputSpatialReference(collection, { outSR, outputCrs, inputCrs, sourceSR }) {
   const spatialReference =
-    outputCrs ||
-    outSR ||
-    inputCrs ||
-    sourceSR ||
-    getCollectionCrs(collection) ||
-    4326;
+    outputCrs || outSR || inputCrs || sourceSR || getCollectionCrs(collection) || 4326;
 
   const { wkid, wkt, latestWkid } = normalizeSpatialReference(spatialReference);
 

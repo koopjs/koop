@@ -27,9 +27,7 @@ test('normalize-options, collection: metadata.fields already defined', (t) => {
 
 test('normalize-options, collection: generate metadata fields from feature', (t) => {
   t.plan(1);
-  const normalized = normalizeCollection({}, [
-    { properties: { name: 'test' } },
-  ]);
+  const normalized = normalizeCollection({}, [{ properties: { name: 'test' } }]);
   t.deepEquals(normalized, {
     metadata: {
       fields: [

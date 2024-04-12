@@ -57,9 +57,9 @@ describe('FeatureLayerMetadata', () => {
       type: 'Feature Layer',
       displayField: '',
       description:
-        'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+        'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
       copyrightText:
-        'Copyright information varies by provider. For more information please contact the source of this data.',
+        'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
       defaultVisibility: true,
       isDataVersioned: false,
       hasContingentValuesDefinition: false,
@@ -187,9 +187,9 @@ describe('FeatureLayerMetadata', () => {
         type: 'Feature Layer',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -356,9 +356,9 @@ describe('FeatureLayerMetadata', () => {
         type: 'Feature Layer',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -517,9 +517,9 @@ describe('FeatureLayerMetadata', () => {
         type: 'Feature Layer',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -674,9 +674,9 @@ describe('FeatureLayerMetadata', () => {
         type: 'Feature Layer',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -837,9 +837,9 @@ describe('FeatureLayerMetadata', () => {
         type: 'Feature Layer',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -979,9 +979,9 @@ describe('FeatureLayerMetadata', () => {
         type: 'Feature Layer',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -1121,7 +1121,7 @@ describe('FeatureLayerMetadata', () => {
     });
   });
 
-  it('static method "create" should normalize input, call constructor, and mixin-overrides ', () => {
+  it('static method "create" should normalize input, call constructor, and mixin-overrides', () => {
     const featureLayerMetadata = FeatureLayerMetadata.create(
       {
         features: [],
@@ -1147,9 +1147,9 @@ describe('FeatureLayerMetadata', () => {
       type: 'Feature Layer',
       displayField: 'myField',
       description:
-        'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+        'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
       copyrightText:
-        'Copyright information varies by provider. For more information please contact the source of this data.',
+        'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
       defaultVisibility: true,
       isDataVersioned: false,
       hasContingentValuesDefinition: false,

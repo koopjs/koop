@@ -2,9 +2,7 @@ const { StatisticsFields } = require('../helpers/fields');
 
 function renderStatisticsResponse(input = {}, options = {}) {
   const { statistics } = input;
-  const normalizedStatistics = Array.isArray(statistics)
-    ? statistics
-    : [statistics];
+  const normalizedStatistics = Array.isArray(statistics) ? statistics : [statistics];
   const features = normalizedStatistics.map((attributes) => {
     return { attributes };
   });

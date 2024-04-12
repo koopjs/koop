@@ -42,8 +42,7 @@ function verifyPbfMessage(pbfMessage) {
 }
 
 function convertToPbfJson(payload, requestParameters) {
-  const { returnCountOnly, returnIdsOnly, quantizationParameters } =
-    requestParameters;
+  const { returnCountOnly, returnIdsOnly, quantizationParameters } = requestParameters;
 
   if (returnCountOnly === true) {
     return {

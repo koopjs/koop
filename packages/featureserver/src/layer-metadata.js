@@ -1,8 +1,4 @@
-const {
-  isTable,
-  TableLayerMetadata,
-  FeatureLayerMetadata,
-} = require('./helpers');
+const { isTable, TableLayerMetadata, FeatureLayerMetadata } = require('./helpers');
 
 function layerMetadata(data = {}, options = {}) {
   if (isTable({ ...data, ...options })) {

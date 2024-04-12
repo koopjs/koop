@@ -118,10 +118,7 @@ describe('Index tests', function () {
         koop.register();
         throw new Error('should have thrown');
       } catch (error) {
-        error.should.have.property(
-          'message',
-          'Plugin registration failed: plugin undefined',
-        );
+        error.should.have.property('message', 'Plugin registration failed: plugin undefined');
       }
     });
 
@@ -132,7 +129,7 @@ describe('Index tests', function () {
       koop.providers[0].should.have.property('namespace', 'test-provider');
     });
 
-    it('should register unknown plugin type as provider and add output and provider routes to router stack', function () {
+    it('should register unknown plugin as provider and add routes to router stack', function () {
       const koop = new Koop({ logLevel: 'error' });
       const unknownPlugin = _.cloneDeep(mockProviderDefinition);
       delete unknownPlugin.type;

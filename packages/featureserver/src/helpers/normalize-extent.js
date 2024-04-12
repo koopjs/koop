@@ -18,10 +18,7 @@ const esriExtentSchema = joi
   .unknown();
 
 const simpleArraySchema = joi.array().items(joi.number().required()).min(4);
-const cornerArraySchema = joi
-  .array()
-  .items(joi.array().items(joi.number()).length(2))
-  .length(2);
+const cornerArraySchema = joi.array().items(joi.array().items(joi.number()).length(2)).length(2);
 
 module.exports = function (input, spatialReference) {
   if (!input) return undefined;

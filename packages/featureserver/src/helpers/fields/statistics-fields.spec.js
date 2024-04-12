@@ -69,9 +69,7 @@ describe('StatisticsFields', () => {
     });
 
     it('should default groupByFieldsForStatistics to empty array', () => {
-      const { groupByFieldsForStatistics } = StatisticsFields.normalizeOptions(
-        {},
-      );
+      const { groupByFieldsForStatistics } = StatisticsFields.normalizeOptions({});
 
       groupByFieldsForStatistics.should.deepEqual([]);
     });
@@ -132,9 +130,7 @@ describe('StatisticsFields', () => {
       const result = StatisticsFields.create({
         statisticsSample: { bar: 100000 },
         fieldDefinitions: [{ name: 'foo', type: 'Date' }],
-        outStatistics: [
-          { onStatisticField: 'foo', outStatisticFieldName: 'bar' },
-        ],
+        outStatistics: [{ onStatisticField: 'foo', outStatisticFieldName: 'bar' }],
       });
       result.should.deepEqual([
         {

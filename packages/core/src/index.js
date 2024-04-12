@@ -40,9 +40,7 @@ class Koop extends Events {
 
     this.server
       .on('mount', () => {
-        this.log.info(
-          `Koop ${this.version} mounted at ${this.server.mountpath}`,
-        );
+        this.log.info(`Koop ${this.version} mounted at ${this.server.mountpath}`);
       })
       .get('/status', (req, res) =>
         res.json({
@@ -72,11 +70,7 @@ class Koop extends Events {
       return this.#registerAuth(plugin, options);
     }
 
-    this.log.warn(
-      'Unrecognized plugin type: "' +
-        plugin.type +
-        '". Defaulting to provider.',
-    );
+    this.log.warn('Unrecognized plugin type: "' + plugin.type + '". Defaulting to provider.');
     return this.#registerProvider(plugin, options);
   }
 
@@ -91,16 +85,12 @@ class Koop extends Events {
     });
     dataProvider.addRoutesToServer(this.server);
     this.providers.push(dataProvider);
-    this.log.info(
-      `registered provider: ${dataProvider.namespace} v${dataProvider.version}`,
-    );
+    this.log.info(`registered provider: ${dataProvider.namespace} v${dataProvider.version}`);
   }
 
   #registerOutput(outputClass, options) {
     this.outputs.push({ outputClass, options });
-    this.log.info(
-      `registered output: ${outputClass.name} v${outputClass.version}`,
-    );
+    this.log.info(`registered output: ${outputClass.name} v${outputClass.version}`);
   }
 
   #registerCache(Cache, options) {

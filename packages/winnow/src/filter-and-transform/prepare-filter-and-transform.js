@@ -13,8 +13,7 @@ function normalizeParams(inParams) {
   // If this is just a passed in feature
   if (!inParams.length) params = [[inParams]];
   // If this is an array of features
-  if (isGeoJSONFeatures(inParams) || isEsriFeatures(inParams))
-    params = [inParams];
+  if (isGeoJSONFeatures(inParams) || isEsriFeatures(inParams)) params = [inParams];
   return params;
 }
 

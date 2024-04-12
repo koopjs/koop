@@ -25,10 +25,7 @@ describe('layerMetadata', function () {
     isTableSpy.callCount.should.equal(1);
     isTableSpy.firstCall.args.should.deepEqual([{ foo: 'bar', sna: 'fu' }]);
     TableCreateSpy.callCount.should.equal(1);
-    TableCreateSpy.firstCall.args.should.deepEqual([
-      { foo: 'bar' },
-      { sna: 'fu' },
-    ]);
+    TableCreateSpy.firstCall.args.should.deepEqual([{ foo: 'bar' }, { sna: 'fu' }]);
     TableCreateSpy.resetHistory();
   });
 
@@ -48,10 +45,7 @@ describe('layerMetadata', function () {
     isTableSpy.callCount.should.equal(1);
     isTableSpy.firstCall.args.should.deepEqual([{ foo: 'bar', sna: 'fu' }]);
     FeatureLayerCreateSpy.callCount.should.equal(1);
-    FeatureLayerCreateSpy.firstCall.args.should.deepEqual([
-      { foo: 'bar' },
-      { sna: 'fu' },
-    ]);
+    FeatureLayerCreateSpy.firstCall.args.should.deepEqual([{ foo: 'bar' }, { sna: 'fu' }]);
     FeatureLayerCreateSpy.resetHistory();
   });
 });

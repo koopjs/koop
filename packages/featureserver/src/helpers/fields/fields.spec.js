@@ -68,10 +68,7 @@ describe('Fields', () => {
 
     it('should acquire "attributeSample" from features[0].attributes', () => {
       const { attributeSample } = Fields.normalizeOptions({
-        features: [
-          { attributes: { name: 'foo' } },
-          { attributes: { name: 'bar' } },
-        ],
+        features: [{ attributes: { name: 'foo' } }, { attributes: { name: 'bar' } }],
       });
 
       attributeSample.should.deepEqual({ name: 'foo' });
@@ -79,10 +76,7 @@ describe('Fields', () => {
 
     it('should acquire "attributeSample" from features[0].properties', () => {
       const { attributeSample } = Fields.normalizeOptions({
-        features: [
-          { properties: { name: 'foo' } },
-          { properties: { name: 'bar' } },
-        ],
+        features: [{ properties: { name: 'foo' } }, { properties: { name: 'bar' } }],
       });
 
       attributeSample.should.deepEqual({ name: 'foo' });

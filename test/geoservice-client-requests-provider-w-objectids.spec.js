@@ -105,9 +105,7 @@ describe('Typical Geoservice Client request sequence: Dataset with OBJECTID as a
         `/file-geojson/rest/services/${idUrlParam}/FeatureServer/0/query?f=json&objectIds=${objectIds[0]}&outFields=*&outSR=102100&spatialRel=esriSpatialRelIntersects&where=1%3D1`,
       );
 
-      expect(identifyResponse.body).toEqual(
-        filterByObjectIds(IDFIELD, objectIds),
-      );
+      expect(identifyResponse.body).toEqual(filterByObjectIds(IDFIELD, objectIds));
     });
 
     test('filter by objectIds, return all outFields defined by layer info', async () => {
@@ -125,9 +123,7 @@ describe('Typical Geoservice Client request sequence: Dataset with OBJECTID as a
         )}&outSR=102100&spatialRel=esriSpatialRelIntersects&where=1%3D1`,
       );
 
-      expect(identifyResponse.body).toEqual(
-        filterByObjectIds(IDFIELD, objectIds),
-      );
+      expect(identifyResponse.body).toEqual(filterByObjectIds(IDFIELD, objectIds));
     });
   });
 
@@ -163,9 +159,7 @@ describe('Typical Geoservice Client request sequence: Dataset with OBJECTID as a
         `/file-geojson/rest/services/${idUrlParam}/FeatureServer/0/query?f=json&&resultOffset=0&resultRecordCount=50&where=1%3D1&orderByFields=&outFields=*&returnGeometry=false&spatialRel=esriSpatialRelIntersects`,
       );
 
-      expect(featuresResponse.body).toEqual(
-        getAttributeTable(IDFIELD, objectIds),
-      );
+      expect(featuresResponse.body).toEqual(getAttributeTable(IDFIELD, objectIds));
     });
   });
 });

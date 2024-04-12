@@ -2,14 +2,7 @@ const isDifferentCrs = require('./is-different-crs');
 
 function params(
   features,
-  {
-    returnGeometry,
-    inputCrs,
-    outputCrs,
-    aggregates,
-    geometry,
-    geometryPrecision,
-  } = {},
+  { returnGeometry, inputCrs, outputCrs, aggregates, geometry, geometryPrecision } = {},
 ) {
   const params = [];
   // NOTE: order matters here
@@ -32,17 +25,8 @@ function params(
   return params;
 }
 
-function shouldAddCrsParams({
-  aggregates,
-  returnGeometry,
-  inputCrs,
-  outputCrs,
-} = {}) {
-  return (
-    !aggregates &&
-    returnGeometry !== false &&
-    isDifferentCrs(inputCrs, outputCrs)
-  );
+function shouldAddCrsParams({ aggregates, returnGeometry, inputCrs, outputCrs } = {}) {
+  return !aggregates && returnGeometry !== false && isDifferentCrs(inputCrs, outputCrs);
 }
 
 function getCrsString({ wkt, wkid } = {}) {

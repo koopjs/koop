@@ -12,7 +12,7 @@ workspaces.forEach((workspace) => {
   const package = workspace.split(path.sep).pop();
 
   const coverageDir = path.join('.coverage', context);
-  const packageCoverageDirectory = path.join(process.cwd(),'.coverage', context);
+  const packageCoverageDirectory = path.join(process.cwd(), '.coverage', context);
 
   console.log(`Package "${package}":`);
 
@@ -30,7 +30,7 @@ workspaces.forEach((workspace) => {
 
 function getCmd(package, coverageDir) {
   const destination = path.join('..', '..', coverageDir);
-  if(package === 'output-geoservices') {
+  if (package === 'output-geoservices') {
     return `cp ${coverageDir}/coverage-final.json ${destination}/output-geoservices.json > /dev/null`;
   }
 

@@ -16,19 +16,13 @@ module.exports = function transformToEsriProperties(
 
   if (requiresObjectId && !idField) {
     properties = injectObjectId({ properties, geometry });
-  } else if (
-    requiresObjectId &&
-    shouldLogIdFieldDataTypeWarning(properties[idField])
-  ) {
+  } else if (requiresObjectId && shouldLogIdFieldDataTypeWarning(properties[idField])) {
     logManager.logger.debug(
-      `Unique-identifier ("${idField}") has a value (${properties[idField]}) that is not an integer-type, it is a ${typeof properties[idField]}; this may cause problems in some clients.`,
+      `Unique-identifier ("${idField}") has a value (${properties[idField]}) that is not an integer-type, it is a ${typeof properties[idField]}; this may cause problems in some clients.`, // eslint-disable-line
     );
-  } else if (
-    requiresObjectId &&
-    shouldLogIdFieldRangeWarning(properties[idField])
-  ) {
+  } else if (requiresObjectId && shouldLogIdFieldRangeWarning(properties[idField])) {
     logManager.logger.debug(
-      `Unique-identifier ("${idField}") has a value (${properties[idField]}) that is not a valid integer range (0 to ${Number.MAX_SAFE_INTEGER}); this may cause problems in some clients.`,
+      `Unique-identifier ("${idField}") has a value (${properties[idField]}) that is not a valid integer range (0 to ${Number.MAX_SAFE_INTEGER}); this may cause problems in some clients.`, // eslint-disable-line
     );
   }
 
@@ -49,24 +43,18 @@ function shouldLogIdFieldDataTypeWarning(idFieldValue) {
 }
 
 function shouldLogIdFieldRangeWarning(idFieldValue) {
-  return (
-    idFieldValue && (idFieldValue < 0 || idFieldValue > Number.MAX_SAFE_INTEGER)
-  );
+  return idFieldValue && (idFieldValue < 0 || idFieldValue > Number.MAX_SAFE_INTEGER);
 }
 
 function transformProperties(properties, dateFields) {
-  return Object.entries(properties).reduce(
-    (transformedProperties, [key, value]) => {
-      if (dateFields.includes(key)) {
-        transformedProperties[key] =
-          value === null ? null : new Date(value).getTime();
-      } else if (_.isObject(value)) {
-        transformedProperties[key] = JSON.stringify(value);
-      } else {
-        transformedProperties[key] = value;
-      }
-      return transformedProperties;
-    },
-    {},
-  );
+  return Object.entries(properties).reduce((transformedProperties, [key, value]) => {
+    if (dateFields.includes(key)) {
+      transformedProperties[key] = value === null ? null : new Date(value).getTime();
+    } else if (_.isObject(value)) {
+      transformedProperties[key] = JSON.stringify(value);
+    } else {
+      transformedProperties[key] = value;
+    }
+    return transformedProperties;
+  }, {});
 }

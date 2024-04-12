@@ -41,9 +41,7 @@ function traverse(node, options) {
   }
 
   if (node.type === 'String') {
-    return shouldHandleAsColumn(node)
-      ? handleColumn(node, options)
-      : handleValue(node, options);
+    return shouldHandleAsColumn(node) ? handleColumn(node, options) : handleValue(node, options);
   }
 
   if (['Number', 'Boolean'].includes(node.type)) {
@@ -64,9 +62,7 @@ function traverse(node, options) {
 
 function handleColumn(node, options) {
   node.value = node.value.replace(/^"([^"]*)"$/, (match, val) => val);
-  node.value = options?.esri
-    ? `attributes->\`${node.value}\``
-    : `properties->\`${node.value}\``;
+  node.value = options?.esri ? `attributes->\`${node.value}\`` : `properties->\`${node.value}\``;
 }
 
 function shouldHandleAsColumn(node) {
@@ -92,9 +88,7 @@ function trackTargetColumn(node) {
   // distribute target column to any downstream nodes; required for IN
   if (node.targetColumnName) {
     if (Array.isArray(node.value)) {
-      node.value.forEach(
-        (child) => (child.targetColumnName = node.targetColumnName),
-      );
+      node.value.forEach((child) => (child.targetColumnName = node.targetColumnName));
     }
 
     if (node.left) {

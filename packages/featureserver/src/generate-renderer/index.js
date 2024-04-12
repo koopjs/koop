@@ -30,11 +30,7 @@ function generateRendererFromPrecalculatedStatistics(statistics, options) {
   const { colorRamp: colorRampConfig = {}, baseSymbol } = classificationDef;
   const classification = statistics.classBreaks.sort((a, b) => a[0] - b[0]);
 
-  validateClassificationDefinition(
-    classificationDef,
-    geometryType,
-    classification,
-  );
+  validateClassificationDefinition(classificationDef, geometryType, classification);
 
   const colorRamp = createColorRamp({ classification, ...colorRampConfig });
   const symbolCollection = colorRamp.map((color) => {
@@ -46,14 +42,11 @@ function generateRendererFromPrecalculatedStatistics(statistics, options) {
 function generateRendererFromFeatures(data, params) {
   const { classificationDef, geometryType } = params;
 
-  // TODO: this seems weird; the winnow method is "query" but it's really a very specialized transform (aggregation)
-  // consider changes to winnow - this should maybe be a different method
+  // TODO: this seems weird; the winnow method is "query" but it's really a very
+  // specialized transform (aggregation) consider changes to winnow - this should
+  // maybe be a different method
   const classification = Winnow.query(data, params);
-  validateClassificationDefinition(
-    classificationDef,
-    geometryType,
-    classification,
-  );
+  validateClassificationDefinition(classificationDef, geometryType, classification);
 
   const { colorRamp: colorRampConfig = {}, baseSymbol } = classificationDef;
 
@@ -63,11 +56,7 @@ function generateRendererFromFeatures(data, params) {
   });
 
   if (classificationDef.type === 'classBreaksDef') {
-    return renderClassBreaks(
-      classification,
-      classificationDef,
-      symbolCollection,
-    );
+    return renderClassBreaks(classification, classificationDef, symbolCollection);
   }
 
   // if not 'classBreaksDef', then its unique-values
@@ -96,11 +85,7 @@ function createClassBreakInfos(breaks, symbolCollection) {
   });
 }
 
-function renderUniqueValue(
-  classification,
-  classificationDef,
-  symbolCollection,
-) {
+function renderUniqueValue(classification, classificationDef, symbolCollection) {
   const { uniqueValueFields, fieldDelimiter } = classificationDef;
   return {
     type: 'uniqueValue',
@@ -110,19 +95,11 @@ function renderUniqueValue(
     fieldDelimiter,
     defaultSymbol: {},
     defaultLabel: '',
-    uniqueValueInfos: createUniqueValueInfos(
-      classification,
-      fieldDelimiter,
-      symbolCollection,
-    ),
+    uniqueValueInfos: createUniqueValueInfos(classification, fieldDelimiter, symbolCollection),
   };
 }
 
-function createUniqueValueInfos(
-  uniqueValueEntries,
-  fieldDelimiter,
-  symbolCollection,
-) {
+function createUniqueValueInfos(uniqueValueEntries, fieldDelimiter, symbolCollection) {
   return uniqueValueEntries.map((uniqueValue, index) => {
     const value = serializeUniqueValues(uniqueValue, fieldDelimiter);
 

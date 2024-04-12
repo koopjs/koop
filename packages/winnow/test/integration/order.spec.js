@@ -41,7 +41,7 @@ test('With a limit of 10, toEsri, and an idField, order by OBJECTID DESC', (t) =
   t.equals(filtered.features[1].attributes.OBJECTID, 11309);
 });
 
-test('With a limit of 10, toEsri and no idField specified (winnow generates OBJECTID), order by OBJECTID DESC', (t) => {
+test('limit of 10, toEsri and no idField specified, order by OBJECTID DESC', (t) => {
   t.plan(3);
   const options = {
     limit: 10,

@@ -38,10 +38,7 @@ test('createSqlString: with no options', (t) => {
   t.plan(9);
   testCleanup();
   const sqlString = createSqlString();
-  t.equals(
-    sqlString,
-    'SELECT "substring" GROUP BY "substring" ORDER BY "substring"',
-  );
+  t.equals(sqlString, 'SELECT "substring" GROUP BY "substring" ORDER BY "substring"');
   t.equals(selectSpy.callCount, 1);
   t.equals(whereSpy.create.callCount, 0);
   t.equals(groupBySpy.callCount, 1);

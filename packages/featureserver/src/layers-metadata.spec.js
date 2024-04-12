@@ -35,7 +35,7 @@ describe('layers metadata', () => {
     FeatureLayerMetadata.callCount.should.equal(0);
   });
 
-  it('table/feature layer input should generate appropriate class instances with default ids', () => {
+  it('table/feature layer input should generate class instances with default ids', () => {
     const normalizeInputData = sinon.spy(function () {
       return {
         layers: ['layer1', 'layer2'],
@@ -67,10 +67,7 @@ describe('layers metadata', () => {
       },
     });
 
-    const layersInfo = layersInfoHandler(
-      { hello: 'world' },
-      { some: 'options' },
-    );
+    const layersInfo = layersInfoHandler({ hello: 'world' }, { some: 'options' });
 
     layersInfo.should.deepEqual({
       layers: ['layer1-metadata', 'layer2-metadata'],
@@ -89,9 +86,6 @@ describe('layers metadata', () => {
       { layerId: 1, some: 'options' },
     ]);
     tableCreateSpy.callCount.should.equal(1);
-    tableCreateSpy.firstCall.args.should.deepEqual([
-      'table1',
-      { layerId: 2, some: 'options' },
-    ]);
+    tableCreateSpy.firstCall.args.should.deepEqual(['table1', { layerId: 2, some: 'options' }]);
   });
 });

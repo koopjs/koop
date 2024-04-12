@@ -1,9 +1,6 @@
 const { setLogger } = require('./log-manager');
 
-const {
-  filterAndTransform,
-  prepareFilterAndTransform,
-} = require('./filter-and-transform');
+const { filterAndTransform, prepareFilterAndTransform } = require('./filter-and-transform');
 const { query, prepareQuery } = require('./query');
 
 module.exports = {

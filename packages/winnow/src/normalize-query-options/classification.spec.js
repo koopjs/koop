@@ -1,13 +1,13 @@
 const test = require('tape');
 const normalizeClassification = require('./classification');
 
-test('normalize-options, classification: undefined', (t) => {
+test('undefined', (t) => {
   t.plan(1);
   const normalized = normalizeClassification({});
   t.equal(normalized, undefined);
 });
 
-test('normalize-options, classification: return classification', (t) => {
+test('return classification', (t) => {
   t.plan(1);
   const normalized = normalizeClassification({
     classification: 'some classification',
@@ -15,7 +15,7 @@ test('normalize-options, classification: return classification', (t) => {
   t.equal(normalized, 'some classification');
 });
 
-test('normalize-options, classification: classificationDef without type should throw error', (t) => {
+test('classificationDef without type should throw error', (t) => {
   t.plan(1);
   try {
     normalizeClassification({ classificationDef: {} });
@@ -24,7 +24,7 @@ test('normalize-options, classification: classificationDef without type should t
   }
 });
 
-test('normalize-options, classification: classificationDef of type "classBreaksDef"', (t) => {
+test('classificationDef of type "classBreaksDef"', (t) => {
   t.plan(1);
   const normalized = normalizeClassification({
     classificationDef: {
@@ -48,7 +48,7 @@ test('normalize-options, classification: classificationDef of type "classBreaksD
   });
 });
 
-test('normalize-options, classification: classificationMethod "esriClassifyNaturalBreaks"', (t) => {
+test('classificationMethod "esriClassifyNaturalBreaks"', (t) => {
   t.plan(1);
   const normalized = normalizeClassification({
     classificationDef: {
@@ -72,7 +72,7 @@ test('normalize-options, classification: classificationMethod "esriClassifyNatur
   });
 });
 
-test('normalize-options, classification: classificationMethod "esriClassifyQuantile"', (t) => {
+test('classificationMethod "esriClassifyQuantile"', (t) => {
   t.plan(1);
   const normalized = normalizeClassification({
     classificationDef: {
@@ -96,7 +96,7 @@ test('normalize-options, classification: classificationMethod "esriClassifyQuant
   });
 });
 
-test('normalize-options, classification: classificationMethod "esriClassifyGeometricalInterval"', (t) => {
+test('classificationMethod "esriClassifyGeometricalInterval"', (t) => {
   t.plan(1);
   const normalized = normalizeClassification({
     classificationDef: {
@@ -120,7 +120,7 @@ test('normalize-options, classification: classificationMethod "esriClassifyGeome
   });
 });
 
-test('normalize-options, classification: classificationMethod "esriClassifyStandardDeviation"', (t) => {
+test('classificationMethod "esriClassifyStandardDeviation"', (t) => {
   t.plan(1);
   const normalized = normalizeClassification({
     classificationDef: {
@@ -144,7 +144,7 @@ test('normalize-options, classification: classificationMethod "esriClassifyStand
   });
 });
 
-test('normalize-options, classification: transformationMethod "esriNormalizeByLog"', (t) => {
+test('transformationMethod "esriNormalizeByLog"', (t) => {
   t.plan(1);
   const normalized = normalizeClassification({
     classificationDef: {
@@ -168,7 +168,7 @@ test('normalize-options, classification: transformationMethod "esriNormalizeByLo
   });
 });
 
-test('normalize-options, classification: transformationMethod "esriNormalizeByPercentOfTotal"', (t) => {
+test('transformationMethod "esriNormalizeByPercentOfTotal"', (t) => {
   t.plan(1);
   const normalized = normalizeClassification({
     classificationDef: {
@@ -192,7 +192,7 @@ test('normalize-options, classification: transformationMethod "esriNormalizeByPe
   });
 });
 
-test('normalize-options, classification: classificationDef of type "uniqueValueDev"', (t) => {
+test('classificationDef of type "uniqueValueDev"', (t) => {
   t.plan(1);
   const normalized = normalizeClassification({
     classificationDef: {

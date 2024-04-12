@@ -3,8 +3,7 @@ const getGeometryTypeFromGeojson = require('./get-geometry-type-from-geojson');
 
 function hasValidFullExent(data) {
   // Check for a valid fullExtent. If unset, assume this is a Table
-  const fullExtent =
-    data.fullExtent || (data.metadata && data.metadata.fullExtent);
+  const fullExtent = data.fullExtent || (data.metadata && data.metadata.fullExtent);
   if (
     _.isUndefined(fullExtent) ||
     _.isUndefined(fullExtent.xmin) ||

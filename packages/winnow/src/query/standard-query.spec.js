@@ -21,16 +21,10 @@ test('standardQuery, no options', (t) => {
     '../sql-query-builder': queryBuilderSpy,
   });
 
-  const result = standardQuery(
-    ['feature1', 'feature2', 'feature3'],
-    'SQL statement',
-  );
+  const result = standardQuery(['feature1', 'feature2', 'feature3'], 'SQL statement');
   t.deepEquals(result, ['feature1', 'feature2']);
   t.ok(queryBuilderSpy.params.calledOnce);
-  t.deepEquals(queryBuilderSpy.params.firstCall.args, [
-    ['feature1', 'feature2', 'feature3'],
-    {},
-  ]);
+  t.deepEquals(queryBuilderSpy.params.firstCall.args, [['feature1', 'feature2', 'feature3'], {}]);
   t.ok(filterAndTransformSpy.filterAndTransform.calledOnce);
   t.deepEquals(filterAndTransformSpy.filterAndTransform.firstCall.args, [
     'SQL statement',
@@ -57,11 +51,10 @@ test('standardQuery, limit option', (t) => {
     '../sql-query-builder': queryBuilderSpy,
   });
 
-  const result = standardQuery(
-    ['feature1', 'feature2', 'feature3'],
-    'SQL statement',
-    { foo: 'bar', limit: 2 },
-  );
+  const result = standardQuery(['feature1', 'feature2', 'feature3'], 'SQL statement', {
+    foo: 'bar',
+    limit: 2,
+  });
   t.deepEquals(result, ['feature1']);
   t.ok(queryBuilderSpy.params.calledOnce);
   t.deepEquals(queryBuilderSpy.params.firstCall.args, [
@@ -94,11 +87,11 @@ test('standardQuery, limit and collection option', (t) => {
     '../sql-query-builder': queryBuilderSpy,
   });
 
-  const result = standardQuery(
-    ['feature1', 'feature2', 'feature3'],
-    'SQL statement',
-    { foo: 'bar', limit: 2, collection: {} },
-  );
+  const result = standardQuery(['feature1', 'feature2', 'feature3'], 'SQL statement', {
+    foo: 'bar',
+    limit: 2,
+    collection: {},
+  });
   t.deepEquals(result, {
     metadata: { exceededTransferLimit: true },
     features: ['feature1'],

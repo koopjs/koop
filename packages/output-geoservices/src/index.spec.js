@@ -41,9 +41,7 @@ describe('Output Geoservices', () => {
   describe('constructor', () => {
     test('should include expected static properties', () => {
       expect(OutputGeoServices.type).toBe('output');
-      expect(OutputGeoServices.version).toBe(
-        require('../package.json').version,
-      );
+      expect(OutputGeoServices.version).toBe(require('../package.json').version);
       expect(OutputGeoServices.routes).toEqual([
         {
           path: '$namespace/rest/info',
@@ -94,11 +92,7 @@ describe('Output Geoservices', () => {
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
       await output.generalHandler({ foo: 'bar' }, resMock);
       expect(FeatureServer.route.mock.calls.length).toBe(1);
-      expect(FeatureServer.route.mock.calls[0]).toEqual([
-        { foo: 'bar' },
-        resMock,
-        'someData',
-      ]);
+      expect(FeatureServer.route.mock.calls[0]).toEqual([{ foo: 'bar' }, resMock, 'someData']);
       expect(modelMock.pull.mock.calls.length).toBe(1);
       expect(modelMock.pull.mock.calls[0][0]).toEqual({ foo: 'bar' });
     });
@@ -110,11 +104,7 @@ describe('Output Geoservices', () => {
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
       await output.generalHandler({ foo: 'bar' }, resMock);
       expect(FeatureServer.route.mock.calls.length).toBe(1);
-      expect(FeatureServer.route.mock.calls[0]).toEqual([
-        { foo: 'bar' },
-        resMock,
-        'someData',
-      ]);
+      expect(FeatureServer.route.mock.calls[0]).toEqual([{ foo: 'bar' }, resMock, 'someData']);
     });
 
     test('should handle 5xx error', async () => {
@@ -197,10 +187,7 @@ describe('Output Geoservices', () => {
         }),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
-      await output.generalHandler(
-        { headers: { authorization: '123' } },
-        resMock,
-      );
+      await output.generalHandler({ headers: { authorization: '123' } }, resMock);
       expect(resMock.status.mock.calls[0].length).toBe(1);
       expect(resMock.status.mock.calls[0]).toEqual([200]);
       expect(resMock.json.mock.calls[0].length).toBe(1);
@@ -224,10 +211,7 @@ describe('Output Geoservices', () => {
         }),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
-      await output.generalHandler(
-        { headers: { authorization: '123' } },
-        resMock,
-      );
+      await output.generalHandler({ headers: { authorization: '123' } }, resMock);
       expect(resMock.status.mock.calls[0].length).toBe(1);
       expect(resMock.status.mock.calls[0]).toEqual([200]);
       expect(resMock.json.mock.calls[0].length).toBe(1);
@@ -298,14 +282,13 @@ describe('Output Geoservices', () => {
           owningSystemUrl: 'https://some-host.com/api/v1/provider-name',
           authInfo: {
             isTokenBasedSecurity: true,
-            tokenServicesUrl:
-              'https://some-host.com/api/v1/provider-name/rest/generateToken',
+            tokenServicesUrl: 'https://some-host.com/api/v1/provider-name/rest/generateToken',
           },
         },
       ]);
     });
 
-    test('should return rest info with default authInfo, http token url, set by option', async () => {
+    test('should set by option', async () => {
       const modelMock = {
         namespace: 'provider-name',
         pull: jest.fn(async () => 'someData'),
@@ -322,14 +305,13 @@ describe('Output Geoservices', () => {
           owningSystemUrl: 'http://some-host.com/api/v1/provider-name',
           authInfo: {
             isTokenBasedSecurity: true,
-            tokenServicesUrl:
-              'http://some-host.com/api/v1/provider-name/rest/generateToken',
+            tokenServicesUrl: 'http://some-host.com/api/v1/provider-name/rest/generateToken',
           },
         },
       ]);
     });
 
-    test('should return rest info with default authInfo, http token url, set by GEOSERVICES_HTTP', async () => {
+    test('should set by GEOSERVICES_HTTP', async () => {
       const modelMock = {
         namespace: 'provider-name',
         pull: jest.fn(async () => 'someData'),
@@ -346,8 +328,7 @@ describe('Output Geoservices', () => {
             owningSystemUrl: 'http://some-host.com/api/v1/provider-name',
             authInfo: {
               isTokenBasedSecurity: true,
-              tokenServicesUrl:
-                'http://some-host.com/api/v1/provider-name/rest/generateToken',
+              tokenServicesUrl: 'http://some-host.com/api/v1/provider-name/rest/generateToken',
             },
           },
         ]);
@@ -358,7 +339,7 @@ describe('Output Geoservices', () => {
       }
     });
 
-    test('should return rest info with default authInfo, http token url, set by KOOP_AUTH_HTTP', async () => {
+    test('should set by KOOP_AUTH_HTTP', async () => {
       const modelMock = {
         namespace: 'provider-name',
         pull: jest.fn(async () => 'someData'),
@@ -375,8 +356,7 @@ describe('Output Geoservices', () => {
             owningSystemUrl: 'http://some-host.com/api/v1/provider-name',
             authInfo: {
               isTokenBasedSecurity: true,
-              tokenServicesUrl:
-                'http://some-host.com/api/v1/provider-name/rest/generateToken',
+              tokenServicesUrl: 'http://some-host.com/api/v1/provider-name/rest/generateToken',
             },
           },
         ]);
@@ -387,7 +367,7 @@ describe('Output Geoservices', () => {
       }
     });
 
-    test('should return rest info with default authInfo, http token url, set by authenticationSpecification', async () => {
+    test('should set with authenticationSpecification', async () => {
       const modelMock = {
         namespace: 'provider-name',
         pull: jest.fn(async () => 'someData'),
@@ -406,8 +386,7 @@ describe('Output Geoservices', () => {
           owningSystemUrl: 'http://some-host.com/api/v1/provider-name',
           authInfo: {
             isTokenBasedSecurity: true,
-            tokenServicesUrl:
-              'http://some-host.com/api/v1/provider-name/rest/generateToken',
+            tokenServicesUrl: 'http://some-host.com/api/v1/provider-name/rest/generateToken',
           },
         },
       ]);

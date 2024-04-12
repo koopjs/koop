@@ -105,9 +105,7 @@ class GeoServices {
 
   #getHttpSetting(options, model) {
     if (options.useHttpForTokenUrl || process.env.GEOSERVICES_HTTP === 'true') {
-      return (
-        options.useHttpForTokenUrl || process.env.GEOSERVICES_HTTP === 'true'
-      );
+      return options.useHttpForTokenUrl || process.env.GEOSERVICES_HTTP === 'true';
     }
 
     if (typeof model.authenticationSpecification === 'function') {
@@ -116,7 +114,7 @@ class GeoServices {
 
     if (typeof process.env.KOOP_AUTH_HTTP !== 'undefined') {
       this.#logger.warn(
-        'Use of "KOOP_AUTH_HTTP" environment variable is deprecated.  It will be removed in a future release. Use the "useHttpForTokenUrl" option or "GEOSERVICES_HTTP" environment variable.',
+        'Use of "KOOP_AUTH_HTTP" environment variable is deprecated.  It will be removed in a future release. Use the "useHttpForTokenUrl" option or "GEOSERVICES_HTTP" environment variable.', // eslint-disable-line
       );
       return process.env.KOOP_AUTH_HTTP === 'true';
     }
@@ -176,17 +174,11 @@ class GeoServices {
     const authInfo = { ...this.#authInfo };
 
     if (this.#authInfo.isTokenBasedSecurity) {
-      authInfo.tokenServicesUrl = this.#buildTokensUrl(
-        req.headers.host,
-        req.baseUrl,
-      );
+      authInfo.tokenServicesUrl = this.#buildTokensUrl(req.headers.host, req.baseUrl);
     }
 
     FeatureServer.route(req, res, {
-      owningSystemUrl: this.#buildOwningSystemUrl(
-        req.headers.host,
-        req.baseUrl,
-      ),
+      owningSystemUrl: this.#buildOwningSystemUrl(req.headers.host, req.baseUrl),
       authInfo,
     });
   }

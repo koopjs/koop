@@ -65,11 +65,7 @@ test('project, error throw in projection, return null', (t) => {
   const project = proxyquire(modulePath, {
     '../../helpers/project-coordinates': projectSpy,
   });
-  const result = project(
-    { type: 'Point', coordinates: [] },
-    'source-cs',
-    'target-cs',
-  );
+  const result = project({ type: 'Point', coordinates: [] }, 'source-cs', 'target-cs');
   t.deepEquals(result, null);
   t.end();
 });

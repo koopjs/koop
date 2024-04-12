@@ -114,11 +114,7 @@ const layerTemplateSchema = Joi.object().keys({
         domain: Joi.any().valid(null),
         editable: Joi.boolean().valid(false, true),
         nullable: Joi.boolean().valid(false),
-        sqlType: Joi.string().valid(
-          'sqlTypeOther',
-          'sqlTypeDouble',
-          'sqlTypeInteger',
-        ),
+        sqlType: Joi.string().valid('sqlTypeOther', 'sqlTypeDouble', 'sqlTypeInteger'),
       }),
     )
     .min(0),

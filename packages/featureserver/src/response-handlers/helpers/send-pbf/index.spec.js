@@ -59,22 +59,13 @@ describe('sendPbf', () => {
       esri: 'pbf',
       length: 99,
     });
-    res.set.firstCall.args.should.deepEqual([
-      'content-type',
-      'application/x-protobuf',
-    ]);
+    res.set.firstCall.args.should.deepEqual(['content-type', 'application/x-protobuf']);
     res.set.secondCall.args.should.deepEqual(['content-length', 99]);
-    res.set.thirdCall.args.should.deepEqual([
-      'content-disposition',
-      'inline;filename=results.pbf',
-    ]);
+    res.set.thirdCall.args.should.deepEqual(['content-disposition', 'inline;filename=results.pbf']);
 
     res.status.firstCall.args.should.deepEqual([200]);
 
-    transformFeaturesForPbfSpy.firstCall.args.should.deepEqual([
-      { esri: 'json' },
-      undefined,
-    ]);
+    transformFeaturesForPbfSpy.firstCall.args.should.deepEqual([{ esri: 'json' }, undefined]);
     protoSpy.encode.firstCall.args.should.deepEqual([
       {
         queryResult: {
@@ -94,15 +85,9 @@ describe('sendPbf', () => {
       esri: 'pbf',
       length: 99,
     });
-    res.set.firstCall.args.should.deepEqual([
-      'content-type',
-      'application/x-protobuf',
-    ]);
+    res.set.firstCall.args.should.deepEqual(['content-type', 'application/x-protobuf']);
     res.set.secondCall.args.should.deepEqual(['content-length', 99]);
-    res.set.thirdCall.args.should.deepEqual([
-      'content-disposition',
-      'inline;filename=results.pbf',
-    ]);
+    res.set.thirdCall.args.should.deepEqual(['content-disposition', 'inline;filename=results.pbf']);
 
     res.status.firstCall.args.should.deepEqual([200]);
 
@@ -128,15 +113,9 @@ describe('sendPbf', () => {
       length: 99,
     });
 
-    res.set.firstCall.args.should.deepEqual([
-      'content-type',
-      'application/x-protobuf',
-    ]);
+    res.set.firstCall.args.should.deepEqual(['content-type', 'application/x-protobuf']);
     res.set.secondCall.args.should.deepEqual(['content-length', 99]);
-    res.set.thirdCall.args.should.deepEqual([
-      'content-disposition',
-      'inline;filename=results.pbf',
-    ]);
+    res.set.thirdCall.args.should.deepEqual(['content-disposition', 'inline;filename=results.pbf']);
 
     res.status.firstCall.args.should.deepEqual([200]);
 

@@ -2,26 +2,14 @@ const test = require('tape');
 const normalizeQueryInput = require('./normalize-query-input');
 
 test('normalizeQueryInput: invalid input should throw error', (t) => {
-  const invalidInput = [
-    undefined,
-    null,
-    {},
-    { features: [{}] },
-    [{}],
-    'string',
-    1234,
-    true,
-  ];
+  const invalidInput = [undefined, null, {}, { features: [{}] }, [{}], 'string', 1234, true];
 
   invalidInput.forEach((input) => {
     try {
       normalizeQueryInput(input);
       t.fail(`should have throw error on: ${input}`);
     } catch (error) {
-      t.equals(
-        error.message,
-        'Could not normalize query input to feature array',
-      );
+      t.equals(error.message, 'Could not normalize query input to feature array');
     }
   });
   t.end();

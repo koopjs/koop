@@ -3,13 +3,7 @@ const { getDataTypeFromValue } = require('../helpers');
 const logManager = require('../log-manager');
 
 function logProviderDataWarnings(geojson, requestParams) {
-  const {
-    f,
-    outFields = '*',
-    returnCountOnly,
-    returnExtentOnly,
-    returnIdsOnly,
-  } = requestParams;
+  const { f, outFields = '*', returnCountOnly, returnExtentOnly, returnIdsOnly } = requestParams;
 
   if (f === 'geojson' || returnCountOnly || returnExtentOnly || returnIdsOnly) {
     return;
@@ -21,13 +15,13 @@ function logProviderDataWarnings(geojson, requestParams) {
 
   if (!metadata.idField && properties?.OBJECTID === undefined) {
     logManager.logger.debug(
-      `provider data has no OBJECTID and has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an integer in range 0 - ${Number.MAX_SAFE_INTEGER}. An OBJECTID field will be auto-generated in the absence of an "idField" assignment.`,
+      `provider data has no OBJECTID and has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an integer in range 0 - ${Number.MAX_SAFE_INTEGER}. An OBJECTID field will be auto-generated in the absence of an "idField" assignment.`, // eslint-disable-line
     );
   }
 
   if (hasMixedCaseObjectIdKey(metadata.idField)) {
     logManager.logger.debug(
-      'requested provider has "idField" that is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients.',
+      'requested provider has "idField" that is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients.', // eslint-disable-line
     );
   }
 
@@ -45,16 +39,13 @@ function hasMixedCaseObjectIdKey(idField = '') {
 }
 
 function getFieldsDefinitionsForResponse(fields, outFields) {
-  const outFieldsSet =
-    outFields === '*' || outFields === '' ? null : outFields.split(',');
+  const outFieldsSet = outFields === '*' || outFields === '' ? null : outFields.split(',');
   if (!outFieldsSet) {
     return fields;
   }
 
   return fields.filter((field) => {
-    return (
-      outFieldsSet.includes(field.alias) || outFieldsSet.includes(field.name)
-    );
+    return outFieldsSet.includes(field.alias) || outFieldsSet.includes(field.name);
   });
 }
 
@@ -74,12 +65,11 @@ function compareFieldDefintionsToFeature(fieldDefinitions, featureProperties) {
 function compareFeatureToFieldDefinitions(featureProperties, fieldDefinitions) {
   Object.keys(featureProperties).forEach((key) => {
     const definition =
-      _.find(fieldDefinitions, ['name', key]) ||
-      _.find(fieldDefinitions, ['name', key]);
+      _.find(fieldDefinitions, ['name', key]) || _.find(fieldDefinitions, ['name', key]);
 
     if (!definition && key !== 'OBJECTID') {
       logManager.logger.debug(
-        `requested provider has feature with property "${key}" that was not defined in metadata fields array`,
+        `requested provider has feature with property "${key}" that was not defined in metadata fields array`, // eslint-disable-line
       );
     }
   });
@@ -92,10 +82,7 @@ function findFeatureProperty(properties, name, alias) {
 function hasTypeMismatch(definitionType, value) {
   const propertyType = getDataTypeFromValue(value);
 
-  return (
-    definitionType !== propertyType &&
-    !isEsriTypeMatchException(definitionType, propertyType)
-  );
+  return definitionType !== propertyType && !isEsriTypeMatchException(definitionType, propertyType);
 }
 
 function isEsriTypeMatchException(definitionType, propertyType) {

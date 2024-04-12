@@ -14,10 +14,7 @@ function getDefaultSymbol(geomType) {
 }
 
 function getSymbolRenderer(geomType) {
-  if (
-    geomType === 'esriGeometryPoint' ||
-    geomType === 'esriGeometryMultiPoint'
-  ) {
+  if (geomType === 'esriGeometryPoint' || geomType === 'esriGeometryMultiPoint') {
     return new PointRenderer();
   }
 
@@ -29,8 +26,5 @@ function getSymbolRenderer(geomType) {
     return new PolygonRenderer();
   }
 
-  throw new CodedError(
-    'Dataset geometry type is not supported for renderers.',
-    400,
-  );
+  throw new CodedError('Dataset geometry type is not supported for renderers.', 400);
 }

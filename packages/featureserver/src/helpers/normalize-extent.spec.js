@@ -39,9 +39,7 @@ describe('normalize-extent', function () {
       normalizeExtent([-180, -90, 180, 'foo'], { wkid: 4326 });
       should.fail();
     } catch (error) {
-      error.message.should.equal(
-        'Received invalid extent: [-180,-90,180,"foo"]',
-      );
+      error.message.should.equal('Received invalid extent: [-180,-90,180,"foo"]');
     }
   });
 

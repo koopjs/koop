@@ -37,14 +37,8 @@ const polygonFeature = {
 
 test('sql.fn.ST_Within - geometries fully within a target polygon should return true', (t) => {
   t.plan(3);
-  t.ok(
-    filterAndTransform.fn.ST_Within(pointFeature, polygonFilter),
-    'point within filter geom',
-  );
-  t.ok(
-    filterAndTransform.fn.ST_Within(lineFeature, polygonFilter),
-    'line within filter geom',
-  );
+  t.ok(filterAndTransform.fn.ST_Within(pointFeature, polygonFilter), 'point within filter geom');
+  t.ok(filterAndTransform.fn.ST_Within(lineFeature, polygonFilter), 'line within filter geom');
   t.ok(
     filterAndTransform.fn.ST_Within(polygonFeature, polygonFilter),
     'polygon within filter geom',

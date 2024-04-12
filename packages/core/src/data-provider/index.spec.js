@@ -70,18 +70,10 @@ describe('Tests for Provider', function () {
     providerRegistration.should.have.property('namespace', 'test-provider');
     providerRegistration.should.have.property('version', '99.0.0');
     providerRegistration.should.have.property('providerRoutes').length(1);
-    providerRegistration.providerRoutes[0].should.have.property(
-      'path',
-      '/mock-provider-route/:id',
-    );
+    providerRegistration.providerRoutes[0].should.have.property('path', '/mock-provider-route/:id');
     providerRegistration.should.have.property('outputPluginRoutes').length(1);
-    providerRegistration.outputPluginRoutes[0].should.have.property(
-      'namespace',
-      'MockOutput',
-    );
-    providerRegistration.outputPluginRoutes[0].should.have
-      .property('routes')
-      .length(1);
+    providerRegistration.outputPluginRoutes[0].should.have.property('namespace', 'MockOutput');
+    providerRegistration.outputPluginRoutes[0].should.have.property('routes').length(1);
     providerRegistration.outputPluginRoutes[0].routes[0].should.have.property(
       'path',
       '/test-provider/:id/mock-output',
@@ -133,13 +125,9 @@ describe('Tests for Provider', function () {
     providerRegistration.addRoutesToServer(mockServer);
     mockServer.get.callCount.should.equal(2);
     mockServer.get.firstCall.args[0].should.equal('/mock-provider-route/:id');
-    mockServer.get.secondCall.args[0].should.equal(
-      '/test-provider/:id/mock-output',
-    );
+    mockServer.get.secondCall.args[0].should.equal('/test-provider/:id/mock-output');
     mockServer.post.callCount.should.equal(1);
-    mockServer.post.firstCall.args[0].should.equal(
-      '/test-provider/:id/mock-output',
-    );
+    mockServer.post.firstCall.args[0].should.equal('/test-provider/:id/mock-output');
   });
 
   it('should add routes to server, provider routes last', function () {
@@ -157,14 +145,10 @@ describe('Tests for Provider', function () {
     };
     providerRegistration.addRoutesToServer(mockServer);
     mockServer.get.callCount.should.equal(2);
-    mockServer.get.firstCall.args[0].should.equal(
-      '/test-provider/:id/mock-output',
-    );
+    mockServer.get.firstCall.args[0].should.equal('/test-provider/:id/mock-output');
     mockServer.get.secondCall.args[0].should.equal('/mock-provider-route/:id');
     mockServer.post.callCount.should.equal(1);
-    mockServer.post.firstCall.args[0].should.equal(
-      '/test-provider/:id/mock-output',
-    );
+    mockServer.post.firstCall.args[0].should.equal('/test-provider/:id/mock-output');
   });
 
   it('should add routes to server, no provider-defined routes', function () {
@@ -182,13 +166,9 @@ describe('Tests for Provider', function () {
     };
     providerRegistration.addRoutesToServer(mockServer);
     mockServer.get.callCount.should.equal(1);
-    mockServer.get.firstCall.args[0].should.equal(
-      '/test-provider/:id/mock-output',
-    );
+    mockServer.get.firstCall.args[0].should.equal('/test-provider/:id/mock-output');
     mockServer.post.callCount.should.equal(1);
-    mockServer.post.firstCall.args[0].should.equal(
-      '/test-provider/:id/mock-output',
-    );
+    mockServer.post.firstCall.args[0].should.equal('/test-provider/:id/mock-output');
   });
 
   it('should throw error on bad provider option', () => {

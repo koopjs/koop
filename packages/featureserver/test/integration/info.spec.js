@@ -24,9 +24,7 @@ describe('Info operations', () => {
       restInfo.should.have.property('currentVersion', CURRENT_VERSION);
       restInfo.should.have.property('authInfo');
       restInfo.authInfo.should.have.property('isTokenBasedSecurity', true);
-      restInfo.authInfo.should.have
-        .property('tokenServicesUrl')
-        .be.type('string');
+      restInfo.authInfo.should.have.property('tokenServicesUrl').be.type('string');
     });
   });
 
@@ -47,7 +45,7 @@ describe('Info operations', () => {
         capabilities: 'Query',
         description: 'MyTestDesc',
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         spatialReference: { wkid: 4326, latestWkid: 4326 },
         fullExtent: {
           spatialReference: { wkid: 4326, latestWkid: 4326 },
@@ -193,7 +191,7 @@ describe('Info operations', () => {
       server.layers[0].geometryType.should.equal('esriGeometryPoint');
     });
 
-    it('should support a metadata with layer id, defaultVisibility, minScale, and maxScale values', () => {
+    it('should support metadata', () => {
       const layer0 = _.cloneDeep(data);
       const layer1 = _.cloneDeep(data);
       layer0.metadata = {

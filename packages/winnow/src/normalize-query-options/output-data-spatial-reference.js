@@ -3,18 +3,12 @@ const { getCollectionCrs } = require('./helpers');
 const logManager = require('../log-manager');
 
 function normalizeOutputDataSpatialReference(options = {}) {
-  const {
-    srsname,
-    srsName,
-    projection,
-    outputCrs,
-    outSR,
-    inputCrs,
-    sourceSR,
-    collection,
-  } = options;
+  const { srsname, srsName, projection, outputCrs, outSR, inputCrs, sourceSR, collection } =
+    options;
 
-  // if no output spatial reference set (outputCrs, projection, srsname, srsName, outSR), assume output will be same as input (inputCrs, sourceSR)
+  /* if no output spatial reference set (outputCrs, projection, srsname, srsName, outSR)
+   * assume output will be same as input (inputCrs, sourceSR)
+   */
   const outputSpatialReference =
     outputCrs ||
     projection ||
@@ -30,7 +24,7 @@ function normalizeOutputDataSpatialReference(options = {}) {
 
   if (!spatialReference) {
     logManager.logger.debug(
-      `spatial reference "${outputSpatialReference}" could not be normalized. Defaulting to EPSG:4326.`,
+      `spatial reference "${outputSpatialReference}" could not be normalized. Defaulting to EPSG:4326.`, // eslint-disable-line
     );
     // @TODO: throw error
   }

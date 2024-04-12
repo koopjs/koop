@@ -66,11 +66,7 @@ class FilterAndTransformParams {
   addInputCrs(data) {
     const { metadata = {} } = data;
     this.inputCrs =
-      this.inputCrs ||
-      this.sourceSR ||
-      metadata.crs ||
-      helpers.getCollectionCrs(data) ||
-      4326;
+      this.inputCrs || this.sourceSR || metadata.crs || helpers.getCollectionCrs(data) || 4326;
     delete this.sourceSR;
     return this;
   }

@@ -1,4 +1,3 @@
-
 const { workspaces } = require('../package.json');
 const shell = require('shelljs');
 const path = require('path');
@@ -12,7 +11,7 @@ workspaces.forEach((workspace) => {
   const package = workspace.split(path.sep).pop();
   console.log(`Package "${package}":`);
   process.stdout.write(`  - running ${context} test coverage...`);
-  shell.exec(getCovCmd(package, context)); 
+  shell.exec(getCovCmd(package, context));
   process.stdout.write('completed.\n');
   process.stdout.write(`  - generating ${context} test coverage badge...`);
   shell.exec(getBadgeCmd(package, context));

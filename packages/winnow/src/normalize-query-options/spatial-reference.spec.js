@@ -43,15 +43,15 @@ test('normalize-query-options, spatial-reference: object with latest wkid from p
   t.equal(wkid, 4269);
 });
 
-test('normalize-query-options, spatial-reference: object with wkt that is Web Mercator string', (t) => {
+test('object with wkt that is Web Mercator string', (t) => {
   t.plan(1);
   const inputWkt =
-    'PROJCS["WGS_1984_Web_Mercator_Auxiliary_Sphere",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Mercator_Auxiliary_Sphere"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-6.828007551173374],PARAMETER["Standard_Parallel_1",0.0],PARAMETER["Auxiliary_Sphere_Type",0.0],UNIT["Meter",1.0]]';
+    'PROJCS["WGS_1984_Web_Mercator_Auxiliary_Sphere",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Mercator_Auxiliary_Sphere"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-6.828007551173374],PARAMETER["Standard_Parallel_1",0.0],PARAMETER["Auxiliary_Sphere_Type",0.0],UNIT["Meter",1.0]]';  // eslint-disable-line
   const { wkid } = normalizeSpatialReference({ wkt: inputWkt });
   t.equal(wkid, 3857);
 });
 
-test('normalize-query-options, spatial-reference: object with wkt that is not Web Mercator string', (t) => {
+test('object with wkt that is not Web Mercator string', (t) => {
   t.plan(2);
   const inputWkt = `PROJCS["NAD_1983_StatePlane_California_V_FIPS_0405_Feet",
   GEOGCS["GCS_North_American_1983",
@@ -76,7 +76,7 @@ test('normalize-query-options, spatial-reference: object with wkt that is not We
 test('normalize-query-options, spatial-reference: Web Mercator wkt string', (t) => {
   t.plan(1);
   const inputWkt =
-    'PROJCS["WGS_1984_Web_Mercator_Auxiliary_Sphere",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Mercator_Auxiliary_Sphere"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-6.828007551173374],PARAMETER["Standard_Parallel_1",0.0],PARAMETER["Auxiliary_Sphere_Type",0.0],UNIT["Meter",1.0]]';
+    'PROJCS["WGS_1984_Web_Mercator_Auxiliary_Sphere",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Mercator_Auxiliary_Sphere"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-6.828007551173374],PARAMETER["Standard_Parallel_1",0.0],PARAMETER["Auxiliary_Sphere_Type",0.0],UNIT["Meter",1.0]]';  // eslint-disable-line
   const { wkid } = normalizeSpatialReference(inputWkt);
   t.equal(wkid, 3857);
 });
@@ -124,13 +124,13 @@ test('normalize-query-options, spatial-reference: wkid 102100', (t) => {
 test('normalize-query-options, spatial-reference: wkid not in Proj4 list', (t) => {
   t.plan(2);
   const inputWkt =
-    'PROJCS["NAD_1983_HARN_StatePlane_Washington_North_FIPS_4601",GEOGCS["GCS_North_American_1983_HARN",DATUM["D_North_American_1983_HARN",SPHEROID["GRS_1980",6378137.0,298.257222101]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Lambert_Conformal_Conic"],PARAMETER["False_Easting",500000.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-120.8333333333333],PARAMETER["Standard_Parallel_1",47.5],PARAMETER["Standard_Parallel_2",48.73333333333333],PARAMETER["Latitude_Of_Origin",47.0],UNIT["Meter",1.0]]';
+    'PROJCS["NAD_1983_HARN_StatePlane_Washington_North_FIPS_4601",GEOGCS["GCS_North_American_1983_HARN",DATUM["D_North_American_1983_HARN",SPHEROID["GRS_1980",6378137.0,298.257222101]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Lambert_Conformal_Conic"],PARAMETER["False_Easting",500000.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-120.8333333333333],PARAMETER["Standard_Parallel_1",47.5],PARAMETER["Standard_Parallel_2",48.73333333333333],PARAMETER["Latitude_Of_Origin",47.0],UNIT["Meter",1.0]]';  // eslint-disable-line
   const { wkt, wkid } = normalizeSpatialReference(2855);
   t.equal(wkt, inputWkt);
   t.equal(wkid, 2855);
 });
 
-test('normalize-query-options, spatial-reference: object with wkid and other optional properties', (t) => {
+test('object with wkid and other optional properties', (t) => {
   t.plan(1);
   const { wkid } = normalizeSpatialReference({
     wkid: 102643,

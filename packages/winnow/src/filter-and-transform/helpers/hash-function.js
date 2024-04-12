@@ -1,6 +1,5 @@
 const hashFixture = require('./hash-fixture');
-const USE_JAVASCRIPT_HASHING =
-  process.env.OBJECTID_FEATURE_HASH === 'javascript';
+const USE_JAVASCRIPT_HASHING = process.env.OBJECTID_FEATURE_HASH === 'javascript';
 const murmurhash = require('murmurhash');
 
 function getHashFunction() {
@@ -15,9 +14,7 @@ function getHashFunction() {
     return hashFunction;
     // eslint-disable-next-line
   } catch (e) {
-    console.info(
-      'Using murmurhash as default hasher for OBJECTID auto-generate.',
-    );
+    console.info('Using murmurhash as default hasher for OBJECTID auto-generate.');
     return murmurhash;
   }
 }
