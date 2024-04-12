@@ -195,10 +195,7 @@ class GeoServices {
       return generalResponseHandler(res, result, req.query);
       */
     restInfo(req, res, {
-      owningSystemUrl: this.#buildOwningSystemUrl(
-        req.headers.host,
-        req.baseUrl,
-      ),
+      owningSystemUrl: this.#buildOwningSystemUrl(req.headers.host, req.baseUrl),
       authInfo,
     });
   }
