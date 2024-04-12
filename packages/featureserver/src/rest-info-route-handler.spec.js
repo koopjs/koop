@@ -94,11 +94,7 @@ describe('rest/info handler', () => {
       },
     };
 
-    restInfo(
-      req,
-      {},
-      { authInfo: { foo: 'bar' }, owningSystemUrl: 'helloworld' },
-    );
+    restInfo(req, {}, { authInfo: { foo: 'bar' }, owningSystemUrl: 'helloworld' });
     handlerSpy.callCount.should.equal(1);
     handlerSpy.firstCall.args.should.deepEqual([
       {},
