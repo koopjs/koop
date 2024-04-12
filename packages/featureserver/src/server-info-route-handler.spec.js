@@ -9,6 +9,15 @@ describe('server info', () => {
       server: 'metadata',
     };
   });
+  const req = {
+    app: {
+      locals: {},
+    },
+    body: {},
+    query: {},
+  };
+
+  const res = {};
   const serverInfoHandler = proxyquire('./server-info-route-handler', {
     './helpers/server-metadata': {
       create: serverMetadataCreateSpy,
@@ -20,7 +29,7 @@ describe('server info', () => {
   });
 
   it('should construct options from empty geojson and no settings', () => {
-    const serverInfo = serverInfoHandler({});
+    const serverInfo = serverInfoHandler(req, res, {});
 
     serverInfo.should.deepEqual({ server: 'metadata' });
 
@@ -29,6 +38,10 @@ describe('server info', () => {
         currentVersion: undefined,
         initialExtent: undefined,
         fullExtent: undefined,
+        spatialReference: {
+          latestWkid: 4326,
+          wkid: 4326,
+        },
         layers: [],
         tables: [],
         relationships: [],
@@ -37,14 +50,14 @@ describe('server info', () => {
   });
 
   it('should construct options from empty geojson and app config', () => {
-    const serverInfo = serverInfoHandler(
-      {},
-      {
-        app: {
-          locals: { config: { featureServer: { currentVersion: 101.1 } } },
-        },
+    const req = {
+      app: {
+        locals: { config: { featureServer: { currentVersion: 101.1 } } },
       },
-    );
+      query: {},
+      body: {},
+    };
+    const serverInfo = serverInfoHandler(req, res, {});
 
     serverInfo.should.deepEqual({ server: 'metadata' });
 
@@ -53,6 +66,10 @@ describe('server info', () => {
         currentVersion: 101.1,
         initialExtent: undefined,
         fullExtent: undefined,
+        spatialReference: {
+          latestWkid: 4326,
+          wkid: 4326,
+        },
         layers: [],
         tables: [],
         relationships: [],
@@ -62,7 +79,7 @@ describe('server info', () => {
 
   it('should construct options from empty feature collection and no settings', () => {
     const simpleCollectionFixture = { type: 'FeatureCollection', features: [] };
-    const serverInfo = serverInfoHandler(simpleCollectionFixture);
+    const serverInfo = serverInfoHandler(req, res, simpleCollectionFixture);
 
     serverInfo.should.deepEqual({ server: 'metadata' });
 
@@ -71,6 +88,10 @@ describe('server info', () => {
         currentVersion: undefined,
         initialExtent: undefined,
         fullExtent: undefined,
+        spatialReference: {
+          latestWkid: 4326,
+          wkid: 4326,
+        },
         layers: [],
         tables: [
           {
@@ -99,7 +120,7 @@ describe('server info', () => {
       ],
     };
 
-    const serverInfo = serverInfoHandler(simpleCollectionFixture);
+    const serverInfo = serverInfoHandler(req, res, simpleCollectionFixture);
 
     serverInfo.should.deepEqual({
       server: 'metadata',
@@ -110,6 +131,10 @@ describe('server info', () => {
         currentVersion: undefined,
         initialExtent: undefined,
         fullExtent: undefined,
+        spatialReference: {
+          latestWkid: 4326,
+          wkid: 4326,
+        },
         layers: [],
         tables: [
           {
@@ -154,7 +179,7 @@ describe('server info', () => {
       ],
     };
 
-    const serverInfo = serverInfoHandler(simpleCollectionFixture);
+    const serverInfo = serverInfoHandler(req, res, simpleCollectionFixture);
 
     serverInfo.should.deepEqual({
       server: 'metadata',
@@ -180,6 +205,10 @@ describe('server info', () => {
           xmax: -99,
           ymin: 39,
           ymax: 41,
+        },
+        spatialReference: {
+          latestWkid: 4326,
+          wkid: 4326,
         },
         layers: [
           {
@@ -277,7 +306,7 @@ describe('server info', () => {
       tables,
     };
 
-    const serverInfo = serverInfoHandler(input);
+    const serverInfo = serverInfoHandler(req, res, input);
 
     serverInfo.should.deepEqual({
       server: 'metadata',
@@ -349,6 +378,10 @@ describe('server info', () => {
           spatialReference: { wkid: 4326, latestWkid: 4326 },
         },
         relationships: [],
+        spatialReference: {
+          latestWkid: 4326,
+          wkid: 4326,
+        },
       },
     ]);
   });
@@ -432,7 +465,7 @@ describe('server info', () => {
       relationships,
     };
 
-    const serverInfo = serverInfoHandler(input);
+    const serverInfo = serverInfoHandler(req, res, input);
 
     serverInfo.should.deepEqual({
       server: 'metadata',
@@ -503,6 +536,10 @@ describe('server info', () => {
           ymax: 90,
           spatialReference: { wkid: 4326, latestWkid: 4326 },
         },
+        spatialReference: {
+          latestWkid: 4326,
+          wkid: 4326,
+        },
         relationships: [
           {
             id: 0,
@@ -533,7 +570,7 @@ describe('server info', () => {
       ],
     };
 
-    const serverInfo = serverInfoHandler(simpleCollectionFixture);
+    const serverInfo = serverInfoHandler(req, res, simpleCollectionFixture);
 
     serverInfo.should.deepEqual({
       server: 'metadata',
@@ -563,6 +600,10 @@ describe('server info', () => {
         ],
         tables: [],
         relationships: [],
+        spatialReference: {
+          latestWkid: 4326,
+          wkid: 4326,
+        },
       },
     ]);
   });

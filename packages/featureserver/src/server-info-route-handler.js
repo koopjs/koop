@@ -6,60 +6,65 @@ const {
   normalizeExtent,
   normalizeSpatialReference,
   normalizeInputData,
+  combineBodyQueryParameters,
+  validateInfoRouteParams,
 } = require('./helpers');
 const logManager = require('./log-manager');
 const ServerMetadata = require('./helpers/server-metadata');
 
-function serverMetadataResponse(data, req = {}) {
-  const { query: { inputCrs, sourceSR } = {} } = req;
-  const providerMetadata = normalizeMetadataFromProvider(data, inputCrs, sourceSR);
+function serverInfo(req, res, data) {
+  const requestParameters = combineBodyQueryParameters(req.body, req.query);
+
+  validateInfoRouteParams(requestParameters);
+
+  const { layers, tables, relationships, ...restData } = normalizeInputData(data);
+
+  const { inputCrs, sourceSR } = requestParameters;
+
+  const metadata = normalizeMetadata(layers[0], tables[0], restData);
+  const spatialReference = getSpatialReference(inputCrs, sourceSR, layers[0]);
+
+  const fullExtent = getExtent(metadata.extent, layers, spatialReference);
+  const initialExtent = getExtent(metadata.initialExtent, layers, spatialReference);
 
   // TODO: deprecate in favor or server-metadata-settings
   const appConfig = req.app?.locals?.config?.featureServer || {};
 
   return ServerMetadata.create({
     ...appConfig,
-    ...providerMetadata,
-    currentVersion: appConfig.currentVersion,
-  });
-}
-
-function normalizeMetadataFromProvider(data, inputCrs, sourceSR) {
-  const { layers, tables, relationships } = normalizeInputData(data);
-
-  const collectionMetadata = flattenMetadata(data);
-
-  const spatialReference = getSpatialReference(inputCrs, sourceSR, layers[0] || data) || {
-    wkid: 4326,
-    latestWkid: 4326,
-  };
-
-  const extent =
-    collectionMetadata?.extent || calculateServiceExtentFromLayers(layers, spatialReference);
-
-  const metadata = {
-    ...flattenMetadata(tables[0]),
-    ...flattenMetadata(layers[0]),
-    ...flattenMetadata(data),
-    fullExtent: getExtent(extent, spatialReference),
-    initialExtent: getExtent(collectionMetadata?.initialExtent || extent, spatialReference),
-  };
-
-  return {
     ...metadata,
+    spatialReference,
+    fullExtent,
+    initialExtent,
+    currentVersion: appConfig.currentVersion,
     layers: layers.map(formatServerItemInfo),
     tables: tables.map((table, idx) => {
       return formatServerItemInfo(table, layers.length + idx);
     }),
     relationships: relationships.map(formatRelationshipInfo),
-  };
+  });
 }
 
-function getSpatialReference(inputCrs, sourceSR, data) {
-  const spatialReference = inputCrs || sourceSR || getCollectionCrs(data);
+function normalizeMetadata(...args) {
+  const flattened = args
+    .map((arg) => {
+      return flattenMetadata(arg);
+    })
+    .reduce((acc, cur) => {
+      acc = {
+        ...acc,
+        ...cur,
+      };
+      return acc;
+    }, {});
+  return flattened;
+}
+
+function getSpatialReference(inputCrs, sourceSR, layer) {
+  const spatialReference = inputCrs || sourceSR || getCollectionCrs(layer);
 
   if (!spatialReference) {
-    return;
+    return { wkid: 4326, latestWkid: 4326 };
   }
 
   return normalizeSpatialReference(spatialReference);
@@ -117,7 +122,9 @@ function flattenMetadata(data) {
   };
 }
 
-function getExtent(extent, spatialReference) {
+function getExtent(metadataExtent, layers, spatialReference) {
+  const extent = metadataExtent || calculateServiceExtentFromLayers(layers, spatialReference);
+
   try {
     return normalizeExtent(extent, spatialReference);
   } catch (error) {
@@ -160,4 +167,4 @@ function formatRelationshipInfo(json, relationshipIndex) {
   };
 }
 
-module.exports = serverMetadataResponse;
+module.exports = serverInfo;
