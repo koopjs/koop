@@ -31,10 +31,7 @@ module.exports = function extendModel(
       this.#cacheTtl = options.cacheTtl;
       this.namespace = namespace;
       this.logger = logger;
-      this.#before = this.#normalizeAndBindMethod(
-        options.before || beforeNoop,
-        2,
-      );
+      this.#before = this.#normalizeAndBindMethod(options.before || beforeNoop, 2);
       this.#after = this.#normalizeAndBindMethod(options.after || afterNoop, 3);
       this.#cacheRetrieve = this.#normalizeAndBindMethod(
         modelCache?.retrieve || cacheRetrieveNoop,
@@ -47,9 +44,7 @@ module.exports = function extendModel(
         modelCache,
       );
       this.#getProviderData = this.#normalizeAndBindMethod(this.getData, 2);
-      this.#getLayer = this.getLayer
-        ? this.#normalizeAndBindMethod(this.getLayer, 2)
-        : undefined;
+      this.#getLayer = this.getLayer ? this.#normalizeAndBindMethod(this.getLayer, 2) : undefined;
       this.#getCatalog = this.getCatalog
         ? this.#normalizeAndBindMethod(this.getCatalog, 2)
         : undefined;
@@ -117,9 +112,7 @@ module.exports = function extendModel(
       if (!this.#getLayer) {
         return this.#handleReturn(
           callback,
-          new Error(
-            `getLayer() method is not implemented in the ${this.namespace} provider.`,
-          ),
+          new Error(`getLayer() method is not implemented in the ${this.namespace} provider.`),
         );
       }
 
@@ -156,9 +149,7 @@ module.exports = function extendModel(
       if (!this.#getCatalog) {
         return this.#handleReturn(
           callback,
-          new Error(
-            `getCatalog() method is not implemented in the ${this.namespace} provider.`,
-          ),
+          new Error(`getCatalog() method is not implemented in the ${this.namespace} provider.`),
         );
       }
 
@@ -198,9 +189,7 @@ module.exports = function extendModel(
         const providerStream = await this.getStream(req);
         return providerStream;
       } else {
-        throw new Error(
-          'getStream() function is not implemented in the provider.',
-        );
+        throw new Error('getStream() function is not implemented in the provider.');
       }
     }
 
@@ -227,9 +216,7 @@ module.exports = function extendModel(
   // If provider has auth methods use them, then use auth-module methods, otherwise dummy methods
   if (typeof ProviderModel.prototype.authorize !== 'function') {
     Model.prototype.authorize =
-      typeof authModule?.authorize === 'function'
-        ? authModule.authorize
-        : async () => {};
+      typeof authModule?.authorize === 'function' ? authModule.authorize : async () => {};
   }
 
   if (typeof ProviderModel.prototype.authenticate !== 'function') {
@@ -245,15 +232,14 @@ module.exports = function extendModel(
     logger.warn(
       'Use of "authenticationSpecification" is deprecated. It will be removed in a future release.',
     );
-    Model.prototype.authenticationSpecification =
-      authModule?.authenticationSpecification;
+    Model.prototype.authenticationSpecification = authModule?.authenticationSpecification;
   }
 
   return new Model({ logger, cache }, options);
 };
 
 function shouldUseCache(cacheEntry) {
-  // older cache plugins stored expiry time explicitly; all caches should move to returning empty if expired
+  // older cache plugins stored expiry time; all should move to returning empty if expired
   if (!cacheEntry) {
     return false;
   }

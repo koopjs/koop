@@ -12,11 +12,7 @@ const ServerMetadata = require('./helpers/server-metadata');
 
 function serverMetadataResponse(data, req = {}) {
   const { query: { inputCrs, sourceSR } = {} } = req;
-  const providerMetadata = normalizeMetadataFromProvider(
-    data,
-    inputCrs,
-    sourceSR,
-  );
+  const providerMetadata = normalizeMetadataFromProvider(data, inputCrs, sourceSR);
 
   // TODO: deprecate in favor or server-metadata-settings
   const appConfig = req.app?.locals?.config?.featureServer || {};
@@ -33,25 +29,20 @@ function normalizeMetadataFromProvider(data, inputCrs, sourceSR) {
 
   const collectionMetadata = flattenMetadata(data);
 
-  const spatialReference = getSpatialReference(
-    inputCrs,
-    sourceSR,
-    layers[0] || data,
-  ) || { wkid: 4326, latestWkid: 4326 };
+  const spatialReference = getSpatialReference(inputCrs, sourceSR, layers[0] || data) || {
+    wkid: 4326,
+    latestWkid: 4326,
+  };
 
   const extent =
-    collectionMetadata?.extent ||
-    calculateServiceExtentFromLayers(layers, spatialReference);
+    collectionMetadata?.extent || calculateServiceExtentFromLayers(layers, spatialReference);
 
   const metadata = {
     ...flattenMetadata(tables[0]),
     ...flattenMetadata(layers[0]),
     ...flattenMetadata(data),
     fullExtent: getExtent(extent, spatialReference),
-    initialExtent: getExtent(
-      collectionMetadata?.initialExtent || extent,
-      spatialReference,
-    ),
+    initialExtent: getExtent(collectionMetadata?.initialExtent || extent, spatialReference),
   };
 
   return {
@@ -88,9 +79,7 @@ function calculateServiceExtentFromLayers(layers, spatialReference) {
         const bounds = calculateBounds(layer);
         bounds.forEach((coordinate) => {
           if (isNaN(coordinate)) {
-            throw new Error(
-              `Geometry coordinate is not a number: ${coordinate}`,
-            );
+            throw new Error(`Geometry coordinate is not a number: ${coordinate}`);
           }
         });
         return bounds;
@@ -115,9 +104,7 @@ function calculateServiceExtentFromLayers(layers, spatialReference) {
       spatialReference,
     };
   } catch (error) {
-    logManager.logger.debug(
-      `Could not calculate extent from data: ${error.message}`,
-    );
+    logManager.logger.debug(`Could not calculate extent from data: ${error.message}`);
   }
 }
 
@@ -139,15 +126,11 @@ function getExtent(extent, spatialReference) {
 }
 
 function formatServerItemInfo(json, defaultId) {
-  const {
-    metadata: { id, name, minScale = 0, maxScale = 0, defaultVisibility } = {},
-  } = json;
+  const { metadata: { id, name, minScale = 0, maxScale = 0, defaultVisibility } = {} } = json;
 
   const geometryType = getGeometryTypeFromGeojson(json);
 
-  const defaultName = geometryType
-    ? `Layer_${id || defaultId}`
-    : `Table_${id || defaultId}`;
+  const defaultName = geometryType ? `Layer_${id || defaultId}` : `Table_${id || defaultId}`;
 
   const retVal = {
     id: id || defaultId,

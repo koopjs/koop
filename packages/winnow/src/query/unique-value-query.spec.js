@@ -103,7 +103,7 @@ test('uniqueValueQuery, one field', (t) => {
         },
       },
     ],
-    'SELECT COUNT(properties->`Name`) as `count`,  properties->`Name` as `Name` FROM ?  GROUP BY properties->`Name`',
+    'SELECT COUNT(properties->`Name`) as `count`,  properties->`Name` as `Name` FROM ?  GROUP BY properties->`Name`',  // eslint-disable-line
     {
       aggregates: [
         {
@@ -199,7 +199,7 @@ test('uniqueValueQuery, two fields', (t) => {
         },
       },
     ],
-    'SELECT COUNT(properties->`Name`) as `count`,  properties->`Name` as `Name`, properties->`Location` as `Location` FROM ?  GROUP BY properties->`Name`, properties->`Location`',
+    'SELECT COUNT(properties->`Name`) as `count`,  properties->`Name` as `Name`, properties->`Location` as `Location` FROM ?  GROUP BY properties->`Name`, properties->`Location`',  // eslint-disable-line
     {
       aggregates: [
         {

@@ -61,9 +61,7 @@ function getUnits({ latestWkid, wkid, wkt }) {
     const units = wktParser(wkt)?.units;
     return esriUnitsLookup(units);
   } catch (error) {
-    logManager.logger.debug(
-      `Could not set feature service units from spatial reference: ${error}`,
-    );
+    logManager.logger.debug(`Could not set feature service units from spatial reference: ${error}`);
   }
 }
 

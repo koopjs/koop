@@ -5,25 +5,29 @@ const _ = require('lodash');
 
 const { workspaces } = require('../package.json');
 
-async function execute () {
+async function execute() {
   for (let i = 0; i < workspaces.length; i++) {
     const workspace = workspaces[i];
     process.chdir(workspace);
     const package = workspace.split(path.sep).pop();
 
-    const {files} = await git().diffSummary(['--name-only', '--relative', 'origin/master']);
+    const { files } = await git().diffSummary(['--name-only', '--relative', 'origin/master']);
 
-    const srcFiles = files.filter(({ file }) => {
-      return file.endsWith('.js') && !file.endsWith('spec.js');
-    }).map(({ file }) => {
-      return `-n ${file}`;
-    });
+    const srcFiles = files
+      .filter(({ file }) => {
+        return file.endsWith('.js') && !file.endsWith('spec.js');
+      })
+      .map(({ file }) => {
+        return `-n ${file}`;
+      });
 
-    const testTargetFiles = files.filter(({ file }) => {
-      return file.startsWith('src') && file.endsWith('spec.js');
-    }).map(({ file }) => {
-      return `-n ${file.replace('.spec', '')}`;
-    });
+    const testTargetFiles = files
+      .filter(({ file }) => {
+        return file.startsWith('src') && file.endsWith('spec.js');
+      })
+      .map(({ file }) => {
+        return `-n ${file.replace('.spec', '')}`;
+      });
 
     const filesForCoverageCheck = _.uniq([...srcFiles, ...testTargetFiles]);
 
@@ -40,13 +44,14 @@ async function execute () {
   }
 }
 
-execute().then(() => {
-  process.exit();
-}).catch(error => {
-  console.error(error);
-  process.exit(1);
-});
-
+execute()
+  .then(() => {
+    process.exit();
+  })
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
 
 function getCovCmd(package, srcFiles) {
   if (package === 'output-geoservices') {

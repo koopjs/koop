@@ -1,8 +1,4 @@
-const {
-  normalizeInputData,
-  TableLayerMetadata,
-  FeatureLayerMetadata,
-} = require('./helpers');
+const { normalizeInputData, TableLayerMetadata, FeatureLayerMetadata } = require('./helpers');
 
 module.exports = function layersMetadata(data, options = {}) {
   const { layers: layersInput, tables: tablesInput } = normalizeInputData(data);

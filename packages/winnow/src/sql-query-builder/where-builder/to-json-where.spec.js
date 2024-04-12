@@ -40,7 +40,7 @@ test('toJsonWhere: transform a simple but inverse predicate to Esri flavor', (t)
   t.equals(whereFragment, "'bar' = attributes->`foo`");
 });
 
-test('toJsonWhere: transform a predicate with OBJECTID and metadata fields that define the OBJECTID', (t) => {
+test('toJsonWhere: transform predicate with OBJECTID and field that defines the OBJECTID', (t) => {
   t.plan(1);
   const options = {
     idField: 'OBJECTID',
@@ -63,12 +63,10 @@ test('toJsonWhere: handles 1=1', (t) => {
 
 test('toJsonWhere: handles (expression))', (t) => {
   t.plan(1);
-  const whereFragment = translateSqlWhere(
-    "(model = 'ford' OR model = 'benz') AND color = 'white'",
-  );
+  const whereFragment = translateSqlWhere("(model = 'ford' OR model = 'benz') AND color = 'white'");
   t.equals(
     whereFragment,
-    "(properties->`model` = 'ford' OR properties->`model` = 'benz') AND properties->`color` = 'white'",
+    "(properties->`model` = 'ford' OR properties->`model` = 'benz') AND properties->`color` = 'white'", // eslint-disable-line
   );
 });
 
@@ -147,7 +145,7 @@ test('toJsonWhere: handle BETWEEN', (t) => {
   );
 });
 
-test('toJsonWhere: transform a simple equality predicate and transform values by code value domain', (t) => {
+test('toJsonWhere: transform equality predicate and transform values by code value domain', (t) => {
   t.plan(1);
   const options = {
     esriFields: [

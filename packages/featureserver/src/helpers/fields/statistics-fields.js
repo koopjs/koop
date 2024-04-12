@@ -42,9 +42,7 @@ class StatisticsFields {
 
     this.fields = Object.entries(statisticsSample).map(([key, value]) => {
       if (groupByFieldsForStatistics.includes(key)) {
-        const fieldDefinition = fieldDefinitions.find(
-          ({ name }) => name === key,
-        );
+        const fieldDefinition = fieldDefinitions.find(({ name }) => name === key);
 
         if (fieldDefinition) {
           return new FieldFromFieldDefinition(fieldDefinition);

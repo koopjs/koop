@@ -13,11 +13,7 @@ const classificationDefinitionSchema = joi
           .string()
           .valid('esriSMS', 'esriSLS', 'esriSFS')
           .required()
-          .error(
-            new Error(
-              'baseSymbol requires a valid type: esriSMS, esriSLS, esriSFS',
-            ),
-          ),
+          .error(new Error('baseSymbol requires a valid type: esriSMS, esriSLS, esriSFS')),
       })
       .optional()
       .unknown(),
@@ -29,11 +25,7 @@ const classificationDefinitionSchema = joi
     'any.required': 'classification definition is required',
   });
 
-function validateClassificationDefinition(
-  definition,
-  geometryType,
-  classification,
-) {
+function validateClassificationDefinition(definition, geometryType, classification) {
   validateDefinitionShape(definition);
   validateDefinitionSymbolAgainstGeometry(definition.baseSymbol, geometryType);
   validateUniqueValueFields(definition, classification);
@@ -48,10 +40,7 @@ function validateDefinitionShape(definition) {
   }
 }
 
-function validateDefinitionSymbolAgainstGeometry(
-  baseSymbol = {},
-  geometryType,
-) {
+function validateDefinitionSymbolAgainstGeometry(baseSymbol = {}, geometryType) {
   const { type: symbolType } = baseSymbol;
 
   if (!symbolType) {
@@ -60,7 +49,7 @@ function validateDefinitionSymbolAgainstGeometry(
 
   if (symbolLookup(geometryType) !== symbolType) {
     const error = new Error(
-      'Classification defintion uses a base symbol type that is incompatiable with dataset geometry',
+      'Classification defintion uses a base symbol type that is incompatiable with dataset geometry', // eslint-disable-line
     );
     error.code = 400;
     throw error;
@@ -94,14 +83,9 @@ function validateUniqueValueFields(definition, classification) {
   }
   const classificationFieldNames = Object.keys(classification[0]);
 
-  if (
-    areFieldsMissingFromClassification(
-      uniqueValueFields,
-      classificationFieldNames,
-    )
-  ) {
+  if (areFieldsMissingFromClassification(uniqueValueFields, classificationFieldNames)) {
     throw new CodedError(
-      `Unique value definition fields are incongruous with classification fields: ${uniqueValueFields.join(
+      `Unique value definition fields are incongruous with classification fields: ${uniqueValueFields.join( // eslint-disable-line
         ', ',
       )} : ${classificationFieldNames.join(', ')}`,
       400,
@@ -109,13 +93,8 @@ function validateUniqueValueFields(definition, classification) {
   }
 }
 
-function areFieldsMissingFromClassification(
-  definitionFields,
-  classificationFieldNames,
-) {
-  return definitionFields.some(
-    (fieldName) => !classificationFieldNames.includes(fieldName),
-  );
+function areFieldsMissingFromClassification(definitionFields, classificationFieldNames) {
+  return definitionFields.some((fieldName) => !classificationFieldNames.includes(fieldName));
 }
 
 module.exports = validateClassificationDefinition;

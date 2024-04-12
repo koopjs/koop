@@ -22,7 +22,7 @@ describe('Layers operations', () => {
             displayField: 'id',
             description: 'MyTestDesc',
             copyrightText:
-              'Copyright information varies by provider. For more information please contact the source of this data.',
+              'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
             defaultVisibility: true,
             isDataVersioned: false,
             hasContingentValuesDefinition: false,

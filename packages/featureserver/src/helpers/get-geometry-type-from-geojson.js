@@ -19,8 +19,7 @@ module.exports = function getGeometryTypeFromGeojson({
   metadata = {},
   features = [],
 } = {}) {
-  const type =
-    geometryType || metadata.geometryType || findInFeatures(features);
+  const type = geometryType || metadata.geometryType || findInFeatures(features);
 
   if (!type) {
     logManager.logger.debug(`Input JSON has unsupported geometryType: ${type}`);

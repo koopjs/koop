@@ -29,10 +29,7 @@ describe('filterAndTransform', () => {
 
     describe('should standardize parameters', () => {
       it('should convert "returnDistinctValues" to "distinct"', () => {
-        const result = filterAndTransform(
-          { features: [{}] },
-          { returnDistinctValues: true },
-        );
+        const result = filterAndTransform({ features: [{}] }, { returnDistinctValues: true });
         result.should.deepEqual({
           features: 'expected-result',
         });
@@ -56,10 +53,7 @@ describe('filterAndTransform', () => {
       });
 
       it('should remove "+" from where', () => {
-        const result = filterAndTransform(
-          { features: [{}] },
-          { where: 'FOO+IS+NOT+NULL' },
-        );
+        const result = filterAndTransform({ features: [{}] }, { where: 'FOO+IS+NOT+NULL' });
         result.should.deepEqual({
           features: 'expected-result',
         });
@@ -76,10 +70,7 @@ describe('filterAndTransform', () => {
       });
 
       it('should not remove "+" from where if wrapped in single quotes', () => {
-        const result = filterAndTransform(
-          { features: [{}] },
-          { where: "'FOO+'+IS+NOT+NULL" },
-        );
+        const result = filterAndTransform({ features: [{}] }, { where: "'FOO+'+IS+NOT+NULL" });
         result.should.deepEqual({
           features: 'expected-result',
         });
@@ -96,10 +87,7 @@ describe('filterAndTransform', () => {
       });
 
       it('should not remove "+" from where if wrapped in double quotes', () => {
-        const result = filterAndTransform(
-          { features: [{}] },
-          { where: '"FOO+"+IS+NOT+NULL' },
-        );
+        const result = filterAndTransform({ features: [{}] }, { where: '"FOO+"+IS+NOT+NULL' });
         result.should.deepEqual({
           features: 'expected-result',
         });
@@ -136,10 +124,7 @@ describe('filterAndTransform', () => {
       });
 
       it('should set toEsri:false when returnExtentOnly: true', () => {
-        const result = filterAndTransform(
-          { features: [{}] },
-          { returnExtentOnly: true },
-        );
+        const result = filterAndTransform({ features: [{}] }, { returnExtentOnly: true });
         result.should.deepEqual({
           features: 'expected-result',
         });
@@ -183,10 +168,7 @@ describe('filterAndTransform', () => {
             query: filterAndTransformSpy,
           },
         };
-        const { filterAndTransform } = proxyquire(
-          './filter-and-transform',
-          stub,
-        );
+        const { filterAndTransform } = proxyquire('./filter-and-transform', stub);
         const result = filterAndTransform({ features: [{}] }, {});
         result.should.deepEqual({
           features: 'expected-result',
@@ -204,10 +186,7 @@ describe('filterAndTransform', () => {
       });
 
       it('should get value from metadata.crs', () => {
-        const result = filterAndTransform(
-          { metadata: { crs: 1234 }, features: [{}] },
-          {},
-        );
+        const result = filterAndTransform({ metadata: { crs: 1234 }, features: [{}] }, {});
         result.should.deepEqual({
           features: 'expected-result',
         });

@@ -104,9 +104,7 @@ function calculateExtentFromFeatures(geojson, spatialReference) {
       spatialReference,
     };
   } catch (error) {
-    logManager.logger.debug(
-      `Could not calculate extent from data: ${error.message}`,
-    );
+    logManager.logger.debug(`Could not calculate extent from data: ${error.message}`);
   }
 }
 

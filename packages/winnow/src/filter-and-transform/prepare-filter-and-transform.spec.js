@@ -19,8 +19,7 @@ test('Should return prepared filter and transform query', (t) => {
   });
 
   // Get a prepared filter and transform query
-  const preparedFilterAndTransform =
-    prepareFilterAndTransform('SELECT foo FROM ?');
+  const preparedFilterAndTransform = prepareFilterAndTransform('SELECT foo FROM ?');
   t.equals(typeof preparedFilterAndTransform, 'function');
 
   // Execute with single GeoJSON feature

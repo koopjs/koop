@@ -85,16 +85,8 @@ describe('generate-renderer', () => {
         { classification: data.statistics.classBreaks },
       ]);
       createSymbolSpy.calledTwice.should.equal(true);
-      createSymbolSpy.firstCall.args.should.deepEqual([
-        undefined,
-        'color-1',
-        'esriGeometryPoint',
-      ]);
-      createSymbolSpy.secondCall.args.should.deepEqual([
-        undefined,
-        'color-2',
-        'esriGeometryPoint',
-      ]);
+      createSymbolSpy.firstCall.args.should.deepEqual([undefined, 'color-1', 'esriGeometryPoint']);
+      createSymbolSpy.secondCall.args.should.deepEqual([undefined, 'color-2', 'esriGeometryPoint']);
     });
 
     it('should render precalculated statistics with default geometry type', () => {
@@ -168,16 +160,8 @@ describe('generate-renderer', () => {
         { classification: data.statistics.classBreaks },
       ]);
       createSymbolSpy.calledTwice.should.equal(true);
-      createSymbolSpy.firstCall.args.should.deepEqual([
-        undefined,
-        'color-1',
-        'esriGeometryPoint',
-      ]);
-      createSymbolSpy.secondCall.args.should.deepEqual([
-        undefined,
-        'color-2',
-        'esriGeometryPoint',
-      ]);
+      createSymbolSpy.firstCall.args.should.deepEqual([undefined, 'color-1', 'esriGeometryPoint']);
+      createSymbolSpy.secondCall.args.should.deepEqual([undefined, 'color-2', 'esriGeometryPoint']);
     });
   });
 
@@ -291,9 +275,7 @@ describe('generate-renderer', () => {
       });
 
       getGeometrySpy.calledOnce.should.equal(true);
-      getGeometrySpy.firstCall.args.should.deepEqual([
-        { features: ['feature'] },
-      ]);
+      getGeometrySpy.firstCall.args.should.deepEqual([{ features: ['feature'] }]);
       winnowSpy.calledOnce.should.equal(true);
       winnowSpy.firstCall.args.should.deepEqual([
         { features: ['feature'] },
@@ -396,9 +378,7 @@ describe('generate-renderer', () => {
       });
 
       getGeometrySpy.calledOnce.should.equal(true);
-      getGeometrySpy.firstCall.args.should.deepEqual([
-        { features: ['feature'] },
-      ]);
+      getGeometrySpy.firstCall.args.should.deepEqual([{ features: ['feature'] }]);
       winnowSpy.calledOnce.should.equal(true);
       winnowSpy.firstCall.args.should.deepEqual([
         { features: ['feature'] },

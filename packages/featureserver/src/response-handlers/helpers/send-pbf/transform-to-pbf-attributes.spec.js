@@ -107,10 +107,7 @@ describe('transformToPbfAttributes', () => {
   });
 
   it('should properly handle OIDs that are strings', () => {
-    const result = transformToPbfAttributes(
-      { ...attributes, FID: 'foo' },
-      fieldMap,
-    );
+    const result = transformToPbfAttributes({ ...attributes, FID: 'foo' }, fieldMap);
     result.should.deepEqual([
       {
         sint64Value: 1421798400000,

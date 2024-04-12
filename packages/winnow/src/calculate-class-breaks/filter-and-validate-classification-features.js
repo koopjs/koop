@@ -1,9 +1,6 @@
 const _ = require('lodash');
 
-module.exports = function filterAndValidateClassificationFeatures(
-  features,
-  classificationField,
-) {
+module.exports = function filterAndValidateClassificationFeatures(features, classificationField) {
   return features
     .filter((feature) => {
       return !shouldSkipFeature({ feature, classificationField });

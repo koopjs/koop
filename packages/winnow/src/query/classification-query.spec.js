@@ -77,15 +77,11 @@ test('classificationQuery, classes classification type', (t) => {
     '../calculate-class-breaks/index': calculateClassBreaksSpy,
   });
 
-  const result = classificationQuery(
-    ['feature1', 'feature2', 'feature3'],
-    'SQL statement',
-    {
-      foo: 'bar',
-      collection: {},
-      classification: { type: 'classes', breakCount: 1 },
-    },
-  );
+  const result = classificationQuery(['feature1', 'feature2', 'feature3'], 'SQL statement', {
+    foo: 'bar',
+    collection: {},
+    classification: { type: 'classes', breakCount: 1 },
+  });
   t.deepEquals(result, 'classification results');
   t.ok(standardQuerySpy.calledOnce);
   t.deepEquals(standardQuerySpy.firstCall.args, [
@@ -119,15 +115,11 @@ test('classificationQuery, unique classification type', (t) => {
     './unique-value-query': uniqueValueQuerySpy,
   });
 
-  const result = classificationQuery(
-    ['feature1', 'feature2', 'feature3'],
-    'SQL filter statement',
-    {
-      foo: 'bar',
-      collection: {},
-      classification: { type: 'unique' },
-    },
-  );
+  const result = classificationQuery(['feature1', 'feature2', 'feature3'], 'SQL filter statement', {
+    foo: 'bar',
+    collection: {},
+    classification: { type: 'unique' },
+  });
   t.deepEquals(result, 'unique value query result');
   t.ok(standardQuerySpy.calledOnce);
   t.deepEquals(standardQuerySpy.firstCall.args, [
@@ -136,9 +128,6 @@ test('classificationQuery, unique classification type', (t) => {
     { foo: 'bar', collection: {}, classification: { type: 'unique' } },
   ]);
   t.ok(uniqueValueQuerySpy.calledOnce);
-  t.deepEquals(uniqueValueQuerySpy.firstCall.args, [
-    ['feature1', 'feature2'],
-    { type: 'unique' },
-  ]);
+  t.deepEquals(uniqueValueQuerySpy.firstCall.args, [['feature1', 'feature2'], { type: 'unique' }]);
   t.end();
 });

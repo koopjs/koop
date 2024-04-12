@@ -37,9 +37,9 @@ describe('TableLayerMetadata', () => {
       type: 'Table',
       displayField: '',
       description:
-        'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+        'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
       copyrightText:
-        'Copyright information varies by provider. For more information please contact the source of this data.',
+        'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
       defaultVisibility: true,
       isDataVersioned: false,
       hasContingentValuesDefinition: false,
@@ -158,9 +158,9 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -272,9 +272,9 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -384,9 +384,9 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -496,9 +496,9 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'hellow',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -608,9 +608,9 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'fluffy',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -720,9 +720,9 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -832,9 +832,9 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -944,9 +944,9 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -1056,9 +1056,9 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -1168,9 +1168,9 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -1270,10 +1270,7 @@ describe('TableLayerMetadata', () => {
 
     it('defer to "capabilities.list" option if defined ', () => {
       const tableLayerMetadata = new TableLayerMetadata();
-      tableLayerMetadata.mixinOverrides(
-        {},
-        { capabilities: { list: 'hello,world' } },
-      );
+      tableLayerMetadata.mixinOverrides({}, { capabilities: { list: 'hello,world' } });
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
@@ -1283,9 +1280,9 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -1385,10 +1382,7 @@ describe('TableLayerMetadata', () => {
 
     it('add "Extract" to default "capabilities" if capabilities.extract is truthy', () => {
       const tableLayerMetadata = new TableLayerMetadata();
-      tableLayerMetadata.mixinOverrides(
-        {},
-        { capabilities: { extract: true } },
-      );
+      tableLayerMetadata.mixinOverrides({}, { capabilities: { extract: true } });
 
       tableLayerMetadata.should.deepEqual({
         currentVersion: CURRENT_VERSION,
@@ -1398,9 +1392,9 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -1510,9 +1504,9 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -1622,9 +1616,9 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -1734,9 +1728,9 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -1846,9 +1840,9 @@ describe('TableLayerMetadata', () => {
         type: 'Table',
         displayField: 'OBJECTID',
         description:
-          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+          'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
         copyrightText:
-          'Copyright information varies by provider. For more information please contact the source of this data.',
+          'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
         defaultVisibility: true,
         isDataVersioned: false,
         hasContingentValuesDefinition: false,
@@ -2111,9 +2105,7 @@ describe('TableLayerMetadata', () => {
             supportedQueryFormats: ['PBF'],
           },
         );
-        tableLayerMetadata.supportedQueryFormats.should.equal(
-          'JSON,geojson,PBF',
-        );
+        tableLayerMetadata.supportedQueryFormats.should.equal('JSON,geojson,PBF');
         loggerSpy.error.firstCall.args.should.deepEqual([
           '"supportedQueryFormats" override is invalid; must contain "JSON". skipping override',
         ]);
@@ -2191,7 +2183,7 @@ describe('TableLayerMetadata', () => {
     });
   });
 
-  it('static method "create" should normalize input, call constructor, and mixin-overrides ', () => {
+  it('should normalize input, call constructor, and mixin-overrides ', () => {
     const tableLayerMetadata = TableLayerMetadata.create(
       {
         features: ['feature'],
@@ -2228,7 +2220,7 @@ describe('TableLayerMetadata', () => {
       displayField: 'myField',
       description: 'Overrides default layer description.',
       copyrightText:
-        'Copyright information varies by provider. For more information please contact the source of this data.',
+        'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
       defaultVisibility: true,
       isDataVersioned: false,
       hasContingentValuesDefinition: false,
@@ -2347,9 +2339,9 @@ describe('TableLayerMetadata', () => {
       type: 'Table',
       displayField: 'myField',
       description:
-        'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+        'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
       copyrightText:
-        'Copyright information varies by provider. For more information please contact the source of this data.',
+        'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
       defaultVisibility: true,
       isDataVersioned: false,
       hasContingentValuesDefinition: false,

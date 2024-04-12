@@ -1,8 +1,8 @@
 const Koop = require('@koopjs/koop-core');
 const provider = require('@koopjs/provider-file-geojson');
 const request = require('supertest');
-const FeatureCollection = require('./helpers/FeatureCollection.proto')
-  .esriPBuffer.FeatureCollectionPBuffer;
+const FeatureCollection = require('./helpers/FeatureCollection.proto').esriPBuffer
+  .FeatureCollectionPBuffer;
 const mockLogger = {
   debug: () => {},
   info: () => {},
@@ -28,12 +28,8 @@ describe('koop', () => {
           const decodedBuffer = FeatureCollection.decode(response.body);
           const pbfJson = FeatureCollection.toObject(decodedBuffer);
           expect(response.status).toBe(200);
-          expect(response.headers['content-disposition']).toBe(
-            'inline;filename=results.pbf',
-          );
-          expect(response.headers['content-type']).toBe(
-            'application/x-protobuf',
-          );
+          expect(response.headers['content-disposition']).toBe('inline;filename=results.pbf');
+          expect(response.headers['content-type']).toBe('application/x-protobuf');
           expect(response.headers['content-length']).toBe('229');
           expect(pbfJson).toEqual({
             queryResult: {

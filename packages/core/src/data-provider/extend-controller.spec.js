@@ -42,9 +42,6 @@ describe('Tests for create-controller', function () {
   it('should use a default namespace when unnamed constructor functions are used', () => {
     const mockModel = 'model-test';
     const extendedController = extendController(mockModel, function () {});
-    extendedController.should.have.property(
-      'namespace',
-      'UndefinedControllerNamespace',
-    );
+    extendedController.should.have.property('namespace', 'UndefinedControllerNamespace');
   });
 });

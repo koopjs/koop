@@ -46,10 +46,7 @@ module.exports = class DataProvider {
       ..._.pick(pluginDefinition, 'hosts', 'disableIdParam'),
     };
 
-    this.version =
-      pluginDefinition.version ||
-      pluginDefinition?.status?.version ||
-      'unknown';
+    this.version = pluginDefinition.version || pluginDefinition?.status?.version || 'unknown';
 
     this.#urlSafeNamespace = this.namespace.replace(/\s/g, '-').toLowerCase();
 
@@ -66,16 +63,11 @@ module.exports = class DataProvider {
 
     this.#definedProviderRoutes = pluginDefinition.routes || [];
 
-    this.#outputPluginControllers = outputPlugins.map(
-      ({ outputClass, options }) => {
-        return extendRouteController(model, outputClass, options);
-      },
-    );
+    this.#outputPluginControllers = outputPlugins.map(({ outputClass, options }) => {
+      return extendRouteController(model, outputClass, options);
+    });
 
-    this.#providerController = extendRouteController(
-      model,
-      pluginDefinition.Controller,
-    );
+    this.#providerController = extendRouteController(model, pluginDefinition.Controller);
 
     this.#logger = logger;
     this.#createOutputRoutes();
@@ -94,32 +86,30 @@ module.exports = class DataProvider {
   }
 
   #createOutputRoutes() {
-    this.outputPluginRoutes = this.#outputPluginControllers.map(
-      (controller) => {
-        const routes = controller.routes.map((route) => {
-          const { handler, path, methods } = route;
+    this.outputPluginRoutes = this.#outputPluginControllers.map((controller) => {
+      const routes = controller.routes.map((route) => {
+        const { handler, path, methods } = route;
 
-          const compositeRoute = new ProviderRoute({
-            controller,
-            handler,
-            path,
-            methods,
-            providerNamespace: this.#urlSafeNamespace,
-            outputNamespace: controller.namespace,
-            hosts: this.#options.hosts,
-            disableIdParam: this.#options.disableIdParam,
-            routePrefix: this.#options.routePrefix,
-            absolutePath: this.#options.absolutePath,
-          });
-          return compositeRoute;
+        const compositeRoute = new ProviderRoute({
+          controller,
+          handler,
+          path,
+          methods,
+          providerNamespace: this.#urlSafeNamespace,
+          outputNamespace: controller.namespace,
+          hosts: this.#options.hosts,
+          disableIdParam: this.#options.disableIdParam,
+          routePrefix: this.#options.routePrefix,
+          absolutePath: this.#options.absolutePath,
         });
+        return compositeRoute;
+      });
 
-        return {
-          namespace: controller.namespace,
-          routes,
-        };
-      },
-    );
+      return {
+        namespace: controller.namespace,
+        routes,
+      };
+    });
   }
 
   #createProviderRoutes() {
@@ -138,9 +128,7 @@ module.exports = class DataProvider {
         routePrefix: this.#options.routePrefix,
         absolutePath: true,
       });
-      this.#logger.info(
-        `ROUTE | [${methods.join(', ').toUpperCase()}] | ${registeredRoute.path}`,
-      );
+      this.#logger.info(`ROUTE | [${methods.join(', ').toUpperCase()}] | ${registeredRoute.path}`);
       return registeredRoute;
     });
   }
@@ -148,9 +136,7 @@ module.exports = class DataProvider {
   #addOutputRoutes(server) {
     this.outputPluginRoutes.forEach((output) => {
       const { namespace: outputNamespace, routes } = output;
-      this.#logger.info(
-        `"${outputNamespace}" routes for the "${this.namespace}" provider:`,
-      );
+      this.#logger.info(`"${outputNamespace}" routes for the "${this.namespace}" provider:`);
       this.#addRouteCollection(server, routes);
     });
   }
@@ -170,9 +156,7 @@ module.exports = class DataProvider {
         server[method.toLowerCase()](path, handler);
       });
 
-      this.#logger.info(
-        `ROUTE | [${methods.join(', ').toUpperCase()}] | ${path}`,
-      );
+      this.#logger.info(`ROUTE | [${methods.join(', ').toUpperCase()}] | ${path}`);
     });
   }
 

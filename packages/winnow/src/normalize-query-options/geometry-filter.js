@@ -11,8 +11,7 @@ function normalizeGeometryFilter(options = {}) {
 
   if (!geometry) return;
 
-  const geometryFilterSpatialReference =
-    normalizeGeometryFilterSpatialReference(options);
+  const geometryFilterSpatialReference = normalizeGeometryFilterSpatialReference(options);
   const fromSR = getCrsString(geometryFilterSpatialReference);
 
   const geometryFilter = transformGeometryToGeojson(geometry);

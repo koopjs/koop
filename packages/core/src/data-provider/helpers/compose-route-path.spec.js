@@ -59,9 +59,7 @@ describe('Tests for composeRoutePath', function () {
       path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/:method',
     };
     const fullRoute = composeRoutePath(params);
-    fullRoute.should.equal(
-      '/test/rest/services/:host/:id/FeatureServer/:layer/:method',
-    );
+    fullRoute.should.equal('/test/rest/services/:host/:id/FeatureServer/:layer/:method');
   });
 
   it('create route without path construction', function () {

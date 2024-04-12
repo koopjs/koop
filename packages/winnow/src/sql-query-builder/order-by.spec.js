@@ -16,10 +16,7 @@ test('createOrderByClause: returns empty string if empty options', (t) => {
 test('createOrderByClause: returns orderBy clause with default direction', (t) => {
   t.plan(1);
   const orderByClause = createOrderByClause({ order: ['foo', 'bar'] });
-  t.equals(
-    orderByClause,
-    ' ORDER BY properties->`foo` ASC, properties->`bar` ASC',
-  );
+  t.equals(orderByClause, ' ORDER BY properties->`foo` ASC, properties->`bar` ASC');
 });
 
 test('createOrderByClause: returns orderBy clause for esri JSON', (t) => {
@@ -28,10 +25,7 @@ test('createOrderByClause: returns orderBy clause for esri JSON', (t) => {
     esri: true,
     order: ['foo', 'bar'],
   });
-  t.equals(
-    orderByClause,
-    ' ORDER BY attributes->`foo` ASC, attributes->`bar` ASC',
-  );
+  t.equals(orderByClause, ' ORDER BY attributes->`foo` ASC, attributes->`bar` ASC');
 });
 
 test('createOrderByClause: returns orderBy clause with directions ', (t) => {
@@ -39,10 +33,7 @@ test('createOrderByClause: returns orderBy clause with directions ', (t) => {
   const orderByClause = createOrderByClause({
     order: ['foo DESC', 'bar DESC'],
   });
-  t.equals(
-    orderByClause,
-    ' ORDER BY properties->`foo` DESC, properties->`bar` DESC',
-  );
+  t.equals(orderByClause, ' ORDER BY properties->`foo` DESC, properties->`bar` DESC');
 });
 
 test('createOrderByClause: returns orderBy clause formated for aggregation select', (t) => {
@@ -60,8 +51,5 @@ test('createOrderByClause: returns orderBy clause formated for aggregation selec
     order: ['foo DESC', 'bar DESC'],
     aggregates: [{ name: 'hello' }],
   });
-  t.equals(
-    orderByClause,
-    ' ORDER BY properties->`foo` DESC, properties->`bar` DESC',
-  );
+  t.equals(orderByClause, ' ORDER BY properties->`foo` DESC, properties->`bar` DESC');
 });

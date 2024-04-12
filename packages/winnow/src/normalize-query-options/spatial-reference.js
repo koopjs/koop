@@ -22,9 +22,7 @@ function normalizeSpatialReference(input) {
   const { error } = schema.validate(input);
 
   if (error) {
-    logManager.logger.debug(
-      `${input} is not a valid spatial reference; defaulting to none`,
-    );
+    logManager.logger.debug(`${input} is not a valid spatial reference; defaulting to none`);
     // Todo: throw error
     return;
   }
@@ -68,10 +66,7 @@ function parseSpatialReferenceInput(spatialReference) {
 }
 
 function isNumericSpatialReferenceId(spatialReference) {
-  return (
-    Number.isInteger(spatialReference) ||
-    Number.isInteger(Number(spatialReference))
-  );
+  return Number.isInteger(spatialReference) || Number.isInteger(Number(spatialReference));
 }
 
 function isPrefixedSpatialReferenceId(spatialReference) {
@@ -79,9 +74,7 @@ function isPrefixedSpatialReferenceId(spatialReference) {
 }
 
 function extractPrefixedSpatialReferenceId(prefixedId) {
-  const spatialRefId = prefixedId.match(
-    /^(EPSG|ESRI|SR-ORG|IAU2000):([0-9]+)/,
-  )[2];
+  const spatialRefId = prefixedId.match(/^(EPSG|ESRI|SR-ORG|IAU2000):([0-9]+)/)[2];
   return Number(spatialRefId);
 }
 
@@ -92,7 +85,6 @@ function convertWkidToSpatialReference(wkid) {
   // If the input wkid is one of the set known to proj4, return it in an object
   if (PROJ4_WKIDS.includes(wkid)) return { wkid };
 
-  // WKID is not known to proj4, so we need its WKT spatial reference in order to do downstream reprojections.  First check in local lookup
   return wktLookup.get(wkid) || esriWktLookup(wkid);
 }
 

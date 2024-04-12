@@ -40,9 +40,7 @@ function createMultipartRamp(options) {
   const { colorRamps, classificationCount } = options;
 
   if (!colorRamps || !Array.isArray(colorRamps)) {
-    throw new CodedError(
-      'Multipart color-ramps need a valid color-ramp configuration array',
-    );
+    throw new CodedError('Multipart color-ramps need a valid color-ramp configuration array');
   }
 
   return colorRamps.map((ramp) => {

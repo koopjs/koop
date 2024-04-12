@@ -5,13 +5,7 @@ const toEsriAttributes = require(modulePath);
 
 test('toEsriAttributes, does not require idField', (t) => {
   // (properties, geometry, dateFields, requiresObjectId, idField)
-  const result = toEsriAttributes(
-    { foo: 'bar' },
-    { coordinates: [-118, 34] },
-    '',
-    'false',
-    '',
-  );
+  const result = toEsriAttributes({ foo: 'bar' }, { coordinates: [-118, 34] }, '', 'false', '');
   t.deepEquals(result, { foo: 'bar' });
   t.end();
 });
@@ -29,14 +23,14 @@ test('toEsriAttributes, requires idField and properties contain it', (t) => {
   t.end();
 });
 
-test('toEsriAttributes, requires idField, properties contain it, but logs debug string message', (t) => {
+test('toEsriAttributes, requires idField, properties contain it, but logs string message', (t) => {
   const toEsriAttributes = proxyquire(modulePath, {
     '../../log-manager': {
       logger: {
         debug: (message) => {
           t.equals(
             message,
-            'Unique-identifier ("OBJECTID") has a value (abc) that is not an integer-type, it is a string; this may cause problems in some clients.',
+            'Unique-identifier ("OBJECTID") has a value (abc) that is not an integer-type, it is a string; this may cause problems in some clients.', // eslint-disable-line
           );
         },
       },
@@ -54,14 +48,14 @@ test('toEsriAttributes, requires idField, properties contain it, but logs debug 
   t.end();
 });
 
-test('toEsriAttributes, requires idField, properties contain it, but logs debug range message', (t) => {
+test('toEsriAttributes, requires idField, properties contain it, but logs range message', (t) => {
   const toEsriAttributes = proxyquire(modulePath, {
     '../../log-manager': {
       logger: {
         debug: (message) => {
           t.equals(
             message,
-            'Unique-identifier ("OBJECTID") has a value (-1) that is not a valid integer range (0 to 9007199254740991); this may cause problems in some clients.',
+            'Unique-identifier ("OBJECTID") has a value (-1) that is not a valid integer range (0 to 9007199254740991); this may cause problems in some clients.', // eslint-disable-line
           );
         },
       },
@@ -83,23 +77,14 @@ test('toEsriAttributes, requires idField and properties do not have one, so crea
   const toEsriAttributes = proxyquire(modulePath, {
     '../helpers': {
       createIntegerHash: (string) => {
-        t.deepEquals(
-          string,
-          '{"properties":{"foo":"bar"},"geometry":{"coordinates":[-118,34]}}',
-        );
+        t.deepEquals(string, '{"properties":{"foo":"bar"},"geometry":{"coordinates":[-118,34]}}');
         return 99999;
       },
     },
   });
 
   // (properties, geometry, dateFields, requiresObjectId, idField)
-  const result = toEsriAttributes(
-    { foo: 'bar' },
-    { coordinates: [-118, 34] },
-    '',
-    'true',
-    'null',
-  );
+  const result = toEsriAttributes({ foo: 'bar' }, { coordinates: [-118, 34] }, '', 'true', 'null');
   t.deepEquals(result, { foo: 'bar', OBJECTID: 99999 });
   t.end();
 });
@@ -132,7 +117,7 @@ test('toEsriAttributes, require idField, has dateFields', (t) => {
       createIntegerHash: (string) => {
         t.deepEquals(
           string,
-          `{"properties":{"hello":"world","foo":"${date1.toISOString()}","bar":"${date2.toISOString()}"},"geometry":{"coordinates":[-118,34]}}`,
+          `{"properties":{"hello":"world","foo":"${date1.toISOString()}","bar":"${date2.toISOString()}"},"geometry":{"coordinates":[-118,34]}}`, // eslint-disable-line
         );
         return 99999;
       },

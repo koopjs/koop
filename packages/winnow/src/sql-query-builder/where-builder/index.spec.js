@@ -46,10 +46,7 @@ test('WhereBuilder.create: where param and objectIds param', (t) => {
     objectIds: [1, 2],
     idField: 'OBJECTID',
   });
-  t.equals(
-    whereClause,
-    "properties->`color` = 'red' AND properties->`OBJECTID` IN (1, 2 )",
-  );
+  t.equals(whereClause, "properties->`color` = 'red' AND properties->`OBJECTID` IN (1, 2 )");
 });
 
 test('WhereBuilder.create: returns where clause with geometry predicate', (t) => {
@@ -60,39 +57,30 @@ test('WhereBuilder.create: returns where clause with geometry predicate', (t) =>
   t.equals(whereClause, 'ST_Intersects(geometry, ?)');
 });
 
-test('WhereBuilder.create: returns where clause with translated sql-where and geometry predicate', (t) => {
+test('returns where clause with translated sql-where and geometry predicate', (t) => {
   t.plan(1);
   const whereClause = WhereBuilder.create({
     geometry: [0, 0, 0, 0],
     where: "color='red'",
   });
-  t.equals(
-    whereClause,
-    "properties->`color` = 'red' AND ST_Intersects(geometry, ?)",
-  );
+  t.equals(whereClause, "properties->`color` = 'red' AND ST_Intersects(geometry, ?)");
 });
 
-test('WhereBuilder.create: transform a predicate with OBJECTID and no metadata fields to user-defined function', (t) => {
+test('predicate with OBJECTID and no metadata fields to user-defined function', (t) => {
   t.plan(1);
 
   const whereClause = WhereBuilder.create({ where: 'OBJECTID=1234' });
-  t.equals(
-    whereClause,
-    "hashedObjectIdComparator(properties, geometry, 1234, '=')=true",
-  );
+  t.equals(whereClause, "hashedObjectIdComparator(properties, geometry, 1234, '=')=true");
 });
 
 test('WhereBuilder.create: transform a predicate with OBJECTID IN (1234)', (t) => {
   t.plan(1);
 
   const whereClause = WhereBuilder.create({ objectIds: [1234, 4567] });
-  t.equals(
-    whereClause,
-    "hashedObjectIdComparator(properties, geometry, '1234,4567', 'IN')=true",
-  );
+  t.equals(whereClause, "hashedObjectIdComparator(properties, geometry, '1234,4567', 'IN')=true");
 });
 
-test('WhereBuilder.create: transform a predicate with OBJECTID and no metadata fields to Esri flavor with user-defined function', (t) => {
+test('predicate with OBJECTID and no metadata fields to Esri with user-defined function', (t) => {
   t.plan(1);
   const options = {
     esri: true,
@@ -100,13 +88,10 @@ test('WhereBuilder.create: transform a predicate with OBJECTID and no metadata f
   };
 
   const whereClause = WhereBuilder.create(options);
-  t.equals(
-    whereClause,
-    "hashedObjectIdComparator(attributes, geometry, 1234, '=')=true",
-  );
+  t.equals(whereClause, "hashedObjectIdComparator(attributes, geometry, 1234, '=')=true");
 });
 
-test('WhereBuilder.create: transform an inverse predicate with OBJECTID and no metadata fields to Esri flavor with user-defined function', (t) => {
+test('inverse predicate with OBJECTID and no fields toEsri with user function', (t) => {
   t.plan(1);
   const options = {
     esri: true,
@@ -114,10 +99,7 @@ test('WhereBuilder.create: transform an inverse predicate with OBJECTID and no m
   };
 
   const whereClause = WhereBuilder.create(options);
-  t.equals(
-    whereClause,
-    "hashedObjectIdComparator(attributes, geometry, 1234, '<=')=true",
-  );
+  t.equals(whereClause, "hashedObjectIdComparator(attributes, geometry, 1234, '<=')=true");
 });
 
 test('WhereBuilder.create: handle BETWEEN', (t) => {
@@ -171,9 +153,6 @@ test('WhereBuilder.create: handle TIMESTAMP cast error', (t) => {
     WhereBuilder.create({ where: "foo > TIMESTAMP 'barz'" });
     t.fail('should have thrown');
   } catch (error) {
-    t.equals(
-      error.message,
-      'Invalid "where" parameter: Invalid time value for timestamp "barz"',
-    );
+    t.equals(error.message, 'Invalid "where" parameter: Invalid time value for timestamp "barz"');
   }
 });

@@ -30,11 +30,7 @@ class TableLayerMetadata {
     const layerId = reqLayer != null ? reqLayer : req.layerId;
 
     // TODO: deprecate req.app.locals.config usage
-    const { currentVersion, description } = _.get(
-      req,
-      'app.locals.config.featureServer',
-      {},
-    );
+    const { currentVersion, description } = _.get(req, 'app.locals.config.featureServer', {});
 
     const normalizedOptions = _.pickBy(
       {
@@ -43,10 +39,7 @@ class TableLayerMetadata {
         layerId,
         ...query,
         ...metadata,
-        capabilities: normalizeCapabilities(
-          capabilities,
-          metadata.capabilities,
-        ),
+        capabilities: normalizeCapabilities(capabilities, metadata.capabilities),
       },
       (value) => value,
     );
@@ -141,10 +134,7 @@ class TableLayerMetadata {
       return;
     }
 
-    if (
-      _.has(capabilities, 'extract') &&
-      !this.capabilities.includes('Extract')
-    ) {
+    if (_.has(capabilities, 'extract') && !this.capabilities.includes('Extract')) {
       this.capabilities = `${this.capabilities},Extract`;
     }
   }
@@ -210,9 +200,7 @@ class TableLayerMetadata {
         return;
       }
 
-      validateQueryFormatsArray(
-        supportedQueryFormats.split(',').map((val) => val.trim()),
-      );
+      validateQueryFormatsArray(supportedQueryFormats.split(',').map((val) => val.trim()));
       this.supportedQueryFormats = supportedQueryFormats;
     } catch (error) {
       logManager.logger.error(error.message);

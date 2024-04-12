@@ -6,12 +6,8 @@ module.exports = function normalizeInput(input = {}) {
   const geometryType = getGeometryTypeFromGeojson(input);
 
   return {
-    layers:
-      layers || (type === 'FeatureCollection' && geometryType && [input]) || [],
-    tables:
-      tables ||
-      (type === 'FeatureCollection' && !geometryType && [input]) ||
-      [],
+    layers: layers || (type === 'FeatureCollection' && geometryType && [input]) || [],
+    tables: tables || (type === 'FeatureCollection' && !geometryType && [input]) || [],
     relationships: relationships || [],
   };
 };

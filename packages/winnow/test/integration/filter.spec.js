@@ -19,7 +19,7 @@ test('With a where options 1=1', (t) => {
 test('With a where option with multiple statements', (t) => {
   const options = {
     where:
-      "Genus like '%Quercus%' AND Street_Name = 'CLAREMONT' AND House_Number < 600 AND Trunk_Diameter = 9",
+      "Genus like '%Quercus%' AND Street_Name = 'CLAREMONT' AND House_Number < 600 AND Trunk_Diameter = 9", // eslint-disable-line
   };
   run('trees', options, 1, t);
 });
@@ -27,7 +27,7 @@ test('With a where option with multiple statements', (t) => {
 test('With a where option with multiple statements with appended 1=1', (t) => {
   const options = {
     where:
-      "Genus like '%Quercus%' AND Street_Name = 'CLAREMONT' AND House_Number < 600 AND Trunk_Diameter = 9 AND 1=1",
+      "Genus like '%Quercus%' AND Street_Name = 'CLAREMONT' AND House_Number < 600 AND Trunk_Diameter = 9 AND 1=1", // eslint-disable-line
   };
   run('trees', options, 1, t);
 });
@@ -79,8 +79,7 @@ test('With esri json', (t) => {
 
 test('With multiple like clauses', (t) => {
   const options = {
-    where:
-      "Genus like '%Quercus%' AND Common_Name like '%Live Oak%' AND Street_Type like '%ST%'",
+    where: "Genus like '%Quercus%' AND Common_Name like '%Live Oak%' AND Street_Type like '%ST%'",
   };
   run('trees', options, 5, t);
 });
@@ -129,8 +128,7 @@ test('With an IN parameter and a numeric test', (t) => {
 
 test('With an AND and an OR', (t) => {
   const options = {
-    where:
-      "(Genus like '%Quercus%' AND Common_Name like '%Live Oak%') OR Street_Type like '%AVE%'",
+    where: "(Genus like '%Quercus%' AND Common_Name like '%Live Oak%') OR Street_Type like '%AVE%'",
   };
   run('trees', options, 13, t);
 });
@@ -187,7 +185,7 @@ test('With an esri style envelope and wkt string for web mercator', (t) => {
       xmax: -13150342,
       ymax: 4051582,
       spatialReference: {
-        wkt: 'PROJCS["WGS_1984_Web_Mercator_Auxiliary_Sphere",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Mercator_Auxiliary_Sphere"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-97.03124999997486],PARAMETER["Standard_Parallel_1",0.0],PARAMETER["Auxiliary_Sphere_Type",0.0],UNIT["Meter",1.0]]',
+        wkt: 'PROJCS["WGS_1984_Web_Mercator_Auxiliary_Sphere",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Mercator_Auxiliary_Sphere"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-97.03124999997486],PARAMETER["Standard_Parallel_1",0.0],PARAMETER["Auxiliary_Sphere_Type",0.0],UNIT["Meter",1.0]]', // eslint-disable-line
       },
     },
   };
@@ -580,7 +578,7 @@ test('with a timestamp query', (t) => {
 test('with a between query', (t) => {
   const options = {
     where:
-      "survey_date between timestamp '2017-01-06T00:00:00.000Z' AND timestamp '2017-02-06T23:59:59.000Z'",
+      "survey_date between timestamp '2017-01-06T00:00:00.000Z' AND timestamp '2017-02-06T23:59:59.000Z'", // eslint-disable-line
   };
   run('trees', options, 2, t);
 });
@@ -630,8 +628,7 @@ test('with null dates in data source', (t) => {
   // * 'toEsri' option enabled
   // * the geojson is passed to winnow.query with the metadata.fields populated
   const options = {
-    where:
-      "Date1 >= timestamp '2020-01-05 00:00:00' AND Date1 <= timestamp '2020-02-08 23:59:59'",
+    where: "Date1 >= timestamp '2020-01-05 00:00:00' AND Date1 <= timestamp '2020-02-08 23:59:59'",
     toEsri: true,
   };
   t.plan(4);

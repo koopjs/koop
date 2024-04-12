@@ -20,15 +20,11 @@ describe('when creating a color ramp that', () => {
     });
 
     it('should throw an error on invalid type option', () => {
-      createColorRamp
-        .bind(null, { classification, type: 'foo' })
-        .should.throw();
+      createColorRamp.bind(null, { classification, type: 'foo' }).should.throw();
     });
 
     it('should throw an error on multipart type with color-ramps', () => {
-      createColorRamp
-        .bind(null, { classification, type: 'multipart' })
-        .should.throw();
+      createColorRamp.bind(null, { classification, type: 'multipart' }).should.throw();
     });
 
     it('should return correct hsv color ramp', () => {

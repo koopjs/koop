@@ -454,7 +454,7 @@ describe('Tests for extend-model', function () {
   });
 
   describe('auth methods', () => {
-    it('should attach auth methods from authModule if provider does not already define them', async () => {
+    it('should add auth methods from authModule if provider does not have them', async () => {
       const model = extendModel({
         ProviderModel: MockModel,
         namespace: 'test-provider',
@@ -589,10 +589,7 @@ describe('Tests for extend-model', function () {
         },
       );
 
-      await model.pull(
-        { url: 'domain/test-provider', params: {}, query: {} },
-        pullCallbackSpy,
-      );
+      await model.pull({ url: 'domain/test-provider', params: {}, query: {} }, pullCallbackSpy);
       getDataSpy.should.be.calledOnce();
       getDataSpy.firstCall.args.length.should.equal(2);
       getDataArgs[0].should.deepEqual({
@@ -978,7 +975,7 @@ describe('Tests for extend-model', function () {
       mockLogger.debug.should.be.calledOnce();
     });
 
-    it('should call the getCatalog() function if cache misses, inserts to cache', async function () {
+    it('should call getCatalog() function if cache misses, inserts to cache', async function () {
       const mockCache = {
         retrieve: sinon.spy((key, query, callback) => {
           callback(null);

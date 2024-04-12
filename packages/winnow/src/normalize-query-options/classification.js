@@ -1,8 +1,7 @@
 function normalizeClassification({ classification, classificationDef } = {}) {
   if (classification)
     return classification; // TODO: ? normalize standard classification
-  else if (classificationDef)
-    return normalizeGeoservicesClassBreaks(classificationDef);
+  else if (classificationDef) return normalizeGeoservicesClassBreaks(classificationDef);
   else return undefined;
 }
 

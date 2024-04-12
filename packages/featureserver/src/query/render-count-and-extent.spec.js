@@ -16,10 +16,7 @@ const stub = {
   'esri-extent': esriExtentSpy,
 };
 
-const { renderCountAndExtentResponse } = proxyquire(
-  './render-count-and-extent',
-  stub,
-);
+const { renderCountAndExtentResponse } = proxyquire('./render-count-and-extent', stub);
 
 describe('renderCountAndExtent', () => {
   afterEach(function () {
@@ -46,10 +43,7 @@ describe('renderCountAndExtent', () => {
   });
 
   it('should render count', () => {
-    const result = renderCountAndExtentResponse(
-      { features: ['test'] },
-      { returnCountOnly: true },
-    );
+    const result = renderCountAndExtentResponse({ features: ['test'] }, { returnCountOnly: true });
     result.should.deepEqual({
       count: 1,
     });
@@ -57,10 +51,7 @@ describe('renderCountAndExtent', () => {
   });
 
   it('should render extent', () => {
-    const result = renderCountAndExtentResponse(
-      { features: ['test'] },
-      { returnExtentOnly: true },
-    );
+    const result = renderCountAndExtentResponse({ features: ['test'] }, { returnExtentOnly: true });
     result.should.deepEqual({
       extent: {
         foo: 'bar',

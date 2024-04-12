@@ -10,7 +10,7 @@ function normalizeIdField(options, features = []) {
 
   if (shouldWarnIdFieldIsMissingFromData(idField, features)) {
     logManager.logger.debug(
-      'requested provider has "idField" assignment, but this property is not found in properties of all features.',
+      'requested provider has "idField" assignment, but this property is not found in properties of all features.', // eslint-disable-line
     );
   }
 

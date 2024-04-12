@@ -1,8 +1,5 @@
 const should = require('should'); // eslint-disable-line
-const {
-  getEsriTypeFromDefinition,
-  getEsriTypeFromValue,
-} = require('./esri-type-utils');
+const { getEsriTypeFromDefinition, getEsriTypeFromValue } = require('./esri-type-utils');
 
 describe('getEsriTypeFromDefinition', () => {
   it('no definition should default to string', () => {
@@ -61,12 +58,8 @@ describe('getEsriTypeFromDefinition', () => {
   });
 
   it('small-integer', () => {
-    getEsriTypeFromDefinition('SmallInteger').should.equal(
-      'esriFieldTypeSmallInteger',
-    );
-    getEsriTypeFromDefinition('smallinteger').should.equal(
-      'esriFieldTypeSmallInteger',
-    );
+    getEsriTypeFromDefinition('SmallInteger').should.equal('esriFieldTypeSmallInteger');
+    getEsriTypeFromDefinition('smallinteger').should.equal('esriFieldTypeSmallInteger');
   });
 
   it('xml', () => {
@@ -95,8 +88,6 @@ describe('getEsriTypeFromValue', () => {
 
   it('date', () => {
     getEsriTypeFromValue(new Date()).should.equal('esriFieldTypeDate');
-    getEsriTypeFromValue(new Date().toISOString()).should.equal(
-      'esriFieldTypeDate',
-    );
+    getEsriTypeFromValue(new Date().toISOString()).should.equal('esriFieldTypeDate');
   });
 });

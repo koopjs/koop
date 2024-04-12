@@ -11,7 +11,7 @@ describe('ServerMetadata', () => {
     result.should.deepEqual({
       currentVersion: CURRENT_VERSION,
       serviceDescription:
-        'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+        'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
       hasVersionedData: false,
       supportsDisconnectedEditing: false,
       hasStaticData: false,
@@ -22,9 +22,9 @@ describe('ServerMetadata', () => {
       supportedExportFormats: '',
       capabilities: 'Query',
       description:
-        'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+        'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
       copyrightText:
-        'Copyright information varies by provider. For more information please contact the source of this data.',
+        'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
       spatialReference: { wkid: 4326, latestWkid: 4326 },
       fullExtent: {
         xmin: -180,
@@ -133,7 +133,7 @@ describe('ServerMetadata', () => {
     result.should.deepEqual({
       currentVersion: CURRENT_VERSION,
       serviceDescription:
-        'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+        'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
       hasVersionedData: false,
       supportsDisconnectedEditing: false,
       hasStaticData: false,
@@ -144,9 +144,9 @@ describe('ServerMetadata', () => {
       supportedExportFormats: '',
       capabilities: 'Query',
       description:
-        'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.',
+        'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.', // eslint-disable-line
       copyrightText:
-        'Copyright information varies by provider. For more information please contact the source of this data.',
+        'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
       spatialReference: { wkid: 4326, latestWkid: 4326 },
       fullExtent: {
         xmin: -180,
@@ -244,7 +244,7 @@ describe('ServerMetadata', () => {
     it('should use wkt if available', () => {
       const result = ServerMetadata.create({
         spatialReference: {
-          wkt: 'PROJCS["WGS 84 / Pseudo-Mercator",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Mercator_1SP"],PARAMETER["central_meridian",0],PARAMETER["scale_factor",1],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Easting",EAST],AXIS["Northing",NORTH],EXTENSION["PROJ4","+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs"],AUTHORITY["EPSG","3857"]]',
+          wkt: 'PROJCS["WGS 84 / Pseudo-Mercator",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Mercator_1SP"],PARAMETER["central_meridian",0],PARAMETER["scale_factor",1],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Easting",EAST],AXIS["Northing",NORTH],EXTENSION["PROJ4","+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs"],AUTHORITY["EPSG","3857"]]', // eslint-disable-line
         },
       });
 

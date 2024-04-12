@@ -14,13 +14,9 @@ module.exports = function (geometry, precision) {
 };
 
 function reducePrecision(coordinates, precision) {
-  return transformCoordinates(
-    coordinates,
-    { precision },
-    (coordinates, { precision }) => {
-      return coordinates.map((position) => {
-        return parseFloat(position.toFixed(precision));
-      });
-    },
-  );
+  return transformCoordinates(coordinates, { precision }, (coordinates, { precision }) => {
+    return coordinates.map((position) => {
+      return parseFloat(position.toFixed(precision));
+    });
+  });
 }

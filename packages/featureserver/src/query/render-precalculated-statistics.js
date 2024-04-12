@@ -6,9 +6,7 @@ const { isDate } = require('../helpers/data-type-utils');
 function renderPrecalculatedStatisticsResponse(input, options) {
   const { statistics } = input;
 
-  const normalizedStatistics = Array.isArray(statistics)
-    ? statistics
-    : [statistics];
+  const normalizedStatistics = Array.isArray(statistics) ? statistics : [statistics];
   const fields = StatisticsFields.create({
     ...input,
     ...options,

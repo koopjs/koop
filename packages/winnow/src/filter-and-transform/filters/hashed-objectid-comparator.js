@@ -10,13 +10,11 @@ const logManager = require('../../log-manager');
  *
  * @param {object} properties GeoJSON feature properties
  * @param {*} geometry GeoJSON feature properties
- * @param {*} value the objectId the feature is being compared to.  Presumed to have been created by feature hashing
+ * @param {*} value objectId the feature is being compared to.  Presumed to be created by hashing
  * @param {*} operator the predicate operator
  */
 module.exports = function (properties, geometry, value, operator) {
-  const hashedFeature = createIntegerHash(
-    JSON.stringify({ properties, geometry }),
-  );
+  const hashedFeature = createIntegerHash(JSON.stringify({ properties, geometry }));
 
   if (operator === '=' && hashedFeature === value) {
     return true;

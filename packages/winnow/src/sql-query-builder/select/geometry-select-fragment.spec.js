@@ -51,24 +51,18 @@ test('createGeometryFragment: different input/output CRS, and geometryPrecision 
     outputCrs: { wkid: 3857 },
     geometryPrecision: 1,
   });
-  t.equal(
-    geometryFragment,
-    'reducePrecision(project(geometry,?,?),?) as geometry',
-  );
+  t.equal(geometryFragment, 'reducePrecision(project(geometry,?,?),?) as geometry');
   t.end();
 });
 
-test('createGeometryFragment: different input/output CRS, geometryPrecision, and toEsri options', (t) => {
+test('different input/output CRS, geometryPrecision, and toEsri options', (t) => {
   const geometryFragment = createGeometrySelectFragment({
     inputCrs: { wkid: 4326 },
     outputCrs: { wkid: 3857 },
     geometryPrecision: 1,
     toEsri: true,
   });
-  t.equal(
-    geometryFragment,
-    'esriGeometry(reducePrecision(project(geometry,?,?),?)) as geometry',
-  );
+  t.equal(geometryFragment, 'esriGeometry(reducePrecision(project(geometry,?,?),?)) as geometry');
   t.end();
 });
 

@@ -1,7 +1,4 @@
-const {
-  getEsriTypeFromDefinition,
-  getEsriTypeFromValue,
-} = require('./esri-type-utils');
+const { getEsriTypeFromDefinition, getEsriTypeFromValue } = require('./esri-type-utils');
 const {
   ESRI_FIELD_TYPE_OID,
   ESRI_FIELD_TYPE_STRING,
@@ -81,8 +78,7 @@ class StatisticDateField extends StatisticField {
 class FieldFromFieldDefinition extends Field {
   constructor(fieldDefinition) {
     super();
-    const { name, type, alias, domain, sqlType, length, defaultValue } =
-      fieldDefinition;
+    const { name, type, alias, domain, sqlType, length, defaultValue } = fieldDefinition;
 
     this.name = name;
     this.type = getEsriTypeFromDefinition(type);

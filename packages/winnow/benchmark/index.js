@@ -3,9 +3,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const winnow = require('../src/index.js');
 
-const features = fs.readJSONSync(
-  path.join(__dirname, './fixtures.geojson'),
-).features;
+const features = fs.readJSONSync(path.join(__dirname, './fixtures.geojson')).features;
 const suite = new Benchmark.Suite();
 
 suite

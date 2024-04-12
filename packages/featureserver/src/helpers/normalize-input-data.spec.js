@@ -62,7 +62,7 @@ describe('normalize-input-data', function () {
     });
   });
 
-  it('GeoJSON collection input with metadata geometryType but no features should return single layer', () => {
+  it('GeoJSON collection input with metadata geometryType but no features', () => {
     const collection = {
       metadata: { geometryType: 'Point' },
       type: 'FeatureCollection',

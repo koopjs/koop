@@ -12,9 +12,7 @@ describe('when creating a symbol', () => {
       createSymbol(undefined, 'red');
       should.fail('should have thrown error');
     } catch (error) {
-      error.message.should.equal(
-        'Dataset geometry type is not supported for renderers.',
-      );
+      error.message.should.equal('Dataset geometry type is not supported for renderers.');
       error.code.should.equal(400);
     }
   });

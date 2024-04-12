@@ -41,8 +41,7 @@ const stub = {
     renderStatisticsResponse: renderStatisticsResponseSpy,
   },
   './render-precalculated-statistics': {
-    renderPrecalculatedStatisticsResponse:
-      renderPrecalculatedStatisticsResponseSpy,
+    renderPrecalculatedStatisticsResponse: renderPrecalculatedStatisticsResponseSpy,
   },
   './render-count-and-extent': {
     renderCountAndExtentResponse: renderCountAndExtentResponseSpy,

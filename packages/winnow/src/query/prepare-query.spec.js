@@ -48,10 +48,7 @@ test('Should return prepared query', (t) => {
   t.ok(sqlQueryHelpers.create.calledOnce);
   t.deepEquals(sqlQueryHelpers.create.firstCall.args, [{ hello: 'world' }]);
   t.ok(sqlQueryHelpers.params.calledOnce);
-  t.deepEquals(sqlQueryHelpers.params.firstCall.args, [
-    '$features$',
-    { hello: 'world' },
-  ]);
+  t.deepEquals(sqlQueryHelpers.params.firstCall.args, ['$features$', { hello: 'world' }]);
   t.equals(typeof preparedQuery, 'function');
 
   // Execute prepared query

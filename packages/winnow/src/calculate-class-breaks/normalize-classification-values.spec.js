@@ -1,7 +1,7 @@
 const test = require('tape');
 const normalizeClassificationValues = require('./normalize-classification-values');
 
-test('nomalizeClassificationValue: unsupported method', (spec) => {
+test('unsupported method', (spec) => {
   try {
     normalizeClassificationValues([], { normType: 'unsupported' });
     spec.fail('should have thrown error');
@@ -11,7 +11,7 @@ test('nomalizeClassificationValue: unsupported method', (spec) => {
   spec.end();
 });
 
-test('nomalizeClassificationValue: normalize by field, field undefined', (spec) => {
+test('normalize by field, field undefined', (spec) => {
   try {
     normalizeClassificationValues([], { normType: 'field' });
     spec.fail('should have thrown error');
@@ -21,7 +21,7 @@ test('nomalizeClassificationValue: normalize by field, field undefined', (spec) 
   spec.end();
 });
 
-test('nomalizeClassificationValue: normalize by field, no classification field', (spec) => {
+test('normalize by field, no classification field', (spec) => {
   try {
     normalizeClassificationValues([], { normType: 'field', normField: 'foo' });
     spec.fail('should have thrown error');
@@ -31,7 +31,7 @@ test('nomalizeClassificationValue: normalize by field, no classification field',
   spec.end();
 });
 
-test('nomalizeClassificationValue: normalize by field, fields not found', (spec) => {
+test('normalize by field, fields not found', (spec) => {
   try {
     normalizeClassificationValues([], {
       normType: 'field',
@@ -48,7 +48,7 @@ test('nomalizeClassificationValue: normalize by field, fields not found', (spec)
   spec.end();
 });
 
-test('nomalizeClassificationValue: normalize by field, normalization field not found in feature', (spec) => {
+test('normalize by field, normalization field not found in feature', (spec) => {
   try {
     normalizeClassificationValues([{ properties: { booz: 1 } }], {
       normType: 'field',
@@ -65,48 +65,45 @@ test('nomalizeClassificationValue: normalize by field, normalization field not f
   spec.end();
 });
 
-test('nomalizeClassificationValue: normalize by field, normalization field is non-numeric', (spec) => {
+test('normalize by field, normalization field is non-numeric', (spec) => {
   try {
-    normalizeClassificationValues(
-      [{ properties: { booz: 1, foo: 'string' } }],
-      { normType: 'field', normField: 'foo', field: 'booz' },
-    );
+    normalizeClassificationValues([{ properties: { booz: 1, foo: 'string' } }], {
+      normType: 'field',
+      normField: 'foo',
+      field: 'booz',
+    });
     spec.fail('should have thrown error');
   } catch (error) {
-    spec.equals(
-      error.message,
-      'Cannot use non-numeric normalizationField, foo: "string"',
-    );
+    spec.equals(error.message, 'Cannot use non-numeric normalizationField, foo: "string"');
   }
   spec.end();
 });
 
-test('nomalizeClassificationValue: normalize by field, classification field is non-numeric', (spec) => {
+test('normalize by field, classification field is non-numeric', (spec) => {
   try {
-    normalizeClassificationValues(
-      [{ properties: { booz: 'string', foo: 10 } }],
-      { normType: 'field', normField: 'foo', field: 'booz' },
-    );
+    normalizeClassificationValues([{ properties: { booz: 'string', foo: 10 } }], {
+      normType: 'field',
+      normField: 'foo',
+      field: 'booz',
+    });
     spec.fail('should have thrown error');
   } catch (error) {
-    spec.equals(
-      error.message,
-      'Cannot use non-numeric classificationField, booz: "string"',
-    );
+    spec.equals(error.message, 'Cannot use non-numeric classificationField, booz: "string"');
   }
   spec.end();
 });
 
-test('nomalizeClassificationValue: normalize by field', (spec) => {
-  const result = normalizeClassificationValues(
-    [{ properties: { booz: 1, foo: 10 } }],
-    { normType: 'field', normField: 'foo', field: 'booz' },
-  );
+test('normalize by field', (spec) => {
+  const result = normalizeClassificationValues([{ properties: { booz: 1, foo: 10 } }], {
+    normType: 'field',
+    normField: 'foo',
+    field: 'booz',
+  });
   spec.deepEquals(result, [0.1]);
   spec.end();
 });
 
-test('nomalizeClassificationValue: normalize by log, normalization field not found in feature', (spec) => {
+test('normalize by log, normalization field not found in feature', (spec) => {
   try {
     normalizeClassificationValues([{ properties: {} }], {
       normType: 'log',
@@ -114,15 +111,12 @@ test('nomalizeClassificationValue: normalize by log, normalization field not fou
     });
     spec.fail('should have thrown error');
   } catch (error) {
-    spec.equals(
-      error.message,
-      'Classification field "booz" was not found on any feature.',
-    );
+    spec.equals(error.message, 'Classification field "booz" was not found on any feature.');
   }
   spec.end();
 });
 
-test('nomalizeClassificationValue: normalize by log, normalization field is non-numeric', (spec) => {
+test('normalize by log, normalization field is non-numeric', (spec) => {
   try {
     normalizeClassificationValues([{ properties: { booz: 'string' } }], {
       normType: 'log',
@@ -130,15 +124,12 @@ test('nomalizeClassificationValue: normalize by log, normalization field is non-
     });
     spec.fail('should have thrown error');
   } catch (error) {
-    spec.equals(
-      error.message,
-      'Cannot use non-numeric classificationField, booz: "string"',
-    );
+    spec.equals(error.message, 'Cannot use non-numeric classificationField, booz: "string"');
   }
   spec.end();
 });
 
-test('nomalizeClassificationValue: normalize by log, less than 0', (spec) => {
+test('normalize by log, less than 0', (spec) => {
   const result = normalizeClassificationValues([{ properties: { booz: -1 } }], {
     normType: 'log',
     field: 'booz',
@@ -147,7 +138,7 @@ test('nomalizeClassificationValue: normalize by log, less than 0', (spec) => {
   spec.end();
 });
 
-test('nomalizeClassificationValue: normalize by log, 0', (spec) => {
+test('normalize by log, 0', (spec) => {
   const result = normalizeClassificationValues([{ properties: { booz: 0 } }], {
     normType: 'log',
     field: 'booz',
@@ -156,16 +147,16 @@ test('nomalizeClassificationValue: normalize by log, 0', (spec) => {
   spec.end();
 });
 
-test('nomalizeClassificationValue: normalize by log', (spec) => {
-  const result = normalizeClassificationValues(
-    [{ properties: { booz: 200 } }],
-    { normType: 'log', field: 'booz' },
-  );
+test('normalize by log', (spec) => {
+  const result = normalizeClassificationValues([{ properties: { booz: 200 } }], {
+    normType: 'log',
+    field: 'booz',
+  });
   spec.deepEquals(result, [2.3010299956639813]);
   spec.end();
 });
 
-test('nomalizeClassificationValue: normalize by percent, classification field not found in feature', (spec) => {
+test('normalize by percent, classification field not found in feature', (spec) => {
   try {
     normalizeClassificationValues([{ properties: {} }, { properties: {} }], {
       normType: 'percent',
@@ -181,12 +172,12 @@ test('nomalizeClassificationValue: normalize by percent, classification field no
   spec.end();
 });
 
-test('nomalizeClassificationValue: normalize by percent, value total <= 0', (spec) => {
+test('normalize by percent, value total <= 0', (spec) => {
   try {
-    normalizeClassificationValues(
-      [{ properties: { booz: 1 } }, { properties: { booz: -2 } }],
-      { normType: 'percent', field: 'booz' },
-    );
+    normalizeClassificationValues([{ properties: { booz: 1 } }, { properties: { booz: -2 } }], {
+      normType: 'percent',
+      field: 'booz',
+    });
     spec.fail('should have thrown error');
   } catch (error) {
     spec.equals(
@@ -197,7 +188,7 @@ test('nomalizeClassificationValue: normalize by percent, value total <= 0', (spe
   spec.end();
 });
 
-test('nomalizeClassificationValue: normalize by percent', (spec) => {
+test('normalize by percent', (spec) => {
   const result = normalizeClassificationValues(
     [{ properties: { booz: 1 } }, { properties: { booz: 9 } }],
     { normType: 'percent', field: 'booz' },

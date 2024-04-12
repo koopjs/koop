@@ -25,31 +25,16 @@ const rows = Object.entries(coverageChangesSummary)
     const masterCoverage = coverageSummary[packageFilePath];
     return [
       packageFilePath,
-      formatCovComparison(
-        changesCoverage.statements.pct,
-        masterCoverage?.statements?.pct || 0,
-      ),
-      formatCovComparison(
-        changesCoverage.branches.pct,
-        masterCoverage?.branches?.pct || 0,
-      ),
-      formatCovComparison(
-        changesCoverage.functions.pct,
-        masterCoverage?.functions?.pct || 0,
-      ),
-      formatCovComparison(
-        changesCoverage.lines.pct,
-        masterCoverage?.lines?.pct || 0,
-      ),
+      formatCovComparison(changesCoverage.statements.pct, masterCoverage?.statements?.pct || 0),
+      formatCovComparison(changesCoverage.branches.pct, masterCoverage?.branches?.pct || 0),
+      formatCovComparison(changesCoverage.functions.pct, masterCoverage?.functions?.pct || 0),
+      formatCovComparison(changesCoverage.lines.pct, masterCoverage?.lines?.pct || 0),
     ];
   });
 
 const headers = ['File Path', 'Statements', 'Branches', 'Functions', 'Lines'];
 
-const table = json2md([
-  { h2: 'Coverage Report (change vs master)' },
-  { table: { headers, rows } },
-]);
+const table = json2md([{ h2: 'Coverage Report (change vs master)' }, { table: { headers, rows } }]);
 
 const alignedTable = table.replace(
   '| --------- | ---------- | -------- | --------- | ----- |',

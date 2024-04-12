@@ -17,10 +17,7 @@ function composeRoutePath(params) {
     return routeJoiner(routePrefix, path);
   }
 
-  const providerParamsFragment = getProviderParamsFragment(
-    hosts,
-    disableIdParam,
-  );
+  const providerParamsFragment = getProviderParamsFragment(hosts, disableIdParam);
 
   if (path.includes('$namespace') || path.includes('$providerParams')) {
     const paramsPath = path
@@ -29,12 +26,7 @@ function composeRoutePath(params) {
     return routeJoiner(routePrefix, paramsPath);
   }
 
-  return routeJoiner(
-    routePrefix,
-    providerNamespace,
-    providerParamsFragment,
-    path,
-  );
+  return routeJoiner(routePrefix, providerNamespace, providerParamsFragment, path);
 }
 
 function getProviderParamsFragment(hosts, disableIdParam) {

@@ -1,9 +1,5 @@
 const _ = require('lodash');
-const {
-  calculateBounds,
-  intersects,
-  contains,
-} = require('@terraformer/spatial');
+const { calculateBounds, intersects, contains } = require('@terraformer/spatial');
 const bboxPolygon = require('@turf/bbox-polygon').default;
 const { arcgisToGeoJSON } = require('@terraformer/arcgis');
 
@@ -18,15 +14,11 @@ module.exports = function (featureGeometry = {}, filterGeometry = {}) {
 
   if (!type || coordinates.length === 0) return false;
 
-  const geometryFilterEnvelope =
-    convertGeometryToEnvelopePolygon(filterGeometry);
+  const geometryFilterEnvelope = convertGeometryToEnvelopePolygon(filterGeometry);
 
-  if (type === 'Point')
-    return contains(geometryFilterEnvelope, normalizedFeatureGeometry);
+  if (type === 'Point') return contains(geometryFilterEnvelope, normalizedFeatureGeometry);
 
-  const featureEnvelope = convertGeometryToEnvelopePolygon(
-    normalizedFeatureGeometry,
-  );
+  const featureEnvelope = convertGeometryToEnvelopePolygon(normalizedFeatureGeometry);
   return intersects(geometryFilterEnvelope, featureEnvelope);
 };
 

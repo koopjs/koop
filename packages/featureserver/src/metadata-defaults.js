@@ -4,11 +4,11 @@ const CURRENT_VERSION = 11.2;
 const FULL_VERSION = '11.2.0';
 const MAX_RECORD_COUNT = 2000;
 const SERVICE_DESCRIPTION =
-  'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.';
+  'This is a feature service exposed with Koop. For more information go to https://github.com/koopjs/koop.'; // eslint-disable-line
 const LAYER_DESCRIPTION =
-  'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.';
+  'This is a feature layer exposed with Koop. For more information go to https://github.com/koopjs/koop.'; // eslint-disable-line
 const COPYRIGHT =
-  'Copyright information varies by provider. For more information please contact the source of this data.';
+  'Copyright information varies by provider. For more information please contact the source of this data.'; // eslint-disable-line
 const SPATIAL_REFERENCE = {
   wkid: 4326,
   latestWkid: 4326,
@@ -267,9 +267,7 @@ class MetadataDefaults {
     });
 
     if (error) {
-      throw new Error(
-        `FeatureServer default settings are invalid: ${error.details[0].message}.`,
-      );
+      throw new Error(`FeatureServer default settings are invalid: ${error.details[0].message}.`);
     }
 
     this.#overridables = _.merge(this.#overridables, value);

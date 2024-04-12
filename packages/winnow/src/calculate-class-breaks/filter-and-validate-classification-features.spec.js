@@ -1,5 +1,5 @@
 const test = require('tape');
-const filterAndValidateClassificationValues = require('./filter-and-validate-classification-features');
+const filterAndValidateClassificationValues = require('./filter-and-validate-classification-features'); // eslint-disable-line
 
 test('filterAndValidateClassificationValues: success', (spec) => {
   const features = [
@@ -25,10 +25,7 @@ test('filterAndValidateClassificationValues: should throw error', (spec) => {
     filterAndValidateClassificationValues(features, 'rain');
     spec.fail('should throw error');
   } catch (error) {
-    spec.equals(
-      error.message,
-      'Cannot use non-numeric classificationField, rain: "foo"',
-    );
+    spec.equals(error.message, 'Cannot use non-numeric classificationField, rain: "foo"');
   }
   spec.end();
 });

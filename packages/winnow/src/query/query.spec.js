@@ -32,14 +32,9 @@ test('Should normalize and execute standard query on feature array', (t) => {
   t.ok(spys.normalizeQueryInput.calledOnce);
   t.deepEquals(spys.normalizeQueryInput.firstCall.args, [['features']]);
   t.ok(spys.normalizeQueryOptions.calledOnce);
-  t.deepEquals(spys.normalizeQueryOptions.firstCall.args, [
-    { hello: 'world' },
-    ['features'],
-  ]);
+  t.deepEquals(spys.normalizeQueryOptions.firstCall.args, [{ hello: 'world' }, ['features']]);
   t.ok(spys.sqlQueryHelpers.create.calledOnce);
-  t.deepEquals(spys.sqlQueryHelpers.create.firstCall.args, [
-    { hello: 'world' },
-  ]);
+  t.deepEquals(spys.sqlQueryHelpers.create.firstCall.args, [{ hello: 'world' }]);
   t.ok(spys.standardQuery.calledOnce);
   t.deepEquals(spys.standardQuery.firstCall.args, [
     ['features'],
@@ -75,10 +70,7 @@ test('Should normalize and execute standard query on collection', (t) => {
     './standard-query': spys.standardQuery,
   });
 
-  const result = query(
-    { metadata: { foo: 'bar' }, features: ['features'] },
-    { hello: 'world' },
-  );
+  const result = query({ metadata: { foo: 'bar' }, features: ['features'] }, { hello: 'world' });
   t.ok(spys.normalizeQueryInput.notCalled);
   t.ok(spys.normalizeQueryOptions.calledOnce);
   t.deepEquals(spys.normalizeQueryOptions.firstCall.args, [

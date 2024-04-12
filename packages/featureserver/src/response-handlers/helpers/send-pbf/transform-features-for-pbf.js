@@ -13,14 +13,9 @@ function transformFeaturesForPbf(json, quantizationParameters) {
   } = json;
   const fields = _.orderBy(json.fields, ['name'], ['asc']);
 
-  const geometryTransform = getGeometryTransform(
-    spatialReference,
-    quantizationParameters,
-  );
+  const geometryTransform = getGeometryTransform(spatialReference, quantizationParameters);
 
-  const features = json.features.map(
-    transformFeatureFunction(fields, geometryTransform),
-  );
+  const features = json.features.map(transformFeatureFunction(fields, geometryTransform));
 
   return {
     objectIdFieldName,
@@ -49,10 +44,7 @@ function transformFeatureFunction(fields, geometryTransform) {
   return (feature) => {
     const attributes = transformToPbfAttributes(feature.attributes, fieldMap);
 
-    const geometry = transformToPbfGeometry(
-      feature.geometry,
-      geometryTransform,
-    );
+    const geometry = transformToPbfGeometry(feature.geometry, geometryTransform);
 
     return {
       attributes,

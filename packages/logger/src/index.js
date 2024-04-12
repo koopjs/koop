@@ -95,8 +95,7 @@ function formatter(options) {
 
   if (options.message !== undefined) line.push(options.message);
 
-  if (options.meta && Object.keys(options.meta).length)
-    line.push(JSON.stringify(options.meta));
+  if (options.meta && Object.keys(options.meta).length) line.push(JSON.stringify(options.meta));
 
   return line.join(' ');
 }

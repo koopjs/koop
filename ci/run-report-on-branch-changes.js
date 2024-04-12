@@ -6,4 +6,6 @@ if (!fs.existsSync('.coverage/changes')) {
   return;
 }
 
-shell.exec('nyc report --temp-dir=.coverage/changes --reporter=json-summary --report-dir=.coverage_changes_json');
+shell.exec(
+  'nyc report --temp-dir=.coverage/changes --reporter=json-summary --report-dir=.coverage_changes_json',
+);

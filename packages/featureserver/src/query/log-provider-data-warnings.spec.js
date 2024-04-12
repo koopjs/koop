@@ -5,16 +5,13 @@ const proxyquire = require('proxyquire');
 describe('logProviderDataWarnings', () => {
   const loggerSpy = sinon.spy(() => {});
 
-  const { logProviderDataWarnings } = proxyquire(
-    './log-provider-data-warnings',
-    {
-      '../log-manager': {
-        logger: {
-          debug: loggerSpy,
-        },
+  const { logProviderDataWarnings } = proxyquire('./log-provider-data-warnings', {
+    '../log-manager': {
+      logger: {
+        debug: loggerSpy,
       },
     },
-  );
+  });
 
   afterEach(() => {
     loggerSpy.resetHistory();
@@ -24,7 +21,7 @@ describe('logProviderDataWarnings', () => {
     logProviderDataWarnings({}, {});
     loggerSpy.callCount.should.equal(1);
     loggerSpy.firstCall.args.should.deepEqual([
-      `provider data has no OBJECTID and has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an integer in range 0 - ${Number.MAX_SAFE_INTEGER}. An OBJECTID field will be auto-generated in the absence of an "idField" assignment.`,
+      `provider data has no OBJECTID and has no "idField" assignment. You will get the most reliable behavior from ArcGIS clients if the provider assigns the "idField" to a property that is an integer in range 0 - ${Number.MAX_SAFE_INTEGER}. An OBJECTID field will be auto-generated in the absence of an "idField" assignment.`, // eslint-disable-line
     ]);
   });
 
@@ -32,7 +29,7 @@ describe('logProviderDataWarnings', () => {
     logProviderDataWarnings({ metadata: { idField: 'objEctId' } }, {});
     loggerSpy.callCount.should.equal(1);
     loggerSpy.firstCall.args.should.deepEqual([
-      'requested provider has "idField" that is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients.',
+      'requested provider has "idField" that is a mixed-case version of "OBJECTID". This can cause errors in ArcGIS clients.', // eslint-disable-line
     ]);
   });
 
@@ -50,7 +47,7 @@ describe('logProviderDataWarnings', () => {
     ]);
   });
 
-  it('should log field definition - feature property type mismatch', () => {
+  it('feature property type mismatch', () => {
     logProviderDataWarnings(
       {
         metadata: { fields: [{ name: 'foo', type: 'String' }] },
@@ -64,7 +61,7 @@ describe('logProviderDataWarnings', () => {
     ]);
   });
 
-  it('should log field definition - feature property type mismatch (outFields as empty string)', () => {
+  it('feature property type mismatch (outFields as empty string)', () => {
     logProviderDataWarnings(
       {
         metadata: { fields: [{ name: 'foo', type: 'String' }] },
@@ -78,7 +75,7 @@ describe('logProviderDataWarnings', () => {
     ]);
   });
 
-  it('should log field definition - feature property type mismatch (outFields defined)', () => {
+  it('feature property type mismatch (outFields defined)', () => {
     logProviderDataWarnings(
       {
         metadata: { fields: [{ name: 'foo', type: 'String' }] },
@@ -93,7 +90,7 @@ describe('logProviderDataWarnings', () => {
     ]);
   });
 
-  it('should log field definition - feature property type mismatch (outFields defined with alias)', () => {
+  it('feature property type mismatch (outFields defined with alias)', () => {
     logProviderDataWarnings(
       {
         metadata: { fields: [{ name: 'foo', alias: 'food', type: 'String' }] },
@@ -140,7 +137,7 @@ describe('logProviderDataWarnings', () => {
     );
     loggerSpy.callCount.should.equal(2);
     loggerSpy.secondCall.args.should.deepEqual([
-      'requested provider has feature with property "foo" that was not defined in metadata fields array',
+      'requested provider has feature with property "foo" that was not defined in metadata fields array', // eslint-disable-line
     ]);
   });
 });

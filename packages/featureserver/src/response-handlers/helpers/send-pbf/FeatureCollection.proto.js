@@ -1,3 +1,4 @@
+/* eslint-disable */
 // TODO: move this to a npm
 'use strict';
 
@@ -27,15 +28,9 @@ $root.esriPBuffer = (function () {
 
     FeatureCollectionPBuffer.encode = function encode(message, writer) {
       if (!writer) writer = $Writer.create();
-      if (
-        message.version != null &&
-        Object.hasOwnProperty.call(message, 'version')
-      )
+      if (message.version != null && Object.hasOwnProperty.call(message, 'version'))
         writer.uint32(10).string(message.version);
-      if (
-        message.queryResult != null &&
-        Object.hasOwnProperty.call(message, 'queryResult')
-      )
+      if (message.queryResult != null && Object.hasOwnProperty.call(message, 'queryResult'))
         $root.esriPBuffer.FeatureCollectionPBuffer.QueryResult.encode(
           message.queryResult,
           writer.uint32(18).fork(),
@@ -43,45 +38,33 @@ $root.esriPBuffer = (function () {
       return writer;
     };
 
-    FeatureCollectionPBuffer.encodeDelimited = function encodeDelimited(
-      message,
-      writer,
-    ) {
+    FeatureCollectionPBuffer.encodeDelimited = function encodeDelimited(message, writer) {
       return this.encode(message, writer).ldelim();
     };
 
     FeatureCollectionPBuffer.verify = function verify(message) {
-      if (typeof message !== 'object' || message === null)
-        return 'object expected';
+      if (typeof message !== 'object' || message === null) return 'object expected';
       if (message.version != null && message.hasOwnProperty('version'))
         if (!$util.isString(message.version)) return 'version: string expected';
-      if (
-        message.queryResult != null &&
-        message.hasOwnProperty('queryResult')
-      ) {
-        var error =
-          $root.esriPBuffer.FeatureCollectionPBuffer.QueryResult.verify(
-            message.queryResult,
-          );
+      if (message.queryResult != null && message.hasOwnProperty('queryResult')) {
+        var error = $root.esriPBuffer.FeatureCollectionPBuffer.QueryResult.verify(
+          message.queryResult,
+        );
         if (error) return 'queryResult.' + error;
       }
       return null;
     };
 
     FeatureCollectionPBuffer.fromObject = function fromObject(object) {
-      if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer)
-        return object;
+      if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer) return object;
       var message = new $root.esriPBuffer.FeatureCollectionPBuffer();
       if (object.version != null) message.version = String(object.version);
       if (object.queryResult != null) {
         if (typeof object.queryResult !== 'object')
-          throw TypeError(
-            '.esriPBuffer.FeatureCollectionPBuffer.queryResult: object expected',
-          );
-        message.queryResult =
-          $root.esriPBuffer.FeatureCollectionPBuffer.QueryResult.fromObject(
-            object.queryResult,
-          );
+          throw TypeError('.esriPBuffer.FeatureCollectionPBuffer.queryResult: object expected');
+        message.queryResult = $root.esriPBuffer.FeatureCollectionPBuffer.QueryResult.fromObject(
+          object.queryResult,
+        );
       }
       return message;
     };
@@ -96,11 +79,10 @@ $root.esriPBuffer = (function () {
       if (message.version != null && message.hasOwnProperty('version'))
         object.version = message.version;
       if (message.queryResult != null && message.hasOwnProperty('queryResult'))
-        object.queryResult =
-          $root.esriPBuffer.FeatureCollectionPBuffer.QueryResult.toObject(
-            message.queryResult,
-            options,
-          );
+        object.queryResult = $root.esriPBuffer.FeatureCollectionPBuffer.QueryResult.toObject(
+          message.queryResult,
+          options,
+        );
       return object;
     };
 
@@ -196,8 +178,7 @@ $root.esriPBuffer = (function () {
       function SpatialReference(properties) {
         if (properties)
           for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            if (properties[keys[i]] != null)
-              this[keys[i]] = properties[keys[i]];
+            if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
       SpatialReference.prototype.wkid = 0;
@@ -214,72 +195,44 @@ $root.esriPBuffer = (function () {
         if (!writer) writer = $Writer.create();
         if (message.wkid != null && Object.hasOwnProperty.call(message, 'wkid'))
           writer.uint32(8).uint32(message.wkid);
-        if (
-          message.lastestWkid != null &&
-          Object.hasOwnProperty.call(message, 'lastestWkid')
-        )
+        if (message.lastestWkid != null && Object.hasOwnProperty.call(message, 'lastestWkid'))
           writer.uint32(16).uint32(message.lastestWkid);
-        if (
-          message.vcsWkid != null &&
-          Object.hasOwnProperty.call(message, 'vcsWkid')
-        )
+        if (message.vcsWkid != null && Object.hasOwnProperty.call(message, 'vcsWkid'))
           writer.uint32(24).uint32(message.vcsWkid);
-        if (
-          message.latestVcsWkid != null &&
-          Object.hasOwnProperty.call(message, 'latestVcsWkid')
-        )
+        if (message.latestVcsWkid != null && Object.hasOwnProperty.call(message, 'latestVcsWkid'))
           writer.uint32(32).uint32(message.latestVcsWkid);
         if (message.wkt != null && Object.hasOwnProperty.call(message, 'wkt'))
           writer.uint32(42).string(message.wkt);
         return writer;
       };
 
-      SpatialReference.encodeDelimited = function encodeDelimited(
-        message,
-        writer,
-      ) {
+      SpatialReference.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
       };
 
       SpatialReference.verify = function verify(message) {
-        if (typeof message !== 'object' || message === null)
-          return 'object expected';
+        if (typeof message !== 'object' || message === null) return 'object expected';
         if (message.wkid != null && message.hasOwnProperty('wkid'))
           if (!$util.isInteger(message.wkid)) return 'wkid: integer expected';
-        if (
-          message.lastestWkid != null &&
-          message.hasOwnProperty('lastestWkid')
-        )
-          if (!$util.isInteger(message.lastestWkid))
-            return 'lastestWkid: integer expected';
+        if (message.lastestWkid != null && message.hasOwnProperty('lastestWkid'))
+          if (!$util.isInteger(message.lastestWkid)) return 'lastestWkid: integer expected';
         if (message.vcsWkid != null && message.hasOwnProperty('vcsWkid'))
-          if (!$util.isInteger(message.vcsWkid))
-            return 'vcsWkid: integer expected';
-        if (
-          message.latestVcsWkid != null &&
-          message.hasOwnProperty('latestVcsWkid')
-        )
-          if (!$util.isInteger(message.latestVcsWkid))
-            return 'latestVcsWkid: integer expected';
+          if (!$util.isInteger(message.vcsWkid)) return 'vcsWkid: integer expected';
+        if (message.latestVcsWkid != null && message.hasOwnProperty('latestVcsWkid'))
+          if (!$util.isInteger(message.latestVcsWkid)) return 'latestVcsWkid: integer expected';
         if (message.wkt != null && message.hasOwnProperty('wkt'))
           if (!$util.isString(message.wkt)) return 'wkt: string expected';
         return null;
       };
 
       SpatialReference.fromObject = function fromObject(object) {
-        if (
-          object instanceof
-          $root.esriPBuffer.FeatureCollectionPBuffer.SpatialReference
-        )
+        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.SpatialReference)
           return object;
-        var message =
-          new $root.esriPBuffer.FeatureCollectionPBuffer.SpatialReference();
+        var message = new $root.esriPBuffer.FeatureCollectionPBuffer.SpatialReference();
         if (object.wkid != null) message.wkid = object.wkid >>> 0;
-        if (object.lastestWkid != null)
-          message.lastestWkid = object.lastestWkid >>> 0;
+        if (object.lastestWkid != null) message.lastestWkid = object.lastestWkid >>> 0;
         if (object.vcsWkid != null) message.vcsWkid = object.vcsWkid >>> 0;
-        if (object.latestVcsWkid != null)
-          message.latestVcsWkid = object.latestVcsWkid >>> 0;
+        if (object.latestVcsWkid != null) message.latestVcsWkid = object.latestVcsWkid >>> 0;
         if (object.wkt != null) message.wkt = String(object.wkt);
         return message;
       };
@@ -294,22 +247,14 @@ $root.esriPBuffer = (function () {
           object.latestVcsWkid = 0;
           object.wkt = '';
         }
-        if (message.wkid != null && message.hasOwnProperty('wkid'))
-          object.wkid = message.wkid;
-        if (
-          message.lastestWkid != null &&
-          message.hasOwnProperty('lastestWkid')
-        )
+        if (message.wkid != null && message.hasOwnProperty('wkid')) object.wkid = message.wkid;
+        if (message.lastestWkid != null && message.hasOwnProperty('lastestWkid'))
           object.lastestWkid = message.lastestWkid;
         if (message.vcsWkid != null && message.hasOwnProperty('vcsWkid'))
           object.vcsWkid = message.vcsWkid;
-        if (
-          message.latestVcsWkid != null &&
-          message.hasOwnProperty('latestVcsWkid')
-        )
+        if (message.latestVcsWkid != null && message.hasOwnProperty('latestVcsWkid'))
           object.latestVcsWkid = message.latestVcsWkid;
-        if (message.wkt != null && message.hasOwnProperty('wkt'))
-          object.wkt = message.wkt;
+        if (message.wkt != null && message.hasOwnProperty('wkt')) object.wkt = message.wkt;
         return object;
       };
 
@@ -321,10 +266,7 @@ $root.esriPBuffer = (function () {
         if (typeUrlPrefix === undefined) {
           typeUrlPrefix = 'type.googleapis.com';
         }
-        return (
-          typeUrlPrefix +
-          '/esriPBuffer.FeatureCollectionPBuffer.SpatialReference'
-        );
+        return typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.SpatialReference';
       };
 
       return SpatialReference;
@@ -334,8 +276,7 @@ $root.esriPBuffer = (function () {
       function Field(properties) {
         if (properties)
           for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            if (properties[keys[i]] != null)
-              this[keys[i]] = properties[keys[i]];
+            if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
       Field.prototype.name = '';
@@ -353,30 +294,15 @@ $root.esriPBuffer = (function () {
         if (!writer) writer = $Writer.create();
         if (message.name != null && Object.hasOwnProperty.call(message, 'name'))
           writer.uint32(10).string(message.name);
-        if (
-          message.fieldType != null &&
-          Object.hasOwnProperty.call(message, 'fieldType')
-        )
+        if (message.fieldType != null && Object.hasOwnProperty.call(message, 'fieldType'))
           writer.uint32(16).int32(message.fieldType);
-        if (
-          message.alias != null &&
-          Object.hasOwnProperty.call(message, 'alias')
-        )
+        if (message.alias != null && Object.hasOwnProperty.call(message, 'alias'))
           writer.uint32(26).string(message.alias);
-        if (
-          message.sqlType != null &&
-          Object.hasOwnProperty.call(message, 'sqlType')
-        )
+        if (message.sqlType != null && Object.hasOwnProperty.call(message, 'sqlType'))
           writer.uint32(32).int32(message.sqlType);
-        if (
-          message.domain != null &&
-          Object.hasOwnProperty.call(message, 'domain')
-        )
+        if (message.domain != null && Object.hasOwnProperty.call(message, 'domain'))
           writer.uint32(42).string(message.domain);
-        if (
-          message.defaultValue != null &&
-          Object.hasOwnProperty.call(message, 'defaultValue')
-        )
+        if (message.defaultValue != null && Object.hasOwnProperty.call(message, 'defaultValue'))
           writer.uint32(50).string(message.defaultValue);
         return writer;
       };
@@ -386,8 +312,7 @@ $root.esriPBuffer = (function () {
       };
 
       Field.verify = function verify(message) {
-        if (typeof message !== 'object' || message === null)
-          return 'object expected';
+        if (typeof message !== 'object' || message === null) return 'object expected';
         if (message.name != null && message.hasOwnProperty('name'))
           if (!$util.isString(message.name)) return 'name: string expected';
         if (message.fieldType != null && message.hasOwnProperty('fieldType'))
@@ -450,18 +375,13 @@ $root.esriPBuffer = (function () {
           }
         if (message.domain != null && message.hasOwnProperty('domain'))
           if (!$util.isString(message.domain)) return 'domain: string expected';
-        if (
-          message.defaultValue != null &&
-          message.hasOwnProperty('defaultValue')
-        )
-          if (!$util.isString(message.defaultValue))
-            return 'defaultValue: string expected';
+        if (message.defaultValue != null && message.hasOwnProperty('defaultValue'))
+          if (!$util.isString(message.defaultValue)) return 'defaultValue: string expected';
         return null;
       };
 
       Field.fromObject = function fromObject(object) {
-        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.Field)
-          return object;
+        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.Field) return object;
         var message = new $root.esriPBuffer.FeatureCollectionPBuffer.Field();
         if (object.name != null) message.name = String(object.name);
         switch (object.fieldType) {
@@ -658,8 +578,7 @@ $root.esriPBuffer = (function () {
             break;
         }
         if (object.domain != null) message.domain = String(object.domain);
-        if (object.defaultValue != null)
-          message.defaultValue = String(object.defaultValue);
+        if (object.defaultValue != null) message.defaultValue = String(object.defaultValue);
         return message;
       };
 
@@ -668,45 +587,32 @@ $root.esriPBuffer = (function () {
         var object = {};
         if (options.defaults) {
           object.name = '';
-          object.fieldType =
-            options.enums === String ? 'esriFieldTypeSmallInteger' : 0;
+          object.fieldType = options.enums === String ? 'esriFieldTypeSmallInteger' : 0;
           object.alias = '';
           object.sqlType = options.enums === String ? 'sqlTypeBigInt' : 0;
           object.domain = '';
           object.defaultValue = '';
         }
-        if (message.name != null && message.hasOwnProperty('name'))
-          object.name = message.name;
+        if (message.name != null && message.hasOwnProperty('name')) object.name = message.name;
         if (message.fieldType != null && message.hasOwnProperty('fieldType'))
           object.fieldType =
             options.enums === String
-              ? $root.esriPBuffer.FeatureCollectionPBuffer.FieldType[
-                  message.fieldType
-                ] === undefined
+              ? $root.esriPBuffer.FeatureCollectionPBuffer.FieldType[message.fieldType] ===
+                undefined
                 ? message.fieldType
-                : $root.esriPBuffer.FeatureCollectionPBuffer.FieldType[
-                    message.fieldType
-                  ]
+                : $root.esriPBuffer.FeatureCollectionPBuffer.FieldType[message.fieldType]
               : message.fieldType;
-        if (message.alias != null && message.hasOwnProperty('alias'))
-          object.alias = message.alias;
+        if (message.alias != null && message.hasOwnProperty('alias')) object.alias = message.alias;
         if (message.sqlType != null && message.hasOwnProperty('sqlType'))
           object.sqlType =
             options.enums === String
-              ? $root.esriPBuffer.FeatureCollectionPBuffer.SQLType[
-                  message.sqlType
-                ] === undefined
+              ? $root.esriPBuffer.FeatureCollectionPBuffer.SQLType[message.sqlType] === undefined
                 ? message.sqlType
-                : $root.esriPBuffer.FeatureCollectionPBuffer.SQLType[
-                    message.sqlType
-                  ]
+                : $root.esriPBuffer.FeatureCollectionPBuffer.SQLType[message.sqlType]
               : message.sqlType;
         if (message.domain != null && message.hasOwnProperty('domain'))
           object.domain = message.domain;
-        if (
-          message.defaultValue != null &&
-          message.hasOwnProperty('defaultValue')
-        )
+        if (message.defaultValue != null && message.hasOwnProperty('defaultValue'))
           object.defaultValue = message.defaultValue;
         return object;
       };
@@ -729,8 +635,7 @@ $root.esriPBuffer = (function () {
       function GeometryField(properties) {
         if (properties)
           for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            if (properties[keys[i]] != null)
-              this[keys[i]] = properties[keys[i]];
+            if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
       GeometryField.prototype.field = null;
@@ -742,42 +647,27 @@ $root.esriPBuffer = (function () {
 
       GeometryField.encode = function encode(message, writer) {
         if (!writer) writer = $Writer.create();
-        if (
-          message.field != null &&
-          Object.hasOwnProperty.call(message, 'field')
-        )
+        if (message.field != null && Object.hasOwnProperty.call(message, 'field'))
           $root.esriPBuffer.FeatureCollectionPBuffer.Field.encode(
             message.field,
             writer.uint32(10).fork(),
           ).ldelim();
-        if (
-          message.geometryType != null &&
-          Object.hasOwnProperty.call(message, 'geometryType')
-        )
+        if (message.geometryType != null && Object.hasOwnProperty.call(message, 'geometryType'))
           writer.uint32(16).int32(message.geometryType);
         return writer;
       };
 
-      GeometryField.encodeDelimited = function encodeDelimited(
-        message,
-        writer,
-      ) {
+      GeometryField.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
       };
 
       GeometryField.verify = function verify(message) {
-        if (typeof message !== 'object' || message === null)
-          return 'object expected';
+        if (typeof message !== 'object' || message === null) return 'object expected';
         if (message.field != null && message.hasOwnProperty('field')) {
-          var error = $root.esriPBuffer.FeatureCollectionPBuffer.Field.verify(
-            message.field,
-          );
+          var error = $root.esriPBuffer.FeatureCollectionPBuffer.Field.verify(message.field);
           if (error) return 'field.' + error;
         }
-        if (
-          message.geometryType != null &&
-          message.hasOwnProperty('geometryType')
-        )
+        if (message.geometryType != null && message.hasOwnProperty('geometryType'))
           switch (message.geometryType) {
             default:
               return 'geometryType: enum value expected';
@@ -794,22 +684,15 @@ $root.esriPBuffer = (function () {
       };
 
       GeometryField.fromObject = function fromObject(object) {
-        if (
-          object instanceof
-          $root.esriPBuffer.FeatureCollectionPBuffer.GeometryField
-        )
+        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.GeometryField)
           return object;
-        var message =
-          new $root.esriPBuffer.FeatureCollectionPBuffer.GeometryField();
+        var message = new $root.esriPBuffer.FeatureCollectionPBuffer.GeometryField();
         if (object.field != null) {
           if (typeof object.field !== 'object')
             throw TypeError(
               '.esriPBuffer.FeatureCollectionPBuffer.GeometryField.field: object expected',
             );
-          message.field =
-            $root.esriPBuffer.FeatureCollectionPBuffer.Field.fromObject(
-              object.field,
-            );
+          message.field = $root.esriPBuffer.FeatureCollectionPBuffer.Field.fromObject(object.field);
         }
         switch (object.geometryType) {
           default:
@@ -855,28 +738,20 @@ $root.esriPBuffer = (function () {
         var object = {};
         if (options.defaults) {
           object.field = null;
-          object.geometryType =
-            options.enums === String ? 'esriGeometryTypePoint' : 0;
+          object.geometryType = options.enums === String ? 'esriGeometryTypePoint' : 0;
         }
         if (message.field != null && message.hasOwnProperty('field'))
-          object.field =
-            $root.esriPBuffer.FeatureCollectionPBuffer.Field.toObject(
-              message.field,
-              options,
-            );
-        if (
-          message.geometryType != null &&
-          message.hasOwnProperty('geometryType')
-        )
+          object.field = $root.esriPBuffer.FeatureCollectionPBuffer.Field.toObject(
+            message.field,
+            options,
+          );
+        if (message.geometryType != null && message.hasOwnProperty('geometryType'))
           object.geometryType =
             options.enums === String
-              ? $root.esriPBuffer.FeatureCollectionPBuffer.GeometryType[
-                  message.geometryType
-                ] === undefined
+              ? $root.esriPBuffer.FeatureCollectionPBuffer.GeometryType[message.geometryType] ===
+                undefined
                 ? message.geometryType
-                : $root.esriPBuffer.FeatureCollectionPBuffer.GeometryType[
-                    message.geometryType
-                  ]
+                : $root.esriPBuffer.FeatureCollectionPBuffer.GeometryType[message.geometryType]
               : message.geometryType;
         return object;
       };
@@ -889,9 +764,7 @@ $root.esriPBuffer = (function () {
         if (typeUrlPrefix === undefined) {
           typeUrlPrefix = 'type.googleapis.com';
         }
-        return (
-          typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.GeometryField'
-        );
+        return typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.GeometryField';
       };
 
       return GeometryField;
@@ -901,8 +774,7 @@ $root.esriPBuffer = (function () {
       function Envelope(properties) {
         if (properties)
           for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            if (properties[keys[i]] != null)
-              this[keys[i]] = properties[keys[i]];
+            if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
       Envelope.prototype.XMin = 0;
@@ -941,8 +813,7 @@ $root.esriPBuffer = (function () {
       };
 
       Envelope.verify = function verify(message) {
-        if (typeof message !== 'object' || message === null)
-          return 'object expected';
+        if (typeof message !== 'object' || message === null) return 'object expected';
         if (message.XMin != null && message.hasOwnProperty('XMin'))
           if (typeof message.XMin !== 'number') return 'XMin: number expected';
         if (message.YMin != null && message.hasOwnProperty('YMin'))
@@ -951,24 +822,17 @@ $root.esriPBuffer = (function () {
           if (typeof message.XMax !== 'number') return 'XMax: number expected';
         if (message.YMax != null && message.hasOwnProperty('YMax'))
           if (typeof message.YMax !== 'number') return 'YMax: number expected';
-        if (
-          message.SpatialReference != null &&
-          message.hasOwnProperty('SpatialReference')
-        ) {
-          var error =
-            $root.esriPBuffer.FeatureCollectionPBuffer.SpatialReference.verify(
-              message.SpatialReference,
-            );
+        if (message.SpatialReference != null && message.hasOwnProperty('SpatialReference')) {
+          var error = $root.esriPBuffer.FeatureCollectionPBuffer.SpatialReference.verify(
+            message.SpatialReference,
+          );
           if (error) return 'SpatialReference.' + error;
         }
         return null;
       };
 
       Envelope.fromObject = function fromObject(object) {
-        if (
-          object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.Envelope
-        )
-          return object;
+        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.Envelope) return object;
         var message = new $root.esriPBuffer.FeatureCollectionPBuffer.Envelope();
         if (object.XMin != null) message.XMin = Number(object.XMin);
         if (object.YMin != null) message.YMin = Number(object.YMin);
@@ -999,28 +863,17 @@ $root.esriPBuffer = (function () {
         }
         if (message.XMin != null && message.hasOwnProperty('XMin'))
           object.XMin =
-            options.json && !isFinite(message.XMin)
-              ? String(message.XMin)
-              : message.XMin;
+            options.json && !isFinite(message.XMin) ? String(message.XMin) : message.XMin;
         if (message.YMin != null && message.hasOwnProperty('YMin'))
           object.YMin =
-            options.json && !isFinite(message.YMin)
-              ? String(message.YMin)
-              : message.YMin;
+            options.json && !isFinite(message.YMin) ? String(message.YMin) : message.YMin;
         if (message.XMax != null && message.hasOwnProperty('XMax'))
           object.XMax =
-            options.json && !isFinite(message.XMax)
-              ? String(message.XMax)
-              : message.XMax;
+            options.json && !isFinite(message.XMax) ? String(message.XMax) : message.XMax;
         if (message.YMax != null && message.hasOwnProperty('YMax'))
           object.YMax =
-            options.json && !isFinite(message.YMax)
-              ? String(message.YMax)
-              : message.YMax;
-        if (
-          message.SpatialReference != null &&
-          message.hasOwnProperty('SpatialReference')
-        )
+            options.json && !isFinite(message.YMax) ? String(message.YMax) : message.YMax;
+        if (message.SpatialReference != null && message.hasOwnProperty('SpatialReference'))
           object.SpatialReference =
             $root.esriPBuffer.FeatureCollectionPBuffer.SpatialReference.toObject(
               message.SpatialReference,
@@ -1047,8 +900,7 @@ $root.esriPBuffer = (function () {
       function Value(properties) {
         if (properties)
           for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            if (properties[keys[i]] != null)
-              this[keys[i]] = properties[keys[i]];
+            if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
       Value.prototype.stringValue = null;
@@ -1086,50 +938,23 @@ $root.esriPBuffer = (function () {
 
       Value.encode = function encode(message, writer) {
         if (!writer) writer = $Writer.create();
-        if (
-          message.stringValue != null &&
-          Object.hasOwnProperty.call(message, 'stringValue')
-        )
+        if (message.stringValue != null && Object.hasOwnProperty.call(message, 'stringValue'))
           writer.uint32(10).string(message.stringValue);
-        if (
-          message.floatValue != null &&
-          Object.hasOwnProperty.call(message, 'floatValue')
-        )
+        if (message.floatValue != null && Object.hasOwnProperty.call(message, 'floatValue'))
           writer.uint32(21).float(message.floatValue);
-        if (
-          message.doubleValue != null &&
-          Object.hasOwnProperty.call(message, 'doubleValue')
-        )
+        if (message.doubleValue != null && Object.hasOwnProperty.call(message, 'doubleValue'))
           writer.uint32(25).double(message.doubleValue);
-        if (
-          message.sintValue != null &&
-          Object.hasOwnProperty.call(message, 'sintValue')
-        )
+        if (message.sintValue != null && Object.hasOwnProperty.call(message, 'sintValue'))
           writer.uint32(32).sint32(message.sintValue);
-        if (
-          message.uintValue != null &&
-          Object.hasOwnProperty.call(message, 'uintValue')
-        )
+        if (message.uintValue != null && Object.hasOwnProperty.call(message, 'uintValue'))
           writer.uint32(40).uint32(message.uintValue);
-        if (
-          message.int64Value != null &&
-          Object.hasOwnProperty.call(message, 'int64Value')
-        )
+        if (message.int64Value != null && Object.hasOwnProperty.call(message, 'int64Value'))
           writer.uint32(48).int64(message.int64Value);
-        if (
-          message.uint64Value != null &&
-          Object.hasOwnProperty.call(message, 'uint64Value')
-        )
+        if (message.uint64Value != null && Object.hasOwnProperty.call(message, 'uint64Value'))
           writer.uint32(56).uint64(message.uint64Value);
-        if (
-          message.sint64Value != null &&
-          Object.hasOwnProperty.call(message, 'sint64Value')
-        )
+        if (message.sint64Value != null && Object.hasOwnProperty.call(message, 'sint64Value'))
           writer.uint32(64).sint64(message.sint64Value);
-        if (
-          message.boolValue != null &&
-          Object.hasOwnProperty.call(message, 'boolValue')
-        )
+        if (message.boolValue != null && Object.hasOwnProperty.call(message, 'boolValue'))
           writer.uint32(72).bool(message.boolValue);
         return writer;
       };
@@ -1139,51 +964,33 @@ $root.esriPBuffer = (function () {
       };
 
       Value.verify = function verify(message) {
-        if (typeof message !== 'object' || message === null)
-          return 'object expected';
+        if (typeof message !== 'object' || message === null) return 'object expected';
         var properties = {};
-        if (
-          message.stringValue != null &&
-          message.hasOwnProperty('stringValue')
-        ) {
+        if (message.stringValue != null && message.hasOwnProperty('stringValue')) {
           properties.valueType = 1;
-          if (!$util.isString(message.stringValue))
-            return 'stringValue: string expected';
+          if (!$util.isString(message.stringValue)) return 'stringValue: string expected';
         }
-        if (
-          message.floatValue != null &&
-          message.hasOwnProperty('floatValue')
-        ) {
+        if (message.floatValue != null && message.hasOwnProperty('floatValue')) {
           if (properties.valueType === 1) return 'valueType: multiple values';
           properties.valueType = 1;
-          if (typeof message.floatValue !== 'number')
-            return 'floatValue: number expected';
+          if (typeof message.floatValue !== 'number') return 'floatValue: number expected';
         }
-        if (
-          message.doubleValue != null &&
-          message.hasOwnProperty('doubleValue')
-        ) {
+        if (message.doubleValue != null && message.hasOwnProperty('doubleValue')) {
           if (properties.valueType === 1) return 'valueType: multiple values';
           properties.valueType = 1;
-          if (typeof message.doubleValue !== 'number')
-            return 'doubleValue: number expected';
+          if (typeof message.doubleValue !== 'number') return 'doubleValue: number expected';
         }
         if (message.sintValue != null && message.hasOwnProperty('sintValue')) {
           if (properties.valueType === 1) return 'valueType: multiple values';
           properties.valueType = 1;
-          if (!$util.isInteger(message.sintValue))
-            return 'sintValue: integer expected';
+          if (!$util.isInteger(message.sintValue)) return 'sintValue: integer expected';
         }
         if (message.uintValue != null && message.hasOwnProperty('uintValue')) {
           if (properties.valueType === 1) return 'valueType: multiple values';
           properties.valueType = 1;
-          if (!$util.isInteger(message.uintValue))
-            return 'uintValue: integer expected';
+          if (!$util.isInteger(message.uintValue)) return 'uintValue: integer expected';
         }
-        if (
-          message.int64Value != null &&
-          message.hasOwnProperty('int64Value')
-        ) {
+        if (message.int64Value != null && message.hasOwnProperty('int64Value')) {
           if (properties.valueType === 1) return 'valueType: multiple values';
           properties.valueType = 1;
           if (
@@ -1196,10 +1003,7 @@ $root.esriPBuffer = (function () {
           )
             return 'int64Value: integer|Long expected';
         }
-        if (
-          message.uint64Value != null &&
-          message.hasOwnProperty('uint64Value')
-        ) {
+        if (message.uint64Value != null && message.hasOwnProperty('uint64Value')) {
           if (properties.valueType === 1) return 'valueType: multiple values';
           properties.valueType = 1;
           if (
@@ -1212,10 +1016,7 @@ $root.esriPBuffer = (function () {
           )
             return 'uint64Value: integer|Long expected';
         }
-        if (
-          message.sint64Value != null &&
-          message.hasOwnProperty('sint64Value')
-        ) {
+        if (message.sint64Value != null && message.hasOwnProperty('sint64Value')) {
           if (properties.valueType === 1) return 'valueType: multiple values';
           properties.valueType = 1;
           if (
@@ -1231,34 +1032,25 @@ $root.esriPBuffer = (function () {
         if (message.boolValue != null && message.hasOwnProperty('boolValue')) {
           if (properties.valueType === 1) return 'valueType: multiple values';
           properties.valueType = 1;
-          if (typeof message.boolValue !== 'boolean')
-            return 'boolValue: boolean expected';
+          if (typeof message.boolValue !== 'boolean') return 'boolValue: boolean expected';
         }
         return null;
       };
 
       Value.fromObject = function fromObject(object) {
-        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.Value)
-          return object;
+        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.Value) return object;
         var message = new $root.esriPBuffer.FeatureCollectionPBuffer.Value();
-        if (object.stringValue != null)
-          message.stringValue = String(object.stringValue);
-        if (object.floatValue != null)
-          message.floatValue = Number(object.floatValue);
-        if (object.doubleValue != null)
-          message.doubleValue = Number(object.doubleValue);
+        if (object.stringValue != null) message.stringValue = String(object.stringValue);
+        if (object.floatValue != null) message.floatValue = Number(object.floatValue);
+        if (object.doubleValue != null) message.doubleValue = Number(object.doubleValue);
         if (object.sintValue != null) message.sintValue = object.sintValue | 0;
-        if (object.uintValue != null)
-          message.uintValue = object.uintValue >>> 0;
+        if (object.uintValue != null) message.uintValue = object.uintValue >>> 0;
         if (object.int64Value != null)
           if ($util.Long)
-            (message.int64Value = $util.Long.fromValue(
-              object.int64Value,
-            )).unsigned = false;
+            (message.int64Value = $util.Long.fromValue(object.int64Value)).unsigned = false;
           else if (typeof object.int64Value === 'string')
             message.int64Value = parseInt(object.int64Value, 10);
-          else if (typeof object.int64Value === 'number')
-            message.int64Value = object.int64Value;
+          else if (typeof object.int64Value === 'number') message.int64Value = object.int64Value;
           else if (typeof object.int64Value === 'object')
             message.int64Value = new $util.LongBits(
               object.int64Value.low >>> 0,
@@ -1266,13 +1058,10 @@ $root.esriPBuffer = (function () {
             ).toNumber();
         if (object.uint64Value != null)
           if ($util.Long)
-            (message.uint64Value = $util.Long.fromValue(
-              object.uint64Value,
-            )).unsigned = true;
+            (message.uint64Value = $util.Long.fromValue(object.uint64Value)).unsigned = true;
           else if (typeof object.uint64Value === 'string')
             message.uint64Value = parseInt(object.uint64Value, 10);
-          else if (typeof object.uint64Value === 'number')
-            message.uint64Value = object.uint64Value;
+          else if (typeof object.uint64Value === 'number') message.uint64Value = object.uint64Value;
           else if (typeof object.uint64Value === 'object')
             message.uint64Value = new $util.LongBits(
               object.uint64Value.low >>> 0,
@@ -1280,47 +1069,34 @@ $root.esriPBuffer = (function () {
             ).toNumber(true);
         if (object.sint64Value != null)
           if ($util.Long)
-            (message.sint64Value = $util.Long.fromValue(
-              object.sint64Value,
-            )).unsigned = false;
+            (message.sint64Value = $util.Long.fromValue(object.sint64Value)).unsigned = false;
           else if (typeof object.sint64Value === 'string')
             message.sint64Value = parseInt(object.sint64Value, 10);
-          else if (typeof object.sint64Value === 'number')
-            message.sint64Value = object.sint64Value;
+          else if (typeof object.sint64Value === 'number') message.sint64Value = object.sint64Value;
           else if (typeof object.sint64Value === 'object')
             message.sint64Value = new $util.LongBits(
               object.sint64Value.low >>> 0,
               object.sint64Value.high >>> 0,
             ).toNumber();
-        if (object.boolValue != null)
-          message.boolValue = Boolean(object.boolValue);
+        if (object.boolValue != null) message.boolValue = Boolean(object.boolValue);
         return message;
       };
 
       Value.toObject = function toObject(message, options) {
         if (!options) options = {};
         var object = {};
-        if (
-          message.stringValue != null &&
-          message.hasOwnProperty('stringValue')
-        ) {
+        if (message.stringValue != null && message.hasOwnProperty('stringValue')) {
           object.stringValue = message.stringValue;
           if (options.oneofs) object.valueType = 'stringValue';
         }
-        if (
-          message.floatValue != null &&
-          message.hasOwnProperty('floatValue')
-        ) {
+        if (message.floatValue != null && message.hasOwnProperty('floatValue')) {
           object.floatValue =
             options.json && !isFinite(message.floatValue)
               ? String(message.floatValue)
               : message.floatValue;
           if (options.oneofs) object.valueType = 'floatValue';
         }
-        if (
-          message.doubleValue != null &&
-          message.hasOwnProperty('doubleValue')
-        ) {
+        if (message.doubleValue != null && message.hasOwnProperty('doubleValue')) {
           object.doubleValue =
             options.json && !isFinite(message.doubleValue)
               ? String(message.doubleValue)
@@ -1335,15 +1111,10 @@ $root.esriPBuffer = (function () {
           object.uintValue = message.uintValue;
           if (options.oneofs) object.valueType = 'uintValue';
         }
-        if (
-          message.int64Value != null &&
-          message.hasOwnProperty('int64Value')
-        ) {
+        if (message.int64Value != null && message.hasOwnProperty('int64Value')) {
           if (typeof message.int64Value === 'number')
             object.int64Value =
-              options.longs === String
-                ? String(message.int64Value)
-                : message.int64Value;
+              options.longs === String ? String(message.int64Value) : message.int64Value;
           else
             object.int64Value =
               options.longs === String
@@ -1356,15 +1127,10 @@ $root.esriPBuffer = (function () {
                   : message.int64Value;
           if (options.oneofs) object.valueType = 'int64Value';
         }
-        if (
-          message.uint64Value != null &&
-          message.hasOwnProperty('uint64Value')
-        ) {
+        if (message.uint64Value != null && message.hasOwnProperty('uint64Value')) {
           if (typeof message.uint64Value === 'number')
             object.uint64Value =
-              options.longs === String
-                ? String(message.uint64Value)
-                : message.uint64Value;
+              options.longs === String ? String(message.uint64Value) : message.uint64Value;
           else
             object.uint64Value =
               options.longs === String
@@ -1377,15 +1143,10 @@ $root.esriPBuffer = (function () {
                   : message.uint64Value;
           if (options.oneofs) object.valueType = 'uint64Value';
         }
-        if (
-          message.sint64Value != null &&
-          message.hasOwnProperty('sint64Value')
-        ) {
+        if (message.sint64Value != null && message.hasOwnProperty('sint64Value')) {
           if (typeof message.sint64Value === 'number')
             object.sint64Value =
-              options.longs === String
-                ? String(message.sint64Value)
-                : message.sint64Value;
+              options.longs === String ? String(message.sint64Value) : message.sint64Value;
           else
             object.sint64Value =
               options.longs === String
@@ -1425,8 +1186,7 @@ $root.esriPBuffer = (function () {
         this.coords = [];
         if (properties)
           for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            if (properties[keys[i]] != null)
-              this[keys[i]] = properties[keys[i]];
+            if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
       Geometry.prototype.geometryType = 0;
@@ -1439,21 +1199,16 @@ $root.esriPBuffer = (function () {
 
       Geometry.encode = function encode(message, writer) {
         if (!writer) writer = $Writer.create();
-        if (
-          message.geometryType != null &&
-          Object.hasOwnProperty.call(message, 'geometryType')
-        )
+        if (message.geometryType != null && Object.hasOwnProperty.call(message, 'geometryType'))
           writer.uint32(8).int32(message.geometryType);
         if (message.lengths != null && message.lengths.length) {
           writer.uint32(18).fork();
-          for (var i = 0; i < message.lengths.length; ++i)
-            writer.uint32(message.lengths[i]);
+          for (var i = 0; i < message.lengths.length; ++i) writer.uint32(message.lengths[i]);
           writer.ldelim();
         }
         if (message.coords != null && message.coords.length) {
           writer.uint32(26).fork();
-          for (var i = 0; i < message.coords.length; ++i)
-            writer.sint64(message.coords[i]);
+          for (var i = 0; i < message.coords.length; ++i) writer.sint64(message.coords[i]);
           writer.ldelim();
         }
         return writer;
@@ -1464,12 +1219,8 @@ $root.esriPBuffer = (function () {
       };
 
       Geometry.verify = function verify(message) {
-        if (typeof message !== 'object' || message === null)
-          return 'object expected';
-        if (
-          message.geometryType != null &&
-          message.hasOwnProperty('geometryType')
-        )
+        if (typeof message !== 'object' || message === null) return 'object expected';
+        if (message.geometryType != null && message.hasOwnProperty('geometryType'))
           switch (message.geometryType) {
             default:
               return 'geometryType: enum value expected';
@@ -1485,8 +1236,7 @@ $root.esriPBuffer = (function () {
         if (message.lengths != null && message.hasOwnProperty('lengths')) {
           if (!Array.isArray(message.lengths)) return 'lengths: array expected';
           for (var i = 0; i < message.lengths.length; ++i)
-            if (!$util.isInteger(message.lengths[i]))
-              return 'lengths: integer[] expected';
+            if (!$util.isInteger(message.lengths[i])) return 'lengths: integer[] expected';
         }
         if (message.coords != null && message.hasOwnProperty('coords')) {
           if (!Array.isArray(message.coords)) return 'coords: array expected';
@@ -1505,10 +1255,7 @@ $root.esriPBuffer = (function () {
       };
 
       Geometry.fromObject = function fromObject(object) {
-        if (
-          object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.Geometry
-        )
-          return object;
+        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.Geometry) return object;
         var message = new $root.esriPBuffer.FeatureCollectionPBuffer.Geometry();
         switch (object.geometryType) {
           default:
@@ -1563,13 +1310,10 @@ $root.esriPBuffer = (function () {
           message.coords = [];
           for (var i = 0; i < object.coords.length; ++i)
             if ($util.Long)
-              (message.coords[i] = $util.Long.fromValue(
-                object.coords[i],
-              )).unsigned = false;
+              (message.coords[i] = $util.Long.fromValue(object.coords[i])).unsigned = false;
             else if (typeof object.coords[i] === 'string')
               message.coords[i] = parseInt(object.coords[i], 10);
-            else if (typeof object.coords[i] === 'number')
-              message.coords[i] = object.coords[i];
+            else if (typeof object.coords[i] === 'number') message.coords[i] = object.coords[i];
             else if (typeof object.coords[i] === 'object')
               message.coords[i] = new $util.LongBits(
                 object.coords[i].low >>> 0,
@@ -1587,35 +1331,25 @@ $root.esriPBuffer = (function () {
           object.coords = [];
         }
         if (options.defaults)
-          object.geometryType =
-            options.enums === String ? 'esriGeometryTypePoint' : 0;
-        if (
-          message.geometryType != null &&
-          message.hasOwnProperty('geometryType')
-        )
+          object.geometryType = options.enums === String ? 'esriGeometryTypePoint' : 0;
+        if (message.geometryType != null && message.hasOwnProperty('geometryType'))
           object.geometryType =
             options.enums === String
-              ? $root.esriPBuffer.FeatureCollectionPBuffer.GeometryType[
-                  message.geometryType
-                ] === undefined
+              ? $root.esriPBuffer.FeatureCollectionPBuffer.GeometryType[message.geometryType] ===
+                undefined
                 ? message.geometryType
-                : $root.esriPBuffer.FeatureCollectionPBuffer.GeometryType[
-                    message.geometryType
-                  ]
+                : $root.esriPBuffer.FeatureCollectionPBuffer.GeometryType[message.geometryType]
               : message.geometryType;
         if (message.lengths && message.lengths.length) {
           object.lengths = [];
-          for (var j = 0; j < message.lengths.length; ++j)
-            object.lengths[j] = message.lengths[j];
+          for (var j = 0; j < message.lengths.length; ++j) object.lengths[j] = message.lengths[j];
         }
         if (message.coords && message.coords.length) {
           object.coords = [];
           for (var j = 0; j < message.coords.length; ++j)
             if (typeof message.coords[j] === 'number')
               object.coords[j] =
-                options.longs === String
-                  ? String(message.coords[j])
-                  : message.coords[j];
+                options.longs === String ? String(message.coords[j]) : message.coords[j];
             else
               object.coords[j] =
                 options.longs === String
@@ -1648,8 +1382,7 @@ $root.esriPBuffer = (function () {
       function esriShapeBuffer(properties) {
         if (properties)
           for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            if (properties[keys[i]] != null)
-              this[keys[i]] = properties[keys[i]];
+            if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
       esriShapeBuffer.prototype.bytes = $util.newBuffer([]);
@@ -1660,24 +1393,17 @@ $root.esriPBuffer = (function () {
 
       esriShapeBuffer.encode = function encode(message, writer) {
         if (!writer) writer = $Writer.create();
-        if (
-          message.bytes != null &&
-          Object.hasOwnProperty.call(message, 'bytes')
-        )
+        if (message.bytes != null && Object.hasOwnProperty.call(message, 'bytes'))
           writer.uint32(10).bytes(message.bytes);
         return writer;
       };
 
-      esriShapeBuffer.encodeDelimited = function encodeDelimited(
-        message,
-        writer,
-      ) {
+      esriShapeBuffer.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
       };
 
       esriShapeBuffer.verify = function verify(message) {
-        if (typeof message !== 'object' || message === null)
-          return 'object expected';
+        if (typeof message !== 'object' || message === null) return 'object expected';
         if (message.bytes != null && message.hasOwnProperty('bytes'))
           if (
             !(
@@ -1690,20 +1416,14 @@ $root.esriPBuffer = (function () {
       };
 
       esriShapeBuffer.fromObject = function fromObject(object) {
-        if (
-          object instanceof
-          $root.esriPBuffer.FeatureCollectionPBuffer.esriShapeBuffer
-        )
+        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.esriShapeBuffer)
           return object;
-        var message =
-          new $root.esriPBuffer.FeatureCollectionPBuffer.esriShapeBuffer();
+        var message = new $root.esriPBuffer.FeatureCollectionPBuffer.esriShapeBuffer();
         if (object.bytes != null)
           if (typeof object.bytes === 'string')
             $util.base64.decode(
               object.bytes,
-              (message.bytes = $util.newBuffer(
-                $util.base64.length(object.bytes),
-              )),
+              (message.bytes = $util.newBuffer($util.base64.length(object.bytes))),
               0,
             );
           else if (object.bytes.length >= 0) message.bytes = object.bytes;
@@ -1717,8 +1437,7 @@ $root.esriPBuffer = (function () {
           if (options.bytes === String) object.bytes = '';
           else {
             object.bytes = [];
-            if (options.bytes !== Array)
-              object.bytes = $util.newBuffer(object.bytes);
+            if (options.bytes !== Array) object.bytes = $util.newBuffer(object.bytes);
           }
         if (message.bytes != null && message.hasOwnProperty('bytes'))
           object.bytes =
@@ -1738,10 +1457,7 @@ $root.esriPBuffer = (function () {
         if (typeUrlPrefix === undefined) {
           typeUrlPrefix = 'type.googleapis.com';
         }
-        return (
-          typeUrlPrefix +
-          '/esriPBuffer.FeatureCollectionPBuffer.esriShapeBuffer'
-        );
+        return typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.esriShapeBuffer';
       };
 
       return esriShapeBuffer;
@@ -1753,8 +1469,7 @@ $root.esriPBuffer = (function () {
         this.aggregateGeometries = [];
         if (properties)
           for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            if (properties[keys[i]] != null)
-              this[keys[i]] = properties[keys[i]];
+            if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
       Feature.prototype.attributes = $util.emptyArray;
@@ -1783,42 +1498,27 @@ $root.esriPBuffer = (function () {
               message.attributes[i],
               writer.uint32(10).fork(),
             ).ldelim();
-        if (
-          message.geometry != null &&
-          Object.hasOwnProperty.call(message, 'geometry')
-        )
+        if (message.geometry != null && Object.hasOwnProperty.call(message, 'geometry'))
           $root.esriPBuffer.FeatureCollectionPBuffer.Geometry.encode(
             message.geometry,
             writer.uint32(18).fork(),
           ).ldelim();
-        if (
-          message.shapeBuffer != null &&
-          Object.hasOwnProperty.call(message, 'shapeBuffer')
-        )
+        if (message.shapeBuffer != null && Object.hasOwnProperty.call(message, 'shapeBuffer'))
           $root.esriPBuffer.FeatureCollectionPBuffer.esriShapeBuffer
             .encode(message.shapeBuffer, writer.uint32(26).fork())
             .ldelim();
-        if (
-          message.centroid != null &&
-          Object.hasOwnProperty.call(message, 'centroid')
-        )
+        if (message.centroid != null && Object.hasOwnProperty.call(message, 'centroid'))
           $root.esriPBuffer.FeatureCollectionPBuffer.Geometry.encode(
             message.centroid,
             writer.uint32(34).fork(),
           ).ldelim();
-        if (
-          message.aggregateGeometries != null &&
-          message.aggregateGeometries.length
-        )
+        if (message.aggregateGeometries != null && message.aggregateGeometries.length)
           for (var i = 0; i < message.aggregateGeometries.length; ++i)
             $root.esriPBuffer.FeatureCollectionPBuffer.Geometry.encode(
               message.aggregateGeometries[i],
               writer.uint32(42).fork(),
             ).ldelim();
-        if (
-          message.envelope != null &&
-          Object.hasOwnProperty.call(message, 'envelope')
-        )
+        if (message.envelope != null && Object.hasOwnProperty.call(message, 'envelope'))
           $root.esriPBuffer.FeatureCollectionPBuffer.Envelope.encode(
             message.envelope,
             writer.uint32(50).fork(),
@@ -1831,15 +1531,10 @@ $root.esriPBuffer = (function () {
       };
 
       Feature.verify = function verify(message) {
-        if (typeof message !== 'object' || message === null)
-          return 'object expected';
+        if (typeof message !== 'object' || message === null) return 'object expected';
         var properties = {};
-        if (
-          message.attributes != null &&
-          message.hasOwnProperty('attributes')
-        ) {
-          if (!Array.isArray(message.attributes))
-            return 'attributes: array expected';
+        if (message.attributes != null && message.hasOwnProperty('attributes')) {
+          if (!Array.isArray(message.attributes)) return 'attributes: array expected';
           for (var i = 0; i < message.attributes.length; ++i) {
             var error = $root.esriPBuffer.FeatureCollectionPBuffer.Value.verify(
               message.attributes[i],
@@ -1850,64 +1545,45 @@ $root.esriPBuffer = (function () {
         if (message.geometry != null && message.hasOwnProperty('geometry')) {
           properties.compressedGeometry = 1;
           {
-            var error =
-              $root.esriPBuffer.FeatureCollectionPBuffer.Geometry.verify(
-                message.geometry,
-              );
+            var error = $root.esriPBuffer.FeatureCollectionPBuffer.Geometry.verify(
+              message.geometry,
+            );
             if (error) return 'geometry.' + error;
           }
         }
-        if (
-          message.shapeBuffer != null &&
-          message.hasOwnProperty('shapeBuffer')
-        ) {
-          if (properties.compressedGeometry === 1)
-            return 'compressedGeometry: multiple values';
+        if (message.shapeBuffer != null && message.hasOwnProperty('shapeBuffer')) {
+          if (properties.compressedGeometry === 1) return 'compressedGeometry: multiple values';
           properties.compressedGeometry = 1;
           {
-            var error =
-              $root.esriPBuffer.FeatureCollectionPBuffer.esriShapeBuffer.verify(
-                message.shapeBuffer,
-              );
+            var error = $root.esriPBuffer.FeatureCollectionPBuffer.esriShapeBuffer.verify(
+              message.shapeBuffer,
+            );
             if (error) return 'shapeBuffer.' + error;
           }
         }
         if (message.centroid != null && message.hasOwnProperty('centroid')) {
-          var error =
-            $root.esriPBuffer.FeatureCollectionPBuffer.Geometry.verify(
-              message.centroid,
-            );
+          var error = $root.esriPBuffer.FeatureCollectionPBuffer.Geometry.verify(message.centroid);
           if (error) return 'centroid.' + error;
         }
-        if (
-          message.aggregateGeometries != null &&
-          message.hasOwnProperty('aggregateGeometries')
-        ) {
+        if (message.aggregateGeometries != null && message.hasOwnProperty('aggregateGeometries')) {
           if (!Array.isArray(message.aggregateGeometries))
             return 'aggregateGeometries: array expected';
           for (var i = 0; i < message.aggregateGeometries.length; ++i) {
-            var error =
-              $root.esriPBuffer.FeatureCollectionPBuffer.Geometry.verify(
-                message.aggregateGeometries[i],
-              );
+            var error = $root.esriPBuffer.FeatureCollectionPBuffer.Geometry.verify(
+              message.aggregateGeometries[i],
+            );
             if (error) return 'aggregateGeometries.' + error;
           }
         }
         if (message.envelope != null && message.hasOwnProperty('envelope')) {
-          var error =
-            $root.esriPBuffer.FeatureCollectionPBuffer.Envelope.verify(
-              message.envelope,
-            );
+          var error = $root.esriPBuffer.FeatureCollectionPBuffer.Envelope.verify(message.envelope);
           if (error) return 'envelope.' + error;
         }
         return null;
       };
 
       Feature.fromObject = function fromObject(object) {
-        if (
-          object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.Feature
-        )
-          return object;
+        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.Feature) return object;
         var message = new $root.esriPBuffer.FeatureCollectionPBuffer.Feature();
         if (object.attributes) {
           if (!Array.isArray(object.attributes))
@@ -1920,10 +1596,9 @@ $root.esriPBuffer = (function () {
               throw TypeError(
                 '.esriPBuffer.FeatureCollectionPBuffer.Feature.attributes: object expected',
               );
-            message.attributes[i] =
-              $root.esriPBuffer.FeatureCollectionPBuffer.Value.fromObject(
-                object.attributes[i],
-              );
+            message.attributes[i] = $root.esriPBuffer.FeatureCollectionPBuffer.Value.fromObject(
+              object.attributes[i],
+            );
           }
         }
         if (object.geometry != null) {
@@ -1931,10 +1606,9 @@ $root.esriPBuffer = (function () {
             throw TypeError(
               '.esriPBuffer.FeatureCollectionPBuffer.Feature.geometry: object expected',
             );
-          message.geometry =
-            $root.esriPBuffer.FeatureCollectionPBuffer.Geometry.fromObject(
-              object.geometry,
-            );
+          message.geometry = $root.esriPBuffer.FeatureCollectionPBuffer.Geometry.fromObject(
+            object.geometry,
+          );
         }
         if (object.shapeBuffer != null) {
           if (typeof object.shapeBuffer !== 'object')
@@ -1951,10 +1625,9 @@ $root.esriPBuffer = (function () {
             throw TypeError(
               '.esriPBuffer.FeatureCollectionPBuffer.Feature.centroid: object expected',
             );
-          message.centroid =
-            $root.esriPBuffer.FeatureCollectionPBuffer.Geometry.fromObject(
-              object.centroid,
-            );
+          message.centroid = $root.esriPBuffer.FeatureCollectionPBuffer.Geometry.fromObject(
+            object.centroid,
+          );
         }
         if (object.aggregateGeometries) {
           if (!Array.isArray(object.aggregateGeometries))
@@ -1978,10 +1651,9 @@ $root.esriPBuffer = (function () {
             throw TypeError(
               '.esriPBuffer.FeatureCollectionPBuffer.Feature.envelope: object expected',
             );
-          message.envelope =
-            $root.esriPBuffer.FeatureCollectionPBuffer.Envelope.fromObject(
-              object.envelope,
-            );
+          message.envelope = $root.esriPBuffer.FeatureCollectionPBuffer.Envelope.fromObject(
+            object.envelope,
+          );
         }
         return message;
       };
@@ -2000,37 +1672,30 @@ $root.esriPBuffer = (function () {
         if (message.attributes && message.attributes.length) {
           object.attributes = [];
           for (var j = 0; j < message.attributes.length; ++j)
-            object.attributes[j] =
-              $root.esriPBuffer.FeatureCollectionPBuffer.Value.toObject(
-                message.attributes[j],
-                options,
-              );
+            object.attributes[j] = $root.esriPBuffer.FeatureCollectionPBuffer.Value.toObject(
+              message.attributes[j],
+              options,
+            );
         }
         if (message.geometry != null && message.hasOwnProperty('geometry')) {
-          object.geometry =
-            $root.esriPBuffer.FeatureCollectionPBuffer.Geometry.toObject(
-              message.geometry,
-              options,
-            );
+          object.geometry = $root.esriPBuffer.FeatureCollectionPBuffer.Geometry.toObject(
+            message.geometry,
+            options,
+          );
           if (options.oneofs) object.compressedGeometry = 'geometry';
         }
-        if (
-          message.shapeBuffer != null &&
-          message.hasOwnProperty('shapeBuffer')
-        ) {
-          object.shapeBuffer =
-            $root.esriPBuffer.FeatureCollectionPBuffer.esriShapeBuffer.toObject(
-              message.shapeBuffer,
-              options,
-            );
+        if (message.shapeBuffer != null && message.hasOwnProperty('shapeBuffer')) {
+          object.shapeBuffer = $root.esriPBuffer.FeatureCollectionPBuffer.esriShapeBuffer.toObject(
+            message.shapeBuffer,
+            options,
+          );
           if (options.oneofs) object.compressedGeometry = 'shapeBuffer';
         }
         if (message.centroid != null && message.hasOwnProperty('centroid'))
-          object.centroid =
-            $root.esriPBuffer.FeatureCollectionPBuffer.Geometry.toObject(
-              message.centroid,
-              options,
-            );
+          object.centroid = $root.esriPBuffer.FeatureCollectionPBuffer.Geometry.toObject(
+            message.centroid,
+            options,
+          );
         if (message.aggregateGeometries && message.aggregateGeometries.length) {
           object.aggregateGeometries = [];
           for (var j = 0; j < message.aggregateGeometries.length; ++j)
@@ -2041,11 +1706,10 @@ $root.esriPBuffer = (function () {
               );
         }
         if (message.envelope != null && message.hasOwnProperty('envelope'))
-          object.envelope =
-            $root.esriPBuffer.FeatureCollectionPBuffer.Envelope.toObject(
-              message.envelope,
-              options,
-            );
+          object.envelope = $root.esriPBuffer.FeatureCollectionPBuffer.Envelope.toObject(
+            message.envelope,
+            options,
+          );
         return object;
       };
 
@@ -2067,8 +1731,7 @@ $root.esriPBuffer = (function () {
       function UniqueIdField(properties) {
         if (properties)
           for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            if (properties[keys[i]] != null)
-              this[keys[i]] = properties[keys[i]];
+            if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
       UniqueIdField.prototype.name = '';
@@ -2090,35 +1753,24 @@ $root.esriPBuffer = (function () {
         return writer;
       };
 
-      UniqueIdField.encodeDelimited = function encodeDelimited(
-        message,
-        writer,
-      ) {
+      UniqueIdField.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
       };
 
       UniqueIdField.verify = function verify(message) {
-        if (typeof message !== 'object' || message === null)
-          return 'object expected';
+        if (typeof message !== 'object' || message === null) return 'object expected';
         if (message.name != null && message.hasOwnProperty('name'))
           if (!$util.isString(message.name)) return 'name: string expected';
-        if (
-          message.isSystemMaintained != null &&
-          message.hasOwnProperty('isSystemMaintained')
-        )
+        if (message.isSystemMaintained != null && message.hasOwnProperty('isSystemMaintained'))
           if (typeof message.isSystemMaintained !== 'boolean')
             return 'isSystemMaintained: boolean expected';
         return null;
       };
 
       UniqueIdField.fromObject = function fromObject(object) {
-        if (
-          object instanceof
-          $root.esriPBuffer.FeatureCollectionPBuffer.UniqueIdField
-        )
+        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.UniqueIdField)
           return object;
-        var message =
-          new $root.esriPBuffer.FeatureCollectionPBuffer.UniqueIdField();
+        var message = new $root.esriPBuffer.FeatureCollectionPBuffer.UniqueIdField();
         if (object.name != null) message.name = String(object.name);
         if (object.isSystemMaintained != null)
           message.isSystemMaintained = Boolean(object.isSystemMaintained);
@@ -2132,12 +1784,8 @@ $root.esriPBuffer = (function () {
           object.name = '';
           object.isSystemMaintained = false;
         }
-        if (message.name != null && message.hasOwnProperty('name'))
-          object.name = message.name;
-        if (
-          message.isSystemMaintained != null &&
-          message.hasOwnProperty('isSystemMaintained')
-        )
+        if (message.name != null && message.hasOwnProperty('name')) object.name = message.name;
+        if (message.isSystemMaintained != null && message.hasOwnProperty('isSystemMaintained'))
           object.isSystemMaintained = message.isSystemMaintained;
         return object;
       };
@@ -2150,9 +1798,7 @@ $root.esriPBuffer = (function () {
         if (typeUrlPrefix === undefined) {
           typeUrlPrefix = 'type.googleapis.com';
         }
-        return (
-          typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.UniqueIdField'
-        );
+        return typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.UniqueIdField';
       };
 
       return UniqueIdField;
@@ -2162,8 +1808,7 @@ $root.esriPBuffer = (function () {
       function GeometryProperties(properties) {
         if (properties)
           for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            if (properties[keys[i]] != null)
-              this[keys[i]] = properties[keys[i]];
+            if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
       GeometryProperties.prototype.shapeAreaFieldName = '';
@@ -2186,34 +1831,21 @@ $root.esriPBuffer = (function () {
           Object.hasOwnProperty.call(message, 'shapeLengthFieldName')
         )
           writer.uint32(18).string(message.shapeLengthFieldName);
-        if (
-          message.units != null &&
-          Object.hasOwnProperty.call(message, 'units')
-        )
+        if (message.units != null && Object.hasOwnProperty.call(message, 'units'))
           writer.uint32(26).string(message.units);
         return writer;
       };
 
-      GeometryProperties.encodeDelimited = function encodeDelimited(
-        message,
-        writer,
-      ) {
+      GeometryProperties.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
       };
 
       GeometryProperties.verify = function verify(message) {
-        if (typeof message !== 'object' || message === null)
-          return 'object expected';
-        if (
-          message.shapeAreaFieldName != null &&
-          message.hasOwnProperty('shapeAreaFieldName')
-        )
+        if (typeof message !== 'object' || message === null) return 'object expected';
+        if (message.shapeAreaFieldName != null && message.hasOwnProperty('shapeAreaFieldName'))
           if (!$util.isString(message.shapeAreaFieldName))
             return 'shapeAreaFieldName: string expected';
-        if (
-          message.shapeLengthFieldName != null &&
-          message.hasOwnProperty('shapeLengthFieldName')
-        )
+        if (message.shapeLengthFieldName != null && message.hasOwnProperty('shapeLengthFieldName'))
           if (!$util.isString(message.shapeLengthFieldName))
             return 'shapeLengthFieldName: string expected';
         if (message.units != null && message.hasOwnProperty('units'))
@@ -2222,13 +1854,9 @@ $root.esriPBuffer = (function () {
       };
 
       GeometryProperties.fromObject = function fromObject(object) {
-        if (
-          object instanceof
-          $root.esriPBuffer.FeatureCollectionPBuffer.GeometryProperties
-        )
+        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.GeometryProperties)
           return object;
-        var message =
-          new $root.esriPBuffer.FeatureCollectionPBuffer.GeometryProperties();
+        var message = new $root.esriPBuffer.FeatureCollectionPBuffer.GeometryProperties();
         if (object.shapeAreaFieldName != null)
           message.shapeAreaFieldName = String(object.shapeAreaFieldName);
         if (object.shapeLengthFieldName != null)
@@ -2245,18 +1873,11 @@ $root.esriPBuffer = (function () {
           object.shapeLengthFieldName = '';
           object.units = '';
         }
-        if (
-          message.shapeAreaFieldName != null &&
-          message.hasOwnProperty('shapeAreaFieldName')
-        )
+        if (message.shapeAreaFieldName != null && message.hasOwnProperty('shapeAreaFieldName'))
           object.shapeAreaFieldName = message.shapeAreaFieldName;
-        if (
-          message.shapeLengthFieldName != null &&
-          message.hasOwnProperty('shapeLengthFieldName')
-        )
+        if (message.shapeLengthFieldName != null && message.hasOwnProperty('shapeLengthFieldName'))
           object.shapeLengthFieldName = message.shapeLengthFieldName;
-        if (message.units != null && message.hasOwnProperty('units'))
-          object.units = message.units;
+        if (message.units != null && message.hasOwnProperty('units')) object.units = message.units;
         return object;
       };
 
@@ -2268,10 +1889,7 @@ $root.esriPBuffer = (function () {
         if (typeUrlPrefix === undefined) {
           typeUrlPrefix = 'type.googleapis.com';
         }
-        return (
-          typeUrlPrefix +
-          '/esriPBuffer.FeatureCollectionPBuffer.GeometryProperties'
-        );
+        return typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.GeometryProperties';
       };
 
       return GeometryProperties;
@@ -2281,16 +1899,11 @@ $root.esriPBuffer = (function () {
       function ServerGens(properties) {
         if (properties)
           for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            if (properties[keys[i]] != null)
-              this[keys[i]] = properties[keys[i]];
+            if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
-      ServerGens.prototype.minServerGen = $util.Long
-        ? $util.Long.fromBits(0, 0, true)
-        : 0;
-      ServerGens.prototype.serverGen = $util.Long
-        ? $util.Long.fromBits(0, 0, true)
-        : 0;
+      ServerGens.prototype.minServerGen = $util.Long ? $util.Long.fromBits(0, 0, true) : 0;
+      ServerGens.prototype.serverGen = $util.Long ? $util.Long.fromBits(0, 0, true) : 0;
 
       ServerGens.create = function create(properties) {
         return new ServerGens(properties);
@@ -2298,15 +1911,9 @@ $root.esriPBuffer = (function () {
 
       ServerGens.encode = function encode(message, writer) {
         if (!writer) writer = $Writer.create();
-        if (
-          message.minServerGen != null &&
-          Object.hasOwnProperty.call(message, 'minServerGen')
-        )
+        if (message.minServerGen != null && Object.hasOwnProperty.call(message, 'minServerGen'))
           writer.uint32(8).uint64(message.minServerGen);
-        if (
-          message.serverGen != null &&
-          Object.hasOwnProperty.call(message, 'serverGen')
-        )
+        if (message.serverGen != null && Object.hasOwnProperty.call(message, 'serverGen'))
           writer.uint32(16).uint64(message.serverGen);
         return writer;
       };
@@ -2316,12 +1923,8 @@ $root.esriPBuffer = (function () {
       };
 
       ServerGens.verify = function verify(message) {
-        if (typeof message !== 'object' || message === null)
-          return 'object expected';
-        if (
-          message.minServerGen != null &&
-          message.hasOwnProperty('minServerGen')
-        )
+        if (typeof message !== 'object' || message === null) return 'object expected';
+        if (message.minServerGen != null && message.hasOwnProperty('minServerGen'))
           if (
             !$util.isInteger(message.minServerGen) &&
             !(
@@ -2345,18 +1948,11 @@ $root.esriPBuffer = (function () {
       };
 
       ServerGens.fromObject = function fromObject(object) {
-        if (
-          object instanceof
-          $root.esriPBuffer.FeatureCollectionPBuffer.ServerGens
-        )
-          return object;
-        var message =
-          new $root.esriPBuffer.FeatureCollectionPBuffer.ServerGens();
+        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.ServerGens) return object;
+        var message = new $root.esriPBuffer.FeatureCollectionPBuffer.ServerGens();
         if (object.minServerGen != null)
           if ($util.Long)
-            (message.minServerGen = $util.Long.fromValue(
-              object.minServerGen,
-            )).unsigned = true;
+            (message.minServerGen = $util.Long.fromValue(object.minServerGen)).unsigned = true;
           else if (typeof object.minServerGen === 'string')
             message.minServerGen = parseInt(object.minServerGen, 10);
           else if (typeof object.minServerGen === 'number')
@@ -2368,13 +1964,10 @@ $root.esriPBuffer = (function () {
             ).toNumber(true);
         if (object.serverGen != null)
           if ($util.Long)
-            (message.serverGen = $util.Long.fromValue(
-              object.serverGen,
-            )).unsigned = true;
+            (message.serverGen = $util.Long.fromValue(object.serverGen)).unsigned = true;
           else if (typeof object.serverGen === 'string')
             message.serverGen = parseInt(object.serverGen, 10);
-          else if (typeof object.serverGen === 'number')
-            message.serverGen = object.serverGen;
+          else if (typeof object.serverGen === 'number') message.serverGen = object.serverGen;
           else if (typeof object.serverGen === 'object')
             message.serverGen = new $util.LongBits(
               object.serverGen.low >>> 0,
@@ -2406,15 +1999,10 @@ $root.esriPBuffer = (function () {
                   : long;
           } else object.serverGen = options.longs === String ? '0' : 0;
         }
-        if (
-          message.minServerGen != null &&
-          message.hasOwnProperty('minServerGen')
-        )
+        if (message.minServerGen != null && message.hasOwnProperty('minServerGen'))
           if (typeof message.minServerGen === 'number')
             object.minServerGen =
-              options.longs === String
-                ? String(message.minServerGen)
-                : message.minServerGen;
+              options.longs === String ? String(message.minServerGen) : message.minServerGen;
           else
             object.minServerGen =
               options.longs === String
@@ -2428,9 +2016,7 @@ $root.esriPBuffer = (function () {
         if (message.serverGen != null && message.hasOwnProperty('serverGen'))
           if (typeof message.serverGen === 'number')
             object.serverGen =
-              options.longs === String
-                ? String(message.serverGen)
-                : message.serverGen;
+              options.longs === String ? String(message.serverGen) : message.serverGen;
           else
             object.serverGen =
               options.longs === String
@@ -2452,9 +2038,7 @@ $root.esriPBuffer = (function () {
         if (typeUrlPrefix === undefined) {
           typeUrlPrefix = 'type.googleapis.com';
         }
-        return (
-          typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.ServerGens'
-        );
+        return typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.ServerGens';
       };
 
       return ServerGens;
@@ -2464,8 +2048,7 @@ $root.esriPBuffer = (function () {
       function Scale(properties) {
         if (properties)
           for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            if (properties[keys[i]] != null)
-              this[keys[i]] = properties[keys[i]];
+            if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
       Scale.prototype.xScale = 0;
@@ -2479,25 +2062,13 @@ $root.esriPBuffer = (function () {
 
       Scale.encode = function encode(message, writer) {
         if (!writer) writer = $Writer.create();
-        if (
-          message.xScale != null &&
-          Object.hasOwnProperty.call(message, 'xScale')
-        )
+        if (message.xScale != null && Object.hasOwnProperty.call(message, 'xScale'))
           writer.uint32(9).double(message.xScale);
-        if (
-          message.yScale != null &&
-          Object.hasOwnProperty.call(message, 'yScale')
-        )
+        if (message.yScale != null && Object.hasOwnProperty.call(message, 'yScale'))
           writer.uint32(17).double(message.yScale);
-        if (
-          message.mScale != null &&
-          Object.hasOwnProperty.call(message, 'mScale')
-        )
+        if (message.mScale != null && Object.hasOwnProperty.call(message, 'mScale'))
           writer.uint32(25).double(message.mScale);
-        if (
-          message.zScale != null &&
-          Object.hasOwnProperty.call(message, 'zScale')
-        )
+        if (message.zScale != null && Object.hasOwnProperty.call(message, 'zScale'))
           writer.uint32(33).double(message.zScale);
         return writer;
       };
@@ -2507,26 +2078,20 @@ $root.esriPBuffer = (function () {
       };
 
       Scale.verify = function verify(message) {
-        if (typeof message !== 'object' || message === null)
-          return 'object expected';
+        if (typeof message !== 'object' || message === null) return 'object expected';
         if (message.xScale != null && message.hasOwnProperty('xScale'))
-          if (typeof message.xScale !== 'number')
-            return 'xScale: number expected';
+          if (typeof message.xScale !== 'number') return 'xScale: number expected';
         if (message.yScale != null && message.hasOwnProperty('yScale'))
-          if (typeof message.yScale !== 'number')
-            return 'yScale: number expected';
+          if (typeof message.yScale !== 'number') return 'yScale: number expected';
         if (message.mScale != null && message.hasOwnProperty('mScale'))
-          if (typeof message.mScale !== 'number')
-            return 'mScale: number expected';
+          if (typeof message.mScale !== 'number') return 'mScale: number expected';
         if (message.zScale != null && message.hasOwnProperty('zScale'))
-          if (typeof message.zScale !== 'number')
-            return 'zScale: number expected';
+          if (typeof message.zScale !== 'number') return 'zScale: number expected';
         return null;
       };
 
       Scale.fromObject = function fromObject(object) {
-        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.Scale)
-          return object;
+        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.Scale) return object;
         var message = new $root.esriPBuffer.FeatureCollectionPBuffer.Scale();
         if (object.xScale != null) message.xScale = Number(object.xScale);
         if (object.yScale != null) message.yScale = Number(object.yScale);
@@ -2546,24 +2111,16 @@ $root.esriPBuffer = (function () {
         }
         if (message.xScale != null && message.hasOwnProperty('xScale'))
           object.xScale =
-            options.json && !isFinite(message.xScale)
-              ? String(message.xScale)
-              : message.xScale;
+            options.json && !isFinite(message.xScale) ? String(message.xScale) : message.xScale;
         if (message.yScale != null && message.hasOwnProperty('yScale'))
           object.yScale =
-            options.json && !isFinite(message.yScale)
-              ? String(message.yScale)
-              : message.yScale;
+            options.json && !isFinite(message.yScale) ? String(message.yScale) : message.yScale;
         if (message.mScale != null && message.hasOwnProperty('mScale'))
           object.mScale =
-            options.json && !isFinite(message.mScale)
-              ? String(message.mScale)
-              : message.mScale;
+            options.json && !isFinite(message.mScale) ? String(message.mScale) : message.mScale;
         if (message.zScale != null && message.hasOwnProperty('zScale'))
           object.zScale =
-            options.json && !isFinite(message.zScale)
-              ? String(message.zScale)
-              : message.zScale;
+            options.json && !isFinite(message.zScale) ? String(message.zScale) : message.zScale;
         return object;
       };
 
@@ -2585,8 +2142,7 @@ $root.esriPBuffer = (function () {
       function Translate(properties) {
         if (properties)
           for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            if (properties[keys[i]] != null)
-              this[keys[i]] = properties[keys[i]];
+            if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
       Translate.prototype.xTranslate = 0;
@@ -2600,25 +2156,13 @@ $root.esriPBuffer = (function () {
 
       Translate.encode = function encode(message, writer) {
         if (!writer) writer = $Writer.create();
-        if (
-          message.xTranslate != null &&
-          Object.hasOwnProperty.call(message, 'xTranslate')
-        )
+        if (message.xTranslate != null && Object.hasOwnProperty.call(message, 'xTranslate'))
           writer.uint32(9).double(message.xTranslate);
-        if (
-          message.yTranslate != null &&
-          Object.hasOwnProperty.call(message, 'yTranslate')
-        )
+        if (message.yTranslate != null && Object.hasOwnProperty.call(message, 'yTranslate'))
           writer.uint32(17).double(message.yTranslate);
-        if (
-          message.mTranslate != null &&
-          Object.hasOwnProperty.call(message, 'mTranslate')
-        )
+        if (message.mTranslate != null && Object.hasOwnProperty.call(message, 'mTranslate'))
           writer.uint32(25).double(message.mTranslate);
-        if (
-          message.zTranslate != null &&
-          Object.hasOwnProperty.call(message, 'zTranslate')
-        )
+        if (message.zTranslate != null && Object.hasOwnProperty.call(message, 'zTranslate'))
           writer.uint32(33).double(message.zTranslate);
         return writer;
       };
@@ -2628,38 +2172,25 @@ $root.esriPBuffer = (function () {
       };
 
       Translate.verify = function verify(message) {
-        if (typeof message !== 'object' || message === null)
-          return 'object expected';
+        if (typeof message !== 'object' || message === null) return 'object expected';
         if (message.xTranslate != null && message.hasOwnProperty('xTranslate'))
-          if (typeof message.xTranslate !== 'number')
-            return 'xTranslate: number expected';
+          if (typeof message.xTranslate !== 'number') return 'xTranslate: number expected';
         if (message.yTranslate != null && message.hasOwnProperty('yTranslate'))
-          if (typeof message.yTranslate !== 'number')
-            return 'yTranslate: number expected';
+          if (typeof message.yTranslate !== 'number') return 'yTranslate: number expected';
         if (message.mTranslate != null && message.hasOwnProperty('mTranslate'))
-          if (typeof message.mTranslate !== 'number')
-            return 'mTranslate: number expected';
+          if (typeof message.mTranslate !== 'number') return 'mTranslate: number expected';
         if (message.zTranslate != null && message.hasOwnProperty('zTranslate'))
-          if (typeof message.zTranslate !== 'number')
-            return 'zTranslate: number expected';
+          if (typeof message.zTranslate !== 'number') return 'zTranslate: number expected';
         return null;
       };
 
       Translate.fromObject = function fromObject(object) {
-        if (
-          object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.Translate
-        )
-          return object;
-        var message =
-          new $root.esriPBuffer.FeatureCollectionPBuffer.Translate();
-        if (object.xTranslate != null)
-          message.xTranslate = Number(object.xTranslate);
-        if (object.yTranslate != null)
-          message.yTranslate = Number(object.yTranslate);
-        if (object.mTranslate != null)
-          message.mTranslate = Number(object.mTranslate);
-        if (object.zTranslate != null)
-          message.zTranslate = Number(object.zTranslate);
+        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.Translate) return object;
+        var message = new $root.esriPBuffer.FeatureCollectionPBuffer.Translate();
+        if (object.xTranslate != null) message.xTranslate = Number(object.xTranslate);
+        if (object.yTranslate != null) message.yTranslate = Number(object.yTranslate);
+        if (object.mTranslate != null) message.mTranslate = Number(object.mTranslate);
+        if (object.zTranslate != null) message.zTranslate = Number(object.zTranslate);
         return message;
       };
 
@@ -2703,9 +2234,7 @@ $root.esriPBuffer = (function () {
         if (typeUrlPrefix === undefined) {
           typeUrlPrefix = 'type.googleapis.com';
         }
-        return (
-          typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.Translate'
-        );
+        return typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.Translate';
       };
 
       return Translate;
@@ -2715,8 +2244,7 @@ $root.esriPBuffer = (function () {
       function Transform(properties) {
         if (properties)
           for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            if (properties[keys[i]] != null)
-              this[keys[i]] = properties[keys[i]];
+            if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
       Transform.prototype.quantizeOriginPostion = 0;
@@ -2734,18 +2262,12 @@ $root.esriPBuffer = (function () {
           Object.hasOwnProperty.call(message, 'quantizeOriginPostion')
         )
           writer.uint32(8).int32(message.quantizeOriginPostion);
-        if (
-          message.scale != null &&
-          Object.hasOwnProperty.call(message, 'scale')
-        )
+        if (message.scale != null && Object.hasOwnProperty.call(message, 'scale'))
           $root.esriPBuffer.FeatureCollectionPBuffer.Scale.encode(
             message.scale,
             writer.uint32(18).fork(),
           ).ldelim();
-        if (
-          message.translate != null &&
-          Object.hasOwnProperty.call(message, 'translate')
-        )
+        if (message.translate != null && Object.hasOwnProperty.call(message, 'translate'))
           $root.esriPBuffer.FeatureCollectionPBuffer.Translate.encode(
             message.translate,
             writer.uint32(26).fork(),
@@ -2758,8 +2280,7 @@ $root.esriPBuffer = (function () {
       };
 
       Transform.verify = function verify(message) {
-        if (typeof message !== 'object' || message === null)
-          return 'object expected';
+        if (typeof message !== 'object' || message === null) return 'object expected';
         if (
           message.quantizeOriginPostion != null &&
           message.hasOwnProperty('quantizeOriginPostion')
@@ -2772,28 +2293,21 @@ $root.esriPBuffer = (function () {
               break;
           }
         if (message.scale != null && message.hasOwnProperty('scale')) {
-          var error = $root.esriPBuffer.FeatureCollectionPBuffer.Scale.verify(
-            message.scale,
-          );
+          var error = $root.esriPBuffer.FeatureCollectionPBuffer.Scale.verify(message.scale);
           if (error) return 'scale.' + error;
         }
         if (message.translate != null && message.hasOwnProperty('translate')) {
-          var error =
-            $root.esriPBuffer.FeatureCollectionPBuffer.Translate.verify(
-              message.translate,
-            );
+          var error = $root.esriPBuffer.FeatureCollectionPBuffer.Translate.verify(
+            message.translate,
+          );
           if (error) return 'translate.' + error;
         }
         return null;
       };
 
       Transform.fromObject = function fromObject(object) {
-        if (
-          object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.Transform
-        )
-          return object;
-        var message =
-          new $root.esriPBuffer.FeatureCollectionPBuffer.Transform();
+        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.Transform) return object;
+        var message = new $root.esriPBuffer.FeatureCollectionPBuffer.Transform();
         switch (object.quantizeOriginPostion) {
           default:
             if (typeof object.quantizeOriginPostion === 'number') {
@@ -2815,20 +2329,16 @@ $root.esriPBuffer = (function () {
             throw TypeError(
               '.esriPBuffer.FeatureCollectionPBuffer.Transform.scale: object expected',
             );
-          message.scale =
-            $root.esriPBuffer.FeatureCollectionPBuffer.Scale.fromObject(
-              object.scale,
-            );
+          message.scale = $root.esriPBuffer.FeatureCollectionPBuffer.Scale.fromObject(object.scale);
         }
         if (object.translate != null) {
           if (typeof object.translate !== 'object')
             throw TypeError(
               '.esriPBuffer.FeatureCollectionPBuffer.Transform.translate: object expected',
             );
-          message.translate =
-            $root.esriPBuffer.FeatureCollectionPBuffer.Translate.fromObject(
-              object.translate,
-            );
+          message.translate = $root.esriPBuffer.FeatureCollectionPBuffer.Translate.fromObject(
+            object.translate,
+          );
         }
         return message;
       };
@@ -2837,8 +2347,7 @@ $root.esriPBuffer = (function () {
         if (!options) options = {};
         var object = {};
         if (options.defaults) {
-          object.quantizeOriginPostion =
-            options.enums === String ? 'upperLeft' : 0;
+          object.quantizeOriginPostion = options.enums === String ? 'upperLeft' : 0;
           object.scale = null;
           object.translate = null;
         }
@@ -2848,25 +2357,24 @@ $root.esriPBuffer = (function () {
         )
           object.quantizeOriginPostion =
             options.enums === String
-              ? $root.esriPBuffer.FeatureCollectionPBuffer
-                  .QuantizeOriginPostion[message.quantizeOriginPostion] ===
-                undefined
+              ? $root.esriPBuffer.FeatureCollectionPBuffer.QuantizeOriginPostion[
+                  message.quantizeOriginPostion
+                ] === undefined
                 ? message.quantizeOriginPostion
-                : $root.esriPBuffer.FeatureCollectionPBuffer
-                    .QuantizeOriginPostion[message.quantizeOriginPostion]
+                : $root.esriPBuffer.FeatureCollectionPBuffer.QuantizeOriginPostion[
+                    message.quantizeOriginPostion
+                  ]
               : message.quantizeOriginPostion;
         if (message.scale != null && message.hasOwnProperty('scale'))
-          object.scale =
-            $root.esriPBuffer.FeatureCollectionPBuffer.Scale.toObject(
-              message.scale,
-              options,
-            );
+          object.scale = $root.esriPBuffer.FeatureCollectionPBuffer.Scale.toObject(
+            message.scale,
+            options,
+          );
         if (message.translate != null && message.hasOwnProperty('translate'))
-          object.translate =
-            $root.esriPBuffer.FeatureCollectionPBuffer.Translate.toObject(
-              message.translate,
-              options,
-            );
+          object.translate = $root.esriPBuffer.FeatureCollectionPBuffer.Translate.toObject(
+            message.translate,
+            options,
+          );
         return object;
       };
 
@@ -2878,9 +2386,7 @@ $root.esriPBuffer = (function () {
         if (typeUrlPrefix === undefined) {
           typeUrlPrefix = 'type.googleapis.com';
         }
-        return (
-          typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.Transform'
-        );
+        return typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.Transform';
       };
 
       return Transform;
@@ -2894,8 +2400,7 @@ $root.esriPBuffer = (function () {
         this.geometryFields = [];
         if (properties)
           for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            if (properties[keys[i]] != null)
-              this[keys[i]] = properties[keys[i]];
+            if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
       FeatureResult.prototype.objectIdFieldName = '';
@@ -2926,10 +2431,7 @@ $root.esriPBuffer = (function () {
           Object.hasOwnProperty.call(message, 'objectIdFieldName')
         )
           writer.uint32(10).string(message.objectIdFieldName);
-        if (
-          message.uniqueIdField != null &&
-          Object.hasOwnProperty.call(message, 'uniqueIdField')
-        )
+        if (message.uniqueIdField != null && Object.hasOwnProperty.call(message, 'uniqueIdField'))
           $root.esriPBuffer.FeatureCollectionPBuffer.UniqueIdField.encode(
             message.uniqueIdField,
             writer.uint32(18).fork(),
@@ -2952,18 +2454,12 @@ $root.esriPBuffer = (function () {
             message.geometryProperties,
             writer.uint32(42).fork(),
           ).ldelim();
-        if (
-          message.serverGens != null &&
-          Object.hasOwnProperty.call(message, 'serverGens')
-        )
+        if (message.serverGens != null && Object.hasOwnProperty.call(message, 'serverGens'))
           $root.esriPBuffer.FeatureCollectionPBuffer.ServerGens.encode(
             message.serverGens,
             writer.uint32(50).fork(),
           ).ldelim();
-        if (
-          message.geometryType != null &&
-          Object.hasOwnProperty.call(message, 'geometryType')
-        )
+        if (message.geometryType != null && Object.hasOwnProperty.call(message, 'geometryType'))
           writer.uint32(56).int32(message.geometryType);
         if (
           message.spatialReference != null &&
@@ -2982,10 +2478,7 @@ $root.esriPBuffer = (function () {
           writer.uint32(80).bool(message.hasZ);
         if (message.hasM != null && Object.hasOwnProperty.call(message, 'hasM'))
           writer.uint32(88).bool(message.hasM);
-        if (
-          message.transform != null &&
-          Object.hasOwnProperty.call(message, 'transform')
-        )
+        if (message.transform != null && Object.hasOwnProperty.call(message, 'transform'))
           $root.esriPBuffer.FeatureCollectionPBuffer.Transform.encode(
             message.transform,
             writer.uint32(98).fork(),
@@ -3017,68 +2510,39 @@ $root.esriPBuffer = (function () {
         return writer;
       };
 
-      FeatureResult.encodeDelimited = function encodeDelimited(
-        message,
-        writer,
-      ) {
+      FeatureResult.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
       };
 
       FeatureResult.verify = function verify(message) {
-        if (typeof message !== 'object' || message === null)
-          return 'object expected';
-        if (
-          message.objectIdFieldName != null &&
-          message.hasOwnProperty('objectIdFieldName')
-        )
+        if (typeof message !== 'object' || message === null) return 'object expected';
+        if (message.objectIdFieldName != null && message.hasOwnProperty('objectIdFieldName'))
           if (!$util.isString(message.objectIdFieldName))
             return 'objectIdFieldName: string expected';
-        if (
-          message.uniqueIdField != null &&
-          message.hasOwnProperty('uniqueIdField')
-        ) {
-          var error =
-            $root.esriPBuffer.FeatureCollectionPBuffer.UniqueIdField.verify(
-              message.uniqueIdField,
-            );
+        if (message.uniqueIdField != null && message.hasOwnProperty('uniqueIdField')) {
+          var error = $root.esriPBuffer.FeatureCollectionPBuffer.UniqueIdField.verify(
+            message.uniqueIdField,
+          );
           if (error) return 'uniqueIdField.' + error;
         }
-        if (
-          message.globalIdFieldName != null &&
-          message.hasOwnProperty('globalIdFieldName')
-        )
+        if (message.globalIdFieldName != null && message.hasOwnProperty('globalIdFieldName'))
           if (!$util.isString(message.globalIdFieldName))
             return 'globalIdFieldName: string expected';
-        if (
-          message.geohashFieldName != null &&
-          message.hasOwnProperty('geohashFieldName')
-        )
-          if (!$util.isString(message.geohashFieldName))
-            return 'geohashFieldName: string expected';
-        if (
-          message.geometryProperties != null &&
-          message.hasOwnProperty('geometryProperties')
-        ) {
-          var error =
-            $root.esriPBuffer.FeatureCollectionPBuffer.GeometryProperties.verify(
-              message.geometryProperties,
-            );
+        if (message.geohashFieldName != null && message.hasOwnProperty('geohashFieldName'))
+          if (!$util.isString(message.geohashFieldName)) return 'geohashFieldName: string expected';
+        if (message.geometryProperties != null && message.hasOwnProperty('geometryProperties')) {
+          var error = $root.esriPBuffer.FeatureCollectionPBuffer.GeometryProperties.verify(
+            message.geometryProperties,
+          );
           if (error) return 'geometryProperties.' + error;
         }
-        if (
-          message.serverGens != null &&
-          message.hasOwnProperty('serverGens')
-        ) {
-          var error =
-            $root.esriPBuffer.FeatureCollectionPBuffer.ServerGens.verify(
-              message.serverGens,
-            );
+        if (message.serverGens != null && message.hasOwnProperty('serverGens')) {
+          var error = $root.esriPBuffer.FeatureCollectionPBuffer.ServerGens.verify(
+            message.serverGens,
+          );
           if (error) return 'serverGens.' + error;
         }
-        if (
-          message.geometryType != null &&
-          message.hasOwnProperty('geometryType')
-        )
+        if (message.geometryType != null && message.hasOwnProperty('geometryType'))
           switch (message.geometryType) {
             default:
               return 'geometryType: enum value expected';
@@ -3091,14 +2555,10 @@ $root.esriPBuffer = (function () {
             case 5:
               break;
           }
-        if (
-          message.spatialReference != null &&
-          message.hasOwnProperty('spatialReference')
-        ) {
-          var error =
-            $root.esriPBuffer.FeatureCollectionPBuffer.SpatialReference.verify(
-              message.spatialReference,
-            );
+        if (message.spatialReference != null && message.hasOwnProperty('spatialReference')) {
+          var error = $root.esriPBuffer.FeatureCollectionPBuffer.SpatialReference.verify(
+            message.spatialReference,
+          );
           if (error) return 'spatialReference.' + error;
         }
         if (
@@ -3108,58 +2568,44 @@ $root.esriPBuffer = (function () {
           if (typeof message.exceededTransferLimit !== 'boolean')
             return 'exceededTransferLimit: boolean expected';
         if (message.hasZ != null && message.hasOwnProperty('hasZ'))
-          if (typeof message.hasZ !== 'boolean')
-            return 'hasZ: boolean expected';
+          if (typeof message.hasZ !== 'boolean') return 'hasZ: boolean expected';
         if (message.hasM != null && message.hasOwnProperty('hasM'))
-          if (typeof message.hasM !== 'boolean')
-            return 'hasM: boolean expected';
+          if (typeof message.hasM !== 'boolean') return 'hasM: boolean expected';
         if (message.transform != null && message.hasOwnProperty('transform')) {
-          var error =
-            $root.esriPBuffer.FeatureCollectionPBuffer.Transform.verify(
-              message.transform,
-            );
+          var error = $root.esriPBuffer.FeatureCollectionPBuffer.Transform.verify(
+            message.transform,
+          );
           if (error) return 'transform.' + error;
         }
         if (message.fields != null && message.hasOwnProperty('fields')) {
           if (!Array.isArray(message.fields)) return 'fields: array expected';
           for (var i = 0; i < message.fields.length; ++i) {
-            var error = $root.esriPBuffer.FeatureCollectionPBuffer.Field.verify(
-              message.fields[i],
-            );
+            var error = $root.esriPBuffer.FeatureCollectionPBuffer.Field.verify(message.fields[i]);
             if (error) return 'fields.' + error;
           }
         }
         if (message.values != null && message.hasOwnProperty('values')) {
           if (!Array.isArray(message.values)) return 'values: array expected';
           for (var i = 0; i < message.values.length; ++i) {
-            var error = $root.esriPBuffer.FeatureCollectionPBuffer.Value.verify(
-              message.values[i],
-            );
+            var error = $root.esriPBuffer.FeatureCollectionPBuffer.Value.verify(message.values[i]);
             if (error) return 'values.' + error;
           }
         }
         if (message.features != null && message.hasOwnProperty('features')) {
-          if (!Array.isArray(message.features))
-            return 'features: array expected';
+          if (!Array.isArray(message.features)) return 'features: array expected';
           for (var i = 0; i < message.features.length; ++i) {
-            var error =
-              $root.esriPBuffer.FeatureCollectionPBuffer.Feature.verify(
-                message.features[i],
-              );
+            var error = $root.esriPBuffer.FeatureCollectionPBuffer.Feature.verify(
+              message.features[i],
+            );
             if (error) return 'features.' + error;
           }
         }
-        if (
-          message.geometryFields != null &&
-          message.hasOwnProperty('geometryFields')
-        ) {
-          if (!Array.isArray(message.geometryFields))
-            return 'geometryFields: array expected';
+        if (message.geometryFields != null && message.hasOwnProperty('geometryFields')) {
+          if (!Array.isArray(message.geometryFields)) return 'geometryFields: array expected';
           for (var i = 0; i < message.geometryFields.length; ++i) {
-            var error =
-              $root.esriPBuffer.FeatureCollectionPBuffer.GeometryField.verify(
-                message.geometryFields[i],
-              );
+            var error = $root.esriPBuffer.FeatureCollectionPBuffer.GeometryField.verify(
+              message.geometryFields[i],
+            );
             if (error) return 'geometryFields.' + error;
           }
         }
@@ -3167,13 +2613,9 @@ $root.esriPBuffer = (function () {
       };
 
       FeatureResult.fromObject = function fromObject(object) {
-        if (
-          object instanceof
-          $root.esriPBuffer.FeatureCollectionPBuffer.FeatureResult
-        )
+        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.FeatureResult)
           return object;
-        var message =
-          new $root.esriPBuffer.FeatureCollectionPBuffer.FeatureResult();
+        var message = new $root.esriPBuffer.FeatureCollectionPBuffer.FeatureResult();
         if (object.objectIdFieldName != null)
           message.objectIdFieldName = String(object.objectIdFieldName);
         if (object.uniqueIdField != null) {
@@ -3205,10 +2647,9 @@ $root.esriPBuffer = (function () {
             throw TypeError(
               '.esriPBuffer.FeatureCollectionPBuffer.FeatureResult.serverGens: object expected',
             );
-          message.serverGens =
-            $root.esriPBuffer.FeatureCollectionPBuffer.ServerGens.fromObject(
-              object.serverGens,
-            );
+          message.serverGens = $root.esriPBuffer.FeatureCollectionPBuffer.ServerGens.fromObject(
+            object.serverGens,
+          );
         }
         switch (object.geometryType) {
           default:
@@ -3265,10 +2706,9 @@ $root.esriPBuffer = (function () {
             throw TypeError(
               '.esriPBuffer.FeatureCollectionPBuffer.FeatureResult.transform: object expected',
             );
-          message.transform =
-            $root.esriPBuffer.FeatureCollectionPBuffer.Transform.fromObject(
-              object.transform,
-            );
+          message.transform = $root.esriPBuffer.FeatureCollectionPBuffer.Transform.fromObject(
+            object.transform,
+          );
         }
         if (object.fields) {
           if (!Array.isArray(object.fields))
@@ -3281,10 +2721,9 @@ $root.esriPBuffer = (function () {
               throw TypeError(
                 '.esriPBuffer.FeatureCollectionPBuffer.FeatureResult.fields: object expected',
               );
-            message.fields[i] =
-              $root.esriPBuffer.FeatureCollectionPBuffer.Field.fromObject(
-                object.fields[i],
-              );
+            message.fields[i] = $root.esriPBuffer.FeatureCollectionPBuffer.Field.fromObject(
+              object.fields[i],
+            );
           }
         }
         if (object.values) {
@@ -3298,10 +2737,9 @@ $root.esriPBuffer = (function () {
               throw TypeError(
                 '.esriPBuffer.FeatureCollectionPBuffer.FeatureResult.values: object expected',
               );
-            message.values[i] =
-              $root.esriPBuffer.FeatureCollectionPBuffer.Value.fromObject(
-                object.values[i],
-              );
+            message.values[i] = $root.esriPBuffer.FeatureCollectionPBuffer.Value.fromObject(
+              object.values[i],
+            );
           }
         }
         if (object.features) {
@@ -3315,10 +2753,9 @@ $root.esriPBuffer = (function () {
               throw TypeError(
                 '.esriPBuffer.FeatureCollectionPBuffer.FeatureResult.features: object expected',
               );
-            message.features[i] =
-              $root.esriPBuffer.FeatureCollectionPBuffer.Feature.fromObject(
-                object.features[i],
-              );
+            message.features[i] = $root.esriPBuffer.FeatureCollectionPBuffer.Feature.fromObject(
+              object.features[i],
+            );
           }
         }
         if (object.geometryFields) {
@@ -3357,71 +2794,44 @@ $root.esriPBuffer = (function () {
           object.geohashFieldName = '';
           object.geometryProperties = null;
           object.serverGens = null;
-          object.geometryType =
-            options.enums === String ? 'esriGeometryTypePoint' : 0;
+          object.geometryType = options.enums === String ? 'esriGeometryTypePoint' : 0;
           object.spatialReference = null;
           object.exceededTransferLimit = false;
           object.hasZ = false;
           object.hasM = false;
           object.transform = null;
         }
-        if (
-          message.objectIdFieldName != null &&
-          message.hasOwnProperty('objectIdFieldName')
-        )
+        if (message.objectIdFieldName != null && message.hasOwnProperty('objectIdFieldName'))
           object.objectIdFieldName = message.objectIdFieldName;
-        if (
-          message.uniqueIdField != null &&
-          message.hasOwnProperty('uniqueIdField')
-        )
-          object.uniqueIdField =
-            $root.esriPBuffer.FeatureCollectionPBuffer.UniqueIdField.toObject(
-              message.uniqueIdField,
-              options,
-            );
-        if (
-          message.globalIdFieldName != null &&
-          message.hasOwnProperty('globalIdFieldName')
-        )
+        if (message.uniqueIdField != null && message.hasOwnProperty('uniqueIdField'))
+          object.uniqueIdField = $root.esriPBuffer.FeatureCollectionPBuffer.UniqueIdField.toObject(
+            message.uniqueIdField,
+            options,
+          );
+        if (message.globalIdFieldName != null && message.hasOwnProperty('globalIdFieldName'))
           object.globalIdFieldName = message.globalIdFieldName;
-        if (
-          message.geohashFieldName != null &&
-          message.hasOwnProperty('geohashFieldName')
-        )
+        if (message.geohashFieldName != null && message.hasOwnProperty('geohashFieldName'))
           object.geohashFieldName = message.geohashFieldName;
-        if (
-          message.geometryProperties != null &&
-          message.hasOwnProperty('geometryProperties')
-        )
+        if (message.geometryProperties != null && message.hasOwnProperty('geometryProperties'))
           object.geometryProperties =
             $root.esriPBuffer.FeatureCollectionPBuffer.GeometryProperties.toObject(
               message.geometryProperties,
               options,
             );
         if (message.serverGens != null && message.hasOwnProperty('serverGens'))
-          object.serverGens =
-            $root.esriPBuffer.FeatureCollectionPBuffer.ServerGens.toObject(
-              message.serverGens,
-              options,
-            );
-        if (
-          message.geometryType != null &&
-          message.hasOwnProperty('geometryType')
-        )
+          object.serverGens = $root.esriPBuffer.FeatureCollectionPBuffer.ServerGens.toObject(
+            message.serverGens,
+            options,
+          );
+        if (message.geometryType != null && message.hasOwnProperty('geometryType'))
           object.geometryType =
             options.enums === String
-              ? $root.esriPBuffer.FeatureCollectionPBuffer.GeometryType[
-                  message.geometryType
-                ] === undefined
+              ? $root.esriPBuffer.FeatureCollectionPBuffer.GeometryType[message.geometryType] ===
+                undefined
                 ? message.geometryType
-                : $root.esriPBuffer.FeatureCollectionPBuffer.GeometryType[
-                    message.geometryType
-                  ]
+                : $root.esriPBuffer.FeatureCollectionPBuffer.GeometryType[message.geometryType]
               : message.geometryType;
-        if (
-          message.spatialReference != null &&
-          message.hasOwnProperty('spatialReference')
-        )
+        if (message.spatialReference != null && message.hasOwnProperty('spatialReference'))
           object.spatialReference =
             $root.esriPBuffer.FeatureCollectionPBuffer.SpatialReference.toObject(
               message.spatialReference,
@@ -3432,42 +2842,36 @@ $root.esriPBuffer = (function () {
           message.hasOwnProperty('exceededTransferLimit')
         )
           object.exceededTransferLimit = message.exceededTransferLimit;
-        if (message.hasZ != null && message.hasOwnProperty('hasZ'))
-          object.hasZ = message.hasZ;
-        if (message.hasM != null && message.hasOwnProperty('hasM'))
-          object.hasM = message.hasM;
+        if (message.hasZ != null && message.hasOwnProperty('hasZ')) object.hasZ = message.hasZ;
+        if (message.hasM != null && message.hasOwnProperty('hasM')) object.hasM = message.hasM;
         if (message.transform != null && message.hasOwnProperty('transform'))
-          object.transform =
-            $root.esriPBuffer.FeatureCollectionPBuffer.Transform.toObject(
-              message.transform,
-              options,
-            );
+          object.transform = $root.esriPBuffer.FeatureCollectionPBuffer.Transform.toObject(
+            message.transform,
+            options,
+          );
         if (message.fields && message.fields.length) {
           object.fields = [];
           for (var j = 0; j < message.fields.length; ++j)
-            object.fields[j] =
-              $root.esriPBuffer.FeatureCollectionPBuffer.Field.toObject(
-                message.fields[j],
-                options,
-              );
+            object.fields[j] = $root.esriPBuffer.FeatureCollectionPBuffer.Field.toObject(
+              message.fields[j],
+              options,
+            );
         }
         if (message.values && message.values.length) {
           object.values = [];
           for (var j = 0; j < message.values.length; ++j)
-            object.values[j] =
-              $root.esriPBuffer.FeatureCollectionPBuffer.Value.toObject(
-                message.values[j],
-                options,
-              );
+            object.values[j] = $root.esriPBuffer.FeatureCollectionPBuffer.Value.toObject(
+              message.values[j],
+              options,
+            );
         }
         if (message.features && message.features.length) {
           object.features = [];
           for (var j = 0; j < message.features.length; ++j)
-            object.features[j] =
-              $root.esriPBuffer.FeatureCollectionPBuffer.Feature.toObject(
-                message.features[j],
-                options,
-              );
+            object.features[j] = $root.esriPBuffer.FeatureCollectionPBuffer.Feature.toObject(
+              message.features[j],
+              options,
+            );
         }
         if (message.geometryFields && message.geometryFields.length) {
           object.geometryFields = [];
@@ -3489,9 +2893,7 @@ $root.esriPBuffer = (function () {
         if (typeUrlPrefix === undefined) {
           typeUrlPrefix = 'type.googleapis.com';
         }
-        return (
-          typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.FeatureResult'
-        );
+        return typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.FeatureResult';
       };
 
       return FeatureResult;
@@ -3501,13 +2903,10 @@ $root.esriPBuffer = (function () {
       function CountResult(properties) {
         if (properties)
           for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            if (properties[keys[i]] != null)
-              this[keys[i]] = properties[keys[i]];
+            if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
-      CountResult.prototype.count = $util.Long
-        ? $util.Long.fromBits(0, 0, true)
-        : 0;
+      CountResult.prototype.count = $util.Long ? $util.Long.fromBits(0, 0, true) : 0;
 
       CountResult.create = function create(properties) {
         return new CountResult(properties);
@@ -3515,10 +2914,7 @@ $root.esriPBuffer = (function () {
 
       CountResult.encode = function encode(message, writer) {
         if (!writer) writer = $Writer.create();
-        if (
-          message.count != null &&
-          Object.hasOwnProperty.call(message, 'count')
-        )
+        if (message.count != null && Object.hasOwnProperty.call(message, 'count'))
           writer.uint32(8).uint64(message.count);
         return writer;
       };
@@ -3528,8 +2924,7 @@ $root.esriPBuffer = (function () {
       };
 
       CountResult.verify = function verify(message) {
-        if (typeof message !== 'object' || message === null)
-          return 'object expected';
+        if (typeof message !== 'object' || message === null) return 'object expected';
         if (message.count != null && message.hasOwnProperty('count'))
           if (
             !$util.isInteger(message.count) &&
@@ -3544,21 +2939,12 @@ $root.esriPBuffer = (function () {
       };
 
       CountResult.fromObject = function fromObject(object) {
-        if (
-          object instanceof
-          $root.esriPBuffer.FeatureCollectionPBuffer.CountResult
-        )
-          return object;
-        var message =
-          new $root.esriPBuffer.FeatureCollectionPBuffer.CountResult();
+        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.CountResult) return object;
+        var message = new $root.esriPBuffer.FeatureCollectionPBuffer.CountResult();
         if (object.count != null)
-          if ($util.Long)
-            (message.count = $util.Long.fromValue(object.count)).unsigned =
-              true;
-          else if (typeof object.count === 'string')
-            message.count = parseInt(object.count, 10);
-          else if (typeof object.count === 'number')
-            message.count = object.count;
+          if ($util.Long) (message.count = $util.Long.fromValue(object.count)).unsigned = true;
+          else if (typeof object.count === 'string') message.count = parseInt(object.count, 10);
+          else if (typeof object.count === 'number') message.count = object.count;
           else if (typeof object.count === 'object')
             message.count = new $util.LongBits(
               object.count.low >>> 0,
@@ -3582,17 +2968,15 @@ $root.esriPBuffer = (function () {
           } else object.count = options.longs === String ? '0' : 0;
         if (message.count != null && message.hasOwnProperty('count'))
           if (typeof message.count === 'number')
-            object.count =
-              options.longs === String ? String(message.count) : message.count;
+            object.count = options.longs === String ? String(message.count) : message.count;
           else
             object.count =
               options.longs === String
                 ? $util.Long.prototype.toString.call(message.count)
                 : options.longs === Number
-                  ? new $util.LongBits(
-                      message.count.low >>> 0,
-                      message.count.high >>> 0,
-                    ).toNumber(true)
+                  ? new $util.LongBits(message.count.low >>> 0, message.count.high >>> 0).toNumber(
+                      true,
+                    )
                   : message.count;
         return object;
       };
@@ -3605,9 +2989,7 @@ $root.esriPBuffer = (function () {
         if (typeUrlPrefix === undefined) {
           typeUrlPrefix = 'type.googleapis.com';
         }
-        return (
-          typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.CountResult'
-        );
+        return typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.CountResult';
       };
 
       return CountResult;
@@ -3618,8 +3000,7 @@ $root.esriPBuffer = (function () {
         this.objectIds = [];
         if (properties)
           for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            if (properties[keys[i]] != null)
-              this[keys[i]] = properties[keys[i]];
+            if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
       ObjectIdsResult.prototype.objectIdFieldName = '';
@@ -3637,52 +3018,36 @@ $root.esriPBuffer = (function () {
           Object.hasOwnProperty.call(message, 'objectIdFieldName')
         )
           writer.uint32(10).string(message.objectIdFieldName);
-        if (
-          message.serverGens != null &&
-          Object.hasOwnProperty.call(message, 'serverGens')
-        )
+        if (message.serverGens != null && Object.hasOwnProperty.call(message, 'serverGens'))
           $root.esriPBuffer.FeatureCollectionPBuffer.ServerGens.encode(
             message.serverGens,
             writer.uint32(18).fork(),
           ).ldelim();
         if (message.objectIds != null && message.objectIds.length) {
           writer.uint32(26).fork();
-          for (var i = 0; i < message.objectIds.length; ++i)
-            writer.uint64(message.objectIds[i]);
+          for (var i = 0; i < message.objectIds.length; ++i) writer.uint64(message.objectIds[i]);
           writer.ldelim();
         }
         return writer;
       };
 
-      ObjectIdsResult.encodeDelimited = function encodeDelimited(
-        message,
-        writer,
-      ) {
+      ObjectIdsResult.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
       };
 
       ObjectIdsResult.verify = function verify(message) {
-        if (typeof message !== 'object' || message === null)
-          return 'object expected';
-        if (
-          message.objectIdFieldName != null &&
-          message.hasOwnProperty('objectIdFieldName')
-        )
+        if (typeof message !== 'object' || message === null) return 'object expected';
+        if (message.objectIdFieldName != null && message.hasOwnProperty('objectIdFieldName'))
           if (!$util.isString(message.objectIdFieldName))
             return 'objectIdFieldName: string expected';
-        if (
-          message.serverGens != null &&
-          message.hasOwnProperty('serverGens')
-        ) {
-          var error =
-            $root.esriPBuffer.FeatureCollectionPBuffer.ServerGens.verify(
-              message.serverGens,
-            );
+        if (message.serverGens != null && message.hasOwnProperty('serverGens')) {
+          var error = $root.esriPBuffer.FeatureCollectionPBuffer.ServerGens.verify(
+            message.serverGens,
+          );
           if (error) return 'serverGens.' + error;
         }
         if (message.objectIds != null && message.hasOwnProperty('objectIds')) {
-          if (!Array.isArray(message.objectIds))
-            return 'objectIds: array expected';
+          if (!Array.isArray(message.objectIds)) return 'objectIds: array expected';
           for (var i = 0; i < message.objectIds.length; ++i)
             if (
               !$util.isInteger(message.objectIds[i]) &&
@@ -3698,13 +3063,9 @@ $root.esriPBuffer = (function () {
       };
 
       ObjectIdsResult.fromObject = function fromObject(object) {
-        if (
-          object instanceof
-          $root.esriPBuffer.FeatureCollectionPBuffer.ObjectIdsResult
-        )
+        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.ObjectIdsResult)
           return object;
-        var message =
-          new $root.esriPBuffer.FeatureCollectionPBuffer.ObjectIdsResult();
+        var message = new $root.esriPBuffer.FeatureCollectionPBuffer.ObjectIdsResult();
         if (object.objectIdFieldName != null)
           message.objectIdFieldName = String(object.objectIdFieldName);
         if (object.serverGens != null) {
@@ -3712,10 +3073,9 @@ $root.esriPBuffer = (function () {
             throw TypeError(
               '.esriPBuffer.FeatureCollectionPBuffer.ObjectIdsResult.serverGens: object expected',
             );
-          message.serverGens =
-            $root.esriPBuffer.FeatureCollectionPBuffer.ServerGens.fromObject(
-              object.serverGens,
-            );
+          message.serverGens = $root.esriPBuffer.FeatureCollectionPBuffer.ServerGens.fromObject(
+            object.serverGens,
+          );
         }
         if (object.objectIds) {
           if (!Array.isArray(object.objectIds))
@@ -3725,9 +3085,7 @@ $root.esriPBuffer = (function () {
           message.objectIds = [];
           for (var i = 0; i < object.objectIds.length; ++i)
             if ($util.Long)
-              (message.objectIds[i] = $util.Long.fromValue(
-                object.objectIds[i],
-              )).unsigned = true;
+              (message.objectIds[i] = $util.Long.fromValue(object.objectIds[i])).unsigned = true;
             else if (typeof object.objectIds[i] === 'string')
               message.objectIds[i] = parseInt(object.objectIds[i], 10);
             else if (typeof object.objectIds[i] === 'number')
@@ -3749,25 +3107,19 @@ $root.esriPBuffer = (function () {
           object.objectIdFieldName = '';
           object.serverGens = null;
         }
-        if (
-          message.objectIdFieldName != null &&
-          message.hasOwnProperty('objectIdFieldName')
-        )
+        if (message.objectIdFieldName != null && message.hasOwnProperty('objectIdFieldName'))
           object.objectIdFieldName = message.objectIdFieldName;
         if (message.serverGens != null && message.hasOwnProperty('serverGens'))
-          object.serverGens =
-            $root.esriPBuffer.FeatureCollectionPBuffer.ServerGens.toObject(
-              message.serverGens,
-              options,
-            );
+          object.serverGens = $root.esriPBuffer.FeatureCollectionPBuffer.ServerGens.toObject(
+            message.serverGens,
+            options,
+          );
         if (message.objectIds && message.objectIds.length) {
           object.objectIds = [];
           for (var j = 0; j < message.objectIds.length; ++j)
             if (typeof message.objectIds[j] === 'number')
               object.objectIds[j] =
-                options.longs === String
-                  ? String(message.objectIds[j])
-                  : message.objectIds[j];
+                options.longs === String ? String(message.objectIds[j]) : message.objectIds[j];
             else
               object.objectIds[j] =
                 options.longs === String
@@ -3790,10 +3142,7 @@ $root.esriPBuffer = (function () {
         if (typeUrlPrefix === undefined) {
           typeUrlPrefix = 'type.googleapis.com';
         }
-        return (
-          typeUrlPrefix +
-          '/esriPBuffer.FeatureCollectionPBuffer.ObjectIdsResult'
-        );
+        return typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.ObjectIdsResult';
       };
 
       return ObjectIdsResult;
@@ -3803,8 +3152,7 @@ $root.esriPBuffer = (function () {
       function QueryResult(properties) {
         if (properties)
           for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-            if (properties[keys[i]] != null)
-              this[keys[i]] = properties[keys[i]];
+            if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
       QueryResult.prototype.featureResult = null;
@@ -3814,9 +3162,7 @@ $root.esriPBuffer = (function () {
       var $oneOfFields;
 
       Object.defineProperty(QueryResult.prototype, 'Results', {
-        get: $util.oneOfGetter(
-          ($oneOfFields = ['featureResult', 'countResult', 'idsResult']),
-        ),
+        get: $util.oneOfGetter(($oneOfFields = ['featureResult', 'countResult', 'idsResult'])),
         set: $util.oneOfSetter($oneOfFields),
       });
 
@@ -3826,26 +3172,17 @@ $root.esriPBuffer = (function () {
 
       QueryResult.encode = function encode(message, writer) {
         if (!writer) writer = $Writer.create();
-        if (
-          message.featureResult != null &&
-          Object.hasOwnProperty.call(message, 'featureResult')
-        )
+        if (message.featureResult != null && Object.hasOwnProperty.call(message, 'featureResult'))
           $root.esriPBuffer.FeatureCollectionPBuffer.FeatureResult.encode(
             message.featureResult,
             writer.uint32(10).fork(),
           ).ldelim();
-        if (
-          message.countResult != null &&
-          Object.hasOwnProperty.call(message, 'countResult')
-        )
+        if (message.countResult != null && Object.hasOwnProperty.call(message, 'countResult'))
           $root.esriPBuffer.FeatureCollectionPBuffer.CountResult.encode(
             message.countResult,
             writer.uint32(18).fork(),
           ).ldelim();
-        if (
-          message.idsResult != null &&
-          Object.hasOwnProperty.call(message, 'idsResult')
-        )
+        if (message.idsResult != null && Object.hasOwnProperty.call(message, 'idsResult'))
           $root.esriPBuffer.FeatureCollectionPBuffer.ObjectIdsResult.encode(
             message.idsResult,
             writer.uint32(26).fork(),
@@ -3858,33 +3195,24 @@ $root.esriPBuffer = (function () {
       };
 
       QueryResult.verify = function verify(message) {
-        if (typeof message !== 'object' || message === null)
-          return 'object expected';
+        if (typeof message !== 'object' || message === null) return 'object expected';
         var properties = {};
-        if (
-          message.featureResult != null &&
-          message.hasOwnProperty('featureResult')
-        ) {
+        if (message.featureResult != null && message.hasOwnProperty('featureResult')) {
           properties.Results = 1;
           {
-            var error =
-              $root.esriPBuffer.FeatureCollectionPBuffer.FeatureResult.verify(
-                message.featureResult,
-              );
+            var error = $root.esriPBuffer.FeatureCollectionPBuffer.FeatureResult.verify(
+              message.featureResult,
+            );
             if (error) return 'featureResult.' + error;
           }
         }
-        if (
-          message.countResult != null &&
-          message.hasOwnProperty('countResult')
-        ) {
+        if (message.countResult != null && message.hasOwnProperty('countResult')) {
           if (properties.Results === 1) return 'Results: multiple values';
           properties.Results = 1;
           {
-            var error =
-              $root.esriPBuffer.FeatureCollectionPBuffer.CountResult.verify(
-                message.countResult,
-              );
+            var error = $root.esriPBuffer.FeatureCollectionPBuffer.CountResult.verify(
+              message.countResult,
+            );
             if (error) return 'countResult.' + error;
           }
         }
@@ -3892,10 +3220,9 @@ $root.esriPBuffer = (function () {
           if (properties.Results === 1) return 'Results: multiple values';
           properties.Results = 1;
           {
-            var error =
-              $root.esriPBuffer.FeatureCollectionPBuffer.ObjectIdsResult.verify(
-                message.idsResult,
-              );
+            var error = $root.esriPBuffer.FeatureCollectionPBuffer.ObjectIdsResult.verify(
+              message.idsResult,
+            );
             if (error) return 'idsResult.' + error;
           }
         }
@@ -3903,13 +3230,8 @@ $root.esriPBuffer = (function () {
       };
 
       QueryResult.fromObject = function fromObject(object) {
-        if (
-          object instanceof
-          $root.esriPBuffer.FeatureCollectionPBuffer.QueryResult
-        )
-          return object;
-        var message =
-          new $root.esriPBuffer.FeatureCollectionPBuffer.QueryResult();
+        if (object instanceof $root.esriPBuffer.FeatureCollectionPBuffer.QueryResult) return object;
+        var message = new $root.esriPBuffer.FeatureCollectionPBuffer.QueryResult();
         if (object.featureResult != null) {
           if (typeof object.featureResult !== 'object')
             throw TypeError(
@@ -3925,20 +3247,18 @@ $root.esriPBuffer = (function () {
             throw TypeError(
               '.esriPBuffer.FeatureCollectionPBuffer.QueryResult.countResult: object expected',
             );
-          message.countResult =
-            $root.esriPBuffer.FeatureCollectionPBuffer.CountResult.fromObject(
-              object.countResult,
-            );
+          message.countResult = $root.esriPBuffer.FeatureCollectionPBuffer.CountResult.fromObject(
+            object.countResult,
+          );
         }
         if (object.idsResult != null) {
           if (typeof object.idsResult !== 'object')
             throw TypeError(
               '.esriPBuffer.FeatureCollectionPBuffer.QueryResult.idsResult: object expected',
             );
-          message.idsResult =
-            $root.esriPBuffer.FeatureCollectionPBuffer.ObjectIdsResult.fromObject(
-              object.idsResult,
-            );
+          message.idsResult = $root.esriPBuffer.FeatureCollectionPBuffer.ObjectIdsResult.fromObject(
+            object.idsResult,
+          );
         }
         return message;
       };
@@ -3946,34 +3266,25 @@ $root.esriPBuffer = (function () {
       QueryResult.toObject = function toObject(message, options) {
         if (!options) options = {};
         var object = {};
-        if (
-          message.featureResult != null &&
-          message.hasOwnProperty('featureResult')
-        ) {
-          object.featureResult =
-            $root.esriPBuffer.FeatureCollectionPBuffer.FeatureResult.toObject(
-              message.featureResult,
-              options,
-            );
+        if (message.featureResult != null && message.hasOwnProperty('featureResult')) {
+          object.featureResult = $root.esriPBuffer.FeatureCollectionPBuffer.FeatureResult.toObject(
+            message.featureResult,
+            options,
+          );
           if (options.oneofs) object.Results = 'featureResult';
         }
-        if (
-          message.countResult != null &&
-          message.hasOwnProperty('countResult')
-        ) {
-          object.countResult =
-            $root.esriPBuffer.FeatureCollectionPBuffer.CountResult.toObject(
-              message.countResult,
-              options,
-            );
+        if (message.countResult != null && message.hasOwnProperty('countResult')) {
+          object.countResult = $root.esriPBuffer.FeatureCollectionPBuffer.CountResult.toObject(
+            message.countResult,
+            options,
+          );
           if (options.oneofs) object.Results = 'countResult';
         }
         if (message.idsResult != null && message.hasOwnProperty('idsResult')) {
-          object.idsResult =
-            $root.esriPBuffer.FeatureCollectionPBuffer.ObjectIdsResult.toObject(
-              message.idsResult,
-              options,
-            );
+          object.idsResult = $root.esriPBuffer.FeatureCollectionPBuffer.ObjectIdsResult.toObject(
+            message.idsResult,
+            options,
+          );
           if (options.oneofs) object.Results = 'idsResult';
         }
         return object;
@@ -3987,9 +3298,7 @@ $root.esriPBuffer = (function () {
         if (typeUrlPrefix === undefined) {
           typeUrlPrefix = 'type.googleapis.com';
         }
-        return (
-          typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.QueryResult'
-        );
+        return typeUrlPrefix + '/esriPBuffer.FeatureCollectionPBuffer.QueryResult';
       };
 
       return QueryResult;

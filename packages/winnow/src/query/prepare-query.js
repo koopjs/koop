@@ -1,9 +1,6 @@
 const _ = require('lodash');
 const { filterAndTransform } = require('../filter-and-transform');
-const {
-  create: createSqlStatement,
-  params: createSqlParams,
-} = require('../sql-query-builder');
+const { create: createSqlStatement, params: createSqlParams } = require('../sql-query-builder');
 const normalizeQueryOptions = require('../normalize-query-options');
 const normalizeQueryInput = require('./normalize-query-input');
 const packageFeatures = require('./package-features');

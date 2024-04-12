@@ -1,9 +1,7 @@
 const Joi = require('joi');
 const composeRoutePath = require('./helpers/compose-route-path');
 const METHODS_SCHEMA = Joi.array().items(
-  Joi.string()
-    .valid('get', 'post', 'patch', 'put', 'delete', 'head')
-    .insensitive(),
+  Joi.string().valid('get', 'post', 'patch', 'put', 'delete', 'head').insensitive(),
 );
 
 class ProviderRoute {
@@ -20,18 +18,14 @@ class ProviderRoute {
 
   #validateController(controller, handler, path) {
     if (!controller[handler]) {
-      throw new Error(
-        `defines route "${path}" with unknown handler: ${handler}`,
-      );
+      throw new Error(`defines route "${path}" with unknown handler: ${handler}`);
     }
   }
 
   #validateHttpMethods(methods, path) {
     const result = METHODS_SCHEMA.validate(methods);
     if (result.error) {
-      throw new Error(
-        `defines route "${path}" with unsupported HTTP method: ${result.value[0]}`,
-      );
+      throw new Error(`defines route "${path}" with unsupported HTTP method: ${result.value[0]}`);
     }
   }
 }

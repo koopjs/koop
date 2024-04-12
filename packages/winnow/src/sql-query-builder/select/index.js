@@ -4,11 +4,7 @@ const createFieldsSelectFragment = require('./fields-select-fragment');
 
 function createSelectSql(options = {}) {
   if (options.aggregates) {
-    return createAggregationSelect(
-      options.aggregates,
-      options.groupBy,
-      options.esri,
-    );
+    return createAggregationSelect(options.aggregates, options.groupBy, options.esri);
   }
 
   return createStandardSelect(options);

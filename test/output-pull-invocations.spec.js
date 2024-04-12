@@ -18,9 +18,7 @@ describe('test output using model.pull with callback arg', () => {
 
   test('should return data', async () => {
     try {
-      const response = await request(koop.server).get(
-        '/async-no-callback/output-path',
-      );
+      const response = await request(koop.server).get('/async-no-callback/output-path');
       expect(response.status).toBe(200);
       expect(response.body).toEqual({
         features: [
