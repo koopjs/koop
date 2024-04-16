@@ -1,21 +1,14 @@
 const _ = require('lodash');
-const joi = require('joi');
 const metadataDefaults = require('./metadata-defaults');
 const { generalResponseHandler } = require('./response-handlers');
-const { combineBodyQueryParameters } = require('./helpers');
-
-const parameterSchema = joi
-  .object({
-    f: joi.string().valid('json', 'pjson').default('json'),
-  })
-  .unknown();
+const { combineBodyQueryParameters, validateInfoRouteParams } = require('./helpers');
 
 function restInfo(req, res, data = {}) {
   const { currentVersion, fullVersion } = getVersions(req.app.locals);
 
   const requestParams = combineBodyQueryParameters(req.body, req.query);
 
-  validate(requestParams);
+  validateInfoRouteParams(requestParams);
 
   return generalResponseHandler(
     res,
@@ -45,16 +38,6 @@ function getVersions(locals) {
     versionDefaults.fullVersion,
   );
   return { currentVersion, fullVersion };
-}
-
-function validate(parameters) {
-  const { error } = parameterSchema.validate(parameters);
-
-  if (error) {
-    const err = new Error('Invalid format');
-    err.code = 400;
-    throw err;
-  }
 }
 
 module.exports = restInfo;
