@@ -44,8 +44,8 @@ describe('server info', () => {
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: undefined,
-        initialExtent: null,
-        fullExtent: null,
+        fullExtent: undefined,
+        initialExtent: undefined,
         spatialReference: {
           latestWkid: 4326,
           wkid: 4326,
@@ -79,8 +79,8 @@ describe('server info', () => {
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: 101.1,
-        initialExtent: null,
-        fullExtent: null,
+        fullExtent: undefined,
+        initialExtent: undefined,
         spatialReference: {
           latestWkid: 4326,
           wkid: 4326,
@@ -107,8 +107,8 @@ describe('server info', () => {
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: undefined,
-        initialExtent: null,
-        fullExtent: null,
+        fullExtent: undefined,
+        initialExtent: undefined,
         spatialReference: {
           latestWkid: 4326,
           wkid: 4326,
@@ -154,8 +154,8 @@ describe('server info', () => {
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: undefined,
-        initialExtent: null,
-        fullExtent: null,
+        fullExtent: undefined,
+        initialExtent: undefined,
         spatialReference: {
           latestWkid: 4326,
           wkid: 4326,
@@ -624,8 +624,8 @@ describe('server info', () => {
           type: 'name',
           properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
         },
-        fullExtent: null,
-        initialExtent: null,
+        fullExtent: undefined,
+        initialExtent: undefined,
         layers: [
           {
             id: 0,
@@ -674,9 +674,9 @@ describe('server info', () => {
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: undefined,
-        fullExtent: null,
-        initialExtent: null,
         extent: simpleCollectionFixture.metadata.extent,
+        fullExtent: undefined,
+        initialExtent: undefined,
         layers: [
           {
             id: 0,
