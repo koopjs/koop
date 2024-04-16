@@ -13,11 +13,9 @@ describe('Feature Server Output - rest/info', () => {
   const koop = new Koop({ logLevel: 'error', logger: mockLogger });
   koop.register(provider, { dataDir: './test/provider-data' });
 
-  test('return expected result', async () => {
+  test('return expected success result', async () => {
     try {
-      const response = await request(koop.server).get(
-        '/file-geojson/rest/info',
-      );
+      const response = await request(koop.server).get('/file-geojson/rest/info');
       expect(response.status).toBe(200);
       const {
         body: {
@@ -33,6 +31,23 @@ describe('Feature Server Output - rest/info', () => {
       expect(currentVersion).toBe(11.2);
       expect(fullVersion).toBe('11.2.0');
       expect(owningSystemUrl).toMatch(/file-geojson$/);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  });
+
+  test('return expected 400 result', async () => {
+    try {
+      const response = await request(koop.server).get('/file-geojson/rest/info?f=jsonb');
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        error: {
+          code: 400,
+          details: [],
+          message: 'Invalid format',
+        },
+      });
     } catch (error) {
       console.error(error);
       throw error;

@@ -39,6 +39,7 @@ describe('normalize-input-data', function () {
     };
     const result = normalizeInputData(collection);
     result.should.deepEqual({
+      crs: collection.crs,
       tables: [],
       layers: [collection],
       relationships: [],
@@ -56,6 +57,7 @@ describe('normalize-input-data', function () {
     };
     const result = normalizeInputData(collection);
     result.should.deepEqual({
+      crs: collection.crs,
       tables: [collection],
       layers: [],
       relationships: [],
@@ -73,10 +75,16 @@ describe('normalize-input-data', function () {
       features: [],
     };
     const result = normalizeInputData(collection);
+    const { metadata, crs } = collection;
     result.should.deepEqual({
+      crs,
+      metadata,
       tables: [],
-      layers: [collection],
+      metadata: {
+        geometryType: 'Point',
+      },
       relationships: [],
+      layers: [collection],
     });
   });
 

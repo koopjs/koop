@@ -179,6 +179,10 @@ describe('Route module unit tests', () => {
       return { serverInfo: true };
     });
 
+    afterEach(() => {
+      serverInfoSpy.resetHistory();
+      responseHandlerSpy.resetHistory();
+    });
     const responseHandlerSpy = sinon.spy();
 
     const route = proxyquire('./route', {
@@ -199,20 +203,14 @@ describe('Route module unit tests', () => {
       serverInfoSpy.calledOnce.should.equal(true);
       serverInfoSpy.firstCall.args.should.deepEqual([
         {
-          metadata: { maxRecordCount: 2000 },
-        },
-        {
           params: {},
           query: { resultRecordCount: 2000 },
           url: '/rest/services/test/FeatureServer',
         },
-      ]);
-
-      responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args.should.deepEqual([
         {},
-        { serverInfo: true },
-        { resultRecordCount: 2000 },
+        {
+          metadata: { maxRecordCount: 2000 },
+        },
       ]);
     });
 
@@ -237,26 +235,14 @@ describe('Route module unit tests', () => {
       serverInfoSpy.calledOnce.should.equal(true);
       serverInfoSpy.firstCall.args.should.deepEqual([
         {
-          metadata: { maxRecordCount: 2000 },
-        },
-        {
           params: {},
           query: { resultRecordCount: 2000 },
           url: '/rest/services/test/FeatureServer',
         },
-      ]);
-
-      responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args.should.deepEqual([
         {},
         {
-          error: {
-            code: 500,
-            message: 'Fool bar',
-            details: ['Fool bar'],
-          },
+          metadata: { maxRecordCount: 2000 },
         },
-        { resultRecordCount: 2000 },
       ]);
     });
 

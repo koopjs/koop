@@ -1,7 +1,7 @@
 const FeatureServer = require('@koopjs/featureserver');
 const {
   restInfo,
-  // serverInfo,
+  serverInfo,
   // layerInfo,
   // layersInfo,
   // query,
@@ -82,12 +82,12 @@ class GeoServices {
     {
       path: '$namespace/rest/services/$providerParams/FeatureServer',
       methods: ['get', 'post'],
-      handler: 'generalHandler',
+      handler: 'serverInfoHandler',
     },
     {
       path: '$namespace/rest/services/$providerParams/FeatureServer*',
       methods: ['get', 'post'],
-      handler: 'generalHandler',
+      handler: 'serverInfoHandler',
     },
     {
       path: '$namespace/rest/services/$providerParams/MapServer*',
@@ -136,33 +136,37 @@ class GeoServices {
       const data = await this.model.pull(req);
       return FeatureServer.route(req, res, data);
     } catch (error) {
-      this.#logger.error(error);
-
-      const token = this.#extractTokenFromRequest(req);
-      const { code, message, details = [] } = normalizeError(error);
-
-      res.status(200); // ArcGIS standard is to wrap errors in 200 success
-
-      if (isMissingTokenError(code, token)) {
-        return res.json(tokenRequiredError);
-      }
-
-      if (isInvalidTokenError(code, token)) {
-        return res.json(invalidTokenError);
-      }
-
-      if (isUnauthorizedError(code, message)) {
-        return res.json(authorizationError);
-      }
-
-      return res.json({
-        error: {
-          code: code || 500,
-          message,
-          details,
-        },
-      });
+      this.#errorHandler(error, req, res);
     }
+  }
+
+  #errorHandler(error, req, res) {
+    this.#logger.error(error);
+
+    const token = this.#extractTokenFromRequest(req);
+    const { code, message, details = [] } = normalizeError(error);
+
+    res.status(200); // ArcGIS standard is to wrap errors in 200 success
+
+    if (isMissingTokenError(code, token)) {
+      return res.json(tokenRequiredError);
+    }
+
+    if (isInvalidTokenError(code, token)) {
+      return res.json(invalidTokenError);
+    }
+
+    if (isUnauthorizedError(code, message)) {
+      return res.json(authorizationError);
+    }
+
+    return res.json({
+      error: {
+        code: code || 500,
+        message,
+        details,
+      },
+    });
   }
 
   #extractTokenFromRequest(req) {
@@ -190,14 +194,23 @@ class GeoServices {
     if (this.#includeOwningSystemUrl) {
       data.owningSystemUrl = this.#buildOwningSystemUrl(req.headers.host, req.baseUrl);
     }
-    /*
-    const result = restInfo(geojson, req);
-      return generalResponseHandler(res, result, req.query);
-      */
-    restInfo(req, res, {
-      owningSystemUrl: this.#buildOwningSystemUrl(req.headers.host, req.baseUrl),
-      authInfo,
-    });
+    try {
+      restInfo(req, res, {
+        owningSystemUrl: this.#buildOwningSystemUrl(req.headers.host, req.baseUrl),
+        authInfo,
+      });
+    } catch (error) {
+      this.#errorHandler(error, req, res);
+    }
+  }
+
+  async serverInfoHandler(req, res) {
+    try {
+      const data = await this.model.pull(req);
+      return serverInfo(req, res, data);
+    } catch (error) {
+      this.#errorHandler(error, req, res);
+    }
   }
 
   #buildTokensUrl(host, baseUrl) {
