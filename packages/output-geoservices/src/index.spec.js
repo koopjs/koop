@@ -6,6 +6,7 @@ jest.mock('@koopjs/featureserver', () => ({
   route: jest.fn(),
   setDefaults: jest.fn(),
   restInfo: jest.fn(),
+  serverInfo: jest.fn(),
 }));
 
 const loggerMock = {
@@ -72,12 +73,12 @@ describe('Output Geoservices', () => {
         {
           path: '$namespace/rest/services/$providerParams/FeatureServer',
           methods: ['get', 'post'],
-          handler: 'generalHandler',
+          handler: 'serverInfoHandler',
         },
         {
           path: '$namespace/rest/services/$providerParams/FeatureServer*',
           methods: ['get', 'post'],
-          handler: 'generalHandler',
+          handler: 'serverInfoHandler',
         },
         {
           path: '$namespace/rest/services/$providerParams/MapServer*',
@@ -388,6 +389,70 @@ describe('Output Geoservices', () => {
           authInfo: {
             isTokenBasedSecurity: true,
             tokenServicesUrl: 'http://some-host.com/api/v1/provider-name/rest/generateToken',
+          },
+        },
+      ]);
+    });
+
+    test('should handle 5xx error', async () => {
+      const modelMock = {
+        pull: jest.fn(async () => {
+          const error = new Error('Upstream error');
+          error.code = 503;
+          throw error;
+        }),
+      };
+
+      FeatureServer.restInfo.mockImplementation(() => {
+        throw new Error('some error');
+      });
+      const output = new OutputGeoServices(modelMock, { logger: loggerMock });
+      await output.restInfoHandler(reqMock, resMock);
+      expect(resMock.status.mock.calls[0].length).toBe(1);
+      expect(resMock.status.mock.calls[0]).toEqual([200]);
+      expect(resMock.json.mock.calls[0].length).toBe(1);
+      expect(resMock.json.mock.calls[0]).toEqual([
+        {
+          error: {
+            code: 500,
+            details: [],
+            message: 'some error',
+          },
+        },
+      ]);
+    });
+  });
+
+  describe('serverInfoHandler', () => {
+    test('should pull data and call handler', async () => {
+      const output = new OutputGeoServices(modelMock, { logger: loggerMock });
+      await output.serverInfoHandler({ foo: 'bar' }, resMock);
+      expect(FeatureServer.serverInfo.mock.calls.length).toBe(1);
+      expect(FeatureServer.serverInfo.mock.calls[0]).toEqual([{ foo: 'bar' }, resMock, 'someData']);
+      expect(modelMock.pull.mock.calls.length).toBe(1);
+      expect(modelMock.pull.mock.calls[0][0]).toEqual({ foo: 'bar' });
+    });
+
+    test('should handle 5xx error', async () => {
+      const modelMock = {
+        pull: jest.fn(async () => {
+          const error = new Error('Upstream error');
+          error.code = 503;
+          throw error;
+        }),
+      };
+
+      const output = new OutputGeoServices(modelMock, { logger: loggerMock });
+      await output.serverInfoHandler(reqMock, resMock);
+      expect(resMock.status.mock.calls[0].length).toBe(1);
+      expect(resMock.status.mock.calls[0]).toEqual([200]);
+      expect(resMock.json.mock.calls[0].length).toBe(1);
+      expect(resMock.json.mock.calls[0]).toEqual([
+        {
+          error: {
+            code: 503,
+            details: [],
+            message: 'Upstream error',
           },
         },
       ]);

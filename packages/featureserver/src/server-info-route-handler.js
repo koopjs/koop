@@ -11,6 +11,7 @@ const {
 } = require('./helpers');
 const logManager = require('./log-manager');
 const ServerMetadata = require('./helpers/server-metadata');
+const { generalResponseHandler } = require('./response-handlers');
 
 function serverInfo(req, res, data) {
   const requestParameters = combineBodyQueryParameters(req.body, req.query);
@@ -24,18 +25,20 @@ function serverInfo(req, res, data) {
   const metadata = normalizeMetadata(layers[0], tables[0], restData);
   const spatialReference = getSpatialReference(inputCrs, sourceSR, layers[0]);
 
-  const fullExtent = getExtent(metadata.extent, layers, spatialReference);
-  const initialExtent = getExtent(metadata.initialExtent, layers, spatialReference);
+  metadata.fullExtent = getExtent(metadata.extent, layers, spatialReference);
+  metadata.initialExtent = getExtent(
+    metadata.initialExtent || metadata.extent,
+    layers,
+    spatialReference,
+  );
 
   // TODO: deprecate in favor or server-metadata-settings
   const appConfig = req.app?.locals?.config?.featureServer || {};
 
-  return ServerMetadata.create({
+  const payload = ServerMetadata.create({
     ...appConfig,
     ...metadata,
     spatialReference,
-    fullExtent,
-    initialExtent,
     currentVersion: appConfig.currentVersion,
     layers: layers.map(formatServerItemInfo),
     tables: tables.map((table, idx) => {
@@ -43,6 +46,8 @@ function serverInfo(req, res, data) {
     }),
     relationships: relationships.map(formatRelationshipInfo),
   });
+
+  return generalResponseHandler(res, payload, requestParameters);
 }
 
 function normalizeMetadata(...args) {

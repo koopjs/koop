@@ -18,10 +18,20 @@ describe('server info', () => {
   };
 
   const res = {};
+  const handlerSpy = sinon.spy();
+  const loggerSpy = {
+    warn: sinon.spy(),
+    debug: sinon.spy(),
+  };
+
   const serverInfoHandler = proxyquire('./server-info-route-handler', {
     './helpers/server-metadata': {
       create: serverMetadataCreateSpy,
     },
+    './response-handlers': {
+      generalResponseHandler: handlerSpy,
+    },
+    './log-manager': { logger: loggerSpy },
   });
 
   beforeEach(() => {
@@ -29,15 +39,13 @@ describe('server info', () => {
   });
 
   it('should construct options from empty geojson and no settings', () => {
-    const serverInfo = serverInfoHandler(req, res, {});
-
-    serverInfo.should.deepEqual({ server: 'metadata' });
+    serverInfoHandler(req, res, {});
 
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: undefined,
-        initialExtent: undefined,
-        fullExtent: undefined,
+        initialExtent: null,
+        fullExtent: null,
         spatialReference: {
           latestWkid: 4326,
           wkid: 4326,
@@ -46,6 +54,14 @@ describe('server info', () => {
         tables: [],
         relationships: [],
       },
+    ]);
+
+    handlerSpy.firstCall.args.should.deepEqual([
+      {},
+      {
+        server: 'metadata',
+      },
+      {},
     ]);
   });
 
@@ -57,15 +73,14 @@ describe('server info', () => {
       query: {},
       body: {},
     };
-    const serverInfo = serverInfoHandler(req, res, {});
 
-    serverInfo.should.deepEqual({ server: 'metadata' });
+    serverInfoHandler(req, res, {});
 
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: 101.1,
-        initialExtent: undefined,
-        fullExtent: undefined,
+        initialExtent: null,
+        fullExtent: null,
         spatialReference: {
           latestWkid: 4326,
           wkid: 4326,
@@ -75,19 +90,25 @@ describe('server info', () => {
         relationships: [],
       },
     ]);
+
+    handlerSpy.firstCall.args.should.deepEqual([
+      {},
+      {
+        server: 'metadata',
+      },
+      {},
+    ]);
   });
 
   it('should construct options from empty feature collection and no settings', () => {
     const simpleCollectionFixture = { type: 'FeatureCollection', features: [] };
-    const serverInfo = serverInfoHandler(req, res, simpleCollectionFixture);
-
-    serverInfo.should.deepEqual({ server: 'metadata' });
+    serverInfoHandler(req, res, simpleCollectionFixture);
 
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: undefined,
-        initialExtent: undefined,
-        fullExtent: undefined,
+        initialExtent: null,
+        fullExtent: null,
         spatialReference: {
           latestWkid: 4326,
           wkid: 4326,
@@ -107,6 +128,14 @@ describe('server info', () => {
         ],
         relationships: [],
       },
+    ]);
+
+    handlerSpy.firstCall.args.should.deepEqual([
+      {},
+      {
+        server: 'metadata',
+      },
+      {},
     ]);
   });
 
@@ -120,17 +149,13 @@ describe('server info', () => {
       ],
     };
 
-    const serverInfo = serverInfoHandler(req, res, simpleCollectionFixture);
-
-    serverInfo.should.deepEqual({
-      server: 'metadata',
-    });
+    serverInfoHandler(req, res, simpleCollectionFixture);
 
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: undefined,
-        initialExtent: undefined,
-        fullExtent: undefined,
+        initialExtent: null,
+        fullExtent: null,
         spatialReference: {
           latestWkid: 4326,
           wkid: 4326,
@@ -150,6 +175,14 @@ describe('server info', () => {
         ],
         relationships: [],
       },
+    ]);
+
+    handlerSpy.firstCall.args.should.deepEqual([
+      {},
+      {
+        server: 'metadata',
+      },
+      {},
     ]);
   });
 
@@ -179,11 +212,7 @@ describe('server info', () => {
       ],
     };
 
-    const serverInfo = serverInfoHandler(req, res, simpleCollectionFixture);
-
-    serverInfo.should.deepEqual({
-      server: 'metadata',
-    });
+    serverInfoHandler(req, res, simpleCollectionFixture);
 
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
@@ -226,6 +255,14 @@ describe('server info', () => {
         tables: [],
         relationships: [],
       },
+    ]);
+
+    handlerSpy.firstCall.args.should.deepEqual([
+      {},
+      {
+        server: 'metadata',
+      },
+      {},
     ]);
   });
 
@@ -306,11 +343,7 @@ describe('server info', () => {
       tables,
     };
 
-    const serverInfo = serverInfoHandler(req, res, input);
-
-    serverInfo.should.deepEqual({
-      server: 'metadata',
-    });
+    serverInfoHandler(req, res, input);
 
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
@@ -383,6 +416,14 @@ describe('server info', () => {
           wkid: 4326,
         },
       },
+    ]);
+
+    handlerSpy.firstCall.args.should.deepEqual([
+      {},
+      {
+        server: 'metadata',
+      },
+      {},
     ]);
   });
 
@@ -465,11 +506,7 @@ describe('server info', () => {
       relationships,
     };
 
-    const serverInfo = serverInfoHandler(req, res, input);
-
-    serverInfo.should.deepEqual({
-      server: 'metadata',
-    });
+    serverInfoHandler(req, res, input);
 
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
@@ -552,6 +589,14 @@ describe('server info', () => {
         ],
       },
     ]);
+
+    handlerSpy.firstCall.args.should.deepEqual([
+      {},
+      {
+        server: 'metadata',
+      },
+      {},
+    ]);
   });
 
   it('should fail to construct extents from layers, log error', () => {
@@ -570,11 +615,7 @@ describe('server info', () => {
       ],
     };
 
-    const serverInfo = serverInfoHandler(req, res, simpleCollectionFixture);
-
-    serverInfo.should.deepEqual({
-      server: 'metadata',
-    });
+    serverInfoHandler(req, res, simpleCollectionFixture);
 
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
@@ -583,8 +624,8 @@ describe('server info', () => {
           type: 'name',
           properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
         },
-        fullExtent: undefined,
-        initialExtent: undefined,
+        fullExtent: null,
+        initialExtent: null,
         layers: [
           {
             id: 0,
@@ -605,6 +646,64 @@ describe('server info', () => {
           wkid: 4326,
         },
       },
+    ]);
+    handlerSpy.firstCall.args.should.deepEqual([
+      {},
+      {
+        server: 'metadata',
+      },
+      {},
+    ]);
+  });
+
+  it('should ignore malformed metadata extent', () => {
+    const simpleCollectionFixture = {
+      type: 'FeatureCollection',
+      metadata: { extent: [0, 'a', 3] },
+      features: [
+        {
+          type: 'Feature',
+          properties: {},
+          geometry: { type: 'Point', coordinates: ['test', 40] },
+        },
+      ],
+    };
+
+    serverInfoHandler(req, res, simpleCollectionFixture);
+
+    serverMetadataCreateSpy.firstCall.args.should.deepEqual([
+      {
+        currentVersion: undefined,
+        fullExtent: null,
+        initialExtent: null,
+        extent: simpleCollectionFixture.metadata.extent,
+        layers: [
+          {
+            id: 0,
+            name: 'Layer_0',
+            parentLayerId: -1,
+            defaultVisibility: true,
+            subLayerIds: null,
+            minScale: 0,
+            maxScale: 0,
+            geometryType: 'esriGeometryPoint',
+            type: 'Feature Layer',
+          },
+        ],
+        tables: [],
+        relationships: [],
+        spatialReference: {
+          latestWkid: 4326,
+          wkid: 4326,
+        },
+      },
+    ]);
+    handlerSpy.firstCall.args.should.deepEqual([
+      {},
+      {
+        server: 'metadata',
+      },
+      {},
     ]);
   });
 });

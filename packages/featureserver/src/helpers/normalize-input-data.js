@@ -1,11 +1,18 @@
+const _ = require('lodash');
+const logManager = require('../log-manager');
 const getGeometryTypeFromGeojson = require('./get-geometry-type-from-geojson');
 
 module.exports = function normalizeInputForServerInfo(input = {}) {
+  if (!_.isObject(input)) {
+    logManager.logger.debug(`Unexpected input data: ${input}`);
+    input = {};
+  }
+
   // Might be standard geojson, or prepared server metadata object
   const { layers, tables, relationships, type, features, ...rest } = input;
 
   // Geometry type will be defined if standard geojson
-  const geometryType = getGeometryTypeFromGeojson({ type, features });
+  const geometryType = getGeometryTypeFromGeojson({ type, features, metadata: rest.metadata });
 
   return {
     ...rest,
@@ -25,10 +32,10 @@ function getLayers(input, geometryType) {
 }
 
 function getTables(input, geometryType) {
-  const { tables, type, features } = input;
+  const { tables, layers, relationships, type, features, ...rest } = input;
   if (tables) {
     return tables;
   }
 
-  return type === 'FeatureCollection' && !geometryType ? [{ type, features }] : [];
+  return type === 'FeatureCollection' && !geometryType ? [{ type, features, ...rest }] : [];
 }
