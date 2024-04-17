@@ -277,18 +277,16 @@ describe('Route module unit tests', () => {
       layersInfoSpy.calledOnce.should.equal(true);
       layersInfoSpy.firstCall.args.should.deepEqual([
         {
+          params: {},
+          query: {
+            resultRecordCount: 2000,
+          },
+          url: '/rest/services/test/FeatureServer/layers',
+        },
+        {},
+        {
           metadata: { maxRecordCount: 2000 },
         },
-        {
-          resultRecordCount: 2000,
-        },
-      ]);
-
-      responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args.should.deepEqual([
-        {},
-        { layersInfo: true },
-        { resultRecordCount: 2000 },
       ]);
     });
 
@@ -313,10 +311,17 @@ describe('Route module unit tests', () => {
       layersInfoSpy.calledOnce.should.equal(true);
       layersInfoSpy.firstCall.args.should.deepEqual([
         {
-          metadata: { maxRecordCount: 2000 },
+          params: {},
+          query: {
+            resultRecordCount: 2000,
+          },
+          url: '/rest/services/test/FeatureServer/layers',
         },
+        {},
         {
-          resultRecordCount: 2000,
+          metadata: {
+            maxRecordCount: 2000,
+          },
         },
       ]);
 

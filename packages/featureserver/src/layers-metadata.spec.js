@@ -4,6 +4,18 @@ const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 
 describe('layers metadata', () => {
+  const handlerSpy = sinon.spy();
+  const req = {
+    app: {
+      locals: {},
+    },
+    body: {},
+    query: {},
+  };
+  beforeEach(() => {
+    handlerSpy.resetHistory();
+  });
+
   it('empty input returns empty table and layer arrays', () => {
     const normalizeInputData = sinon.spy(function () {
       return {
@@ -15,6 +27,9 @@ describe('layers metadata', () => {
     const FeatureLayerMetadata = sinon.spy();
 
     const layersInfoHandler = proxyquire('./layers-metadata', {
+      './response-handlers': {
+        generalResponseHandler: handlerSpy,
+      },
       './helpers': {
         normalizeInputData,
         TableLayerMetadata,
@@ -22,12 +37,16 @@ describe('layers metadata', () => {
       },
     });
 
-    const layersInfo = layersInfoHandler({});
+    layersInfoHandler(req, {}, {});
 
-    layersInfo.should.deepEqual({
-      layers: [],
-      tables: [],
-    });
+    handlerSpy.firstCall.args.should.deepEqual([
+      {},
+      {
+        layers: [],
+        tables: [],
+      },
+      {},
+    ]);
 
     normalizeInputData.callCount.should.equal(1);
     normalizeInputData.firstCall.args.should.deepEqual([{}]);
@@ -40,6 +59,7 @@ describe('layers metadata', () => {
       return {
         layers: ['layer1', 'layer2'],
         tables: ['table1'],
+        other: 'metadata',
       };
     });
 
@@ -60,6 +80,9 @@ describe('layers metadata', () => {
     };
 
     const layersInfoHandler = proxyquire('./layers-metadata', {
+      './response-handlers': {
+        generalResponseHandler: handlerSpy,
+      },
       './helpers': {
         normalizeInputData,
         TableLayerMetadata,
@@ -67,25 +90,29 @@ describe('layers metadata', () => {
       },
     });
 
-    const layersInfo = layersInfoHandler({ hello: 'world' }, { some: 'options' });
+    layersInfoHandler(req, {}, { hello: 'world' });
 
-    layersInfo.should.deepEqual({
-      layers: ['layer1-metadata', 'layer2-metadata'],
-      tables: ['table1-metadata'],
-    });
+    handlerSpy.firstCall.args.should.deepEqual([
+      {},
+      {
+        layers: ['layer1-metadata', 'layer2-metadata'],
+        tables: ['table1-metadata'],
+      },
+      {},
+    ]);
 
     normalizeInputData.callCount.should.equal(1);
     normalizeInputData.firstCall.args.should.deepEqual([{ hello: 'world' }]);
     featureLayerCreateSpy.callCount.should.equal(2);
     featureLayerCreateSpy.firstCall.args.should.deepEqual([
       'layer1',
-      { layerId: 0, some: 'options' },
+      { layerId: 0, other: 'metadata' },
     ]);
     featureLayerCreateSpy.secondCall.args.should.deepEqual([
       'layer2',
-      { layerId: 1, some: 'options' },
+      { layerId: 1, other: 'metadata' },
     ]);
     tableCreateSpy.callCount.should.equal(1);
-    tableCreateSpy.firstCall.args.should.deepEqual(['table1', { layerId: 2, some: 'options' }]);
+    tableCreateSpy.firstCall.args.should.deepEqual(['table1', { layerId: 2, other: 'metadata' }]);
   });
 });

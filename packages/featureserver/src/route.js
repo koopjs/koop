@@ -41,8 +41,7 @@ module.exports = function route(req, res, geojson = {}) {
     }
 
     if (isLayersMetadataRequest(route) || isRelationshipsMetadataRequest(route)) {
-      const result = layersInfo(geojson, params);
-      return generalResponseHandler(res, result, req.query);
+      return layersInfo(req, res, geojson);
     }
 
     if (isLayerMetadataRequest(method, route)) {
