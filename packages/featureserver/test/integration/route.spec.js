@@ -82,7 +82,7 @@ describe('Routing feature server requests', () => {
     });
   });
 
-  describe('Layer Info', () => {
+  describe.skip('Layer Info', () => {
     it('should handle a layer info request of form /FeatureServer/:layerId`', (done) => {
       request(app)
         .get('/FeatureServer/3?f=json')

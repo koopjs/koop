@@ -5,7 +5,7 @@ module.exports = {
   route: require('./route.js'),
   restInfo: require('./rest-info-route-handler'),
   serverInfo: require('./server-info-route-handler'),
-  layerInfo: require('./layer-metadata'),
+  layerInfo: require('./layer-info-handler.js'),
   layersInfo: require('./layers-info-handler'),
   query: require('./query'),
   queryRelatedRecords: require('./queryRelatedRecords.js'),

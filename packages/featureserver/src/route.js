@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const layerInfo = require('./layer-metadata');
+const layerInfo = require('./layer-info-handler.js');
 const query = require('./query');
 const logManager = require('./log-manager');
 const queryRelatedRecords = require('./queryRelatedRecords.js');
@@ -45,8 +45,7 @@ module.exports = function route(req, res, geojson = {}) {
     }
 
     if (isLayerMetadataRequest(method, route)) {
-      const result = layerInfo(geojson, req);
-      return generalResponseHandler(res, result, req.query);
+      return layerInfo(req, res, geojson);
     }
 
     if (method) {
