@@ -39,7 +39,7 @@ describe('layerInfo handler', function () {
     layerMetadata(req, {});
     handlerSpy.firstCall.args.should.deepEqual([{}, 'table-layer-metadata', {}]);
     isTableSpy.callCount.should.equal(1);
-    isTableSpy.firstCall.args.should.deepEqual([{ }]);
+    isTableSpy.firstCall.args.should.deepEqual([{}]);
     TableCreateSpy.callCount.should.equal(1);
     TableCreateSpy.firstCall.args.should.deepEqual([
       {},
