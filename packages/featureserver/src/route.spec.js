@@ -345,15 +345,13 @@ describe('Route module unit tests', () => {
     });
   });
 
-  describe('/FeatureServer/0 route', () => {
-    const layerInfoSpy = sinon.spy(function () {
-      return 'layer-metadata';
-    });
+  describe('/FeatureServer/:layer route', () => {
+    const layerInfoSpy = sinon.spy();
 
     const responseHandlerSpy = sinon.spy();
 
     const route = proxyquire('./route', {
-      './layer-metadata': layerInfoSpy,
+      './layer-info-handler': layerInfoSpy,
       './response-handlers': { generalResponseHandler: responseHandlerSpy },
     });
 
@@ -370,20 +368,14 @@ describe('Route module unit tests', () => {
       layerInfoSpy.calledOnce.should.equal(true);
       layerInfoSpy.firstCall.args.should.deepEqual([
         {
-          metadata: { maxRecordCount: 2000 },
-        },
-        {
           params: {},
           query: { resultRecordCount: 2000 },
           url: '/rest/services/test/FeatureServer/0',
         },
-      ]);
-
-      responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args.should.deepEqual([
         {},
-        'layer-metadata',
-        { resultRecordCount: 2000 },
+        {
+          metadata: { maxRecordCount: 2000 },
+        },
       ]);
     });
 
@@ -392,7 +384,7 @@ describe('Route module unit tests', () => {
         throw new Error('Fool bar');
       });
       const route = proxyquire('./route', {
-        './layer-metadata': layerInfoSpy,
+        './layer-info-handler': layerInfoSpy,
         './response-handlers': { generalResponseHandler: responseHandlerSpy },
       });
 
@@ -408,26 +400,14 @@ describe('Route module unit tests', () => {
       layerInfoSpy.calledOnce.should.equal(true);
       layerInfoSpy.firstCall.args.should.deepEqual([
         {
-          metadata: { maxRecordCount: 2000 },
-        },
-        {
           params: {},
           query: { resultRecordCount: 2000 },
           url: '/rest/services/test/FeatureServer/0',
         },
-      ]);
-
-      responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args.should.deepEqual([
         {},
         {
-          error: {
-            code: 500,
-            message: 'Fool bar',
-            details: ['Fool bar'],
-          },
+          metadata: { maxRecordCount: 2000 },
         },
-        { resultRecordCount: 2000 },
       ]);
     });
 
@@ -445,7 +425,7 @@ describe('Route module unit tests', () => {
     const responseHandlerSpy = sinon.spy();
 
     const route = proxyquire('./route', {
-      './layer-metadata': layerInfoSpy,
+      './layer-info-handler': layerInfoSpy,
       './response-handlers': { generalResponseHandler: responseHandlerSpy },
     });
 
@@ -462,20 +442,14 @@ describe('Route module unit tests', () => {
       layerInfoSpy.calledOnce.should.equal(true);
       layerInfoSpy.firstCall.args.should.deepEqual([
         {
-          metadata: { maxRecordCount: 2000 },
-        },
-        {
           params: {},
           query: { resultRecordCount: 2000 },
           url: '/rest/services/test/FeatureServer/0/info',
         },
-      ]);
-
-      responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args.should.deepEqual([
         {},
-        'layer-metadata',
-        { resultRecordCount: 2000 },
+        {
+          metadata: { maxRecordCount: 2000 },
+        },
       ]);
     });
 

@@ -2,7 +2,7 @@ const FeatureServer = require('@koopjs/featureserver');
 const {
   restInfo,
   serverInfo,
-  // layerInfo,
+  layerInfo,
   layersInfo,
   // query,
 } = require('@koopjs/featureserver');
@@ -76,7 +76,7 @@ class GeoServices {
     {
       path: '$namespace/rest/services/$providerParams/FeatureServer/:layer',
       methods: ['get', 'post'],
-      handler: 'generalHandler',
+      handler: 'layerInfoHandler',
     },
     {
       path: '$namespace/rest/services/$providerParams/FeatureServer',
@@ -213,6 +213,10 @@ class GeoServices {
 
   async layersInfoHandler(req, res) {
     this.#pullDataHandler(req, res, layersInfo);
+  }
+
+  async layerInfoHandler(req, res) {
+    this.#pullDataHandler(req, res, layerInfo);
   }
 
   #buildTokensUrl(host, baseUrl) {
