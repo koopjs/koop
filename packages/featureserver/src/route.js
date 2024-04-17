@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const layerInfo = require('./layer-info-handler.js');
-const query = require('./query');
+const query = require('./query/index.js');
 const logManager = require('./log-manager');
 const queryRelatedRecords = require('./queryRelatedRecords.js');
 const generateRenderer = require('./generate-renderer');

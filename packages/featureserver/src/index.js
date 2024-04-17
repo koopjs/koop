@@ -7,7 +7,7 @@ module.exports = {
   serverInfo: require('./server-info-route-handler'),
   layerInfo: require('./layer-info-handler.js'),
   layersInfo: require('./layers-info-handler'),
-  query: require('./query'),
+  query: require('./query/index.js'),
   queryRelatedRecords: require('./queryRelatedRecords.js'),
   generateRenderer: require('./generate-renderer'),
   setLogger,

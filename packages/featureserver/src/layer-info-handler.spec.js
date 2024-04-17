@@ -22,6 +22,32 @@ describe('layerInfo handler', function () {
     handlerSpy.resetHistory();
   });
 
+  it('no data', () => {
+    const isTableSpy = sinon.spy(function () {
+      return true;
+    });
+    const layerMetadata = proxyquire('./layer-info-handler', {
+      './helpers': {
+        isTable: isTableSpy,
+        TableLayerMetadata: { create: TableCreateSpy },
+        FeatureLayerMetadata: { create: FeatureLayerCreateSpy },
+      },
+      './response-handlers': {
+        generalResponseHandler: handlerSpy,
+      },
+    });
+    layerMetadata(req, {});
+    handlerSpy.firstCall.args.should.deepEqual([{}, 'table-layer-metadata', {}]);
+    isTableSpy.callCount.should.equal(1);
+    isTableSpy.firstCall.args.should.deepEqual([{ }]);
+    TableCreateSpy.callCount.should.equal(1);
+    TableCreateSpy.firstCall.args.should.deepEqual([
+      {},
+      { inputCrs: undefined, sourceSR: undefined },
+    ]);
+    TableCreateSpy.resetHistory();
+  });
+
   it('isTable === true, returns TableLayerMetadata instance', () => {
     const isTableSpy = sinon.spy(function () {
       return true;
