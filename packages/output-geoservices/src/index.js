@@ -3,7 +3,7 @@ const {
   restInfo,
   serverInfo,
   // layerInfo,
-  // layersInfo,
+  layersInfo,
   // query,
 } = require('@koopjs/featureserver');
 const Logger = require('@koopjs/logger');
@@ -71,7 +71,7 @@ class GeoServices {
     {
       path: '$namespace/rest/services/$providerParams/FeatureServer/layers',
       methods: ['get', 'post'],
-      handler: 'generalHandler',
+      handler: 'layersInfoHandler',
     },
     {
       path: '$namespace/rest/services/$providerParams/FeatureServer/:layer',
@@ -198,13 +198,21 @@ class GeoServices {
     }
   }
 
-  async serverInfoHandler(req, res) {
+  async #pullDataHandler(req, res, handler) {
     try {
       const data = await this.model.pull(req);
-      return serverInfo(req, res, data);
+      return handler(req, res, data);
     } catch (error) {
       this.#errorHandler(error, req, res);
     }
+  }
+
+  async serverInfoHandler(req, res) {
+    this.#pullDataHandler(req, res, serverInfo);
+  }
+
+  async layersInfoHandler(req, res) {
+    this.#pullDataHandler(req, res, layersInfo);
   }
 
   #buildTokensUrl(host, baseUrl) {

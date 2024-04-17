@@ -260,7 +260,7 @@ describe('Route module unit tests', () => {
     const responseHandlerSpy = sinon.spy();
 
     const route = proxyquire('./route', {
-      './layers-metadata': layersInfoSpy,
+      './layers-info-handler': layersInfoSpy,
       './response-handlers': { generalResponseHandler: responseHandlerSpy },
     });
 
@@ -295,7 +295,7 @@ describe('Route module unit tests', () => {
         throw new Error('Fool bar');
       });
       const route = proxyquire('./route', {
-        './layers-metadata': layersInfoSpy,
+        './layers-info-handler': layersInfoSpy,
         './response-handlers': { generalResponseHandler: responseHandlerSpy },
       });
 

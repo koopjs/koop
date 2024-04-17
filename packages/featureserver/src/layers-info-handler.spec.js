@@ -3,7 +3,7 @@ should.config.checkProtoEql = false;
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 
-describe('layers metadata', () => {
+describe('layersInfo handler', () => {
   const handlerSpy = sinon.spy();
   const req = {
     app: {
@@ -26,7 +26,7 @@ describe('layers metadata', () => {
     const TableLayerMetadata = sinon.spy();
     const FeatureLayerMetadata = sinon.spy();
 
-    const layersInfoHandler = proxyquire('./layers-metadata', {
+    const layersInfoHandler = proxyquire('./layers-info-handler', {
       './response-handlers': {
         generalResponseHandler: handlerSpy,
       },
@@ -79,7 +79,7 @@ describe('layers metadata', () => {
       }
     };
 
-    const layersInfoHandler = proxyquire('./layers-metadata', {
+    const layersInfoHandler = proxyquire('./layers-info-handler', {
       './response-handlers': {
         generalResponseHandler: handlerSpy,
       },

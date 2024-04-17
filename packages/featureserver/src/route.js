@@ -6,7 +6,7 @@ const queryRelatedRecords = require('./queryRelatedRecords.js');
 const generateRenderer = require('./generate-renderer');
 const restInfo = require('./rest-info-route-handler');
 const serverInfo = require('./server-info-route-handler');
-const layersInfo = require('./layers-metadata');
+const layersInfo = require('./layers-info-handler');
 const { generalResponseHandler, queryResponseHandler } = require('./response-handlers');
 const { validateInputs, normalizeRequestParameters } = require('./helpers');
 
