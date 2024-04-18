@@ -1,11 +1,5 @@
 const FeatureServer = require('@koopjs/featureserver');
-const {
-  restInfo,
-  serverInfo,
-  layerInfo,
-  layersInfo,
-  // query,
-} = require('@koopjs/featureserver');
+const { restInfo, serverInfo, layerInfo, layersInfo, query } = require('@koopjs/featureserver');
 const Logger = require('@koopjs/logger');
 let logger = new Logger();
 const ARCGIS_UNAUTHORIZED_MESSAGE = 'Item does not exist or is inaccessible.';
@@ -62,6 +56,11 @@ class GeoServices {
       path: '$namespace/rest/generateToken',
       methods: ['get', 'post'],
       handler: 'generateToken',
+    },
+    {
+      path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/query',
+      methods: ['get', 'post'],
+      handler: 'queryHandler',
     },
     {
       path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/:method',
@@ -217,6 +216,10 @@ class GeoServices {
 
   async layerInfoHandler(req, res) {
     this.#pullDataHandler(req, res, layerInfo);
+  }
+
+  async queryHandler(req, res) {
+    this.#pullDataHandler(req, res, query);
   }
 
   #buildTokensUrl(host, baseUrl) {

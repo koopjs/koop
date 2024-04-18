@@ -34,17 +34,16 @@ describe('Route module unit tests', () => {
       querySpy.calledOnce.should.equal(true);
       querySpy.firstCall.args.should.deepEqual([
         {
+          params: { method: 'query' },
+          query: {
+            resultRecordCount: 2000,
+          },
+          url: '/FeatureServer/0/query',
+        },
+        {},
+        {
           metadata: { maxRecordCount: 2000 },
         },
-        {
-          resultRecordCount: 2000,
-        },
-      ]);
-      responseHandlerSpy.calledOnce.should.equal(true);
-      responseHandlerSpy.firstCall.args.should.deepEqual([
-        {},
-        { features: [] },
-        { resultRecordCount: 2000 },
       ]);
     });
 
@@ -480,9 +479,38 @@ describe('Route module unit tests', () => {
         {},
         {
           error: {
-            code: 404,
-            message: 'Not Found',
-            details: ['Not Found'],
+            code: 400,
+            message: 'Invalid URL',
+            details: ['Invalid URL'],
+          },
+        },
+        { resultRecordCount: 2000 },
+      ]);
+    });
+
+    it('should unsupported layer method', () => {
+      const responseHandlerSpy = sinon.spy();
+      const route = proxyquire('./route', {
+        './response-handlers': { generalResponseHandler: responseHandlerSpy },
+      });
+
+      route(
+        {
+          params: {},
+          query: {},
+          url: '/rest/services/test/FeatureServer/0/goobar',
+        },
+        {},
+        {},
+      );
+      responseHandlerSpy.calledOnce.should.equal(true);
+      responseHandlerSpy.firstCall.args.should.deepEqual([
+        {},
+        {
+          error: {
+            code: 400,
+            message: 'Invalid URL',
+            details: ['Invalid URL'],
           },
         },
         { resultRecordCount: 2000 },

@@ -1,11 +1,11 @@
 const should = require('should'); // eslint-disable-line
-const { validate } = require('./validate-query-request-parameters');
+const { validateQueryRequestParams } = require('./validate-query-request-parameters');
 
 describe('validate-query-request-parameters', () => {
   describe('quantizationParameters', () => {
     it('should invalidate with 400 due to missing extent param', () => {
       try {
-        validate({
+        validateQueryRequestParams({
           quantizationParameters: {
             extent: {},
           },
@@ -19,7 +19,7 @@ describe('validate-query-request-parameters', () => {
 
     it('should validate if missing (optional)', () => {
       try {
-        validate({});
+        validateQueryRequestParams({});
       } catch (err) {
         err.should.deepEqual(undefined);
       }

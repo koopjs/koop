@@ -51,9 +51,9 @@ const stub = {
   },
 };
 
-const queryHandler = proxyquire('./', stub);
+const queryJson = proxyquire('./query-json', stub);
 
-describe('query', () => {
+describe('queryJson', () => {
   afterEach(function () {
     filterAndTransformSpy.resetHistory();
     logWarningsSpy.resetHistory();
@@ -71,7 +71,7 @@ describe('query', () => {
         metadata: 'metadata',
       };
 
-      const result = queryHandler(json, { outStatistics: ['stats'] });
+      const result = queryJson(json, { outStatistics: ['stats'] });
       result.should.equal('precalculated-statistics');
       renderPrecalculatedStatisticsResponseSpy.callCount.should.equal(1);
       renderPrecalculatedStatisticsResponseSpy.firstCall.args.should.deepEqual([
@@ -94,7 +94,7 @@ describe('query', () => {
         returnCountOnly: true,
       };
 
-      const result = queryHandler(json, params);
+      const result = queryJson(json, params);
       result.should.deepEqual({
         extent: 'extent',
         count: 'count',
@@ -112,7 +112,7 @@ describe('query', () => {
         returnExtentOnly: true,
       };
 
-      const result = queryHandler(json, params);
+      const result = queryJson(json, params);
       result.should.deepEqual({
         extent: 'extent',
       });
@@ -129,7 +129,7 @@ describe('query', () => {
         returnCountOnly: true,
       };
 
-      const result = queryHandler(json, params);
+      const result = queryJson(json, params);
       result.should.deepEqual({
         count: 'count',
       });
@@ -165,7 +165,7 @@ describe('query', () => {
 
       const params = { f: 'geojson' };
 
-      const result = queryHandler(json, params);
+      const result = queryJson(json, params);
       result.should.deepEqual({
         type: 'FeatureCollection',
         features: ['filtered-feature'],
@@ -202,7 +202,7 @@ describe('query', () => {
 
       const params = { f: 'geojson' };
 
-      const result = queryHandler(json, params);
+      const result = queryJson(json, params);
       result.should.deepEqual({
         type: 'FeatureCollection',
         features: json.features,
@@ -219,7 +219,7 @@ describe('query', () => {
 
       const params = { f: 'geojson' };
 
-      const result = queryHandler(json, params);
+      const result = queryJson(json, params);
       result.should.deepEqual({
         type: 'FeatureCollection',
         features: json.features,
@@ -247,7 +247,7 @@ describe('query', () => {
 
       const params = { f: 'geojson' };
 
-      const result = queryHandler(json, params);
+      const result = queryJson(json, params);
       result.should.deepEqual({
         type: 'FeatureCollection',
         features: ['filtered-feature'],
@@ -275,7 +275,7 @@ describe('query', () => {
 
     const params = { returnCountOnly: true };
 
-    const result = queryHandler(json, params);
+    const result = queryJson(json, params);
     result.should.equal('count-or-extent');
     getGeometryTypeFromGeojsonSpy.callCount.should.equal(1);
     getGeometryTypeFromGeojsonSpy.firstCall.args.should.deepEqual([json]);
@@ -299,7 +299,7 @@ describe('query', () => {
 
     const params = { returnCountOnly: true };
 
-    const result = queryHandler(json, params);
+    const result = queryJson(json, params);
     result.should.deepEqual('count-or-extent');
     renderCountAndExtentResponseSpy.callCount.should.equal(1);
     renderCountAndExtentResponseSpy.firstCall.args.should.deepEqual([
@@ -332,7 +332,7 @@ describe('query', () => {
 
     const params = { returnExtentOnly: true };
 
-    const result = queryHandler(json, params);
+    const result = queryJson(json, params);
     result.should.deepEqual('count-or-extent');
     renderCountAndExtentResponseSpy.callCount.should.equal(1);
     renderCountAndExtentResponseSpy.firstCall.args.should.deepEqual([
@@ -365,7 +365,7 @@ describe('query', () => {
 
     const params = { returnExtentOnly: true, returnCountOnly: true };
 
-    const result = queryHandler(json, params);
+    const result = queryJson(json, params);
     result.should.deepEqual('count-or-extent');
     renderCountAndExtentResponseSpy.callCount.should.equal(1);
     renderCountAndExtentResponseSpy.firstCall.args.should.deepEqual([
@@ -384,7 +384,7 @@ describe('query', () => {
       const filterAndTransformSpy = sinon.spy(function () {
         return { features: [{ attributes: { OBJECTID: 1138516379 } }] };
       });
-      const queryHandler = proxyquire('./', {
+      const queryJson = proxyquire('./query-json', {
         ...stub,
         './filter-and-transform': {
           filterAndTransform: filterAndTransformSpy,
@@ -407,7 +407,7 @@ describe('query', () => {
 
       const params = { returnIdsOnly: true };
 
-      const result = queryHandler(json, params);
+      const result = queryJson(json, params);
       result.should.deepEqual({
         objectIdFieldName: 'OBJECTID',
         objectIds: [1138516379],
@@ -421,7 +421,7 @@ describe('query', () => {
           features: [{ attributes: { anIdProp: 1138516379 } }],
         };
       });
-      const queryHandler = proxyquire('./', {
+      const queryJson = proxyquire('./query-json', {
         ...stub,
         './filter-and-transform': {
           filterAndTransform: filterAndTransformSpy,
@@ -445,7 +445,7 @@ describe('query', () => {
 
       const params = { returnIdsOnly: true };
 
-      const result = queryHandler(json, params);
+      const result = queryJson(json, params);
       result.should.deepEqual({
         objectIdFieldName: 'anIdProp',
         objectIds: [1138516379],
@@ -479,7 +479,7 @@ describe('query', () => {
       ],
     };
 
-    const result = queryHandler(json, params);
+    const result = queryJson(json, params);
     result.should.deepEqual('out-statistics');
     renderStatisticsResponseSpy.callCount.should.equal(1);
     renderStatisticsResponseSpy.firstCall.args.should.deepEqual([
@@ -512,7 +512,7 @@ describe('query', () => {
       ],
     };
 
-    const result = queryHandler(json);
+    const result = queryJson(json);
     result.should.deepEqual('features');
     renderFeaturesResponseSpy.callCount.should.equal(1);
     renderFeaturesResponseSpy.firstCall.args.should.deepEqual([

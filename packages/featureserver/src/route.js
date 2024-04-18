@@ -1,13 +1,13 @@
 const _ = require('lodash');
 const layerInfo = require('./layer-info-handler.js');
-const query = require('./query/index.js');
+const query = require('./query');
 const logManager = require('./log-manager');
 const queryRelatedRecords = require('./queryRelatedRecords.js');
 const generateRenderer = require('./generate-renderer');
 const restInfo = require('./rest-info-route-handler');
 const serverInfo = require('./server-info-route-handler');
 const layersInfo = require('./layers-info-handler');
-const { generalResponseHandler, queryResponseHandler } = require('./response-handlers');
+const { generalResponseHandler } = require('./response-handlers');
 const { validateInputs, normalizeRequestParameters } = require('./helpers');
 
 module.exports = function route(req, res, geojson = {}) {
@@ -48,18 +48,22 @@ module.exports = function route(req, res, geojson = {}) {
       return layerInfo(req, res, geojson);
     }
 
-    if (method) {
-      const operationResult = handleMethodRequest({ method, geojson, req });
+    if (method === 'query') {
+      return query(req, res, geojson);
+    }
 
-      if (method === 'query') {
-        return queryResponseHandler(res, operationResult, req.query);
-      }
-
+    if (method === 'generateRenderer') {
+      const operationResult = generateRenderer(geojson, req.query);
       return generalResponseHandler(res, operationResult, req.query);
     }
 
-    const error = new Error('Not Found');
-    error.code = 404;
+    if (method === 'queryRelatedRecords') {
+      const operationResult = queryRelatedRecords(geojson, req.query);
+      return generalResponseHandler(res, operationResult, req.query);
+    }
+
+    const error = new Error('Invalid URL');
+    error.code = 400;
     throw error;
   } catch (error) {
     logManager.logger.debug(error);
@@ -75,24 +79,6 @@ module.exports = function route(req, res, geojson = {}) {
     );
   }
 };
-
-function handleMethodRequest({ method, geojson, req }) {
-  if (method === 'query') {
-    return query(geojson, req.query);
-  }
-
-  if (method === 'queryRelatedRecords') {
-    return queryRelatedRecords(geojson, req.query);
-  }
-
-  if (method === 'generateRenderer') {
-    return generateRenderer(geojson, req.query);
-  }
-
-  const error = new Error('Method not supported');
-  error.code = 400;
-  throw error;
-}
 
 function isRestInfoRequest(url) {
   return /\/rest\/info$/i.test(url);

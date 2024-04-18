@@ -58,6 +58,11 @@ describe('Output Geoservices', () => {
           handler: 'generateToken',
         },
         {
+          path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/query',
+          methods: ['get', 'post'],
+          handler: 'queryHandler',
+        },
+        {
           path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/:method',
           methods: ['get', 'post'],
           handler: 'generalHandler',
