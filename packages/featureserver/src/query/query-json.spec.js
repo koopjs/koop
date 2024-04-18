@@ -51,7 +51,7 @@ const stub = {
   },
 };
 
-const queryJson = proxyquire('./query-json', stub);
+const { queryJson } = proxyquire('./query-json', stub);
 
 describe('queryJson', () => {
   afterEach(function () {
@@ -384,7 +384,7 @@ describe('queryJson', () => {
       const filterAndTransformSpy = sinon.spy(function () {
         return { features: [{ attributes: { OBJECTID: 1138516379 } }] };
       });
-      const queryJson = proxyquire('./query-json', {
+      const { queryJson } = proxyquire('./query-json', {
         ...stub,
         './filter-and-transform': {
           filterAndTransform: filterAndTransformSpy,
@@ -421,12 +421,14 @@ describe('queryJson', () => {
           features: [{ attributes: { anIdProp: 1138516379 } }],
         };
       });
-      const queryJson = proxyquire('./query-json', {
+
+      const { queryJson } = proxyquire('./query-json', {
         ...stub,
         './filter-and-transform': {
           filterAndTransform: filterAndTransformSpy,
         },
       });
+
       const json = {
         type: 'FeatureCollection',
         metadata: { idField: 'anIdProp' },
@@ -456,12 +458,14 @@ describe('queryJson', () => {
       const filterAndTransformSpy = sinon.spy(function () {
         return {};
       });
-      const queryJson = proxyquire('./query-json', {
+
+      const { queryJson } = proxyquire('./query-json', {
         ...stub,
         './filter-and-transform': {
           filterAndTransform: filterAndTransformSpy,
         },
       });
+
       const json = {
         type: 'FeatureCollection',
         features: [],
