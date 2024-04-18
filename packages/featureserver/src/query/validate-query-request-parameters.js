@@ -1,5 +1,7 @@
 const joi = require('joi');
 
+const formatSchema = joi.string().valid('json', 'pjson', 'pbf').default('json');
+
 const spatialReferenceSchema = joi
   .object({
     wkid: joi.number().integer().required(),
@@ -25,10 +27,11 @@ const quantizationParametersSchema = joi.object({
 const queryRequestSchema = joi
   .object({
     quantizationParameters: quantizationParametersSchema,
+    f: formatSchema,
   })
   .unknown();
 
-function validate(queryRequestParams) {
+function validateQueryRequestParams(queryRequestParams) {
   const { error } = queryRequestSchema.validate(queryRequestParams);
 
   if (error) {
@@ -37,16 +40,33 @@ function validate(queryRequestParams) {
 }
 
 function handleError(error) {
-  // TODO: right now the only possible error is for quantizationParams
-  // const [param] = error.details[0].path;
-  // if (param === 'quantizationParameters') {
-  const err = new Error("'quantizationParameters' parameter is invalid");
-  err.code = 400;
-  err.details = [error.details[0].message];
-  throw err;
-  // }
-  // throw error;
+  const [param] = error.details[0].path;
+  const code = 400;
+  const details = [error.details[0].message];
+
+  if (param === 'quantizationParameters') {
+    throw makeError({
+      message: "'quantizationParameters' parameter is invalid",
+      code,
+      details,
+    });
+  }
+
+  throw makeError({
+    message: 'Invalid format',
+    code,
+    details,
+  });
 }
+
 module.exports = {
-  validate,
+  validateQueryRequestParams,
 };
+
+function makeError(params) {
+  const { message, details, code } = params;
+  const err = new Error(message);
+  err.code = code;
+  err.details = details;
+  return err;
+}

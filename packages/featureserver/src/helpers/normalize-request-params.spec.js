@@ -10,7 +10,7 @@ describe('normailizeRequestParameters', () => {
 
   it('should remove empty strings from query params', () => {
     const result = normalizeRequestParameters({ test: '', foo: 'barb', boo: 400 }, {});
-    result.should.deepEqual({ foo: 'barb', boo: 400, resultRecordCount: 2000 });
+    result.should.deepEqual({ foo: 'barb', boo: 400 });
   });
 
   it('should coerce query string boolean', () => {
@@ -18,7 +18,6 @@ describe('normailizeRequestParameters', () => {
     result.should.deepEqual({
       test: true,
       foo: false,
-      resultRecordCount: 2000,
     });
   });
 
@@ -26,7 +25,6 @@ describe('normailizeRequestParameters', () => {
     const result = normalizeRequestParameters({ test: JSON.stringify({ foo: 'bard' }) }, {});
     result.should.deepEqual({
       test: { foo: 'bard' },
-      resultRecordCount: 2000,
     });
   });
 
@@ -51,7 +49,6 @@ describe('normailizeRequestParameters', () => {
       boolFalse: false,
       numberInt: 1,
       numberDecimal: 1.1,
-      resultRecordCount: 2000,
     });
   });
 });
