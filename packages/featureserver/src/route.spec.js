@@ -35,15 +35,11 @@ describe('Route module unit tests', () => {
       querySpy.firstCall.args.should.deepEqual([
         {
           params: { method: 'query' },
-          query: {
-            resultRecordCount: 2000,
-          },
+          query: {},
           url: '/FeatureServer/0/query',
         },
         {},
-        {
-          metadata: { maxRecordCount: 2000 },
-        },
+        {},
       ]);
     });
 
@@ -77,7 +73,7 @@ describe('Route module unit tests', () => {
             details: ['Fool bar'],
           },
         },
-        { resultRecordCount: 2000 },
+        {},
       ]);
     });
     afterEach(() => {
@@ -112,13 +108,11 @@ describe('Route module unit tests', () => {
       restInfoSpy.firstCall.args.should.deepEqual([
         {
           params: {},
-          query: { resultRecordCount: 2000 },
+          query: {},
           url: '/rest/info',
         },
         {},
-        {
-          metadata: { maxRecordCount: 2000 },
-        },
+        {},
       ]);
     });
 
@@ -144,13 +138,11 @@ describe('Route module unit tests', () => {
       restInfoSpy.firstCall.args.should.deepEqual([
         {
           params: {},
-          query: { resultRecordCount: 2000 },
+          query: {},
           url: '/rest/info',
         },
         {},
-        {
-          metadata: { maxRecordCount: 2000 },
-        },
+        {},
       ]);
 
       responseHandlerSpy.calledOnce.should.equal(true);
@@ -163,7 +155,7 @@ describe('Route module unit tests', () => {
             details: ['Fool bar'],
           },
         },
-        { resultRecordCount: 2000 },
+        {},
       ]);
     });
 
@@ -203,13 +195,11 @@ describe('Route module unit tests', () => {
       serverInfoSpy.firstCall.args.should.deepEqual([
         {
           params: {},
-          query: { resultRecordCount: 2000 },
+          query: {},
           url: '/rest/services/test/FeatureServer',
         },
         {},
-        {
-          metadata: { maxRecordCount: 2000 },
-        },
+        {},
       ]);
     });
 
@@ -235,13 +225,11 @@ describe('Route module unit tests', () => {
       serverInfoSpy.firstCall.args.should.deepEqual([
         {
           params: {},
-          query: { resultRecordCount: 2000 },
+          query: {},
           url: '/rest/services/test/FeatureServer',
         },
         {},
-        {
-          metadata: { maxRecordCount: 2000 },
-        },
+        {},
       ]);
     });
 
@@ -277,15 +265,11 @@ describe('Route module unit tests', () => {
       layersInfoSpy.firstCall.args.should.deepEqual([
         {
           params: {},
-          query: {
-            resultRecordCount: 2000,
-          },
+          query: {},
           url: '/rest/services/test/FeatureServer/layers',
         },
         {},
-        {
-          metadata: { maxRecordCount: 2000 },
-        },
+        {},
       ]);
     });
 
@@ -311,17 +295,11 @@ describe('Route module unit tests', () => {
       layersInfoSpy.firstCall.args.should.deepEqual([
         {
           params: {},
-          query: {
-            resultRecordCount: 2000,
-          },
+          query: {},
           url: '/rest/services/test/FeatureServer/layers',
         },
         {},
-        {
-          metadata: {
-            maxRecordCount: 2000,
-          },
-        },
+        {},
       ]);
 
       responseHandlerSpy.calledOnce.should.equal(true);
@@ -334,7 +312,7 @@ describe('Route module unit tests', () => {
             details: ['Fool bar'],
           },
         },
-        { resultRecordCount: 2000 },
+        {},
       ]);
     });
 
@@ -368,13 +346,11 @@ describe('Route module unit tests', () => {
       layerInfoSpy.firstCall.args.should.deepEqual([
         {
           params: {},
-          query: { resultRecordCount: 2000 },
+          query: {},
           url: '/rest/services/test/FeatureServer/0',
         },
         {},
-        {
-          metadata: { maxRecordCount: 2000 },
-        },
+        {},
       ]);
     });
 
@@ -400,13 +376,11 @@ describe('Route module unit tests', () => {
       layerInfoSpy.firstCall.args.should.deepEqual([
         {
           params: {},
-          query: { resultRecordCount: 2000 },
+          query: {},
           url: '/rest/services/test/FeatureServer/0',
         },
         {},
-        {
-          metadata: { maxRecordCount: 2000 },
-        },
+        {},
       ]);
     });
 
@@ -442,13 +416,11 @@ describe('Route module unit tests', () => {
       layerInfoSpy.firstCall.args.should.deepEqual([
         {
           params: {},
-          query: { resultRecordCount: 2000 },
+          query: {},
           url: '/rest/services/test/FeatureServer/0/info',
         },
         {},
-        {
-          metadata: { maxRecordCount: 2000 },
-        },
+        {},
       ]);
     });
 
@@ -484,11 +456,11 @@ describe('Route module unit tests', () => {
             details: ['Invalid URL'],
           },
         },
-        { resultRecordCount: 2000 },
+        {},
       ]);
     });
 
-    it('should unsupported layer method', () => {
+    it('should reject unsupported layer method', () => {
       const responseHandlerSpy = sinon.spy();
       const route = proxyquire('./route', {
         './response-handlers': { generalResponseHandler: responseHandlerSpy },
@@ -513,7 +485,7 @@ describe('Route module unit tests', () => {
             details: ['Invalid URL'],
           },
         },
-        { resultRecordCount: 2000 },
+        {},
       ]);
     });
   });

@@ -1,16 +1,9 @@
 const _ = require('lodash');
-const defaults = require('../metadata-defaults');
-const { combineBodyQueryParameters } = require('./combine-body-query-params');
 
-function normalizeRequestParameters(query, body, maxRecordCount = defaults.maxRecordCount()) {
+function normalizeRequestParameters(body, query) {
   const requestParams = combineBodyQueryParameters(body, query);
 
-  const { resultRecordCount, ...params } = _.mapValues(requestParams, coerceStrings);
-
-  return {
-    ...params,
-    resultRecordCount: resultRecordCount || maxRecordCount,
-  };
+  return _.mapValues(requestParams, coerceStrings);
 }
 
 function coerceStrings(val) {
@@ -22,16 +15,30 @@ function coerceStrings(val) {
     return true;
   }
 
-  return tryParse(val);
+  return tryJsonParse(val);
 }
 
-function tryParse(value) {
+function tryJsonParse(value) {
   try {
     return JSON.parse(value);
     // eslint-disable-next-line
   } catch (e) {
     return value;
   }
+}
+
+function combineBodyQueryParameters(body, query) {
+  const definedQueryParams = _.pickBy(query, isNotEmptyString);
+  const definedBodyParams = _.pickBy(body, isNotEmptyString);
+
+  return {
+    ...definedBodyParams,
+    ...definedQueryParams,
+  };
+}
+
+function isNotEmptyString(str) {
+  return !_.isString(str) || !_.isEmpty(str);
 }
 
 module.exports = { normalizeRequestParameters };

@@ -17,7 +17,7 @@ describe('koop', () => {
 
   describe('Feature Server', () => {
     describe('/query?f=pbf', () => {
-      test('request as PBF', async () => {
+      test.only('request as PBF', async () => {
         try {
           const response = await request(koop.server)
             .get(

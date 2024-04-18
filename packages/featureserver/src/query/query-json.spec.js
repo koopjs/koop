@@ -451,6 +451,30 @@ describe('queryJson', () => {
         objectIds: [1138516379],
       });
     });
+
+    it('should return empty array if no features', () => {
+      const filterAndTransformSpy = sinon.spy(function () {
+        return {};
+      });
+      const queryJson = proxyquire('./query-json', {
+        ...stub,
+        './filter-and-transform': {
+          filterAndTransform: filterAndTransformSpy,
+        },
+      });
+      const json = {
+        type: 'FeatureCollection',
+        features: [],
+      };
+
+      const params = { returnIdsOnly: true };
+
+      const result = queryJson(json, params);
+      result.should.deepEqual({
+        objectIdFieldName: 'OBJECTID',
+        objectIds: [],
+      });
+    });
   });
 
   it('should return outStatistics', () => {

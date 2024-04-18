@@ -1,6 +1,6 @@
 const joi = require('joi');
 
-const formatSchema = joi.string().valid('json', 'pjson').default('json');
+const formatSchema = joi.string().valid('json', 'pjson', 'pbf').default('json');
 
 const spatialReferenceSchema = joi
   .object({
@@ -40,10 +40,10 @@ function validateQueryRequestParams(queryRequestParams) {
 }
 
 function handleError(error) {
-  // TODO: right now the only possible error is for quantizationParams
   const [param] = error.details[0].path;
   const code = 400;
   const details = [error.details[0].message];
+
   if (param === 'quantizationParameters') {
     throw makeError({
       message: "'quantizationParameters' parameter is invalid",
@@ -52,15 +52,11 @@ function handleError(error) {
     });
   }
 
-  if (param === 'f') {
-    throw makeError({
-      message: 'Invalid format',
-      code,
-      details,
-    });
-  }
-
-  throw error;
+  throw makeError({
+    message: 'Invalid format',
+    code,
+    details,
+  });
 }
 
 module.exports = {
@@ -68,7 +64,7 @@ module.exports = {
 };
 
 function makeError(params) {
-  const { message, details, code = 500 } = params;
+  const { message, details, code } = params;
   const err = new Error(message);
   err.code = code;
   err.details = details;

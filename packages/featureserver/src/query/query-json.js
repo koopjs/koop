@@ -72,7 +72,7 @@ function renderPrecalculatedData(
   return retVal;
 }
 
-function renderGeoservicesResponse(data, params = {}) {
+function renderGeoservicesResponse(data, params) {
   const { returnCountOnly, returnExtentOnly, returnIdsOnly, outSR } = params;
 
   // TODO: if only count, and f=pbf need to encode response
@@ -108,4 +108,4 @@ function renderIdsOnlyResponse({ features = [], metadata = {} }) {
   };
 }
 
-module.exports = queryJson;
+module.exports = { queryJson };

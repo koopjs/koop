@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const layerInfo = require('./layer-info-handler.js');
 const query = require('./query');
 const logManager = require('./log-manager');
@@ -20,17 +19,12 @@ module.exports = function route(req, res, geojson = {}) {
   const [route] = (url || originalUrl).split('?');
 
   try {
-    const params = normalizeRequestParameters(
-      req.query,
-      req.body,
-      _.get(geojson, 'metadata.maxRecordCount'),
-    );
+    req.query = normalizeRequestParameters(req.body, req.query);
 
     // TODO move to each handler, as params and data will vary a lot
-    validateInputs(params, geojson);
+    validateInputs(req.query, geojson);
 
-    req = { ...req, query: params };
-    geojson.metadata = geojson.metadata || { maxRecordCount: 2000 };
+    // geojson.metadata = geojson.metadata || { maxRecordCount: 2000 };
 
     if (isRestInfoRequest(route)) {
       return restInfo(req, res, geojson);
