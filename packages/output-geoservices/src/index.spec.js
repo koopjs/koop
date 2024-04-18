@@ -9,6 +9,7 @@ jest.mock('@koopjs/featureserver', () => ({
   serverInfo: jest.fn(),
   layersInfo: jest.fn(),
   layerInfo: jest.fn(),
+  query: jest.fn(),
 }));
 
 const loggerMock = {
@@ -535,6 +536,17 @@ describe('Output Geoservices', () => {
           },
         },
       ]);
+    });
+  });
+
+  describe('queryHandler', () => {
+    test('should pull data and call handler', async () => {
+      const output = new OutputGeoServices(modelMock, { logger: loggerMock });
+      await output.queryHandler({ foo: 'bar' }, resMock);
+      expect(FeatureServer.query.mock.calls.length).toBe(1);
+      expect(FeatureServer.query.mock.calls[0]).toEqual([{ foo: 'bar' }, resMock, 'someData']);
+      expect(modelMock.pull.mock.calls.length).toBe(1);
+      expect(modelMock.pull.mock.calls[0][0]).toEqual({ foo: 'bar' });
     });
   });
 
