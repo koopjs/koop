@@ -69,6 +69,9 @@ You can leverage your own custom logger instance, but it must adhere to the Wins
 }
 ```
 
+### `includeOwningSystemUrl (boolean)`
+If `true`, adds `owningSystemUrl` to the `rest/info` response.  Defaults to false.
+
 ## Routes
 
 ```js

@@ -205,7 +205,7 @@ module.exports = function extendModel(
       try {
         await this.authorize(req);
       } catch (error) {
-        error.code = 401;
+        error.code = error.code || 401;
         return { error };
       }
 
