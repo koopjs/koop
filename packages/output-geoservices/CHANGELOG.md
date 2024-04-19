@@ -1,5 +1,11 @@
 # @koopjs/output-geoservices
 
+## 8.1.14
+
+### Patch Changes
+
+- owningSystemUrl inclusion is a constructor option
+
 ## 8.1.13
 
 ### Patch Changes

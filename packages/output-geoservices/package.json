@@ -1,6 +1,6 @@
 {
   "name": "@koopjs/output-geoservices",
-  "version": "8.1.13",
+  "version": "8.1.14",
   "description": "Wraps FeatureServer as a Koop output plugin",
   "main": "src/index.js",
   "scripts": {

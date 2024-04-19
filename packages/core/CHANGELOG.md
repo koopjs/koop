@@ -1,5 +1,13 @@
 # @koopjs/koop-core
 
+## 10.4.5
+
+### Patch Changes
+
+- auth error code can be set from provider but defaults to 401
+- Updated dependencies [90228e9]
+  - @koopjs/output-geoservices@8.1.14
+
 ## 10.4.4
 
 ### Patch Changes
