@@ -1,15 +1,23 @@
 const Winnow = require('@koopjs/winnow');
-const { getGeometryTypeFromGeojson } = require('../helpers');
+const { getGeometryTypeFromGeojson, normalizeRequestParameters } = require('../helpers');
 const validateClassificationDefinition = require('./validate-classification-definition');
 const { createColorRamp } = require('./color-ramp');
 const { createSymbol } = require('./create-symbol');
+const { generalResponseHandler } = require('../response-handlers');
 
 module.exports = generateRenderer;
 
-function generateRenderer(data = {}, options = {}) {
+function generateRenderer(req, res, data) {
+  const requestParams = normalizeRequestParameters(req.body, req.query);
+
+  const payload = getPayload(data, requestParams);
+  return generalResponseHandler(res, payload, requestParams);
+}
+
+function getPayload(data, requestParams) {
   const { statistics = {}, features } = data;
+  const { classificationDef = {} } = requestParams;
   const geometryType = getGeometryTypeFromGeojson(data);
-  const { classificationDef = {} } = options;
 
   if (statistics.classBreaks) {
     return generateRendererFromPrecalculatedStatistics(statistics, {
@@ -19,7 +27,7 @@ function generateRenderer(data = {}, options = {}) {
   }
 
   if (features) {
-    return generateRendererFromFeatures(data, { ...options, geometryType });
+    return generateRendererFromFeatures(data, { ...requestParams, geometryType });
   }
 
   return {};
@@ -41,16 +49,17 @@ function generateRendererFromPrecalculatedStatistics(statistics, options) {
 
 function generateRendererFromFeatures(data, params) {
   const { classificationDef, geometryType } = params;
+  const { colorRamp: colorRampConfig = {}, baseSymbol } = classificationDef;
 
   // TODO: this seems weird; the winnow method is "query" but it's really a very
   // specialized transform (aggregation) consider changes to winnow - this should
   // maybe be a different method
   const classification = Winnow.query(data, params);
+
   validateClassificationDefinition(classificationDef, geometryType, classification);
 
-  const { colorRamp: colorRampConfig = {}, baseSymbol } = classificationDef;
-
   const colorRamp = createColorRamp({ classification, ...colorRampConfig });
+
   const symbolCollection = colorRamp.map((color) => {
     return createSymbol(baseSymbol, color, geometryType);
   });

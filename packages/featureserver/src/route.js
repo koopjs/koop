@@ -24,8 +24,6 @@ module.exports = function route(req, res, geojson = {}) {
     // TODO move to each handler, as params and data will vary a lot
     validateInputs(req.query, geojson);
 
-    // geojson.metadata = geojson.metadata || { maxRecordCount: 2000 };
-
     if (isRestInfoRequest(route)) {
       return restInfo(req, res, geojson);
     }
@@ -47,8 +45,7 @@ module.exports = function route(req, res, geojson = {}) {
     }
 
     if (method === 'generateRenderer') {
-      const operationResult = generateRenderer(geojson, req.query);
-      return generalResponseHandler(res, operationResult, req.query);
+      return generateRenderer(req, res, geojson);
     }
 
     if (method === 'queryRelatedRecords') {
