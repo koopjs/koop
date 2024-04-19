@@ -42,6 +42,7 @@ class GeoServices {
   #useHttpForTokenUrl = false;
   #authInfo;
   #logger;
+  #includeOwningSystemUrl;
 
   static type = 'output';
   static version = require('../package.json').version;
@@ -95,6 +96,7 @@ class GeoServices {
       isTokenBasedSecurity: true,
     };
 
+    this.#includeOwningSystemUrl = options.includeOwningSystemUrl || false;
     this.#useHttpForTokenUrl = this.#getHttpSetting(options, model);
 
     FeatureServer.setLogger({ logger: this.#logger });
@@ -177,10 +179,13 @@ class GeoServices {
       authInfo.tokenServicesUrl = this.#buildTokensUrl(req.headers.host, req.baseUrl);
     }
 
-    FeatureServer.route(req, res, {
-      owningSystemUrl: this.#buildOwningSystemUrl(req.headers.host, req.baseUrl),
-      authInfo,
-    });
+    const data = { authInfo };
+
+    if (this.#includeOwningSystemUrl) {
+      data.owningSystemUrl = this.#buildOwningSystemUrl(req.headers.host, req.baseUrl);
+    }
+
+    FeatureServer.route(req, res, data);
   }
 
   #buildTokensUrl(host, baseUrl) {

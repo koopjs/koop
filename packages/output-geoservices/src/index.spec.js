@@ -261,7 +261,6 @@ describe('Output Geoservices', () => {
         reqMock,
         resMock,
         {
-          owningSystemUrl: 'https://some-host.com/api/v1/provider-name',
           authInfo: { food: 'baz' },
         },
       ]);
@@ -279,7 +278,6 @@ describe('Output Geoservices', () => {
         reqMock,
         resMock,
         {
-          owningSystemUrl: 'https://some-host.com/api/v1/provider-name',
           authInfo: {
             isTokenBasedSecurity: true,
             tokenServicesUrl: 'https://some-host.com/api/v1/provider-name/rest/generateToken',
@@ -302,7 +300,6 @@ describe('Output Geoservices', () => {
         reqMock,
         resMock,
         {
-          owningSystemUrl: 'http://some-host.com/api/v1/provider-name',
           authInfo: {
             isTokenBasedSecurity: true,
             tokenServicesUrl: 'http://some-host.com/api/v1/provider-name/rest/generateToken',
@@ -325,7 +322,6 @@ describe('Output Geoservices', () => {
           reqMock,
           resMock,
           {
-            owningSystemUrl: 'http://some-host.com/api/v1/provider-name',
             authInfo: {
               isTokenBasedSecurity: true,
               tokenServicesUrl: 'http://some-host.com/api/v1/provider-name/rest/generateToken',
@@ -353,7 +349,6 @@ describe('Output Geoservices', () => {
           reqMock,
           resMock,
           {
-            owningSystemUrl: 'http://some-host.com/api/v1/provider-name',
             authInfo: {
               isTokenBasedSecurity: true,
               tokenServicesUrl: 'http://some-host.com/api/v1/provider-name/rest/generateToken',
@@ -383,10 +378,34 @@ describe('Output Geoservices', () => {
         reqMock,
         resMock,
         {
-          owningSystemUrl: 'http://some-host.com/api/v1/provider-name',
           authInfo: {
             isTokenBasedSecurity: true,
             tokenServicesUrl: 'http://some-host.com/api/v1/provider-name/rest/generateToken',
+          },
+        },
+      ]);
+    });
+
+    test('should include owningSystemUrl', async () => {
+      const modelMock = {
+        namespace: 'provider-name',
+        pull: jest.fn(async () => 'someData'),
+        authenticationSpecification: () => {
+          return { };
+        },
+      };
+
+      const output = new OutputGeoServices(modelMock, { includeOwningSystemUrl: true });
+      await output.restInfoHandler(reqMock, resMock);
+      expect(FeatureServer.route.mock.calls.length).toBe(1);
+      expect(FeatureServer.route.mock.calls[0]).toEqual([
+        reqMock,
+        resMock,
+        {
+          owningSystemUrl: 'https://some-host.com/api/v1/provider-name',
+          authInfo: {
+            isTokenBasedSecurity: true,
+            tokenServicesUrl: 'https://some-host.com/api/v1/provider-name/rest/generateToken',
           },
         },
       ]);
