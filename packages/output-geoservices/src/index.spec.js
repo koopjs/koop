@@ -391,7 +391,7 @@ describe('Output Geoservices', () => {
         namespace: 'provider-name',
         pull: jest.fn(async () => 'someData'),
         authenticationSpecification: () => {
-          return { };
+          return {};
         },
       };
 
