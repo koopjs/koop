@@ -193,11 +193,9 @@ class GeoServices {
     if (this.#includeOwningSystemUrl) {
       data.owningSystemUrl = this.#buildOwningSystemUrl(req.headers.host, req.baseUrl);
     }
+
     try {
-      restInfo(req, res, {
-        owningSystemUrl: this.#buildOwningSystemUrl(req.headers.host, req.baseUrl),
-        authInfo,
-      });
+      restInfo(req, res, data);
     } catch (error) {
       this.#errorHandler(error, req, res);
     }
