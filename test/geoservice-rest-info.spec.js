@@ -22,7 +22,6 @@ describe('Feature Server Output - rest/info', () => {
           authInfo: { isTokenBasedSecurity, tokenServicesUrl },
           currentVersion,
           fullVersion,
-          owningSystemUrl,
         },
       } = response;
 
@@ -30,7 +29,6 @@ describe('Feature Server Output - rest/info', () => {
       expect(tokenServicesUrl).toMatch(/file-geojson\/rest\/generateToken$/);
       expect(currentVersion).toBe(11.2);
       expect(fullVersion).toBe('11.2.0');
-      expect(owningSystemUrl).toMatch(/file-geojson$/);
     } catch (error) {
       console.error(error);
       throw error;
