@@ -1,0 +1,17 @@
+{
+  "type": "FeatureCollection",
+  "metadata": { "filtersApplied": "all" },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -104.9476,
+          39.9448
+        ]
+      }
+    }
+  ]
+}

@@ -26,7 +26,7 @@ function buildRenderer(data, requestParams = {}) {
 }
 
 function generateRendererFromPrecalculatedStatistics(statistics, options) {
-  const { classificationDef, geometryType = 'esriGeometryPoint' } = options;
+  const { classificationDef = {}, geometryType = 'esriGeometryPoint' } = options;
   const { colorRamp: colorRampConfig = {}, baseSymbol } = classificationDef;
   const classification = statistics.classBreaks.sort((a, b) => a[0] - b[0]);
 

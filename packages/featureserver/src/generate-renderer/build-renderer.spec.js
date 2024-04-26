@@ -2,7 +2,7 @@ const should = require('should');
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 
-describe('generate-renderer', () => {
+describe('build-renderer', () => {
   describe('with pre-calculated statistics', () => {
     it('should render precalculated statistics', () => {
       const getGeometrySpy = sinon.spy(function () {
@@ -17,7 +17,7 @@ describe('generate-renderer', () => {
         return ['color-1', 'color-2'];
       });
 
-      const generateRenderer = proxyquire('./build-renderer', {
+      const buildRenderer = proxyquire('./build-renderer', {
         '../helpers': {
           getGeometryTypeFromGeojson: getGeometrySpy,
         },
@@ -38,7 +38,7 @@ describe('generate-renderer', () => {
           ],
         },
       };
-      const result = generateRenderer(data);
+      const result = buildRenderer(data);
 
       result.should.deepEqual({
         type: 'classBreaks',
@@ -92,7 +92,7 @@ describe('generate-renderer', () => {
         return ['color-1', 'color-2'];
       });
 
-      const generateRenderer = proxyquire('./build-renderer', {
+      const buildRenderer = proxyquire('./build-renderer', {
         '../helpers': {
           getGeometryTypeFromGeojson: getGeometrySpy,
         },
@@ -113,7 +113,7 @@ describe('generate-renderer', () => {
           ],
         },
       };
-      const result = generateRenderer(data);
+      const result = buildRenderer(data);
 
       result.should.deepEqual({
         type: 'classBreaks',
@@ -171,7 +171,7 @@ describe('generate-renderer', () => {
         return 'esriGeometryPoint';
       });
 
-      const generateRenderer = proxyquire('./build-renderer', {
+      const buildRenderer = proxyquire('./build-renderer', {
         '@koopjs/winnow': {
           query: winnowSpy,
         },
@@ -184,7 +184,7 @@ describe('generate-renderer', () => {
       });
 
       try {
-        generateRenderer({ features: ['feature'] }, {});
+        buildRenderer({ features: ['feature'] }, {});
         should.fail('should have thrown error');
       } catch (error) {
         error.message.should.equal('invalid classification definition');
@@ -212,7 +212,7 @@ describe('generate-renderer', () => {
         return ['color-1', 'color-2'];
       });
 
-      const generateRenderer = proxyquire('./build-renderer', {
+      const buildRenderer = proxyquire('./build-renderer', {
         '@koopjs/winnow': {
           query: winnowSpy,
         },
@@ -225,7 +225,7 @@ describe('generate-renderer', () => {
         './create-symbol': { createSymbol: createSymbolSpy },
       });
 
-      const result = generateRenderer(
+      const result = buildRenderer(
         { features: ['feature'] },
         {
           classificationDef: {
@@ -312,7 +312,7 @@ describe('generate-renderer', () => {
         return ['color-1', 'color-2'];
       });
 
-      const generateRenderer = proxyquire('./build-renderer', {
+      const buildRenderer = proxyquire('./build-renderer', {
         '@koopjs/winnow': {
           query: winnowSpy,
         },
@@ -325,7 +325,7 @@ describe('generate-renderer', () => {
         './create-symbol': { createSymbol: createSymbolSpy },
       });
 
-      const result = generateRenderer(
+      const result = buildRenderer(
         { features: ['feature'] },
         {
           classificationDef: {

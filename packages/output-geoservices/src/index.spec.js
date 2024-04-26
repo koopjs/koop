@@ -64,6 +64,11 @@ describe('Output Geoservices', () => {
           handler: 'queryHandler',
         },
         {
+          path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/generateRenderer',
+          methods: ['get', 'post'],
+          handler: 'generateRendererHandler',
+        },
+        {
           path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/:method',
           methods: ['get', 'post'],
           handler: 'generalHandler',

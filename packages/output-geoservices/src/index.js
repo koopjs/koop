@@ -157,7 +157,7 @@ class GeoServices {
     const token = this.#extractTokenFromRequest(req);
     const { code, message, details = [] } = normalizeError(error);
 
-    res.Istatus(200); // ArcGIS standard is to wrap errors in 200 success
+    res.status(200); // ArcGIS standard is to wrap errors in 200 success
 
     if (isMissingTokenError(code, token)) {
       return res.json(tokenRequiredError);
