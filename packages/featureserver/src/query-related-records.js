@@ -28,21 +28,17 @@ function queryRelatedRecords(data, params = {}) {
   return response;
 }
 
-function convertFeaturesToRelatedRecordGroups({ features, properties }, returnCountOnly = false) {
+function convertFeaturesToRelatedRecordGroups(collection, returnCountOnly = false) {
   const recordGroup = {
-    objectId: properties.objectid,
+    objectId: collection.properties?.objectid,
   };
 
   if (returnCountOnly) {
-    // allow for preprocessing of count within provider
-    if (properties.count || properties.count === 0) {
-      recordGroup.count = properties.count;
-    } else {
-      recordGroup.count = _.get(features, 'length', 0);
-    }
-
+    recordGroup.count = getCount(collection, returnCountOnly);
     return recordGroup;
   }
+
+  const { features } = collection;
 
   if (features) {
     recordGroup.relatedRecords = features.map(({ geometry, properties }) => {
@@ -54,4 +50,18 @@ function convertFeaturesToRelatedRecordGroups({ features, properties }, returnCo
   }
 
   return recordGroup;
+}
+
+function getCount(collection) {
+  const {
+    count,
+    properties: { count: propertiesCount },
+    features,
+  } = collection;
+
+  if (count !== undefined || propertiesCount !== undefined) {
+    return count || propertiesCount;
+  }
+
+  return _.get(features, 'length', 0);
 }

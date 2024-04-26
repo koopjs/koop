@@ -8,7 +8,7 @@ module.exports = {
   layerInfo: require('./layer-info-handler.js'),
   layersInfo: require('./layers-info-handler'),
   query: require('./query'),
-  queryRelatedRecords: require('./queryRelatedRecords.js'),
+  queryRelatedRecords: require('./query-related-records.js'),
   generateRenderer: require('./generate-renderer'),
   setLogger,
   setDefaults: defaults.setDefaults.bind(defaults),

@@ -10,6 +10,7 @@ jest.mock('@koopjs/featureserver', () => ({
   layersInfo: jest.fn(),
   layerInfo: jest.fn(),
   query: jest.fn(),
+  generateRenderer: jest.fn(),
 }));
 
 const loggerMock = {
@@ -323,6 +324,29 @@ describe('Output Geoservices', () => {
       ]);
     });
 
+    test('should set owningSystemUrl', async () => {
+      const modelMock = {
+        namespace: 'provider-name',
+        pull: jest.fn(async () => 'someData'),
+      };
+      const output = new OutputGeoServices(modelMock, {
+        useHttpForTokenUrl: true,
+        includeOwningSystemUrl: true,
+      });
+      await output.restInfoHandler(reqMock, resMock);
+      expect(FeatureServer.restInfo.mock.calls.length).toBe(1);
+      expect(FeatureServer.restInfo.mock.calls[0]).toEqual([
+        reqMock,
+        resMock,
+        {
+          authInfo: {
+            isTokenBasedSecurity: true,
+            tokenServicesUrl: 'http://some-host.com/api/v1/provider-name/rest/generateToken',
+          },
+          owningSystemUrl: 'http://some-host.com/api/v1/provider-name',
+        },
+      ]);
+    });
     test('should set by GEOSERVICES_HTTP', async () => {
       const modelMock = {
         namespace: 'provider-name',
@@ -544,6 +568,21 @@ describe('Output Geoservices', () => {
       await output.queryHandler({ foo: 'bar' }, resMock);
       expect(FeatureServer.query.mock.calls.length).toBe(1);
       expect(FeatureServer.query.mock.calls[0]).toEqual([{ foo: 'bar' }, resMock, 'someData']);
+      expect(modelMock.pull.mock.calls.length).toBe(1);
+      expect(modelMock.pull.mock.calls[0][0]).toEqual({ foo: 'bar' });
+    });
+  });
+
+  describe('generateRendererHandler', () => {
+    test('should pull data and call handler', async () => {
+      const output = new OutputGeoServices(modelMock, { logger: loggerMock });
+      await output.generateRendererHandler({ foo: 'bar' }, resMock);
+      expect(FeatureServer.generateRenderer.mock.calls.length).toBe(1);
+      expect(FeatureServer.generateRenderer.mock.calls[0]).toEqual([
+        { foo: 'bar' },
+        resMock,
+        'someData',
+      ]);
       expect(modelMock.pull.mock.calls.length).toBe(1);
       expect(modelMock.pull.mock.calls[0][0]).toEqual({ foo: 'bar' });
     });

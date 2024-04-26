@@ -51,6 +51,7 @@ class GeoServices {
   #authInfo;
   #logger;
   #includeOwningSystemUrl;
+  #restInfoProtocol;
 
   static type = 'output';
   static version = require('../package.json').version;
@@ -115,7 +116,7 @@ class GeoServices {
     };
 
     this.#includeOwningSystemUrl = options.includeOwningSystemUrl || false;
-    this.#useHttpForTokenUrl = this.#getHttpSetting(options, model);
+    this.#restInfoProtocol = this.#getHttpSetting(options, model) ? 'http' : 'https';
 
     FeatureServer.setLogger({ logger: this.#logger });
 
@@ -196,14 +197,19 @@ class GeoServices {
 
   restInfoHandler(req, res) {
     const authInfo = { ...this.#authInfo };
+    const {
+      headers: { host },
+      baseUrl,
+    } = req;
 
     if (this.#authInfo.isTokenBasedSecurity) {
-      authInfo.tokenServicesUrl = this.#buildTokensUrl(req.headers.host, req.baseUrl);
+      req.headers.host, req.baseUrl;
+      authInfo.tokenServicesUrl = `${this.#restInfoProtocol}://${host}${baseUrl}/${this.model.namespace}/rest/generateToken`; // eslint-disable-line
     }
 
     const data = { authInfo };
     if (this.#includeOwningSystemUrl) {
-      data.owningSystemUrl = this.#buildOwningSystemUrl(req.headers.host, req.baseUrl);
+      data.owningSystemUrl = `${this.#restInfoProtocol}://${host}${baseUrl}/${this.model.namespace}`; // eslint-disable-line
     }
 
     try {
@@ -242,19 +248,8 @@ class GeoServices {
     this.#pullDataHandler(req, res, generateRenderer);
   }
 
-  #buildTokensUrl(host, baseUrl) {
-    const protocol = this.#useHttpForTokenUrl ? 'http' : 'https';
-    return `${protocol}://${host}${baseUrl}/${this.model.namespace}/rest/generateToken`;
-  }
-
-  #buildOwningSystemUrl(host, baseUrl) {
-    const protocol = this.#useHttpForTokenUrl ? 'http' : 'https';
-    return `${protocol}://${host}${baseUrl}/${this.model.namespace}`;
-  }
-
   async generateToken(req, res) {
     try {
-      //const decodedToken = await this.model.authorize(req);
       const tokenResponse = await this.model.authenticate(req);
       res.status(200).json(tokenResponse);
     } catch (error) {
