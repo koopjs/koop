@@ -3,14 +3,6 @@ const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 
 describe('generate-renderer', () => {
-  it('should handle empty data', () => {
-    const generateRenderer = require('./');
-
-    const result = generateRenderer();
-
-    result.should.deepEqual({});
-  });
-
   describe('with pre-calculated statistics', () => {
     it('should render precalculated statistics', () => {
       const getGeometrySpy = sinon.spy(function () {
@@ -25,7 +17,7 @@ describe('generate-renderer', () => {
         return ['color-1', 'color-2'];
       });
 
-      const generateRenderer = proxyquire('./', {
+      const generateRenderer = proxyquire('./build-renderer', {
         '../helpers': {
           getGeometryTypeFromGeojson: getGeometrySpy,
         },
@@ -100,7 +92,7 @@ describe('generate-renderer', () => {
         return ['color-1', 'color-2'];
       });
 
-      const generateRenderer = proxyquire('./', {
+      const generateRenderer = proxyquire('./build-renderer', {
         '../helpers': {
           getGeometryTypeFromGeojson: getGeometrySpy,
         },
@@ -179,7 +171,7 @@ describe('generate-renderer', () => {
         return 'esriGeometryPoint';
       });
 
-      const generateRenderer = proxyquire('./', {
+      const generateRenderer = proxyquire('./build-renderer', {
         '@koopjs/winnow': {
           query: winnowSpy,
         },
@@ -220,7 +212,7 @@ describe('generate-renderer', () => {
         return ['color-1', 'color-2'];
       });
 
-      const generateRenderer = proxyquire('./', {
+      const generateRenderer = proxyquire('./build-renderer', {
         '@koopjs/winnow': {
           query: winnowSpy,
         },
@@ -320,7 +312,7 @@ describe('generate-renderer', () => {
         return ['color-1', 'color-2'];
       });
 
-      const generateRenderer = proxyquire('./', {
+      const generateRenderer = proxyquire('./build-renderer', {
         '@koopjs/winnow': {
           query: winnowSpy,
         },

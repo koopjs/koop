@@ -1,5 +1,12 @@
 const FeatureServer = require('@koopjs/featureserver');
-const { restInfo, serverInfo, layerInfo, layersInfo, query } = require('@koopjs/featureserver');
+const {
+  restInfo,
+  serverInfo,
+  layerInfo,
+  layersInfo,
+  query,
+  generateRenderer,
+} = require('@koopjs/featureserver');
 const Logger = require('@koopjs/logger');
 let logger = new Logger();
 const ARCGIS_UNAUTHORIZED_MESSAGE = 'Item does not exist or is inaccessible.';
@@ -62,6 +69,11 @@ class GeoServices {
       path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/query',
       methods: ['get', 'post'],
       handler: 'queryHandler',
+    },
+    {
+      path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/generateRenderer',
+      methods: ['get', 'post'],
+      handler: 'generateRendererHandler',
     },
     {
       path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/:method',
@@ -145,7 +157,7 @@ class GeoServices {
     const token = this.#extractTokenFromRequest(req);
     const { code, message, details = [] } = normalizeError(error);
 
-    res.status(200); // ArcGIS standard is to wrap errors in 200 success
+    res.Istatus(200); // ArcGIS standard is to wrap errors in 200 success
 
     if (isMissingTokenError(code, token)) {
       return res.json(tokenRequiredError);
@@ -224,6 +236,10 @@ class GeoServices {
 
   async queryHandler(req, res) {
     this.#pullDataHandler(req, res, query);
+  }
+
+  async generateRendererHandler(req, res) {
+    this.#pullDataHandler(req, res, generateRenderer);
   }
 
   #buildTokensUrl(host, baseUrl) {
