@@ -1,6 +1,6 @@
 const _ = require('lodash');
-const { getCollectionCrs, getGeometryTypeFromGeojson } = require('./helpers');
-const { QueryFields } = require('./helpers/fields');
+const { getCollectionCrs, getGeometryTypeFromGeojson } = require('../helpers');
+const { QueryFields } = require('../helpers/fields');
 
 module.exports = queryRelatedRecords;
 
