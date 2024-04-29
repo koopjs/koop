@@ -1,4 +1,5 @@
 const joi = require('joi');
+const { sharedQueryParamSchema } = require('../helpers/shared-query-request-param-schema');
 
 const formatSchema = joi.string().valid('json', 'pjson', 'pbf').default('json');
 
@@ -24,8 +25,8 @@ const quantizationParametersSchema = joi.object({
   mode: joi.string().optional(),
 });
 
-const queryRequestSchema = joi
-  .object({
+const queryRequestSchema = sharedQueryParamSchema
+  .append({
     quantizationParameters: quantizationParametersSchema,
     f: formatSchema,
   })
