@@ -1,5 +1,11 @@
 # @koopjs/koop-core
 
+## 10.4.6
+
+### Patch Changes
+
+- remove arity validation for transform function options
+
 ## 10.4.5
 
 ### Patch Changes
