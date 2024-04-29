@@ -1,29 +1,14 @@
 const joi = require('joi');
+const { sharedQueryParamSchema } = require('../helpers/shared-query-request-param-schema');
 
-const formatSchema = joi.string().valid('json', 'pjson', 'pbf').default('json');
-
-const spatialReferenceSchema = joi
-  .object({
-    wkid: joi.number().integer().required(),
-    latestWkid: joi.number().integer(),
+const queryRequestSchema = sharedQueryParamSchema
+  .append({
+    f: joi.string().valid('json', 'pjson').default('json'),
+    relationshipId: joi.string().optional(),
   })
   .unknown();
 
-const queryRequestSchema = joi
-  .object({
-    resultRecordCount: joi.number().preferences({ convert: false }).optional(),
-    resultOffset: joi.number().preferences({ convert: false }).optional(),
-    returnGeometry: joi.boolean().optional(),
-    outFields: joi.string().optional(),
-    objectIds: joi.string().optional(),
-    returnCountOnly: joi.boolean().optional(),
-    orderByFields: joi.string().optional(),
-    outSR: spatialReferenceSchema,
-    f: formatSchema,
-  })
-  .unknown();
-
-function validateQueryRequestParams(queryRequestParams) {
+function validateQueryRelatedRequestParams(queryRequestParams) {
   const { error } = queryRequestSchema.validate(queryRequestParams);
 
   if (error) {
@@ -52,7 +37,7 @@ function handleError(error) {
 }
 
 module.exports = {
-  validateQueryRequestParams,
+  validateQueryRelatedRequestParams,
 };
 
 function makeError(params) {
