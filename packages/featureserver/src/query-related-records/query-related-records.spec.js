@@ -97,7 +97,7 @@ describe('QueryRelatedRecords operation', () => {
     response.relatedRecordGroups[0].relatedRecords.should.have.length(1);
   });
 
-  it.only('should return the expected response schema when data has geometry', () => {
+  it('should return the expected response schema when data has geometry', () => {
     const response = queryRelatedRecords(relatedDataWithGeom, {});
     response.should.have.property('fields');
     response.should.have.property('relatedRecordGroups');
