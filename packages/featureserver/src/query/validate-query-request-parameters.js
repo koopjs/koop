@@ -44,17 +44,18 @@ function handleError(error) {
   const [param] = error.details[0].path;
   const code = 400;
   const details = [error.details[0].message];
+  let message = error.details[0].message;
 
   if (param === 'quantizationParameters') {
-    throw makeError({
-      message: "'quantizationParameters' parameter is invalid",
-      code,
-      details,
-    });
+    message = "'quantizationParameters' parameter is invalid";
+  }
+
+  if (param === 'f') {
+    message = 'Invalid format';
   }
 
   throw makeError({
-    message: 'Invalid format',
+    message,
     code,
     details,
   });

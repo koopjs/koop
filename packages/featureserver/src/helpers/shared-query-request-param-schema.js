@@ -1,11 +1,14 @@
 const joi = require('joi');
 
-const spatialReferenceSchema = joi
-  .object({
-    wkid: joi.number().integer().required(),
-    latestWkid: joi.number().integer(),
-  })
-  .unknown();
+const spatialReferenceSchema = joi.alternatives(
+  joi.number().integer(),
+  joi
+    .object({
+      wkid: joi.number().integer().required(),
+      latestWkid: joi.number().integer(),
+    })
+    .unknown(),
+);
 
 const sharedQueryParamSchema = joi
   .object({
@@ -13,7 +16,7 @@ const sharedQueryParamSchema = joi
     resultOffset: joi.number().preferences({ convert: false }).optional(),
     returnGeometry: joi.boolean().optional(),
     outFields: joi.string().optional(),
-    objectIds: joi.string().optional(),
+    objectIds: joi.alternatives(joi.number().integer(), joi.string().optional()),
     returnCountOnly: joi.boolean().optional(),
     orderByFields: joi.string().optional(),
     outSR: spatialReferenceSchema,
