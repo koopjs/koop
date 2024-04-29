@@ -13,8 +13,8 @@ const providerOptionsSchema = Joi.object({
     .unknown(true)
     .optional(),
   routePrefix: Joi.string().optional(),
-  before: Joi.function().arity(2).optional(),
-  after: Joi.function().arity(3).optional(),
+  before: Joi.function().optional(),
+  after: Joi.function().optional(),
   name: Joi.string().optional(),
   defaultToOutputRoutes: Joi.boolean().optional(),
 }).unknown(true);
