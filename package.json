@@ -73,7 +73,7 @@
     "shelljs": "^0.8.5",
     "simple-git": "^3.24.0",
     "snyk": "^1.1290.0",
-    "supertest": "^6.3.4",
+    "supertest": "^7.0.0",
     "yargs": "^17.7.2"
   },
   "config": {
