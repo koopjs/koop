@@ -51,7 +51,7 @@
     "@turf/bbox-polygon": "^6.5.0",
     "@turf/centroid": "^6.5.0",
     "@types/geojson": "^7946.0.14",
-    "alasql": "^4.3.2",
+    "alasql": "^4.3.3",
     "classybrew": "0.0.3",
     "joi": "^17.12.3",
     "js-sql-parser": "^1.6.0",
