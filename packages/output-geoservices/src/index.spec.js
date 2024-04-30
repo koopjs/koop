@@ -61,6 +61,26 @@ describe('Output Geoservices', () => {
           handler: 'generateToken',
         },
         {
+          path: '$namespace/rest/services/$providerParams/FeatureServer',
+          methods: ['get', 'post'],
+          handler: 'serverInfoHandler',
+        },
+        {
+          path: '$namespace/rest/services/$providerParams/FeatureServer/layers',
+          methods: ['get', 'post'],
+          handler: 'layersInfoHandler',
+        },
+        {
+          path: '$namespace/rest/services/$providerParams/FeatureServer/:layer',
+          methods: ['get', 'post'],
+          handler: 'layerInfoHandler',
+        },
+        {
+          path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/info',
+          methods: ['get', 'post'],
+          handler: 'layerInfoHandler',
+        },
+        {
           path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/query',
           methods: ['get', 'post'],
           handler: 'queryHandler',
@@ -74,31 +94,6 @@ describe('Output Geoservices', () => {
           path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/queryRelatedRecords',
           methods: ['get', 'post'],
           handler: 'queryRelatedRecordsHandler',
-        },
-        {
-          path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/:method',
-          methods: ['get', 'post'],
-          handler: 'generalHandler',
-        },
-        {
-          path: '$namespace/rest/services/$providerParams/FeatureServer/layers',
-          methods: ['get', 'post'],
-          handler: 'layersInfoHandler',
-        },
-        {
-          path: '$namespace/rest/services/$providerParams/FeatureServer/:layer',
-          methods: ['get', 'post'],
-          handler: 'layerInfoHandler',
-        },
-        {
-          path: '$namespace/rest/services/$providerParams/FeatureServer',
-          methods: ['get', 'post'],
-          handler: 'serverInfoHandler',
-        },
-        {
-          path: '$namespace/rest/services/$providerParams/FeatureServer*',
-          methods: ['get', 'post'],
-          handler: 'serverInfoHandler',
         },
         {
           path: '$namespace/rest/services/$providerParams/MapServer*',

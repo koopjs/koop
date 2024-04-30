@@ -1,6 +1,5 @@
 const should = require('should'); // eslint-disable-line
 const {
-  route,
   restInfo,
   serverInfo,
   layerInfo,
@@ -13,7 +12,6 @@ const {
 } = require('./index');
 describe('exposed methods of FeatureServer', () => {
   it('ensure methods are defined', () => {
-    route.should.be.a.Function();
     restInfo.should.be.a.Function();
     serverInfo.should.be.a.Function();
     layerInfo.should.be.a.Function();
