@@ -14,26 +14,20 @@ const app = express() // set up a basic express server
 const FeatureServer = require('@koopjs/featureserver')
 const cache = require('cache')
 
-// We only need one handler because FeatureServer.route is going to do all the work
+
 const handler = (req, res) => {
   cache.get(/* some geojson */, (err, data) => {
     if (err) res.status(500).json({error: err.message})
-    else FeatureServer.route(req, res, data)
+    else FeatureServer.query(req, res, data)
   })
 }
 
-// Sets up all of the handled routes to support `GET` and `POST`
-const routes = ['/FeatureServer', '/FeatureServer/layers', '/FeatureServer/:layer', '/FeatureServer/:layer/:method']
-
-routes.forEach(route => {
-  app.route(route)
+app.route('/FeatureServer/:layer/query')
   .get(handler)
   .post(handler)
-})
 ```
 
 ## API
-* [FeatureServer.route](#featureserver.route)
 * [FeatureServer.query](#featureserver.query)
 * [FeatureServer.restInfo](#featureserver.serverInfo)
 * [FeatureServer.serverInfo](#featureserver.serverInfo)
@@ -42,83 +36,6 @@ routes.forEach(route => {
 * [FeatureServer.generateRenderer](#featureserver.generateRenderer)
 * [FeatureServer.queryRelatedRecords](#featureserver.queryRelatedRecords)
 * [FeatureServer.setDefaults](#featureserver.setDefaults)
-
-### FeatureServer.route
-Pass in an `incoming request object`, an `outgoing response object`, a `geojson` object, and `options` and this function will route and return a geoservices compliant response
-
-- Supports: '/FeatureServer', '/FeatureServer/layers', '/FeatureServer/:layer', '/FeatureServer/:layer/:method'
-	- _Note_: only `query`, `info`, and `generateRenderer` are supported methods at this time.
-
-```js
-FeatureServer.route(req, res, data, options)
-```
-
-- **data** is either a geojson object extended with some additional properties or an object with a layers property which an array of extended geojson objects. These properties are optional and can be used to provide more specific metadata or to shortcut the built in filtering mechanism.
-
-e.g.
-
-```js
-{
-  type: 'FeatureCollection' // Static
-  features: Array, // GeoJSON features
-  statistics: Object, // pass statistics to an outStatistics request to or else they will be calculated from geojson features passed in
-  metadata: {
-    id: number, // The unique layer id.  If supplied for one layer, you should supply for all layers to avoid multiple layers having the same id.
-    name: String, // The name of the layer
-    description: String, // The description of the layer
-    copyrightText: String, // The copyright text (layer attribution text)
-    extent: Array, // valid extent array e.g. [[180,90],[-180,-90]]
-    displayField: String, // The display field to be used by a client
-    geometryType: String // REQUIRED if no features are returned with this object Point || MultiPoint || LineString || MultiLineString || Polygon || MultiPolygon
-    idField: String, // unique identifier field,
-    maxRecordCount: Number, // the maximum number of features a provider can return at once
-    limitExceeded: Boolean, // whether or not the server has limited the features returned
-    timeInfo: Object, // describes the time extent and capabilities of the layer,
-    transform: Object, // describes a quantization transformation
-    renderer: Object, // provider can over-ride default symbology of FeatureServer output with a renderer object. See https://developers.arcgis.com/web-map-specification/objects/simpleRenderer, for object specification.
-    defaultVisibility: boolean, // The default visibility of this layer
-    minScale: number, // The minScale value for this layer
-    maxScale: number, // The maxScale value for this layer
-    fields: [
-     { // Subkeys are optional
-       name: String,
-       type: String, // 'Date' || 'Double' || 'Integer' || 'String'
-       alias: String, // how should clients display this field name,
-     }
-    ],
-    supportedQueryFormats: String | Array // 'JSON,geojson' || ['JSON', 'geojson']
-  },
-  capabilities: {
-    quantization: Boolean // True if the provider supports quantization
-  },
-  filtersApplied: {
-    all: Boolean // true if all post processing should be skipped
-    geometry: Boolean, // true if a geometric filter has already been applied to the data
-    where: Boolean, // true if a sql-like where filter has already been applied to the data
-    offset: Boolean // true if the result offset has already been applied to the data,
-    limit: Boolean // true if the result count has already been limited,
-    projection: Boolean // true if the result data has already been projected
-  }
-  count: Number // pass count if the number of features in a query has been pre-calculated
-}
-```
-
-or
-
-```js
-{
-  layers: [
-    {
-      type: 'FeatureCollection'
-      ...
-    },
-    {
-      type: 'FeatureCollection'
-      ...
-    }
-]
-```
-- **options** is an object that dictates method actions. See `FeatureServer.query` and `FeatureServer.generateRenderer` for more details.
 
 ### FeatureServer.query
 Pass in `geojson` and `options` (a valid [geoservices query object](https://geoservices.github.io/query.html)), and the function will perform the query and return a valid geoservices query object. The in addition to input `statistics: {}`, following is an example of _all_ query `options` that can be passed into the query route: '/FeatureServer/:layer/query'

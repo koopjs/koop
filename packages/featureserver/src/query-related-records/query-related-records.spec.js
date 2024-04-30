@@ -1,5 +1,5 @@
 require('should');
-const queryRelatedRecords = require('./query-related-records');
+const { queryRelatedRecords } = require('./query-related-records');
 const relatedData = {
   type: 'FeatureCollection',
   features: [

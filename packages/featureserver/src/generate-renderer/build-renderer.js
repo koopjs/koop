@@ -8,16 +8,16 @@ function buildRenderer(data, requestParams = {}) {
   const { statistics = {}, features } = data;
   const { classificationDef } = requestParams;
 
-  if (!classificationDef && !statistics?.classBreaks && !features) {
-    return {};
-  }
   const geometryType = getGeometryTypeFromGeojson(data);
-
   if (statistics.classBreaks) {
     return generateRendererFromPrecalculatedStatistics(statistics, {
-      classificationDef,
+      classificationDef: classificationDef || {},
       geometryType,
     });
+  }
+
+  if (!classificationDef || !features) {
+    return {};
   }
 
   return generateRendererFromFeatures(data, { ...requestParams, geometryType });

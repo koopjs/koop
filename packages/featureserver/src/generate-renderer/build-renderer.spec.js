@@ -1,4 +1,4 @@
-const should = require('should');
+require('should');
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 const { buildRenderer } = require('./build-renderer');
@@ -167,7 +167,7 @@ describe('build-renderer', () => {
   });
 
   describe('with winnow statistics', () => {
-    it('should throw error when no classificationDef provided', () => {
+    it('should return empty object when no classification def sent', () => {
       const winnowSpy = sinon.spy(function () {
         return [
           [0, 10],
@@ -192,12 +192,8 @@ describe('build-renderer', () => {
         },
       });
 
-      try {
-        buildRenderer({ features: ['feature'] }, {});
-        should.fail('should have thrown error');
-      } catch (error) {
-        error.message.should.equal('invalid classification definition');
-      }
+      const result = buildRenderer({ features: ['feature'] }, {});
+      result.should.deepEqual({});
     });
 
     it('should calculate breaks and use classBreaksDef for renderer', () => {
