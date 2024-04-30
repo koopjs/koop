@@ -1,8 +1,17 @@
 const should = require('should');
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
+const { buildRenderer } = require('./build-renderer');
 
 describe('build-renderer', () => {
+  describe('empty result', () => {
+    it('no classificationDef', () => {
+      const data = {};
+      const result = buildRenderer(data);
+      result.should.deepEqual({});
+    });
+  });
+
   describe('with pre-calculated statistics', () => {
     it('should render precalculated statistics', () => {
       const getGeometrySpy = sinon.spy(function () {
@@ -17,7 +26,7 @@ describe('build-renderer', () => {
         return ['color-1', 'color-2'];
       });
 
-      const buildRenderer = proxyquire('./build-renderer', {
+      const { buildRenderer } = proxyquire('./build-renderer', {
         '../helpers': {
           getGeometryTypeFromGeojson: getGeometrySpy,
         },
@@ -92,7 +101,7 @@ describe('build-renderer', () => {
         return ['color-1', 'color-2'];
       });
 
-      const buildRenderer = proxyquire('./build-renderer', {
+      const { buildRenderer } = proxyquire('./build-renderer', {
         '../helpers': {
           getGeometryTypeFromGeojson: getGeometrySpy,
         },
@@ -171,7 +180,7 @@ describe('build-renderer', () => {
         return 'esriGeometryPoint';
       });
 
-      const buildRenderer = proxyquire('./build-renderer', {
+      const { buildRenderer } = proxyquire('./build-renderer', {
         '@koopjs/winnow': {
           query: winnowSpy,
         },
@@ -212,7 +221,7 @@ describe('build-renderer', () => {
         return ['color-1', 'color-2'];
       });
 
-      const buildRenderer = proxyquire('./build-renderer', {
+      const { buildRenderer } = proxyquire('./build-renderer', {
         '@koopjs/winnow': {
           query: winnowSpy,
         },
@@ -312,7 +321,7 @@ describe('build-renderer', () => {
         return ['color-1', 'color-2'];
       });
 
-      const buildRenderer = proxyquire('./build-renderer', {
+      const { buildRenderer } = proxyquire('./build-renderer', {
         '@koopjs/winnow': {
           query: winnowSpy,
         },

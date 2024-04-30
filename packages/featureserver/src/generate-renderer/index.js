@@ -1,6 +1,6 @@
 const { normalizeRequestParameters } = require('../helpers');
 const { generalResponseHandler } = require('../response-handlers');
-const buildRenderer = require('./build-renderer');
+const { buildRenderer } = require('./build-renderer');
 
 module.exports = generateRenderer;
 

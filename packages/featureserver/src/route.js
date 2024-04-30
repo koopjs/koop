@@ -1,7 +1,7 @@
 const layerInfo = require('./layer-info-handler.js');
 const query = require('./query');
 const logManager = require('./log-manager');
-const queryRelatedRecords = require('./query-related-records/query-related-records.js');
+const queryRelatedRecords = require('./query-related-records');
 const generateRenderer = require('./generate-renderer');
 const restInfo = require('./rest-info-route-handler');
 const serverInfo = require('./server-info-route-handler');
@@ -49,8 +49,7 @@ module.exports = function route(req, res, geojson = {}) {
     }
 
     if (method === 'queryRelatedRecords') {
-      const operationResult = queryRelatedRecords(geojson, req.query);
-      return generalResponseHandler(res, operationResult, req.query);
+      return queryRelatedRecords(req, res, geojson);
     }
 
     const error = new Error('Invalid URL');

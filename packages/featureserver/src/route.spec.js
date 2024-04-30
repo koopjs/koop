@@ -82,6 +82,160 @@ describe('Route module unit tests', () => {
     });
   });
 
+  describe('/generateRenderer route', () => {
+    const generateSpy = sinon.spy(function () {
+      return {
+        features: [],
+      };
+    });
+
+    const responseHandlerSpy = sinon.spy();
+
+    const route = proxyquire('./route', {
+      './generate-renderer': generateSpy,
+      './response-handlers': {
+        generalResponseHandler: responseHandlerSpy,
+      },
+    });
+
+    it('should use generateRenderer handler and return 200', () => {
+      route(
+        {
+          params: { method: 'generateRenderer' },
+          query: {},
+          url: '/FeatureServer/0/generateRenderer',
+        },
+        {},
+        {},
+      );
+      generateSpy.calledOnce.should.equal(true);
+      generateSpy.firstCall.args.should.deepEqual([
+        {
+          params: { method: 'generateRenderer' },
+          query: {},
+          url: '/FeatureServer/0/generateRenderer',
+        },
+        {},
+        {},
+      ]);
+    });
+
+    it('should use generateRenderer handler and handle error', () => {
+      const generateRendererSpy = sinon.spy(function () {
+        throw new Error('Fool bar');
+      });
+
+      const route = proxyquire('./route', {
+        './generate-renderer': generateRendererSpy,
+        './response-handlers': { generalResponseHandler: responseHandlerSpy },
+      });
+
+      route(
+        {
+          params: { method: 'generateRenderer' },
+          query: {},
+          url: '/FeatureServer/0/generateRenderer',
+        },
+        {},
+        {},
+      );
+      generateRendererSpy.calledOnce.should.equal(true);
+      responseHandlerSpy.calledOnce.should.equal(true);
+      responseHandlerSpy.firstCall.args.should.deepEqual([
+        {},
+        {
+          error: {
+            code: 500,
+            message: 'Fool bar',
+            details: ['Fool bar'],
+          },
+        },
+        {},
+      ]);
+    });
+    afterEach(() => {
+      generateSpy.resetHistory();
+      responseHandlerSpy.resetHistory();
+    });
+  });
+
+  describe('/queryRelatedRecords route', () => {
+    const generateSpy = sinon.spy(function () {
+      return {
+        features: [],
+      };
+    });
+
+    const responseHandlerSpy = sinon.spy();
+
+    const route = proxyquire('./route', {
+      './query-related-records': generateSpy,
+      './response-handlers': {
+        generalResponseHandler: responseHandlerSpy,
+      },
+    });
+
+    it('should use queryRelatedRecords handler and return 200', () => {
+      route(
+        {
+          params: { method: 'queryRelatedRecords' },
+          query: {},
+          url: '/FeatureServer/0/queryRelatedRecords',
+        },
+        {},
+        {},
+      );
+      generateSpy.calledOnce.should.equal(true);
+      generateSpy.firstCall.args.should.deepEqual([
+        {
+          params: { method: 'queryRelatedRecords' },
+          query: {},
+          url: '/FeatureServer/0/queryRelatedRecords',
+        },
+        {},
+        {},
+      ]);
+    });
+
+    it('should use queryRelatedRecords handler and handle error', () => {
+      const queryRelatedRecordsSpy = sinon.spy(function () {
+        throw new Error('Fool bar');
+      });
+
+      const route = proxyquire('./route', {
+        './query-related-records': queryRelatedRecordsSpy,
+        './response-handlers': { generalResponseHandler: responseHandlerSpy },
+      });
+
+      route(
+        {
+          params: { method: 'queryRelatedRecords' },
+          query: {},
+          url: '/FeatureServer/0/queryRelatedRecords',
+        },
+        {},
+        {},
+      );
+      queryRelatedRecordsSpy.calledOnce.should.equal(true);
+      responseHandlerSpy.calledOnce.should.equal(true);
+      responseHandlerSpy.firstCall.args.should.deepEqual([
+        {},
+        {
+          error: {
+            code: 500,
+            message: 'Fool bar',
+            details: ['Fool bar'],
+          },
+        },
+        {},
+      ]);
+    });
+    afterEach(() => {
+      generateSpy.resetHistory();
+      responseHandlerSpy.resetHistory();
+    });
+  });
+
   describe('/rest/info route', () => {
     const restInfoSpy = sinon.spy(function () {
       return { restInfo: true };
@@ -92,6 +246,48 @@ describe('Route module unit tests', () => {
     const route = proxyquire('./route', {
       './rest-info-route-handler': restInfoSpy,
       './response-handlers': { generalResponseHandler: responseHandlerSpy },
+    });
+
+    it('should use restInfo handler and return 200 even without data', () => {
+      route(
+        {
+          params: {},
+          query: {},
+          url: '/rest/info',
+        },
+        {},
+      );
+      restInfoSpy.calledOnce.should.equal(true);
+      restInfoSpy.firstCall.args.should.deepEqual([
+        {
+          params: {},
+          query: {},
+          url: '/rest/info',
+        },
+        {},
+        {},
+      ]);
+    });
+
+    it('should use restInfo handler and return 200 with originalUrl', () => {
+      route(
+        {
+          params: {},
+          query: {},
+          originalUrl: '/rest/info',
+        },
+        {},
+      );
+      restInfoSpy.calledOnce.should.equal(true);
+      restInfoSpy.firstCall.args.should.deepEqual([
+        {
+          params: {},
+          query: {},
+          originalUrl: '/rest/info',
+        },
+        {},
+        {},
+      ]);
     });
 
     it('should use restInfo handler and return 200', () => {

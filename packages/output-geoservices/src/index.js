@@ -6,6 +6,7 @@ const {
   layersInfo,
   query,
   generateRenderer,
+  queryRelatedRecords,
 } = require('@koopjs/featureserver');
 const Logger = require('@koopjs/logger');
 let logger = new Logger();
@@ -75,6 +76,11 @@ class GeoServices {
       path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/generateRenderer',
       methods: ['get', 'post'],
       handler: 'generateRendererHandler',
+    },
+    {
+      path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/queryRelatedRecords',
+      methods: ['get', 'post'],
+      handler: 'queryRelatedRecordsHandler',
     },
     {
       path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/:method',
@@ -246,6 +252,10 @@ class GeoServices {
 
   async generateRendererHandler(req, res) {
     this.#pullDataHandler(req, res, generateRenderer);
+  }
+
+  async queryRelatedRecordsHandler(req, res) {
+    this.#pullDataHandler(req, res, queryRelatedRecords);
   }
 
   async generateToken(req, res) {

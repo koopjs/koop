@@ -17,6 +17,18 @@ describe('validate-query-related-request-parameters', () => {
       }
     });
 
+    it('should invalidate with 400 due to other error', () => {
+      try {
+        validateQueryRelatedRequestParams({
+          outSR: 'foo',
+        });
+      } catch (error) {
+        error.message.should.deepEqual('"outSR" must be one of [number, object]');
+        error.details.should.deepEqual(['"outSR" must be one of [number, object]']);
+        error.code.should.equal(400);
+      }
+    });
+
     it('should validate if missing (optional)', () => {
       try {
         validateQueryRelatedRequestParams({});

@@ -4,8 +4,6 @@ const validateClassificationDefinition = require('./validate-classification-defi
 const { createColorRamp } = require('./color-ramp');
 const { createSymbol } = require('./create-symbol');
 
-module.exports = buildRenderer;
-
 function buildRenderer(data, requestParams = {}) {
   const { statistics = {}, features } = data;
   const { classificationDef } = requestParams;
@@ -118,3 +116,5 @@ function serializeUniqueValues(uniqueValue, delimiter) {
   const { count, ...rest } = uniqueValue;
   return Object.values(rest).join(delimiter);
 }
+
+module.exports = { buildRenderer };

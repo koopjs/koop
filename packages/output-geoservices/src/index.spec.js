@@ -11,6 +11,7 @@ jest.mock('@koopjs/featureserver', () => ({
   layerInfo: jest.fn(),
   query: jest.fn(),
   generateRenderer: jest.fn(),
+  queryRelatedRecords: jest.fn(),
 }));
 
 const loggerMock = {
@@ -68,6 +69,11 @@ describe('Output Geoservices', () => {
           path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/generateRenderer',
           methods: ['get', 'post'],
           handler: 'generateRendererHandler',
+        },
+        {
+          path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/queryRelatedRecords',
+          methods: ['get', 'post'],
+          handler: 'queryRelatedRecordsHandler',
         },
         {
           path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/:method',
@@ -579,6 +585,21 @@ describe('Output Geoservices', () => {
       await output.generateRendererHandler({ foo: 'bar' }, resMock);
       expect(FeatureServer.generateRenderer.mock.calls.length).toBe(1);
       expect(FeatureServer.generateRenderer.mock.calls[0]).toEqual([
+        { foo: 'bar' },
+        resMock,
+        'someData',
+      ]);
+      expect(modelMock.pull.mock.calls.length).toBe(1);
+      expect(modelMock.pull.mock.calls[0][0]).toEqual({ foo: 'bar' });
+    });
+  });
+
+  describe('queryRelatedRecordsHandler', () => {
+    test('should pull data and call handler', async () => {
+      const output = new OutputGeoServices(modelMock, { logger: loggerMock });
+      await output.queryRelatedRecordsHandler({ foo: 'bar' }, resMock);
+      expect(FeatureServer.queryRelatedRecords.mock.calls.length).toBe(1);
+      expect(FeatureServer.queryRelatedRecords.mock.calls[0]).toEqual([
         { foo: 'bar' },
         resMock,
         'someData',
