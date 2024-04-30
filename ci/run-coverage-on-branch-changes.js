@@ -62,7 +62,7 @@ function getCovCmd(package, srcFiles) {
 }
 
 function getTestCmd(package) {
-  if (package === 'featureserver' || package === 'winnow') {
+  if (package === 'winnow') {
     return 'npm run test:unit > /dev/null';
   }
 

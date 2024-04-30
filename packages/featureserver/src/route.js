@@ -1,7 +1,7 @@
 const layerInfo = require('./layer-info-handler.js');
 const query = require('./query');
 const logManager = require('./log-manager');
-const queryRelatedRecords = require('./queryRelatedRecords.js');
+const queryRelatedRecords = require('./query-related-records');
 const generateRenderer = require('./generate-renderer');
 const restInfo = require('./rest-info-route-handler');
 const serverInfo = require('./server-info-route-handler');
@@ -24,8 +24,6 @@ module.exports = function route(req, res, geojson = {}) {
     // TODO move to each handler, as params and data will vary a lot
     validateInputs(req.query, geojson);
 
-    // geojson.metadata = geojson.metadata || { maxRecordCount: 2000 };
-
     if (isRestInfoRequest(route)) {
       return restInfo(req, res, geojson);
     }
@@ -47,13 +45,11 @@ module.exports = function route(req, res, geojson = {}) {
     }
 
     if (method === 'generateRenderer') {
-      const operationResult = generateRenderer(geojson, req.query);
-      return generalResponseHandler(res, operationResult, req.query);
+      return generateRenderer(req, res, geojson);
     }
 
     if (method === 'queryRelatedRecords') {
-      const operationResult = queryRelatedRecords(geojson, req.query);
-      return generalResponseHandler(res, operationResult, req.query);
+      return queryRelatedRecords(req, res, geojson);
     }
 
     const error = new Error('Invalid URL');

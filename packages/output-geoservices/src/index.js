@@ -1,5 +1,13 @@
 const FeatureServer = require('@koopjs/featureserver');
-const { restInfo, serverInfo, layerInfo, layersInfo, query } = require('@koopjs/featureserver');
+const {
+  restInfo,
+  serverInfo,
+  layerInfo,
+  layersInfo,
+  query,
+  generateRenderer,
+  queryRelatedRecords,
+} = require('@koopjs/featureserver');
 const Logger = require('@koopjs/logger');
 let logger = new Logger();
 const ARCGIS_UNAUTHORIZED_MESSAGE = 'Item does not exist or is inaccessible.';
@@ -44,6 +52,7 @@ class GeoServices {
   #authInfo;
   #logger;
   #includeOwningSystemUrl;
+  #restInfoProtocol;
 
   static type = 'output';
   static version = require('../package.json').version;
@@ -62,6 +71,16 @@ class GeoServices {
       path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/query',
       methods: ['get', 'post'],
       handler: 'queryHandler',
+    },
+    {
+      path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/generateRenderer',
+      methods: ['get', 'post'],
+      handler: 'generateRendererHandler',
+    },
+    {
+      path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/queryRelatedRecords',
+      methods: ['get', 'post'],
+      handler: 'queryRelatedRecordsHandler',
     },
     {
       path: '$namespace/rest/services/$providerParams/FeatureServer/:layer/:method',
@@ -103,7 +122,7 @@ class GeoServices {
     };
 
     this.#includeOwningSystemUrl = options.includeOwningSystemUrl || false;
-    this.#useHttpForTokenUrl = this.#getHttpSetting(options, model);
+    this.#restInfoProtocol = this.#getHttpSetting(options, model) ? 'http' : 'https';
 
     FeatureServer.setLogger({ logger: this.#logger });
 
@@ -184,14 +203,19 @@ class GeoServices {
 
   restInfoHandler(req, res) {
     const authInfo = { ...this.#authInfo };
+    const {
+      headers: { host },
+      baseUrl,
+    } = req;
 
     if (this.#authInfo.isTokenBasedSecurity) {
-      authInfo.tokenServicesUrl = this.#buildTokensUrl(req.headers.host, req.baseUrl);
+      req.headers.host, req.baseUrl;
+      authInfo.tokenServicesUrl = `${this.#restInfoProtocol}://${host}${baseUrl}/${this.model.namespace}/rest/generateToken`; // eslint-disable-line
     }
 
     const data = { authInfo };
     if (this.#includeOwningSystemUrl) {
-      data.owningSystemUrl = this.#buildOwningSystemUrl(req.headers.host, req.baseUrl);
+      data.owningSystemUrl = `${this.#restInfoProtocol}://${host}${baseUrl}/${this.model.namespace}`; // eslint-disable-line
     }
 
     try {
@@ -226,19 +250,16 @@ class GeoServices {
     this.#pullDataHandler(req, res, query);
   }
 
-  #buildTokensUrl(host, baseUrl) {
-    const protocol = this.#useHttpForTokenUrl ? 'http' : 'https';
-    return `${protocol}://${host}${baseUrl}/${this.model.namespace}/rest/generateToken`;
+  async generateRendererHandler(req, res) {
+    this.#pullDataHandler(req, res, generateRenderer);
   }
 
-  #buildOwningSystemUrl(host, baseUrl) {
-    const protocol = this.#useHttpForTokenUrl ? 'http' : 'https';
-    return `${protocol}://${host}${baseUrl}/${this.model.namespace}`;
+  async queryRelatedRecordsHandler(req, res) {
+    this.#pullDataHandler(req, res, queryRelatedRecords);
   }
 
   async generateToken(req, res) {
     try {
-      //const decodedToken = await this.model.authorize(req);
       const tokenResponse = await this.model.authenticate(req);
       res.status(200).json(tokenResponse);
     } catch (error) {
