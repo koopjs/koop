@@ -1,5 +1,11 @@
 # @koopjs/output-geoservices
 
+## 8.1.16
+
+### Patch Changes
+
+- handle MapServer requests with invalid url error
+
 ## 8.1.15
 
 ### Patch Changes
