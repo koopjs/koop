@@ -3,7 +3,6 @@ const FeatureServer = require('@koopjs/featureserver');
 
 jest.mock('@koopjs/featureserver', () => ({
   setLogger: jest.fn(),
-  route: jest.fn(),
   setDefaults: jest.fn(),
   restInfo: jest.fn(),
   serverInfo: jest.fn(),
@@ -98,51 +97,25 @@ describe('Output Geoservices', () => {
         {
           path: '$namespace/rest/services/$providerParams/MapServer*',
           methods: ['get', 'post'],
-          handler: 'generalHandler',
+          handler: 'invalidUrlHandler',
         },
       ]);
     });
   });
 
-  describe('generalHandler', () => {
-    test('should pull data and route', async () => {
+  describe('error handling', () => {
+    test('should handle Invalid URL', async () => {
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
-      await output.generalHandler({ foo: 'bar' }, resMock);
-      expect(FeatureServer.route.mock.calls.length).toBe(1);
-      expect(FeatureServer.route.mock.calls[0]).toEqual([{ foo: 'bar' }, resMock, 'someData']);
-      expect(modelMock.pull.mock.calls.length).toBe(1);
-      expect(modelMock.pull.mock.calls[0][0]).toEqual({ foo: 'bar' });
-    });
-
-    test('should authorize, then pull data and route', async () => {
-      const modelMock = {
-        pull: jest.fn(async () => 'someData'),
-      };
-      const output = new OutputGeoServices(modelMock, { logger: loggerMock });
-      await output.generalHandler({ foo: 'bar' }, resMock);
-      expect(FeatureServer.route.mock.calls.length).toBe(1);
-      expect(FeatureServer.route.mock.calls[0]).toEqual([{ foo: 'bar' }, resMock, 'someData']);
-    });
-
-    test('should handle 5xx error', async () => {
-      const modelMock = {
-        pull: jest.fn(async () => {
-          const error = new Error('Upstream error');
-          error.code = 503;
-          throw error;
-        }),
-      };
-      const output = new OutputGeoServices(modelMock, { logger: loggerMock });
-      await output.generalHandler(reqMock, resMock);
+      await output.invalidUrlHandler(reqMock, resMock);
       expect(resMock.status.mock.calls[0].length).toBe(1);
       expect(resMock.status.mock.calls[0]).toEqual([200]);
       expect(resMock.json.mock.calls[0].length).toBe(1);
       expect(resMock.json.mock.calls[0]).toEqual([
         {
           error: {
-            code: 503,
-            details: [],
-            message: 'Upstream error',
+            code: 400,
+            details: ['Invalid URL'],
+            message: 'Invalid URL',
           },
         },
       ]);
@@ -155,7 +128,7 @@ describe('Output Geoservices', () => {
         }),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
-      await output.generalHandler(reqMock, resMock);
+      await output.queryHandler(reqMock, resMock);
       expect(resMock.status.mock.calls[0].length).toBe(1);
       expect(resMock.status.mock.calls[0]).toEqual([200]);
       expect(resMock.json.mock.calls[0].length).toBe(1);
@@ -179,7 +152,7 @@ describe('Output Geoservices', () => {
         }),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
-      await output.generalHandler(reqMock, resMock);
+      await output.queryHandler(reqMock, resMock);
       expect(resMock.status.mock.calls[0].length).toBe(1);
       expect(resMock.status.mock.calls[0]).toEqual([200]);
       expect(resMock.json.mock.calls[0].length).toBe(1);
@@ -204,7 +177,7 @@ describe('Output Geoservices', () => {
         }),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
-      await output.generalHandler({ headers: { authorization: '123' } }, resMock);
+      await output.queryHandler({ headers: { authorization: '123' } }, resMock);
       expect(resMock.status.mock.calls[0].length).toBe(1);
       expect(resMock.status.mock.calls[0]).toEqual([200]);
       expect(resMock.json.mock.calls[0].length).toBe(1);
@@ -228,7 +201,7 @@ describe('Output Geoservices', () => {
         }),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
-      await output.generalHandler({ headers: { authorization: '123' } }, resMock);
+      await output.queryHandler({ headers: { authorization: '123' } }, resMock);
       expect(resMock.status.mock.calls[0].length).toBe(1);
       expect(resMock.status.mock.calls[0]).toEqual([200]);
       expect(resMock.json.mock.calls[0].length).toBe(1);
@@ -251,7 +224,7 @@ describe('Output Geoservices', () => {
         }),
       };
       const output = new OutputGeoServices(modelMock, { logger: loggerMock });
-      await output.generalHandler(reqMock, resMock);
+      await output.queryHandler(reqMock, resMock);
       expect(resMock.status.mock.calls[0].length).toBe(1);
       expect(resMock.status.mock.calls[0]).toEqual([200]);
       expect(resMock.json.mock.calls[0].length).toBe(1);
