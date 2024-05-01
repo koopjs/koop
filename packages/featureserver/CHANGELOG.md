@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 9.0.0
+
+### Major Changes
+
+- Remove route module and refactor signatures of handlers; consumers can no longer use FeatureServer.route. If using this directly with Express, you need to define each route and bind to the correct FeatureServer handler.
+
 ## 8.5.7
 
 ### Patch Changes
