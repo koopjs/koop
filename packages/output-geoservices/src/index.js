@@ -105,7 +105,7 @@ class GeoServices {
     {
       path: '$namespace/rest/services/$providerParams/MapServer*',
       methods: ['get', 'post'],
-      handler: 'generalHandler',
+      handler: 'invalidUrlHandler',
     },
   ];
 
@@ -144,13 +144,11 @@ class GeoServices {
     return false;
   }
 
-  async generalHandler(req, res) {
-    try {
-      const data = await this.model.pull(req);
-      return FeatureServer.route(req, res, data);
-    } catch (error) {
-      this.#errorHandler(error, req, res);
-    }
+  async invalidUrlHandler(req, res) {
+    const error = new Error('Invalid URL');
+    error.code = 400;
+    error.details = ['Invalid URL'];
+    this.#errorHandler(error, req, res);
   }
 
   #errorHandler(error, req, res) {
