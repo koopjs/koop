@@ -57,12 +57,12 @@ The Koop dependency graph is shown below.
 ![Screen Shot 2022-11-30 at 1 03 46 PM](https://user-images.githubusercontent.com/4369192/204908289-82659cfe-fcf3-404a-aa70-79baf540f1b8.png)
 
 ### Test Coverage
-Test coverages for each package are shown below. Coverage for some packages includes integration tests as opposed to true unit tests. Difference in coverage is shown below. Our goal is to have complete unit test coverage, and breakout integration/e2e tests separately.
+Test coverages for each package are shown below. Coverage for winnow package includes integration tests as opposed to true unit tests. Our goal is to have complete unit test coverage, and breakout integration/e2e tests separately.
 
 | package | integration + unit | unit |
 |---|---|---|
 |cache-memory|N/A|![coverage](./packages/cache-memory/coverage.svg)|
-|featureserver|![coverage](./packages/featureserver/coverage.svg)|![coverage](./packages/featureserver/coverage-unit.svg)|
+|featureserver|![coverage](./packages/featureserver/coverage.svg)|
 |koop-core|N/A|![coverage](./packages/core/coverage.svg)|
 |logger|N/A|![coverage](./packages/logger/coverage.svg)|
 |output-geoservices|N/A|![coverage](./packages/output-geoservices/coverage.svg)|

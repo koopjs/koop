@@ -1,11 +1,11 @@
 const should = require('should'); // eslint-disable-line
-const { validate } = require('./validate-query-request-parameters');
+const { validateQueryRequestParams } = require('./validate-query-request-parameters');
 
 describe('validate-query-request-parameters', () => {
   describe('quantizationParameters', () => {
     it('should invalidate with 400 due to missing extent param', () => {
       try {
-        validate({
+        validateQueryRequestParams({
           quantizationParameters: {
             extent: {},
           },
@@ -19,7 +19,29 @@ describe('validate-query-request-parameters', () => {
 
     it('should validate if missing (optional)', () => {
       try {
-        validate({});
+        validateQueryRequestParams({});
+      } catch (err) {
+        err.should.deepEqual(undefined);
+      }
+    });
+  });
+
+  describe('f', () => {
+    it('should invalidate with 400 due to invalid f param', () => {
+      try {
+        validateQueryRequestParams({
+          f: 'foo',
+        });
+      } catch (error) {
+        error.message.should.deepEqual('Invalid format');
+        error.details.should.deepEqual(['"f" must be one of [json, pjson, pbf]']);
+        error.code.should.equal(400);
+      }
+    });
+
+    it('should validate if missing (optional)', () => {
+      try {
+        validateQueryRequestParams({});
       } catch (err) {
         err.should.deepEqual(undefined);
       }

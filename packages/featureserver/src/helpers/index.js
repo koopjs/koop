@@ -12,4 +12,6 @@ module.exports = {
   ...require('./renderers'),
   ...require('./validate-inputs'),
   ...require('./normalize-request-params'),
+  ...require('./combine-body-query-params'),
+  ...require('./validate-info-route-params'),
 };

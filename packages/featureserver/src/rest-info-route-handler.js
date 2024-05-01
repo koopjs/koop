@@ -1,27 +1,43 @@
 const _ = require('lodash');
-const defaults = require('./metadata-defaults');
+const metadataDefaults = require('./metadata-defaults');
+const { generalResponseHandler } = require('./response-handlers');
+const { combineBodyQueryParameters, validateInfoRouteParams } = require('./helpers');
 
-function restInfo(data = {}, req) {
-  const versionDefaults = defaults.restInfoDefaults();
+function restInfo(req, res, data = {}) {
+  const { currentVersion, fullVersion } = getVersions(req.app.locals);
+
+  const requestParams = combineBodyQueryParameters(req.body, req.query);
+
+  validateInfoRouteParams(requestParams);
+
+  return generalResponseHandler(
+    res,
+    {
+      currentVersion,
+      fullVersion,
+      owningSystemUrl: data.owningSystemUrl,
+      authInfo: {
+        ...data.authInfo,
+      },
+    },
+    requestParams,
+  );
+}
+
+function getVersions(locals) {
+  const versionDefaults = metadataDefaults.restInfoDefaults();
   const currentVersion = _.get(
-    req,
-    'app.locals.config.featureServer.currentVersion',
+    locals,
+    'config.featureServer.currentVersion',
     versionDefaults.currentVersion,
   );
+
   const fullVersion = _.get(
-    req,
-    'app.locals.config.featureServer.fullVersion',
+    locals,
+    'config.featureServer.fullVersion',
     versionDefaults.fullVersion,
   );
-
-  return {
-    currentVersion,
-    fullVersion,
-    owningSystemUrl: data.owningSystemUrl,
-    authInfo: {
-      ...data.authInfo,
-    },
-  };
+  return { currentVersion, fullVersion };
 }
 
 module.exports = restInfo;
