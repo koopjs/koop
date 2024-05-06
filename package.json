@@ -56,7 +56,7 @@
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
     "cz-git": "^1.9.1",
-    "eslint": "^9.1.1",
+    "eslint": "^9.2.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-no-only-tests": "^3.1.0",
     "eslint-plugin-prettier": "^5.1.3",
@@ -72,7 +72,7 @@
     "protobufjs": "^7.2.6",
     "shelljs": "^0.8.5",
     "simple-git": "^3.24.0",
-    "snyk": "^1.1290.0",
+    "snyk": "^1.1291.0",
     "supertest": "^7.0.0",
     "yargs": "^17.7.2"
   },
