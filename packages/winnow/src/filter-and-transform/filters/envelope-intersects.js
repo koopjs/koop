@@ -1,33 +1,19 @@
-const _ = require('lodash');
-const { calculateBounds, intersects, contains } = require('@terraformer/spatial');
-const bboxPolygon = require('@turf/bbox-polygon').default;
-const { arcgisToGeoJSON } = require('@terraformer/arcgis');
+const intersects = require('@turf/boolean-intersects').default;
+const envelope = require('@turf/envelope').default;
+const { normalizeGeometry, isValidGeometry } = require('./helpers');
 
-module.exports = function (featureGeometry = {}, filterGeometry = {}) {
-  if (_.isEmpty(featureGeometry) || _.isEmpty(filterGeometry)) return false;
+module.exports = function (searchGeometry, geometry) {
+  if (!geometry) {
+    return false;
+  }
 
-  const normalizedFeatureGeometry = isGeoJsonGeometry(featureGeometry)
-    ? featureGeometry
-    : arcgisToGeoJSON(featureGeometry);
+  const featureGeometry = normalizeGeometry(geometry);
 
-  const { type, coordinates = [] } = normalizedFeatureGeometry;
+  if (!isValidGeometry(featureGeometry)) {
+    return false;
+  }
 
-  if (!type || coordinates.length === 0) return false;
+  const geometryFilterEnvelope = envelope(searchGeometry);
 
-  const geometryFilterEnvelope = convertGeometryToEnvelopePolygon(filterGeometry);
-
-  if (type === 'Point') return contains(geometryFilterEnvelope, normalizedFeatureGeometry);
-
-  const featureEnvelope = convertGeometryToEnvelopePolygon(normalizedFeatureGeometry);
-  return intersects(geometryFilterEnvelope, featureEnvelope);
+  return intersects(geometryFilterEnvelope, featureGeometry);
 };
-
-function convertGeometryToEnvelopePolygon(geometry) {
-  const bounds = calculateBounds(geometry);
-  const { geometry: envelopePolygon } = bboxPolygon(bounds);
-  return envelopePolygon;
-}
-
-function isGeoJsonGeometry({ type, coordinates }) {
-  return type && coordinates;
-}

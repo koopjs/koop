@@ -9,7 +9,9 @@ const normalizeSourceSR = require('./source-data-spatial-reference');
 function normalizeGeometryFilter(options = {}) {
   const geometry = options.geometry || options.bbox;
 
-  if (!geometry) return;
+  if (!geometry) {
+    return;
+  }
 
   const geometryFilterSpatialReference = normalizeGeometryFilterSpatialReference(options);
   const fromSR = getCrsString(geometryFilterSpatialReference);
@@ -73,7 +75,7 @@ function transformEsriEnvelopeToPolygon({ xmin, ymin, xmax, ymax }) {
   };
 }
 
-function getCrsString({ wkt, wkid } = {}) {
+function getCrsString({ wkt, wkid }) {
   return wkt || `EPSG:${wkid}`;
 }
 
