@@ -55,7 +55,7 @@ test('WhereBuilder.create: returns where clause with geometry predicate', (t) =>
   const whereClause = WhereBuilder.create({
     geometry: [0, 0, 0, 0],
   });
-  t.equals(whereClause, 'ST_Intersects(geometry, ?)');
+  t.equals(whereClause, 'ST_Intersects(?, geometry)');
 });
 
 test('WhereBuilder.create: returns where clause with translated sql-where and geometry predicate', (t) => {
@@ -64,10 +64,7 @@ test('WhereBuilder.create: returns where clause with translated sql-where and ge
     geometry: [0, 0, 0, 0],
     where: "color='red'",
   });
-  t.equals(
-    whereClause,
-    "properties->`color` = 'red' AND ST_Intersects(geometry, ?)",
-  );
+  t.equals(whereClause, "properties->`color` = 'red' AND ST_Intersects(?, geometry)");
 });
 
 test('WhereBuilder.create: transform a predicate with OBJECTID and no metadata fields to user-defined function', (t) => {
