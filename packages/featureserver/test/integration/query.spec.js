@@ -187,7 +187,7 @@ describe('Query operations', () => {
         geometryType: 'esriGeometryEnvelope'
       });
       response.should.be.an.instanceOf(Object);
-      response.features.length.should.equal(100);
+      response.features.length.should.equal(101);
     });
   });
 
@@ -198,7 +198,7 @@ describe('Query operations', () => {
         geometryType: 'esriGeometryEnvelope'
       });
       response.should.be.an.instanceOf(Object);
-      response.features.length.should.equal(100);
+      response.features.length.should.equal(101);
     });
 
     it('should still have the correct outSR even when projection is already applied', () => {
@@ -209,7 +209,7 @@ describe('Query operations', () => {
       });
       response.spatialReference.wkid.should.equal(102100);
       response.should.be.an.instanceOf(Object);
-      response.features.length.should.equal(100);
+      response.features.length.should.equal(101);
     });
   });
 
