@@ -56,8 +56,8 @@ class WhereBuilder {
     const spatialPredicate = this.#options.spatialPredicate || 'ST_Intersects';
 
     // The "?" in the string below is a SQL query parameter.  When it is executed,
-    // a supplied value is used in its place
-    this.#geometryPredicate = `${spatialPredicate}(geometry, ?)`;
+    // a supplied search-geometry is used in its place
+    this.#geometryPredicate = `${spatialPredicate}(?, geometry)`;
 
     return this;
   }

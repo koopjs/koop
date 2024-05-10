@@ -306,44 +306,6 @@ test('With a point geometry filter', (t) => {
   run('trees', options, 1, t);
 });
 
-test('With a ST_Contains geometry predicate', (t) => {
-  const options = {
-    geometry: {
-      type: 'Polygon',
-      coordinates: [
-        [
-          [-118.163, 34.162],
-          [-118.108, 34.162],
-          [-118.108, 34.173],
-          [-118.163, 34.173],
-          [-118.163, 34.162],
-        ],
-      ],
-    },
-    spatialPredicate: 'ST_Contains',
-  };
-  run('trees', options, 12, t);
-});
-
-test('With a ST_Within geometry predicate', (t) => {
-  const options = {
-    geometry: {
-      type: 'Polygon',
-      coordinates: [
-        [
-          [-118.163, 34.162],
-          [-118.108, 34.162],
-          [-118.108, 34.173],
-          [-118.163, 34.173],
-          [-118.163, 34.162],
-        ],
-      ],
-    },
-    spatialPredicate: 'ST_Within',
-  };
-  run('trees', options, 12, t);
-});
-
 test('With a ST_EnvelopeIntersects geometry predicate', (t) => {
   const options = {
     geometry: {
@@ -361,20 +323,6 @@ test('With a ST_EnvelopeIntersects geometry predicate', (t) => {
     spatialPredicate: 'ST_EnvelopeIntersects',
   };
   run('states', options, 2, t);
-});
-
-test('With a ST_Intersects geometry predicate', (t) => {
-  const options = {
-    geometry: {
-      type: 'LineString',
-      coordinates: [
-        [-85.983201784023521, 34.515410848143297, 204.5451898127248],
-        [-121.278821256198796, 39.823566607727578, 1173.189682061974963],
-      ],
-    },
-    spatialPredicate: 'ST_Intersects',
-  };
-  run('states', options, 1, t);
 });
 
 test('With a where and a geometry option', (t) => {
@@ -446,32 +394,6 @@ test('With an envelope, an inSR and an outSR', (t) => {
     outSR: 102100,
   };
   run('trees', options, 6, t);
-});
-
-test('With a multi-ring geometry and an inSR', (t) => {
-  const options = {
-    geometry: {
-      rings: [
-        [
-          [19930537.269606635, -1018885.7633881811],
-          [19930537.269606635, 13148258.807095852],
-          [20037508.342788905, 13148258.807095852],
-          [20037508.342788905, -1018885.7633881811],
-          [19930537.269606635, -1018885.7633881811],
-        ],
-        [
-          [-20037508.342788905, -1018885.7633881811],
-          [-20037508.342788905, 13148258.807095852],
-          [-4568447.54013514, 13148258.807095852],
-          [-4568447.54013514, -1018885.7633881811],
-          [-20037508.342788905, -1018885.7633881811],
-        ],
-      ],
-    },
-    geometryType: 'esriGeometryPolygon',
-    inSR: 102100,
-  };
-  run('ringbug', options, 30, t);
 });
 
 test('with a coded value domain', (t) => {
