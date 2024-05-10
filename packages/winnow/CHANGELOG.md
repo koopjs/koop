@@ -1,5 +1,11 @@
 # @koopjs/winnow
 
+## 5.0.2
+
+### Patch Changes
+
+- fix behavior of intersects, contains, and within
+
 ## 5.0.1
 
 ### Patch Changes
