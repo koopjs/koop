@@ -148,7 +148,7 @@ function transformRings(rings, transform) {
     result.push(ring);
   }
 
-  return result;
+  return result.filter((ring) => ring.length > 1);
 }
 
 function transformPaths(paths, transform) {
@@ -160,7 +160,7 @@ function transformPaths(paths, transform) {
     result.push(path);
   }
 
-  return result;
+  return result.filter((ring) => ring.length > 1);
 }
 
 module.exports = {
