@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 9.0.2
+
+### Patch Changes
+
+- remove single vertex rings and paths from quantized geometry
+
 ## 9.0.1
 
 ### Patch Changes
