@@ -1,5 +1,6 @@
 const should = require('should'); // eslint-disable-line
 const { getDataTypeFromValue, isDate } = require('./data-type-utils');
+const proxyquire = require('proxyquire');
 
 describe('getDataTypeFromValue', () => {
   it('should return integer', () => {
@@ -58,5 +59,27 @@ describe('isDate', () => {
 
   it('should return false for a string in parenthesis', () => {
     isDate('(foo').should.equal(false);
+  });
+
+  it('should return false for a string that includes +', () => {
+    isDate('123+10').should.equal(false);
+  });
+
+  it('should throw error', () => {
+    const { isDate } = proxyquire('./data-type-utils', {
+      'iso-datestring-validator': {
+        isValidDate: () => {},
+        isValidISODateString: () => {
+          throw new Error('other error');
+        },
+      },
+    });
+
+    try {
+      isDate('12310abc');
+      throw new Error('should have thrown');
+    } catch (error) {
+      error.message.should.equal('other error');
+    }
   });
 });
