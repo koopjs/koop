@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 9.0.3
+
+### Patch Changes
+
+- handle regex error from date validator
+
 ## 9.0.2
 
 ### Patch Changes
