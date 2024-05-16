@@ -1,7 +1,6 @@
 const should = require('should'); // eslint-disable-line
 const { getDataTypeFromValue, isDate } = require('./data-type-utils');
 const proxyquire = require('proxyquire');
-const { isValidDate } = require('iso-datestring-validator');
 
 describe('getDataTypeFromValue', () => {
   it('should return integer', () => {
