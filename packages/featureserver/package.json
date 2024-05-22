@@ -23,7 +23,6 @@
     "@esri/proj-codes": "^3.3.0",
     "@koopjs/logger": "5.0.0",
     "@koopjs/winnow": "5.0.2",
-    "@terraformer/spatial": "^2.2.1",
     "@turf/envelope": "^6.5.0",
     "chroma-js": "^2.4.2",
     "esri-extent": "^1.1.3",

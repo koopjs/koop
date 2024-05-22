@@ -47,7 +47,6 @@
     "@esri/proj-codes": "^3.3.0",
     "@koopjs/logger": "5.0.0",
     "@terraformer/arcgis": "^2.1.2",
-    "@terraformer/spatial": "^2.2.1",
     "@turf/bbox-polygon": "^6.5.0",
     "@turf/boolean-contains": "^6.5.0",
     "@turf/boolean-equal": "^6.5.0",
