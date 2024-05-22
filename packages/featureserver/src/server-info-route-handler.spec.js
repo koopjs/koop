@@ -186,7 +186,7 @@ describe('server info', () => {
     ]);
   });
 
-  it('should construct options from feature collection with CRS and features, no settings', () => {
+  it('should construct options from collection with CRS and features, no settings', () => {
     const simpleCollectionFixture = {
       type: 'FeatureCollection',
       crs: {

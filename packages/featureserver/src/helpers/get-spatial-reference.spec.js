@@ -4,7 +4,7 @@ const getSpatialReference = require('./get-spatial-reference');
 describe('get-spatial-reference', () => {
   it('getSpatialReference: no data passed', () => {
     const wkt = getSpatialReference();
-    should(wkt).equal(undefined);
+    should(wkt).deepEqual({ wkid: 4326, latestWkid: 4326 });
   });
 
   it('getSpatialReference: only inputCrs', () => {

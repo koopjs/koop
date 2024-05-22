@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const TableLayerMetadata = require('./table-layer-metadata');
 const { PointRenderer, LineRenderer, PolygonRenderer } = require('./renderers');
-const { calculateBounds } = require('@terraformer/spatial');
+const envelope = require('@turf/envelope');
 const logManager = require('../log-manager');
 const getSpatialReference = require('./get-spatial-reference');
 const getGeometryTypeFromGeojson = require('./get-geometry-type-from-geojson');
@@ -22,32 +22,34 @@ class FeatureLayerMetadata extends TableLayerMetadata {
     return this;
   }
 
-  mixinOverrides(geojson = {}, options = {}) {
+  mixinOverrides(geojson, options = {}) {
     super.mixinOverrides(geojson, options);
 
-    const { renderer, extent, inputCrs, sourceSR, capabilities = {} } = options;
+    const { renderer, labelingInfo, extent, inputCrs, sourceSR, capabilities = {} } = options;
 
     this.geometryType = getGeometryTypeFromGeojson({ ...geojson, ...options });
 
     this.supportsCoordinatesQuantization = !!capabilities.quantization;
 
-    this._setExtent(geojson, { inputCrs, sourceSR, extent });
+    this.#_setExtent(geojson, { inputCrs, sourceSR, extent });
 
-    this._setRenderer(renderer);
+    this.#_setRenderer(renderer);
 
-    this._setDirectOverrides(options);
+    this.#_setLabelingInfo(labelingInfo);
+
+    this.#_setDirectOverrides(options);
 
     return this;
   }
 
-  _setExtent(geojson, options) {
+  #_setExtent(geojson, options) {
     const extent = getLayerExtent(geojson, options);
     if (extent) {
       this.extent = extent;
     }
   }
 
-  _setRenderer(renderer) {
+  #_setRenderer(renderer) {
     if (renderer) {
       this.drawingInfo.renderer = renderer;
       return;
@@ -55,14 +57,24 @@ class FeatureLayerMetadata extends TableLayerMetadata {
 
     if (this.geometryType === 'esriGeometryPolygon') {
       this.drawingInfo.renderer = new PolygonRenderer();
-    } else if (this.geometryType === 'esriGeometryPolyline') {
+      return;
+    }
+
+    if (this.geometryType === 'esriGeometryPolyline') {
       this.drawingInfo.renderer = new LineRenderer();
-    } else {
-      this.drawingInfo.renderer = new PointRenderer();
+      return;
+    }
+
+    this.drawingInfo.renderer = new PointRenderer();
+  }
+
+  #_setLabelingInfo(labelingInfo) {
+    if (labelingInfo) {
+      this.drawingInfo.labelingInfo = labelingInfo;
     }
   }
 
-  _setDirectOverrides(options) {
+  #_setDirectOverrides(options) {
     super._setDirectOverrides(options);
     const { minScale, maxScale } = options;
 
@@ -74,10 +86,7 @@ class FeatureLayerMetadata extends TableLayerMetadata {
 }
 
 function getLayerExtent(geojson, options) {
-  const spatialReference = getSpatialReference(geojson, options) || {
-    wkid: 4326,
-    latestWkid: 4326,
-  };
+  const spatialReference = getSpatialReference(geojson, options);
 
   const { extent } = options;
 
@@ -94,7 +103,9 @@ function calculateExtentFromFeatures(geojson, spatialReference) {
   }
 
   try {
-    const [xmin, ymin, xmax, ymax] = calculateBounds(geojson);
+    const {
+      bbox: [xmin, ymin, xmax, ymax],
+    } = envelope(geojson);
 
     return {
       xmin,

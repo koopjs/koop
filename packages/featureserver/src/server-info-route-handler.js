@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { calculateBounds } = require('@terraformer/spatial');
+const envelope = require('@turf/envelope');
 const {
   getCollectionCrs,
   getGeometryTypeFromGeojson,
@@ -86,13 +86,13 @@ function calculateServiceExtentFromLayers(layers, spatialReference) {
         return _.has(layer, 'features[0]');
       })
       .map((layer) => {
-        const bounds = calculateBounds(layer);
-        bounds.forEach((coordinate) => {
+        const { bbox } = envelope(layer);
+        bbox.forEach((coordinate) => {
           if (isNaN(coordinate)) {
             throw new Error(`Geometry coordinate is not a number: ${coordinate}`);
           }
         });
-        return bounds;
+        return bbox;
       })
       .reduce(
         (accumulator, bounds) => {

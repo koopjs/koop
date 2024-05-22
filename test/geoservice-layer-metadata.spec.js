@@ -27,5 +27,21 @@ describe('koop', () => {
         throw error;
       }
     });
+
+    test('handles labelingInfo override', async () => {
+      try {
+        const response = await request(koop.server).get(
+          '/file-geojson/rest/services/points-w-metadata-labeling-info/FeatureServer/0',
+        );
+        expect(response.status).toBe(200);
+        const {
+          drawingInfo: { labelingInfo },
+        } = response.body;
+        expect(labelingInfo).toBe('label-spec');
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    });
   });
 });

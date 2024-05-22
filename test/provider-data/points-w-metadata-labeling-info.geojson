@@ -1,0 +1,25 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "idField": "id",
+    "labelingInfo": "label-spec"
+    },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "aaa",
+        "timestamp": "2023-04-10T16:15:30.000Z",
+        "label": "White Leg",
+        "category": "pinto"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80,
+          25
+        ]
+      }
+    }
+  ]
+}
