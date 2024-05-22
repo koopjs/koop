@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 9.1.0
+
+### Minor Changes
+
+- set labelingInfo via metadata
+
 ## 9.0.3
 
 ### Patch Changes
