@@ -103,10 +103,15 @@ function calculateExtentFromFeatures(geojson, spatialReference) {
   }
 
   try {
-    const {
-      bbox: [xmin, ymin, xmax, ymax],
-    } = envelope(geojson);
+    const { bbox } = envelope(geojson);
 
+    bbox.forEach((coordinate) => {
+      if (!isFinite(coordinate)) {
+        throw new Error(`Feature does not contain valid geometry`);
+      }
+    });
+
+    const [xmin, ymin, xmax, ymax] = bbox;
     return {
       xmin,
       xmax,

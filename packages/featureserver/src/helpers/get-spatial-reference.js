@@ -3,9 +3,9 @@ const getCollectionCrs = require('./get-collection-crs');
 const normalizeSpatialReference = require('./normalize-spatial-reference');
 
 function getSpatialReference(geojson, { inputCrs, sourceSR } = {}) {
-  if (!inputCrs && !sourceSR && _.isEmpty(geojson)) {
-    return { wkid: 4326, latestWkid: 4326 };
-  }
+  // if (!inputCrs && !sourceSR && _.isEmpty(geojson)) {
+  //   return { wkid: 4326, latestWkid: 4326 };
+  // }
 
   const spatialReference = inputCrs ||
     sourceSR ||

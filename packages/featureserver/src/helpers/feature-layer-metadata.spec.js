@@ -750,6 +750,38 @@ describe('FeatureLayerMetadata', () => {
       normalizeExtentSpy.callCount.should.equal(0);
     });
 
+    it('should fail to set extent from features', () => {
+      const envelopeSpy = sinon.spy(function () {
+        return { bbox: [-180, Infinity, 180, 90] };
+      });
+      const FeatureLayerMetadata = proxyquire('./feature-layer-metadata', {
+        '@turf/envelope': envelopeSpy,
+        './get-spatial-reference': getSpatialReferenceSpy,
+        './get-geometry-type-from-geojson': getGeometryTypeFromGeojsonSpy,
+        './normalize-extent': normalizeExtentSpy,
+      });
+      const featureLayerMetadata = new FeatureLayerMetadata();
+
+      featureLayerMetadata.mixinOverrides(
+        {
+          features: ['feature'],
+        },
+        {},
+      );
+
+      featureLayerMetadata.extent.should.deepEqual({
+        xmin: -180,
+        ymin: -90,
+        xmax: 180,
+        ymax: 90,
+        spatialReference: { wkid: 4326, latestWkid: 4326 },
+      });
+
+      getSpatialReferenceSpy.callCount.should.equal(1);
+      envelopeSpy.callCount.should.equal(1);
+      normalizeExtentSpy.callCount.should.equal(0);
+    });
+
     it('should set renderer from options', () => {
       const featureLayerMetadata = new FeatureLayerMetadata();
 

@@ -610,7 +610,7 @@ describe('server info', () => {
         {
           type: 'Feature',
           properties: {},
-          geometry: { type: 'Point', coordinates: ['test', 40] },
+          geometry: { type: 'Point', coordinates: ['test', undefined] },
         },
       ],
     };

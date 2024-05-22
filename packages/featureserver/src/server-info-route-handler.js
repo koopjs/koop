@@ -88,8 +88,8 @@ function calculateServiceExtentFromLayers(layers, spatialReference) {
       .map((layer) => {
         const { bbox } = envelope(layer);
         bbox.forEach((coordinate) => {
-          if (isNaN(coordinate)) {
-            throw new Error(`Geometry coordinate is not a number: ${coordinate}`);
+          if (!isFinite(coordinate)) {
+            throw new Error(`Feature does not contain valid geometry`);
           }
         });
         return bbox;
