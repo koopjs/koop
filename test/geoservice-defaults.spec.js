@@ -1,14 +1,13 @@
 const Koop = require('@koopjs/koop-core');
 const provider = require('@koopjs/provider-file-geojson');
 const request = require('supertest');
-const VERSION = 11.2;
-const FULL_VERSION = '11.2.0';
+const { CURRENT_VERSION, FULL_VERSION } = require('./helpers/client-response-fixtures');
 
 describe('Geoservices defaults settings', () => {
   const koop = new Koop({
     logLevel: 'error',
     geoservicesDefaults: {
-      currentVersion: VERSION,
+      currentVersion: CURRENT_VERSION,
       fullVersion: FULL_VERSION,
       layer: { supportedQueryFormats: 'JSON' },
     },
