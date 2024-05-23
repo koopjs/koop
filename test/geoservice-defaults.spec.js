@@ -19,7 +19,7 @@ describe('Geoservices defaults settings', () => {
         '/file-geojson/rest/services/polygon/FeatureServer',
       );
       expect(response.status).toBe(200);
-      expect(response.body.currentVersion).toBe(11.2);
+      expect(response.body.currentVersion).toBe(CURRENT_VERSION);
     } catch (error) {
       console.error(error);
       throw error;
@@ -32,7 +32,7 @@ describe('Geoservices defaults settings', () => {
         '/file-geojson/rest/services/polygon/FeatureServer/0',
       );
       expect(response.status).toBe(200);
-      expect(response.body.currentVersion).toBe(11.2);
+      expect(response.body.currentVersion).toBe(CURRENT_VERSION);
     } catch (error) {
       console.error(error);
       throw error;
