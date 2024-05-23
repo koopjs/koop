@@ -1,9 +1,7 @@
 const Koop = require('@koopjs/koop-core');
 const provider = require('@koopjs/provider-file-geojson');
 const request = require('supertest');
-const CURRENT_VERSION = 11.2;
-const COPYRIGHT_TEXT =
-  'Copyright information varies by provider. For more information please contact the source of this data.'; // eslint-disable-line
+const { CURRENT_VERSION, COPYRIGHT_TEXT } = require('./helpers/client-response-fixtures');
 
 const mockLogger = {
   debug: () => {},

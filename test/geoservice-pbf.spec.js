@@ -21,7 +21,7 @@ describe('koop', () => {
         try {
           const response = await request(koop.server)
             .get(
-              '/file-geojson/rest/services/points-w-objectid/FeatureServer/0/query?f=pbf&resultRecordCount=1',
+              '/file-geojson/rest/services/points-w-objectid/FeatureServer/0/query?f=pbf&resultRecordCount=1', // eslint-disable-line
             )
             .responseType('blob')
             .buffer();

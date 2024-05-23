@@ -1,4 +1,5 @@
 const CURRENT_VERSION = 11.2;
+const FULL_VERSION = '11.2.0';
 const COPYRIGHT_TEXT =
   'Copyright information varies by provider. For more information please contact the source of this data.';
 
@@ -543,4 +544,7 @@ module.exports = {
   paginated,
   getWithFilter,
   getAttributeTable,
+  CURRENT_VERSION,
+  FULL_VERSION,
+  COPYRIGHT_TEXT,
 };
