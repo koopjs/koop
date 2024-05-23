@@ -1,7 +1,7 @@
 const Koop = require('@koopjs/koop-core');
 const provider = require('@koopjs/provider-file-geojson');
 const request = require('supertest');
-const { CURRENT_VERSION } = require('./helpers/client-response-fixtures');
+const { CURRENT_VERSION, COPYRIGHT_TEXT } = require('./helpers/client-response-fixtures');
 const mockLogger = {
   debug: () => {},
   info: () => {},
@@ -34,8 +34,7 @@ describe('koop', () => {
           supportedExportFormats: '',
           capabilities: 'Query',
           description: 'GeoJSON from points-w-objectid.geojson',
-          copyrightText:
-            'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
+          copyrightText: COPYRIGHT_TEXT,
           spatialReference: { wkid: 4326, latestWkid: 4326 },
           fullExtent: {
             spatialReference: { wkid: 4326, latestWkid: 4326 },
@@ -108,8 +107,7 @@ describe('koop', () => {
           supportedExportFormats: '',
           capabilities: 'Query',
           description: 'test',
-          copyrightText:
-            'Copyright information varies by provider. For more information please contact the source of this data.', // eslint-disable-line
+          copyrightText: COPYRIGHT_TEXT,
           spatialReference: { wkid: 4326, latestWkid: 4326 },
           fullExtent: {
             spatialReference: { wkid: 4326, latestWkid: 4326 },
