@@ -1,6 +1,7 @@
 const Koop = require('@koopjs/koop-core');
 const provider = require('@koopjs/provider-file-geojson');
 const request = require('supertest');
+const { CURRENT_VERSION } = require('./helpers/client-response-fixtures');
 const mockLogger = {
   debug: () => {},
   info: () => {},
@@ -21,7 +22,7 @@ describe('koop', () => {
         );
         expect(response.status).toBe(200);
         expect(response.body).toEqual({
-          currentVersion: 11.2,
+          currentVersion: CURRENT_VERSION,
           serviceDescription: 'GeoJSON from points-w-objectid.geojson',
           hasVersionedData: false,
           supportsDisconnectedEditing: false,
@@ -95,7 +96,7 @@ describe('koop', () => {
         );
         expect(response.status).toBe(200);
         expect(response.body).toEqual({
-          currentVersion: 11.2,
+          currentVersion: CURRENT_VERSION,
           serviceDescription: 'test',
           hasVersionedData: false,
           supportsDisconnectedEditing: false,

@@ -1,6 +1,7 @@
 const Koop = require('@koopjs/koop-core');
 const provider = require('@koopjs/provider-file-geojson');
 const request = require('supertest');
+const { FULL_VERSION, CURRENT_VERSION } = require('./helpers/client-response-fixtures');
 const mockLogger = {
   debug: () => {},
   info: () => {},
@@ -27,8 +28,8 @@ describe('Feature Server Output - rest/info', () => {
 
       expect(isTokenBasedSecurity).toBe(true);
       expect(tokenServicesUrl).toMatch(/file-geojson\/rest\/generateToken$/);
-      expect(currentVersion).toBe(11.2);
-      expect(fullVersion).toBe('11.2.0');
+      expect(currentVersion).toBe(CURRENT_VERSION);
+      expect(fullVersion).toBe(FULL_VERSION);
     } catch (error) {
       console.error(error);
       throw error;
