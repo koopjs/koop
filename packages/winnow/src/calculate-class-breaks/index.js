@@ -5,14 +5,22 @@ const transformClassBreaksToRanges = require('./transform-class-breaks-to-ranges
 const filterAndValidateClassificationFeatures = require('./filter-and-validate-classification-features'); // eslint-disable-line
 
 function calculateClassBreaks(features, classification) {
-  if (!classification.method) throw new Error('must supply classification.method');
-  if (!classification.breakCount) throw new Error('must supply classification.breakCount');
+  if (!classification.method) {
+    throw new Error('must supply classification.method');
+  }
+
+  if (!classification.breakCount) {
+    throw new Error('must supply classification.breakCount');
+  }
 
   const values = classification.normType
     ? normalizeClassificationValues(features, classification)
     : getFieldValues(features, classification.field);
-  // limit break count to num values
-  if (classification.breakCount > values.length) classification.breakCount = values.length;
+
+  // limit break count to num values - 1; [1, 2, 3, 4, 5, 6] => [1-2, 2-3, 3-4, 4-5, 5-6]
+  if (classification.breakCount > values.length) {
+    classification.breakCount = values.length - 1;
+  }
 
   // calculate break ranges [ [a-b], [b-c], ...] from input values
   const classBreakArray = transformValuesToClassBreaksArray(values, classification);

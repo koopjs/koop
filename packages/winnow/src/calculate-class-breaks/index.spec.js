@@ -24,6 +24,31 @@ test('calculateClassBreaks: no breakCount', (t) => {
   }
 });
 
+test('calculateClassBreaks: breakCount > values', (t) => {
+  t.plan(1);
+  const features = [
+    { properties: { Trunk_Diameter: 13 } },
+    { properties: { Trunk_Diameter: 7 } },
+    { properties: { Trunk_Diameter: 17 } },
+    { properties: { Trunk_Diameter: 25 } },
+    { properties: { Trunk_Diameter: 3 } },
+  ];
+  const classification = {
+    type: 'classes',
+    field: 'Trunk_Diameter',
+    method: 'equalInterval',
+    breakCount: 6,
+  };
+
+  const result = calculateClassBreaks(features, classification);
+  t.deepEquals(result, [
+    [3, 8.5],
+    [8.6, 14],
+    [15, 19.5],
+    [19.6, 25],
+  ]);
+});
+
 test('calculateClassBreaks: no method', (t) => {
   t.plan(1);
   const features = [
@@ -171,6 +196,54 @@ test('calculateClassBreaks: quantile', (t) => {
   ]);
 });
 
+test('calculateClassBreaks: geomInterval not supported', (t) => {
+  t.plan(1);
+  const features = [
+    { properties: { Trunk_Diameter: 13 } },
+    { properties: { Trunk_Diameter: 7 } },
+    { properties: { Trunk_Diameter: 17 } },
+    { properties: { Trunk_Diameter: 25 } },
+    { properties: { Trunk_Diameter: 3 } },
+  ];
+  const classification = {
+    type: 'classes',
+    field: 'Trunk_Diameter',
+    method: 'geomInterval',
+    breakCount: 4,
+  };
+
+  try {
+    calculateClassBreaks(features, classification);
+    t.fail('should have thrown');
+  } catch (error) {
+    t.equals(error.message, 'Classification method not yet supported');
+  }
+});
+
+test('calculateClassBreaks: unknown method not supported', (t) => {
+  t.plan(1);
+  const features = [
+    { properties: { Trunk_Diameter: 13 } },
+    { properties: { Trunk_Diameter: 7 } },
+    { properties: { Trunk_Diameter: 17 } },
+    { properties: { Trunk_Diameter: 25 } },
+    { properties: { Trunk_Diameter: 3 } },
+  ];
+  const classification = {
+    type: 'classes',
+    field: 'Trunk_Diameter',
+    method: 'geomIntervalz',
+    breakCount: 4,
+  };
+
+  try {
+    calculateClassBreaks(features, classification);
+    t.fail('should have thrown');
+  } catch (error) {
+    t.equals(error.message, 'invalid classificationMethod: geomIntervalz');
+  }
+});
+
 test('calculateClassBreaks: normalize by field', (t) => {
   t.plan(1);
   const features = [
@@ -269,5 +342,30 @@ test('calculateClassBreaks: null values not used in breaks calculation', (t) => 
     [3, 10.333333333333332],
     [10.333333333333334, 17.666666666666664],
     [17.666666666666664, 25],
+  ]);
+});
+
+test('calculateClassBreaks: zero negative values', (t) => {
+  t.plan(1);
+  const features = [
+    { properties: { Trunk_Diameter: 13 } },
+    { properties: { Trunk_Diameter: -10 } },
+    { properties: { Trunk_Diameter: 7 } },
+    { properties: { Trunk_Diameter: 17 } },
+    { properties: { Trunk_Diameter: 25 } },
+    { properties: { Trunk_Diameter: 3 } },
+  ];
+  const classification = {
+    type: 'classes',
+    field: 'Trunk_Diameter',
+    method: 'equalInterval',
+    breakCount: 3,
+  };
+
+  const result = calculateClassBreaks(features, classification);
+  t.deepEquals(result, [
+    [0, 8.333333333333334],
+    [8.333333333333336, 16.666666666666668],
+    [16.666666666666668, 25],
   ]);
 });
