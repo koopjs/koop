@@ -1,5 +1,11 @@
 # @koopjs/winnow
 
+## 5.0.3
+
+### Patch Changes
+
+- breakCount needs to >= features.length - 1
+
 ## 5.0.2
 
 ### Patch Changes
