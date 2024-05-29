@@ -40,8 +40,8 @@ describe('Feature Server Output - /generateRenderer', () => {
         classBreakInfos: [
           {
             classMinValue: 900,
-            classMaxValue: 900,
-            label: '900-900',
+            classMaxValue: 985,
+            label: '900-985',
             description: '',
             symbol: {
               color: [0, 255, 0],
@@ -57,26 +57,9 @@ describe('Feature Server Output - /generateRenderer', () => {
             },
           },
           {
-            classMinValue: 901,
             classMaxValue: 1103,
-            label: '901-1103',
-            description: '',
-            symbol: {
-              color: [0, 255, 255],
-              outline: {
-                color: [190, 190, 190, 105],
-                width: 0.5,
-                type: 'esriSLS',
-                style: 'esriSLSSolid',
-              },
-              size: 7.5,
-              type: 'esriSMS',
-              style: 'esriSMSCircle',
-            },
-          },
-          {
-            classMinValue: 1104,
-            label: '1104-undefined',
+            classMinValue: 986,
+            label: '986-1103',
             description: '',
             symbol: {
               color: [0, 0, 255],
