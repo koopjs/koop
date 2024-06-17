@@ -52,7 +52,7 @@
     "@turf/boolean-equal": "^6.5.0",
     "@turf/boolean-intersects": "^6.5.0",
     "@turf/boolean-within": "^6.5.0",
-    "@turf/centroid": "^6.5.0",
+    "@turf/centroid": "^7.0.0",
     "@turf/envelope": "^6.5.0",
     "@turf/flatten": "^6.5.0",
     "@types/geojson": "^7946.0.14",
