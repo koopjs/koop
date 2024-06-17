@@ -54,7 +54,7 @@
     "@turf/boolean-within": "^6.5.0",
     "@turf/centroid": "^7.0.0",
     "@turf/envelope": "^6.5.0",
-    "@turf/flatten": "^6.5.0",
+    "@turf/flatten": "^7.0.0",
     "@types/geojson": "^7946.0.14",
     "alasql": "^4.4.0",
     "classybrew": "0.0.3",
