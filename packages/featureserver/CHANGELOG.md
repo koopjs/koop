@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 9.1.2
+
+### Patch Changes
+
+- use default func for turf libs
+
 ## 9.1.1
 
 ### Patch Changes
