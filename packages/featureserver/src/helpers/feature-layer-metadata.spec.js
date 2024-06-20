@@ -21,7 +21,7 @@ const normalizeExtentSpy = sinon.spy(function () {
 });
 
 const FeatureLayerMetadata = proxyquire('./feature-layer-metadata', {
-  '@turf/envelope': envelopeSpy,
+  '@turf/envelope': { default: envelopeSpy },
   './get-spatial-reference': getSpatialReferenceSpy,
   './get-geometry-type-from-geojson': getGeometryTypeFromGeojsonSpy,
   './normalize-extent': normalizeExtentSpy,
@@ -755,7 +755,7 @@ describe('FeatureLayerMetadata', () => {
         return { bbox: [-180, Infinity, 180, 90] };
       });
       const FeatureLayerMetadata = proxyquire('./feature-layer-metadata', {
-        '@turf/envelope': envelopeSpy,
+        '@turf/envelope': { default: envelopeSpy },
         './get-spatial-reference': getSpatialReferenceSpy,
         './get-geometry-type-from-geojson': getGeometryTypeFromGeojsonSpy,
         './normalize-extent': normalizeExtentSpy,
