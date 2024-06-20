@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const envelope = require('@turf/envelope');
+const envelope = require('@turf/envelope').default;
 const {
   getCollectionCrs,
   getGeometryTypeFromGeojson,
