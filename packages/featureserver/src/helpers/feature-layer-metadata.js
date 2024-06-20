@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const TableLayerMetadata = require('./table-layer-metadata');
 const { PointRenderer, LineRenderer, PolygonRenderer } = require('./renderers');
-const envelope = require('@turf/envelope');
+const envelope = require('@turf/envelope').default;
 const logManager = require('../log-manager');
 const getSpatialReference = require('./get-spatial-reference');
 const getGeometryTypeFromGeojson = require('./get-geometry-type-from-geojson');
