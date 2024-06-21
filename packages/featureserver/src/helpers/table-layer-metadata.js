@@ -3,6 +3,7 @@ const joi = require('joi');
 const defaults = require('../metadata-defaults');
 const logManager = require('../log-manager');
 const { LayerFields } = require('./fields');
+const { normalizeCapabilities } = require('./normalize-capabilities');
 
 const supportedQueryFormatsArraySchema = joi
   .array()
@@ -22,15 +23,15 @@ class TableLayerMetadata {
     return tableMetadata.mixinOverrides(normalizedGeojson, normalizedOptions);
   }
 
-  static normalizeInput(geojson, req) {
+  static normalizeInput(geojson, options) {
     const { metadata = {}, capabilities, ...normalizedGeojson } = geojson;
 
-    const { params: { layer: reqLayer } = {}, query = {} } = req;
+    const { params = {}, query = {} } = options;
 
-    const layerId = reqLayer != null ? reqLayer : req.layerId;
+    const layerId = params.layer != null ? params.layer : options.layerId;
 
     // TODO: deprecate req.app.locals.config usage
-    const { currentVersion, description } = _.get(req, 'app.locals.config.featureServer', {});
+    const { currentVersion, description } = _.get(options, 'app.locals.config.featureServer', {});
 
     const normalizedOptions = _.pickBy(
       {
@@ -39,7 +40,7 @@ class TableLayerMetadata {
         layerId,
         ...query,
         ...metadata,
-        capabilities: normalizeCapabilities(capabilities, metadata.capabilities),
+        capabilities: normalizeCapabilities({ capabilities, metadata }),
       },
       (value) => value,
     );
@@ -58,7 +59,7 @@ class TableLayerMetadata {
     Object.assign(this, defaults.tableLayerDefaults());
   }
 
-  mixinOverrides(geojson = {}, options = {}) {
+  mixinOverrides(geojson, options) {
     const {
       id,
       idField = 'OBJECTID',
@@ -95,10 +96,7 @@ class TableLayerMetadata {
   }
 
   _setFields(data, options) {
-    const fields = LayerFields.create({ ...data, ...options });
-    if (fields) {
-      this.fields = fields;
-    }
+    this.fields = LayerFields.create({ ...data, ...options });
   }
 
   _setId(layerId, metadataId) {
@@ -111,11 +109,7 @@ class TableLayerMetadata {
   }
 
   _setDisplayField(displayField, idField) {
-    const overrideDisplayField = displayField || idField;
-
-    if (overrideDisplayField) {
-      this.displayField = overrideDisplayField;
-    }
+    this.displayField = displayField || idField;
   }
 
   _setHasStaticData(hasStaticData) {
@@ -125,24 +119,14 @@ class TableLayerMetadata {
   }
 
   _setCapabilities(capabilities) {
-    if (!capabilities) {
+    if (capabilities) {
+      this.capabilities = capabilities;
       return;
-    }
-
-    if (capabilities.list) {
-      this.capabilities = capabilities.list;
-      return;
-    }
-
-    if (_.has(capabilities, 'extract') && !this.capabilities.includes('Extract')) {
-      this.capabilities = `${this.capabilities},Extract`;
     }
   }
 
   _setUniqueIdField(idField) {
-    if (idField) {
-      this.uniqueIdField.name = idField;
-    }
+    this.uniqueIdField.name = idField;
   }
 
   _setPagination(supportsPagination) {
@@ -206,20 +190,6 @@ class TableLayerMetadata {
       logManager.logger.error(error.message);
     }
   }
-}
-
-function normalizeCapabilities(capabilities, metadataCapabilites) {
-  if (_.isString(metadataCapabilites)) {
-    return {
-      ...capabilities,
-      list: metadataCapabilites,
-    };
-  }
-
-  return {
-    ...(metadataCapabilites || {}),
-    ...capabilities,
-  };
 }
 
 function validateQueryFormatsArray(arr) {

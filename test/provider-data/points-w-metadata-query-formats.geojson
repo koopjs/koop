@@ -2,7 +2,8 @@
   "type": "FeatureCollection",
   "metadata": {
     "idField": "id",
-    "supportedQueryFormats": "JSON"
+    "supportedQueryFormats": "JSON",
+    "capabilities": "Query, Editing"
     },
   "features": [
     {

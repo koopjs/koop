@@ -160,5 +160,19 @@ describe('koop', () => {
         throw error;
       }
     });
+
+    test('handles capabilities override', async () => {
+      try {
+        const response = await request(koop.server).get(
+          '/file-geojson/rest/services/points-w-metadata-query-formats/FeatureServer',
+        );
+        expect(response.status).toBe(200);
+        const { capabilities } = response.body;
+        expect(capabilities).toBe('Query, Editing');
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    });
   });
 });

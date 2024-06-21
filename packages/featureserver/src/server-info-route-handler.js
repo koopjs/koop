@@ -12,6 +12,7 @@ const {
 const logManager = require('./log-manager');
 const ServerMetadata = require('./helpers/server-metadata');
 const { generalResponseHandler } = require('./response-handlers');
+const { normalizeCapabilities } = require('./helpers/normalize-capabilities');
 
 function serverInfo(req, res, data) {
   const requestParameters = combineBodyQueryParameters(req.body, req.query);
@@ -24,7 +25,7 @@ function serverInfo(req, res, data) {
 
   const metadata = normalizeMetadata(layers[0], tables[0], restData);
   const spatialReference = getSpatialReference(inputCrs, sourceSR, layers[0]);
-
+  const capabilities = normalizeCapabilities({...restData, metadata});
   metadata.fullExtent = getExtent(metadata.extent, layers, spatialReference);
   metadata.initialExtent = getExtent(
     metadata.initialExtent || metadata.extent,
@@ -39,6 +40,7 @@ function serverInfo(req, res, data) {
     ...appConfig,
     ...metadata,
     spatialReference,
+    capabilities,
     currentVersion: appConfig.currentVersion,
     layers: layers.map(formatServerItemInfo),
     tables: tables.map((table, idx) => {

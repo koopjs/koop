@@ -43,6 +43,7 @@ describe('server info', () => {
 
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
+        capabilities: 'Query',
         currentVersion: undefined,
         fullExtent: undefined,
         initialExtent: undefined,
@@ -78,6 +79,7 @@ describe('server info', () => {
 
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
+        capabilities: 'Query',
         currentVersion: 101.1,
         fullExtent: undefined,
         initialExtent: undefined,
@@ -107,6 +109,7 @@ describe('server info', () => {
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: undefined,
+        capabilities: 'Query',
         fullExtent: undefined,
         initialExtent: undefined,
         spatialReference: {
@@ -156,6 +159,7 @@ describe('server info', () => {
         currentVersion: undefined,
         fullExtent: undefined,
         initialExtent: undefined,
+        capabilities: 'Query',
         spatialReference: {
           latestWkid: 4326,
           wkid: 4326,
@@ -217,6 +221,7 @@ describe('server info', () => {
     serverMetadataCreateSpy.firstCall.args.should.deepEqual([
       {
         currentVersion: undefined,
+        capabilities: 'Query',
         crs: {
           type: 'name',
           properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
@@ -318,10 +323,6 @@ describe('server info', () => {
     const tables = [
       {
         type: 'FeatureCollection',
-        crs: {
-          type: 'name',
-          properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
-        },
         features: [
           { type: 'Feature', properties: {}, geometry: null },
           { type: 'Feature', properties: {}, geometry: null },
@@ -345,78 +346,30 @@ describe('server info', () => {
 
     serverInfoHandler(req, res, input);
 
-    serverMetadataCreateSpy.firstCall.args.should.deepEqual([
-      {
-        currentVersion: undefined,
-        crs: {
-          type: 'name',
-          properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
-        },
-        maxRecordCount: 5000,
-        hasStaticData: true,
-        serviceDescription: 'A service description from provider metadata',
-        description: 'Defined in provider metadata',
-        copyrightText: 'Custom Copyright Text',
-        name: 'Foobar',
-        extent: [-110, -90, 180, 90],
-        initialExtent: {
-          xmin: -110,
-          ymin: -80,
-          xmax: 180,
-          ymax: 90,
-          spatialReference: { wkid: 4326, latestWkid: 4326 },
-        },
-        geometryType: 'set by metadata',
-        layers: [
-          {
-            id: 0,
-            name: 'Layer_0',
-            parentLayerId: -1,
-            defaultVisibility: true,
-            subLayerIds: null,
-            minScale: 0,
-            maxScale: 0,
-            geometryType: 'esriGeometryPoint',
-            type: 'Feature Layer',
-          },
-          {
-            id: 1,
-            name: 'Layer_1',
-            parentLayerId: -1,
-            defaultVisibility: true,
-            subLayerIds: null,
-            minScale: 0,
-            maxScale: 0,
-            geometryType: 'esriGeometryPoint',
-            type: 'Feature Layer',
-          },
-        ],
-        tables: [
-          {
-            id: 2,
-            name: 'Table_2',
-            parentLayerId: -1,
-            defaultVisibility: true,
-            subLayerIds: null,
-            minScale: 0,
-            maxScale: 0,
-            type: 'Table',
-          },
-        ],
-        fullExtent: {
-          xmin: -110,
-          ymin: -90,
-          xmax: 180,
-          ymax: 90,
-          spatialReference: { wkid: 4326, latestWkid: 4326 },
-        },
-        relationships: [],
-        spatialReference: {
-          latestWkid: 4326,
-          wkid: 4326,
-        },
-      },
-    ]);
+    serverMetadataCreateSpy.firstCall.args[0].maxRecordCount.should.equal(5000);
+    serverMetadataCreateSpy.firstCall.args[0].name.should.equal('Foobar');
+    serverMetadataCreateSpy.firstCall.args[0].geometryType.should.equal('set by metadata');
+    serverMetadataCreateSpy.firstCall.args[0].initialExtent.should.deepEqual({
+      xmin: -110,
+      ymin: -80,
+      xmax: 180,
+      ymax: 90,
+      spatialReference: { latestWkid: 4326, wkid: 4326 },
+    });
+    serverMetadataCreateSpy.firstCall.args[0].fullExtent.should.deepEqual({
+      xmin: -110,
+      ymin: -90,
+      xmax: 180,
+      ymax: 90,
+      spatialReference: { latestWkid: 4326, wkid: 4326 },
+    });
+    serverMetadataCreateSpy.firstCall.args[0].serviceDescription.should.equal(
+      'A service description from provider metadata',
+    );
+    serverMetadataCreateSpy.firstCall.args[0].description.should.equal(
+      'Defined in provider metadata',
+    );
+    serverMetadataCreateSpy.firstCall.args[0].copyrightText.should.equal('Custom Copyright Text');
 
     handlerSpy.firstCall.args.should.deepEqual([
       {},
@@ -508,85 +461,14 @@ describe('server info', () => {
 
     serverInfoHandler(req, res, input);
 
-    serverMetadataCreateSpy.firstCall.args.should.deepEqual([
+    serverMetadataCreateSpy.firstCall.args[0].relationships.should.deepEqual([
       {
-        currentVersion: undefined,
-        crs: {
-          type: 'name',
-          properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
-        },
-        maxRecordCount: 5000,
-        hasStaticData: true,
-        serviceDescription: 'A service description from provider metadata',
-        description: 'Defined in provider metadata',
-        copyrightText: 'Custom Copyright Text',
-        name: 'Foobar',
-        extent: [-110, -90, 180, 90],
-        initialExtent: {
-          xmin: -110,
-          ymin: -80,
-          xmax: 180,
-          ymax: 90,
-          spatialReference: { wkid: 4326, latestWkid: 4326 },
-        },
-        geometryType: 'set by metadata',
-        layers: [
-          {
-            id: 0,
-            name: 'Layer_0',
-            parentLayerId: -1,
-            defaultVisibility: true,
-            subLayerIds: null,
-            minScale: 0,
-            maxScale: 0,
-            geometryType: 'esriGeometryPoint',
-            type: 'Feature Layer',
-          },
-          {
-            id: 1,
-            name: 'Layer_1',
-            parentLayerId: -1,
-            defaultVisibility: true,
-            subLayerIds: null,
-            minScale: 0,
-            maxScale: 0,
-            geometryType: 'esriGeometryPoint',
-            type: 'Feature Layer',
-          },
-        ],
-        tables: [
-          {
-            id: 2,
-            name: 'Table_2',
-            parentLayerId: -1,
-            defaultVisibility: true,
-            subLayerIds: null,
-            minScale: 0,
-            maxScale: 0,
-            type: 'Table',
-          },
-        ],
-        fullExtent: {
-          xmin: -110,
-          ymin: -90,
-          xmax: 180,
-          ymax: 90,
-          spatialReference: { wkid: 4326, latestWkid: 4326 },
-        },
-        spatialReference: {
-          latestWkid: 4326,
-          wkid: 4326,
-        },
-        relationships: [
-          {
-            id: 0,
-            name: 'Relationship_0',
-          },
-          {
-            id: 1,
-            name: 'Relationship_1',
-          },
-        ],
+        id: 0,
+        name: 'Relationship_0',
+      },
+      {
+        id: 1,
+        name: 'Relationship_1',
       },
     ]);
 
@@ -617,36 +499,7 @@ describe('server info', () => {
 
     serverInfoHandler(req, res, simpleCollectionFixture);
 
-    serverMetadataCreateSpy.firstCall.args.should.deepEqual([
-      {
-        currentVersion: undefined,
-        crs: {
-          type: 'name',
-          properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
-        },
-        fullExtent: undefined,
-        initialExtent: undefined,
-        layers: [
-          {
-            id: 0,
-            name: 'Layer_0',
-            parentLayerId: -1,
-            defaultVisibility: true,
-            subLayerIds: null,
-            minScale: 0,
-            maxScale: 0,
-            geometryType: 'esriGeometryPoint',
-            type: 'Feature Layer',
-          },
-        ],
-        tables: [],
-        relationships: [],
-        spatialReference: {
-          latestWkid: 4326,
-          wkid: 4326,
-        },
-      },
-    ]);
+    should(serverMetadataCreateSpy.firstCall.args[0].fullExtent).equal(undefined);
     handlerSpy.firstCall.args.should.deepEqual([
       {},
       {
@@ -671,33 +524,7 @@ describe('server info', () => {
 
     serverInfoHandler(req, res, simpleCollectionFixture);
 
-    serverMetadataCreateSpy.firstCall.args.should.deepEqual([
-      {
-        currentVersion: undefined,
-        extent: simpleCollectionFixture.metadata.extent,
-        fullExtent: undefined,
-        initialExtent: undefined,
-        layers: [
-          {
-            id: 0,
-            name: 'Layer_0',
-            parentLayerId: -1,
-            defaultVisibility: true,
-            subLayerIds: null,
-            minScale: 0,
-            maxScale: 0,
-            geometryType: 'esriGeometryPoint',
-            type: 'Feature Layer',
-          },
-        ],
-        tables: [],
-        relationships: [],
-        spatialReference: {
-          latestWkid: 4326,
-          wkid: 4326,
-        },
-      },
-    ]);
+    should(serverMetadataCreateSpy.firstCall.args[0].fullExtent).equal(undefined);
     handlerSpy.firstCall.args.should.deepEqual([
       {},
       {

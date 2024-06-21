@@ -18,6 +18,7 @@ const OVERRIDABLE_DEFAULTS = [
   'layers',
   'tables',
   'relationships',
+  'capabilities',
 ];
 
 class ServerMetadata {
