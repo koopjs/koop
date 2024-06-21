@@ -25,7 +25,7 @@ function serverInfo(req, res, data) {
 
   const metadata = normalizeMetadata(layers[0], tables[0], restData);
   const spatialReference = getSpatialReference(inputCrs, sourceSR, layers[0]);
-  const capabilities = normalizeCapabilities({...restData, metadata});
+  const capabilities = normalizeCapabilities({ ...restData, metadata });
   metadata.fullExtent = getExtent(metadata.extent, layers, spatialReference);
   metadata.initialExtent = getExtent(
     metadata.initialExtent || metadata.extent,
