@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 9.2.0
+
+### Minor Changes
+
+Adding back support for geojson as an output schema
+
 ## 9.1.2
 
 ### Patch Changes
