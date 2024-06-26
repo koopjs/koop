@@ -1,5 +1,12 @@
 # @koopjs/output-geoservices
 
+## 8.1.23
+
+### Patch Changes
+
+- Updated dependencies [0445801]
+  - @koopjs/featureserver@9.2.0
+
 ## 8.1.22
 
 ### Patch Changes
