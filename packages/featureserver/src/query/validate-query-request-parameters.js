@@ -1,7 +1,7 @@
 const joi = require('joi');
 const { sharedQueryParamSchema } = require('../helpers/shared-query-request-param-schema');
 
-const formatSchema = joi.string().valid('json', 'pjson', 'pbf').default('json');
+const formatSchema = joi.string().valid('json', 'pjson', 'pbf', 'geojson').default('json');
 
 const spatialReferenceSchema = joi
   .object({

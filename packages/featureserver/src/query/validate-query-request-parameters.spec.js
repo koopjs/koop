@@ -34,7 +34,7 @@ describe('validate-query-request-parameters', () => {
         });
       } catch (error) {
         error.message.should.deepEqual('Invalid format');
-        error.details.should.deepEqual(['"f" must be one of [json, pjson, pbf]']);
+        error.details.should.deepEqual(['"f" must be one of [json, pjson, pbf, geojson]']);
         error.code.should.equal(400);
       }
     });
