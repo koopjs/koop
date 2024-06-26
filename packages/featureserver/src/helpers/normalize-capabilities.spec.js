@@ -12,6 +12,15 @@ describe('normalizeCapabilities', function () {
     result.should.deepEqual('Query, Hello, Foo, Bar, World');
   });
 
+  it('use legacy "list"', () => {
+    const result = normalizeCapabilities({
+      metadata: {
+        capabilities: { list: 'hello, foo,bar' },
+      },
+    });
+    result.should.deepEqual('Query, Hello, Foo, Bar');
+  });
+
   it('combine arrays from root-level and metadata object', () => {
     const result = normalizeCapabilities({
       capabilities: ['Hello', 'world'],

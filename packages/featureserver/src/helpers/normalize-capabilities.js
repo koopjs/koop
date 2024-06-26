@@ -18,6 +18,11 @@ function convertCapabilityToArray(capabilities = []) {
     return capabilities;
   }
 
+  // backwards compatability for old providers using capabilities.list
+  if (capabilities.list) {
+    return convertCapabilityToArray(capabilities.list);
+  }
+
   if (_.isObject(capabilities)) {
     return Object.entries(capabilities).reduce((acc, [key, val]) => {
       if (val === true) {
