@@ -266,7 +266,7 @@ describe('FeatureLayerMetadata', () => {
       ]);
     });
 
-    it.skip('should set quanitization if capabilities.quantization === true', () => {
+    it('should set quanitization if supportsCoordinateQuantization === true', () => {
       const featureLayerMetadata = new FeatureLayerMetadata();
 
       featureLayerMetadata.mixinOverrides(
@@ -274,9 +274,7 @@ describe('FeatureLayerMetadata', () => {
           features: [],
         },
         {
-          capabilities: {
-            quantization: true,
-          },
+          supportsCoordinatesQuantization: true,
         },
       );
       featureLayerMetadata.should.deepEqual({

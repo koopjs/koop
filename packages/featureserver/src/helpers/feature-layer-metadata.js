@@ -25,11 +25,9 @@ class FeatureLayerMetadata extends TableLayerMetadata {
   mixinOverrides(geojson, options = {}) {
     super.mixinOverrides(geojson, options);
 
-    const { renderer, labelingInfo, extent, inputCrs, sourceSR, capabilities = {} } = options;
+    const { renderer, labelingInfo, extent, inputCrs, sourceSR } = options;
 
     this.geometryType = getGeometryTypeFromGeojson({ ...geojson, ...options });
-
-    this.supportsCoordinatesQuantization = !!capabilities.quantization;
 
     this.#_setExtent(geojson, { inputCrs, sourceSR, extent });
 
@@ -76,11 +74,13 @@ class FeatureLayerMetadata extends TableLayerMetadata {
 
   #_setDirectOverrides(options) {
     super._setDirectOverrides(options);
-    const { minScale, maxScale } = options;
+    const { minScale, maxScale, supportsCoordinatesQuantization, allowGeometryUpdates } = options;
 
     _.merge(this, {
       minScale,
       maxScale,
+      allowGeometryUpdates,
+      supportsCoordinatesQuantization,
     });
   }
 }

@@ -19,6 +19,7 @@ const OVERRIDABLE_DEFAULTS = [
   'tables',
   'relationships',
   'capabilities',
+  'allowGeometryUpdates',
 ];
 
 class ServerMetadata {
