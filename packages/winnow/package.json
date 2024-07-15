@@ -56,7 +56,7 @@
     "@turf/envelope": "^7.0.0",
     "@turf/flatten": "^7.0.0",
     "@types/geojson": "^7946.0.14",
-    "alasql": "^4.4.0",
+    "alasql": "^4.5.0",
     "classybrew": "0.0.3",
     "joi": "^17.13.3",
     "js-sql-parser": "^1.6.0",
