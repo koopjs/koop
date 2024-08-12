@@ -51,7 +51,7 @@
     "@turf/boolean-contains": "^7.0.0",
     "@turf/boolean-equal": "^7.0.0",
     "@turf/boolean-intersects": "^7.0.0",
-    "@turf/boolean-within": "^7.0.0",
+    "@turf/boolean-within": "^7.1.0",
     "@turf/centroid": "^7.0.0",
     "@turf/envelope": "^7.0.0",
     "@turf/flatten": "^7.0.0",
