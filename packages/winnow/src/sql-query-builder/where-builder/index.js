@@ -8,7 +8,7 @@ const timestampWithoutZoneRegex = /^\d{4}-\d{2}-\d{2} {0,1}\d{0,2}:{0,1}\d{0,2}:
 const fieldFirstObjectIdPredicateRegex =
   /(properties|attributes)->`OBJECTID` (=|<|>|<=|>=) ([0-9]+)/g;
 
-const objectidInPredicateRegex = /(properties|attributes)->`OBJECTID` (IN) \((.+)\)/g;
+const objectidInPredicateRegex = /(properties|attributes)->`OBJECTID` (IN) \(([0-9,\s]+)\)/g;
 
 // RegExp for value-first predicate, e.g "1234 = properties->`OBJECTID`""
 const valueFirstObjectIdPredicateRegex =
