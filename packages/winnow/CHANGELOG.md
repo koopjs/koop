@@ -1,5 +1,11 @@
 # @koopjs/winnow
 
+## 5.0.4
+
+### Patch Changes
+
+Fix issue with object id queries
+
 ## 5.0.3
 
 ### Patch Changes

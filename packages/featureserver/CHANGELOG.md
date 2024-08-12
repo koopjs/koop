@@ -1,5 +1,12 @@
 # @koopjs/featureserver
 
+## 9.2.1
+
+### Patch Changes
+
+- Updated dependencies [642ab7e]
+  - @koopjs/winnow@5.0.4
+
 ## 9.2.0
 
 ### Minor Changes
