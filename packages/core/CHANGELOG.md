@@ -1,5 +1,11 @@
 # @koopjs/koop-core
 
+## 10.4.17
+
+### Patch Changes
+
+Fixed default cache key generation to support POST requests
+
 ## 10.4.16
 
 ### Patch Changes

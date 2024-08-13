@@ -1,7 +1,7 @@
 {
   "name": "@koopjs/koop-core",
   "description": "Serve, transform, and query geospatial data on the web",
-  "version": "10.4.16",
+  "version": "10.4.17",
   "contributors": [
     {
       "name": "Rich Gwozdz",
