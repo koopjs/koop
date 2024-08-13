@@ -198,7 +198,20 @@ module.exports = function extendModel(
       if (providerKeyGenerator) {
         return providerKeyGenerator(req);
       }
-      return hasher(req.url).toString();
+
+      const url = new URL(req.url, `http://${req.headers.host}`);
+      const base = url.origin + url.pathname;
+      const params = Object.assign({}, req.query, req.body);
+
+      return (
+        hasher
+          //  Use larger hash here to have less collisions. Parameters can be quite large since
+          //  geometries and OBJECTID sets can be passed in
+          .bigInt(`${base}::${JSON.stringify(params)}`, {
+            size: 128,
+          })
+          .toString()
+      );
     }
 
     async #authorizeRequest(req) {
