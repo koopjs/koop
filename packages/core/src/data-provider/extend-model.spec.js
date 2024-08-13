@@ -20,6 +20,22 @@ const mockLogger = {
   info: () => {},
 };
 
+const genMockRequest = ({
+  url = '/arcgis/rest/services/FeatureServer/0/query',
+  headers,
+  params = {},
+  query = {},
+  body = {},
+  ...other
+} = {}) => ({
+  ...other,
+  url,
+  headers: _.merge({ host: 'http://localhost' }, headers),
+  params,
+  query,
+  body,
+});
+
 class MockModel {
   constructor(koop, options) {
     this.options = options;
@@ -124,11 +140,7 @@ describe('Tests for extend-model', function () {
           cache: mockCache,
         });
 
-        const data = await model.pull({
-          url: 'domain/test-provider',
-          params: {},
-          query: {},
-        });
+        const data = await model.pull(genMockRequest());
         data.should.deepEqual({ metadata: {} });
         mockCache.retrieve.calledOnce.should.equal(true);
         getDataSpy.called.should.equal(true);
@@ -154,11 +166,7 @@ describe('Tests for extend-model', function () {
           cache: mockCache,
         });
 
-        const data = await model.pull({
-          url: 'domain/test-provider',
-          params: {},
-          query: {},
-        });
+        const data = await model.pull(genMockRequest());
         data.should.deepEqual({ metadata: {}, ttl: 5 });
         mockCache.retrieve.calledOnce.should.equal(true);
         getDataSpy.calledOnce.should.equal(true);
@@ -186,11 +194,7 @@ describe('Tests for extend-model', function () {
           },
         );
 
-        const data = await model.pull({
-          url: 'domain/test-provider',
-          params: {},
-          query: {},
-        });
+        const data = await model.pull(genMockRequest());
         data.should.deepEqual({ metadata: {} });
         mockCache.retrieve.calledOnce.should.equal(true);
         getDataSpy.calledOnce.should.equal(true);
@@ -217,11 +221,7 @@ describe('Tests for extend-model', function () {
           cache: mockCache,
         });
 
-        const data = await model.pull({
-          url: 'domain/test-provider',
-          params: {},
-          query: {},
-        });
+        const data = await model.pull(genMockRequest());
         data.should.deepEqual({
           foo: 'bar',
         });
@@ -257,11 +257,7 @@ describe('Tests for extend-model', function () {
           cache: mockCache,
         });
 
-        const data = await model.pull({
-          url: 'domain/test-provider',
-          params: {},
-          query: {},
-        });
+        const data = await model.pull(genMockRequest());
         data.should.deepEqual({
           _cache: {
             updated: 0,
@@ -301,11 +297,7 @@ describe('Tests for extend-model', function () {
           cache: mockCache,
         });
 
-        const data = await model.pull({
-          url: 'domain/test-provider',
-          params: {},
-          query: {},
-        });
+        const data = await model.pull(genMockRequest());
         data.should.deepEqual({
           metadata: {
             updated: 0,
@@ -338,11 +330,7 @@ describe('Tests for extend-model', function () {
         });
 
         try {
-          await model.pull({
-            url: 'domain/test-provider',
-            params: {},
-            query: {},
-          });
+          await model.pull(genMockRequest());
           should.fail();
         } catch (err) {
           err.message.should.equal('unauthorized');
@@ -370,11 +358,7 @@ describe('Tests for extend-model', function () {
         });
 
         try {
-          await model.pull({
-            url: 'domain/test-provider',
-            params: {},
-            query: {},
-          });
+          await model.pull(genMockRequest());
           should.fail();
         } catch (err) {
           err.message.should.equal('err in getData');
@@ -406,11 +390,7 @@ describe('Tests for extend-model', function () {
 
         const pullData = promisify(model.pull).bind(model);
 
-        const data = await pullData({
-          url: 'domain/test-provider',
-          params: {},
-          query: {},
-        });
+        const data = await pullData(genMockRequest());
         data.should.deepEqual({ metadata: {} });
         mockCache.retrieve.calledOnce.should.equal(true);
         getDataSpy.called.should.equal(true);
@@ -440,7 +420,7 @@ describe('Tests for extend-model', function () {
         logger: mockLogger,
         cache: mockCache,
       });
-      await model.pull({ url: 'domain/test-provider', query: {} }, pullSpy);
+      await model.pull(genMockRequest(), pullSpy);
       mockCache.retrieve.should.be.calledOnce();
       mockCache.retrieve.firstCall.args.length.should.equal(3);
       mockCache.retrieve.firstCall.args[0].should.equal('custom-key');
@@ -450,6 +430,85 @@ describe('Tests for extend-model', function () {
       pullSpy.firstCall.args.length.should.equal(2);
       should.not.exist(pullSpy.firstCall.args[0]);
       pullSpy.firstCall.args[1].should.deepEqual({ foo: 'bar' });
+    });
+
+    it('default cache key should support the POST requests and consider body payload', async () => {
+      const mockCache = {
+        retrieve: sinon.spy((key, query, callback) => {
+          callback(null, { foo: 'bar' });
+        }),
+        insert: sinon.spy(() => {}),
+      };
+      const pullSpy = sinon.spy();
+
+      class Model extends MockModel {}
+      const model = extendModel({
+        ProviderModel: Model,
+        logger: mockLogger,
+        cache: mockCache,
+      });
+
+      await model.pull(
+        genMockRequest({
+          body: { f: 'json' },
+        }),
+        pullSpy,
+      );
+
+      await model.pull(
+        genMockRequest({
+          body: { f: 'pbf' },
+        }),
+        pullSpy,
+      );
+
+      mockCache.retrieve.should.be.calledTwice();
+
+      // Verify that posts with different bodies generate different keys
+      mockCache.retrieve.firstCall.args[0].should.not.equal(mockCache.retrieve.secondCall.args[0]);
+    });
+
+    it('default cache key should support both GET & POST request methods', async () => {
+      const mockCache = {
+        retrieve: sinon.spy((key, query, callback) => {
+          callback(null, { foo: 'bar' });
+        }),
+        insert: sinon.spy(() => {}),
+      };
+      const pullSpy = sinon.spy();
+
+      class Model extends MockModel {}
+      const model = extendModel({
+        ProviderModel: Model,
+        logger: mockLogger,
+        cache: mockCache,
+      });
+
+      // GET
+      await model.pull(
+        genMockRequest({
+          url: '/arcgis/rest/services/FeatureServer/0/query?f=json',
+          query: { f: 'json' },
+        }),
+        pullSpy,
+      );
+
+      // POST
+      await model.pull(
+        genMockRequest({
+          // Notice no query params. This would cache incorrectly before when only
+          // hashing on url for POSTs
+          url: '/arcgis/rest/services/FeatureServer/0/query',
+          body: { f: 'json' },
+        }),
+        pullSpy,
+      );
+
+      mockCache.retrieve.should.be.calledTwice();
+
+      // Verify that both the GET and POST requests generate the same default key
+      mockCache.retrieve.firstCall.args[0].should.equal(mockCache.retrieve.secondCall.args[0]);
+      mockCache.retrieve.secondCall.args[0].should.equal(mockCache.retrieve.firstCall.args[0]);
     });
   });
 
@@ -545,7 +604,7 @@ describe('Tests for extend-model', function () {
         },
       );
 
-      const req = { url: 'domain/test-provider', params: {}, query: {} };
+      const req = genMockRequest();
       await model.pull(req, function () {});
       beforeSpy.should.be.calledOnce();
       beforeSpy.firstCall.args.length.should.equal(2);
@@ -554,11 +613,11 @@ describe('Tests for extend-model', function () {
 
       getDataSpy.should.be.calledOnce();
       getDataSpy.firstCall.args.length.should.equal(2);
-      getDataSpy.firstCall.args[0].should.be.an.Object().and.deepEqual({
-        url: 'domain/test-provider',
-        params: {},
-        query: { hello: 'world' },
-      });
+      getDataSpy.firstCall.args[0].should.be.an.Object().and.deepEqual(
+        genMockRequest({
+          query: { hello: 'world' },
+        }),
+      );
       getDataSpy.firstCall.args[1].should.be.a.Function();
     });
 
@@ -589,29 +648,21 @@ describe('Tests for extend-model', function () {
         },
       );
 
-      await model.pull({ url: 'domain/test-provider', params: {}, query: {} }, pullCallbackSpy);
+      await model.pull(genMockRequest(), pullCallbackSpy);
       getDataSpy.should.be.calledOnce();
       getDataSpy.firstCall.args.length.should.equal(2);
-      getDataArgs[0].should.deepEqual({
-        url: 'domain/test-provider',
-        params: {},
-        query: {},
-      });
+      getDataArgs[0].should.deepEqual(genMockRequest());
       getDataSpy.firstCall.args[1].should.be.an.Function();
 
       afterSpy.should.be.calledOnce();
       afterSpy.firstCall.args.length.should.equal(3);
       afterSpy.firstCall.args[0].should.be.an.Object();
-      afterSpyArgs[0].should.deepEqual({
-        url: 'domain/test-provider',
-        params: {},
-        query: {},
-      });
-      afterSpy.firstCall.args[0].should.deepEqual({
-        url: 'domain/test-provider',
-        params: {},
-        query: { hello: 'world' },
-      }); // captures the expected change to the req argument in the after function
+      afterSpyArgs[0].should.deepEqual(genMockRequest());
+      afterSpy.firstCall.args[0].should.deepEqual(
+        genMockRequest({
+          query: { hello: 'world' },
+        }),
+      ); // captures the expected change to the req argument in the after function
       afterSpyArgs[1].should.deepEqual({ metadata: {} });
       afterSpy.firstCall.args[2].should.be.an.Function();
 
@@ -652,7 +703,7 @@ describe('Tests for extend-model', function () {
       const pullLayer = promisify(model.pullLayer).bind(model);
 
       try {
-        await pullLayer({ url: 'domain/test-provider', params: {}, query: {} });
+        await pullLayer(genMockRequest());
         should.fail();
       } catch (err) {
         err.message.should.equal('unauthorized');
@@ -699,11 +750,7 @@ describe('Tests for extend-model', function () {
 
       const pullLayer = promisify(model.pullLayer).bind(model);
 
-      const data = await pullLayer({
-        url: 'domain/test-provider',
-        params: {},
-        query: {},
-      });
+      const data = await pullLayer(genMockRequest());
       data.should.deepEqual({
         layer: 'foo',
       });
@@ -735,11 +782,7 @@ describe('Tests for extend-model', function () {
 
       const pullLayer = promisify(model.pullLayer).bind(model);
 
-      const data = await pullLayer({
-        url: 'domain/test-provider',
-        params: {},
-        query: {},
-      });
+      const data = await pullLayer(genMockRequest());
       data.should.deepEqual({
         layer: 'cached',
       });
@@ -763,11 +806,7 @@ describe('Tests for extend-model', function () {
 
       const pullLayer = promisify(model.pullLayer).bind(model);
 
-      const data = await pullLayer({
-        url: 'domain/test-provider',
-        params: {},
-        query: {},
-      });
+      const data = await pullLayer(genMockRequest());
       data.should.deepEqual({
         layer: 'foo',
       });
@@ -791,11 +830,7 @@ describe('Tests for extend-model', function () {
 
       const pullLayer = promisify(model.pullLayer).bind(model);
 
-      const data = await pullLayer({
-        url: 'domain/test-provider',
-        params: {},
-        query: {},
-      });
+      const data = await pullLayer(genMockRequest());
       data.should.deepEqual({
         layer: 'foo',
         ttl: 10,
@@ -829,11 +864,7 @@ describe('Tests for extend-model', function () {
 
       const pullLayer = promisify(model.pullLayer).bind(model);
 
-      const data = await pullLayer({
-        url: 'domain/test-provider',
-        params: {},
-        query: {},
-      });
+      const data = await pullLayer(genMockRequest());
       data.should.deepEqual({
         layer: 'foo',
         ttl: 10,
@@ -866,7 +897,7 @@ describe('Tests for extend-model', function () {
       const pullLayer = promisify(model.pullLayer).bind(model);
 
       try {
-        await pullLayer({ url: 'domain/test-provider', params: {}, query: {} });
+        await pullLayer(genMockRequest());
         should.fail();
       } catch (err) {
         err.message.should.equal('err in getLayer');
@@ -895,11 +926,7 @@ describe('Tests for extend-model', function () {
       const pullCatalog = promisify(model.pullCatalog).bind(model);
 
       try {
-        await pullCatalog({
-          url: 'domain/test-provider',
-          params: {},
-          query: {},
-        });
+        await pullCatalog(genMockRequest());
         should.fail('should have thrown');
       } catch (err) {
         err.message.should.equal(
@@ -932,11 +959,7 @@ describe('Tests for extend-model', function () {
 
       const pullCatalog = promisify(model.pullCatalog).bind(model);
 
-      const data = await pullCatalog({
-        url: 'domain/test-provider',
-        params: {},
-        query: {},
-      });
+      const data = await pullCatalog(genMockRequest());
       data.should.deepEqual({ foo: 'bar' });
       mockCache.retrieve.should.be.calledOnce();
       mockCache.retrieve.firstCall.args.length.should.equal(3);
@@ -963,11 +986,7 @@ describe('Tests for extend-model', function () {
 
       const pullCatalog = promisify(model.pullCatalog).bind(model);
 
-      const data = await pullCatalog({
-        url: 'domain/test-provider',
-        params: {},
-        query: {},
-      });
+      const data = await pullCatalog(genMockRequest());
       data.should.deepEqual({
         catalog: 'foo',
       });
@@ -1000,11 +1019,7 @@ describe('Tests for extend-model', function () {
 
       const pullCatalog = promisify(model.pullCatalog).bind(model);
 
-      const data = await pullCatalog({
-        url: 'domain/test-provider',
-        params: {},
-        query: {},
-      });
+      const data = await pullCatalog(genMockRequest());
       data.should.deepEqual({
         catalog: 'foo',
         ttl: 10,
@@ -1036,11 +1051,7 @@ describe('Tests for extend-model', function () {
       const pullCatalog = promisify(model.pullCatalog).bind(model);
 
       try {
-        await pullCatalog({
-          url: 'domain/test-provider',
-          params: {},
-          query: {},
-        });
+        await pullCatalog(genMockRequest());
         should.fail();
       } catch (err) {
         err.message.should.equal('err in getCatalog');
@@ -1068,11 +1079,7 @@ describe('Tests for extend-model', function () {
       const pullCatalog = promisify(model.pullCatalog).bind(model);
 
       try {
-        await pullCatalog({
-          url: 'domain/test-provider',
-          params: {},
-          query: {},
-        });
+        await pullCatalog(genMockRequest());
         should.fail();
       } catch (err) {
         err.message.should.equal('unauthorized');
