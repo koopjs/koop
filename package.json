@@ -68,7 +68,7 @@
     "lint-staged": "^15.2.9",
     "nyc": "^17.0.0",
     "prettier": "^3.3.3",
-    "protobufjs": "^7.3.2",
+    "protobufjs": "^7.4.0",
     "shelljs": "^0.8.5",
     "simple-git": "^3.25.0",
     "snyk": "^1.1292.4",
