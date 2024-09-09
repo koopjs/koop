@@ -43,7 +43,7 @@
   ],
   "devDependencies": {
     "@changesets/changelog-git": "^0.2.0",
-    "@changesets/cli": "^2.27.7",
+    "@changesets/cli": "^2.27.8",
     "@commitlint/config-conventional": "^19.4.1",
     "@koopjs/auth-direct-file": "^3.0.0",
     "@koopjs/provider-file-geojson": "^2.2.0",
@@ -55,7 +55,7 @@
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
     "cz-git": "^1.9.4",
-    "eslint": "^9.9.1",
+    "eslint": "^9.10.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-no-only-tests": "^3.3.0",
     "eslint-plugin-prettier": "^5.2.1",
