@@ -78,7 +78,7 @@
     "tape": "^5.9.0"
   },
   "optionalDependencies": {
-    "farmhash": "^3.3.1"
+    "farmhash": "^4.0.1"
   },
   "types": "index.d.ts"
 }
