@@ -138,7 +138,7 @@ function getExtent(metadataExtent, layers, spatialReference) {
 }
 
 function formatServerItemInfo(json, defaultId) {
-  const { metadata: { id, name, minScale = 0, maxScale = 0, defaultVisibility } = {} } = json;
+  const { metadata: { id, type, name, minScale = 0, maxScale = 0, defaultVisibility } = {} } = json;
 
   const geometryType = getGeometryTypeFromGeojson(json);
 
@@ -147,7 +147,8 @@ function formatServerItemInfo(json, defaultId) {
   const retVal = {
     id: id || defaultId,
     name: name || defaultName,
-    type: geometryType ? 'Feature Layer' : 'Table',
+    // type: geometryType ? 'Feature Layer' : 'Table',
+    type: type || (geometryType ? 'Feature Layer' : 'Table'),
     parentLayerId: -1,
     defaultVisibility: defaultVisibility !== false,
     subLayerIds: null,
