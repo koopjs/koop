@@ -1,0 +1,10 @@
+{
+  "version": "1",
+  "npmClient": "npm",
+  "type": "provider",
+  "name": "IWProvider",
+  "allowedParams": {
+    "host": false,
+    "id": false
+  }
+}
