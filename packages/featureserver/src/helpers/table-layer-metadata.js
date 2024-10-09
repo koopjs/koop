@@ -160,6 +160,7 @@ class TableLayerMetadata {
   _setDirectOverrides(options) {
     const {
       name,
+      type,
       relationships,
       description,
       copyrightText,
@@ -174,6 +175,7 @@ class TableLayerMetadata {
 
     _.merge(this, {
       name,
+      type,
       relationships,
       description,
       copyrightText,
