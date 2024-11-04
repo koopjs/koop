@@ -20,7 +20,7 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "@esri/proj-codes": "^3.3.0",
+    "@esri/proj-codes": "^3.4.0",
     "@koopjs/logger": "5.0.0",
     "@koopjs/winnow": "5.0.4",
     "@turf/envelope": "^7.1.0",
