@@ -44,7 +44,7 @@
   },
   "homepage": "https://github.com/koopjs/koop#readme",
   "dependencies": {
-    "@esri/proj-codes": "^3.3.0",
+    "@esri/proj-codes": "^3.4.0",
     "@koopjs/logger": "5.0.0",
     "@terraformer/arcgis": "^2.1.2",
     "@turf/bbox-polygon": "^7.1.0",
