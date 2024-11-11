@@ -25,7 +25,7 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "winston": "^3.16.0"
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "tap-min": "^3.0.0",
