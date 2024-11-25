@@ -64,7 +64,7 @@
     "moment": "^2.30.1",
     "murmurhash": "^2.0.1",
     "ngeohash": "^0.6.3",
-    "proj4": "^2.14.0",
+    "proj4": "^2.15.0",
     "simple-statistics": "^7.8.7",
     "wkt-parser": "^1.4.0"
   },
