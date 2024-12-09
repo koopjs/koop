@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "even-more-min": "^1.0.1",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "mocha": "^10.8.2",
     "nyc": "^17.1.0",
     "proxyquire": "^2.1.3",
