@@ -5,6 +5,11 @@ const DataProvider = require('./data-provider');
 
 const providerConstructorSpy = sinon.spy();
 
+const mockBodyParser = {
+  json: sinon.spy(() => {}),
+  urlencoded: sinon.spy(() => {}),
+};
+
 const mockApp = {
   use: sinon.spy(() => mockApp),
   disable: sinon.spy(() => mockApp),
@@ -44,6 +49,7 @@ const Koop = proxyquire('./', {
   './data-provider': mockDataProviderModule,
   '@koopjs/logger': MockLogger,
   express: mockExpress,
+  'body-parser': mockBodyParser,
 });
 
 class MockProviderPluginController {
@@ -91,6 +97,7 @@ describe('Index tests', function () {
       const koop = new Koop();
       koop.config.should.be.empty();
       mockApp.use.callCount.should.equal(5);
+      mockBodyParser.json.calledWith({ limit: '10000kb' });
     });
 
     it('should instantiate Koop with options', function () {
@@ -108,6 +115,13 @@ describe('Index tests', function () {
       new Koop({ disableCors: true, disableCompression: true });
 
       mockApp.use.callCount.should.equal(3);
+    });
+
+    it('should modify bodyParserLimit', function () {
+      new Koop({ bodyParserLimit: '20mb' });
+
+      mockApp.use.callCount.should.equal(5);
+      mockBodyParser.json.calledWith({ limit: '20mb' });
     });
   });
 
