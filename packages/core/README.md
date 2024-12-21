@@ -65,6 +65,17 @@ const options = {
 }
 ```
 
+#### bodyParserLimit (or maximum POST body size)
+Koop configures Express maximum body size to 10mb by default. If you want to decrease or increase that size, you can do so by adding a `bodyParserLimit` value to your Koop config file:
+
+```js
+const options = {
+  bodyParserLimit: '20mb'
+}
+```
+
+> See [Supported units and abbreviations](https://www.npmjs.com/package/bytes#bytesparsestringnumber-value-numbernull).
+
 #### logger
 Koop includes a Winston logger with a console transport by default.  If you have a custom logger that you want to use, you can pass it as an option:
 
