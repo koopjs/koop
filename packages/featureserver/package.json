@@ -23,7 +23,7 @@
     "@esri/proj-codes": "^3.4.0",
     "@koopjs/logger": "5.0.0",
     "@koopjs/winnow": "5.0.4",
-    "@turf/envelope": "^7.1.0",
+    "@turf/envelope": "^7.2.0",
     "chroma-js": "^3.1.2",
     "esri-extent": "^1.1.3",
     "geojson-validation": "^1.0.2",
