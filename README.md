@@ -14,6 +14,7 @@ Want to see Koop in action? The repository ships with a demo that shows Koops su
 ```bash
 git clone https://github.com/koopjs/koop
 cd koop
+npm install
 npm run demo
 ```
 
