@@ -55,7 +55,7 @@
     "@turf/centroid": "^7.2.0",
     "@turf/envelope": "^7.2.0",
     "@turf/flatten": "^7.2.0",
-    "@types/geojson": "^7946.0.15",
+    "@types/geojson": "^7946.0.16",
     "alasql": "^4.6.2",
     "classybrew": "0.0.3",
     "joi": "^17.13.3",
