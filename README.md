@@ -9,12 +9,23 @@ Koop's plugin-architecture facilates custom deployments specific to your needs. 
 ![lots of geojson into feature services](https://user-images.githubusercontent.com/7832202/28444721-43eb6ea6-6d8d-11e7-8d56-3af46fd5bf88.png)
 
 ## Demo
-Want to see Koop in action? The repository ships with a demo that shows Koops support for GeoServices (ArcGIS). It leverages the file-geojson data provider and the GeoServices output-plugin:
+
+Want to see Koop in action? The repository ships with a demo that shows Koop's support for GeoServices (ArcGIS). It leverages the `file-geojson` data provider and the GeoServices output plugin.
+
+You can run the demo with npm:
 
 ```bash
 git clone https://github.com/koopjs/koop
 cd koop
 npm run demo
+```
+
+Or if you'd prefer to run the demo in a Docker container:
+
+```bash
+cd koop
+docker build -t koop .
+docker run -p 8080:8080 --rm koop
 ```
 
 Koop will start listening on port 8080. You should the following console logging noting the exposed file-geojson/GeoService routes:
