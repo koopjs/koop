@@ -112,7 +112,7 @@ function initServer(options) {
     // parse application/json
     .use(bodyParser.json({ limit: options.bodyParserLimit || '10000kb' }))
     // parse application/x-www-form-urlencoded
-    .use(bodyParser.urlencoded({ extended: false }))
+    .use(bodyParser.urlencoded({ limit: options.urlencodedLimit || '100kb', extended: false }))
     .disable('x-powered-by')
     // for demos and preview maps in providers
     .set('view engine', 'ejs')

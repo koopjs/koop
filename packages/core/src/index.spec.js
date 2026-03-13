@@ -121,7 +121,17 @@ describe('Index tests', function () {
       new Koop({ bodyParserLimit: '20mb' });
 
       mockApp.use.callCount.should.equal(5);
-      mockBodyParser.json.calledWith({ limit: '20mb' });
+      const args = mockBodyParser.json.getCall(0).args[0];
+      args.should.have.property('limit', '20mb');
+    });
+
+    it('should modify urlencodedLimit', function () {
+      new Koop({ urlencodedLimit: '10mb' });
+
+      mockApp.use.callCount.should.equal(5);
+      const args = mockBodyParser.urlencoded.getCall(0).args[0];
+      args.should.have.property('extended', false);
+      args.should.have.property('limit', '10mb');
     });
   });
 

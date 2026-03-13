@@ -76,6 +76,17 @@ const options = {
 
 > See [Supported units and abbreviations](https://www.npmjs.com/package/bytes#bytesparsestringnumber-value-numbernull).
 
+#### urlencodedLimit (or maximum POST body size)
+Koop configures Express maximum urlencoded size to 100kb by default. If you want to decrease or increase that size, you can do so by adding a `urlencodedLimit` value to your Koop config file:
+
+```js
+const options = {
+  urlencodedLimit: '500kb'
+}
+```
+
+> See [Supported units and abbreviations](https://www.npmjs.com/package/bytes#bytesparsestringnumber-value-numbernull).
+
 #### logger
 Koop includes a Winston logger with a console transport by default.  If you have a custom logger that you want to use, you can pass it as an option:
 
