@@ -225,6 +225,7 @@ class MetadataDefaults {
       maxRecordCountFactor: 1,
       fields: [],
       relationships: [],
+      indexes: [],
       capabilities: 'Query',
       ownershipBasedAccessControlForFeatures: {
         allowOthersToQuery: true,
