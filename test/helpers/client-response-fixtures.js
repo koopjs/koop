@@ -1,6 +1,7 @@
 const CURRENT_VERSION = 11.2;
 const FULL_VERSION = '11.2.0';
 const COPYRIGHT_TEXT =
+  // eslint-disable-next-line max-len
   'Copyright information varies by provider. For more information please contact the source of this data.';
 
 function getServerInfo(id) {
@@ -129,6 +130,7 @@ function getLayersInfo(filename, idField) {
           },
         ],
         relationships: [],
+        indexes: [],
         capabilities: 'Query',
         maxRecordCount: 2000,
         supportsStatistics: true,
