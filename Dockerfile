@@ -1,5 +1,5 @@
 # Use the official Node.js image as the base image
-FROM node:16.20.2
+FROM node:24.14.1-alpine
 
 # Set the working directory in the Docker container
 WORKDIR /usr/src/app
