@@ -281,7 +281,7 @@ function getFirst2000(idField, objectIds) {
     features: [
       {
         attributes: { [idField]: objectIds[0] },
-        geometry: { x: -8905559.263461886, y: 2875744.6243522414 },
+        geometry: { x: -8905559.263461886, y: 2875744.6243522423 },
       },
       {
         attributes: { [idField]: objectIds[1] },
@@ -350,7 +350,7 @@ function filterByObjectIds(idField, objectIds) {
           label: 'White Leg',
           timestamp: 1681143330000,
         },
-        geometry: { x: -8905559.263461886, y: 2875744.6243522414 },
+        geometry: { x: -8905559.263461886, y: 2875744.6243522423 },
       },
     ],
     exceededTransferLimit: false,
@@ -448,7 +448,7 @@ function getWithFilter(idField, objectIds) {
     features: [
       {
         attributes: { category: 'pinto', [idField]: objectIds[0] },
-        geometry: { x: -8905559.263461886, y: 2875744.6243522414 },
+        geometry: { x: -8905559.263461886, y: 2875744.6243522423 },
       },
       {
         attributes: { category: 'pinto', [idField]: objectIds[1] },
