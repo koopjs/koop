@@ -102,6 +102,11 @@ class GeoServices {
       methods: ['get', 'post'],
       handler: 'queryRelatedRecordsHandler',
     },
+    {
+      path: '$namespace/rest/services/$providerParams/MapServer{*path}',
+      methods: ['get', 'post'],
+      handler: 'invalidUrlHandler',
+    },
   ];
 
   constructor(model, options = {}) {
