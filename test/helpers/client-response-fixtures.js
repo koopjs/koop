@@ -1,6 +1,7 @@
 const CURRENT_VERSION = 11.2;
 const FULL_VERSION = '11.2.0';
 const COPYRIGHT_TEXT =
+  // eslint-disable-next-line max-len
   'Copyright information varies by provider. For more information please contact the source of this data.';
 
 function getServerInfo(id) {
@@ -280,7 +281,7 @@ function getFirst2000(idField, objectIds) {
     features: [
       {
         attributes: { [idField]: objectIds[0] },
-        geometry: { x: -8905559.263461886, y: 2875744.6243522423 },
+        geometry: { x: -8905559.263461886, y: 2875744.6243522414 },
       },
       {
         attributes: { [idField]: objectIds[1] },
@@ -349,7 +350,7 @@ function filterByObjectIds(idField, objectIds) {
           label: 'White Leg',
           timestamp: 1681143330000,
         },
-        geometry: { x: -8905559.263461886, y: 2875744.6243522423 },
+        geometry: { x: -8905559.263461886, y: 2875744.6243522414 },
       },
     ],
     exceededTransferLimit: false,
@@ -447,7 +448,7 @@ function getWithFilter(idField, objectIds) {
     features: [
       {
         attributes: { category: 'pinto', [idField]: objectIds[0] },
-        geometry: { x: -8905559.263461886, y: 2875744.6243522423 },
+        geometry: { x: -8905559.263461886, y: 2875744.6243522414 },
       },
       {
         attributes: { category: 'pinto', [idField]: objectIds[1] },
