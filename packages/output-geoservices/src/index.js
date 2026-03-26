@@ -197,7 +197,6 @@ class GeoServices {
     } = req;
 
     if (this.#authInfo.isTokenBasedSecurity) {
-      (req.headers.host, req.baseUrl);
       authInfo.tokenServicesUrl = `${this.#restInfoProtocol}://${host}${baseUrl}/${this.model.namespace}/rest/generateToken`; // eslint-disable-line
     }
 
