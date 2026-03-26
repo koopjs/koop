@@ -22,25 +22,25 @@
     "@koopjs/cache-memory": "6.0.0",
     "@koopjs/logger": "5.0.0",
     "@koopjs/output-geoservices": "8.1.25",
-    "@sindresorhus/fnv1a": "^2.0.1",
-    "body-parser": "^1.19.0",
-    "compression": "^1.7.5",
-    "config": "^3.3.12",
-    "cors": "^2.8.5",
+    "@sindresorhus/fnv1a": "^3.1.0",
+    "body-parser": "^1.20.4",
+    "compression": "^1.8.1",
+    "config": "^4.4.1",
+    "cors": "^2.8.6",
     "easy-table": "^1.1.1",
-    "ejs": "^3.1.10",
-    "express": "^4.21.2",
-    "joi": "^17.13.3",
-    "lodash": "^4.17.15"
+    "ejs": "^5.0.1",
+    "express": "^5.2.1",
+    "joi": "^18.1.1",
+    "lodash": "^4.17.23"
   },
   "devDependencies": {
     "even-more-min": "^1.0.1",
-    "mocha": "^10.8.2",
+    "mocha": "^11.7.5",
     "proxyquire": "^2.1.3",
     "should": "^13.2.3",
     "should-sinon": "0.0.6",
-    "sinon": "^18.0.0",
-    "supertest": "^7.0.0"
+    "sinon": "^21.0.3",
+    "supertest": "^7.2.2"
   },
   "files": [
     "src/**/*.js",

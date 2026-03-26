@@ -42,12 +42,15 @@
     "packages/core"
   ],
   "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.2",
     "@changesets/changelog-git": "^0.2.0",
     "@changesets/cli": "^2.30.0",
     "@commitlint/config-conventional": "^20.5.0",
     "@koopjs/auth-direct-file": "^3.0.0",
     "@koopjs/provider-file-geojson": "^2.2.0",
     "await-spawn": "^4.0.2",
+    "babel-jest": "^30.3.0",
     "byline": "^5.0.0",
     "commitizen": "^4.3.1",
     "commitlint": "^20.5.0",
