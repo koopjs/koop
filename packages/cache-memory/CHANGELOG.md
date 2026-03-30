@@ -1,5 +1,11 @@
 # @koopjs/cache-memory
 
+## 7.0.0
+
+### Major Changes
+
+Upgrade node to version 24.14.1 and upgrade dependencies as needed
+
 ## 6.0.0
 
 ### Major Changes

@@ -1,6 +1,6 @@
 {
   "name": "@koopjs/winnow",
-  "version": "5.0.4",
+  "version": "6.0.0",
   "description": "Apply sql-like filters to GeoJSON",
   "main": "src/index.js",
   "directories": {
@@ -45,7 +45,7 @@
   "homepage": "https://github.com/koopjs/koop#readme",
   "dependencies": {
     "@esri/proj-codes": "^3.6.0",
-    "@koopjs/logger": "5.0.0",
+    "@koopjs/logger": "6.0.0",
     "@terraformer/arcgis": "^2.1.2",
     "@turf/bbox-polygon": "^7.3.4",
     "@turf/boolean-contains": "^7.3.4",
