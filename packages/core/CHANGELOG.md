@@ -1,18 +1,5 @@
 # @koopjs/koop-core
 
-## 11.0.0
-
-### Major Changes
-
-Upgrade node to version 24.14.1 and upgrade dependencies as needed
-
-### Patch Changes
-
-- Updated dependencies [ec0d449]
-  - @koopjs/output-geoservices@9.0.0
-  - @koopjs/cache-memory@7.0.0
-  - @koopjs/logger@6.0.0
-
 ## 10.4.18
 
 ### Patch Changes

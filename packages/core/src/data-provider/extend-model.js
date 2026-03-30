@@ -1,5 +1,5 @@
 const { promisify } = require('util');
-const fnv1a = require('@sindresorhus/fnv1a').default;
+const hasher = require('@sindresorhus/fnv1a');
 
 const beforeNoop = async () => {};
 const afterNoop = async (req, data) => {
@@ -203,9 +203,15 @@ module.exports = function extendModel(
       const base = url.origin + url.pathname;
       const params = Object.assign({}, req.query, req.body);
 
-      //  Use a larger hash here to have fewer collisions. Parameters can be quite large since
-      //  geometries and OBJECTID sets can be passed in
-      return fnv1a(`${base}::${JSON.stringify(params)}`, { size: 128 }).toString();
+      return (
+        hasher
+          //  Use larger hash here to have less collisions. Parameters can be quite large since
+          //  geometries and OBJECTID sets can be passed in
+          .bigInt(`${base}::${JSON.stringify(params)}`, {
+            size: 128,
+          })
+          .toString()
+      );
     }
 
     async #authorizeRequest(req) {
