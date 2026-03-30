@@ -1,24 +1,5 @@
 # @koopjs/output-geoservices
 
-## 9.0.0
-
-### Major Changes
-
-Upgrade node to version 24.14.1 and upgrade dependencies as needed
-
-### Patch Changes
-
-- Updated dependencies [ec0d449]
-  - @koopjs/featureserver@11.0.0
-  - @koopjs/logger@6.0.0
-
-## 8.1.25
-
-### Patch Changes
-
-- Updated dependencies [8186371]
-  - @koopjs/featureserver@10.0.0
-
 ## 8.1.24
 
 ### Patch Changes

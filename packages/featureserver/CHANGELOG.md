@@ -1,23 +1,5 @@
 # @koopjs/featureserver
 
-## 11.0.0
-
-### Major Changes
-
-Upgrade node to version 24.14.1 and upgrade dependencies as needed
-
-### Patch Changes
-
-- Updated dependencies [ec0d449]
-  - @koopjs/logger@6.0.0
-  - @koopjs/winnow@6.0.0
-
-## 10.0.0
-
-### Major Changes
-
-add 'indexes' to layer metadata defaults
-
 ## 9.2.1
 
 ### Patch Changes

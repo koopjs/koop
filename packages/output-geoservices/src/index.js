@@ -103,7 +103,7 @@ class GeoServices {
       handler: 'queryRelatedRecordsHandler',
     },
     {
-      path: '$namespace/rest/services/$providerParams/MapServer{*path}',
+      path: '$namespace/rest/services/$providerParams/MapServer*',
       methods: ['get', 'post'],
       handler: 'invalidUrlHandler',
     },
@@ -202,6 +202,7 @@ class GeoServices {
     } = req;
 
     if (this.#authInfo.isTokenBasedSecurity) {
+      req.headers.host, req.baseUrl;
       authInfo.tokenServicesUrl = `${this.#restInfoProtocol}://${host}${baseUrl}/${this.model.namespace}/rest/generateToken`; // eslint-disable-line
     }
 

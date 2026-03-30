@@ -42,41 +42,38 @@
     "packages/core"
   ],
   "devDependencies": {
-    "@babel/core": "^7.29.0",
-    "@babel/preset-env": "^7.29.2",
     "@changesets/changelog-git": "^0.2.0",
-    "@changesets/cli": "^2.30.0",
-    "@commitlint/config-conventional": "^20.5.0",
+    "@changesets/cli": "^2.27.11",
+    "@commitlint/config-conventional": "^19.6.0",
     "@koopjs/auth-direct-file": "^3.0.0",
     "@koopjs/provider-file-geojson": "^2.2.0",
     "await-spawn": "^4.0.2",
-    "babel-jest": "^30.3.0",
     "byline": "^5.0.0",
     "commitizen": "^4.3.1",
-    "commitlint": "^20.5.0",
-    "coverage-badges-cli": "^2.2.0",
-    "cross-env": "^10.1.0",
+    "commitlint": "^19.6.1",
+    "coverage-badges-cli": "^2.1.0",
+    "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
-    "cz-git": "^1.12.0",
-    "eslint": "^10.1.0",
-    "eslint-config-prettier": "^10.1.8",
+    "cz-git": "^1.11.0",
+    "eslint": "^9.18.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-no-only-tests": "^3.3.0",
-    "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-prettier": "^5.2.1",
     "husky": "^9.1.7",
-    "jest": "^30.3.0",
+    "jest": "^29.7.0",
     "jest-coverage-badges-ng": "^1.0.1",
-    "json2md": "^2.0.3",
-    "lerna": "^9.0.7",
+    "json2md": "^2.0.1",
+    "lerna": "^8.1.9",
     "lerna-changelog": "^2.2.0",
-    "lint-staged": "^16.4.0",
-    "nyc": "^18.0.0",
-    "prettier": "^3.8.1",
-    "protobufjs": "^8.0.0",
-    "shelljs": "^0.10.0",
+    "lint-staged": "^15.3.0",
+    "nyc": "^17.1.0",
+    "prettier": "^3.4.2",
+    "protobufjs": "^7.4.0",
+    "shelljs": "^0.8.5",
     "simple-git": "^3.27.0",
     "snyk": "^1.1295.0",
-    "supertest": "^7.2.2",
-    "yargs": "^18.0.0"
+    "supertest": "^7.0.0",
+    "yargs": "^17.7.2"
   },
   "config": {
     "commitizen": {
@@ -91,6 +88,6 @@
     "!*.js": []
   },
   "volta": {
-    "node": "24.14.1"
+    "node": "20.11.1"
   }
 }

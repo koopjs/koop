@@ -35,10 +35,6 @@ const config = {
 
   // The glob patterns Jest uses to detect test files
   testMatch: ['<rootDir>/test/**/*.spec.[jt]s?(x)'],
-
-  // An array of regexp pattern strings that are matched against all source file paths
-  // Matched files will not be transformed
-  transformIgnorePatterns: ['node_modules/(?!(@sindresorhus/fnv1a)/)'],
 };
 
 module.exports = config;

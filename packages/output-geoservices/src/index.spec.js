@@ -95,7 +95,7 @@ describe('Output Geoservices', () => {
           handler: 'queryRelatedRecordsHandler',
         },
         {
-          path: '$namespace/rest/services/$providerParams/MapServer{*path}',
+          path: '$namespace/rest/services/$providerParams/MapServer*',
           methods: ['get', 'post'],
           handler: 'invalidUrlHandler',
         },

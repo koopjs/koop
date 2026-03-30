@@ -1,16 +1,5 @@
 # @koopjs/winnow
 
-## 6.0.0
-
-### Major Changes
-
-Upgrade node to version 24.14.1 and upgrade dependencies as needed
-
-### Patch Changes
-
-- Updated dependencies [ec0d449]
-  - @koopjs/logger@6.0.0
-
 ## 5.0.4
 
 ### Patch Changes
