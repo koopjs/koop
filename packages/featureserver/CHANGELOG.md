@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 10.0.0
+
+### Major Changes
+
+add 'indexes' to layer metadata defaults
+
 ## 9.2.1
 
 ### Patch Changes
