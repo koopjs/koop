@@ -37,10 +37,10 @@
   "devDependencies": {
     "tap-min": "^3.0.0",
     "tape": "^5.9.0",
-    "uuid": "^10.0.0"
+    "uuid": "^13.0.0"
   },
   "dependencies": {
     "@alloc/quick-lru": "^5.2.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.23"
   }
 }
