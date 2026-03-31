@@ -51,7 +51,6 @@ function getServerInfo(id) {
     supportsRelationshipsResource: false,
     allowGeometryUpdates: false,
     relationships: [],
-    indexes: [],
     supportedContingentValuesFormats: '',
     supportedExportFormats: '',
     supportsAppend: false,
