@@ -1,5 +1,11 @@
 # @koopjs/featureserver
 
+## 9.3.0
+
+### Minor Changes
+
+add default value for indexes on feature layer metadata
+
 ## 9.2.1
 
 ### Patch Changes
