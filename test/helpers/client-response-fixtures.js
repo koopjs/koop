@@ -130,7 +130,6 @@ function getLayersInfo(filename, idField) {
           },
         ],
         relationships: [],
-        indexes: [],
         capabilities: 'Query',
         maxRecordCount: 2000,
         supportsStatistics: true,
