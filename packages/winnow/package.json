@@ -69,7 +69,7 @@
     "wkt-parser": "^1.4.0"
   },
   "devDependencies": {
-    "@turf/helpers": "^7.1.0",
+    "@turf/helpers": "^7.2.0",
     "benchmark": "^2.1.4",
     "fs-extra": "^11.2.0",
     "proxyquire": "^2.1.3",
