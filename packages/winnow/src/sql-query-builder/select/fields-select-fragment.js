@@ -10,12 +10,15 @@ function createFieldsSelectFragment(options = {}) {
 
 function selectFieldsAsEsriJson(options) {
   const { fields, dateFields = [], returnIdsOnly, idField = null } = options;
-  const delimitedDateFields = dateFields.join(',');
-  const includeIdField = shouldIncludeIdField({ returnIdsOnly, fields });
-  if (fields) {
-    return `selectFieldsToEsriAttributes(properties, geometry, "${fields.join(',')}", "${delimitedDateFields}", "${includeIdField}", "${idField}") as attributes`;  // eslint-disable-line
+  const validatedFields = validateFields(fields);
+  const validatedDateFields = validateFields(dateFields);
+  const validatedIdField = idField ? validateField(idField) : null;
+  const delimitedDateFields = validatedDateFields.join(',');
+  const includeIdField = shouldIncludeIdField({ returnIdsOnly, fields: validatedFields });
+  if (validatedFields) {
+    return `selectFieldsToEsriAttributes(properties, geometry, "${validatedFields.join(',')}", "${delimitedDateFields}", "${includeIdField}", "${validatedIdField}") as attributes`;  // eslint-disable-line
   }
-  return `toEsriAttributes(properties, geometry, "${delimitedDateFields}", "${includeIdField}", "${idField}") as attributes`;   // eslint-disable-line
+  return `toEsriAttributes(properties, geometry, "${delimitedDateFields}", "${includeIdField}", "${validatedIdField}") as attributes`;   // eslint-disable-line
 }
 
 function shouldIncludeIdField({ returnIdsOnly, fields }) {
@@ -23,9 +26,22 @@ function shouldIncludeIdField({ returnIdsOnly, fields }) {
   return false;
 }
 
+function validateFields(fields) {
+  if (!fields) return fields;
+  return fields.map(validateField);
+}
+
+function validateField(field) {
+  if (!/^[A-Za-z0-9_]+$/.test(field)) {
+    throw new Error('Invalid field');
+  }
+  return field;
+}
+
 function selectFieldsAsGeoJson(fields) {
-  if (fields) {
-    return `selectFields(properties, "${fields.join(',')}") as properties`;
+  const validatedFields = validateFields(fields);
+  if (validatedFields) {
+    return `selectFields(properties, "${validatedFields.join(',')}") as properties`;
   }
   return 'type, properties as properties';
 }
