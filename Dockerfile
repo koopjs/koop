@@ -1,11 +1,14 @@
 # Use the official Node.js image as the base image
-FROM node:16.20.2
+FROM node:22-slim
 
 # Set the working directory in the Docker container
 WORKDIR /usr/src/app
 
 # Copy the package.json and package-lock.json files to the container
 COPY package.json package-lock.json ./
+
+# Copy the packages in this monorepo to the container
+COPY ./packages ./packages
 
 # Install the required npm packages in the container
 RUN npm install
@@ -17,4 +20,4 @@ COPY demo ./demo
 EXPOSE 8080
 
 # Start the Koop server
-CMD ["node", "demo/index.js"]
+CMD ["npm", "run", "demo"]
