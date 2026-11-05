@@ -86,33 +86,45 @@ function validateOutStatisticsConfiguration(outStatistics = [], groupByFieldsFor
   for (const statistic of outStatistics) {
     if (!statisticFieldNameRegex.test(statistic.outStatisticFieldName)) {
       throw new Error(
-        `Invalid configuration: outStatisticFieldName "${statistic.outStatisticFieldName}" 
-        is invalid. It must contain only letters, numbers, spaces, and underscores, 
-        and must contain at least one letter or number.`,
+        `Invalid configuration: outStatisticFieldName ` +
+          `"${statistic.outStatisticFieldName}" is invalid. ` +
+          'It must contain only letters, numbers, spaces, and underscores, ' +
+          'and must contain at least one letter or number.',
       );
     }
 
     if (!statisticFieldNameRegex.test(statistic.onStatisticField)) {
       throw new Error(
-        `Invalid configuration: onStatisticField "${statistic.onStatisticField}" 
-        is invalid. It must contain only letters, numbers, spaces, and underscores, 
-        and must contain at least one letter or number.`,
+        `Invalid configuration: onStatisticField ` +
+          `"${statistic.onStatisticField}" is invalid. ` +
+          'It must contain only letters, numbers, spaces, and underscores, ' +
+          'and must contain at least one letter or number.',
+      );
+    }
+
+    if (!statisticFieldNameRegex.test(statistic.onStatisticField)) {
+      throw new Error(
+        `Invalid configuration: onStatisticField ` +
+          `"${statistic.onStatisticField}" is invalid. ` +
+          'It must contain only letters, numbers, spaces, and underscores, ' +
+          'and must contain at least one letter or number.',
       );
     }
 
     if (!statisticTypes.includes(statistic.statisticType)) {
       throw new Error(
-        `Invalid configuration: statisticType "${statistic.statisticType}"
-         is invalid. It must be one of the following: ${statisticTypes.join(', ')}.`,
+        `Invalid configuration: statisticType ` +
+          `"${statistic.statisticType}" is invalid. ` +
+          `It must be one of the following: ${statisticTypes.join(', ')}.`,
       );
     }
 
     for (const groupByField of groupByFieldsForStatistics) {
       if (!statisticFieldNameRegex.test(groupByField)) {
         throw new Error(
-          `Invalid configuration: groupByField "${groupByField}" 
-          is invalid. It must contain only letters, numbers, spaces, and underscores, 
-          and must contain at least one letter or number.`,
+          `Invalid configuration: groupByField "${groupByField}" is invalid. ` +
+            'It must contain only letters, numbers, spaces, and underscores, ' +
+            'and must contain at least one letter or number.',
         );
       }
     }
