@@ -3,6 +3,233 @@ should.config.checkProtoEql = false;
 const StatisticsFields = require('./statistics-fields');
 
 describe('StatisticsFields', () => {
+  describe('outStatistics configuration validation', () => {
+    const fieldDefinitions = [{ name: 'foo', type: 'Double' }];
+    const validStatistic = {
+      onStatisticField: 'foo',
+      outStatisticFieldName: 'total',
+      statisticType: 'sum',
+    };
+    const validNames = [
+      'a',
+      '0',
+      'total',
+      'TOTAL',
+      '123',
+      'total_123',
+      'total 123',
+      '_ total_123 _',
+    ];
+    const invalidNames = [
+      '',
+      ' ',
+      '___',
+      '_ _',
+      'total-value',
+      'total.value',
+      'total!',
+      'total\tvalue',
+      'total\nvalue',
+      'total\rvalue',
+      'total\u00a0value',
+      't\u00f3tal',
+      '*',
+      'sum(foo)',
+      'foo + bar',
+      'foo;bar',
+    ];
+
+    ['outStatisticFieldName', 'onStatisticField', 'groupByField'].forEach((field) => {
+      validNames.forEach((name) => {
+        it(`should accept ${field} ${JSON.stringify(name)}`, () => {
+          (() => {
+            return new StatisticsFields({
+              statisticsSample: {},
+              fieldDefinitions,
+              outStatistics: [
+                field === 'groupByField' ? validStatistic : { ...validStatistic, [field]: name },
+              ],
+              groupByFieldsForStatistics: field === 'groupByField' ? [name] : [],
+            });
+          }).should.not.throw();
+        });
+      });
+
+      invalidNames.forEach((name) => {
+        it(`should reject ${field} ${JSON.stringify(name)}`, () => {
+          (() => {
+            return new StatisticsFields({
+              statisticsSample: {},
+              fieldDefinitions,
+              outStatistics: [
+                field === 'groupByField' ? validStatistic : { ...validStatistic, [field]: name },
+              ],
+              groupByFieldsForStatistics: field === 'groupByField' ? [name] : [],
+            });
+          }).should.throw(
+            `Invalid configuration: ${field} "${name}" is invalid. ` +
+              'It must contain only letters, numbers, spaces, and underscores, ' +
+              'and must contain at least one letter or number.',
+          );
+        });
+      });
+    });
+
+    ['count', 'sum', 'avg', 'var', 'max', 'min'].forEach((statisticType) => {
+      it(`should accept statisticType "${statisticType}"`, () => {
+        (() => {
+          return new StatisticsFields({
+            statisticsSample: {},
+            outStatistics: [{ ...validStatistic, statisticType }],
+          });
+        }).should.not.throw();
+      });
+    });
+
+    ['', 'SUM', 'sum ', ' sum', 'stddev', 'median', undefined, null, 1, true, ['sum']].forEach(
+      (statisticType) => {
+        it(`should reject statisticType ${JSON.stringify(statisticType)}`, () => {
+          (() => {
+            return new StatisticsFields({
+              statisticsSample: {},
+              outStatistics: [{ ...validStatistic, statisticType }],
+            });
+          }).should.throw(
+            `Invalid configuration: statisticType "${statisticType}" is invalid. ` +
+              'It must be one of the following: count, sum, avg, var, max, min.',
+          );
+        });
+      },
+    );
+
+    it('should reject an omitted statisticType', () => {
+      (() => {
+        return new StatisticsFields({
+          statisticsSample: {},
+          outStatistics: [{ onStatisticField: 'foo', outStatisticFieldName: 'total' }],
+        });
+      }).should.throw(
+        'Invalid configuration: statisticType "undefined" is invalid. ' +
+          'It must be one of the following: count, sum, avg, var, max, min.',
+      );
+    });
+
+    ['outStatisticFieldName', 'onStatisticField', 'statisticType', 'groupByField'].forEach(
+      (field) => {
+        it(`should validate ${field} through the static create method`, () => {
+          (() => {
+            return StatisticsFields.create({
+              statistics: { total: 1 },
+              outStatistics: [
+                field === 'groupByField'
+                  ? validStatistic
+                  : { ...validStatistic, [field]: 'invalid!' },
+              ],
+              groupByFieldsForStatistics: field === 'groupByField' ? 'foo, invalid!' : [],
+            });
+          }).should.throw(
+            `Invalid configuration: ${field} "invalid!" is invalid. ` +
+              (field === 'statisticType'
+                ? 'It must be one of the following: count, sum, avg, var, max, min.'
+                : 'It must contain only letters, numbers, spaces, and underscores, ' +
+                  'and must contain at least one letter or number.'),
+          );
+        });
+      },
+    );
+
+    it('should accept multiple normalized groupBy fields through the static create method', () => {
+      const result = StatisticsFields.create({
+        statistics: { total: 1 },
+        outStatistics: [validStatistic],
+        groupByFieldsForStatistics: ' foo, bar_123 , field name ',
+      });
+
+      result.map(({ name }) => name).should.deepEqual(['total']);
+    });
+
+    ['foo,,bar', 'foo,', ',foo', 'foo,   ,bar'].forEach((groupByFieldsForStatistics) => {
+      it(`should reject an empty groupBy field in "${groupByFieldsForStatistics}"`, () => {
+        (() => {
+          return StatisticsFields.create({
+            statistics: { total: 1 },
+            outStatistics: [validStatistic],
+            groupByFieldsForStatistics,
+          });
+        }).should.throw(
+          'Invalid configuration: groupByField "" is invalid. ' +
+            'It must contain only letters, numbers, spaces, and underscores, ' +
+            'and must contain at least one letter or number.',
+        );
+      });
+    });
+
+    it('should accept a statistic when field definitions are omitted', () => {
+      (() => {
+        return new StatisticsFields({
+          statisticsSample: {},
+          outStatistics: [validStatistic],
+        });
+      }).should.not.throw();
+    });
+
+    it('should accept source fields without matching field definitions', () => {
+      (() => {
+        return new StatisticsFields({
+          statisticsSample: {},
+          fieldDefinitions,
+          outStatistics: [
+            { ...validStatistic, onStatisticField: 'Foo', outStatisticFieldName: 'total_foo' },
+            { ...validStatistic, onStatisticField: 'bar', outStatisticFieldName: 'total_bar' },
+          ],
+        });
+      }).should.not.throw();
+    });
+
+    ['outStatisticFieldName', 'onStatisticField', 'statisticType'].forEach((field) => {
+      it(`should validate ${field} of statistics after the first entry`, () => {
+        (() => {
+          return new StatisticsFields({
+            statisticsSample: {},
+            outStatistics: [validStatistic, { ...validStatistic, [field]: 'invalid!' }],
+          });
+        }).should.throw(
+          `Invalid configuration: ${field} "invalid!" is invalid. ` +
+            (field === 'statisticType'
+              ? 'It must be one of the following: count, sum, avg, var, max, min.'
+              : 'It must contain only letters, numbers, spaces, and underscores, ' +
+                'and must contain at least one letter or number.'),
+        );
+      });
+    });
+
+    it('should validate groupBy fields after the first entry', () => {
+      (() => {
+        return new StatisticsFields({
+          statisticsSample: {},
+          outStatistics: [validStatistic],
+          groupByFieldsForStatistics: ['foo', 'invalid!'],
+        });
+      }).should.throw(
+        'Invalid configuration: groupByField "invalid!" is invalid. ' +
+          'It must contain only letters, numbers, spaces, and underscores, ' +
+          'and must contain at least one letter or number.',
+      );
+    });
+
+    it('should accept an empty outStatistics array without field definitions', () => {
+      (() => {
+        return new StatisticsFields({ statisticsSample: {}, outStatistics: [] });
+      }).should.not.throw();
+    });
+
+    it('should accept omitted outStatistics and field definitions', () => {
+      (() => {
+        return new StatisticsFields({ statisticsSample: {} });
+      }).should.not.throw();
+    });
+  });
+
   describe('static normalizeOptions method', () => {
     it('should use first element of statistics array as sample', () => {
       const { statisticsSample } = StatisticsFields.normalizeOptions({
@@ -112,7 +339,9 @@ describe('StatisticsFields', () => {
       const result = StatisticsFields.create({
         statisticsSample: { foo: 100000 },
         fieldDefinitions: [{ name: 'foo', type: 'Date' }],
-        outStatistics: [{ onStatisticField: 'foo' }],
+        outStatistics: [
+          { onStatisticField: 'foo', outStatisticFieldName: 'foo', statisticType: 'max' },
+        ],
       });
       result.should.deepEqual([
         {
@@ -130,7 +359,9 @@ describe('StatisticsFields', () => {
       const result = StatisticsFields.create({
         statisticsSample: { bar: 100000 },
         fieldDefinitions: [{ name: 'foo', type: 'Date' }],
-        outStatistics: [{ onStatisticField: 'foo', outStatisticFieldName: 'bar' }],
+        outStatistics: [
+          { onStatisticField: 'foo', outStatisticFieldName: 'bar', statisticType: 'max' },
+        ],
       });
       result.should.deepEqual([
         {
@@ -148,7 +379,9 @@ describe('StatisticsFields', () => {
       const result = StatisticsFields.create({
         statisticsSample: { foo: 100000, bar: 'hello', walter: 1 },
         fieldDefinitions: [{ name: 'foo', type: 'Date' }],
-        outStatistics: [{ onStatisticField: 'foo' }],
+        outStatistics: [
+          { onStatisticField: 'foo', outStatisticFieldName: 'foo', statisticType: 'max' },
+        ],
         groupByFieldsForStatistics: 'bar,walter',
       });
       result.should.deepEqual([
