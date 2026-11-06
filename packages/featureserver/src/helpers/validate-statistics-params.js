@@ -48,7 +48,11 @@ function validateStatisticsParams(parameters = {}) {
 }
 
 function validateFieldName(name, parameter) {
-  if (!statisticFieldNameRegex.test(name)) {
+  if (parameter === 'outStatisticFieldName' && name === undefined) {
+    return;
+  }
+
+  if (typeof name !== 'string' || !statisticFieldNameRegex.test(name)) {
     throw makeError(
       `Invalid configuration: ${parameter} "${name}" is invalid. ` +
         'It must contain only letters, numbers, spaces, and underscores, ' +
