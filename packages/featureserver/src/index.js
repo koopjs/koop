@@ -1,5 +1,6 @@
 const { setLogger } = require('./log-manager');
 const defaults = require('./metadata-defaults');
+const { validateStatisticsRequest } = require('./helpers/validate-statistics-params');
 
 module.exports = {
   restInfo: require('./rest-info-route-handler'),
@@ -9,6 +10,7 @@ module.exports = {
   query: require('./query'),
   queryRelatedRecords: require('./query-related-records'),
   generateRenderer: require('./generate-renderer'),
+  validateStatisticsRequest,
   setLogger,
   setDefaults: defaults.setDefaults.bind(defaults),
 };

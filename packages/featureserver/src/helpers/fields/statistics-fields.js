@@ -38,7 +38,6 @@ class StatisticsFields {
       fieldDefinitions = [],
       outStatistics,
     } = options;
-    validateOutStatisticsConfiguration(outStatistics, groupByFieldsForStatistics);
 
     const dateFieldRegexs = getDateFieldRegexs(fieldDefinitions, outStatistics);
 
@@ -78,57 +77,6 @@ function isDateField(regexs, fieldName, value) {
       return regex.test(fieldName);
     }) || isDate(value)
   );
-}
-
-function validateOutStatisticsConfiguration(outStatistics = [], groupByFieldsForStatistics = []) {
-  const statisticFieldNameRegex = /^(?=.*[a-zA-Z0-9])[a-zA-Z0-9_ ]+$/;
-  const statisticTypes = ['count', 'sum', 'avg', 'var', 'max', 'min'];
-  for (const statistic of outStatistics) {
-    if (!statisticFieldNameRegex.test(statistic.outStatisticFieldName)) {
-      throw new Error(
-        `Invalid configuration: outStatisticFieldName ` +
-          `"${statistic.outStatisticFieldName}" is invalid. ` +
-          'It must contain only letters, numbers, spaces, and underscores, ' +
-          'and must contain at least one letter or number.',
-      );
-    }
-
-    if (!statisticFieldNameRegex.test(statistic.onStatisticField)) {
-      throw new Error(
-        `Invalid configuration: onStatisticField ` +
-          `"${statistic.onStatisticField}" is invalid. ` +
-          'It must contain only letters, numbers, spaces, and underscores, ' +
-          'and must contain at least one letter or number.',
-      );
-    }
-
-    if (!statisticFieldNameRegex.test(statistic.onStatisticField)) {
-      throw new Error(
-        `Invalid configuration: onStatisticField ` +
-          `"${statistic.onStatisticField}" is invalid. ` +
-          'It must contain only letters, numbers, spaces, and underscores, ' +
-          'and must contain at least one letter or number.',
-      );
-    }
-
-    if (!statisticTypes.includes(statistic.statisticType)) {
-      throw new Error(
-        `Invalid configuration: statisticType ` +
-          `"${statistic.statisticType}" is invalid. ` +
-          `It must be one of the following: ${statisticTypes.join(', ')}.`,
-      );
-    }
-
-    for (const groupByField of groupByFieldsForStatistics) {
-      if (!statisticFieldNameRegex.test(groupByField)) {
-        throw new Error(
-          `Invalid configuration: groupByField "${groupByField}" is invalid. ` +
-            'It must contain only letters, numbers, spaces, and underscores, ' +
-            'and must contain at least one letter or number.',
-        );
-      }
-    }
-  }
 }
 
 function getDateFieldRegexs(fieldDefinitions = [], outStatistics = []) {

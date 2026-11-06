@@ -7,6 +7,7 @@ const {
   query,
   queryRelatedRecords,
   generateRenderer,
+  validateStatisticsRequest,
   setLogger,
   setDefaults,
 } = require('./index');
@@ -19,6 +20,7 @@ describe('exposed methods of FeatureServer', () => {
     query.should.be.a.Function();
     queryRelatedRecords.should.be.a.Function();
     generateRenderer.should.be.a.Function();
+    validateStatisticsRequest.should.be.a.Function();
     setLogger.should.be.a.Function();
     setDefaults.should.be.a.Function();
   });

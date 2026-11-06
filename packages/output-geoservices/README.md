@@ -74,6 +74,8 @@ If `true`, adds `owningSystemUrl` to the `rest/info` response.  Defaults to fals
 
 ## Routes
 
+The query handler validates `outStatistics` and `groupByFieldsForStatistics` before fetching provider data. Invalid statistics parameters use the standard ArcGIS error response: HTTP 200 with `error.code: 400`, without calling the provider.
+
 ```js
 <provider-namespace>/rest/info
 <provider-namespace>/rest/generateToken
