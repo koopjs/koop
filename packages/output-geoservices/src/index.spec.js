@@ -11,7 +11,6 @@ jest.mock('@koopjs/featureserver', () => ({
   query: jest.fn(),
   generateRenderer: jest.fn(),
   queryRelatedRecords: jest.fn(),
-  validateStatisticsRequest: jest.requireActual('@koopjs/featureserver').validateStatisticsRequest,
 }));
 
 const loggerMock = {
@@ -545,102 +544,6 @@ describe('Output Geoservices', () => {
       expect(FeatureServer.query.mock.calls[0]).toEqual([{ foo: 'bar' }, resMock, 'someData']);
       expect(modelMock.pull.mock.calls.length).toBe(1);
       expect(modelMock.pull.mock.calls[0][0]).toEqual({ foo: 'bar' });
-    });
-
-    const validStatistic = {
-      onStatisticField: 'foo',
-      outStatisticFieldName: 'total',
-      statisticType: 'sum',
-    };
-
-    ['body', 'query'].forEach((source) => {
-      ['outStatisticFieldName', 'onStatisticField', 'statisticType', 'groupByField'].forEach(
-        (field) => {
-          test(`should reject invalid ${field} in ${source} before pulling data`, async () => {
-            const logger = { ...loggerMock, error: jest.fn() };
-            const output = new OutputGeoServices(modelMock, { logger });
-            const req = {
-              ...reqMock,
-              [source]: {
-                outStatistics: JSON.stringify([
-                  field === 'groupByField'
-                    ? validStatistic
-                    : { ...validStatistic, [field]: 'invalid!' },
-                ]),
-                groupByFieldsForStatistics: field === 'groupByField' ? 'foo, invalid!' : 'foo',
-              },
-            };
-
-            await output.queryHandler(req, resMock);
-
-            expect(modelMock.pull).not.toHaveBeenCalled();
-            expect(FeatureServer.query).not.toHaveBeenCalled();
-            expect(logger.error).toHaveBeenCalledWith(expect.objectContaining({ code: 400 }));
-            expect(resMock.status).toHaveBeenCalledWith(200);
-            expect(resMock.json).toHaveBeenCalledWith({
-              error: {
-                code: 400,
-                details: [],
-                message: expect.stringContaining(
-                  `Invalid configuration: ${field} "invalid!" is invalid.`,
-                ),
-              },
-            });
-          });
-        },
-      );
-    });
-
-    test('should reject invalid groupBy without statistics before pulling data', async () => {
-      const output = new OutputGeoServices(modelMock, { logger: loggerMock });
-      await output.queryHandler(
-        { ...reqMock, query: { groupByFieldsForStatistics: 'invalid!' } },
-        resMock,
-      );
-      expect(modelMock.pull).not.toHaveBeenCalled();
-      expect(FeatureServer.query).not.toHaveBeenCalled();
-      expect(resMock.json).toHaveBeenCalledWith({
-        error: expect.objectContaining({ code: 400 }),
-      });
-    });
-
-    test('should reject malformed statistics before pulling data', async () => {
-      const output = new OutputGeoServices(modelMock, { logger: loggerMock });
-      await output.queryHandler({ ...reqMock, query: { outStatistics: 'not-json' } }, resMock);
-      expect(modelMock.pull).not.toHaveBeenCalled();
-      expect(FeatureServer.query).not.toHaveBeenCalled();
-      expect(resMock.json).toHaveBeenCalledWith({
-        error: expect.objectContaining({ code: 400 }),
-      });
-    });
-
-    test('should preserve valid body parameters when query values are empty', async () => {
-      const output = new OutputGeoServices(modelMock, { logger: loggerMock });
-      const req = {
-        ...reqMock,
-        body: { outStatistics: [validStatistic], groupByFieldsForStatistics: ' foo, bar ' },
-        query: { outStatistics: '', groupByFieldsForStatistics: '' },
-      };
-      await output.queryHandler(req, resMock);
-      expect(modelMock.pull).toHaveBeenCalledWith(req);
-      expect(FeatureServer.query).toHaveBeenCalledWith(req, resMock, 'someData');
-    });
-
-    test('should honor query precedence without mutating valid request parameters', async () => {
-      const output = new OutputGeoServices(modelMock, { logger: loggerMock });
-      const req = {
-        ...reqMock,
-        body: { outStatistics: [{ ...validStatistic, statisticType: 'invalid!' }] },
-        query: {
-          outStatistics: JSON.stringify([validStatistic]),
-          groupByFieldsForStatistics: ' foo, bar ',
-        },
-      };
-      const original = JSON.parse(JSON.stringify(req));
-      await output.queryHandler(req, resMock);
-      expect(modelMock.pull).toHaveBeenCalledWith(req);
-      expect(FeatureServer.query).toHaveBeenCalledWith(req, resMock, 'someData');
-      expect(req).toEqual(original);
     });
   });
 

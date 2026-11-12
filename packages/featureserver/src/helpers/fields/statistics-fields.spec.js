@@ -112,9 +112,7 @@ describe('StatisticsFields', () => {
       const result = StatisticsFields.create({
         statisticsSample: { foo: 100000 },
         fieldDefinitions: [{ name: 'foo', type: 'Date' }],
-        outStatistics: [
-          { onStatisticField: 'foo', outStatisticFieldName: 'foo', statisticType: 'max' },
-        ],
+        outStatistics: [{ onStatisticField: 'foo' }],
       });
       result.should.deepEqual([
         {
@@ -132,9 +130,7 @@ describe('StatisticsFields', () => {
       const result = StatisticsFields.create({
         statisticsSample: { bar: 100000 },
         fieldDefinitions: [{ name: 'foo', type: 'Date' }],
-        outStatistics: [
-          { onStatisticField: 'foo', outStatisticFieldName: 'bar', statisticType: 'max' },
-        ],
+        outStatistics: [{ onStatisticField: 'foo', outStatisticFieldName: 'bar' }],
       });
       result.should.deepEqual([
         {
@@ -152,9 +148,7 @@ describe('StatisticsFields', () => {
       const result = StatisticsFields.create({
         statisticsSample: { foo: 100000, bar: 'hello', walter: 1 },
         fieldDefinitions: [{ name: 'foo', type: 'Date' }],
-        outStatistics: [
-          { onStatisticField: 'foo', outStatisticFieldName: 'foo', statisticType: 'max' },
-        ],
+        outStatistics: [{ onStatisticField: 'foo' }],
         groupByFieldsForStatistics: 'bar,walter',
       });
       result.should.deepEqual([

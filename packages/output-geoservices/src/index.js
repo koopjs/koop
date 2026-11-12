@@ -7,7 +7,6 @@ const {
   query,
   generateRenderer,
   queryRelatedRecords,
-  validateStatisticsRequest,
 } = require('@koopjs/featureserver');
 const Logger = require('@koopjs/logger');
 let logger = new Logger();
@@ -241,12 +240,7 @@ class GeoServices {
   }
 
   async queryHandler(req, res) {
-    try {
-      validateStatisticsRequest(req);
-      return this.#pullDataHandler(req, res, query);
-    } catch (error) {
-      return this.#errorHandler(error, req, res);
-    }
+    this.#pullDataHandler(req, res, query);
   }
 
   async generateRendererHandler(req, res) {
