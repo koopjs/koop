@@ -16,7 +16,6 @@ const cache = require('cache')
 
 
 const handler = (req, res) => {
-  FeatureServer.validateStatisticsRequest(req)
   cache.get(/* some geojson */, (err, data) => {
     if (err) res.status(500).json({error: err.message})
     else FeatureServer.query(req, res, data)
@@ -58,13 +57,13 @@ const options = {
   outSR: 102100, // output spatial reference
   returnIdsOnly: true,
   returnCountOnly: true,
-  orderByFields: 'Full_Part_COUNT DESC',
-  groupByFieldsForStatistics: 'Full_Part',
-  outStatistics: [{
-    statisticType: 'count',
-    onStatisticField: 'Full_Part',
-    outStatisticFieldName: 'name'
-  }],
+  orderByFields: 'Full/Part_COUNT DESC',
+  groupByFieldsForStatistics: 'Full/Part',
+  outStatistics: {
+  	statisticType: 'count',
+  	onStatisticField: '<field>',
+  	outStatisticFieldName: 'name'
+  },
   returnDistinctValues: true,
   resultOffset: 0,
   resultRecordCount: 0,
@@ -73,13 +72,6 @@ const options = {
 
 FeatureServer.query(geojson, options)
 ```
-
-Statistics parameters are validated before query processing, including when the provider supplies precalculated statistics. Invalid parameters throw an error with `code: 400`.
-
-### FeatureServer.validateStatisticsRequest
-`FeatureServer.validateStatisticsRequest(req)` validates `outStatistics` and `groupByFieldsForStatistics` from the request's `body` and `query` without requiring provider data. Use it before fetching data when calling FeatureServer directly. The query handler also runs this validation.
-
-The validator accepts JSON-encoded or parsed statistics arrays and comma-separated or array-form group-by fields. Non-empty query parameters take precedence over body parameters, and the inputs are not mutated. Field names may contain only ASCII letters, numbers, spaces, and underscores, with at least one letter or number. Supported statistic types are `count`, `sum`, `avg`, `var`, `max`, and `min`. Validation failures throw an error with `code: 400`.
 
 ### FeatureServer.restInfo
 Pass in a `data` object and the request object and return a response object that adheres to the specification of the `rest/info` response.  The `data` object may contain the `owningSystemUrl` and the `authInfo` object:
