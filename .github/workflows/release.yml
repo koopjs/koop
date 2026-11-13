@@ -29,18 +29,6 @@ jobs:
     - name: NPM install
       run: npm ci
 
-    - name: Archive release dependencies
-      run: |
-        find node_modules packages -type d -name node_modules -prune -print0 |
-          tar --null -czf "$RUNNER_TEMP/release-dependencies.tar.gz" --files-from -
-
-    - name: Save release dependencies
-      uses: actions/upload-artifact@v4
-      with:
-        name: release-dependencies
-        path: ${{ runner.temp }}/release-dependencies.tar.gz
-        retention-days: 90
-
     - name: Set Github identity
       run: |
         git config --global user.email "github-actions@ci.com"
@@ -50,6 +38,9 @@ jobs:
       run: npm run version
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Update root package-lock.json
+      run: npm install --package-lock-only --ignore-scripts
 
     - name: Update coverage badges and report
       run: npm run cov:unit:json
@@ -83,14 +74,8 @@ jobs:
     - name: Install npm 7
       run: npm i -g npm@7 --registry=https://registry.npmjs.org
 
-    - name: Download release dependencies
-      uses: actions/download-artifact@v4
-      with:
-        name: release-dependencies
-        path: ${{ runner.temp }}
-
-    - name: Restore release dependencies
-      run: tar -xzf "$RUNNER_TEMP/release-dependencies.tar.gz"
+    - name: NPM install
+      run: npm ci
 
     - name: Set Github identity
       run: |
@@ -127,51 +112,10 @@ jobs:
     - name: Install npm 7
       run: npm i -g npm@7 --registry=https://registry.npmjs.org
 
-    - name: Download release dependencies
-      uses: actions/download-artifact@v4
-      with:
-        name: release-dependencies
-        path: ${{ runner.temp }}
-
-    - name: Restore release dependencies
-      run: tar -xzf "$RUNNER_TEMP/release-dependencies.tar.gz"
+    - name: NPM install
+      run: npm ci
 
     - name: Github release
       run: npm run release:github
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  cleanup:
-    needs: [release-npm, release-github]
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout master
-      uses: actions/checkout@v3
-      with:
-        ref: master
-
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 18.x
-
-    - name: Install npm 7
-      run: npm i -g npm@7 --registry=https://registry.npmjs.org
-
-    - name: Set Github identity
-      run: |
-        git config --global user.email "github-actions@ci.com"
-        git config --global user.name "CI Agent"
-
-    - name: Update root package-lock.json
-      run: npm install --package-lock-only --ignore-scripts
-
-    - name: Commit package-lock update
-      run: |
-        git add package-lock.json
-        if ! git diff --cached --quiet; then
-          git commit -m 'chore: update package-lock post-npm release' --no-verify
-        fi
-
-    - name: Push package-lock changes
-      run: git push origin HEAD:master --no-verify
