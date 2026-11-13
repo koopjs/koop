@@ -17,22 +17,31 @@ async function execCommandLine(cmd, args) {
 }
 
 async function getTags() {
-  const output = await execCommandLine('git', ['tag', '--contains', 'HEAD^']);
-  return output.trimEnd().split('\n');
+  const output = await execCommandLine('git', ['tag', '--points-at', 'HEAD']);
+  return output.trimEnd().split('\n').filter(Boolean);
+}
+
+async function getExistingReleases() {
+  const output = await execCommandLine('gh', [
+    'api',
+    '--paginate',
+    'repos/{owner}/{repo}/releases',
+    '--jq',
+    '.[].tag_name',
+  ]);
+  return new Set(output.trimEnd().split('\n').filter(Boolean));
 }
 
 async function getChangelogEntry(tag) {
   const {
-    groups: { package },
+    groups: { package: packageName },
   } = TAG_REGEX.exec(tag);
 
-  const packageDir = package === 'koop-core' ? 'core' : package;
+  const packageDir = packageName === 'koop-core' ? 'core' : packageName;
 
   return new Promise((resolve, rejects) => {
     // @TODO: make this safe for packages without an existing changelog.
-    const readStream = fs.createReadStream(
-      `packages/${packageDir}/CHANGELOG.md`,
-    );
+    const readStream = fs.createReadStream(`packages/${packageDir}/CHANGELOG.md`);
     const lineStream = byline(readStream);
     let changelogLines = [];
     let capture = false;
@@ -72,9 +81,12 @@ async function createRelease(tag, description) {
 
 async function execute() {
   const tags = await getTags();
-  const promises = tags.map((tag) => {
-    return getChangelogEntry(tag);
-  });
+  const existingReleases = await getExistingReleases();
+  const promises = tags
+    .filter((tag) => !existingReleases.has(tag))
+    .map((tag) => {
+      return getChangelogEntry(tag);
+    });
   const results = await Promise.all(promises);
 
   const releasePromises = results.map(([tag, changelog]) => {
@@ -84,11 +96,15 @@ async function execute() {
   return Promise.all(releasePromises);
 }
 
-execute()
-  .then(() => {
-    process.exitCode = 0;
-  })
-  .catch((error) => {
-    console.log(error);
-    process.exitCode = 1;
-  });
+if (require.main === module) {
+  execute()
+    .then(() => {
+      process.exitCode = 0;
+    })
+    .catch((error) => {
+      console.log(error);
+      process.exitCode = 1;
+    });
+}
+
+module.exports = execute;
