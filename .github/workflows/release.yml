@@ -8,19 +8,20 @@ on:
       - ".changeset/*.md"
 
 jobs:
-  release:
+  setup:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x]
+    outputs:
+      release-sha: ${{ steps.release-commit.outputs.sha }}
 
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
   
     - uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 18.x
 
     - name: Install npm 7
       run: npm i -g npm@7 --registry=https://registry.npmjs.org
@@ -33,16 +34,13 @@ jobs:
         git config --global user.email "github-actions@ci.com"
         git config --global user.name "CI Agent"
 
-    - name: Set NPM identity
-      env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: |
-        echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-
     - name: Version
       run: npm run version
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Update root package-lock.json
+      run: npm install --package-lock-only --ignore-scripts
 
     - name: Update coverage badges and report
       run: npm run cov:unit:json
@@ -50,26 +48,74 @@ jobs:
     - name: Commit version and changelog updates
       run: "git add --all && git commit -m 'chore: version and changelog' --no-verify"
 
+    - name: Record release commit
+      id: release-commit
+      run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
     - name: Push versioning changes
-      run: git push origin master --follow-tags --no-verify
-    
+      run: git push origin HEAD:master --no-verify
+
+  release-npm:
+    needs: setup
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout release commit
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ needs.setup.outputs.release-sha }}
+        fetch-depth: 0
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        registry-url: https://registry.npmjs.org
+
+    - name: Install npm 7
+      run: npm i -g npm@7 --registry=https://registry.npmjs.org
+
+    - name: NPM install
+      run: npm ci
+
+    - name: Set Github identity
+      run: |
+        git config --global user.email "github-actions@ci.com"
+        git config --global user.name "CI Agent"
+
     - name: Publish to NPM
-      run: npm run release:npm
+      run: npm run release:npm -- --no-git-tag
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-    - name: Update root package-lock.json
-      run:  npm install --package-lock-only
+    # Recreate missing tags even when a previous attempt already published the packages.
+    - name: Tag released versions
+      run: npm exec changeset tag
 
-    - name: Commit package-lock update
-      run: "git add --all && git commit -m 'chore: update package-lock post-npm release' --no-verify"
+    - name: Push release tags
+      run: git push origin --tags --no-verify
 
-    - name: Push tags and package-lock changes
-      run: git push origin master --follow-tags --no-verify
+  release-github:
+    needs: [setup, release-npm]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout release commit
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ needs.setup.outputs.release-sha }}
+        fetch-depth: 0
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+
+    - name: Install npm 7
+      run: npm i -g npm@7 --registry=https://registry.npmjs.org
+
+    - name: NPM install
+      run: npm ci
 
     - name: Github release
       run: npm run release:github
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Remove .npmrc artifact
-      if: always()
-      run: rm .npmrc

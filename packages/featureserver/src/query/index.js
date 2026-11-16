@@ -3,11 +3,13 @@ const { queryResponseHandler } = require('../response-handlers');
 const { queryJson } = require('./query-json');
 const { validateQueryRequestParams } = require('./validate-query-request-parameters');
 const { normalizeRequestParameters } = require('../helpers/normalize-request-params');
+const { validateStatisticsParams } = require('../helpers/validate-statistics-params');
 
 function queryHandler(req, res, data) {
   const requestParameters = normalizeRequestParameters(req.body, req.query);
 
   validateQueryRequestParams(requestParameters);
+  validateStatisticsParams(requestParameters);
   const payload = queryJson(data, requestParameters);
   return queryResponseHandler(res, payload, {
     ...requestParameters,

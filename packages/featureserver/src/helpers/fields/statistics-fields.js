@@ -38,6 +38,7 @@ class StatisticsFields {
       fieldDefinitions = [],
       outStatistics,
     } = options;
+
     const dateFieldRegexs = getDateFieldRegexs(fieldDefinitions, outStatistics);
 
     this.fields = Object.entries(statisticsSample).map(([key, value]) => {
