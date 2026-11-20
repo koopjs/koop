@@ -81,6 +81,7 @@ The query handler validates `outStatistics` and `groupByFieldsForStatistics` bef
 <provider-namespace>/rest/generateToken
 <provider-namespace>/rest/services/<provider-path-params>/FeatureServer/:layer/:method
 <provider-namespace>/rest/services/<provider-path-params>/FeatureServer/layers
+<provider-namespace>/rest/services/<provider-path-params>/FeatureServer/status
 <provider-namespace>/rest/services/<provider-path-params>/FeatureServer/:layer
 <provider-namespace>/rest/services/<provider-path-params>/FeatureServer
 <provider-namespace>/rest/services/<provider-path-params>/FeatureServer*

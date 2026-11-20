@@ -4,6 +4,7 @@ const {
   serverInfo,
   layerInfo,
   layersInfo,
+  status,
   query,
   generateRenderer,
   queryRelatedRecords,
@@ -77,6 +78,11 @@ class GeoServices {
       path: '$namespace/rest/services/$providerParams/FeatureServer/layers',
       methods: ['get', 'post'],
       handler: 'layersInfoHandler',
+    },
+    {
+      path: '$namespace/rest/services/$providerParams/FeatureServer/status',
+      methods: ['get', 'post'],
+      handler: 'statusHandler',
     },
     {
       path: '$namespace/rest/services/$providerParams/FeatureServer/:layer',
@@ -234,6 +240,10 @@ class GeoServices {
 
   async layersInfoHandler(req, res) {
     this.#pullDataHandler(req, res, layersInfo);
+  }
+
+  async statusHandler(req, res) {
+    this.#pullDataHandler(req, res, status);
   }
 
   async layerInfoHandler(req, res) {
