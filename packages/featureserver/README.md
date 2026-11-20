@@ -34,6 +34,7 @@ app.route('/FeatureServer/:layer/query')
 * [FeatureServer.serverInfo](#featureserver.serverInfo)
 * [FeatureServer.layerInfo](#featureserver.layerInfo)
 * [FeatureServer.layers](#featureserver.layers)
+* [FeatureServer.status](#featureserver.status)
 * [FeatureServer.generateRenderer](#featureserver.generateRenderer)
 * [FeatureServer.queryRelatedRecords](#featureserver.queryRelatedRecords)
 * [FeatureServer.setDefaults](#featureserver.setDefaults)
@@ -199,6 +200,13 @@ const metadata = {
   }]
   //...
 }
+```
+
+### FeatureServer.status
+Pass in the request and response objects and the function responds with the service status, `{ "configuredState": "STARTED", "realTimeState": "STARTED" }`, supporting the `f` and `callback` parameters.
+
+```js
+app.route('/FeatureServer/status').get((req, res) => FeatureServer.status(req, res))
 ```
 
 ### FeatureServer.layers
